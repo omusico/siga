@@ -1,0 +1,41 @@
+package es.udc.cartolab.gvsig.elle;
+
+import com.iver.andami.PluginServices;
+import com.iver.andami.plugins.Extension;
+import com.iver.andami.preferences.IPreference;
+import com.iver.andami.preferences.IPreferenceExtension;
+import com.iver.cit.gvsig.AddLayer;
+import com.iver.cit.gvsig.project.documents.view.gui.View;
+
+import es.udc.cartolab.gvsig.elle.gui.EielLoadMapWindow;
+import es.udc.cartolab.gvsig.elle.gui.EielWizard;
+import es.udc.cartolab.gvsig.users.utils.DBSession;
+
+public class LoadMapExtension extends Extension  {
+
+	public void execute(String actionCommand) {
+		// TODO Auto-generated method stub
+		EielLoadMapWindow window = new EielLoadMapWindow();
+		PluginServices.getMDIManager().addCentredWindow(window);
+	}
+
+	public void initialize() {
+		// TODO Auto-generated method stub
+//		carga la pestaña en añadir capa
+		AddLayer.addWizard(EielWizard.class);
+	}
+
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return PluginServices.getMDIManager().getActiveWindow() instanceof View;
+	}
+
+	public boolean isVisible() {
+		// TODO Auto-generated method stub
+		DBSession dbs = DBSession.getCurrentSession();
+		return dbs!=null;
+	}
+
+
+
+}

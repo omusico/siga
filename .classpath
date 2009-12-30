@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/libFMap/lib/gdbms-0.8-SNAPSHOT.jar" sourcepath="/libGDBMS"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/libFMap"/>
+	<classpathentry kind="lib" path="/libFMap/lib/gt2-main.jar"/>
+	<classpathentry kind="lib" path="/_fwAndami/lib/iver-utiles.jar" sourcepath="/Utiles/src"/>
+	<classpathentry kind="lib" path="/libFMap/lib/driver-manager-1.1.jar" sourcepath="/libDriverManager"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/_fwAndami"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/appgvSIG"/>
+	<classpathentry kind="lib" path="/_fwAndami/lib/beans.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/extJDBC"/>
+	<classpathentry kind="lib" path="/_fwAndami/lib/log4j-1.2.8.jar"/>
+	<classpathentry kind="lib" path="/_fwAndami/lib/JWizardComponent.jar"/>
+	<classpathentry kind="lib" path="/libFMap/lib/cms.jar" sourcepath="/libCq CMS for java"/>
+	<classpathentry kind="var" path="JUNIT_HOME/junit.jar" sourcepath="ECLIPSE_HOME/plugins/org.eclipse.jdt.source_3.1.1/src/org.junit_3.8.1/junitsrc.zip"/>
+	<classpathentry kind="lib" path="lib/formsrt.jar"/>
+	<classpathentry kind="lib" path="/_fwAndami/lib/castor-0.9.5.3-xml.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/extUsers"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
