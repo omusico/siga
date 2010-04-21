@@ -18,5 +18,8 @@
 	<classpathentry kind="lib" path="lib/formsrt.jar"/>
 	<classpathentry kind="lib" path="/_fwAndami/lib/castor-0.9.5.3-xml.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/extUsers"/>
+	<classpathentry kind="src" path="/extCatalogAndGazetteer"/>
+	<classpathentry kind="src" path="/appCatalogAndGazetteerClient"/>
+	<classpathentry kind="src" path="/extWMS"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
