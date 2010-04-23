@@ -25,8 +25,8 @@ import com.jeta.forms.components.panel.FormPanel;
 import es.udc.cartolab.gvsig.elle.utils.Constants;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
-public class EielWizard extends WizardPanel {	
-	
+public class EielWizard extends WizardPanel {
+
 	private JPanel listPanel = null;
 	private JList layerList = null;
 	private JList groupList = null;
@@ -34,12 +34,14 @@ public class EielWizard extends WizardPanel {
 	private DBSession dbs;
 	private String[][] layers;
 	private JComboBox scopeCB;
-	
+
+	@Override
 	public void execute() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
+	@Override
 	public FLayer getLayer() {
 		// TODO Auto-generated method stub
 		DBSession dbs = DBSession.getCurrentSession();
@@ -49,17 +51,17 @@ public class EielWizard extends WizardPanel {
 			//load layer
 			IProjection proj = crsPanel.getCurProj();
 			int pos = layerList.getSelectedIndex();
-			
+
 			String layerName = layers[pos][1];
 			String tableName = layers[pos][2];
-			
+
 			String schema = null;
 			if (layers[pos].length > 8) {
 				if (layers[pos][8].length()>1) {
 					schema = layers[pos][8];
 				}
 			}
-			
+
 			String whereClause = "";
 			Constants constants = Constants.getCurrentConstants();
 			if (constants!=null) {
@@ -69,7 +71,7 @@ public class EielWizard extends WizardPanel {
 					List<String> municipios = constants.getMunicipios();
 					for (int j=0; j<municipios.size()-1; j++) {
 						whereClause = whereClause.concat("mun ='" + municipios.get(j) +
-								"' OR ");
+						"' OR ");
 					}
 					whereClause = whereClause.concat("mun ='" + municipios.get(municipios.size()-1) + "'");
 					break;
@@ -90,15 +92,15 @@ public class EielWizard extends WizardPanel {
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(this,
-					    "SQLException: " + e.getMessage(),
-					    "SQL Error",
-					    JOptionPane.ERROR_MESSAGE);
+						"SQLException: " + e.getMessage(),
+						"SQL Error",
+						JOptionPane.ERROR_MESSAGE);
 			} catch (DBException e) {
 				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(this,
-					    "SQLException: " + e.getMessage(),
-					    "DB Error",
-					    JOptionPane.ERROR_MESSAGE);
+						"SQLException: " + e.getMessage(),
+						"DB Error",
+						JOptionPane.ERROR_MESSAGE);
 			}
 			PluginServices.getMDIManager().restoreCursor();
 		} else {
@@ -106,21 +108,22 @@ public class EielWizard extends WizardPanel {
 			JOptionPane.showMessageDialog(this,
 					PluginServices.getText(this, "notConnectedError"),
 					PluginServices.getText(this, "notConnected"),
-				    JOptionPane.ERROR_MESSAGE);
+					JOptionPane.ERROR_MESSAGE);
 		}
-		
+
 		return layer;
 	}
 
+	@Override
 	public void initWizard() {
-		
+
 		dbs = DBSession.getCurrentSession();
 		setTabName("EIEL");
-		
+
 		setLayout(new BorderLayout());
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
-		
+
 		if (dbs != null) {
 			// TODO Auto-generated method stub
 
@@ -129,10 +132,10 @@ public class EielWizard extends WizardPanel {
 					javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
 					javax.swing.border.TitledBorder.DEFAULT_POSITION, null, null));
 
-			
+
 			mainPanel.add(getListPanel(), BorderLayout.CENTER);
 			mainPanel.add(getCRSPanel(), BorderLayout.SOUTH);
-			
+
 		} else {
 			JLabel label = new JLabel(PluginServices.getText(this, "notConnectedError"));
 			mainPanel.add(label, BorderLayout.NORTH);
@@ -143,12 +146,12 @@ public class EielWizard extends WizardPanel {
 
 	private JPanel getListPanel() {
 		if (listPanel == null) {
-			
+
 			listPanel = new JPanel();
 
 			try {
 
-				FormPanel form = new FormPanel("loadEIELLayer.jfrm");
+				FormPanel form = new FormPanel("forms/loadEIELLayer.jfrm");
 				form.setFocusTraversalPolicyProvider(true);
 
 				listPanel.add(form);
@@ -160,10 +163,10 @@ public class EielWizard extends WizardPanel {
 				layerList = form.getList("layerList");
 				groupList = form.getList("groupList");
 				groupList.setListData(groups);
-				
+
 				JLabel scopeLabel = form.getLabel("scopeLabel");
 				scopeLabel.setText(PluginServices.getText(this, "scope"));
-				
+
 				scopeCB = form.getComboBox("scopeCB");
 				String op1 = PluginServices.getText(this, "all_prov");
 				scopeCB.addItem(op1);
@@ -187,17 +190,17 @@ public class EielWizard extends WizardPanel {
 							} catch (SQLException e) {
 								// TODO Auto-generated catch block
 								JOptionPane.showMessageDialog(null,
-									    "Error SQL: " + e.getMessage(),
-									    "SQL Exception",
-									    JOptionPane.ERROR_MESSAGE);
+										"Error SQL: " + e.getMessage(),
+										"SQL Exception",
+										JOptionPane.ERROR_MESSAGE);
 							}
 							if (layers != null) {
-							String[] layerNames = new String[layers.length];
-							for (int i=0; i<layers.length; i++) {
-								layerNames[i] = layers[i][1];
+								String[] layerNames = new String[layers.length];
+								for (int i=0; i<layers.length; i++) {
+									layerNames[i] = layers[i][1];
+								}
+								layerList.setListData(layerNames);
 							}
-							layerList.setListData(layerNames);
-							} 
 						} else {
 							layerList.setListData(new Object[0]);
 						}
@@ -227,7 +230,7 @@ public class EielWizard extends WizardPanel {
 			}
 
 		}
-		
+
 		return listPanel;
 
 	}

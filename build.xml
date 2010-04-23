@@ -46,10 +46,13 @@
     <copy todir="${dist}">
     	<fileset dir="config" includes="text*.properties"/>
     </copy>
-	<copy todir="${dist}">
-		<fileset dir="forms" includes="*" />
-	</copy>  
-    <move todir="${extensionsDir}/${plugin}/">
+  	
+  	<mkdir dir="${dist}/forms"/>
+  	<copy todir="${dist}/forms">
+      	<fileset dir="forms"/> 
+    </copy>
+  	
+  	<move todir="${extensionsDir}/${plugin}/">
     	<fileset dir="${dist}" includes="**/**"/>
     </move>
   </target>
@@ -71,9 +74,11 @@
 		<copy todir="${dist}">
 			<fileset dir="config" includes="text*.properties"/>
 		</copy>
-		<copy todir="${dist}">
-			<fileset dir="forms" includes="*" />
-		</copy>		
+		
+	  	<mkdir dir="${dist}/forms"/>
+	  	<copy todir="${dist}/forms">
+	      	<fileset dir="forms"/> 
+	    </copy>		
 	</target>
 
 	<target name="move-to-andami">

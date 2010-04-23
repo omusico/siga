@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 import javax.swing.JButton;
@@ -44,9 +43,9 @@ public class SaveAllLegendsDialog extends JPanel implements IWindow, ActionListe
 	private JButton okButton;
 	private JButton cancelButton;
 	private WindowInfo viewInfo = null;
-	
+
 	public WindowInfo getWindowInfo() {
-		
+
 		if (viewInfo == null) {
 			viewInfo = new WindowInfo(WindowInfo.MODELESSDIALOG | WindowInfo.PALETTE);
 			viewInfo.setTitle(PluginServices.getText(this, "save_legends"));
@@ -55,53 +54,53 @@ public class SaveAllLegendsDialog extends JPanel implements IWindow, ActionListe
 		}
 		return viewInfo;
 	}
-	
+
 	private void init() {
-		
+
 		GridBagLayout layout = new GridBagLayout();
 		setLayout(layout);
-		
-		add(getCenterPanel(), new GridBagConstraints(0, 0, 1, 1, 0, 1, 
+
+		add(getCenterPanel(), new GridBagConstraints(0, 0, 1, 1, 0, 1,
 				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 				new Insets(0, 0, 0, 0), 0, 0));
-		
-		add(getSouthPanel(), new GridBagConstraints(0, 1, 1, 1, 10, 0, 
+
+		add(getSouthPanel(), new GridBagConstraints(0, 1, 1, 1, 10, 0,
 				GridBagConstraints.SOUTH, GridBagConstraints.BOTH,
 				new Insets(0, 0, 0, 0), 0, 0));
-		
+
 		//enables tabbing navigation
 		setFocusCycleRoot(true);
 	}
-	
+
 	public SaveAllLegendsDialog(FLayer[] layers) {
 		this.layers = layers;
 		init();
 	}
-	
+
 	public SaveAllLegendsDialog(FLayer[] layers, FLayer[] overviewLayers) {
 		this.layers = layers;
 		this.overviewLayers = overviewLayers;
 		init();
 	}
-	
+
 	protected JPanel getCenterPanel() {
 
 		if (centerPanel == null) {
 			centerPanel = new JPanel();
-			FormPanel form = new FormPanel("saveLegends.jfrm");
+			FormPanel form = new FormPanel("forms/saveLegends.jfrm");
 			form.setFocusTraversalPolicyProvider(true);
 			centerPanel.add(form);
 
 			JLabel legendsLabel = form.getLabel("legendsLabel");
 			legendsLabel.setText(PluginServices.getText(this, "legends_group_name"));
-			
+
 			legendsField = form.getTextField("legendsField");
 			legendsField.addActionListener(this);
-			
+
 		}
 		return centerPanel;
 	}
-	
+
 	protected JPanel getSouthPanel() {
 
 		if (southPanel == null) {
@@ -121,7 +120,7 @@ public class SaveAllLegendsDialog extends JPanel implements IWindow, ActionListe
 
 	public void actionPerformed(ActionEvent event) {
 		// TODO Auto-generated method stub
-		if (event.getSource() == okButton || event.getSource()==legendsField) {
+		if ((event.getSource() == okButton) || (event.getSource()==legendsField)) {
 			PluginServices ps = PluginServices.getPluginServices("es.udc.cartolab.gvsig.users");
 			XMLEntity xml = ps.getPersistentXML();
 			if (xml.contains(EielPage.DEFAULT_LEGEND_DIR_KEY_NAME)) {
@@ -227,7 +226,7 @@ public class SaveAllLegendsDialog extends JPanel implements IWindow, ActionListe
 		}
 	}
 
-	
+
 	private void writeLegend(FLayer layer, File file) {
 		if (layer instanceof ClassifiableVectorial) {
 			ClassifiableVectorial aux = (ClassifiableVectorial) layer;

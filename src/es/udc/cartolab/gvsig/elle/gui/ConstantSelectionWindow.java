@@ -22,8 +22,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.iver.andami.PluginServices;
-import com.iver.andami.ui.mdiFrame.MDIFrame;
-import com.iver.andami.ui.mdiFrame.NewStatusBar;
 import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.jeta.forms.components.panel.FormPanel;
@@ -41,7 +39,7 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 	private JPanel southPanel = null;
 	private JButton okButton;
 	private JButton cancelButton;
-	
+
 	//Constantes (deberia moverse a otro archivo general?
 	private final String municipioTable = "municipio";
 	private final String munCodField = "mun";
@@ -51,7 +49,7 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 	private final String nucCodField ="poblamiento";
 	private final String denominacion = "denominaci";
 	private final String fase = "2005";
-	
+
 	public WindowInfo getWindowInfo() {
 		if (viewInfo == null) {
 			viewInfo = new WindowInfo(WindowInfo.MODELESSDIALOG | WindowInfo.PALETTE);
@@ -61,32 +59,32 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 		}
 		return viewInfo;
 	}
-	
+
 	public ConstantSelectionWindow() {
 		init();
 	}
-	
+
 	protected JPanel getCenterPanel() {
 		if (centerPanel == null) {
 			centerPanel = new JPanel();
-			FormPanel form = new FormPanel("constantSelection.jfrm");
+			FormPanel form = new FormPanel("forms/constantSelection.jfrm");
 			form.setFocusTraversalPolicyProvider(true);
 			centerPanel.add(form);
-			
+
 			JLabel municipioLabel = form.getLabel("municipioLabel");
 			municipioLabel.setText(PluginServices.getText(this, "municipio"));
 			JLabel entidadLabel = form.getLabel("entidadLabel");
 			entidadLabel.setText(PluginServices.getText(this, "entidad"));
 			JLabel nucleoLabel = form.getLabel("nucleoLabel");
 			nucleoLabel.setText(PluginServices.getText(this, "nucleo"));
-			
+
 			municipioCB = form.getComboBox("municipioCB");
 			entidadCB = form.getComboBox("entidadCB");
 			nucleoCB = form.getComboBox("nucleoCB");
-			
+
 			municipioCHB = form.getCheckBox("municipioCHB");
 			municipioCHB.setText(PluginServices.getText(this, "adjacent_councils"));
-			
+
 			try {
 				fillComboBox("", municipioTable, munCodField, "WHERE fase='"+ fase +"'", municipioCB);
 				municipioCB.addActionListener(this);
@@ -95,12 +93,12 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 				e.printStackTrace();
 			}
 
-			
+
 		}
 		return centerPanel;
 	}
-	
-	
+
+
 	protected JPanel getNorthPanel() {
 
 		//Set header if any
@@ -118,7 +116,7 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 		}
 		return northPanel;
 	}
-	
+
 	protected JPanel getSouthPanel() {
 
 		if (southPanel == null) {
@@ -135,13 +133,13 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 		}
 		return southPanel;
 	}
-	
-	private void fillComboBox(String firstItem, String tableName, String codField, 
+
+	private void fillComboBox(String firstItem, String tableName, String codField,
 			String whereClause, JComboBox comboBox) throws SQLException {
-		
+
 		DBSession dbs = DBSession.getCurrentSession();
 		if (dbs != null) {
-			
+
 			Connection con = dbs.getJavaConnection();
 			Statement stat = con.createStatement();
 			String schema = dbs.getSchema();
@@ -149,18 +147,18 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 			query = query + " " + whereClause + " ORDER BY " + codField + ";";
 
 			comboBox.removeAllItems();
-			
-			if (firstItem != null && !firstItem.equals("")) {
+
+			if ((firstItem != null) && !firstItem.equals("")) {
 				comboBox.addItem(firstItem);
 			}
-			
+
 			ResultSet rs = stat.executeQuery(query);
-			
-	        while (rs.next()) {
-	        	String text = rs.getString(codField) + " - " + rs.getString("denominaci");
-	        	comboBox.addItem(text);
-	        }
-	        rs.close();
+
+			while (rs.next()) {
+				String text = rs.getString(codField) + " - " + rs.getString("denominaci");
+				comboBox.addItem(text);
+			}
+			rs.close();
 
 		}
 	}
@@ -175,22 +173,22 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 	}
 
 	private void init() {
-		
+
 		GridBagLayout layout = new GridBagLayout();
 		setLayout(layout);
-		
-		add(getNorthPanel(), new GridBagConstraints(0, 0, 1, 1, 0, 0, 
+
+		add(getNorthPanel(), new GridBagConstraints(0, 0, 1, 1, 0, 0,
 				GridBagConstraints.NORTH, GridBagConstraints.BOTH,
 				new Insets(0, 0, 0, 0), 0, 0));
-		
-		add(getCenterPanel(), new GridBagConstraints(0, 1, 1, 1, 0, 1, 
+
+		add(getCenterPanel(), new GridBagConstraints(0, 1, 1, 1, 0, 1,
 				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 				new Insets(0, 0, 0, 0), 0, 0));
-		
-		add(getSouthPanel(), new GridBagConstraints(0, 2, 1, 1, 10, 0, 
+
+		add(getSouthPanel(), new GridBagConstraints(0, 2, 1, 1, 10, 0,
 				GridBagConstraints.SOUTH, GridBagConstraints.BOTH,
 				new Insets(0, 0, 0, 0), 0, 0));
-		
+
 		//enables tabbing navigation
 		setFocusCycleRoot(true);
 	}
@@ -205,13 +203,13 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 			String munCod = getCode(municipioCB);
 			String entCod = "";
 			String nucCod = "";
-			if (entidadCB.getSelectedIndex()!=0 && nucleoCB.getSelectedIndex()!=0) {
+			if ((entidadCB.getSelectedIndex()!=0) && (nucleoCB.getSelectedIndex()!=0)) {
 				entCod = getCode(entidadCB);
 				nucCod = getCode(nucleoCB);
 			}
 			//Close window
 			PluginServices.getMDIManager().closeWindow(this);
-			
+
 			//hacer lo que haga falta
 			if (municipioCHB.isSelected()) {
 				SelectAdjacentsWindow win = new SelectAdjacentsWindow(munCod, entCod, nucCod);
@@ -219,7 +217,7 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 			} else {
 				Constants cts = Constants.newConstants(munCod, entCod, nucCod);
 			}
-            
+
 		}
 		if (event.getSource() == municipioCB) {
 			nucleoCB.removeAllItems();
@@ -227,7 +225,7 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 			try {
 				entidadCB.removeActionListener(this);
 				String text = PluginServices.getText(this, "all_ent");
-				fillComboBox(text, entidadTable, entCodField, 
+				fillComboBox(text, entidadTable, entCodField,
 						"WHERE fase='" + fase + "' AND " + munCodField + "='" + cod + "'",
 						entidadCB);
 				entidadCB.addActionListener(this);
@@ -241,13 +239,13 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 			if (entidadCB.getSelectedIndex()!=0) {
 				String entCod = getCode(entidadCB);
 				String munCod = getCode(municipioCB);
-				System.out.println("WHERE fase='" + fase + "' AND " + munCodField + "='" + munCod + "' AND " 
+				System.out.println("WHERE fase='" + fase + "' AND " + munCodField + "='" + munCod + "' AND "
 						+ entCodField + "='" + entCod + "'");
 				try {
 					String text = PluginServices.getText(this, "all_nuc");
-					fillComboBox(text, nucleoTable, nucCodField, 
-							"WHERE fase='" + fase + "' AND " + munCodField + "='" + munCod + "' AND " 
-							+ entCodField + "='" + entCod + "'", 
+					fillComboBox(text, nucleoTable, nucCodField,
+							"WHERE fase='" + fase + "' AND " + munCodField + "='" + munCod + "' AND "
+							+ entCodField + "='" + entCod + "'",
 							nucleoCB);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block

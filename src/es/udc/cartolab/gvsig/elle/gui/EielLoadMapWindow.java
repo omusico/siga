@@ -35,7 +35,7 @@ import es.udc.cartolab.gvsig.users.preferences.EielPage;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class EielLoadMapWindow extends JPanel implements IWindow, ActionListener {
-	
+
 	private WindowInfo viewInfo;
 	private DBSession dbs;
 	private CRSSelectPanel crsPanel = null;
@@ -50,9 +50,9 @@ public class EielLoadMapWindow extends JPanel implements IWindow, ActionListener
 	private boolean isCartBaseLoaded;
 
 	private final String cartografiaBase = "Cartograf\u00eda base";
-	
+
 	public WindowInfo getWindowInfo() {
-		
+
 		if (viewInfo == null) {
 			viewInfo = new WindowInfo(WindowInfo.MODELESSDIALOG | WindowInfo.PALETTE);
 			viewInfo.setTitle(PluginServices.getText(this, "Load_map"));
@@ -61,51 +61,51 @@ public class EielLoadMapWindow extends JPanel implements IWindow, ActionListener
 		}
 		return viewInfo;
 	}
-	
+
 	public EielLoadMapWindow() {
-		
+
 		dbs = DBSession.getCurrentSession();
 		view = (View) PluginServices.getMDIManager().getActiveWindow();
-		
-		
+
+
 		try {
 			isCartBaseLoaded = LoadMap.isMapLoaded(view, cartografiaBase);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		XMLEntity xml = PluginServices.getPluginServices("es.udc.cartolab.gvsig.users").getPersistentXML();
 		if (xml.contains(EielPage.DEFAULT_LEGEND_DIR_KEY_NAME)) {
 			legendDir = xml.getStringProperty(EielPage.DEFAULT_LEGEND_DIR_KEY_NAME);
 		}
-		
+
 		JPanel mainPanel = new JPanel();
-		
+
 		GridBagLayout layout = new GridBagLayout();
 		setLayout(layout);
 
 		mainPanel.setLayout(new BorderLayout());
-		
+
 		mainPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(
 				null, PluginServices.getText(this, "Choose_Map"),
 				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
 				javax.swing.border.TitledBorder.DEFAULT_POSITION, null, null));
 
-		
+
 		mainPanel.add(getListPanel(), BorderLayout.CENTER);
 		mainPanel.add(getCRSPanel(), BorderLayout.SOUTH);
-		
-		add(mainPanel, new GridBagConstraints(0, 1, 1, 1, 0, 1, 
+
+		add(mainPanel, new GridBagConstraints(0, 1, 1, 1, 0, 1,
 				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 				new Insets(0, 0, 0, 0), 0, 0));
-		
-		add(getSouthPanel(), new GridBagConstraints(0, 2, 1, 1, 10, 0, 
+
+		add(getSouthPanel(), new GridBagConstraints(0, 2, 1, 1, 10, 0,
 				GridBagConstraints.SOUTH, GridBagConstraints.BOTH,
 				new Insets(0, 0, 0, 0), 0, 0));
-		
+
 	}
-	
+
 	private JPanel getCRSPanel() {
 		if (crsPanel == null) {
 			crsPanel = CRSSelectPanel.getPanel(FOpenDialog.getLastProjection());
@@ -119,7 +119,7 @@ public class EielLoadMapWindow extends JPanel implements IWindow, ActionListener
 		}
 		return crsPanel;
 	}
-	
+
 	protected JPanel getSouthPanel() {
 
 		if (southPanel == null) {
@@ -137,7 +137,7 @@ public class EielLoadMapWindow extends JPanel implements IWindow, ActionListener
 		}
 		return southPanel;
 	}
-	
+
 	private JPanel getListPanel() {
 		if (listPanel == null) {
 
@@ -145,7 +145,7 @@ public class EielLoadMapWindow extends JPanel implements IWindow, ActionListener
 
 			try {
 
-				FormPanel form = new FormPanel("loadEIELMap.jfrm");
+				FormPanel form = new FormPanel("forms/loadEIELMap.jfrm");
 				form.setFocusTraversalPolicyProvider(true);
 
 				listPanel.add(form);
@@ -157,20 +157,20 @@ public class EielLoadMapWindow extends JPanel implements IWindow, ActionListener
 				//layerList = form.getList("layerList");
 				mapList = form.getList("mapList");
 				mapList.setListData(groups);
-				
+
 				layerTextArea = (JTextArea) form.getComponentByName("layerTextArea");
 				layerTextArea.setEditable(false);
-				
+
 				legendCB = form.getComboBox("legendCombo");
-				
+
 				JLabel mapLabel = form.getLabel("mapLabel");
 				JLabel layerLabel = form.getLabel("layerLabel");
 				JLabel legendLabel = form.getLabel("legendLabel");
-				
+
 				mapLabel.setText(PluginServices.getText(this, "map_load"));
 				layerLabel.setText(PluginServices.getText(this, "layer_load"));
 				legendLabel.setText(PluginServices.getText(this, "legend"));
-				
+
 				if (legendDir != null) {
 					File f = new File(legendDir);
 					File[] files = f.listFiles();
@@ -180,7 +180,7 @@ public class EielLoadMapWindow extends JPanel implements IWindow, ActionListener
 						}
 					}
 				}
-				
+
 				mapList.addListSelectionListener(new ListSelectionListener() {
 
 					public void valueChanged(ListSelectionEvent arg0) {
@@ -195,15 +195,15 @@ public class EielLoadMapWindow extends JPanel implements IWindow, ActionListener
 							}
 							try {
 								layers = dbs.getTable("_map", dbs.getSchema(), where, new String[]{"posicion"}, true);
-//								layers = dbs.getTable("mapas", where);
+								//								layers = dbs.getTable("mapas", where);
 
 								String layerText = "";
 								for (int i=0; i<layers.length; i++) {
 									layerText = layerText + layers[i][1] + "\n";
 								}
-								
+
 								layerTextArea.setText(layerText);
-								
+
 							} catch (SQLException e) {
 								// TODO Auto-generated catch block
 								JOptionPane.showMessageDialog(null,
@@ -215,12 +215,12 @@ public class EielLoadMapWindow extends JPanel implements IWindow, ActionListener
 						} else {
 							layerTextArea.setText("");
 						}
-						
+
 					}
 
 				});
 
-				
+
 			} catch (SQLException e) {
 				//exception
 				e.printStackTrace();
@@ -229,7 +229,7 @@ public class EielLoadMapWindow extends JPanel implements IWindow, ActionListener
 
 		return listPanel;
 	}
-	
+
 	private void changeOkButtonState() {
 		if (mapList.getSelectedIndices().length != 1) {
 			okButton.setEnabled(false);
@@ -237,7 +237,7 @@ public class EielLoadMapWindow extends JPanel implements IWindow, ActionListener
 			okButton.setEnabled(true);
 		}
 	}
-	
+
 
 
 	public void actionPerformed(ActionEvent event) {
@@ -250,16 +250,16 @@ public class EielLoadMapWindow extends JPanel implements IWindow, ActionListener
 			dbs = DBSession.getCurrentSession();
 			try {
 				LoadMap.loadMap(view, mapList.getSelectedValue().toString(), crsPanel.getCurProj(), !isCartBaseLoaded);
-				
+
 				/* styles */
 				String selectedItem = "";
 				if (legendCB.getSelectedItem()!=null) {
 					selectedItem = legendCB.getSelectedItem().toString();
 				}
-				if (legendDir!=null && !selectedItem.equals("")) {
+				if ((legendDir!=null) && !selectedItem.equals("")) {
 					String stylePath;
 					if (legendDir.endsWith(File.separator)) {
-						stylePath = legendDir + selectedItem; 
+						stylePath = legendDir + selectedItem;
 					} else {
 						stylePath = legendDir + File.separator + selectedItem;
 					}

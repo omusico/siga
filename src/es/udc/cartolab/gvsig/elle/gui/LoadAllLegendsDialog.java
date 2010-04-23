@@ -33,9 +33,9 @@ public class LoadAllLegendsDialog extends JPanel implements IWindow, ActionListe
 	private WindowInfo viewInfo = null;
 	private View view;
 	private String legendDir;
-	
+
 	public WindowInfo getWindowInfo() {
-		
+
 		if (viewInfo == null) {
 			viewInfo = new WindowInfo(WindowInfo.MODELESSDIALOG | WindowInfo.PALETTE);
 			viewInfo.setTitle(PluginServices.getText(this, "load_legends"));
@@ -44,7 +44,7 @@ public class LoadAllLegendsDialog extends JPanel implements IWindow, ActionListe
 		}
 		return viewInfo;
 	}
-	
+
 	public LoadAllLegendsDialog(View view) throws Exception {
 		this.view = view;
 		XMLEntity xml = PluginServices.getPluginServices("es.udc.cartolab.gvsig.users").getPersistentXML();
@@ -53,54 +53,54 @@ public class LoadAllLegendsDialog extends JPanel implements IWindow, ActionListe
 		}
 		init();
 	}
-	
+
 	private void init() throws Exception {
-		
+
 		GridBagLayout layout = new GridBagLayout();
 		setLayout(layout);
-		
-		add(getCenterPanel(), new GridBagConstraints(0, 0, 1, 1, 0, 1, 
+
+		add(getCenterPanel(), new GridBagConstraints(0, 0, 1, 1, 0, 1,
 				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 				new Insets(0, 0, 0, 0), 0, 0));
-		
-		add(getSouthPanel(), new GridBagConstraints(0, 1, 1, 1, 10, 0, 
+
+		add(getSouthPanel(), new GridBagConstraints(0, 1, 1, 1, 10, 0,
 				GridBagConstraints.SOUTH, GridBagConstraints.BOTH,
 				new Insets(0, 0, 0, 0), 0, 0));
-		
+
 		//enables tabbing navigation
 		setFocusCycleRoot(true);
 	}
-	
+
 	protected JPanel getCenterPanel() throws Exception {
 
 		if (centerPanel == null) {
 			centerPanel = new JPanel();
-			FormPanel form = new FormPanel("loadLegends.jfrm");
+			FormPanel form = new FormPanel("forms/loadLegends.jfrm");
 			form.setFocusTraversalPolicyProvider(true);
 			centerPanel.add(form);
 
 			JLabel legendsLabel = form.getLabel("legendsLabel");
 			legendsLabel.setText(PluginServices.getText(this, "legends_group_name"));
-			
+
 			legendCB = form.getComboBox("legendCB");
 			if (legendDir != null) {
 				File f = new File(legendDir);
 				File[] files = f.listFiles();
 				if (files.length > 0) {
-				for (int i=0; i<files.length; i++) {
-					if (files[i].isDirectory() && !files[i].isHidden()) {
-						legendCB.addItem(files[i].getName());
+					for (int i=0; i<files.length; i++) {
+						if (files[i].isDirectory() && !files[i].isHidden()) {
+							legendCB.addItem(files[i].getName());
+						}
 					}
-				}
 				} else {
 					throw new Exception(PluginServices.getText(this, "theres_no_legends"));
 				}
 			}
-			
+
 		}
 		return centerPanel;
 	}
-	
+
 	protected JPanel getSouthPanel() {
 
 		if (southPanel == null) {
@@ -125,10 +125,10 @@ public class LoadAllLegendsDialog extends JPanel implements IWindow, ActionListe
 			if (legendCB.getSelectedItem()!=null) {
 				selectedItem = legendCB.getSelectedItem().toString();
 			}
-			if (legendDir!=null && !selectedItem.equals("")) {
+			if ((legendDir!=null) && !selectedItem.equals("")) {
 				String stylePath;
 				if (legendDir.endsWith(File.separator)) {
-					stylePath = legendDir + selectedItem; 
+					stylePath = legendDir + selectedItem;
 				} else {
 					stylePath = legendDir + File.separator + selectedItem;
 				}
