@@ -45,14 +45,5 @@
 				<action-tool icon="images/zoomnuc.png" action-command="ZOOM_PREV" tooltip="zoom_constant" position="1"/>
 			</tool-bar>
 		</extension>
-		
-		<extension class-name="es.udc.cartolab.gvsig.elle.EasyWMSExtension"
-			description="Carga de una capa WMS predefinida del SITGA"
-			active="true">
-			<menu text="EIEL/WMS Sitga" icon="images/wms_sitga.png" position="5000"/>
-			<tool-bar name="WMS" position ="1">
-				<action-tool icon="images/wms_sitga.png" action-command="SITGA_WMS" tooltip="WMS SITGA" position="1"/>
-			</tool-bar>
-		</extension>
 	</extensions>
 </plugin-config>

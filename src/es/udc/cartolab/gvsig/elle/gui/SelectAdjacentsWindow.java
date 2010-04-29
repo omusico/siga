@@ -1,6 +1,5 @@
 package es.udc.cartolab.gvsig.elle.gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -31,35 +30,35 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionListener {
 
 	private class CheckBoxItem {
-		
-		private String mun;
-		private JCheckBox checkBox;
-		
+
+		private final String mun;
+		private final JCheckBox checkBox;
+
 		public CheckBoxItem(String mun, JCheckBox chb) {
 			this.mun = mun;
 			checkBox = chb;
 		}
-		
+
 		public String getMun() {
 			return mun;
 		}
-		
+
 		public JCheckBox getCheckBox() {
 			return checkBox;
 		}
-		
+
 	}
-	
-	private String municipio, entidad, nucleo;
+
+	private final String municipio, entidad, nucleo;
 	private WindowInfo viewInfo = null;
 	private JPanel northPanel = null;
 	private JPanel southPanel = null;
 	private JPanel centerPanel = null;
 	private JButton okButton, cancelButton;
-	private ArrayList<CheckBoxItem> checkBoxes;
-	
-	
-	
+	private final ArrayList<CheckBoxItem> checkBoxes;
+
+
+
 	public WindowInfo getWindowInfo() {
 		if (viewInfo == null) {
 			viewInfo = new WindowInfo(WindowInfo.MODELESSDIALOG | WindowInfo.PALETTE);
@@ -69,7 +68,7 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 		}
 		return viewInfo;
 	}
-	
+
 	public SelectAdjacentsWindow(String munCod, String entCod, String nucCod) {
 		municipio = munCod;
 		entidad = entCod;
@@ -77,28 +76,28 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 		checkBoxes = new ArrayList<CheckBoxItem>();
 		init();
 	}
-	
+
 	private void init() {
-		
+
 		GridBagLayout layout = new GridBagLayout();
 		setLayout(layout);
-		
-		add(getNorthPanel(), new GridBagConstraints(0, 0, 1, 1, 0, 0, 
+
+		add(getNorthPanel(), new GridBagConstraints(0, 0, 1, 1, 0, 0,
 				GridBagConstraints.NORTH, GridBagConstraints.BOTH,
 				new Insets(0, 0, 0, 0), 0, 0));
-		
-		add(getCenterPanel(), new GridBagConstraints(0, 1, 1, 1, 0, 1, 
+
+		add(getCenterPanel(), new GridBagConstraints(0, 1, 1, 1, 0, 1,
 				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 				new Insets(10, 10, 0, 0), 0, 0));
-		
-		add(getSouthPanel(), new GridBagConstraints(0, 2, 1, 1, 10, 0, 
+
+		add(getSouthPanel(), new GridBagConstraints(0, 2, 1, 1, 10, 0,
 				GridBagConstraints.SOUTH, GridBagConstraints.BOTH,
 				new Insets(0, 0, 0, 0), 0, 0));
-		
+
 		//enables tabbing navigation
 		setFocusCycleRoot(true);
 	}
-	
+
 	protected JPanel getNorthPanel() {
 
 		//Set header if any
@@ -119,7 +118,7 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 		}
 		return northPanel;
 	}
-	
+
 	protected JPanel getSouthPanel() {
 
 		if (southPanel == null) {
@@ -146,21 +145,21 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 				GridLayout layout = new GridLayout(13,5);
 				centerPanel.setLayout(layout);
 				ArrayList<String> adjacents = new ArrayList<String>();
-				String query = "SELECT mun FROM %s WHERE ST_Touches(the_geom, (SELECT the_geom FROM %s WHERE mun='" + 
+				String query = "SELECT mun FROM %s WHERE ST_Touches(the_geom, (SELECT the_geom FROM %s WHERE mun='" +
 				municipio + "')) ORDER BY denominaci";
 				String table = dbs.getSchema() + ".municipio";
 				try {
 					Statement stat = dbs.getJavaConnection().createStatement();
-					
+
 					query = String.format(query, table, table);
-					
+
 					ResultSet rs = stat.executeQuery(query);
-					
-			        while (rs.next()) {
-			        	String text = rs.getString("mun");
-			        	adjacents.add(text);
-			        }
-			        rs.close();
+
+					while (rs.next()) {
+						String text = rs.getString("mun");
+						adjacents.add(text);
+					}
+					rs.close();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -169,36 +168,36 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 				query = String.format(query, table);
 				try {
 					Statement stat = dbs.getJavaConnection().createStatement();
-					
+
 					query = String.format(query, table, table);
-					
+
 					ResultSet rs = stat.executeQuery(query);
-					
-			        while (rs.next()) {
-			        	String mun = rs.getString("mun");
-			        	String name = rs.getString("denominaci");
-			        	JCheckBox chb = new JCheckBox(name);
-			        	chb.setToolTipText(name);
-			        	if (adjacents.contains(mun)) {
-			        		chb.setSelected(true);
-			        		chb.setForeground(Color.blue);
-			        	}
-			        	if (mun.equals(municipio)) {
-			        		chb.setSelected(true);
-			        		chb.setEnabled(false);
-			        	}
-			        	CheckBoxItem cbi = new CheckBoxItem(mun, chb);
-			        	checkBoxes.add(cbi);
-			        	centerPanel.add(chb);
-			        }
-			        rs.close();
+
+					while (rs.next()) {
+						String mun = rs.getString("mun");
+						String name = rs.getString("denominaci");
+						JCheckBox chb = new JCheckBox(name);
+						chb.setToolTipText(name);
+						if (adjacents.contains(mun)) {
+							chb.setSelected(true);
+							chb.setForeground(Color.blue);
+						}
+						if (mun.equals(municipio)) {
+							chb.setSelected(true);
+							chb.setEnabled(false);
+						}
+						CheckBoxItem cbi = new CheckBoxItem(mun, chb);
+						checkBoxes.add(cbi);
+						centerPanel.add(chb);
+					}
+					rs.close();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
-				
-				
+
+
+
 			}
 		}
 		return centerPanel;
@@ -218,6 +217,11 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 			Constants cts = Constants.newConstants(municipio, entidad, nucleo, municipios);
 			PluginServices.getMDIManager().closeWindow(this);
 		}
+	}
+
+	public Object getWindowProfile() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

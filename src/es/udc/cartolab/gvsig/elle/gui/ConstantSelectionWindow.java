@@ -256,4 +256,9 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 			}
 		}
 	}
+
+	public Object getWindowProfile() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -26,7 +26,7 @@ import com.iver.cit.gvsig.ProjectExtension;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.fmap.layers.FLayers;
 import com.iver.cit.gvsig.fmap.layers.layerOperations.ClassifiableVectorial;
-import com.iver.cit.gvsig.fmap.rendering.Legend;
+import com.iver.cit.gvsig.fmap.rendering.IVectorLegend;
 import com.iver.utiles.XMLEntity;
 import com.jeta.forms.components.panel.FormPanel;
 
@@ -231,7 +231,7 @@ public class SaveAllLegendsDialog extends JPanel implements IWindow, ActionListe
 		if (layer instanceof ClassifiableVectorial) {
 			ClassifiableVectorial aux = (ClassifiableVectorial) layer;
 			try {
-				Legend renderer = (Legend) aux.getLegend().cloneLegend();
+				IVectorLegend renderer = (IVectorLegend) aux.getLegend().cloneLegend();
 				FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
 				OutputStreamWriter writer = new OutputStreamWriter(fos, ProjectExtension.PROJECTENCODING);
 				Marshaller m = new Marshaller(writer);
@@ -243,5 +243,10 @@ public class SaveAllLegendsDialog extends JPanel implements IWindow, ActionListe
 				NotificationManager.addError(PluginServices.getText(this, "Error_guardando_la_leyenda"), e);
 			}
 		}
+	}
+
+	public Object getWindowProfile() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

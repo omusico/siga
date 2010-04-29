@@ -15,11 +15,11 @@ import javax.swing.event.ListSelectionListener;
 import org.cresques.cts.IProjection;
 
 import com.iver.andami.PluginServices;
+import com.iver.cit.gvsig.addlayer.AddLayerDialog;
 import com.iver.cit.gvsig.fmap.drivers.DBException;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.gui.WizardPanel;
 import com.iver.cit.gvsig.gui.panels.CRSSelectPanel;
-import com.iver.cit.gvsig.project.documents.gui.FOpenDialog;
 import com.jeta.forms.components.panel.FormPanel;
 
 import es.udc.cartolab.gvsig.elle.utils.Constants;
@@ -237,11 +237,11 @@ public class EielWizard extends WizardPanel {
 
 	private JPanel getCRSPanel() {
 		if (crsPanel == null) {
-			crsPanel = CRSSelectPanel.getPanel(FOpenDialog.getLastProjection());
+			crsPanel = CRSSelectPanel.getPanel(AddLayerDialog.getLastProjection());
 			crsPanel.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					if (crsPanel.isOkPressed()) {
-						FOpenDialog.setLastProjection(crsPanel.getCurProj());
+						AddLayerDialog.setLastProjection(crsPanel.getCurProj());
 					}
 				}
 			});

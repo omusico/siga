@@ -23,8 +23,8 @@ import javax.swing.event.ListSelectionListener;
 import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.andami.ui.mdiManager.WindowInfo;
+import com.iver.cit.gvsig.addlayer.AddLayerDialog;
 import com.iver.cit.gvsig.gui.panels.CRSSelectPanel;
-import com.iver.cit.gvsig.project.documents.gui.FOpenDialog;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 import com.iver.utiles.XMLEntity;
 import com.jeta.forms.components.panel.FormPanel;
@@ -44,7 +44,7 @@ public class EielLoadMapWindow extends JPanel implements IWindow, ActionListener
 	private JTextArea layerTextArea;
 	private String[][] layers;
 	private JButton okButton, cancelButton;
-	private View view;
+	private final View view;
 	private JComboBox legendCB;
 	private String legendDir;
 	private boolean isCartBaseLoaded;
@@ -108,11 +108,11 @@ public class EielLoadMapWindow extends JPanel implements IWindow, ActionListener
 
 	private JPanel getCRSPanel() {
 		if (crsPanel == null) {
-			crsPanel = CRSSelectPanel.getPanel(FOpenDialog.getLastProjection());
+			crsPanel = CRSSelectPanel.getPanel(AddLayerDialog.getLastProjection());
 			crsPanel.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					if (crsPanel.isOkPressed()) {
-						FOpenDialog.setLastProjection(crsPanel.getCurProj());
+						AddLayerDialog.setLastProjection(crsPanel.getCurProj());
 					}
 				}
 			});
@@ -278,6 +278,11 @@ public class EielLoadMapWindow extends JPanel implements IWindow, ActionListener
 			PluginServices.getMDIManager().restoreCursor();
 			PluginServices.getMDIManager().closeWindow(this);
 		}
+	}
+
+	public Object getWindowProfile() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

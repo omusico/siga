@@ -4,16 +4,14 @@ import java.awt.geom.Rectangle2D;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import org.cresques.cts.IProjection;
 
+import com.hardcode.gdbms.driver.exceptions.InitializeDriverException;
+import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.hardcode.gdbms.engine.values.Value;
 import com.hardcode.gdbms.engine.values.ValueWriter;
-import com.iver.cit.gvsig.fmap.DriverException;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.drivers.DBException;
-import com.iver.cit.gvsig.fmap.drivers.DriverIOException;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.fmap.layers.FLayers;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
@@ -27,13 +25,13 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 public class LoadMap {
 
 	/*
-	 * Propio de la EIEL: 
+	 * Propio de la EIEL:
 	 *  * variables de cartografiaBase y nucleosLayer, y todo lo que conlleva
-	 *    en la carga del mapa. 
+	 *    en la carga del mapa.
 	 *  * Constantes.
 	 *  * El parametro loadCartBase de la funcion loadMap.
 	 */
-	
+
 	private static final String cartografiaBase = "Cartograf\u00eda base";
 	private static final String nucleosLayer = "N\u00facleos";
 
@@ -42,7 +40,7 @@ public class LoadMap {
 	}
 
 	public static FLayer getLayer(String layerName, String tableName,
-			String schema, String whereClause, IProjection proj, 
+			String schema, String whereClause, IProjection proj,
 			boolean visible) throws SQLException, DBException {
 		DBSession dbs = DBSession.getCurrentSession();
 		FLayer layer = null;
@@ -58,7 +56,7 @@ public class LoadMap {
 		return layer;
 	}
 
-	public static void loadMap(View view, String mapName, 
+	public static void loadMap(View view, String mapName,
 			IProjection proj) throws Exception {
 		loadMap(view, mapName, proj, false);
 	}
@@ -87,7 +85,7 @@ public class LoadMap {
 	 * @param loadCartBase
 	 * @throws Exception
 	 */
-	public static void loadMap(View view, String mapName, 
+	public static void loadMap(View view, String mapName,
 			IProjection proj, boolean loadCartBase) throws Exception {
 
 		/*
@@ -137,8 +135,7 @@ public class LoadMap {
 					if (layers[i][7].equals(groupName)) {
 						group.addLayer(layer);
 					} else {
-						group = new FLayers(view.getMapControl().getMapContext(),
-								view.getMapControl().getMapContext().getLayers());
+						group = new FLayers();
 						group.setName(layers[i][7].toUpperCase());
 						groupName = layers[i][7];
 						group.addLayer(layer);
@@ -147,10 +144,10 @@ public class LoadMap {
 				} else {
 					view.getMapControl().getMapContext().getLayers().addLayer(layer);
 				}
-//				//Add to MapOverview (Localizator) the layer
-//				if (layers[i][9].length()>0 && layers[i][9].equalsIgnoreCase("t")) {					
-//					view.getMapOverview().getMapContext().getLayers().addLayer(layer.cloneLayer());
-//				}
+				//				//Add to MapOverview (Localizator) the layer
+				//				if (layers[i][9].length()>0 && layers[i][9].equalsIgnoreCase("t")) {
+				//					view.getMapOverview().getMapContext().getLayers().addLayer(layer.cloneLayer());
+				//				}
 				if (layers[i][1].equals(nucleosLayer)) {
 					nucLayer = layer;
 				}
@@ -166,24 +163,24 @@ public class LoadMap {
 			String[][] layersOV = dbs.getTable("_map_overview", dbs.getSchema(), where, new String[]{"posicion"}, false);
 
 			constants = Constants.getCurrentConstants();
-			
+
 			for (int i=0; i<layersOV.length; i++) {
 				String schema=null;
 				if (layersOV[i][2].length()>1) {
 					schema = layersOV[i][2];
 				}
-				
+
 				FLayer layer = getLayer(layersOV[i][1], layersOV[i][1], schema, whereClause, proj, true);
 				view.getMapOverview().getMapContext().getLayers().addLayer(layer.cloneLayer());
-				
+
 			}
 
 		}
 
 	}
-	
+
 	private static boolean isLayer(FLayers layers, String layerName) {
-		
+
 		for (int i=0; i<layers.getLayersCount(); i++) {
 			boolean found = false;
 			if (layers.getLayer(i) instanceof FLayers) {
@@ -199,9 +196,9 @@ public class LoadMap {
 		}
 		return false;
 	}
-	
+
 	public static boolean isMapLoaded(View view, String mapName) throws SQLException {
-		
+
 		DBSession dbs = DBSession.getCurrentSession();
 		String where = "WHERE mapa='" + mapName + "'";
 		String[][] layersOnMap = dbs.getTable("_map", where);
@@ -214,7 +211,7 @@ public class LoadMap {
 			}
 		}
 		return result;
-		
+
 	}
 
 	public static void zoomToNucleo (FLayer layer, String codMun, String codEnt, String codNuc) {
@@ -226,6 +223,7 @@ public class LoadMap {
 			SelectableDataSource recordset;
 			try {
 				recordset = ((FLyrVect) layer).getRecordset();
+
 
 				int munIdx = recordset.getFieldIndexByName("mun");
 				int entIdx = recordset.getFieldIndexByName("ent");
@@ -251,43 +249,44 @@ public class LoadMap {
 						}
 					}
 				}
-			} catch (DriverException e1) {
+			} catch (ReadDriverException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			} catch (com.hardcode.gdbms.engine.data.driver.DriverException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 
 
 			if (pos > -1) {
 
 				//TODO gvSIG comment: Esta comprobacion se hacia con Selectable
-				try {				
+				try {
 					IGeometry g;
 					ReadableVectorial source = ((FLyrVect)layer).getSource();
 					source.start();
 					g = source.getShape(pos);
 					source.stop();
 
-					/* fix to avoid zoom problems when layer and view 
+					/* fix to avoid zoom problems when layer and view
 					 * projections aren't the same. */
 					g.reProject(layer.getProjection().getCT(layer.getMapContext().getProjection()));
 
 					rectangle = g.getBounds2D();
 
 					if (rectangle.getWidth() < 200){
-						rectangle.setFrameFromCenter(rectangle.getCenterX(), 
+						rectangle.setFrameFromCenter(rectangle.getCenterX(),
 								rectangle.getCenterY(),
 								rectangle.getCenterX()+100,
 								rectangle.getCenterY()+100);
 					}
 
-					if (rectangle != null) {					
-						layer.getMapContext().getViewPort().setExtent(rectangle);				
+					if (rectangle != null) {
+						layer.getMapContext().getViewPort().setExtent(rectangle);
 					}
 
-				} catch (DriverIOException e) {
+				} catch (InitializeDriverException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ReadDriverException e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

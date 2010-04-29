@@ -31,7 +31,7 @@ public class LoadAllLegendsDialog extends JPanel implements IWindow, ActionListe
 	private JButton okButton;
 	private JButton cancelButton;
 	private WindowInfo viewInfo = null;
-	private View view;
+	private final View view;
 	private String legendDir;
 
 	public WindowInfo getWindowInfo() {
@@ -140,6 +140,11 @@ public class LoadAllLegendsDialog extends JPanel implements IWindow, ActionListe
 		if (event.getSource() == cancelButton) {
 			PluginServices.getMDIManager().closeWindow(this);
 		}
+	}
+
+	public Object getWindowProfile() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
