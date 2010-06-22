@@ -42,9 +42,9 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 
 	//Constantes (deberia moverse a otro archivo general?
 	private final String municipioTable = "municipio";
-	private final String munCodField = "mun";
+	private final String munCodField = "municipio";
 	private final String entidadTable = "entidad_singular";
-	private final String entCodField = "ent";
+	private final String entCodField = "entidad";
 	private final String nucleoTable = "nucleo_poblacion";
 	private final String nucCodField ="poblamiento";
 	private final String denominacion = "denominaci";

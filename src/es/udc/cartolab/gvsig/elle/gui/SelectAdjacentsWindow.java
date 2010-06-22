@@ -145,7 +145,7 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 				GridLayout layout = new GridLayout(13,5);
 				centerPanel.setLayout(layout);
 				ArrayList<String> adjacents = new ArrayList<String>();
-				String query = "SELECT mun FROM %s WHERE ST_Touches(the_geom, (SELECT the_geom FROM %s WHERE mun='" +
+				String query = "SELECT municipio FROM %s WHERE ST_Touches(the_geom, (SELECT the_geom FROM %s WHERE municipio='" +
 				municipio + "')) ORDER BY denominaci";
 				String table = dbs.getSchema() + ".municipio";
 				try {
@@ -156,7 +156,7 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 					ResultSet rs = stat.executeQuery(query);
 
 					while (rs.next()) {
-						String text = rs.getString("mun");
+						String text = rs.getString("municipio");
 						adjacents.add(text);
 					}
 					rs.close();
@@ -164,7 +164,7 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				query = "SELECT mun, denominaci FROM %s ORDER BY mun";
+				query = "SELECT municipio, denominaci FROM %s ORDER BY municipio";
 				query = String.format(query, table);
 				try {
 					Statement stat = dbs.getJavaConnection().createStatement();
@@ -174,7 +174,7 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 					ResultSet rs = stat.executeQuery(query);
 
 					while (rs.next()) {
-						String mun = rs.getString("mun");
+						String mun = rs.getString("municipio");
 						String name = rs.getString("denominaci");
 						JCheckBox chb = new JCheckBox(name);
 						chb.setToolTipText(name);

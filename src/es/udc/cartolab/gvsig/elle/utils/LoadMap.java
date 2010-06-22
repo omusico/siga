@@ -110,10 +110,10 @@ public class LoadMap {
 				whereClause = "WHERE ";
 				List<String> municipios = constants.getMunicipios();
 				for (int j=0; j<municipios.size()-1; j++) {
-					whereClause = whereClause.concat("mun ='" + municipios.get(j) +
+					whereClause = whereClause.concat("municipio ='" + municipios.get(j) +
 					"' OR ");
 				}
-				whereClause = whereClause.concat("mun ='" + municipios.get(municipios.size()-1) + "'");
+				whereClause = whereClause.concat("municipio ='" + municipios.get(municipios.size()-1) + "'");
 			}
 
 			FLayer nucLayer = null;
