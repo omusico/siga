@@ -20,6 +20,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import net.miginfocom.swing.MigLayout;
+
 import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.andami.ui.mdiManager.WindowInfo;
@@ -56,6 +58,8 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 	private JPanel centerPanel = null;
 	private JButton okButton, cancelButton;
 	private final ArrayList<CheckBoxItem> checkBoxes;
+	private JButton allCouncilsButton;
+	private JButton cleanCouncilsButton;
 
 
 
@@ -123,15 +127,34 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 
 		if (southPanel == null) {
 			southPanel = new JPanel();
-			FlowLayout layout = new FlowLayout();
-			layout.setAlignment(FlowLayout.RIGHT);
+			MigLayout layout = new MigLayout("", "[][grow][]", "[]");
 			southPanel.setLayout(layout);
+
+			//left
+			JPanel left = new JPanel();
+			allCouncilsButton = new JButton(PluginServices.getText(this, "all"));
+			cleanCouncilsButton = new JButton(PluginServices.getText(this, "clean"));
+			allCouncilsButton.addActionListener(this);
+			cleanCouncilsButton.addActionListener(this);
+			left.add(allCouncilsButton);
+			left.add(cleanCouncilsButton);
+
+			//right
+			JPanel right = new JPanel();
 			okButton = new JButton(PluginServices.getText(this, "ok"));
 			cancelButton = new JButton(PluginServices.getText(this, "cancel"));
 			okButton.addActionListener(this);
 			cancelButton.addActionListener(this);
-			southPanel.add(okButton);
-			southPanel.add(cancelButton);
+			right.add(okButton);
+			right.add(cancelButton);
+
+
+
+			southPanel.add(left, "shrink, align left");
+			southPanel.add(new JPanel());
+			//			southPanel.add(cleanCouncilsButton, "shrink, align left");
+			southPanel.add(right, "shrink, align right");
+			//			southPanel.add(cancelButton, "shrink, align right");
 		}
 		return southPanel;
 	}
@@ -216,6 +239,22 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 			}
 			Constants cts = Constants.newConstants(municipio, entidad, nucleo, municipios);
 			PluginServices.getMDIManager().closeWindow(this);
+		}
+		if (event.getSource() == allCouncilsButton) {
+			for (CheckBoxItem cbi : checkBoxes) {
+				JCheckBox cb = cbi.getCheckBox();
+				if (cb.isEnabled()) {
+					cbi.getCheckBox().setSelected(true);
+				}
+			}
+		}
+		if (event.getSource() == cleanCouncilsButton) {
+			for (CheckBoxItem cbi : checkBoxes) {
+				JCheckBox cb = cbi.getCheckBox();
+				if (cb.isEnabled()) {
+					cbi.getCheckBox().setSelected(false);
+				}
+			}
 		}
 	}
 
