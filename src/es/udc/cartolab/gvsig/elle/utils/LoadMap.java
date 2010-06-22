@@ -137,6 +137,7 @@ public class LoadMap {
 					} else {
 						group = new FLayers();
 						group.setName(layers[i][7].toUpperCase());
+						group.setMapContext(view.getMapControl().getMapContext());
 						groupName = layers[i][7];
 						group.addLayer(layer);
 						view.getMapControl().getMapContext().getLayers().addLayer(group);
