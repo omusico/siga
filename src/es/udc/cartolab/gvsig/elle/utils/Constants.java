@@ -8,16 +8,16 @@ import com.iver.andami.ui.mdiFrame.MDIFrame;
 import com.iver.andami.ui.mdiFrame.NewStatusBar;
 
 public class Constants {
-	
+
 	private static Constants instance = null;
-	
+
 	List<String> municipios;
 	String munCod;
 	String entCod;
 	String nucCod;
-	
+
 	private Constants() {
-		
+
 	}
 	/**
 	 * @return user defined constants, or null if they're not defined yet.
@@ -25,7 +25,7 @@ public class Constants {
 	public static Constants getCurrentConstants() {
 		return instance;
 	}
-	
+
 	public static Constants newConstants(String munCod, String entCod, String nucCod,
 			List<String> municipios) {
 		if (instance == null) {
@@ -47,25 +47,25 @@ public class Constants {
 		instance.changeStatusBar();
 		return instance;
 	}
-	
+
 	public static Constants newConstants(String munCod, String entCod, String nucCod) {
 		ArrayList<String> municipios = new ArrayList<String>();
 		municipios.add(munCod);
 		return newConstants(munCod, entCod, nucCod, municipios);
 	}
-	
+
 	public String getMunCod() {
 		return munCod;
 	}
-	
+
 	public String getEntCod() {
 		return entCod;
 	}
-	
+
 	public String getNucCod() {
 		return nucCod;
 	}
-	
+
 	public List<String> getMunicipios() {
 		return municipios;
 	}
@@ -83,7 +83,16 @@ public class Constants {
 		}
 		String text = PluginServices.getText(this, "status_mun_ent_nuc");
 		text = String.format(text, munCod, ent, nuc);
-        footerStatusBar.setMessage("constants", text);
+		footerStatusBar.setMessage("constants", text);
 	}
-	
+
+	public static void removeConstants() {
+		if (instance!=null) {
+			instance = null;
+			MDIFrame mF = (MDIFrame) PluginServices.getMainFrame();
+			NewStatusBar footerStatusBar = mF.getStatusBar();
+			footerStatusBar.setMessage("constants", PluginServices.getText(null, "all_prov"));
+		}
+	}
+
 }

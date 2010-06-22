@@ -86,7 +86,8 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 			municipioCHB.setText(PluginServices.getText(this, "adjacent_councils"));
 
 			try {
-				fillComboBox("", municipioTable, munCodField, "WHERE fase='"+ fase +"'", municipioCB);
+				String text = PluginServices.getText(this, "all_prov");
+				fillComboBox(text, municipioTable, munCodField, "WHERE fase='"+ fase +"'", municipioCB);
 				municipioCB.addActionListener(this);
 				municipioCB.setSelectedIndex(0);
 			} catch (SQLException e) {
@@ -199,40 +200,51 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 			PluginServices.getMDIManager().closeWindow(this);
 		}
 		if (event.getSource() == okButton) {
-			//Get codes
-			String munCod = getCode(municipioCB);
-			String entCod = "";
-			String nucCod = "";
-			if ((entidadCB.getSelectedIndex()!=0) && (nucleoCB.getSelectedIndex()!=0)) {
-				entCod = getCode(entidadCB);
-				nucCod = getCode(nucleoCB);
-			}
-			//Close window
-			PluginServices.getMDIManager().closeWindow(this);
-
-			//hacer lo que haga falta
-			if (municipioCHB.isSelected()) {
-				SelectAdjacentsWindow win = new SelectAdjacentsWindow(munCod, entCod, nucCod);
-				PluginServices.getMDIManager().addCentredWindow(win);
+			if (municipioCB.getSelectedIndex() != 0) {
+				//Get codes
+				String munCod = getCode(municipioCB);
+				String entCod = "";
+				String nucCod = "";
+				if ((entidadCB.getSelectedIndex()!=0) && (nucleoCB.getSelectedIndex()!=0)) {
+					entCod = getCode(entidadCB);
+					nucCod = getCode(nucleoCB);
+				}
+				//Close window
+				PluginServices.getMDIManager().closeWindow(this);
+				//hacer lo que haga falta
+				if (municipioCHB.isSelected()) {
+					SelectAdjacentsWindow win = new SelectAdjacentsWindow(munCod, entCod, nucCod);
+					PluginServices.getMDIManager().addCentredWindow(win);
+				} else {
+					Constants cts = Constants.newConstants(munCod, entCod, nucCod);
+				}
 			} else {
-				Constants cts = Constants.newConstants(munCod, entCod, nucCod);
+				Constants.removeConstants();
+				PluginServices.getMDIManager().closeWindow(this);
 			}
 
 		}
 		if (event.getSource() == municipioCB) {
-			nucleoCB.removeAllItems();
-			String cod = getCode(municipioCB);
-			try {
+			if (municipioCB.getSelectedIndex() != 0) {
+				String cod = getCode(municipioCB);
+				try {
+					entidadCB.removeActionListener(this);
+					String text = PluginServices.getText(this, "all_ent");
+					fillComboBox(text, entidadTable, entCodField,
+							"WHERE fase='" + fase + "' AND " + munCodField + "='" + cod + "'",
+							entidadCB);
+					entidadCB.addActionListener(this);
+					entidadCB.setSelectedIndex(0);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				municipioCHB.setEnabled(true);
+			} else {
 				entidadCB.removeActionListener(this);
-				String text = PluginServices.getText(this, "all_ent");
-				fillComboBox(text, entidadTable, entCodField,
-						"WHERE fase='" + fase + "' AND " + munCodField + "='" + cod + "'",
-						entidadCB);
+				entidadCB.removeAllItems();
 				entidadCB.addActionListener(this);
-				entidadCB.setSelectedIndex(0);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				municipioCHB.setEnabled(false);
 			}
 		}
 		if (event.getSource() == entidadCB) {
