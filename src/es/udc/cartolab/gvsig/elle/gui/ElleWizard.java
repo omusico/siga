@@ -2,7 +2,6 @@ package es.udc.cartolab.gvsig.elle.gui;
 
 import java.awt.BorderLayout;
 import java.sql.SQLException;
-import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -22,10 +21,9 @@ import com.iver.cit.gvsig.gui.WizardPanel;
 import com.iver.cit.gvsig.gui.panels.CRSSelectPanel;
 import com.jeta.forms.components.panel.FormPanel;
 
-import es.udc.cartolab.gvsig.elle.utils.Constants;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
-public class EielWizard extends WizardPanel {
+public class ElleWizard extends WizardPanel {
 
 	private JPanel listPanel = null;
 	private JList layerList = null;
@@ -63,25 +61,25 @@ public class EielWizard extends WizardPanel {
 			}
 
 			String whereClause = "";
-			Constants constants = Constants.getCurrentConstants();
-			if (constants!=null) {
-				switch (scopeCB.getSelectedIndex()) {
-				case 1 : //adjacents
-					whereClause = "WHERE ";
-					List<String> municipios = constants.getMunicipios();
-					for (int j=0; j<municipios.size()-1; j++) {
-						whereClause = whereClause.concat("mun ='" + municipios.get(j) +
-						"' OR ");
-					}
-					whereClause = whereClause.concat("mun ='" + municipios.get(municipios.size()-1) + "'");
-					break;
-				case 2 : //selected council
-					whereClause = "WHERE mun='" + constants.getMunCod() + "'";
-					break;
-				default:
-					break;
-				}
-			}
+			//			Constants constants = Constants.getCurrentConstants();
+			//			if (constants!=null) {
+			//				switch (scopeCB.getSelectedIndex()) {
+			//				case 1 : //adjacents
+			//					whereClause = "WHERE ";
+			//					List<String> municipios = constants.getMunicipios();
+			//					for (int j=0; j<municipios.size()-1; j++) {
+			//						whereClause = whereClause.concat("mun ='" + municipios.get(j) +
+			//						"' OR ");
+			//					}
+			//					whereClause = whereClause.concat("mun ='" + municipios.get(municipios.size()-1) + "'");
+			//					break;
+			//				case 2 : //selected council
+			//					whereClause = "WHERE mun='" + constants.getMunCod() + "'";
+			//					break;
+			//				default:
+			//					break;
+			//				}
+			//			}
 
 			try {
 				if (schema!=null) {
@@ -170,13 +168,13 @@ public class EielWizard extends WizardPanel {
 				scopeCB = form.getComboBox("scopeCB");
 				String op1 = PluginServices.getText(this, "all_prov");
 				scopeCB.addItem(op1);
-				Constants constants = Constants.getCurrentConstants();
-				if (constants!= null) {
-					String op2 = PluginServices.getText(this, "adjacent_councils");
-					String op3 = PluginServices.getText(this, "selected_council");
-					scopeCB.addItem(op2);
-					scopeCB.addItem(op3);
-				}
+				//				Constants constants = Constants.getCurrentConstants();
+				//				if (constants!= null) {
+				//					String op2 = PluginServices.getText(this, "adjacent_councils");
+				//					String op3 = PluginServices.getText(this, "selected_council");
+				//					scopeCB.addItem(op2);
+				//					scopeCB.addItem(op3);
+				//				}
 
 				groupList.addListSelectionListener(new ListSelectionListener() {
 

@@ -34,22 +34,22 @@ import es.udc.cartolab.gvsig.elle.utils.LoadMap;
 import es.udc.cartolab.gvsig.users.preferences.EielPage;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
-public class EielLoadMapWindow extends JPanel implements IWindow, ActionListener {
+public class LoadMapWindow extends JPanel implements IWindow, ActionListener {
 
 	private WindowInfo viewInfo;
 	private DBSession dbs;
-	private CRSSelectPanel crsPanel = null;
+	protected CRSSelectPanel crsPanel = null;
 	private JPanel listPanel, southPanel;
-	private JList mapList;
+	protected JList mapList;
 	private JTextArea layerTextArea;
 	private String[][] layers;
 	private JButton okButton, cancelButton;
-	private final View view;
+	protected final View view;
 	private JComboBox legendCB;
 	private String legendDir;
-	private boolean isCartBaseLoaded;
+	//	private boolean isCartBaseLoaded;
 
-	private final String cartografiaBase = "Cartograf\u00eda base";
+	//	private final String cartografiaBase = "Cartograf\u00eda base";
 
 	public WindowInfo getWindowInfo() {
 
@@ -62,18 +62,18 @@ public class EielLoadMapWindow extends JPanel implements IWindow, ActionListener
 		return viewInfo;
 	}
 
-	public EielLoadMapWindow() {
+	public LoadMapWindow() {
 
 		dbs = DBSession.getCurrentSession();
 		view = (View) PluginServices.getMDIManager().getActiveWindow();
 
 
-		try {
-			isCartBaseLoaded = LoadMap.isMapLoaded(view, cartografiaBase);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		//		try {
+		//			isCartBaseLoaded = LoadMap.isMapLoaded(view, cartografiaBase);
+		//		} catch (SQLException e) {
+		//			// TODO Auto-generated catch block
+		//			e.printStackTrace();
+		//		}
 
 		XMLEntity xml = PluginServices.getPluginServices("es.udc.cartolab.gvsig.users").getPersistentXML();
 		if (xml.contains(EielPage.DEFAULT_LEGEND_DIR_KEY_NAME)) {
@@ -190,9 +190,9 @@ public class EielLoadMapWindow extends JPanel implements IWindow, ActionListener
 						if (selected.length == 1) {
 							String selectedValue = (String) mapList.getSelectedValues()[0];
 							String where = String.format("WHERE mapa = '%s'", selectedValue);
-							if (!isCartBaseLoaded) {
-								where = where.concat(String.format(" OR mapa='%s'", cartografiaBase));
-							}
+							//							if (!isCartBaseLoaded) {
+							//								where = where.concat(String.format(" OR mapa='%s'", cartografiaBase));
+							//							}
 							try {
 								layers = dbs.getTable("_map", dbs.getSchema(), where, new String[]{"posicion"}, true);
 								//								layers = dbs.getTable("mapas", where);
@@ -238,6 +238,42 @@ public class EielLoadMapWindow extends JPanel implements IWindow, ActionListener
 		}
 	}
 
+	protected void callLoadMap() throws Exception {
+		LoadMap.loadMap(view, mapList.getSelectedValue().toString(), crsPanel.getCurProj());
+	}
+
+	protected void loadMap() {
+		PluginServices.getMDIManager().setWaitCursor();
+		dbs = DBSession.getCurrentSession();
+		try {
+			callLoadMap();
+
+			/* styles */
+			String selectedItem = "";
+			if (legendCB.getSelectedItem()!=null) {
+				selectedItem = legendCB.getSelectedItem().toString();
+			}
+			if ((legendDir!=null) && !selectedItem.equals("")) {
+				String stylePath;
+				if (legendDir.endsWith(File.separator)) {
+					stylePath = legendDir + selectedItem;
+				} else {
+					stylePath = legendDir + File.separator + selectedItem;
+				}
+				LoadLegend.setLegendPath(stylePath);
+				LoadLegend.loadAllStyles(view);
+			}
+		} catch (Exception e) {
+			String message = PluginServices.getText(this, "error_loading_layers");
+			PluginServices.getMDIManager().restoreCursor();
+			JOptionPane.showMessageDialog(this,
+					String.format(message, e.getMessage()),
+					"Error",
+					JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
+		PluginServices.getMDIManager().restoreCursor();
+	}
 
 
 	public void actionPerformed(ActionEvent event) {
@@ -246,36 +282,7 @@ public class EielLoadMapWindow extends JPanel implements IWindow, ActionListener
 			PluginServices.getMDIManager().closeWindow(this);
 		}
 		if (event.getSource() == okButton) {
-			PluginServices.getMDIManager().setWaitCursor();
-			dbs = DBSession.getCurrentSession();
-			try {
-				LoadMap.loadMap(view, mapList.getSelectedValue().toString(), crsPanel.getCurProj(), !isCartBaseLoaded);
-
-				/* styles */
-				String selectedItem = "";
-				if (legendCB.getSelectedItem()!=null) {
-					selectedItem = legendCB.getSelectedItem().toString();
-				}
-				if ((legendDir!=null) && !selectedItem.equals("")) {
-					String stylePath;
-					if (legendDir.endsWith(File.separator)) {
-						stylePath = legendDir + selectedItem;
-					} else {
-						stylePath = legendDir + File.separator + selectedItem;
-					}
-					LoadLegend.setLegendPath(stylePath);
-					LoadLegend.loadAllStyles(view);
-				}
-			} catch (Exception e) {
-				String message = PluginServices.getText(this, "error_loading_layers");
-				PluginServices.getMDIManager().restoreCursor();
-				JOptionPane.showMessageDialog(this,
-						String.format(message, e.getMessage()),
-						"Error",
-						JOptionPane.ERROR_MESSAGE);
-				e.printStackTrace();
-			}
-			PluginServices.getMDIManager().restoreCursor();
+			loadMap();
 			PluginServices.getMDIManager().closeWindow(this);
 		}
 	}

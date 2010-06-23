@@ -1,23 +1,12 @@
 package es.udc.cartolab.gvsig.elle.utils;
 
-import java.awt.geom.Rectangle2D;
 import java.sql.SQLException;
-import java.util.List;
 
 import org.cresques.cts.IProjection;
 
-import com.hardcode.gdbms.driver.exceptions.InitializeDriverException;
-import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
-import com.hardcode.gdbms.engine.values.Value;
-import com.hardcode.gdbms.engine.values.ValueWriter;
-import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.drivers.DBException;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.fmap.layers.FLayers;
-import com.iver.cit.gvsig.fmap.layers.FLyrVect;
-import com.iver.cit.gvsig.fmap.layers.ReadableVectorial;
-import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
-import com.iver.cit.gvsig.fmap.layers.layerOperations.AlphanumericData;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.udc.cartolab.gvsig.users.utils.DBSession;
@@ -58,7 +47,7 @@ public class LoadMap {
 
 	public static void loadMap(View view, String mapName,
 			IProjection proj) throws Exception {
-		loadMap(view, mapName, proj, false);
+		loadMap(view, mapName, proj, null);
 	}
 
 	/**
@@ -86,37 +75,21 @@ public class LoadMap {
 	 * @throws Exception
 	 */
 	public static void loadMap(View view, String mapName,
-			IProjection proj, boolean loadCartBase) throws Exception {
+			IProjection proj, String whereClause) throws Exception {
 
-		/*
-		 * EIEL hacks to remove: constants.
-		 */
+		if (whereClause == null) {
+			whereClause = "";
+		}
 
 		DBSession dbs = DBSession.getCurrentSession();
 		if (dbs != null) {
 			String where = "WHERE mapa='" + mapName + "'";
-			if (loadCartBase) {
-				where = where.concat(" OR mapa='" + cartografiaBase + "'");
-			}
 
 			System.out.println(where);
 
 			/////////////// MapControl
 			String[][] layers = dbs.getTable("_map", dbs.getSchema(), where, new String[]{"posicion"}, false);
 
-			Constants constants = Constants.getCurrentConstants();
-			String whereClause = "";
-			if (constants!=null) {
-				whereClause = "WHERE ";
-				List<String> municipios = constants.getMunicipios();
-				for (int j=0; j<municipios.size()-1; j++) {
-					whereClause = whereClause.concat("municipio ='" + municipios.get(j) +
-					"' OR ");
-				}
-				whereClause = whereClause.concat("municipio ='" + municipios.get(municipios.size()-1) + "'");
-			}
-
-			FLayer nucLayer = null;
 			FLayers group = null;
 			String groupName = "default";
 			for (int i=0; i<layers.length; i++) {
@@ -149,21 +122,19 @@ public class LoadMap {
 				//				if (layers[i][9].length()>0 && layers[i][9].equalsIgnoreCase("t")) {
 				//					view.getMapOverview().getMapContext().getLayers().addLayer(layer.cloneLayer());
 				//				}
-				if (layers[i][1].equals(nucleosLayer)) {
-					nucLayer = layer;
-				}
+
 			}
 
-			if (constants!=null && !constants.getNucCod().equals("")) {
-				if (nucLayer!=null) {
-					zoomToNucleo(nucLayer, constants.getMunCod(), constants.getEntCod(), constants.getNucCod());
-				}
-			}
+			//			if (constants!=null && !constants.getNucCod().equals("")) {
+			//				if (nucLayer!=null) {
+			//					zoomToNucleo(nucLayer, constants.getMunCod(), constants.getEntCod(), constants.getNucCod());
+			//				}
+			//			}
 
 			/////////////// MapOverview
 			String[][] layersOV = dbs.getTable("_map_overview", dbs.getSchema(), where, new String[]{"posicion"}, false);
 
-			constants = Constants.getCurrentConstants();
+			//			constants = Constants.getCurrentConstants();
 
 			for (int i=0; i<layersOV.length; i++) {
 				String schema=null;
@@ -198,6 +169,15 @@ public class LoadMap {
 		return false;
 	}
 
+
+	/**
+	 * This function makes a DB call, so it shouldn't be used in functions that are
+	 * executed a lot of times like isVisible or isEnabled in a gvSIG extension.
+	 * @param view
+	 * @param mapName
+	 * @return
+	 * @throws SQLException
+	 */
 	public static boolean isMapLoaded(View view, String mapName) throws SQLException {
 
 		DBSession dbs = DBSession.getCurrentSession();
@@ -213,85 +193,6 @@ public class LoadMap {
 		}
 		return result;
 
-	}
-
-	public static void zoomToNucleo (FLayer layer, String codMun, String codEnt, String codNuc) {
-		Rectangle2D rectangle = null;
-
-		if (layer instanceof AlphanumericData) {
-			int pos = -1;
-
-			SelectableDataSource recordset;
-			try {
-				recordset = ((FLyrVect) layer).getRecordset();
-
-
-				int munIdx = recordset.getFieldIndexByName("mun");
-				int entIdx = recordset.getFieldIndexByName("ent");
-				int nucIdx = recordset.getFieldIndexByName("poblamiento");
-
-				if (munIdx > -1 && entIdx > -1 && nucIdx > -1) {
-					for (int i=0; i<recordset.getRowCount(); i++) {
-						Value val = recordset.getFieldValue(i, munIdx);
-						String cod = val.getStringValue(ValueWriter.internalValueWriter);
-						cod = cod.replaceAll("'", "");
-						if (cod.equals(codMun)) {
-							val = recordset.getFieldValue(i, entIdx);
-							cod = val.getStringValue(ValueWriter.internalValueWriter);
-							cod = cod.replaceAll("'", "");
-							if (cod.equals(codEnt)) {
-								val = recordset.getFieldValue(i, nucIdx);
-								cod = val.getStringValue(ValueWriter.internalValueWriter);
-								cod = cod.replaceAll("'", "");
-								if (cod.equals(codNuc)) {
-									pos = i;
-								}
-							}
-						}
-					}
-				}
-			} catch (ReadDriverException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-
-
-			if (pos > -1) {
-
-				//TODO gvSIG comment: Esta comprobacion se hacia con Selectable
-				try {
-					IGeometry g;
-					ReadableVectorial source = ((FLyrVect)layer).getSource();
-					source.start();
-					g = source.getShape(pos);
-					source.stop();
-
-					/* fix to avoid zoom problems when layer and view
-					 * projections aren't the same. */
-					g.reProject(layer.getProjection().getCT(layer.getMapContext().getProjection()));
-
-					rectangle = g.getBounds2D();
-
-					if (rectangle.getWidth() < 200){
-						rectangle.setFrameFromCenter(rectangle.getCenterX(),
-								rectangle.getCenterY(),
-								rectangle.getCenterX()+100,
-								rectangle.getCenterY()+100);
-					}
-
-					if (rectangle != null) {
-						layer.getMapContext().getViewPort().setExtent(rectangle);
-					}
-
-				} catch (InitializeDriverException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ReadDriverException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
 	}
 
 }

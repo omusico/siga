@@ -7,22 +7,22 @@ import com.iver.andami.preferences.IPreferenceExtension;
 import com.iver.cit.gvsig.AddLayer;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
-import es.udc.cartolab.gvsig.elle.gui.EielLoadMapWindow;
-import es.udc.cartolab.gvsig.elle.gui.EielWizard;
+import es.udc.cartolab.gvsig.elle.gui.LoadMapWindow;
+import es.udc.cartolab.gvsig.elle.gui.ElleWizard;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class LoadMapExtension extends Extension  {
 
 	public void execute(String actionCommand) {
 		// TODO Auto-generated method stub
-		EielLoadMapWindow window = new EielLoadMapWindow();
+		LoadMapWindow window = new LoadMapWindow();
 		PluginServices.getMDIManager().addCentredWindow(window);
 	}
 
 	public void initialize() {
 		// TODO Auto-generated method stub
 //		carga la pestaña en añadir capa
-		AddLayer.addWizard(EielWizard.class);
+		AddLayer.addWizard(ElleWizard.class);
 	}
 
 	public boolean isEnabled() {
