@@ -31,7 +31,6 @@ import com.jeta.forms.components.panel.FormPanel;
 
 import es.udc.cartolab.gvsig.elle.utils.LoadLegend;
 import es.udc.cartolab.gvsig.elle.utils.LoadMap;
-import es.udc.cartolab.gvsig.users.preferences.EielPage;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class LoadMapWindow extends JPanel implements IWindow, ActionListener {
@@ -75,9 +74,9 @@ public class LoadMapWindow extends JPanel implements IWindow, ActionListener {
 		//			e.printStackTrace();
 		//		}
 
-		XMLEntity xml = PluginServices.getPluginServices("es.udc.cartolab.gvsig.users").getPersistentXML();
-		if (xml.contains(EielPage.DEFAULT_LEGEND_DIR_KEY_NAME)) {
-			legendDir = xml.getStringProperty(EielPage.DEFAULT_LEGEND_DIR_KEY_NAME);
+		XMLEntity xml = PluginServices.getPluginServices("es.udc.cartolab.gvsig.elle").getPersistentXML();
+		if (xml.contains(EllePreferencesPage.DEFAULT_LEGEND_DIR_KEY_NAME)) {
+			legendDir = xml.getStringProperty(EllePreferencesPage.DEFAULT_LEGEND_DIR_KEY_NAME);
 		}
 
 		JPanel mainPanel = new JPanel();

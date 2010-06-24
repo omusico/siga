@@ -7,11 +7,14 @@ import com.iver.andami.preferences.IPreferenceExtension;
 import com.iver.cit.gvsig.AddLayer;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
-import es.udc.cartolab.gvsig.elle.gui.LoadMapWindow;
+import es.udc.cartolab.gvsig.elle.gui.EllePreferencesPage;
 import es.udc.cartolab.gvsig.elle.gui.ElleWizard;
+import es.udc.cartolab.gvsig.elle.gui.LoadMapWindow;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
-public class LoadMapExtension extends Extension  {
+public class LoadMapExtension extends Extension implements IPreferenceExtension {
+
+	public static EllePreferencesPage ellePreferencesPage = new EllePreferencesPage();
 
 	public void execute(String actionCommand) {
 		// TODO Auto-generated method stub
@@ -21,7 +24,7 @@ public class LoadMapExtension extends Extension  {
 
 	public void initialize() {
 		// TODO Auto-generated method stub
-//		carga la pestaña en añadir capa
+		//		carga la pestaña en añadir capa
 		AddLayer.addWizard(ElleWizard.class);
 	}
 
@@ -34,6 +37,14 @@ public class LoadMapExtension extends Extension  {
 		// TODO Auto-generated method stub
 		DBSession dbs = DBSession.getCurrentSession();
 		return dbs!=null;
+	}
+
+	@Override
+	public IPreference[] getPreferencesPages() {
+		// TODO Auto-generated method stub
+		IPreference[] preferences=new IPreference[1];
+		preferences[0]=ellePreferencesPage;
+		return preferences;
 	}
 
 

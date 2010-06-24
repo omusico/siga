@@ -30,8 +30,6 @@ import com.iver.cit.gvsig.fmap.rendering.IVectorLegend;
 import com.iver.utiles.XMLEntity;
 import com.jeta.forms.components.panel.FormPanel;
 
-import es.udc.cartolab.gvsig.users.preferences.EielPage;
-
 
 public class SaveAllLegendsDialog extends JPanel implements IWindow, ActionListener {
 
@@ -121,10 +119,10 @@ public class SaveAllLegendsDialog extends JPanel implements IWindow, ActionListe
 	public void actionPerformed(ActionEvent event) {
 		// TODO Auto-generated method stub
 		if ((event.getSource() == okButton) || (event.getSource()==legendsField)) {
-			PluginServices ps = PluginServices.getPluginServices("es.udc.cartolab.gvsig.users");
+			PluginServices ps = PluginServices.getPluginServices("es.udc.cartolab.gvsig.elle");
 			XMLEntity xml = ps.getPersistentXML();
-			if (xml.contains(EielPage.DEFAULT_LEGEND_DIR_KEY_NAME)) {
-				String path = xml.getStringProperty(EielPage.DEFAULT_LEGEND_DIR_KEY_NAME);
+			if (xml.contains(EllePreferencesPage.DEFAULT_LEGEND_DIR_KEY_NAME)) {
+				String path = xml.getStringProperty(EllePreferencesPage.DEFAULT_LEGEND_DIR_KEY_NAME);
 				if (path.endsWith(File.separator)) {
 					path = path + legendsField.getText() + File.separator;
 				} else {

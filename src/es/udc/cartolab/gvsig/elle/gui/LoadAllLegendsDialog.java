@@ -21,7 +21,6 @@ import com.iver.utiles.XMLEntity;
 import com.jeta.forms.components.panel.FormPanel;
 
 import es.udc.cartolab.gvsig.elle.utils.LoadLegend;
-import es.udc.cartolab.gvsig.users.preferences.EielPage;
 
 public class LoadAllLegendsDialog extends JPanel implements IWindow, ActionListener {
 
@@ -47,9 +46,9 @@ public class LoadAllLegendsDialog extends JPanel implements IWindow, ActionListe
 
 	public LoadAllLegendsDialog(View view) throws Exception {
 		this.view = view;
-		XMLEntity xml = PluginServices.getPluginServices("es.udc.cartolab.gvsig.users").getPersistentXML();
-		if (xml.contains(EielPage.DEFAULT_LEGEND_DIR_KEY_NAME)) {
-			legendDir = xml.getStringProperty(EielPage.DEFAULT_LEGEND_DIR_KEY_NAME);
+		XMLEntity xml = PluginServices.getPluginServices("es.udc.cartolab.gvsig.elle").getPersistentXML();
+		if (xml.contains(EllePreferencesPage.DEFAULT_LEGEND_DIR_KEY_NAME)) {
+			legendDir = xml.getStringProperty(EllePreferencesPage.DEFAULT_LEGEND_DIR_KEY_NAME);
 		}
 		init();
 	}
