@@ -1,6 +1,6 @@
 <project name="extELLE" default="generate-without-source" basedir=".">
     <description>
-    	ELLE for EIEL
+    	ELLE: Easy Layer Loader Extension
     </description>
   <!-- set global properties for this build -->
   <property name="src" location="src"/>

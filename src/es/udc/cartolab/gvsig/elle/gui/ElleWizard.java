@@ -3,7 +3,6 @@ package es.udc.cartolab.gvsig.elle.gui;
 import java.awt.BorderLayout;
 import java.sql.SQLException;
 
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -31,7 +30,7 @@ public class ElleWizard extends WizardPanel {
 	private CRSSelectPanel crsPanel = null;
 	private DBSession dbs;
 	private String[][] layers;
-	private JComboBox scopeCB;
+	//	private JComboBox scopeCB;
 
 	@Override
 	public void execute() {
@@ -60,26 +59,8 @@ public class ElleWizard extends WizardPanel {
 				}
 			}
 
-			String whereClause = "";
-			//			Constants constants = Constants.getCurrentConstants();
-			//			if (constants!=null) {
-			//				switch (scopeCB.getSelectedIndex()) {
-			//				case 1 : //adjacents
-			//					whereClause = "WHERE ";
-			//					List<String> municipios = constants.getMunicipios();
-			//					for (int j=0; j<municipios.size()-1; j++) {
-			//						whereClause = whereClause.concat("mun ='" + municipios.get(j) +
-			//						"' OR ");
-			//					}
-			//					whereClause = whereClause.concat("mun ='" + municipios.get(municipios.size()-1) + "'");
-			//					break;
-			//				case 2 : //selected council
-			//					whereClause = "WHERE mun='" + constants.getMunCod() + "'";
-			//					break;
-			//				default:
-			//					break;
-			//				}
-			//			}
+			String whereClause = getWhereClause();
+
 
 			try {
 				if (schema!=null) {
@@ -112,11 +93,34 @@ public class ElleWizard extends WizardPanel {
 		return layer;
 	}
 
+	private String getWhereClause() {
+		return "";
+		//			Constants constants = Constants.getCurrentConstants();
+		//			if (constants!=null) {
+		//				switch (scopeCB.getSelectedIndex()) {
+		//				case 1 : //adjacents
+		//					whereClause = "WHERE ";
+		//					List<String> municipios = constants.getMunicipios();
+		//					for (int j=0; j<municipios.size()-1; j++) {
+		//						whereClause = whereClause.concat("mun ='" + municipios.get(j) +
+		//						"' OR ");
+		//					}
+		//					whereClause = whereClause.concat("mun ='" + municipios.get(municipios.size()-1) + "'");
+		//					break;
+		//				case 2 : //selected council
+		//					whereClause = "WHERE mun='" + constants.getMunCod() + "'";
+		//					break;
+		//				default:
+		//					break;
+		//				}
+		//			}
+	}
+
 	@Override
 	public void initWizard() {
 
 		dbs = DBSession.getCurrentSession();
-		setTabName("EIEL");
+		setTabName("ELLE");
 
 		setLayout(new BorderLayout());
 		JPanel mainPanel = new JPanel();
@@ -149,7 +153,7 @@ public class ElleWizard extends WizardPanel {
 
 			try {
 
-				FormPanel form = new FormPanel("forms/loadEIELLayer.jfrm");
+				FormPanel form = new FormPanel("forms/loadLayer.jfrm");
 				form.setFocusTraversalPolicyProvider(true);
 
 				listPanel.add(form);
@@ -161,20 +165,6 @@ public class ElleWizard extends WizardPanel {
 				layerList = form.getList("layerList");
 				groupList = form.getList("groupList");
 				groupList.setListData(groups);
-
-				JLabel scopeLabel = form.getLabel("scopeLabel");
-				scopeLabel.setText(PluginServices.getText(this, "scope"));
-
-				scopeCB = form.getComboBox("scopeCB");
-				String op1 = PluginServices.getText(this, "all_prov");
-				scopeCB.addItem(op1);
-				//				Constants constants = Constants.getCurrentConstants();
-				//				if (constants!= null) {
-				//					String op2 = PluginServices.getText(this, "adjacent_councils");
-				//					String op3 = PluginServices.getText(this, "selected_council");
-				//					scopeCB.addItem(op2);
-				//					scopeCB.addItem(op3);
-				//				}
 
 				groupList.addListSelectionListener(new ListSelectionListener() {
 

@@ -46,9 +46,6 @@ public class LoadMapWindow extends JPanel implements IWindow, ActionListener {
 	protected final View view;
 	private JComboBox legendCB;
 	private String legendDir;
-	//	private boolean isCartBaseLoaded;
-
-	//	private final String cartografiaBase = "Cartograf\u00eda base";
 
 	public WindowInfo getWindowInfo() {
 
@@ -65,14 +62,6 @@ public class LoadMapWindow extends JPanel implements IWindow, ActionListener {
 
 		dbs = DBSession.getCurrentSession();
 		view = (View) PluginServices.getMDIManager().getActiveWindow();
-
-
-		//		try {
-		//			isCartBaseLoaded = LoadMap.isMapLoaded(view, cartografiaBase);
-		//		} catch (SQLException e) {
-		//			// TODO Auto-generated catch block
-		//			e.printStackTrace();
-		//		}
 
 		XMLEntity xml = PluginServices.getPluginServices("es.udc.cartolab.gvsig.elle").getPersistentXML();
 		if (xml.contains(EllePreferencesPage.DEFAULT_LEGEND_DIR_KEY_NAME)) {
@@ -144,7 +133,7 @@ public class LoadMapWindow extends JPanel implements IWindow, ActionListener {
 
 			try {
 
-				FormPanel form = new FormPanel("forms/loadEIELMap.jfrm");
+				FormPanel form = new FormPanel("forms/loadMap.jfrm");
 				form.setFocusTraversalPolicyProvider(true);
 
 				listPanel.add(form);
@@ -189,13 +178,8 @@ public class LoadMapWindow extends JPanel implements IWindow, ActionListener {
 						if (selected.length == 1) {
 							String selectedValue = (String) mapList.getSelectedValues()[0];
 							String where = String.format("WHERE mapa = '%s'", selectedValue);
-							//							if (!isCartBaseLoaded) {
-							//								where = where.concat(String.format(" OR mapa='%s'", cartografiaBase));
-							//							}
 							try {
 								layers = dbs.getTable("_map", dbs.getSchema(), where, new String[]{"posicion"}, true);
-								//								layers = dbs.getTable("mapas", where);
-
 								String layerText = "";
 								for (int i=0; i<layers.length; i++) {
 									layerText = layerText + layers[i][1] + "\n";

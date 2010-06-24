@@ -13,17 +13,6 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class LoadMap {
 
-	/*
-	 * Propio de la EIEL:
-	 *  * variables de cartografiaBase y nucleosLayer, y todo lo que conlleva
-	 *    en la carga del mapa.
-	 *  * Constantes.
-	 *  * El parametro loadCartBase de la funcion loadMap.
-	 */
-
-	private static final String cartografiaBase = "Cartograf\u00eda base";
-	private static final String nucleosLayer = "N\u00facleos";
-
 	private LoadMap() {
 
 	}
@@ -124,12 +113,6 @@ public class LoadMap {
 				//				}
 
 			}
-
-			//			if (constants!=null && !constants.getNucCod().equals("")) {
-			//				if (nucLayer!=null) {
-			//					zoomToNucleo(nucLayer, constants.getMunCod(), constants.getEntCod(), constants.getNucCod());
-			//				}
-			//			}
 
 			/////////////// MapOverview
 			String[][] layersOV = dbs.getTable("_map_overview", dbs.getSchema(), where, new String[]{"posicion"}, false);
