@@ -30,7 +30,6 @@ public class ElleWizard extends WizardPanel {
 	private CRSSelectPanel crsPanel = null;
 	private DBSession dbs;
 	private String[][] layers;
-	//	private JComboBox scopeCB;
 
 	@Override
 	public void execute() {
@@ -93,27 +92,8 @@ public class ElleWizard extends WizardPanel {
 		return layer;
 	}
 
-	private String getWhereClause() {
+	protected String getWhereClause() {
 		return "";
-		//			Constants constants = Constants.getCurrentConstants();
-		//			if (constants!=null) {
-		//				switch (scopeCB.getSelectedIndex()) {
-		//				case 1 : //adjacents
-		//					whereClause = "WHERE ";
-		//					List<String> municipios = constants.getMunicipios();
-		//					for (int j=0; j<municipios.size()-1; j++) {
-		//						whereClause = whereClause.concat("mun ='" + municipios.get(j) +
-		//						"' OR ");
-		//					}
-		//					whereClause = whereClause.concat("mun ='" + municipios.get(municipios.size()-1) + "'");
-		//					break;
-		//				case 2 : //selected council
-		//					whereClause = "WHERE mun='" + constants.getMunCod() + "'";
-		//					break;
-		//				default:
-		//					break;
-		//				}
-		//			}
 	}
 
 	@Override
