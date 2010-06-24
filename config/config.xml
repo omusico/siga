@@ -9,26 +9,26 @@
 	<resourceBundle name="text"/>
 	<extensions>
 		<extension class-name="es.udc.cartolab.gvsig.elle.LoadMapExtension" description="Load map" active="true">
-			<menu text="ELLE/Load_map"
+			<menu text="data_base/Load_map"
 				action-command="LoadMap"
 				position="03"/> 
 		</extension>
 		<extension class-name="es.udc.cartolab.gvsig.elle.LoadAllLegendsExtension" description="Load_several_legends" active="true">
-			<menu text="ELLE/load_legends"
+			<menu text="data_base/load_legends"
 				action-command="LOADLEGENDS"
 				position="0900"/>
 		</extension>
 		<extension class-name="es.udc.cartolab.gvsig.elle.SaveAllLegendsExtension" description="Save_several_legends" active="true">
-			<menu text="ELLE/Save_legends/Leg_actives"
+			<menu text="data_base/Save_legends/Leg_actives"
 				action-command="ACTIVES"
 				position="0910"/> 
-			<menu text="ELLE/Save_legends/Leg_visibles"
+			<menu text="data_base/Save_legends/Leg_visibles"
 				action-command="VISIBLES"
 				position="0920"/>
-			<menu text="ELLE/Save_legends/Leg_map_overview"
+			<menu text="data_base/Save_legends/Leg_map_overview"
 				action-command="MAPOVERVIEW"
 				position="0930" />
-			<menu text="ELLE/Save_legends/Leg_all"
+			<menu text="data_base/Save_legends/Leg_all"
 				action-command="ALL"
 				position="0940"/>
 		</extension>
