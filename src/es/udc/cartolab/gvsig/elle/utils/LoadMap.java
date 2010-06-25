@@ -83,7 +83,7 @@ public class LoadMap {
 			String groupName = "default";
 			for (int i=0; i<layers.length; i++) {
 				String schema=null;
-				if (layers[i][8].length()>1) {
+				if (layers[i][8].length()>0) {
 					schema = layers[i][8];
 				}
 
@@ -93,7 +93,7 @@ public class LoadMap {
 				}
 
 				FLayer layer = getLayer(layers[i][1], layers[i][2], schema, whereClause, proj, visible);
-				if (layers[i][7].length()>1) {
+				if (layers[i][7].length()>0) {
 					if (layers[i][7].equals(groupName)) {
 						group.addLayer(layer);
 					} else {
@@ -121,7 +121,7 @@ public class LoadMap {
 
 			for (int i=0; i<layersOV.length; i++) {
 				String schema=null;
-				if (layersOV[i][2].length()>1) {
+				if (layersOV[i][2].length()>0) {
 					schema = layersOV[i][2];
 				}
 

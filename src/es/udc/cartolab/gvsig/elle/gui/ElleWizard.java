@@ -53,7 +53,7 @@ public class ElleWizard extends WizardPanel {
 
 			String schema = null;
 			if (layers[pos].length > 8) {
-				if (layers[pos][8].length()>1) {
+				if (layers[pos][8].length()>0) {
 					schema = layers[pos][8];
 				}
 			}
