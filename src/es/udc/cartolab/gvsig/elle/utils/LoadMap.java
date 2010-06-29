@@ -178,4 +178,58 @@ public class LoadMap {
 
 	}
 
+	public static boolean mapExists(String mapName) throws SQLException {
+
+		DBSession dbs = DBSession.getCurrentSession();
+		String[] maps = dbs.getDistinctValues("_map", "mapa");
+		boolean found = false;
+		for (int i=0; i<maps.length; i++) {
+			if (mapName.equals(maps[i])) {
+				found = true;
+				break;
+			}
+		}
+		return found;
+
+	}
+
+	/**
+	 * Saves the map. If the maps already exists, it'll be overwritten.
+	 * @param rows
+	 * @param mapName
+	 * @throws SQLException
+	 */
+	public static void saveMap(Object[][] rows, String mapName) throws SQLException {
+
+		String auxMapName = "__aux__" + Double.toString(Math.random()*100000).trim();
+		DBSession dbs = DBSession.getCurrentSession();
+		for (Object[] row : rows) {
+			if (row.length == 8 || row.length == 9) {
+
+				Object[] rowToSave = new Object[10];
+				rowToSave[0] = auxMapName;
+				for (int i=0; i<row.length; i++) {
+					rowToSave[i+1] = row[i];
+				}
+				rowToSave[9] = null;
+
+				try {
+					dbs.insertRow(dbs.getSchema(), "_map", rowToSave);
+				} catch (SQLException e) {
+					// undo insertions
+					try {
+						dbs = DBSession.reconnect();
+						dbs.deleteRows(dbs.getSchema(), "_map", "where mapa='" + auxMapName + "'");
+						throw new SQLException(e);
+					} catch (DBException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		}
+		//remove previous entries and rename aux table
+		dbs.deleteRows(dbs.getSchema(), "_map", "where mapa='" + mapName + "'");
+		dbs.updateRows(dbs.getSchema(), "_map", new String[]{"mapa"}, new String[]{mapName}, "where mapa='" + auxMapName + "'");
+	}
 }
+

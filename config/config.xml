@@ -32,5 +32,10 @@
 				action-command="ALL"
 				position="0940"/>
 		</extension>
+		<extension class-name="es.udc.cartolab.gvsig.elle.CreateMapExtension" description="create_map" active="true">
+			<menu text="data_base/Create_map"
+				action-command="CreateMap"
+				position="04" />
+		</extension>
 	</extensions>
 </plugin-config>
