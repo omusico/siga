@@ -366,11 +366,15 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 					}
 				}
 				if (save) {
-					boolean saved = saveMap(mapExists, mapName);
-					if (!saved) {
+					String[] errors = saveMap(mapExists, mapName);
+					if (errors.length>0) {
+						String msg = "Se han producido los siguientes errores:";
+						for (String error : errors) {
+							msg = msg + "\n" + error;
+						}
 						JOptionPane.showMessageDialog(
 								this,
-								"El nombre de la capa no puede ser vacío",
+								msg,
 								"",
 								JOptionPane.ERROR_MESSAGE);
 						close = false;
@@ -396,11 +400,15 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 		}
 	}
 
-	private boolean saveMap(boolean registerExists, String mapName) throws SQLException {
+	private String[] saveMap(boolean registerExists, String mapName) throws SQLException {
 
 		int position = 1;
 		MapTableModel model = (MapTableModel) mapTable.getModel();
 		List<Object[]> rows = new ArrayList<Object[]>();
+		List<String> errors = new ArrayList<String>();
+		String shownNameError = "El nombre de la capa no puede estar vacío.";
+		String parseError = "Las escalas deben ser numéricas.";
+		String minGreaterError = "La escala mínima no puede ser superior a la máxima";
 		for (int i=0; i<model.getRowCount(); i++) {
 
 			if ((Boolean) model.getValueAt(i, 0)) {
@@ -411,10 +419,14 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 				if (aux!=null) {
 					shownName = aux.toString();
 					if (shownName.equals("")) {
-						return false;
+						if (!errors.contains(shownNameError)) {
+							errors.add(shownNameError);
+						}
 					}
 				} else {
-					return false;
+					if (!errors.contains(shownNameError)) {
+						errors.add(shownNameError);
+					}
 				}
 				aux = model.getValueAt(i, 3);
 				String group = null;
@@ -434,7 +446,9 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 						}
 					}
 				} catch (ParseException e) {
-					return false;
+					if (!errors.contains(parseError)) {
+						errors.add(parseError);
+					}
 				}
 				try {
 					aux = model.getValueAt(i, 6);
@@ -445,16 +459,28 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 						}
 					}
 				} catch (ParseException e) {
-					return false;
+					if (!errors.contains(parseError)) {
+						errors.add(parseError);
+					}
+				}
+				if (minScale!=null && maxScale!=null && minScale > maxScale) {
+					if (!errors.contains(minGreaterError)) {
+						errors.add(minGreaterError);
+					}
 				}
 
 				Object[] row = {shownName, table, position, visible, maxScale, minScale, group, schema};
 				rows.add(row);
+				position++;
 
 			}
 		}
-		LoadMap.saveMap(rows.toArray(new Object[0][0]), mapName);
-		return true;
+		if (errors.size()>0) {
+			return errors.toArray(new String[0]);
+		} else {
+			LoadMap.saveMap(rows.toArray(new Object[0][0]), mapName);
+			return new String[0];
+		}
 
 	}
 
