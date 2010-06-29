@@ -3,6 +3,8 @@ package es.udc.cartolab.gvsig.elle.gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,8 +70,8 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 
 		//layout
 		MigLayout layout = new MigLayout("inset 0, align center",
-				"[grow]",
-		"[grow][]");
+				"10[grow]10",
+		"10[grow][]");
 
 		setLayout(layout);
 
@@ -215,12 +217,12 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 							double maxScale = layer.getMaxScale();
 							String maxScaleStr = "";
 							if (maxScale >= 0) {
-								maxScaleStr = Double.toString(maxScale);
+								maxScaleStr = NumberFormat.getInstance().format(maxScale);
 							}
 							double minScale = layer.getMinScale();
 							String minScaleStr = "";
 							if (minScale >= 0) {
-								minScaleStr = Double.toString(minScale);
+								minScaleStr = NumberFormat.getInstance().format(minScale);
 							}
 							schemas.add(layerDef.getSchema());
 							tableNames.add(layerDef.getTableName());
@@ -399,30 +401,51 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 		int position = 1;
 		MapTableModel model = (MapTableModel) mapTable.getModel();
 		List<Object[]> rows = new ArrayList<Object[]>();
-		for (int i=0; i<mapTable.getRowCount(); i++) {
+		for (int i=0; i<model.getRowCount(); i++) {
 
 			if ((Boolean) model.getValueAt(i, 0)) {
 				String schema = schemas.get(i);
 				String table = tableNames.get(i);
-				String shownName = mapTable.getValueAt(i, 2).toString();
-				if (shownName.equals("")) {
+				Object aux = model.getValueAt(i, 2);
+				String shownName = null;
+				if (aux!=null) {
+					shownName = aux.toString();
+					if (shownName.equals("")) {
+						return false;
+					}
+				} else {
 					return false;
 				}
-				String group = mapTable.getValueAt(i, 3).toString();
-				if (group.equals("")) {
-					group = null;
+				aux = model.getValueAt(i, 3);
+				String group = null;
+				if (aux!=null) {
+					if (!aux.toString().equals("")) {
+						group = aux.toString();
+					}
 				}
-				boolean visible = (Boolean) mapTable.getValueAt(i, 4);
-				Double maxScale, minScale;
+				boolean visible = (Boolean) model.getValueAt(i, 4);
+				Double maxScale = null, minScale = null;
 				try {
-					maxScale = Double.parseDouble(mapTable.getValueAt(i, 5).toString());
-				} catch (NumberFormatException e) {
-					maxScale = null; //hay que usar otra forma de gestionar esto
+					aux = model.getValueAt(i, 5);
+					if (aux!=null) {
+						String str = aux.toString();
+						if (!str.equals("")) {
+							maxScale = NumberFormat.getInstance().parse(str).doubleValue();
+						}
+					}
+				} catch (ParseException e) {
+					return false;
 				}
 				try {
-					minScale = Double.parseDouble(mapTable.getValueAt(i, 6).toString());
-				} catch (NumberFormatException e) {
-					minScale = null;
+					aux = model.getValueAt(i, 6);
+					if (aux != null) {
+						String str = aux.toString();
+						if (!str.equals("")) {
+							minScale = NumberFormat.getInstance().parse(str).doubleValue();
+						}
+					}
+				} catch (ParseException e) {
+					return false;
 				}
 
 				Object[] row = {shownName, table, position, visible, maxScale, minScale, group, schema};
