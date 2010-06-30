@@ -40,10 +40,10 @@ import com.iver.utiles.swing.jtable.JTable;
 import es.udc.cartolab.gvsig.elle.utils.LoadMap;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
+@SuppressWarnings("serial")
 public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 
-	private final int widthView = 750;
-	private final int widthNoView = 500;
+	private final int width = 750;
 	private final int height = 500;
 
 	private View view = null;
@@ -60,10 +60,6 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 	private JCheckBox overviewChb;
 
 	private static Logger logger = Logger.getLogger(SaveMapWindow.class);
-
-	public SaveMapWindow() {
-		this(null);
-	}
 
 	public SaveMapWindow(View view) {
 		this.view = view;
@@ -116,12 +112,12 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 
 
 		//map overview
-		overviewChb = new JCheckBox("Guardar localizador");
+		overviewChb = new JCheckBox(PluginServices.getText(this, "save_overview"));
 		//		optionsPanel.add(overviewChb, "growy, align left");
 
 		//map name
 		JPanel namePanel = new JPanel();
-		namePanel.add(new JLabel("Nombre del mapa:"));
+		namePanel.add(new JLabel(PluginServices.getText(this, "map_name")));
 		mapNameField = new JTextField("", 20);
 		namePanel.add(mapNameField);
 		//		optionsPanel.add(namePanel, "shrink, align right, wrap");
@@ -157,7 +153,13 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 	}
 
 	private void setMapTable() {
-		String[] header = {"", "Capa", "Nombre", "Grupo", "Visible", "Escala máxima", "Escala mínima"};
+		String[] header = {"",
+				PluginServices.getText(this, "layer"),
+				PluginServices.getText(this, "name"),
+				PluginServices.getText(this, "group"),
+				PluginServices.getText(this, "visible"),
+				PluginServices.getText(this, "max_scale"),
+				PluginServices.getText(this, "min_scale")};
 		DefaultTableModel model = new MapTableModel();
 		for (String columnName : header) {
 			model.addColumn(columnName);
@@ -179,14 +181,8 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 	@Override
 	public WindowInfo getWindowInfo() {
 		if (viewInfo == null) {
-			int width;
-			if (view != null) {
-				width = widthView;
-			} else {
-				width = widthNoView;
-			}
 			viewInfo = new WindowInfo(WindowInfo.MODALDIALOG | WindowInfo.RESIZABLE);
-			viewInfo.setTitle(PluginServices.getText(this, "Save_map"));
+			viewInfo.setTitle(PluginServices.getText(this, "save_map"));
 			viewInfo.setWidth(width);
 			viewInfo.setHeight(height);
 		}
@@ -353,11 +349,12 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 				boolean save = true;
 				boolean close = true;
 				if (mapExists) {
-
+					String question = PluginServices.getText(this, "overwrite_map_question");
+					question = String.format(question, mapName);
 					int answer = JOptionPane.showOptionDialog(
 							this,
-							"El mapa ya existe, ¿desea continuar?",
-							"",
+							question,
+							PluginServices.getText(this, "overwrite_map"),
 							JOptionPane.YES_NO_OPTION,
 							JOptionPane.QUESTION_MESSAGE,
 							null,
@@ -374,7 +371,7 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 				if (save) {
 					String[] errors = saveMap(mapName);
 					if (errors.length>0) {
-						String msg = "Se han producido los siguientes errores:";
+						String msg = PluginServices.getText(this, "errors_list");
 						for (String error : errors) {
 							msg = msg + "\n" + error;
 						}
@@ -392,7 +389,7 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 			} catch (SQLException e1) {
 				JOptionPane.showMessageDialog(
 						this,
-						"Error al guardar el mapa",
+						PluginServices.getText(this, "error_saving_map"),
 						"",
 						JOptionPane.ERROR_MESSAGE);
 				logger.error(e1.getMessage(), e1);
@@ -400,7 +397,7 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 		} else {
 			JOptionPane.showMessageDialog(
 					this,
-					"El nombre del mapa no puede estar vacío.",
+					PluginServices.getText(this, "error_empty_map_name"),
 					"",
 					JOptionPane.ERROR_MESSAGE);
 		}
@@ -412,10 +409,10 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 		MapTableModel model = (MapTableModel) mapTable.getModel();
 		List<Object[]> rows = new ArrayList<Object[]>();
 		List<String> errors = new ArrayList<String>();
-		String shownNameError = "El nombre de la capa no puede estar vacío.";
-		String parseError = "Las escalas deben ser numéricas.";
-		String minGreaterError = "La escala mínima no puede ser superior a la máxima";
-		String mapoverviewError = "Error al guardar el localizador";
+		String shownNameError = PluginServices.getText(this, "error_empty_layer_name");
+		String parseError = PluginServices.getText(this, "error_numeric_scale");
+		String minGreaterError = PluginServices.getText(this, "error_min_greater_than_max");
+		String mapoverviewError = PluginServices.getText(this, "error_overview");
 		for (int i=0; i<model.getRowCount(); i++) {
 
 			if ((Boolean) model.getValueAt(i, 0)) {
