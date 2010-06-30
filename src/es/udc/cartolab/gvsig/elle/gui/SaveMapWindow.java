@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -56,6 +57,7 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 	private JButton upButton;
 	private JButton downButton;
 	private JTextField mapNameField;
+	private JCheckBox overviewChb;
 
 	private static Logger logger = Logger.getLogger(SaveMapWindow.class);
 
@@ -97,34 +99,38 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 
 	private JPanel getMainPanel() {
 		JPanel panel = new JPanel();
-		if (view!=null) {
-			MigLayout layout = new MigLayout("inset 0, align center",
-					"[grow][]",
-			"[grow][]");
-			panel.setLayout(layout);
-		} else {
-			MigLayout layout = new MigLayout("inset 0, align center",
-					"[][grow][]",
-			"[grow][]");
-			panel.setLayout(layout);
-			//add left table and moveleft/moveright buttons
-		}
+		MigLayout layout = new MigLayout("inset 0, align center",
+				"[grow][grow]",
+		"[grow][]");
+		panel.setLayout(layout);
 
+
+		//map, up & down buttons
 		setMapTable();
+		JPanel tablePanel = new JPanel();
+		MigLayout tableLayout = new MigLayout("inset 0, align center", "[grow][]", "[grow]");
+		tablePanel.setLayout(tableLayout);
+		tablePanel.add(new JScrollPane(mapTable), "growx, growy");
+		tablePanel.add(getUpDownPanel(), "shrink, align right, wrap");
+		fillWithViewLayers(mapTable, view.getMapControl().getMapContext().getLayers());
 
-		panel.add(new JScrollPane(mapTable), "shrink, growx, growy");
-		panel.add(getUpDownPanel(), "shrink, wrap");
 
+		//map overview
+		overviewChb = new JCheckBox("Guardar localizador");
+		//		optionsPanel.add(overviewChb, "growy, align left");
 
 		//map name
 		JPanel namePanel = new JPanel();
 		namePanel.add(new JLabel("Nombre del mapa:"));
 		mapNameField = new JTextField("", 20);
 		namePanel.add(mapNameField);
+		//		optionsPanel.add(namePanel, "shrink, align right, wrap");
 
-		panel.add(namePanel, "growy, align right, wrap");
+		//add to panel
+		panel.add(tablePanel, "span 2 1, grow, wrap");
+		panel.add(overviewChb, "grow 0, align left");
+		panel.add(namePanel, "grow 0, align right, wrap");
 
-		fillWithViewLayers(mapTable, view.getMapControl().getMapContext().getLayers());
 		return panel;
 	}
 
@@ -179,8 +185,8 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 			} else {
 				width = widthNoView;
 			}
-			viewInfo = new WindowInfo(WindowInfo.MODALDIALOG);
-			viewInfo.setTitle(PluginServices.getText(this, "Load_map"));
+			viewInfo = new WindowInfo(WindowInfo.MODALDIALOG | WindowInfo.RESIZABLE);
+			viewInfo.setTitle(PluginServices.getText(this, "Save_map"));
 			viewInfo.setWidth(width);
 			viewInfo.setHeight(height);
 		}
@@ -366,7 +372,7 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 					}
 				}
 				if (save) {
-					String[] errors = saveMap(mapExists, mapName);
+					String[] errors = saveMap(mapName);
 					if (errors.length>0) {
 						String msg = "Se han producido los siguientes errores:";
 						for (String error : errors) {
@@ -400,7 +406,7 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 		}
 	}
 
-	private String[] saveMap(boolean registerExists, String mapName) throws SQLException {
+	private String[] saveMap(String mapName) throws SQLException {
 
 		int position = 1;
 		MapTableModel model = (MapTableModel) mapTable.getModel();
@@ -409,6 +415,7 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 		String shownNameError = "El nombre de la capa no puede estar vacío.";
 		String parseError = "Las escalas deben ser numéricas.";
 		String minGreaterError = "La escala mínima no puede ser superior a la máxima";
+		String mapoverviewError = "Error al guardar el localizador";
 		for (int i=0; i<model.getRowCount(); i++) {
 
 			if ((Boolean) model.getValueAt(i, 0)) {
@@ -478,11 +485,53 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 		if (errors.size()>0) {
 			return errors.toArray(new String[0]);
 		} else {
+			if (overviewChb.isSelected()) {
+				try {
+					saveOverview(mapName);
+				} catch (SQLException e) {
+					return new String[]{mapoverviewError};
+				}
+			}
 			LoadMap.saveMap(rows.toArray(new Object[0][0]), mapName);
 			return new String[0];
 		}
 
 	}
+
+	@SuppressWarnings("deprecation")
+	private void saveOverview(String mapName) throws SQLException {
+		FLayers layers = view.getMapOverview().getMapContext().getLayers();
+		List<Object[]> rows = new ArrayList<Object[]>();
+		for (int i=layers.getLayersCount()-1; i>=0; i--) {
+			FLayer layer = layers.getLayer(i);
+			if (layer instanceof FLyrVect) {
+				VectorialDriver driver = ((FLyrVect) layer).getSource().getDriver();
+				if (driver instanceof PostGisDriver) {
+
+					DBLayerDefinition layerDef = ((VectorialDBAdapter) ((FLyrVect) layer).getSource()).getLyrDef();
+
+					DBSession dbc = DBSession.getCurrentSession();
+					String user;
+					try {
+						user = ((ConnectionJDBC)((PostGisDriver) driver).getConnection()).getConnection().getMetaData().getUserName();
+
+						if (user != null && user.equals(dbc.getUserName())) {
+							String tablename = layerDef.getTableName();
+							String schema = layerDef.getSchema();
+							String[] row = {tablename, schema};
+							rows.add(row);
+						}
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		LoadMap.saveMapOverview(rows.toArray(new Object[0][0]), mapName);
+
+	}
+
 
 	private void closeWindow() {
 		PluginServices.getMDIManager().closeWindow(this);

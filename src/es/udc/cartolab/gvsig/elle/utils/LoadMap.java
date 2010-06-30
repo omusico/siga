@@ -231,5 +231,39 @@ public class LoadMap {
 		dbs.deleteRows(dbs.getSchema(), "_map", "where mapa='" + mapName + "'");
 		dbs.updateRows(dbs.getSchema(), "_map", new String[]{"mapa"}, new String[]{mapName}, "where mapa='" + auxMapName + "'");
 	}
+
+	public static void saveMapOverview(Object[][] rows, String mapName) throws SQLException {
+
+		String auxMapname = "__aux__" + Double.toString(Math.random()*100000).trim();
+		DBSession dbs = DBSession.getCurrentSession();
+		for (int j=0; j<rows.length; j++) {
+			if (rows[j].length == 2 || rows[j].length == 3) {
+				Object[] rowToSave = new Object[4];
+				rowToSave[0] = auxMapname;
+				rowToSave[3] = j+1;
+				for (int i=0; i<rows[j].length; i++) {
+					rowToSave[i+1] = rows[j][i];
+				}
+
+				try {
+					dbs.insertRow(dbs.getSchema(), "_map_overview", rowToSave);
+				} catch (SQLException e) {
+					//undo insertions
+					try {
+						dbs = DBSession.reconnect();
+						dbs.deleteRows(dbs.getSchema(), "_map_overview", "where mapa='" + auxMapname + "'");
+						throw new SQLException(e);
+					} catch (DBException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
+		}
+		//remove previous entries and rename aux table
+		dbs.deleteRows(dbs.getSchema(), "_map_overview", "where mapa='" + mapName + "'");
+		dbs.updateRows(dbs.getSchema(), "_map_overview", new String[]{"mapa"}, new String[]{mapName}, "where mapa='" + auxMapname + "'");
+
+	}
 }
 
