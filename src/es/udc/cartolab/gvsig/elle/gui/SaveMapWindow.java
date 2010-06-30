@@ -413,6 +413,8 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 		String parseError = PluginServices.getText(this, "error_numeric_scale");
 		String minGreaterError = PluginServices.getText(this, "error_min_greater_than_max");
 		String mapoverviewError = PluginServices.getText(this, "error_overview");
+		String repeatedLayerNameError = PluginServices.getText(this, "error_repeated_layer_name");
+		List<String> layerNames = new ArrayList<String>();
 		for (int i=0; i<model.getRowCount(); i++) {
 
 			if ((Boolean) model.getValueAt(i, 0)) {
@@ -431,6 +433,9 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 					if (!errors.contains(shownNameError)) {
 						errors.add(shownNameError);
 					}
+				}
+				if (layerNames.contains(shownName)) {
+					errors.add(repeatedLayerNameError);
 				}
 				aux = model.getValueAt(i, 3);
 				String group = null;
@@ -499,6 +504,7 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 	private void saveOverview(String mapName) throws SQLException {
 		FLayers layers = view.getMapOverview().getMapContext().getLayers();
 		List<Object[]> rows = new ArrayList<Object[]>();
+		List<String> knownTables = new ArrayList<String>();
 		for (int i=layers.getLayersCount()-1; i>=0; i--) {
 			FLayer layer = layers.getLayer(i);
 			if (layer instanceof FLyrVect) {
@@ -513,10 +519,13 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 						user = ((ConnectionJDBC)((PostGisDriver) driver).getConnection()).getConnection().getMetaData().getUserName();
 
 						if (user != null && user.equals(dbc.getUserName())) {
-							String tablename = layerDef.getTableName();
-							String schema = layerDef.getSchema();
-							String[] row = {tablename, schema};
-							rows.add(row);
+							if (!knownTables.contains(layerDef.getComposedTableName())) {
+								String tablename = layerDef.getTableName();
+								String schema = layerDef.getSchema();
+								String[] row = {tablename, schema};
+								rows.add(row);
+								knownTables.add(layerDef.getComposedTableName());
+							}
 						}
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
