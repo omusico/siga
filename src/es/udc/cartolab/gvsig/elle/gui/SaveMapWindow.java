@@ -339,12 +339,6 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 		if (!mapName.equals("")) {
 			try {
 
-				if (mapTable.isEditing()) {
-					if (mapTable.getCellEditor() != null) {
-						mapTable.getCellEditor().stopCellEditing();
-					}
-				}
-
 				boolean mapExists = LoadMap.mapExists(mapName);
 				boolean save = true;
 				boolean close = true;
@@ -369,7 +363,16 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 					}
 				}
 				if (save) {
+
+					PluginServices.getMDIManager().setWaitCursor();
+
+					if (mapTable.isEditing()) {
+						if (mapTable.getCellEditor() != null) {
+							mapTable.getCellEditor().stopCellEditing();
+						}
+					}
 					String[] errors = saveMap(mapName);
+					PluginServices.getMDIManager().restoreCursor();
 					if (errors.length>0) {
 						String msg = PluginServices.getText(this, "errors_list");
 						for (String error : errors) {
@@ -381,12 +384,19 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 								"",
 								JOptionPane.ERROR_MESSAGE);
 						close = false;
+					} else {
+						JOptionPane.showMessageDialog(
+								this,
+								PluginServices.getText(this, "map_saved_correctly"),
+								"",
+								JOptionPane.INFORMATION_MESSAGE);
 					}
 				}
 				if (close) {
 					closeWindow();
 				}
 			} catch (SQLException e1) {
+				PluginServices.getMDIManager().restoreCursor();
 				JOptionPane.showMessageDialog(
 						this,
 						PluginServices.getText(this, "error_saving_map"),
