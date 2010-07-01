@@ -92,7 +92,29 @@ public class LoadMap {
 					visible = false;
 				}
 
+				double maxScale = -1;
+				try {
+					maxScale = Double.parseDouble(layers[i][5]);
+				} catch (NumberFormatException e) {
+					//do nothing
+				}
+
+				double minScale = -1;
+				try {
+					minScale = Double.parseDouble(layers[i][6]);
+				} catch (NumberFormatException e) {
+					//do nothing
+				}
+
 				FLayer layer = getLayer(layers[i][1], layers[i][2], schema, whereClause, proj, visible);
+				if (maxScale >= minScale) {
+					if (maxScale > -1) {
+						layer.setMaxScale(maxScale);
+					}
+					if (minScale > -1) {
+						layer.setMinScale(minScale);
+					}
+				}
 				if (layers[i][7].length()>0) {
 					if (layers[i][7].equals(groupName)) {
 						group.addLayer(layer);
