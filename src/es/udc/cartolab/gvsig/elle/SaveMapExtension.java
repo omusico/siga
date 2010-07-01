@@ -2,12 +2,13 @@ package es.udc.cartolab.gvsig.elle;
 
 import com.iver.andami.PluginServices;
 import com.iver.andami.plugins.Extension;
+import com.iver.cit.gvsig.fmap.layers.FLayers;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.udc.cartolab.gvsig.elle.gui.SaveMapWindow;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
-public class CreateMapExtension extends Extension {
+public class SaveMapExtension extends Extension {
 
 	@Override
 	public void execute(String actionCommand) {
@@ -24,16 +25,22 @@ public class CreateMapExtension extends Extension {
 
 	@Override
 	public boolean isEnabled() {
-		DBSession session = DBSession.getCurrentSession();
-		if (session != null) {
-			return session.getDBUser().isAdmin();
+		if (PluginServices.getMDIManager().getActiveWindow() instanceof View) {
+			FLayers layers = ((View) PluginServices.getMDIManager().getActiveWindow()).getMapControl().getMapContext().getLayers();
+			return layers.getLayersCount() > 0;
 		}
 		return false;
 	}
 
 	@Override
 	public boolean isVisible() {
-		return PluginServices.getMDIManager().getActiveWindow() instanceof View;
+		if (PluginServices.getMDIManager().getActiveWindow() instanceof View) {
+			DBSession session = DBSession.getCurrentSession();
+			if (session != null) {
+				return session.getDBUser().isAdmin();
+			}
+		}
+		return false;
 	}
 
 }

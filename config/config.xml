@@ -32,9 +32,9 @@
 				action-command="ALL"
 				position="0940"/>
 		</extension>
-		<extension class-name="es.udc.cartolab.gvsig.elle.CreateMapExtension" description="save_map" active="true">
+		<extension class-name="es.udc.cartolab.gvsig.elle.SaveMapExtension" description="save_map" active="true">
 			<menu text="data_base_menu/save_map"
-				action-command="CreateMap"
+				action-command="SaveMap"
 				position="04" />
 		</extension>
 	</extensions>
