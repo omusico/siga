@@ -140,68 +140,75 @@ public class LoadMapWindow extends JPanel implements IWindow, ActionListener {
 
 				dbs = DBSession.getCurrentSession();
 
-				String[] groups = dbs.getDistinctValues("_map", "mapa");
+				if (dbs.tableExists(dbs.getSchema(), "_map") && dbs.tableExists(dbs.getSchema(), "_map_overview")) {
 
-				//layerList = form.getList("layerList");
-				mapList = form.getList("mapList");
-				mapList.setListData(groups);
+					String[] groups = dbs.getDistinctValues("_map", "mapa");
 
-				layerTextArea = (JTextArea) form.getComponentByName("layerTextArea");
-				layerTextArea.setEditable(false);
+					//layerList = form.getList("layerList");
+					mapList = form.getList("mapList");
+					mapList.setListData(groups);
 
-				legendCB = form.getComboBox("legendCombo");
+					layerTextArea = (JTextArea) form.getComponentByName("layerTextArea");
+					layerTextArea.setEditable(false);
 
-				JLabel mapLabel = form.getLabel("mapLabel");
-				JLabel layerLabel = form.getLabel("layerLabel");
-				JLabel legendLabel = form.getLabel("legendLabel");
+					legendCB = form.getComboBox("legendCombo");
 
-				mapLabel.setText(PluginServices.getText(this, "map_load"));
-				layerLabel.setText(PluginServices.getText(this, "layer_load"));
-				legendLabel.setText(PluginServices.getText(this, "legend"));
+					JLabel mapLabel = form.getLabel("mapLabel");
+					JLabel layerLabel = form.getLabel("layerLabel");
+					JLabel legendLabel = form.getLabel("legendLabel");
 
-				if (legendDir != null) {
-					File f = new File(legendDir);
-					File[] files = f.listFiles();
-					for (int i=0; i<files.length; i++) {
-						if (files[i].isDirectory() && !files[i].isHidden()) {
-							legendCB.addItem(files[i].getName());
+					mapLabel.setText(PluginServices.getText(this, "map_load"));
+					layerLabel.setText(PluginServices.getText(this, "layer_load"));
+					legendLabel.setText(PluginServices.getText(this, "legend"));
+
+					if (legendDir != null) {
+						File f = new File(legendDir);
+						File[] files = f.listFiles();
+						for (int i=0; i<files.length; i++) {
+							if (files[i].isDirectory() && !files[i].isHidden()) {
+								legendCB.addItem(files[i].getName());
+							}
 						}
 					}
-				}
 
-				mapList.addListSelectionListener(new ListSelectionListener() {
+					mapList.addListSelectionListener(new ListSelectionListener() {
 
-					public void valueChanged(ListSelectionEvent arg0) {
-						// TODO Auto-generated method stub
-						int[] selected = mapList.getSelectedIndices();
-						changeOkButtonState();
-						if (selected.length == 1) {
-							String selectedValue = (String) mapList.getSelectedValues()[0];
-							String where = String.format("WHERE mapa = '%s'", selectedValue);
-							try {
-								layers = dbs.getTable("_map", dbs.getSchema(), where, new String[]{"posicion"}, true);
-								String layerText = "";
-								for (int i=0; i<layers.length; i++) {
-									layerText = layerText + layers[i][1] + "\n";
+						public void valueChanged(ListSelectionEvent arg0) {
+							// TODO Auto-generated method stub
+							int[] selected = mapList.getSelectedIndices();
+							changeOkButtonState();
+							if (selected.length == 1) {
+								String selectedValue = (String) mapList.getSelectedValues()[0];
+								String where = String.format("WHERE mapa = '%s'", selectedValue);
+								try {
+									layers = dbs.getTable("_map", dbs.getSchema(), where, new String[]{"posicion"}, true);
+									String layerText = "";
+									for (int i=0; i<layers.length; i++) {
+										layerText = layerText + layers[i][1] + "\n";
+									}
+
+									layerTextArea.setText(layerText);
+
+								} catch (SQLException e) {
+									// TODO Auto-generated catch block
+									JOptionPane.showMessageDialog(null,
+											"Error SQL: " + e.getMessage(),
+											"SQL Exception",
+											JOptionPane.ERROR_MESSAGE);
 								}
 
-								layerTextArea.setText(layerText);
-
-							} catch (SQLException e) {
-								// TODO Auto-generated catch block
-								JOptionPane.showMessageDialog(null,
-										"Error SQL: " + e.getMessage(),
-										"SQL Exception",
-										JOptionPane.ERROR_MESSAGE);
+							} else {
+								layerTextArea.setText("");
 							}
 
-						} else {
-							layerTextArea.setText("");
 						}
 
-					}
-
-				});
+					});
+				} else {
+					listPanel = new JPanel();
+					JLabel label = new JLabel("No existen datos de mapas en este esquema.");
+					listPanel.add(label);
+				}
 
 
 			} catch (SQLException e) {

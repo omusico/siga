@@ -140,56 +140,63 @@ public class ElleWizard extends WizardPanel {
 
 				dbs = DBSession.getCurrentSession();
 
-				String[] groups = dbs.getDistinctValues("_map", "mapa");
+				if (dbs.tableExists(dbs.getSchema(), "_map")) {
 
-				layerList = form.getList("layerList");
-				groupList = form.getList("groupList");
-				groupList.setListData(groups);
+					String[] groups = dbs.getDistinctValues("_map", "mapa");
 
-				groupList.addListSelectionListener(new ListSelectionListener() {
+					layerList = form.getList("layerList");
+					groupList = form.getList("groupList");
+					groupList.setListData(groups);
 
-					public void valueChanged(ListSelectionEvent arg0) {
-						// TODO Auto-generated method stub
-						int[] selected = groupList.getSelectedIndices();
-						if (selected.length == 1) {
-							String where = String.format("where mapa ='%s'", groupList.getSelectedValues()[0]);
-							try {
-								layers = dbs.getTable("_map", where);
-							} catch (SQLException e) {
-								// TODO Auto-generated catch block
-								JOptionPane.showMessageDialog(null,
-										"Error SQL: " + e.getMessage(),
-										"SQL Exception",
-										JOptionPane.ERROR_MESSAGE);
-							}
-							if (layers != null) {
-								String[] layerNames = new String[layers.length];
-								for (int i=0; i<layers.length; i++) {
-									layerNames[i] = layers[i][1];
+					groupList.addListSelectionListener(new ListSelectionListener() {
+
+						public void valueChanged(ListSelectionEvent arg0) {
+							// TODO Auto-generated method stub
+							int[] selected = groupList.getSelectedIndices();
+							if (selected.length == 1) {
+								String where = String.format("where mapa ='%s'", groupList.getSelectedValues()[0]);
+								try {
+									layers = dbs.getTable("_map", where);
+								} catch (SQLException e) {
+									// TODO Auto-generated catch block
+									JOptionPane.showMessageDialog(null,
+											"Error SQL: " + e.getMessage(),
+											"SQL Exception",
+											JOptionPane.ERROR_MESSAGE);
 								}
-								layerList.setListData(layerNames);
+								if (layers != null) {
+									String[] layerNames = new String[layers.length];
+									for (int i=0; i<layers.length; i++) {
+										layerNames[i] = layers[i][1];
+									}
+									layerList.setListData(layerNames);
+								}
+							} else {
+								layerList.setListData(new Object[0]);
 							}
-						} else {
-							layerList.setListData(new Object[0]);
-						}
-						callStateChanged(false);
-					}
-
-				});
-
-				layerList.addListSelectionListener(new ListSelectionListener() {
-
-					public void valueChanged(ListSelectionEvent arg0) {
-						// TODO Auto-generated method stub
-						int[] selected = groupList.getSelectedIndices();
-						if (selected.length > 0) {
-							callStateChanged(true);
-						} else {
 							callStateChanged(false);
 						}
-					}
 
-				});
+					});
+
+					layerList.addListSelectionListener(new ListSelectionListener() {
+
+						public void valueChanged(ListSelectionEvent arg0) {
+							// TODO Auto-generated method stub
+							int[] selected = groupList.getSelectedIndices();
+							if (selected.length > 0) {
+								callStateChanged(true);
+							} else {
+								callStateChanged(false);
+							}
+						}
+
+					});
+				} else {
+					listPanel = new JPanel();
+					JLabel label = new JLabel("No existen datos de mapas en este esquema.");
+					listPanel.add(label);
+				}
 
 			} catch (SQLException e) {
 				listPanel = new JPanel();
