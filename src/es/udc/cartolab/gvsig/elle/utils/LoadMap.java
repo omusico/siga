@@ -312,17 +312,17 @@ public class LoadMap {
 		+ "   OIDS=FALSE"
 		+ ")";
 
-		String sqlCreateMapOverview =  "CREATE TABLE eiel_map_municipal._map_overview"
-			+ "("
-			+ "  mapa character varying NOT NULL,"
-			+ "  nombre_capa character varying NOT NULL,"
-			+ "  \"schema\" character varying,"
-			+ "  posicion integer,"
-			+ "  CONSTRAINT _map_overview_pkey PRIMARY KEY (mapa, nombre_capa)"
-			+ ")"
-			+ "WITH ("
-			+ "  OIDS=FALSE"
-			+ ")";
+		String sqlCreateMapOverview =  "CREATE TABLE " + dbs.getSchema() + "._map_overview"
+		+ "("
+		+ "  mapa character varying NOT NULL,"
+		+ "  nombre_capa character varying NOT NULL,"
+		+ "  \"schema\" character varying,"
+		+ "  posicion integer,"
+		+ "  CONSTRAINT _map_overview_pkey PRIMARY KEY (mapa, nombre_capa)"
+		+ ")"
+		+ "WITH ("
+		+ "  OIDS=FALSE"
+		+ ")";
 
 		String sqlGrant = "GRANT SELECT ON TABLE " + dbs.getSchema() + ".%s TO public";
 
@@ -338,6 +338,8 @@ public class LoadMap {
 			stat.execute(sqlCreateMapOverview);
 			stat.execute(String.format(sqlGrant, "_map_overview"));
 		}
+
+		con.commit();
 	}
 }
 

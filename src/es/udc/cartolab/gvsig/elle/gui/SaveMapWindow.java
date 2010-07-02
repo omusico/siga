@@ -339,25 +339,42 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 		//check existence of tables _map and _map_overview
 		DBSession dbs = DBSession.getCurrentSession();
 		try {
-			boolean existsMap = dbs.tableExists(dbs.getSchema(), "_map");
-			boolean existsMapOverview = dbs.tableExists(dbs.getSchema(), "_map_overview");
+			boolean tableMapExists = dbs.tableExists(dbs.getSchema(), "_map");
+			boolean tableMapOvExists = dbs.tableExists(dbs.getSchema(), "_map_overview");
 
-			if (!existsMap || !existsMapOverview) {
+			if (!tableMapExists || !tableMapOvExists) {
 
 				boolean canCreate = dbs.getDBUser().canCreateTable(dbs.getSchema());
 				if (!canCreate) {
-					//JOptionPane...
-					//					errors.add("No existen las tablas para guardar los mapas y no tiene permisos de usuario para crearlas, )
+					//[jestevez] I think this code is never reached due to the limitations of SaveMapExtension
+					JOptionPane.showMessageDialog(
+							this,
+							PluginServices.getText(this, "table_map_contact_admin"),
+							"",
+							JOptionPane.ERROR_MESSAGE);
 				} else {
-					//JOptionPane...
-					LoadMap.createMapTables();
-					//JOptionPane...
-					existsMap = true;
+					String message = String.format(PluginServices.getText(this, "tables_will_be_created"), dbs.getSchema());
+					int answer = JOptionPane.showConfirmDialog(
+							this,
+							message,
+							"",
+							JOptionPane.YES_NO_OPTION,
+							JOptionPane.QUESTION_MESSAGE,
+							null);
+					if (answer == 0) {
+						LoadMap.createMapTables();
+						JOptionPane.showMessageDialog(
+								this,
+								PluginServices.getText(this, "tables_created_correctly"),
+								"",
+								JOptionPane.INFORMATION_MESSAGE);
+						tableMapExists = true;
+					}
 				}
 			}
 
 
-			if (existsMap) {
+			if (tableMapExists) {
 				String mapName = mapNameField.getText();
 				if (!mapName.equals("")) {
 

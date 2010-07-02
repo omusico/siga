@@ -206,7 +206,7 @@ public class LoadMapWindow extends JPanel implements IWindow, ActionListener {
 					});
 				} else {
 					listPanel = new JPanel();
-					JLabel label = new JLabel("No existen datos de mapas en este esquema.");
+					JLabel label = new JLabel(PluginServices.getText(this, "no_map_table_on_schema"));
 					listPanel.add(label);
 				}
 
