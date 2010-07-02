@@ -335,90 +335,116 @@ public class SaveMapWindow extends JPanel implements IWindow, ActionListener {
 	}
 
 	private void saveMap() {
-		String mapName = mapNameField.getText();
-		if (!mapName.equals("")) {
-			try {
 
-				boolean mapExists = LoadMap.mapExists(mapName);
-				boolean save = true;
-				boolean close = true;
-				if (mapExists) {
-					String question = PluginServices.getText(this, "overwrite_map_question");
-					question = String.format(question, mapName);
-					int answer = JOptionPane.showOptionDialog(
-							this,
-							question,
-							PluginServices.getText(this, "overwrite_map"),
-							JOptionPane.YES_NO_OPTION,
-							JOptionPane.QUESTION_MESSAGE,
-							null,
-							null,
-							null);
+		//check existence of tables _map and _map_overview
+		DBSession dbs = DBSession.getCurrentSession();
+		try {
+			boolean existsMap = dbs.tableExists(dbs.getSchema(), "_map");
+			boolean existsMapOverview = dbs.tableExists(dbs.getSchema(), "_map_overview");
 
-					if (answer!=0) {
-						save = false;
-					}
-					if (answer==1) {
-						close = false;
-					}
+			if (!existsMap || !existsMapOverview) {
+
+				boolean canCreate = dbs.getDBUser().canCreateTable(dbs.getSchema());
+				if (!canCreate) {
+					//JOptionPane...
+					//					errors.add("No existen las tablas para guardar los mapas y no tiene permisos de usuario para crearlas, )
+				} else {
+					//JOptionPane...
+					LoadMap.createMapTables();
+					//JOptionPane...
+					existsMap = true;
 				}
-				if (save) {
-
-					PluginServices.getMDIManager().setWaitCursor();
-
-					if (mapTable.isEditing()) {
-						if (mapTable.getCellEditor() != null) {
-							mapTable.getCellEditor().stopCellEditing();
-						}
-					}
-					String[] errors = saveMap(mapName);
-					PluginServices.getMDIManager().restoreCursor();
-					if (errors.length>0) {
-						String msg = PluginServices.getText(this, "errors_list");
-						for (String error : errors) {
-							msg = msg + "\n" + error;
-						}
-						JOptionPane.showMessageDialog(
-								this,
-								msg,
-								"",
-								JOptionPane.ERROR_MESSAGE);
-						close = false;
-					} else {
-						JOptionPane.showMessageDialog(
-								this,
-								PluginServices.getText(this, "map_saved_correctly"),
-								"",
-								JOptionPane.INFORMATION_MESSAGE);
-					}
-				}
-				if (close) {
-					closeWindow();
-				}
-			} catch (SQLException e1) {
-				PluginServices.getMDIManager().restoreCursor();
-				JOptionPane.showMessageDialog(
-						this,
-						PluginServices.getText(this, "error_saving_map"),
-						"",
-						JOptionPane.ERROR_MESSAGE);
-				logger.error(e1.getMessage(), e1);
 			}
-		} else {
+
+
+			if (existsMap) {
+				String mapName = mapNameField.getText();
+				if (!mapName.equals("")) {
+
+
+					boolean mapExists = LoadMap.mapExists(mapName);
+					boolean save = true;
+					boolean close = true;
+					if (mapExists) {
+						String question = PluginServices.getText(this, "overwrite_map_question");
+						question = String.format(question, mapName);
+						int answer = JOptionPane.showOptionDialog(
+								this,
+								question,
+								PluginServices.getText(this, "overwrite_map"),
+								JOptionPane.YES_NO_OPTION,
+								JOptionPane.QUESTION_MESSAGE,
+								null,
+								null,
+								null);
+
+						if (answer!=0) {
+							save = false;
+						}
+						if (answer==1) {
+							close = false;
+						}
+					}
+					if (save) {
+
+						PluginServices.getMDIManager().setWaitCursor();
+
+						if (mapTable.isEditing()) {
+							if (mapTable.getCellEditor() != null) {
+								mapTable.getCellEditor().stopCellEditing();
+							}
+						}
+						String[] errors = saveMap(mapName);
+						PluginServices.getMDIManager().restoreCursor();
+						if (errors.length>0) {
+							String msg = PluginServices.getText(this, "errors_list");
+							for (String error : errors) {
+								msg = msg + "\n" + error;
+							}
+							JOptionPane.showMessageDialog(
+									this,
+									msg,
+									"",
+									JOptionPane.ERROR_MESSAGE);
+							close = false;
+						} else {
+							JOptionPane.showMessageDialog(
+									this,
+									PluginServices.getText(this, "map_saved_correctly"),
+									"",
+									JOptionPane.INFORMATION_MESSAGE);
+						}
+					}
+					if (close) {
+						closeWindow();
+					}
+				} else {
+					JOptionPane.showMessageDialog(
+							this,
+							PluginServices.getText(this, "error_empty_map_name"),
+							"",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		} catch (SQLException e1) {
+			PluginServices.getMDIManager().restoreCursor();
 			JOptionPane.showMessageDialog(
 					this,
-					PluginServices.getText(this, "error_empty_map_name"),
+					PluginServices.getText(this, "error_saving_map"),
 					"",
 					JOptionPane.ERROR_MESSAGE);
+			logger.error(e1.getMessage(), e1);
 		}
 	}
 
 	private String[] saveMap(String mapName) throws SQLException {
 
+		List<String> errors = new ArrayList<String>();
+
 		int position = 1;
 		MapTableModel model = (MapTableModel) mapTable.getModel();
 		List<Object[]> rows = new ArrayList<Object[]>();
-		List<String> errors = new ArrayList<String>();
+
 		String shownNameError = PluginServices.getText(this, "error_empty_layer_name");
 		String parseError = PluginServices.getText(this, "error_numeric_scale");
 		String minGreaterError = PluginServices.getText(this, "error_min_greater_than_max");

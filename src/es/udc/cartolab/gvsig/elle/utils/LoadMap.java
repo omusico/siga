@@ -1,6 +1,8 @@
 package es.udc.cartolab.gvsig.elle.utils;
 
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.cresques.cts.IProjection;
 
@@ -286,6 +288,56 @@ public class LoadMap {
 		dbs.deleteRows(dbs.getSchema(), "_map_overview", "where mapa='" + mapName + "'");
 		dbs.updateRows(dbs.getSchema(), "_map_overview", new String[]{"mapa"}, new String[]{mapName}, "where mapa='" + auxMapname + "'");
 
+	}
+
+	public static void createMapTables() throws SQLException {
+
+		DBSession dbs = DBSession.getCurrentSession();
+
+		String sqlCreateMap = "CREATE TABLE " + dbs.getSchema() +"._map "
+		+ "("
+		+ "   mapa character varying(255) NOT NULL,"
+		+ "   nombre_capa character varying(255) NOT NULL,"
+		+ "   nombre_tabla character varying(255),"
+		+ "   posicion integer NOT NULL DEFAULT 0,"
+		+ "   visible boolean,"
+		+ "   max_escala character varying(50),"
+		+ "   min_escala character varying(50),"
+		+ "   grupo character varying,"
+		+ "   \"schema\" character varying,"
+		+ "   localizador boolean,"
+		+ "   CONSTRAINT \"primary key\" PRIMARY KEY (mapa, nombre_capa)"
+		+ ")"
+		+ "WITH ("
+		+ "   OIDS=FALSE"
+		+ ")";
+
+		String sqlCreateMapOverview =  "CREATE TABLE eiel_map_municipal._map_overview"
+			+ "("
+			+ "  mapa character varying NOT NULL,"
+			+ "  nombre_capa character varying NOT NULL,"
+			+ "  \"schema\" character varying,"
+			+ "  posicion integer,"
+			+ "  CONSTRAINT _map_overview_pkey PRIMARY KEY (mapa, nombre_capa)"
+			+ ")"
+			+ "WITH ("
+			+ "  OIDS=FALSE"
+			+ ")";
+
+		String sqlGrant = "GRANT SELECT ON TABLE " + dbs.getSchema() + ".%s TO public";
+
+		Connection con = dbs.getJavaConnection();
+		Statement stat = con.createStatement();
+
+		if (!dbs.tableExists(dbs.getSchema(), "_map")) {
+			stat.execute(sqlCreateMap);
+			stat.execute(String.format(sqlGrant, "_map"));
+		}
+
+		if (!dbs.tableExists(dbs.getSchema(), "_map_overview")) {
+			stat.execute(sqlCreateMapOverview);
+			stat.execute(String.format(sqlGrant, "_map_overview"));
+		}
 	}
 }
 
