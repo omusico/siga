@@ -16,8 +16,10 @@ import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.addlayer.AddLayerDialog;
 import com.iver.cit.gvsig.fmap.drivers.DBException;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
+import com.iver.cit.gvsig.fmap.layers.FLayers;
 import com.iver.cit.gvsig.gui.WizardPanel;
 import com.iver.cit.gvsig.gui.panels.CRSSelectPanel;
+import com.iver.cit.gvsig.project.documents.view.gui.View;
 import com.jeta.forms.components.panel.FormPanel;
 
 import es.udc.cartolab.gvsig.users.utils.DBSession;
@@ -30,6 +32,8 @@ public class ElleWizard extends WizardPanel {
 	private CRSSelectPanel crsPanel = null;
 	private DBSession dbs;
 	private String[][] layers;
+	private View view;
+
 
 	@Override
 	public void execute() {
@@ -46,39 +50,47 @@ public class ElleWizard extends WizardPanel {
 			PluginServices.getMDIManager().setWaitCursor();
 			//load layer
 			IProjection proj = crsPanel.getCurProj();
-			int pos = layerList.getSelectedIndex();
+			int[] selectedPos = layerList.getSelectedIndices();
+			if (selectedPos.length > 1) {
+				layer = new FLayers();
+				((FLayers) layer).setName("ELLE");
+				((FLayers) layer).setMapContext(view.getMapControl().getMapContext());
 
-			String layerName = layers[pos][1];
-			String tableName = layers[pos][2];
-
-			String schema = null;
-			if (layers[pos].length > 8) {
-				if (layers[pos][8].length()>0) {
-					schema = layers[pos][8];
+				try {
+					for (int pos : selectedPos) {
+						((FLayers)layer).addLayer(getLayer(pos, proj));
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(this,
+							"SQLException: " + e.getMessage(),
+							"SQL Error",
+							JOptionPane.ERROR_MESSAGE);
+				} catch (DBException e) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(this,
+							"SQLException: " + e.getMessage(),
+							"DB Error",
+							JOptionPane.ERROR_MESSAGE);
 				}
-			}
 
-			String whereClause = getWhereClause();
-
-
-			try {
-				if (schema!=null) {
-					layer = dbs.getLayer(layerName, tableName, schema, whereClause, proj);
-				} else {
-					layer = dbs.getLayer(layerName, tableName, whereClause, proj);
+			} else {
+				int pos = layerList.getSelectedIndex();
+				try {
+					layer = getLayer(pos, proj);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(this,
+							"SQLException: " + e.getMessage(),
+							"SQL Error",
+							JOptionPane.ERROR_MESSAGE);
+				} catch (DBException e) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(this,
+							"SQLException: " + e.getMessage(),
+							"DB Error",
+							JOptionPane.ERROR_MESSAGE);
 				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(this,
-						"SQLException: " + e.getMessage(),
-						"SQL Error",
-						JOptionPane.ERROR_MESSAGE);
-			} catch (DBException e) {
-				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(this,
-						"SQLException: " + e.getMessage(),
-						"DB Error",
-						JOptionPane.ERROR_MESSAGE);
 			}
 			PluginServices.getMDIManager().restoreCursor();
 		} else {
@@ -96,8 +108,33 @@ public class ElleWizard extends WizardPanel {
 		return "";
 	}
 
+	private FLayer getLayer(int pos, IProjection proj) throws SQLException, DBException {
+		String layerName = layers[pos][1];
+		String tableName = layers[pos][2];
+
+		String schema = null;
+		if (layers[pos].length > 8) {
+			if (layers[pos][8].length()>0) {
+				schema = layers[pos][8];
+			}
+		}
+
+		String whereClause = getWhereClause();
+
+		if (schema!=null) {
+			return dbs.getLayer(layerName, tableName, schema, whereClause, proj);
+		} else {
+			return dbs.getLayer(layerName, tableName, whereClause, proj);
+		}
+	}
+
 	@Override
 	public void initWizard() {
+		if (!(PluginServices.getMDIManager().getActiveWindow() instanceof View)) {
+			return;
+		}
+
+		view = (View) PluginServices.getMDIManager().getActiveWindow();
 
 		dbs = DBSession.getCurrentSession();
 		setTabName("ELLE");
