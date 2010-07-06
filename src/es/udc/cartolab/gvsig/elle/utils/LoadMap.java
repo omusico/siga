@@ -3,6 +3,7 @@ package es.udc.cartolab.gvsig.elle.utils;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import org.cresques.cts.IProjection;
 
@@ -158,7 +159,7 @@ public class LoadMap {
 
 	}
 
-	private static boolean isLayer(FLayers layers, String layerName) {
+	public static boolean isLayer(FLayers layers, String layerName) {
 
 		for (int i=0; i<layers.getLayersCount(); i++) {
 			boolean found = false;
@@ -200,6 +201,54 @@ public class LoadMap {
 		}
 		return result;
 
+	}
+
+	public static void removeMap(View view, String mapName) throws SQLException {
+
+		FLayers layersOnView = view.getMapControl().getMapContext().getLayers();
+		removeMap(layersOnView, mapName, 0);
+	}
+
+	private static boolean removeMap(FLayers layers, String mapName, int depth) throws SQLException {
+		DBSession dbs = DBSession.getCurrentSession();
+		String where = "WHERE mapa='" + mapName + "'";
+		String[][] layersOnMap = dbs.getTable("_map", where);
+
+		ArrayList<Integer> removeIndexes = new ArrayList<Integer>();
+		for (int i=0; i<layers.getLayersCount(); i++) {
+
+			FLayer layer = layers.getLayer(i);
+			if (layer instanceof FLayers) {
+				boolean removedAll = removeMap((FLayers)layer, mapName, depth++);
+				if (removedAll) {
+					//						layers.removeLayer(layer);
+					removeIndexes.add(i);
+				}
+			}
+			for (int j=0; j<layersOnMap.length; j++) {
+				if (depth>0) {
+					if (layers.getName()!=null && !layersOnMap[j][7].equals("")) {
+						if (layers.getName().equalsIgnoreCase(layersOnMap[j][7]) && layer.getName().equals(layersOnMap[j][1])) {
+							//								layers.removeLayer(layer);
+							removeIndexes.add(i);
+							break;
+						}
+					}
+				} else {
+					if (layer.getName().equals(layersOnMap[j][1])) {
+						//							layers.removeLayer(layer);
+						removeIndexes.add(i);
+						break;
+					}
+				}
+			}
+
+		}
+		//remove all indexes backwards to avoid losing positions
+		for (int i=removeIndexes.size()-1; i>=0; i--) {
+			layers.removeLayer(i);
+		}
+		return layers.getLayersCount()==0;
 	}
 
 	public static boolean mapExists(String mapName) throws SQLException {
