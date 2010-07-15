@@ -1,16 +1,18 @@
 package es.udc.cartolab.gvsig.elle.gui.wizard;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.swing.JPanel;
 
 public abstract class WizardComponent extends JPanel {
 
 	private ArrayList<WizardListener> listeners = new ArrayList<WizardListener>();
-	protected WizardWindow parentWindow;
+	//	protected WizardWindow parentWindow;
+	protected Map<String, Object> properties;
 
-	public WizardComponent(WizardWindow parent) {
-		parentWindow = parent;
+	public WizardComponent(Map<String, Object> properties) {
+		this.properties = properties;
 	}
 
 	public abstract boolean canFinish();
@@ -31,7 +33,7 @@ public abstract class WizardComponent extends JPanel {
 
 	protected void callStateChanged() {
 		for(WizardListener listener : listeners) {
-			listener.WizardChanged();
+			listener.wizardChanged();
 		}
 	}
 
@@ -39,6 +41,8 @@ public abstract class WizardComponent extends JPanel {
 
 	public abstract void showComponent();
 
-	public abstract void finish();
+	public abstract void finish() throws WizardFinishException;
+
+	public abstract void setProperties();
 
 }

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.Map;
 
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -20,6 +21,7 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
 import com.jeta.forms.components.panel.FormPanel;
 
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardComponent;
+import es.udc.cartolab.gvsig.elle.gui.wizard.WizardFinishException;
 import es.udc.cartolab.gvsig.elle.utils.LoadMap;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -32,9 +34,10 @@ public class LoadMapWizardComponent extends WizardComponent implements ActionLis
 	private JTextArea layerTextArea;
 	private String[][] layers;
 
+	public final static String PROPERTY_VEW = "view";
 
-	public LoadMapWizardComponent(LoadMapWizard parent) {
-		super(parent);
+	public LoadMapWizardComponent(Map<String, Object> properties) {
+		super(properties);
 
 		dbs = DBSession.getCurrentSession();
 
@@ -168,13 +171,22 @@ public class LoadMapWizardComponent extends WizardComponent implements ActionLis
 	}
 
 	@Override
-	public void finish() {
-		View view = ((LoadMapWizard)parentWindow).getView();
-		try {
-			LoadMap.loadMap(view, mapList.getSelectedValue().toString(), crsPanel.getCurProj());
-		} catch (Exception e) {
-			parentWindow.close();
-			e.printStackTrace();
+	public void finish() throws WizardFinishException {
+		Object aux = properties.get(PROPERTY_VEW);
+		if (aux!=null && aux instanceof View) {
+			View view = (View) aux;
+			try {
+				LoadMap.loadMap(view, mapList.getSelectedValue().toString(), crsPanel.getCurProj());
+			} catch (Exception e) {
+				throw new WizardFinishException(e);
+			}
+		} else {
+			throw new WizardFinishException("Couldn't retrieve the view");
 		}
+	}
+
+	@Override
+	public void setProperties() {
+		// Nothing to do
 	}
 }

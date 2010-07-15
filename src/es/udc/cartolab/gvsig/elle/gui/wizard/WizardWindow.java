@@ -4,7 +4,9 @@ import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -20,6 +22,7 @@ public abstract class WizardWindow extends JPanel implements IWindow, WizardList
 	private JPanel mainPanel;
 	protected List<WizardComponent> views = new ArrayList<WizardComponent>();
 	protected int currentPos;
+	protected Map <String, Object> properties = new HashMap<String, Object>();
 
 
 	public WizardWindow() {
@@ -32,7 +35,11 @@ public abstract class WizardWindow extends JPanel implements IWindow, WizardList
 		finishButton = new JButton("Terminar");
 		finishButton.addActionListener(this);
 
+		addWizardComponents();
+
 	}
+
+	protected abstract void addWizardComponents();
 
 	public void open() {
 		MigLayout layout = new MigLayout("inset 0, align center",
@@ -95,7 +102,7 @@ public abstract class WizardWindow extends JPanel implements IWindow, WizardList
 		finishButton.setEnabled(currentView.canFinish());
 	}
 
-	public void WizardChanged() {
+	public void wizardChanged() {
 		updateButtons();
 	}
 
@@ -103,11 +110,26 @@ public abstract class WizardWindow extends JPanel implements IWindow, WizardList
 		PluginServices.getMDIManager().closeWindow(this);
 	}
 
-	protected abstract void finish();
+	protected void finish() {
+		try {
+			for (WizardComponent wc : views) {
+				wc.finish();
+			}
+		} catch (WizardFinishException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		close();
+	}
 
-	protected abstract void next();
+	protected void next() {
+		views.get(currentPos).setProperties();
+		changeView(currentPos+1);
+	}
 
-	protected abstract void previous();
+	protected void previous() {
+		changeView(currentPos-1);
+	}
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == cancelButton) {

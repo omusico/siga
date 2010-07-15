@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Map;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
@@ -24,6 +25,7 @@ import com.iver.utiles.XMLEntity;
 
 import es.udc.cartolab.gvsig.elle.gui.EllePreferencesPage;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardComponent;
+import es.udc.cartolab.gvsig.elle.gui.wizard.WizardFinishException;
 import es.udc.cartolab.gvsig.elle.utils.LoadLegend;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -36,8 +38,8 @@ public class LoadLegendWizardComponent extends WizardComponent {
 
 	private String legendDir = null;
 
-	public LoadLegendWizardComponent(LoadMapWizard parent) {
-		super(parent);
+	public LoadLegendWizardComponent(Map<String, Object> properties) {
+		super(properties);
 
 		XMLEntity xml = PluginServices.getPluginServices("es.udc.cartolab.gvsig.elle").getPersistentXML();
 		if (xml.contains(EllePreferencesPage.DEFAULT_LEGEND_DIR_KEY_NAME)) {
@@ -215,19 +217,21 @@ public class LoadLegendWizardComponent extends WizardComponent {
 	}
 
 	@Override
-	public void finish() {
-		View view = ((LoadMapWizard) parentWindow).getView();
-		if ((databaseRB.isSelected() && dbStyles.getSelectedItem()!=null) || (fileRB.isSelected() && fileStyles.getSelectedItem()!=null)) {
-			FLayers layers = view.getMapControl().getMapContext().getLayers();
-			try {
-				loadLegends(layers);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+	public void finish() throws WizardFinishException {
+		Object aux = properties.get(LoadMapWizardComponent.PROPERTY_VEW);
+		if (aux!=null && aux instanceof View) {
+			View view = (View) aux;
+
+			if ((databaseRB.isSelected() && dbStyles.getSelectedItem()!=null) || (fileRB.isSelected() && fileStyles.getSelectedItem()!=null)) {
+				FLayers layers = view.getMapControl().getMapContext().getLayers();
+				try {
+					loadLegends(layers);
+				} catch (Exception e) {
+					throw new WizardFinishException(e);
+				}
 			}
+		} else {
+			throw new WizardFinishException("Couldn't retrieve the view");
 		}
 	}
 
@@ -244,6 +248,11 @@ public class LoadLegendWizardComponent extends WizardComponent {
 				loadLegends((FLayers) layer);
 			}
 		}
+	}
+
+	@Override
+	public void setProperties() {
+		// Nothing to do
 	}
 
 
