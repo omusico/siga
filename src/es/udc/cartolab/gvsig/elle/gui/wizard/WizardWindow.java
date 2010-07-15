@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
@@ -76,16 +77,21 @@ public abstract class WizardWindow extends JPanel implements IWindow, WizardList
 		return panel;
 	}
 
-	protected void changeView(int position) {
-		if (position>=0 && position<views.size()) {
-			views.get(currentPos).removeWizardListener(this);
-			currentPos = position;
-			WizardComponent newView = views.get(currentPos);
-			newView.addWizardListener(this);
-			CardLayout cl = (CardLayout) mainPanel.getLayout();
-			cl.show(mainPanel, newView.getWizardComponentName());
-			newView.showComponent();
-			updateButtons();
+	private void changeView(int position) {
+		try {
+			if (position>=0 && position<views.size()) {
+				views.get(currentPos).removeWizardListener(this);
+				currentPos = position;
+				WizardComponent newView = views.get(currentPos);
+				newView.addWizardListener(this);
+				CardLayout cl = (CardLayout) mainPanel.getLayout();
+				cl.show(mainPanel, newView.getWizardComponentName());
+				newView.showComponent();
+				updateButtons();
+			}
+		} catch (WizardException e) {
+			// TODO error y cerrar
+			e.printStackTrace();
 		}
 	}
 
@@ -111,15 +117,26 @@ public abstract class WizardWindow extends JPanel implements IWindow, WizardList
 	}
 
 	protected void finish() {
+		boolean close = true;
 		try {
 			for (WizardComponent wc : views) {
 				wc.finish();
 			}
-		} catch (WizardFinishException e) {
+		} catch (WizardException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			close = e.closeWizard();
+			if (e.showMessage()) {
+				JOptionPane.showMessageDialog(
+						this,
+						e.getMessage(),
+						"",
+						JOptionPane.ERROR_MESSAGE);
+			}
+			//e.printStackTrace();
 		}
-		close();
+		if (close) {
+			close();
+		}
 	}
 
 	protected void next() {

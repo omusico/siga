@@ -8,7 +8,6 @@ import javax.swing.JPanel;
 public abstract class WizardComponent extends JPanel {
 
 	private ArrayList<WizardListener> listeners = new ArrayList<WizardListener>();
-	//	protected WizardWindow parentWindow;
 	protected Map<String, Object> properties;
 
 	public WizardComponent(Map<String, Object> properties) {
@@ -39,9 +38,9 @@ public abstract class WizardComponent extends JPanel {
 
 	public abstract String getWizardComponentName();
 
-	public abstract void showComponent();
+	public abstract void showComponent() throws WizardException;
 
-	public abstract void finish() throws WizardFinishException;
+	public abstract void finish() throws WizardException;
 
 	public abstract void setProperties();
 

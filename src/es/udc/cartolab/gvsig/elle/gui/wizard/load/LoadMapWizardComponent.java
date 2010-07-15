@@ -21,7 +21,7 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
 import com.jeta.forms.components.panel.FormPanel;
 
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardComponent;
-import es.udc.cartolab.gvsig.elle.gui.wizard.WizardFinishException;
+import es.udc.cartolab.gvsig.elle.gui.wizard.WizardException;
 import es.udc.cartolab.gvsig.elle.utils.LoadMap;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -171,17 +171,17 @@ public class LoadMapWizardComponent extends WizardComponent implements ActionLis
 	}
 
 	@Override
-	public void finish() throws WizardFinishException {
+	public void finish() throws WizardException {
 		Object aux = properties.get(PROPERTY_VEW);
 		if (aux!=null && aux instanceof View) {
 			View view = (View) aux;
 			try {
 				LoadMap.loadMap(view, mapList.getSelectedValue().toString(), crsPanel.getCurProj());
 			} catch (Exception e) {
-				throw new WizardFinishException(e);
+				throw new WizardException(e);
 			}
 		} else {
-			throw new WizardFinishException("Couldn't retrieve the view");
+			throw new WizardException("Couldn't retrieve the view");
 		}
 	}
 

@@ -25,7 +25,7 @@ import com.iver.utiles.XMLEntity;
 
 import es.udc.cartolab.gvsig.elle.gui.EllePreferencesPage;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardComponent;
-import es.udc.cartolab.gvsig.elle.gui.wizard.WizardFinishException;
+import es.udc.cartolab.gvsig.elle.gui.wizard.WizardException;
 import es.udc.cartolab.gvsig.elle.utils.LoadLegend;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -217,7 +217,7 @@ public class LoadLegendWizardComponent extends WizardComponent {
 	}
 
 	@Override
-	public void finish() throws WizardFinishException {
+	public void finish() throws WizardException {
 		Object aux = properties.get(LoadMapWizardComponent.PROPERTY_VEW);
 		if (aux!=null && aux instanceof View) {
 			View view = (View) aux;
@@ -227,11 +227,11 @@ public class LoadLegendWizardComponent extends WizardComponent {
 				try {
 					loadLegends(layers);
 				} catch (Exception e) {
-					throw new WizardFinishException(e);
+					throw new WizardException(e);
 				}
 			}
 		} else {
-			throw new WizardFinishException("Couldn't retrieve the view");
+			throw new WizardException("Couldn't retrieve the view");
 		}
 	}
 
