@@ -1,24 +1,20 @@
 package es.udc.cartolab.gvsig.elle.utils;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Hashtable;
 
-import org.exolab.castor.xml.MarshalException;
-import org.exolab.castor.xml.ValidationException;
+import org.gvsig.symbology.fmap.drivers.sld.FMapSLDDriver;
 
 import com.iver.andami.PluginServices;
-import com.iver.cit.gvsig.exceptions.layers.LegendLayerException;
+import com.iver.cit.gvsig.fmap.drivers.gvl.FMapGVLDriver;
+import com.iver.cit.gvsig.fmap.drivers.legend.IFMapLegendDriver;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.fmap.layers.FLayers;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
-import com.iver.cit.gvsig.fmap.layers.XMLException;
-import com.iver.cit.gvsig.fmap.rendering.LegendFactory;
-import com.iver.cit.gvsig.fmap.rendering.VectorialUniqueValueLegend;
+import com.iver.cit.gvsig.fmap.rendering.ILegend;
+import com.iver.cit.gvsig.fmap.rendering.IVectorLegend;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
-import com.iver.utiles.XMLEntity;
-import com.iver.utiles.xmlEntity.generate.XmlTag;
 
 /**
  * This ELLE class can load legends (styles) on the layers. This styles are  'gvl' files placed on a folder defined by the user
@@ -30,6 +26,12 @@ import com.iver.utiles.xmlEntity.generate.XmlTag;
 public abstract class LoadLegend {
 
 	private static String legendPath;
+	private static HashMap<String, Class<? extends IFMapLegendDriver>> drivers = new HashMap<String, Class<? extends IFMapLegendDriver>>();
+
+	static {
+		drivers.put("gvl", FMapGVLDriver.class);
+		drivers.put("sld", FMapSLDDriver.class);
+	}
 
 	public static void setLegendPath(String path) {
 		File f = new File(path);
@@ -56,38 +58,38 @@ public abstract class LoadLegend {
 			return;
 		}
 
-		try {
-			//File styleFile = new File(getLegendPath() + legendFilename);
-			if (legendFile.exists()){
-				InputStreamReader reader;
-				reader = new InputStreamReader(new FileInputStream(legendFile),"UTF-8");
-				XmlTag tag = (XmlTag) XmlTag.unmarshal(reader);
-				XMLEntity xml=new XMLEntity(tag);
-				VectorialUniqueValueLegend legend;
-				legend = (VectorialUniqueValueLegend) LegendFactory.createFromXML(xml);
-				System.out.println("Legend: " + legend + " xml: " + xml.toString().length()  + "name: " + lyr.getName() + " layer: "+ lyr);
-				lyr.setLegend(legend);
-				//LoadLegend.setLegend((FLyrVect) lyr, styleFile.getAbsolutePath());
-				System.out.println("Cargado el style: "+ legendFile.getAbsolutePath());
-			} else {
-				System.out.println("No existe el style: "+ legendFile.getAbsolutePath());
+		//File styleFile = new File(getLegendPath() + legendFilename);
+		if (legendFile.exists()){
+
+			String ext = legendFile.getName().substring(legendFile.getName().lastIndexOf('.') +1);
+			try {
+				if (drivers.containsKey(ext.toLowerCase())) {
+					IFMapLegendDriver driver = drivers.get(ext.toLowerCase()).newInstance();
+					Hashtable<FLayer, ILegend> table = driver.read(lyr.getMapContext().getLayers(),lyr, legendFile);
+					ILegend legend = table.get(lyr);
+					if (legend != null && legend instanceof IVectorLegend) {
+						lyr.setLegend((IVectorLegend)table.get(lyr));
+						System.out.println("Cargado el style: "+ legendFile.getAbsolutePath());
+					}
+				} else {
+					System.out.println("Tipo de leyenda no soportado");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MarshalException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ValidationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (XMLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (LegendLayerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+			//				InputStreamReader reader;
+			//				reader = new InputStreamReader(new FileInputStream(legendFile),"UTF-8");
+			//				XmlTag tag = (XmlTag) XmlTag.unmarshal(reader);
+			//				XMLEntity xml=new XMLEntity(tag);
+			//				IVectorLegend legend = LegendFactory.createFromXML(xml);
+			//				System.out.println("Legend: " + legend + " xml: " + xml.toString().length()  + "name: " + lyr.getName() + " layer: "+ lyr);
+			//				lyr.setLegend(legend);
+			//LoadLegend.setLegend((FLyrVect) lyr, styleFile.getAbsolutePath());
+		} else {
+			System.out.println("No existe el style: "+ legendFile.getAbsolutePath());
 		}
+
 	}
 
 	public static void setOverviewLegend(FLyrVect lyr, String legendFilename){
@@ -101,13 +103,17 @@ public abstract class LoadLegend {
 
 	}
 
-	public static void setLegend(FLyrVect lyr, String legendFilename){
+	public static void setLegend(FLyrVect lyr, String legendFilename) {
+		setLegend(lyr, legendFilename, false);
+	}
 
-		if (legendFilename == null || !legendFilename.endsWith(".gvl")){
-			legendFilename = lyr.getName().toLowerCase() + ".gvl";
+	public static void setLegend(FLyrVect lyr, String legendFilename, boolean absolutePath){
+
+		if (!absolutePath) {
+			legendFilename = getLegendPath() + legendFilename;
 		}
 
-		File legendFile = new File(getLegendPath() + legendFilename);
+		File legendFile = new File(legendFilename);
 		setLegend(lyr, legendFile);
 
 	}

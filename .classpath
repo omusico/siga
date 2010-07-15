@@ -23,5 +23,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/libProjection"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/libExceptions"/>
 	<classpathentry kind="lib" path="lib/miglayout-3.7.2.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/extSymbology"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

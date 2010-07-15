@@ -9,7 +9,7 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.udc.cartolab.gvsig.elle.gui.EllePreferencesPage;
 import es.udc.cartolab.gvsig.elle.gui.ElleWizard;
-import es.udc.cartolab.gvsig.elle.gui.LoadMapWindow;
+import es.udc.cartolab.gvsig.elle.gui.wizard.load.LoadMapWizard;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class LoadMapExtension extends Extension implements IPreferenceExtension {
@@ -18,8 +18,8 @@ public class LoadMapExtension extends Extension implements IPreferenceExtension 
 
 	public void execute(String actionCommand) {
 		// TODO Auto-generated method stub
-		LoadMapWindow window = new LoadMapWindow();
-		PluginServices.getMDIManager().addCentredWindow(window);
+		LoadMapWizard wizard = new LoadMapWizard((View) PluginServices.getMDIManager().getActiveWindow());
+		wizard.open();
 	}
 
 	public void initialize() {
