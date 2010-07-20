@@ -61,15 +61,20 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 			legendDir = xml.getStringProperty(EllePreferencesPage.DEFAULT_LEGEND_DIR_KEY_NAME);
 		}
 
-		setLayout(new MigLayout("inset 0, align center",
-				"20[grow]",
-		"[grow][]15[][]15[][]"));
+		setLayout(new MigLayout("",
+				"10[grow]",
+		"[grow][]"));
+
+		JPanel panelOptions = new JPanel();
+		panelOptions.setLayout(new MigLayout("",
+				"[grow]80",
+		"[]15[][]15[][]"));
 
 		dbPanel = getDBPanel();
 		filePanel = getFilePanel();
 
 		setTable();
-		add(new JScrollPane(table), "wrap");
+		add(new JScrollPane(table), "shrink, growx, growy, wrap");
 
 		noLegendRB = new JRadioButton("No usar leyendas");
 		noLegendRB.addActionListener(new ActionListener() {
@@ -81,7 +86,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 			}
 
 		});
-		add(noLegendRB, "wrap");
+		panelOptions.add(noLegendRB, "wrap");
 
 		databaseRB = new JRadioButton("Cargar leyendas desde la base de datos");
 		databaseRB.addActionListener(new ActionListener() {
@@ -93,8 +98,8 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 			}
 
 		});
-		add(databaseRB, "wrap");
-		add(dbPanel, "wrap");
+		panelOptions.add(databaseRB, "shrink, growx, growy, wrap");
+		panelOptions.add(dbPanel, "shrink, growx, growy, wrap");
 
 		fileRB = new JRadioButton("Cargar desde disco duro");
 		fileRB.addActionListener(new ActionListener() {
@@ -106,8 +111,10 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 			}
 
 		});
-		add(fileRB, "wrap");
-		add(filePanel, "wrap");
+		panelOptions.add(fileRB, "wrap");
+		panelOptions.add(filePanel, "shrink, growx, growy, wrap");
+
+		add(panelOptions, "shrink, growx, growy");
 
 		ButtonGroup group = new ButtonGroup();
 		group.add(noLegendRB);
@@ -139,6 +146,9 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 		cbox.addItem("sld");
 		col.setCellEditor(new DefaultCellEditor(cbox));
 
+		table.getColumnModel().getColumn(0).setMaxWidth(30);
+		table.getColumnModel().getColumn(2).setMaxWidth(60);
+
 	}
 
 
@@ -162,7 +172,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 		dbStyles = new JTextField("", 20);
 
 		panel.add(label);
-		panel.add(dbStyles, "right, wrap");
+		panel.add(dbStyles, "shrink, right, wrap");
 
 		return panel;
 	}
@@ -178,7 +188,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 		fileStyles = new JTextField("", 20);
 		if (legendDir != null) {
 			panel.add(new JLabel(PluginServices.getText(this, "legend")));
-			panel.add(fileStyles, "wrap");
+			panel.add(fileStyles, "shrink, right, wrap");
 		} else {
 			panel.add(new JLabel("<html>El directorio de leyendas no está configurado.<br> Por favor, selecciónelo en el panel de configuraciónd de gvSIG.</html>"), "span 2 wrap");
 		}
@@ -307,6 +317,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		model.setRowCount(0);
 		Object aux = properties.get(SaveMapWizardComponent.PROPERTY_LAYERS_MAP);
+		layers = getLayers();
 		if (aux != null && aux instanceof List<?>) {
 			List<LayerProperties> list = (List<LayerProperties>) aux;
 			for (LayerProperties lp : list) {
