@@ -306,13 +306,16 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 	public void showComponent() throws WizardException {
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		model.setRowCount(0);
-		layers = getLayers();
-		for (FLayer layer : layers) {
-			Object[] row = new Object[3];
-			row[0] = new Boolean(true);
-			row[1] = layer.getName();
-			row[2] = "gvl";
-			model.addRow(row);
+		Object aux = properties.get(SaveMapWizardComponent.PROPERTY_LAYERS_MAP);
+		if (aux != null && aux instanceof List<?>) {
+			List<LayerProperties> list = (List<LayerProperties>) aux;
+			for (LayerProperties lp : list) {
+				Object[] row = new Object[3];
+				row[0] = lp.save();
+				row[1] = lp.getShownname();
+				row[2] = "gvl";
+				model.addRow(row);
+			}
 		}
 	}
 
