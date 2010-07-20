@@ -44,7 +44,6 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 public class SaveMapWizardComponent extends WizardComponent implements ActionListener {
 
 	public final static String PROPERTY_VIEW = "view";
-	//	public final static String PROPERTY_LAYERS = "layers";
 	public final static String PROPERTY_LAYERS_MAP = "table_layers";
 
 	private JButton upButton;
@@ -53,9 +52,6 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 	private JCheckBox overviewChb;
 	private JTable mapTable;
 
-	//	private List<String> schemas;
-	//	private List<String> tableNames;
-	//	private List<String> layerNames;
 
 	private List<LayerProperties> mapLayers;
 
@@ -63,11 +59,6 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 
 	public SaveMapWizardComponent(Map<String, Object> properties) {
 		super(properties);
-		// TODO Auto-generated constructor stub
-
-		//		schemas = new ArrayList<String>();
-		//		tableNames = new ArrayList<String>();
-		//		layerNames = new ArrayList<String>();
 
 		mapLayers = new ArrayList<LayerProperties>();
 
@@ -102,7 +93,6 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 
 		//map overview
 		overviewChb = new JCheckBox(PluginServices.getText(this, "save_overview"));
-		//		optionsPanel.add(overviewChb, "growy, align left");
 
 		//map name
 		JPanel namePanel = new JPanel();
@@ -130,7 +120,6 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 
 		});
 		namePanel.add(mapNameField);
-		//		optionsPanel.add(namePanel, "shrink, align right, wrap");
 
 		//add to panel
 		panel.add(tablePanel, "span 2 1, grow, wrap");
@@ -190,7 +179,6 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 
 	@Override
 	public boolean canFinish() {
-		// TODO Auto-generated method stub
 		return canNext();
 	}
 
@@ -198,12 +186,10 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 	public boolean canNext() {
 		String mapname = mapNameField.getText();
 		return mapname != null && !mapname.equals("");
-		//		return false;
 	}
 
 	@Override
 	public String getWizardComponentName() {
-		// TODO Auto-generated method stub
 		return "save_map";
 	}
 
@@ -310,7 +296,6 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 
 	@Override
 	public void setProperties() throws WizardException {
-		//		properties.put(PROPERTY_LAYERS, getLayerNamesToSave());
 		List<String> errors = parse();
 		if (errors.size()>0) {
 			String msg = PluginServices.getText(this, "errors_list");
@@ -370,7 +355,6 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 			} else if (layer instanceof FLyrVect) {
 				VectorialDriver driver = ((FLyrVect) layer).getSource().getDriver();
 				if (driver instanceof PostGisDriver) {
-					//					ReadableVectorial rv = ((VectorialDBAdapter) ((FLyrVect) layer).getSource()).getOriginalAdapter();
 					DBLayerDefinition layerDef = ((VectorialDBAdapter) ((FLyrVect) layer).getSource()).getLyrDef();
 
 					DBSession dbc = DBSession.getCurrentSession();
@@ -537,21 +521,6 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 
 	}
 
-
-	//	private List<String> getLayerNamesToSave() {
-	//
-	//		List<String> layersToSave = new ArrayList<String>();
-	//		MapTableModel model = (MapTableModel) mapTable.getModel();
-	//		for (int i=0; i<model.getRowCount(); i++) {
-	//
-	//			if ((Boolean) model.getValueAt(i, 0)) {
-	//				layersToSave.add(layerNames.get(i));
-	//			}
-	//		}
-	//		return layersToSave;
-	//
-	//	}
-
 	private void saveOverview(String mapName) throws SQLException {
 		FLayers layers = view.getMapOverview().getMapContext().getLayers();
 		List<Object[]> rows = new ArrayList<Object[]>();
@@ -616,12 +585,6 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 				LayerProperties elementToMove = mapLayers.get(beginPos+1);
 				mapLayers.remove(beginPos+1);
 				mapLayers.add(endPos, elementToMove);
-				//				elementToMove = tableNames.get(beginPos+1);
-				//				tableNames.remove(beginPos+1);
-				//				tableNames.add(endPos, elementToMove);
-				//				elementToMove = layerNames.get(beginPos+1);
-				//				layerNames.remove(beginPos+1);
-				//				layerNames.add(endPos, elementToMove);
 			} else {
 				//the selection group is at the top of the table, don't move anything
 				selectionModel.addSelectionInterval(beginPos, endPos);
@@ -656,12 +619,6 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 				LayerProperties elementToMove = mapLayers.get(beginPos-1);
 				mapLayers.remove(beginPos-1);
 				mapLayers.add(endPos, elementToMove);
-				//				elementToMove = tableNames.get(beginPos-1);
-				//				tableNames.remove(beginPos-1);
-				//				tableNames.add(endPos, elementToMove);
-				//				elementToMove = layerNames.get(beginPos-1);
-				//				layerNames.remove(beginPos-1);
-				//				layerNames.add(endPos, elementToMove);
 			} else {
 				//the selection group is at the top of the table, don't move anything
 				selectionModel.addSelectionInterval(beginPos, endPos);
