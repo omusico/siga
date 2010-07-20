@@ -1,6 +1,7 @@
 package es.udc.cartolab.gvsig.elle.utils;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 
@@ -98,7 +99,11 @@ public abstract class LoadLegend {
 		if (drivers.containsKey(ext.toLowerCase())) {
 			try {
 				IFMapLegendDriver driver = drivers.get(ext.toLowerCase()).newInstance();
-				driver.write(layer.getMapContext().getLayers(),layer, layer.getLegend(), legendFile, "");
+				//workaround for driver version... we hope that when supportedVersions array grows (it has one element
+				//for gvl and sld), gvsIG people will put the newer versions at the last position
+				ArrayList<String> supportedVersions = driver.getSupportedVersions();
+				String version = supportedVersions.get(supportedVersions.size()-1);
+				driver.write(layer.getMapContext().getLayers(),layer, layer.getLegend(), legendFile, version);
 			} catch (InstantiationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
