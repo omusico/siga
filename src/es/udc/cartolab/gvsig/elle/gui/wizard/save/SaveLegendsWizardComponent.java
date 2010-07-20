@@ -214,56 +214,82 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 			DefaultTableModel model = (DefaultTableModel) table.getModel();
 			if ((fileRB.isSelected() && !fileStyles.equals("")) || (databaseRB.isSelected() && !dbStyles.equals(""))) {
 				boolean cont = true;
-				String dirName = fileStyles.getText();
-				File dir = null;
-
-				try {
-					if (fileRB.isSelected()) {
-						dir = getDir(dirName);
-						if (dir == null) {
-							cont = false;
-						}
-					} else {
-						if (LoadMap.legendExists(dbStyles.getText())) {
-							Object[] options = {PluginServices.getText(this, "ok"),
-									PluginServices.getText(this, "cancel")};
-							String message = PluginServices.getText(this, "overwrite_legend_question");
-							int n = JOptionPane.showOptionDialog(this,
-									String.format(message, dbStyles.getText()),
-									PluginServices.getText(this, "overwrite_legend"),
-									JOptionPane.YES_NO_CANCEL_OPTION,
-									JOptionPane.WARNING_MESSAGE,
-									null,
-									options,
-									options[1]);
-							if (n!=0) {
+				boolean useNotGvl = false;
+				for (int i = 0; i<model.getRowCount(); i++) {
+					String type = model.getValueAt(i, 2).toString();
+					if (!type.toLowerCase().equals("gvl")) {
+						useNotGvl = true;
+						break;
+					}
+				}
+				if (useNotGvl) {
+					Object[] options = {PluginServices.getText(this, "ok"),
+							PluginServices.getText(this, "cancel")};
+					int n = JOptionPane.showOptionDialog(this,
+							String.format("El formato de alguna de las leyendas no es propio de gvSIG y por tanto no es totalmente compatible, por lo que se pueden perder" +
+							" algunas características, ¿desea continuar?"),
+							null,
+							JOptionPane.YES_NO_CANCEL_OPTION,
+							JOptionPane.WARNING_MESSAGE,
+							null,
+							options,
+							options[1]);
+					if (n!=0) {
+						cont = false;
+					}
+				}
+				if (cont) {
+					try {
+						String dirName = fileStyles.getText();
+						File dir = null;
+						if (fileRB.isSelected()) {
+							dir = getDir(dirName);
+							if (dir == null) {
 								cont = false;
 							}
-						}
-					}
-					if (cont) {
-						for (int i=0; i<model.getRowCount(); i++) {
-							if ((Boolean) model.getValueAt(i, 0)) {
-								FLayer layer = layers.get(i);
-								if (layer instanceof FLyrVect) {
-									String type = model.getValueAt(i, 2).toString();
-									if (fileRB.isSelected()) {
-										saveFileLegend(dir, (FLyrVect) layer, type);
-									} else {
-										saveDBLegend(dbStyles.getText(), (FLyrVect) layer, type);
-									}
+						} else {
+							if (LoadMap.legendExists(dbStyles.getText())) {
+								Object[] options = {PluginServices.getText(this, "ok"),
+										PluginServices.getText(this, "cancel")};
+								String message = PluginServices.getText(this, "overwrite_legend_question");
+								int n = JOptionPane.showOptionDialog(this,
+										String.format(message, dbStyles.getText()),
+										PluginServices.getText(this, "overwrite_legend"),
+										JOptionPane.YES_NO_CANCEL_OPTION,
+										JOptionPane.WARNING_MESSAGE,
+										null,
+										options,
+										options[1]);
+								if (n!=0) {
+									cont = false;
 								}
 							}
 						}
-					} else {
-						throw new WizardException("", false, false);
+						if (cont) {
+							for (int i=0; i<model.getRowCount(); i++) {
+								if ((Boolean) model.getValueAt(i, 0)) {
+									FLayer layer = layers.get(i);
+									if (layer instanceof FLyrVect) {
+										String type = model.getValueAt(i, 2).toString();
+										if (fileRB.isSelected()) {
+											saveFileLegend(dir, (FLyrVect) layer, type);
+										} else {
+											saveDBLegend(dbStyles.getText(), (FLyrVect) layer, type);
+										}
+									}
+								}
+							}
+						} else {
+							throw new WizardException("", false, false);
+						}
+					} catch (WizardException e) {
+						throw e;
+					} catch (Exception e) {
+						throw new WizardException(e);
 					}
-				} catch (WizardException e) {
-					throw e;
-				} catch (Exception e) {
-					throw new WizardException(e);
+				} else {
+					throw new WizardException("", false, false);
 				}
-
 			}
 		}
 
