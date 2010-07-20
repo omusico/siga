@@ -5,7 +5,7 @@ import com.iver.andami.plugins.Extension;
 import com.iver.cit.gvsig.fmap.layers.FLayers;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
-import es.udc.cartolab.gvsig.elle.gui.SaveMapWindow;
+import es.udc.cartolab.gvsig.elle.gui.wizard.save.SaveMapWizard;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class SaveMapExtension extends Extension {
@@ -13,8 +13,8 @@ public class SaveMapExtension extends Extension {
 	@Override
 	public void execute(String actionCommand) {
 		View view = (View) PluginServices.getMDIManager().getActiveWindow();
-		SaveMapWindow window = new SaveMapWindow(view);
-		PluginServices.getMDIManager().addWindow(window);
+		SaveMapWizard wizard = new SaveMapWizard(view);
+		wizard.open();
 	}
 
 	@Override

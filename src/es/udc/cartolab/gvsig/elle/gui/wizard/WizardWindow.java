@@ -132,7 +132,7 @@ public abstract class WizardWindow extends JPanel implements IWindow, WizardList
 						"",
 						JOptionPane.ERROR_MESSAGE);
 			}
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
 		if (close) {
 			close();
@@ -140,8 +140,16 @@ public abstract class WizardWindow extends JPanel implements IWindow, WizardList
 	}
 
 	protected void next() {
-		views.get(currentPos).setProperties();
-		changeView(currentPos+1);
+		try {
+			views.get(currentPos).setProperties();
+			changeView(currentPos+1);
+		} catch (WizardException e) {
+			JOptionPane.showMessageDialog(
+					this,
+					e.getMessage(),
+					"",
+					JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	protected void previous() {

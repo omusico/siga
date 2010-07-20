@@ -9,6 +9,7 @@ import org.gvsig.symbology.fmap.drivers.sld.FMapSLDDriver;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.drivers.gvl.FMapGVLDriver;
 import com.iver.cit.gvsig.fmap.drivers.legend.IFMapLegendDriver;
+import com.iver.cit.gvsig.fmap.drivers.legend.LegendDriverException;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.fmap.layers.FLayers;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
@@ -90,6 +91,22 @@ public abstract class LoadLegend {
 			System.out.println("No existe el style: "+ legendFile.getAbsolutePath());
 		}
 
+	}
+
+	public static void saveLegend(FLyrVect layer, File legendFile) throws LegendDriverException {
+		String ext = legendFile.getName().substring(legendFile.getName().lastIndexOf('.') +1);
+		if (drivers.containsKey(ext.toLowerCase())) {
+			try {
+				IFMapLegendDriver driver = drivers.get(ext.toLowerCase()).newInstance();
+				driver.write(layer.getMapContext().getLayers(),layer, layer.getLegend(), legendFile, "");
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public static void setOverviewLegend(FLyrVect lyr, String legendFilename){
