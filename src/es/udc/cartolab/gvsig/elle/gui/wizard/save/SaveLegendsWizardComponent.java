@@ -13,6 +13,7 @@ import java.util.Map;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultCellEditor;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -43,11 +44,18 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class SaveLegendsWizardComponent extends WizardComponent {
 
+	public final static String PROPERTY_SAVE_OVERVIEW = "save_overview";
+
+
+	private String[] types = {"gvl", "sld"};
+
 	private JRadioButton noLegendRB, databaseRB, fileRB;
 	private JPanel dbPanel;
 	private JPanel filePanel;
 	private JTextField dbStyles, fileStyles;
 	private JTable table;
+	private JCheckBox overviewCHB;
+	private JComboBox overviewCB;
 
 	private List<FLayer> layers;
 
@@ -65,16 +73,28 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 				"10[grow]",
 		"[grow][]"));
 
-		JPanel panelOptions = new JPanel();
-		panelOptions.setLayout(new MigLayout("",
-				"[grow]80",
-		"[]15[][]15[][]"));
+
 
 		dbPanel = getDBPanel();
 		filePanel = getFilePanel();
 
 		setTable();
 		add(new JScrollPane(table), "shrink, growx, growy, wrap");
+
+		//options
+		add(getOptionsPanel(), "shrink, growx, growy");
+	}
+
+
+	private JPanel getOptionsPanel() {
+
+		JPanel panelOptions = new JPanel();
+		panelOptions.setLayout(new MigLayout("",
+				"[grow]80",
+		"[][]15[][]15[][]"));
+
+
+		panelOptions.add(getOverviewPanel(), "wrap");
 
 		noLegendRB = new JRadioButton("No usar leyendas");
 		noLegendRB.addActionListener(new ActionListener() {
@@ -114,8 +134,6 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 		panelOptions.add(fileRB, "wrap");
 		panelOptions.add(filePanel, "shrink, growx, growy, wrap");
 
-		add(panelOptions, "shrink, growx, growy");
-
 		ButtonGroup group = new ButtonGroup();
 		group.add(noLegendRB);
 		group.add(databaseRB);
@@ -124,6 +142,37 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 		noLegendRB.setSelected(true);
 		dbSetEnabled(false);
 		fileSetEnabled(false);
+
+		return panelOptions;
+	}
+
+	private JPanel getOverviewPanel() {
+		JPanel overviewPanel = new JPanel();
+		overviewPanel.setLayout(new MigLayout("",
+				"[grow][][right]",
+		"[]"));
+
+		overviewCHB = new JCheckBox("Guardar las leyendas del localizador");
+		overviewCHB.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				overviewCB.setEnabled(overviewCHB.isSelected());
+			}
+
+		});
+		overviewPanel.add(overviewCHB);
+		overviewPanel.add(new JLabel("Formato"));
+
+		overviewCB = new JComboBox();
+		for (String type : types) {
+			overviewCB.addItem(type);
+		}
+
+		overviewPanel.add(overviewCB, "shrink, wrap");
+
+		return overviewPanel;
+
 	}
 
 	private void setTable() {
@@ -142,8 +191,9 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 		TableColumn col = table.getColumnModel().getColumn(2);
 
 		JComboBox cbox = new JComboBox();
-		cbox.addItem("gvl");
-		cbox.addItem("sld");
+		for (String type : types) {
+			cbox.addItem(type);
+		}
 		col.setCellEditor(new DefaultCellEditor(cbox));
 
 		table.getColumnModel().getColumn(0).setMaxWidth(30);
@@ -222,6 +272,9 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 						break;
 					}
 				}
+				if (overviewCHB.isSelected() && !overviewCB.getSelectedItem().toString().toLowerCase().equals("gvl")) {
+					useNotGvl = true;
+				}
 				if (useNotGvl) {
 					Object[] options = {PluginServices.getText(this, "ok"),
 							PluginServices.getText(this, "cancel")};
@@ -262,23 +315,14 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 										options[1]);
 								if (n!=0) {
 									cont = false;
+								} else {
+									//borrar leyendas existentes
 								}
 							}
 						}
 						if (cont) {
-							for (int i=0; i<model.getRowCount(); i++) {
-								if ((Boolean) model.getValueAt(i, 0)) {
-									FLayer layer = layers.get(i);
-									if (layer instanceof FLyrVect) {
-										String type = model.getValueAt(i, 2).toString();
-										if (fileRB.isSelected()) {
-											saveFileLegend(dir, (FLyrVect) layer, type);
-										} else {
-											saveDBLegend(dbStyles.getText(), (FLyrVect) layer, type);
-										}
-									}
-								}
-							}
+							saveLegends(model, dir);
+							saveOverviewLegends(dir);
 						} else {
 							throw new WizardException("", false, false);
 						}
@@ -295,7 +339,50 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 
 	}
 
-	private void saveDBLegend(String legendName, FLyrVect layer, String type) throws IOException, LegendDriverException, SQLException {
+	private void saveLegends(DefaultTableModel model, File dir) throws LegendDriverException, IOException, SQLException {
+		for (int i=0; i<model.getRowCount(); i++) {
+			if ((Boolean) model.getValueAt(i, 0)) {
+				FLayer layer = layers.get(i);
+				if (layer instanceof FLyrVect) {
+					String type = model.getValueAt(i, 2).toString();
+					if (fileRB.isSelected()) {
+						saveFileLegend(dir, (FLyrVect) layer, type);
+					} else {
+						saveDBLegend(dbStyles.getText(), (FLyrVect) layer, type, "_map_style");
+					}
+				}
+			}
+		}
+	}
+
+	private void saveOverviewLegends(File dir) throws LegendDriverException, WizardException, IOException, SQLException {
+		Object aux = properties.get(SaveMapWizardComponent.PROPERTY_VIEW);
+		if (aux != null && aux instanceof View) {
+			FLayers ovLayers = ((View) aux).getMapOverview().getMapContext().getLayers();
+			if (fileRB.isSelected()) {
+				File overviewDir = new File(dir.getAbsolutePath() + File.separator + "overview");
+				if (!overviewDir.exists()) {
+					overviewDir.mkdir();
+				}
+				if (!overviewDir.isDirectory()) {
+					String msg = PluginServices.getText(this, "legend_overview_error");
+					throw new WizardException(String.format(msg, overviewDir.getAbsolutePath()));
+				}
+			}
+			for (int i=0; i<ovLayers.getLayersCount(); i++) {
+				if (ovLayers.getLayer(i) instanceof FLyrVect) {
+					if (fileRB.isSelected()) {
+						File overviewDir = new File(dir.getAbsolutePath() + File.separator + "overview");
+						saveFileLegend(overviewDir, (FLyrVect) ovLayers.getLayer(i), overviewCB.getSelectedItem().toString().toLowerCase());
+					} else {
+						saveDBLegend(dbStyles.getText(), (FLyrVect) ovLayers.getLayer(i), overviewCB.getSelectedItem().toString().toLowerCase(), "_map_overview_style");
+					}
+				}
+			}
+		}
+	}
+
+	private void saveDBLegend(String legendName, FLyrVect layer, String type, String table) throws IOException, LegendDriverException, SQLException {
 		File legendFile = File.createTempFile("style", "." + type);
 		LoadLegend.saveLegend(layer, legendFile);
 		BufferedReader reader = new BufferedReader(new FileReader(legendFile.getAbsolutePath()));
@@ -313,7 +400,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 				xml
 		};
 		DBSession dbs = DBSession.getCurrentSession();
-		dbs.insertRow(dbs.getSchema(), "_map_style", row);
+		dbs.insertRow(dbs.getSchema(), table, row);
 	}
 
 	private void saveFileLegend(File dir, FLyrVect layer, String type) throws LegendDriverException {
@@ -326,6 +413,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 			LoadLegend.saveLegend(layer, legendFile);
 		}
 	}
+
 
 	@Override
 	public String getWizardComponentName() {
@@ -354,6 +442,13 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 				model.addRow(row);
 			}
 		}
+
+		//checkbox
+		aux = properties.get(PROPERTY_SAVE_OVERVIEW);
+		if (aux != null && aux instanceof Boolean) {
+			overviewCHB.setSelected((Boolean) aux);
+		}
+		overviewCB.setEnabled(overviewCHB.isSelected());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -423,6 +518,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 			throw new WizardException("no configurado");
 		}
 	}
+
 	//there's no chekcing here
 	private void saveDir(File f, String type) throws WizardException {
 		String path = f.getAbsolutePath();

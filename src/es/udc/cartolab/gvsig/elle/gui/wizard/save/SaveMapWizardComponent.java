@@ -305,6 +305,7 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 			throw new WizardException(msg);
 		}
 		properties.put(PROPERTY_LAYERS_MAP, mapLayers);
+		properties.put(SaveLegendsWizardComponent.PROPERTY_SAVE_OVERVIEW, overviewChb.isSelected());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -403,6 +404,7 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 		try {
 			boolean tableMapExists = dbs.tableExists(dbs.getSchema(), "_map");
 			boolean tableMapOvExists = dbs.tableExists(dbs.getSchema(), "_map_overview");
+			//TODO legends tables
 
 			if (!tableMapExists || !tableMapOvExists) {
 
