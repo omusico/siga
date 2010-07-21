@@ -267,7 +267,8 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 				boolean useNotGvl = false;
 				for (int i = 0; i<model.getRowCount(); i++) {
 					String type = model.getValueAt(i, 2).toString();
-					if (!type.toLowerCase().equals("gvl")) {
+					boolean save = (Boolean) model.getValueAt(i, 0);
+					if (save && !type.toLowerCase().equals("gvl")) {
 						useNotGvl = true;
 						break;
 					}
