@@ -267,21 +267,6 @@ public class LoadMap {
 
 	}
 
-	public static boolean legendExists(String legendName) throws SQLException {
-
-		DBSession dbs = DBSession.getCurrentSession();
-		String[] legends = dbs.getDistinctValues("_map_style", "nombre_estilo");
-		boolean found = false;
-		for (int i=0; i<legends.length; i++) {
-			if (legendName.equals(legends[i])) {
-				found = true;
-				break;
-			}
-		}
-		return found;
-
-	}
-
 	/**
 	 * Saves the map. If the maps already exists, it'll be overwritten.
 	 * @param rows
@@ -443,22 +428,6 @@ public class LoadMap {
 		dbs.getJavaConnection().commit();
 	}
 
-	public static void deleteLegends(String legendsName) throws SQLException {
-		DBSession dbs = DBSession.getCurrentSession();
-		String removeMap = "DELETE FROM " + dbs.getSchema() + "._map_style WHERE nombre_estilo=?";
-		String removeMapOverview = "DELETE FROM " + dbs.getSchema() + "._map_overview_style WHERE nombre_estilo=?";
 
-		PreparedStatement ps = dbs.getJavaConnection().prepareStatement(removeMap);
-		ps.setString(1, legendsName);
-		ps.executeUpdate();
-		ps.close();
-
-		ps = dbs.getJavaConnection().prepareStatement(removeMapOverview);
-		ps.setString(1, legendsName);
-		ps.executeUpdate();
-		ps.close();
-
-		dbs.getJavaConnection().commit();
-	}
 }
 

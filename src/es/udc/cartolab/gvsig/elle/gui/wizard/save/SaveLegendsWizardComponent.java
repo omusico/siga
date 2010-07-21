@@ -39,7 +39,6 @@ import es.udc.cartolab.gvsig.elle.gui.EllePreferencesPage;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardComponent;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardException;
 import es.udc.cartolab.gvsig.elle.utils.LoadLegend;
-import es.udc.cartolab.gvsig.elle.utils.LoadMap;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class SaveLegendsWizardComponent extends WizardComponent {
@@ -302,7 +301,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 								cont = false;
 							}
 						} else {
-							if (LoadMap.legendExists(dbStyles.getText())) {
+							if (LoadLegend.legendExistsDB(dbStyles.getText())) {
 								Object[] options = {PluginServices.getText(this, "ok"),
 										PluginServices.getText(this, "cancel")};
 								String message = PluginServices.getText(this, "overwrite_legend_question");
@@ -317,7 +316,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 								if (n!=0) {
 									cont = false;
 								} else {
-									LoadMap.deleteLegends(dbStyles.getText());
+									LoadLegend.deleteLegends(dbStyles.getText());
 								}
 							}
 						}
@@ -495,7 +494,6 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 				if (!f.isDirectory()) {
 					throw new WizardException("legend_exist_file_error", false);
 				}
-				//overwrite?
 				Object[] options = {PluginServices.getText(this, "ok"),
 						PluginServices.getText(this, "cancel")};
 				String message = PluginServices.getText(this, "overwrite_legend_question");

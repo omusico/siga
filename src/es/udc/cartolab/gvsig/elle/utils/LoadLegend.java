@@ -1,22 +1,23 @@
 package es.udc.cartolab.gvsig.elle.utils;
 
 import java.io.File;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 
 import org.gvsig.symbology.fmap.drivers.sld.FMapSLDDriver;
 
-import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.drivers.gvl.FMapGVLDriver;
 import com.iver.cit.gvsig.fmap.drivers.legend.IFMapLegendDriver;
 import com.iver.cit.gvsig.fmap.drivers.legend.LegendDriverException;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
-import com.iver.cit.gvsig.fmap.layers.FLayers;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.rendering.ILegend;
 import com.iver.cit.gvsig.fmap.rendering.IVectorLegend;
-import com.iver.cit.gvsig.project.documents.view.gui.View;
+
+import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 /**
  * This ELLE class can load legends (styles) on the layers. This styles are  'gvl' files placed on a folder defined by the user
@@ -60,7 +61,6 @@ public abstract class LoadLegend {
 			return false;
 		}
 
-		//File styleFile = new File(getLegendPath() + legendFilename);
 		if (legendFile.exists()){
 
 			String ext = legendFile.getName().substring(legendFile.getName().lastIndexOf('.') +1);
@@ -80,17 +80,8 @@ public abstract class LoadLegend {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				return false;
 			}
 
-			//				InputStreamReader reader;
-			//				reader = new InputStreamReader(new FileInputStream(legendFile),"UTF-8");
-			//				XmlTag tag = (XmlTag) XmlTag.unmarshal(reader);
-			//				XMLEntity xml=new XMLEntity(tag);
-			//				IVectorLegend legend = LegendFactory.createFromXML(xml);
-			//				System.out.println("Legend: " + legend + " xml: " + xml.toString().length()  + "name: " + lyr.getName() + " layer: "+ lyr);
-			//				lyr.setLegend(legend);
-			//LoadLegend.setLegend((FLyrVect) lyr, styleFile.getAbsolutePath());
 		} else {
 			System.out.println("No existe el style: "+ legendFile.getAbsolutePath());
 
@@ -125,93 +116,44 @@ public abstract class LoadLegend {
 			legendFilename = lyr.getName();
 		}
 
-		if (!hasExtension(legendFilename)) {
-			if (!setLegend(lyr, getOverviewLegendPath() + legendFilename + ".gvl", true)) {
-				setLegend(lyr, getOverviewLegendPath() + legendFilename + ".sld", true);
-			}
-		} else {
-			setLegend(lyr, getOverviewLegendPath() + legendFilename, true);
-		}
+		setLegend(lyr, getOverviewLegendPath() + legendFilename, true);
 
-		//		if (legendFilename == null || !legendFilename.endsWith(".gvl")){
-		//			legendFilename = lyr.getName().toLowerCase() + ".gvl";
-		//		}
 
-		//		File legendFile = new File(getOverviewLegendPath() + legendFilename);
-		//		setLegend(lyr, legendFile);
-
-	}
-
-	public static boolean setLegend(FLyrVect lyr, String legendFilename) {
-		return setLegend(lyr, legendFilename, false);
 	}
 
 	public static boolean setLegend(FLyrVect lyr, String legendFilename, boolean absolutePath){
 
+		if (legendFilename == null) {
+			legendFilename = lyr.getName();
+		}
 		if (!absolutePath) {
 			legendFilename = getLegendPath() + legendFilename;
 		}
-
-		File legendFile = new File(legendFilename);
-		return setLegend(lyr, legendFile);
+		File legendFile;
+		if (!hasExtension(legendFilename)) {
+			legendFile = new File(legendFilename + ".gvl");
+			if (!setLegend(lyr, legendFile)) {
+				legendFile = new File(legendFilename + ".sld");
+				return setLegend(lyr, legendFile);
+			} else {
+				return true;
+			}
+		} else {
+			legendFile = new File(legendFilename);
+			return setLegend(lyr, legendFile);
+		}
 
 	}
 
 	public static void setLegend(FLyrVect lyr){
 		//prioridad gvl
-		if (!setLegend(lyr, lyr.getName() + ".gvl")) {
-			setLegend(lyr, lyr.getName() + ".sld");
+		if (!setLegend(lyr, lyr.getName() + ".gvl", false)) {
+			setLegend(lyr, lyr.getName() + ".sld", false);
 		}
 	}
 
 	public static void setOverviewLegend(FLyrVect lyr){
 		setOverviewLegend(lyr, (String)null);
-	}
-
-	public static void loadAllStyles(View view){
-		FLayers layers = view.getMapControl().getMapContext().getLayers();
-
-		for (int i = 0; i < layers.getLayersCount(); i++){
-			FLayer lyr = layers.getLayer(i);
-			if (lyr instanceof FLayers){
-				FLayers layers2 = (FLayers)lyr;
-				for (int j = 0; j < layers2.getLayersCount(); j++){
-					FLayer lyr2 = layers2.getLayer(j);
-					if (lyr2 instanceof FLyrVect){
-						setLegend((FLyrVect)lyr2);
-					}
-				}
-			}
-			if (lyr instanceof FLyrVect){
-				setLegend((FLyrVect)lyr);
-			}
-		}
-
-		layers = view.getMapOverview().getMapContext().getLayers();
-		//TODO [NachoV] This FOR may be removed... because there are no groups on overview map
-		for (int i = 0; i < layers.getLayersCount(); i++){
-			FLayer lyr = layers.getLayer(i);
-			if (lyr instanceof FLayers){
-				FLayers layers2 = (FLayers)lyr;
-				for (int j = 0; j < layers2.getLayersCount(); j++){
-					FLayer lyr2 = layers2.getLayer(j);
-					if (lyr2 instanceof FLyrVect){
-						setOverviewLegend((FLyrVect)lyr2);
-					}
-				}
-			}
-			if (lyr instanceof FLyrVect){
-				setOverviewLegend((FLyrVect)lyr);
-			}
-		}
-	}
-
-	public static void setLegend(String layerName) {
-
-		View view = (View) PluginServices.getMDIManager().getActiveWindow();
-		FLyrVect layer = (FLyrVect) view.getModel().getMapContext().getLayers().getLayer(layerName);
-		setLegend(layer);
-
 	}
 
 	private static boolean hasExtension(String fileName) {
@@ -221,5 +163,38 @@ public abstract class LoadLegend {
 			}
 		}
 		return false;
+	}
+
+	public static void deleteLegends(String legendsName) throws SQLException {
+		DBSession dbs = DBSession.getCurrentSession();
+		String removeMap = "DELETE FROM " + dbs.getSchema() + "._map_style WHERE nombre_estilo=?";
+		String removeMapOverview = "DELETE FROM " + dbs.getSchema() + "._map_overview_style WHERE nombre_estilo=?";
+
+		PreparedStatement ps = dbs.getJavaConnection().prepareStatement(removeMap);
+		ps.setString(1, legendsName);
+		ps.executeUpdate();
+		ps.close();
+
+		ps = dbs.getJavaConnection().prepareStatement(removeMapOverview);
+		ps.setString(1, legendsName);
+		ps.executeUpdate();
+		ps.close();
+
+		dbs.getJavaConnection().commit();
+	}
+
+	public static boolean legendExistsDB(String legendName) throws SQLException {
+
+		DBSession dbs = DBSession.getCurrentSession();
+		String[] legends = dbs.getDistinctValues("_map_style", "nombre_estilo");
+		boolean found = false;
+		for (int i=0; i<legends.length; i++) {
+			if (legendName.equals(legends[i])) {
+				found = true;
+				break;
+			}
+		}
+		return found;
+
 	}
 }
