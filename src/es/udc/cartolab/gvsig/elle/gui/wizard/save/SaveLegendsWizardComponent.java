@@ -93,7 +93,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 		"[][]15[][]15[][]"));
 
 
-		panelOptions.add(getOverviewPanel(), "wrap");
+		panelOptions.add(getOverviewPanel(), "shrink, growx, growy, wrap");
 
 		noLegendRB = new JRadioButton("No usar leyendas");
 		noLegendRB.addActionListener(new ActionListener() {
@@ -148,7 +148,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 	private JPanel getOverviewPanel() {
 		JPanel overviewPanel = new JPanel();
 		overviewPanel.setLayout(new MigLayout("",
-				"[grow][][right]",
+				"[grow, left][][shrink, right]",
 		"[]"));
 
 		overviewCHB = new JCheckBox("Guardar las leyendas del localizador");

@@ -76,7 +76,7 @@ public class LoadLegendWizardComponent extends WizardComponent {
 
 		});
 		add(databaseRB, "wrap");
-		add(dbPanel, "wrap");
+		add(dbPanel, "shrink, growx, growy, wrap");
 
 		fileRB = new JRadioButton("Cargar desde disco duro");
 		fileRB.addActionListener(new ActionListener() {
@@ -89,7 +89,7 @@ public class LoadLegendWizardComponent extends WizardComponent {
 
 		});
 		add(fileRB, "wrap");
-		add(filePanel, "wrap");
+		add(filePanel, "shrink, growx, growy, wrap");
 
 		ButtonGroup group = new ButtonGroup();
 		group.add(noLegendRB);
@@ -115,7 +115,7 @@ public class LoadLegendWizardComponent extends WizardComponent {
 
 		JPanel panel = new JPanel();
 		MigLayout layout = new MigLayout("inset 0, align center",
-				"10[grow][]10",
+				"10[grow][]50",
 		"5[grow]5");
 		panel.setLayout(layout);
 
@@ -132,7 +132,7 @@ public class LoadLegendWizardComponent extends WizardComponent {
 
 		JPanel panel = new JPanel();
 		MigLayout layout = new MigLayout("inset 0, align center",
-				"10[grow][]10",
+				"10[grow][]50",
 		"5[grow]5");
 		panel.setLayout(layout);
 
