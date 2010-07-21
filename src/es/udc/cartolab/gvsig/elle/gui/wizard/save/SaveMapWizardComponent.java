@@ -341,7 +341,7 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 				view = (View) aux;
 				fillWithViewLayers(mapTable, view.getMapControl().getMapContext().getLayers());
 			} else {
-				throw new WizardException("Couldn't retrieve the view");
+				throw new WizardException(PluginServices.getText(this, "no_view_error"));
 			}
 		}
 	}

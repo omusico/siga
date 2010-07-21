@@ -95,7 +95,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 
 		panelOptions.add(getOverviewPanel(), "shrink, growx, growy, wrap");
 
-		noLegendRB = new JRadioButton("No usar leyendas");
+		noLegendRB = new JRadioButton(PluginServices.getText(this, "dont_save"));
 		noLegendRB.addActionListener(new ActionListener() {
 
 			@Override
@@ -107,7 +107,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 		});
 		panelOptions.add(noLegendRB, "wrap");
 
-		databaseRB = new JRadioButton("Cargar leyendas desde la base de datos");
+		databaseRB = new JRadioButton(PluginServices.getText(this, "save_to_db"));
 		databaseRB.addActionListener(new ActionListener() {
 
 			@Override
@@ -120,7 +120,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 		panelOptions.add(databaseRB, "shrink, growx, growy, wrap");
 		panelOptions.add(dbPanel, "shrink, growx, growy, wrap");
 
-		fileRB = new JRadioButton("Cargar desde disco duro");
+		fileRB = new JRadioButton(PluginServices.getText(this, "save_to_disk"));
 		fileRB.addActionListener(new ActionListener() {
 
 			@Override
@@ -151,7 +151,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 				"[grow, left][][shrink, right]",
 		"[]"));
 
-		overviewCHB = new JCheckBox("Guardar las leyendas del localizador");
+		overviewCHB = new JCheckBox(PluginServices.getText(this, "save_overview_legends"));
 		overviewCHB.addActionListener(new ActionListener() {
 
 			@Override
@@ -177,8 +177,8 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 	private void setTable() {
 		String[] header = {"",
 				PluginServices.getText(this, "name"),
-				//				PluginServices.getText(this, "group"),
-		"type"};
+				PluginServices.getText(this, "type")
+		};
 		DefaultTableModel model = new LegendTableModel();
 		for (String h : header) {
 			model.addColumn(h);
@@ -217,7 +217,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 		"5[grow]5");
 		panel.setLayout(layout);
 
-		JLabel label = new JLabel("Seleccione conjunto de leyendas");
+		JLabel label = new JLabel(PluginServices.getText(this, "legends_group_name"));
 		dbStyles = new JTextField("", 20);
 
 		panel.add(label);
@@ -239,7 +239,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 			panel.add(new JLabel(PluginServices.getText(this, "legend")));
 			panel.add(fileStyles, "shrink, right, wrap");
 		} else {
-			panel.add(new JLabel("<html>El directorio de leyendas no está configurado.<br> Por favor, selecciónelo en el panel de configuraciónd de gvSIG.</html>"), "span 2 wrap");
+			panel.add(new JLabel(PluginServices.getText(this, "no_dir_config")), "span 2 wrap");
 		}
 
 		return panel;
@@ -279,8 +279,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 					Object[] options = {PluginServices.getText(this, "ok"),
 							PluginServices.getText(this, "cancel")};
 					int n = JOptionPane.showOptionDialog(this,
-							String.format("El formato de alguna de las leyendas no es propio de gvSIG y por tanto no es totalmente compatible, por lo que se pueden perder" +
-							" algunas características, ¿desea continuar?"),
+							PluginServices.getText(this, "legend_format_question"),
 							null,
 							JOptionPane.YES_NO_CANCEL_OPTION,
 							JOptionPane.WARNING_MESSAGE,
@@ -455,12 +454,12 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 	private List<FLayer> getLayers() throws WizardException {
 		Object aux = properties.get(SaveMapWizard.PROPERTY_VIEW);
 		if (aux == null || !(aux instanceof View)) {
-			throw new WizardException("property");
+			throw new WizardException(PluginServices.getText(this, "no_view_error"));
 		}
 		View view = (View) aux;
 		aux = properties.get(SaveMapWizardComponent.PROPERTY_LAYERS_MAP);
 		if (aux == null || !(aux instanceof List<?>)) {
-			throw new WizardException("property");
+			throw new WizardException(PluginServices.getText(this, "no_layer_list_error"));
 		}
 		List<LayerProperties> layers = (List<LayerProperties>) aux;
 		List<FLayer> layerList = new ArrayList<FLayer>();
@@ -513,49 +512,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 			}
 
 		} else {
-			throw new WizardException("no configurado");
-		}
-	}
-
-	//there's no chekcing here
-	private void saveDir(File f, String type) throws WizardException {
-		String path = f.getAbsolutePath();
-		if (f.canWrite()) {
-			if (layers!=null) {
-				for (FLayer layer : layers) {
-					if (layer instanceof FLyrVect) {
-						String legendFilePath = path + layer.getName().toLowerCase() + "." + type;
-						File legendFile = new File(legendFilePath);
-						try {
-							LoadLegend.saveLegend((FLyrVect) layer, legendFile);
-						} catch (LegendDriverException e) {
-							throw new WizardException(e);
-						}
-					}
-
-				}
-			}
-			/* overview */
-			//			if (overviewLayers != null) {
-			//				File overviewDir = new File(f.getAbsolutePath() + File.separator + "overview");
-			//				if (!overviewDir.exists()) {
-			//					overviewDir.mkdir();
-			//				}
-			//				if (overviewDir.isDirectory()) {
-			//					for (int i=0; i<overviewLayers.length; i++) {
-			//						String legendFilePath = overviewDir.getAbsolutePath() + File.separator + overviewLayers[i].getName().toLowerCase() + ".gvl";
-			//						File legendFile = new File(legendFilePath);
-			//						writeLegend(overviewLayers[i], legendFile);
-			//					}
-			//				} else {
-			//					String msg = PluginServices.getText(this, "legend_overview_error");
-			//					throw new WizardException(String.format(msg, overviewDir.getAbsolutePath()));
-			//				}
-			//			}
-		} else {
-			//error no se puede escribir
-			String message = PluginServices.getText(this, "legend_write_dir_error");
-			throw new WizardException(String.format(message, path));
+			throw new WizardException(PluginServices.getText(this, "no_config_error"));
 		}
 	}
 

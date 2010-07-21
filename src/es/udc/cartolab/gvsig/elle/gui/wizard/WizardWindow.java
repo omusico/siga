@@ -27,13 +27,13 @@ public abstract class WizardWindow extends JPanel implements IWindow, WizardList
 
 
 	public WizardWindow() {
-		nextButton = new JButton("Siguiente");
+		nextButton = new JButton(PluginServices.getText(this, "next"));
 		nextButton.addActionListener(this);
-		prevButton = new JButton("Anterior");
+		prevButton = new JButton(PluginServices.getText(this, "previous"));
 		prevButton.addActionListener(this);
-		cancelButton = new JButton("Cancelar");
+		cancelButton = new JButton(PluginServices.getText(this, "cancel"));
 		cancelButton.addActionListener(this);
-		finishButton = new JButton("Terminar");
+		finishButton = new JButton(PluginServices.getText(this, "finish"));
 		finishButton.addActionListener(this);
 
 		addWizardComponents();
@@ -99,7 +99,7 @@ public abstract class WizardWindow extends JPanel implements IWindow, WizardList
 		if (views.size()<2) {
 			prevButton.setVisible(false);
 			nextButton.setVisible(false);
-			finishButton.setText("Aceptar");
+			finishButton.setText(PluginServices.getText(this, "ok"));
 		}
 		WizardComponent currentView = views.get(currentPos);
 		int nViews = views.size();

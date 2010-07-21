@@ -34,7 +34,7 @@ public class LoadLegendWizardComponent extends WizardComponent {
 	private JRadioButton noLegendRB, databaseRB, fileRB;
 	private JPanel dbPanel;
 	private JPanel filePanel;
-	private JComboBox dbStyles, fileStyles;
+	private JComboBox dbCB, fileCB;
 
 	private String legendDir = null;
 
@@ -53,7 +53,7 @@ public class LoadLegendWizardComponent extends WizardComponent {
 		dbPanel = getDBPanel();
 		filePanel = getFilePanel();
 
-		noLegendRB = new JRadioButton("No usar leyendas");
+		noLegendRB = new JRadioButton(PluginServices.getText(this, "dont_load"));
 		noLegendRB.addActionListener(new ActionListener() {
 
 			@Override
@@ -65,7 +65,7 @@ public class LoadLegendWizardComponent extends WizardComponent {
 		});
 		add(noLegendRB, "wrap");
 
-		databaseRB = new JRadioButton("Cargar leyendas desde la base de datos");
+		databaseRB = new JRadioButton(PluginServices.getText(this, "load_from_db"));
 		databaseRB.addActionListener(new ActionListener() {
 
 			@Override
@@ -78,7 +78,7 @@ public class LoadLegendWizardComponent extends WizardComponent {
 		add(databaseRB, "wrap");
 		add(dbPanel, "shrink, growx, growy, wrap");
 
-		fileRB = new JRadioButton("Cargar desde disco duro");
+		fileRB = new JRadioButton(PluginServices.getText(this, "load_from_disk"));
 		fileRB.addActionListener(new ActionListener() {
 
 			@Override
@@ -104,11 +104,11 @@ public class LoadLegendWizardComponent extends WizardComponent {
 	}
 
 	private void dbSetEnabled(boolean enabled) {
-		dbStyles.setEnabled(enabled);
+		dbCB.setEnabled(enabled);
 	}
 
 	private void fileSetEnabled(boolean enabled) {
-		fileStyles.setEnabled(enabled);
+		fileCB.setEnabled(enabled);
 	}
 
 	private JPanel getDBPanel() {
@@ -119,11 +119,11 @@ public class LoadLegendWizardComponent extends WizardComponent {
 		"5[grow]5");
 		panel.setLayout(layout);
 
-		JLabel label = new JLabel("Seleccione conjunto de leyendas");
-		dbStyles = new JComboBox();
+		JLabel label = new JLabel(PluginServices.getText(this, "legends_group_name"));
+		dbCB = new JComboBox();
 
 		panel.add(label);
-		panel.add(dbStyles, "wrap");
+		panel.add(dbCB, "wrap");
 
 		return panel;
 	}
@@ -136,19 +136,19 @@ public class LoadLegendWizardComponent extends WizardComponent {
 		"5[grow]5");
 		panel.setLayout(layout);
 
-		fileStyles = new JComboBox();
+		fileCB = new JComboBox();
 		if (legendDir != null) {
 			File f = new File(legendDir);
 			File[] files = f.listFiles();
 			for (int i=0; i<files.length; i++) {
 				if (files[i].isDirectory() && !files[i].isHidden()) {
-					fileStyles.addItem(files[i].getName());
+					fileCB.addItem(files[i].getName());
 				}
 			}
-			panel.add(new JLabel(PluginServices.getText(this, "legend")));
-			panel.add(fileStyles, "wrap");
+			panel.add(new JLabel(PluginServices.getText(this, "legends_group_name")));
+			panel.add(fileCB, "wrap");
 		} else {
-			panel.add(new JLabel("<html>El directorio de leyendas no está configurado.<br> Por favor, selecciónelo en el panel de configuraciónd de gvSIG.</html>"), "span 2 wrap");
+			panel.add(new JLabel(PluginServices.getText(this, "no_dir_config")), "span 2 wrap");
 		}
 
 		return panel;
@@ -172,13 +172,13 @@ public class LoadLegendWizardComponent extends WizardComponent {
 
 	@Override
 	public void showComponent() {
-		dbStyles.removeAllItems();
+		dbCB.removeAllItems();
 
 		DBSession dbs = DBSession.getCurrentSession();
 		try {
 			String[] legends = dbs.getDistinctValues("_map_style", dbs.getSchema(), "nombre_estilo", true, false);
 			for (String legend : legends) {
-				dbStyles.addItem(legend);
+				dbCB.addItem(legend);
 			}
 
 		} catch (SQLException e) {
@@ -198,7 +198,7 @@ public class LoadLegendWizardComponent extends WizardComponent {
 
 		DBSession dbs = DBSession.getCurrentSession();
 		String layerName = layer.getName();
-		String styleName = dbStyles.getSelectedItem().toString();
+		String styleName = dbCB.getSelectedItem().toString();
 		String[][] style = dbs.getTable(table, "where nombre_capa='" + layerName + "' and nombre_estilo='" + styleName + "'");
 		if (style.length == 1) {
 			String type = style[0][2];
@@ -215,9 +215,9 @@ public class LoadLegendWizardComponent extends WizardComponent {
 	private void loadFileLegend(FLyrVect layer, boolean overview) {
 		String stylePath;
 		if (legendDir.endsWith(File.separator)) {
-			stylePath = legendDir + fileStyles.getSelectedItem().toString();
+			stylePath = legendDir + fileCB.getSelectedItem().toString();
 		} else {
-			stylePath = legendDir + File.separator + fileStyles.getSelectedItem().toString();
+			stylePath = legendDir + File.separator + fileCB.getSelectedItem().toString();
 		}
 		LoadLegend.setLegendPath(stylePath);
 		if (overview) {
@@ -233,7 +233,7 @@ public class LoadLegendWizardComponent extends WizardComponent {
 		if (aux!=null && aux instanceof View) {
 			View view = (View) aux;
 
-			if ((databaseRB.isSelected() && dbStyles.getSelectedItem()!=null) || (fileRB.isSelected() && fileStyles.getSelectedItem()!=null)) {
+			if ((databaseRB.isSelected() && dbCB.getSelectedItem()!=null) || (fileRB.isSelected() && fileCB.getSelectedItem()!=null)) {
 				try {
 					FLayers layers = view.getMapControl().getMapContext().getLayers();
 					loadLegends(layers, false);
@@ -244,7 +244,7 @@ public class LoadLegendWizardComponent extends WizardComponent {
 				}
 			}
 		} else {
-			throw new WizardException("Couldn't retrieve the view");
+			throw new WizardException(PluginServices.getText(this, "no_view_error"));
 		}
 	}
 
