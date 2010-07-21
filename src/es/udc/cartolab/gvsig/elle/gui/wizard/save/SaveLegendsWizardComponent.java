@@ -316,7 +316,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 								if (n!=0) {
 									cont = false;
 								} else {
-									//borrar leyendas existentes
+									//									LoadMap.deleteLegends(dbStyles.getText());
 								}
 							}
 						}
@@ -389,8 +389,8 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 		StringBuffer buffer = new StringBuffer();
 		String line = reader.readLine();
 		while (line != null) {
-			line = reader.readLine();
 			buffer.append(line).append("\n");
+			line = reader.readLine();
 		}
 		String xml = buffer.toString();
 		String[] row = {
@@ -463,13 +463,12 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 			throw new WizardException("property");
 		}
 		List<LayerProperties> layers = (List<LayerProperties>) aux;
-		List<String> layerNames = new ArrayList<String>();
+		List<FLayer> layerList = new ArrayList<FLayer>();
 		for (LayerProperties lp : layers) {
-			layerNames.add(lp.getLayername());
+			String layerName = lp.getLayername();
+			layerList.add(getLayer(view.getMapControl().getMapContext().getLayers(), layerName));
 		}
-
-		return getLayers(view.getMapControl().getMapContext().getLayers(), layerNames);
-
+		return layerList;
 	}
 
 	//checks if it's possible to save and then saves
@@ -561,19 +560,18 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 		}
 	}
 
-	private List<FLayer> getLayers(FLayers layers, List<String> layerNames) {
-		List<FLayer> l = new ArrayList<FLayer>();
-		for (int i=0; i<layers.getLayersCount(); i++) {
+	private FLayer getLayer(FLayers layers, String layerName) {
+		for (int i=layers.getLayersCount()-1; i>=0; i--) {
 			FLayer layer = layers.getLayer(i);
 			if (layer instanceof FLayers) {
-				l.addAll(getLayers((FLayers) layer, layerNames));
+				return getLayer((FLayers) layer, layerName);
 			} else {
-				if (layerNames.contains(layer.getName())) {
-					l.add(layer);
+				if (layerName.equals(layer.getName())) {
+					return layer;
 				}
 			}
 		}
-		return l;
+		return null;
 	}
 
 	private class LegendTableModel extends DefaultTableModel {
