@@ -53,11 +53,11 @@ public abstract class LoadLegend {
 		return legendPath + "overview" + File.separator;
 	}
 
-	private static void setLegend(FLyrVect lyr, File legendFile){
+	private static boolean setLegend(FLyrVect lyr, File legendFile){
 
 		if (lyr == null) {
 			System.out.println("[LoadLegend] La capa es null: " + lyr + " legend: " + legendFile);
-			return;
+			return false;
 		}
 
 		//File styleFile = new File(getLegendPath() + legendFilename);
@@ -72,12 +72,15 @@ public abstract class LoadLegend {
 					if (legend != null && legend instanceof IVectorLegend) {
 						lyr.setLegend((IVectorLegend)table.get(lyr));
 						System.out.println("Cargado el style: "+ legendFile.getAbsolutePath());
+						return true;
 					}
 				} else {
 					System.out.println("Tipo de leyenda no soportado");
+
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				return false;
 			}
 
 			//				InputStreamReader reader;
@@ -90,7 +93,9 @@ public abstract class LoadLegend {
 			//LoadLegend.setLegend((FLyrVect) lyr, styleFile.getAbsolutePath());
 		} else {
 			System.out.println("No existe el style: "+ legendFile.getAbsolutePath());
+
 		}
+		return false;
 
 	}
 
@@ -116,32 +121,47 @@ public abstract class LoadLegend {
 
 	public static void setOverviewLegend(FLyrVect lyr, String legendFilename){
 
-		if (legendFilename == null || !legendFilename.endsWith(".gvl")){
-			legendFilename = lyr.getName().toLowerCase() + ".gvl";
+		if (legendFilename == null) {
+			legendFilename = lyr.getName();
 		}
 
-		File legendFile = new File(getOverviewLegendPath() + legendFilename);
-		setLegend(lyr, legendFile);
+		if (!hasExtension(legendFilename)) {
+			if (!setLegend(lyr, getOverviewLegendPath() + legendFilename + ".gvl", true)) {
+				setLegend(lyr, getOverviewLegendPath() + legendFilename + ".sld", true);
+			}
+		} else {
+			setLegend(lyr, getOverviewLegendPath() + legendFilename, true);
+		}
+
+		//		if (legendFilename == null || !legendFilename.endsWith(".gvl")){
+		//			legendFilename = lyr.getName().toLowerCase() + ".gvl";
+		//		}
+
+		//		File legendFile = new File(getOverviewLegendPath() + legendFilename);
+		//		setLegend(lyr, legendFile);
 
 	}
 
-	public static void setLegend(FLyrVect lyr, String legendFilename) {
-		setLegend(lyr, legendFilename, false);
+	public static boolean setLegend(FLyrVect lyr, String legendFilename) {
+		return setLegend(lyr, legendFilename, false);
 	}
 
-	public static void setLegend(FLyrVect lyr, String legendFilename, boolean absolutePath){
+	public static boolean setLegend(FLyrVect lyr, String legendFilename, boolean absolutePath){
 
 		if (!absolutePath) {
 			legendFilename = getLegendPath() + legendFilename;
 		}
 
 		File legendFile = new File(legendFilename);
-		setLegend(lyr, legendFile);
+		return setLegend(lyr, legendFile);
 
 	}
 
 	public static void setLegend(FLyrVect lyr){
-		setLegend(lyr, (String)null);
+		//prioridad gvl
+		if (!setLegend(lyr, lyr.getName() + ".gvl")) {
+			setLegend(lyr, lyr.getName() + ".sld");
+		}
 	}
 
 	public static void setOverviewLegend(FLyrVect lyr){
@@ -192,5 +212,14 @@ public abstract class LoadLegend {
 		FLyrVect layer = (FLyrVect) view.getModel().getMapContext().getLayers().getLayer(layerName);
 		setLegend(layer);
 
+	}
+
+	private static boolean hasExtension(String fileName) {
+		for (String ext : drivers.keySet()) {
+			if (fileName.toLowerCase().endsWith("." + ext.toLowerCase())) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

@@ -187,11 +187,19 @@ public class LoadLegendWizardComponent extends WizardComponent {
 		}
 	}
 
-	private void loadDBLegend(FLyrVect layer) throws SQLException, IOException {
+	private void loadDBLegend(FLyrVect layer, boolean overview) throws SQLException, IOException {
+
+		String table;
+		if (overview) {
+			table = "_map_overview_style";
+		} else {
+			table = "_map_style";
+		}
+
 		DBSession dbs = DBSession.getCurrentSession();
 		String layerName = layer.getName();
 		String styleName = dbStyles.getSelectedItem().toString();
-		String[][] style = dbs.getTable("_map_style", "where nombre_capa='" + layerName + "' and nombre_estilo='" + styleName + "'");
+		String[][] style = dbs.getTable(table, "where nombre_capa='" + layerName + "' and nombre_estilo='" + styleName + "'");
 		if (style.length == 1) {
 			String type = style[0][2];
 			String def = style[0][3];
@@ -201,11 +209,10 @@ public class LoadLegendWizardComponent extends WizardComponent {
 			writer.write(def);
 			writer.close();
 			LoadLegend.setLegend(layer, tmpLegend.getAbsolutePath(), true);
-
 		}
 	}
 
-	private void loadFileLegend(FLyrVect layer) {
+	private void loadFileLegend(FLyrVect layer, boolean overview) {
 		String stylePath;
 		if (legendDir.endsWith(File.separator)) {
 			stylePath = legendDir + fileStyles.getSelectedItem().toString();
@@ -213,7 +220,11 @@ public class LoadLegendWizardComponent extends WizardComponent {
 			stylePath = legendDir + File.separator + fileStyles.getSelectedItem().toString();
 		}
 		LoadLegend.setLegendPath(stylePath);
-		LoadLegend.setLegend(layer);
+		if (overview) {
+			LoadLegend.setOverviewLegend(layer);
+		} else {
+			LoadLegend.setLegend(layer);
+		}
 	}
 
 	@Override
@@ -223,9 +234,11 @@ public class LoadLegendWizardComponent extends WizardComponent {
 			View view = (View) aux;
 
 			if ((databaseRB.isSelected() && dbStyles.getSelectedItem()!=null) || (fileRB.isSelected() && fileStyles.getSelectedItem()!=null)) {
-				FLayers layers = view.getMapControl().getMapContext().getLayers();
 				try {
-					loadLegends(layers);
+					FLayers layers = view.getMapControl().getMapContext().getLayers();
+					loadLegends(layers, false);
+					layers = view.getMapOverview().getMapContext().getLayers();
+					loadLegends(layers, true);
 				} catch (Exception e) {
 					throw new WizardException(e);
 				}
@@ -235,17 +248,17 @@ public class LoadLegendWizardComponent extends WizardComponent {
 		}
 	}
 
-	private void loadLegends(FLayers layers) throws SQLException, IOException {
+	private void loadLegends(FLayers layers, boolean overview) throws SQLException, IOException {
 		for (int i=0; i<layers.getLayersCount(); i++) {
 			FLayer layer = layers.getLayer(i);
 			if (layer instanceof FLyrVect) {
 				if (databaseRB.isSelected()) {
-					loadDBLegend((FLyrVect) layer);
+					loadDBLegend((FLyrVect) layer, overview);
 				} else {
-					loadFileLegend((FLyrVect) layer);
+					loadFileLegend((FLyrVect) layer, overview);
 				}
 			} else if (layer instanceof FLayers) {
-				loadLegends((FLayers) layer);
+				loadLegends((FLayers) layer, overview);
 			}
 		}
 	}
