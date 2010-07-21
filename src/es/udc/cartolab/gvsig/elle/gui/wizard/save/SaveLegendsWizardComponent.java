@@ -316,7 +316,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 								if (n!=0) {
 									cont = false;
 								} else {
-									//									LoadMap.deleteLegends(dbStyles.getText());
+									LoadMap.deleteLegends(dbStyles.getText());
 								}
 							}
 						}

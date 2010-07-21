@@ -1,6 +1,7 @@
 package es.udc.cartolab.gvsig.elle.utils;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -422,6 +423,42 @@ public class LoadMap {
 		}
 
 		con.commit();
+	}
+
+	public static void deleteMap(String mapName) throws SQLException {
+		DBSession dbs = DBSession.getCurrentSession();
+		String removeMap = "DELETE FROM " + dbs.getSchema() + "._map WHERE mapa=?";
+		String removeMapOverview = "DELETE FROM " + dbs.getSchema() + "._map_overview WHERE mapa=?";
+
+		PreparedStatement ps = dbs.getJavaConnection().prepareStatement(removeMap);
+		ps.setString(1, mapName);
+		ps.executeUpdate();
+		ps.close();
+
+		ps = dbs.getJavaConnection().prepareStatement(removeMapOverview);
+		ps.setString(1, mapName);
+		ps.executeUpdate();
+		ps.close();
+
+		dbs.getJavaConnection().commit();
+	}
+
+	public static void deleteLegends(String legendsName) throws SQLException {
+		DBSession dbs = DBSession.getCurrentSession();
+		String removeMap = "DELETE FROM " + dbs.getSchema() + "._map_style WHERE nombre_estilo=?";
+		String removeMapOverview = "DELETE FROM " + dbs.getSchema() + "._map_overview_style WHERE nombre_estilo=?";
+
+		PreparedStatement ps = dbs.getJavaConnection().prepareStatement(removeMap);
+		ps.setString(1, legendsName);
+		ps.executeUpdate();
+		ps.close();
+
+		ps = dbs.getJavaConnection().prepareStatement(removeMapOverview);
+		ps.setString(1, legendsName);
+		ps.executeUpdate();
+		ps.close();
+
+		dbs.getJavaConnection().commit();
 	}
 }
 

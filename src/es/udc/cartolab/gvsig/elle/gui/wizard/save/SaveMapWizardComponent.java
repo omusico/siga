@@ -454,6 +454,8 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 
 					if (answer!=0) {
 						throw new WizardException("", false, false);
+					} else {
+						LoadMap.deleteMap(mapName);
 					}
 				}
 
