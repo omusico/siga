@@ -3,6 +3,8 @@ package es.udc.cartolab.gvsig.elle.gui.wizard.save;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.iver.andami.PluginServices;
+import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.iver.cit.gvsig.fmap.drivers.DBLayerDefinition;
 import com.iver.cit.gvsig.fmap.drivers.VectorialDriver;
 import com.iver.cit.gvsig.fmap.drivers.jdbc.postgis.PostGisDriver;
@@ -12,16 +14,23 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.VectorialDBAdapter;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
-public class SaveLegendsWizard extends SaveMapWizard {
+import es.udc.cartolab.gvsig.elle.gui.wizard.WizardWindow;
+
+public class SaveLegendsWizard extends WizardWindow {
+
+	public final static String PROPERTY_VIEW = "view";
 
 	public final static int ACTIVES = 0;
 	public final static int VISIBLES = 1;
 	public final static int ALL = 2;
 
+	private WindowInfo viewInfo;
 	private int layersOption;
+	private final int width = 750;
+	private final int height = 500;
 
 	public SaveLegendsWizard(View view, int layersOption) {
-		super(view);
+		properties.put(SaveMapWizard.PROPERTY_VIEW, view);
 
 		this.layersOption = layersOption;
 		setLayersProperties();
@@ -34,7 +43,7 @@ public class SaveLegendsWizard extends SaveMapWizard {
 	}
 
 	private void setLayersProperties() {
-		Object aux = properties.get(SaveMapWizardComponent.PROPERTY_VIEW);
+		Object aux = properties.get(SaveMapWizard.PROPERTY_VIEW);
 		if (aux != null && aux instanceof View) {
 			FLayers layers = ((View) aux).getMapControl().getMapContext().getLayers();
 			List<LayerProperties> list = getList(layers);
@@ -89,6 +98,23 @@ public class SaveLegendsWizard extends SaveMapWizard {
 
 		return list;
 
+	}
+
+	@Override
+	public WindowInfo getWindowInfo() {
+		if (viewInfo == null) {
+			viewInfo = new WindowInfo(WindowInfo.MODALDIALOG | WindowInfo.RESIZABLE);
+			viewInfo.setTitle(PluginServices.getText(this, "Save_legends"));
+			viewInfo.setWidth(width);
+			viewInfo.setHeight(height);
+		}
+		return viewInfo;
+	}
+
+	@Override
+	public Object getWindowProfile() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

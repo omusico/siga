@@ -43,7 +43,6 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class SaveMapWizardComponent extends WizardComponent implements ActionListener {
 
-	public final static String PROPERTY_VIEW = "view";
 	public final static String PROPERTY_LAYERS_MAP = "table_layers";
 
 	private JButton upButton;
@@ -337,7 +336,7 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 				model.addRow(row);
 			}
 		} else {
-			aux = properties.get(PROPERTY_VIEW);
+			aux = properties.get(SaveMapWizard.PROPERTY_VIEW);
 			if (aux != null && aux instanceof View) {
 				view = (View) aux;
 				fillWithViewLayers(mapTable, view.getMapControl().getMapContext().getLayers());

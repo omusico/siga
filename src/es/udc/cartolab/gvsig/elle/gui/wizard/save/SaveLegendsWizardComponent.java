@@ -357,7 +357,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 	}
 
 	private void saveOverviewLegends(File dir) throws LegendDriverException, WizardException, IOException, SQLException {
-		Object aux = properties.get(SaveMapWizardComponent.PROPERTY_VIEW);
+		Object aux = properties.get(SaveMapWizard.PROPERTY_VIEW);
 		if (aux != null && aux instanceof View) {
 			FLayers ovLayers = ((View) aux).getMapOverview().getMapContext().getLayers();
 			if (fileRB.isSelected()) {
@@ -454,7 +454,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 
 	@SuppressWarnings("unchecked")
 	private List<FLayer> getLayers() throws WizardException {
-		Object aux = properties.get(SaveMapWizardComponent.PROPERTY_VIEW);
+		Object aux = properties.get(SaveMapWizard.PROPERTY_VIEW);
 		if (aux == null || !(aux instanceof View)) {
 			throw new WizardException("property");
 		}

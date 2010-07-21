@@ -12,6 +12,8 @@ import es.udc.cartolab.gvsig.elle.gui.wizard.WizardWindow;
 
 public class SaveMapWizard extends WizardWindow {
 
+	public final static String PROPERTY_VIEW = "view";
+
 	private WindowInfo viewInfo;
 	private final int width = 750;
 	private final int height = 500;
@@ -20,7 +22,7 @@ public class SaveMapWizard extends WizardWindow {
 	public SaveMapWizard(View view) {
 		super();
 
-		properties.put("view", view);
+		properties.put(PROPERTY_VIEW, view);
 
 	}
 
