@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -55,8 +54,9 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 	private JTable table;
 	private JCheckBox overviewCHB;
 	private JComboBox overviewCB;
+	private List<LayerProperties> layers;
 
-	private List<FLayer> layers;
+	//	private List<FLayer> layers;
 
 	private String legendDir = null;
 
@@ -341,7 +341,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 	private void saveLegends(DefaultTableModel model, File dir) throws LegendDriverException, IOException, SQLException {
 		for (int i=0; i<model.getRowCount(); i++) {
 			if ((Boolean) model.getValueAt(i, 0)) {
-				FLayer layer = layers.get(i);
+				FLayer layer = layers.get(i).getLayer();
 				if (layer instanceof FLyrVect) {
 					String type = model.getValueAt(i, 2).toString();
 					if (fileRB.isSelected()) {
@@ -427,19 +427,24 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 
 	@Override
 	public void showComponent() throws WizardException {
+
+		Object aux = properties.get(SaveMapWizardComponent.PROPERTY_LAYERS_MAP);
+		if (aux != null && aux instanceof List<?>) {
+			layers = (List<LayerProperties>) aux;
+		} else {
+			throw new WizardException(PluginServices.getText(this, "no_layer_list_error"));
+		}
+
+		//table
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		model.setRowCount(0);
-		Object aux = properties.get(SaveMapWizardComponent.PROPERTY_LAYERS_MAP);
-		layers = getLayers();
-		if (aux != null && aux instanceof List<?>) {
-			List<LayerProperties> list = (List<LayerProperties>) aux;
-			for (LayerProperties lp : list) {
-				Object[] row = new Object[3];
-				row[0] = lp.save();
-				row[1] = lp.getShownname();
-				row[2] = "gvl";
-				model.addRow(row);
-			}
+		for (LayerProperties lp : layers) {
+			Object[] row = {
+					lp.save(),
+					lp.getShownname(),
+					"gvl"
+			};
+			model.addRow(row);
 		}
 
 		//checkbox
@@ -448,26 +453,6 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 			overviewCHB.setSelected((Boolean) aux);
 		}
 		overviewCB.setEnabled(overviewCHB.isSelected());
-	}
-
-	@SuppressWarnings("unchecked")
-	private List<FLayer> getLayers() throws WizardException {
-		Object aux = properties.get(SaveMapWizard.PROPERTY_VIEW);
-		if (aux == null || !(aux instanceof View)) {
-			throw new WizardException(PluginServices.getText(this, "no_view_error"));
-		}
-		View view = (View) aux;
-		aux = properties.get(SaveMapWizardComponent.PROPERTY_LAYERS_MAP);
-		if (aux == null || !(aux instanceof List<?>)) {
-			throw new WizardException(PluginServices.getText(this, "no_layer_list_error"));
-		}
-		List<LayerProperties> layers = (List<LayerProperties>) aux;
-		List<FLayer> layerList = new ArrayList<FLayer>();
-		for (LayerProperties lp : layers) {
-			String layerName = lp.getLayername();
-			layerList.add(getLayer(view.getMapControl().getMapContext().getLayers(), layerName));
-		}
-		return layerList;
 	}
 
 	//checks if it's possible to save and then saves

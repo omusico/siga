@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -50,7 +52,6 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 	private JTextField mapNameField;
 	private JCheckBox overviewChb;
 	private JTable mapTable;
-
 
 	private List<LayerProperties> mapLayers;
 
@@ -151,6 +152,7 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 	}
 
 	private void setMapTable() {
+
 		String[] header = {"",
 				PluginServices.getText(this, "layer"),
 				PluginServices.getText(this, "name"),
@@ -313,84 +315,118 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 		DefaultTableModel model = (DefaultTableModel) mapTable.getModel();
 		model.setRowCount(0);
 		Object aux = properties.get(PROPERTY_LAYERS_MAP);
-		if (aux != null && aux instanceof List<?>) {
-			List<LayerProperties> layers = (List<LayerProperties>) aux;
-			for (LayerProperties lp : layers) {
-				double maxScale = lp.getMaxScale();
-				String maxScaleStr = "";
-				if (maxScale >= 0) {
-					maxScaleStr = NumberFormat.getInstance().format(maxScale);
-				}
-				double minScale = lp.getMinScale();
-				String minScaleStr = "";
-				if (minScale >= 0) {
-					minScaleStr = NumberFormat.getInstance().format(minScale);
-				}
-				Object[] row = {lp.save(),
-						lp.getLayername(),
-						lp.getShownname(),
-						lp.getGroup(),
-						lp.visible(),
-						maxScaleStr,
-						minScaleStr	};
-				model.addRow(row);
-			}
-		} else {
+		if (aux == null) {
 			aux = properties.get(SaveMapWizard.PROPERTY_VIEW);
 			if (aux != null && aux instanceof View) {
 				view = (View) aux;
-				fillWithViewLayers(mapTable, view.getMapControl().getMapContext().getLayers());
+				createMapLayerList(view.getMapControl().getMapContext().getLayers());
 			} else {
 				throw new WizardException(PluginServices.getText(this, "no_view_error"));
 			}
+		} else if (aux instanceof List<?>) {
+			mapLayers = (List<LayerProperties>) aux;
+		} else {
+			throw new WizardException(PluginServices.getText(this, "no_layer_list_error"));
 		}
+
+		for (LayerProperties lp : mapLayers) {
+			double maxScale = lp.getMaxScale();
+			String maxScaleStr = "";
+			if (maxScale >= 0) {
+				maxScaleStr = NumberFormat.getInstance().format(maxScale);
+			}
+			double minScale = lp.getMinScale();
+			String minScaleStr = "";
+			if (minScale >= 0) {
+				minScaleStr = NumberFormat.getInstance().format(minScale);
+			}
+			Object[] row = {lp.save(),
+					lp.getLayername(),
+					lp.getShownname(),
+					lp.getGroup(),
+					lp.visible(),
+					maxScaleStr,
+					minScaleStr	};
+			model.addRow(row);
+
+		}
+
+		//popup menu
+		final LayerListPopupMenu popupmenu = new LayerListPopupMenu(this, mapTable, mapLayers);
+		mapTable.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.isMetaDown()) {
+					popupmenu.show(e.getComponent(), e.getX(), e.getY());
+				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				System.out.println("mouse entered");
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+
+		});
+
+
 	}
 
-	private void fillWithViewLayers(JTable table, FLayers layers) {
+	private void createMapLayerList(FLayers layers) {
 
 		for (int i=layers.getLayersCount()-1; i>=0; i--) {
 			FLayer layer = layers.getLayer(i);
 			if (layer instanceof FLayers) {
-				fillWithViewLayers(table, (FLayers) layer);
+				createMapLayerList((FLayers) layer);
 			} else if (layer instanceof FLyrVect) {
-				VectorialDriver driver = ((FLyrVect) layer).getSource().getDriver();
-				if (driver instanceof PostGisDriver) {
-					DBLayerDefinition layerDef = ((VectorialDBAdapter) ((FLyrVect) layer).getSource()).getLyrDef();
-
+				try {
+					LayerProperties lp = new LayerProperties((FLyrVect) layer);
+					String user = lp.getUserName();
 					DBSession dbc = DBSession.getCurrentSession();
-					try {
-						String user = ((ConnectionJDBC)((PostGisDriver) driver).getConnection()).getConnection().getMetaData().getUserName();
-
-						if (user != null && user.equals(dbc.getUserName())) {
-							//layer data to fill the table
-							String name = layer.getName();
-							String group = layer.getParentLayer().getName();
-							double maxScale = layer.getMaxScale();
-							String maxScaleStr = "";
-							if (maxScale >= 0) {
-								maxScaleStr = NumberFormat.getInstance().format(maxScale);
-							}
-							double minScale = layer.getMinScale();
-							String minScaleStr = "";
-							if (minScale >= 0) {
-								minScaleStr = NumberFormat.getInstance().format(minScale);
-							}
-
-							boolean visible = layer.isVisible();
-							LayerProperties lp = new LayerProperties(layerDef.getSchema(), layerDef.getTableName(), layer.getName());
-
-							mapLayers.add(lp);
-
-							Object[] row = {true, name, name, group, visible, maxScaleStr, minScaleStr};
-							((DefaultTableModel) table.getModel()).addRow(row);
+					if (user != null && user.equals(dbc.getUserName())) {
+						//layer data to fill the table
+						String name = layer.getName();
+						String group = layer.getParentLayer().getName();
+						double maxScale = layer.getMaxScale();
+						if (maxScale >= 0) {
+							lp.setMaxScale(maxScale);
 						}
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						double minScale = layer.getMinScale();
+						if (minScale >= 0) {
+							lp.setMinScale(minScale);
+						}
+						boolean visible = layer.isVisible();
+
+						lp.setVisible(visible);
+						lp.setGroup(group);
+						lp.setShownname(name);
+						lp.setPosition(mapLayers.size());
+						lp.setSave(true);
+
+						mapLayers.add(lp);
+
 					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (WizardException e) {
+					// layer is not postgis, nothing to do
 				}
 			}
 		}
+
 
 	}
 

@@ -5,15 +5,12 @@ import java.util.List;
 
 import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.WindowInfo;
-import com.iver.cit.gvsig.fmap.drivers.DBLayerDefinition;
-import com.iver.cit.gvsig.fmap.drivers.VectorialDriver;
-import com.iver.cit.gvsig.fmap.drivers.jdbc.postgis.PostGisDriver;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.fmap.layers.FLayers;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
-import com.iver.cit.gvsig.fmap.layers.VectorialDBAdapter;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
+import es.udc.cartolab.gvsig.elle.gui.wizard.WizardException;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardWindow;
 
 public class SaveLegendsWizard extends WizardWindow {
@@ -60,16 +57,10 @@ public class SaveLegendsWizard extends WizardWindow {
 				list.addAll(getList((FLayers) layer));
 			} else {
 				if (layer instanceof FLyrVect) {
-					VectorialDriver driver = ((FLyrVect) layer).getSource().getDriver();
-					if (driver instanceof PostGisDriver) {
-						//					ReadableVectorial rv = ((VectorialDBAdapter) ((FLyrVect) layer).getSource()).getOriginalAdapter();
-						DBLayerDefinition layerDef = ((VectorialDBAdapter) ((FLyrVect) layer).getSource()).getLyrDef();
+					LayerProperties lp;
+					try {
+						lp = new LayerProperties((FLyrVect) layer);
 
-						String schema = layerDef.getSchema();
-						String table = layerDef.getTableName();
-						String layerName = layer.getName();
-
-						LayerProperties lp = new LayerProperties(schema, table, layerName);
 						lp.setVisible(layer.isVisible());
 
 						switch (layersOption) {
@@ -84,13 +75,15 @@ public class SaveLegendsWizard extends WizardWindow {
 							lp.setSave(true);
 						}
 
-						lp.setShownname(layerName);
+						lp.setShownname(layer.getName());
 						lp.setGroup(layer.getParentLayer().getName());
 						lp.setMaxScale(layer.getMaxScale());
 						lp.setMinScale(layer.getMinScale());
 						lp.setPosition(layers.getLayersCount()-i);
 
 						list.add(lp);
+					} catch (WizardException e) {
+						// layer is not postgis, nothing to do
 					}
 				}
 			}
