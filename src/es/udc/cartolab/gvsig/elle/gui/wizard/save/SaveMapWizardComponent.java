@@ -213,7 +213,7 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 		MapTableModel model = (MapTableModel) mapTable.getModel();
 		List<String> layerNames = new ArrayList<String>();
 
-		for (int i=0; i<model.getRowCount(); i++) {
+		for (int i=model.getRowCount()-1; i>=0; i--) {
 
 			boolean save = (Boolean) model.getValueAt(i, 0);
 
