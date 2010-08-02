@@ -342,6 +342,8 @@ public class LoadMap {
 
 	public static void createMapTables() throws SQLException {
 
+		boolean commit = false;
+		
 		DBSession dbs = DBSession.getCurrentSession();
 
 		String sqlCreateMap = "CREATE TABLE " + dbs.getSchema() +"._map "
@@ -356,10 +358,7 @@ public class LoadMap {
 		+ "   grupo character varying,"
 		+ "   \"schema\" character varying,"
 		+ "   localizador boolean,"
-		+ "   CONSTRAINT \"primary key\" PRIMARY KEY (mapa, nombre_capa)"
-		+ ")"
-		+ "WITH ("
-		+ "   OIDS=FALSE"
+		+ "   CONSTRAINT \"_map_pkey\" PRIMARY KEY (mapa, nombre_capa)"
 		+ ")";
 
 		String sqlCreateMapOverview =  "CREATE TABLE " + dbs.getSchema() + "._map_overview"
@@ -369,22 +368,6 @@ public class LoadMap {
 		+ "  \"schema\" character varying,"
 		+ "  posicion integer,"
 		+ "  CONSTRAINT _map_overview_pkey PRIMARY KEY (mapa, nombre_capa)"
-		+ ")"
-		+ "WITH ("
-		+ "  OIDS=FALSE"
-		+ ")";
-
-
-		String sqlCreateMapStyle =  "CREATE TABLE " + dbs.getSchema() + "._map_style"
-		+ "("
-		+ "  nombre_capa character varying NOT NULL,"
-		+ "  nombre_estilo character varying NOT NULL,"
-		+ "  type character varying(3),"
-		+ "  definicion xml,"
-		+ "  CONSTRAINT _map_style_pkey PRIMARY KEY (nombre_capa, nombre_estilo)"
-		+ ")"
-		+ "WITH ("
-		+ "  OIDS=FALSE"
 		+ ")";
 
 		String sqlGrant = "GRANT SELECT ON TABLE " + dbs.getSchema() + ".%s TO public";
@@ -395,19 +378,18 @@ public class LoadMap {
 		if (!dbs.tableExists(dbs.getSchema(), "_map")) {
 			stat.execute(sqlCreateMap);
 			stat.execute(String.format(sqlGrant, "_map"));
+			commit = true;
 		}
 
 		if (!dbs.tableExists(dbs.getSchema(), "_map_overview")) {
 			stat.execute(sqlCreateMapOverview);
 			stat.execute(String.format(sqlGrant, "_map_overview"));
+			commit = true;
 		}
 
-		if (!dbs.tableExists(dbs.getSchema(), "_map_style")) {
-			stat.execute(sqlCreateMapStyle);
-			stat.execute(String.format(sqlGrant, "_map_style"));
+		if (commit) {
+			con.commit();
 		}
-
-		con.commit();
 	}
 
 	public static void deleteMap(String mapName) throws SQLException {

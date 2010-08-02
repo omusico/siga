@@ -43,6 +43,7 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 public class SaveLegendsWizardComponent extends WizardComponent {
 
 	public final static String PROPERTY_SAVE_OVERVIEW = "save_overview";
+	public final static String PROPERTY_CREATE_TABLES_QUESTION = "create_tables_q";
 
 
 	private String[] types = {"gvl", "sld"};
@@ -239,7 +240,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 			panel.add(new JLabel(PluginServices.getText(this, "legend")));
 			panel.add(fileStyles, "shrink, right, wrap");
 		} else {
-			panel.add(new JLabel(PluginServices.getText(this, "no_dir_config")), "span 2 wrap");
+			panel.add(new JLabel(PluginServices.getText(this, "no_dir_config")), "span 2");
 		}
 
 		return panel;
@@ -258,6 +259,12 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 
 	@Override
 	public void finish() throws WizardException {
+		
+		boolean question = true;
+		Object aux = properties.get(PROPERTY_CREATE_TABLES_QUESTION);
+		if (aux != null && aux instanceof Boolean) {
+			question = (Boolean) aux;
+		}
 
 		if (!noLegendRB.isSelected()) {
 			DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -290,8 +297,43 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 						cont = false;
 					}
 				}
+				try {
+				DBSession dbs = DBSession.getCurrentSession();
+				boolean tableStylesExists = dbs.tableExists(dbs.getSchema(), "_map_style");
+				boolean tableOvStylesExists = dbs.tableExists(dbs.getSchema(), "_map_overview_style");
+				if (cont && (!tableStylesExists || !tableOvStylesExists)) {
+					boolean createTable = false;
+					boolean showMsg = false;
+					if (!question) {
+						createTable = true;
+					} else {
+						String message = String.format(PluginServices.getText(this, "tables_will_be_created"), dbs.getSchema());
+						int answer = JOptionPane.showConfirmDialog(
+								this,
+								message,
+								"",
+								JOptionPane.YES_NO_OPTION,
+								JOptionPane.QUESTION_MESSAGE,
+								null);
+						if (answer == 0) {
+							createTable = true;
+							showMsg = true;
+						}
+					}
+					if (createTable) {
+						LoadLegend.createLegendtables();
+						if (showMsg) {
+							JOptionPane.showMessageDialog(
+									this,
+									PluginServices.getText(this, "tables_created_correctly"),
+									"",
+									JOptionPane.INFORMATION_MESSAGE);
+						}
+					} else {
+						cont = false;
+					}
+				}
 				if (cont) {
-					try {
 						String dirName = fileStyles.getText();
 						File dir = null;
 						if (fileRB.isSelected()) {
@@ -325,13 +367,13 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 						} else {
 							throw new WizardException("", false, false);
 						}
-					} catch (WizardException e) {
-						throw e;
-					} catch (Exception e) {
-						throw new WizardException(e);
-					}
 				} else {
 					throw new WizardException("", false, false);
+				}
+				} catch (WizardException e) {
+					throw e;
+				} catch (Exception e) {
+					throw new WizardException(e);
 				}
 			}
 		}

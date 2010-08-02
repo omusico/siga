@@ -148,7 +148,7 @@ public class LoadLegendWizardComponent extends WizardComponent {
 			panel.add(new JLabel(PluginServices.getText(this, "legends_group_name")));
 			panel.add(fileCB, "wrap");
 		} else {
-			panel.add(new JLabel(PluginServices.getText(this, "no_dir_config")), "span 2 wrap");
+			panel.add(new JLabel(PluginServices.getText(this, "no_dir_config")), "span 2");
 		}
 
 		return panel;

@@ -458,6 +458,7 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 							null);
 					if (answer == 0) {
 						LoadMap.createMapTables();
+						properties.put(SaveLegendsWizardComponent.PROPERTY_CREATE_TABLES_QUESTION, false);
 						JOptionPane.showMessageDialog(
 								this,
 								PluginServices.getText(this, "tables_created_correctly"),

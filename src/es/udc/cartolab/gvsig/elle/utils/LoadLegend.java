@@ -1,8 +1,10 @@
 package es.udc.cartolab.gvsig.elle.utils;
 
 import java.io.File;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -196,5 +198,54 @@ public abstract class LoadLegend {
 		}
 		return found;
 
+	}
+
+	public static void createLegendtables() throws SQLException {
+		
+		boolean commit = false;
+		
+		DBSession dbs = DBSession.getCurrentSession();
+		
+		String sqlCreateMapStyle =  "CREATE TABLE " + dbs.getSchema() + "._map_style"
+		+ "("
+		+ "  nombre_capa character varying NOT NULL,"
+		+ "  nombre_estilo character varying NOT NULL,"
+		+ "  type character varying(3),"
+		+ "  definicion xml,"
+		+ "  CONSTRAINT _map_style_pkey PRIMARY KEY (nombre_capa, nombre_estilo)"
+		+ ")"
+		+ "WITH ("
+		+ "  OIDS=FALSE"
+		+ ")";
+		
+		String sqlCreateMapOverviewStyle = "CREATE TABLE " + dbs.getSchema() + "._map_overview_style"
+		+ "("
+		+ "  nombre_capa character varying NOT NULL,"
+		+ "  nombre_estilo character varying NOT NULL,"
+		+ "  tipo character varying(3),"
+		+ "  definicion xml,"
+		+ "  CONSTRAINT overview_style_pk PRIMARY KEY (nombre_capa, nombre_estilo)"
+		+ ")";
+		
+		String sqlGrant = "GRANT SELECT ON TABLE " + dbs.getSchema() + ".%s TO public";
+
+		Connection con = dbs.getJavaConnection();
+		Statement stat = con.createStatement();
+		
+		if (!dbs.tableExists(dbs.getSchema(), "_map_style")) {
+			stat.execute(sqlCreateMapStyle);
+			stat.execute(String.format(sqlGrant, "_map_style"));
+			commit = true;
+		}
+		
+		if (!dbs.tableExists(dbs.getSchema(), "_map_overview_style")) {
+			stat.execute(sqlCreateMapOverviewStyle);
+			stat.execute(String.format(sqlGrant, "_map_style"));
+			commit = true;
+		}
+		
+		if (commit) {
+			con.commit();
+		}
 	}
 }
