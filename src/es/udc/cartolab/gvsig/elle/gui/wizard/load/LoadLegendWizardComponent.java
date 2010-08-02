@@ -176,11 +176,12 @@ public class LoadLegendWizardComponent extends WizardComponent {
 
 		DBSession dbs = DBSession.getCurrentSession();
 		try {
-			String[] legends = dbs.getDistinctValues("_map_style", dbs.getSchema(), "nombre_estilo", true, false);
-			for (String legend : legends) {
-				dbCB.addItem(legend);
+			if (dbs.tableExists(dbs.getSchema(), "_map_style")) {
+				String[] legends = dbs.getDistinctValues("_map_style", dbs.getSchema(), "nombre_estilo", true, false);
+				for (String legend : legends) {
+					dbCB.addItem(legend);
+				}
 			}
-
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
