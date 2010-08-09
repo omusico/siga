@@ -43,5 +43,13 @@ public abstract class WizardComponent extends JPanel {
 	public abstract void finish() throws WizardException;
 
 	public abstract void setProperties() throws WizardException;
+	
+	public void putProperty(String key, Object value) {
+		properties.put(key, value);
+	}
+	
+	public Object getProperty(String key) {
+		return properties.get(key);
+	}
 
 }
