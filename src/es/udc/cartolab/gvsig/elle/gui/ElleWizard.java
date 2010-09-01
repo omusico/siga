@@ -66,6 +66,12 @@ public class ElleWizard extends WizardPanel {
 							"SQLException: " + e.getMessage(),
 							"SQL Error",
 							JOptionPane.ERROR_MESSAGE);
+					try {
+						dbs = DBSession.reconnect();
+					} catch (DBException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				} catch (DBException e) {
 					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(this,
@@ -84,6 +90,12 @@ public class ElleWizard extends WizardPanel {
 							"SQLException: " + e.getMessage(),
 							"SQL Error",
 							JOptionPane.ERROR_MESSAGE);
+					try {
+						dbs = DBSession.reconnect();
+					} catch (DBException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				} catch (DBException e) {
 					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(this,
@@ -200,6 +212,12 @@ public class ElleWizard extends WizardPanel {
 											"Error SQL: " + e.getMessage(),
 											"SQL Exception",
 											JOptionPane.ERROR_MESSAGE);
+									try {
+										dbs = DBSession.reconnect();
+									} catch (DBException e1) {
+										// TODO Auto-generated catch block
+										e1.printStackTrace();
+									}
 								}
 								if (layers != null) {
 									String[] layerNames = new String[layers.length];
@@ -239,6 +257,12 @@ public class ElleWizard extends WizardPanel {
 				listPanel = new JPanel();
 				JLabel label = new JLabel("SQL Exception: " + e.getMessage());
 				listPanel.add(label);
+				try {
+					dbs = DBSession.reconnect();
+				} catch (DBException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 
 		}

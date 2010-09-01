@@ -28,6 +28,7 @@ import net.miginfocom.swing.MigLayout;
 
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.drivers.ConnectionJDBC;
+import com.iver.cit.gvsig.fmap.drivers.DBException;
 import com.iver.cit.gvsig.fmap.drivers.DBLayerDefinition;
 import com.iver.cit.gvsig.fmap.drivers.VectorialDriver;
 import com.iver.cit.gvsig.fmap.drivers.jdbc.postgis.PostGisDriver;
@@ -419,7 +420,12 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 
 					}
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
+					try {
+						DBSession.reconnect();
+					} catch (DBException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					e.printStackTrace();
 				} catch (WizardException e) {
 					// layer is not postgis, nothing to do
@@ -511,6 +517,12 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 			}
 
 		} catch (SQLException e1) {
+			try {
+				dbs = DBSession.reconnect();
+			} catch (DBException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			PluginServices.getMDIManager().restoreCursor();
 			throw new WizardException(PluginServices.getText(this, "error_saving_map"), e1);
 		}
@@ -552,6 +564,12 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 				try {
 					saveOverview(mapName);
 				} catch (SQLException e) {
+					try {
+						DBSession.reconnect();
+					} catch (DBException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					return new String[]{mapoverviewError};
 				}
 			}
@@ -589,6 +607,12 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 						}
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
+						try {
+							DBSession.reconnect();
+						} catch (DBException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 						e.printStackTrace();
 					}
 				}

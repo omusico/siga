@@ -16,6 +16,7 @@ import javax.swing.event.ListSelectionListener;
 
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.addlayer.AddLayerDialog;
+import com.iver.cit.gvsig.fmap.drivers.DBException;
 import com.iver.cit.gvsig.gui.panels.CRSSelectPanel;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 import com.jeta.forms.components.panel.FormPanel;
@@ -135,6 +136,12 @@ public class LoadMapWizardComponent extends WizardComponent implements ActionLis
 											"Error SQL: " + e.getMessage(),
 											"SQL Exception",
 											JOptionPane.ERROR_MESSAGE);
+									try {
+										dbs = DBSession.reconnect();
+									} catch (DBException e1) {
+										// TODO Auto-generated catch block
+										e1.printStackTrace();
+									}
 								}
 
 							} else {
@@ -152,6 +159,12 @@ public class LoadMapWizardComponent extends WizardComponent implements ActionLis
 
 
 			} catch (SQLException e) {
+				try {
+					dbs = DBSession.reconnect();
+				} catch (DBException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				//exception
 				e.printStackTrace();
 			}

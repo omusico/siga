@@ -17,6 +17,7 @@ import javax.swing.JRadioButton;
 import net.miginfocom.swing.MigLayout;
 
 import com.iver.andami.PluginServices;
+import com.iver.cit.gvsig.fmap.drivers.DBException;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.fmap.layers.FLayers;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
@@ -184,6 +185,12 @@ public class LoadLegendWizardComponent extends WizardComponent {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			try {
+				dbs = DBSession.reconnect();
+			} catch (DBException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
 		}
 	}
