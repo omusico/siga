@@ -54,7 +54,10 @@ public class LoadMapWizardComponent extends WizardComponent implements ActionLis
 
 	@Override
 	public boolean canNext() {
-		return mapList.getSelectedIndices().length == 1;
+		if (mapList!=null) {
+			return mapList.getSelectedIndices().length == 1;
+		}
+		return false;
 	}
 
 	@Override
