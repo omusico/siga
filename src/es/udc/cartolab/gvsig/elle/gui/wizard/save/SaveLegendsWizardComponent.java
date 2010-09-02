@@ -46,7 +46,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 	public final static String PROPERTY_CREATE_TABLES_QUESTION = "create_tables_q";
 
 
-	private String[] types = {"gvl", "sld"};
+	private List<String> types;
 
 	private JRadioButton noLegendRB, databaseRB, fileRB;
 	private JPanel dbPanel;
@@ -63,6 +63,8 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 
 	public SaveLegendsWizardComponent(Map<String, Object> properties) {
 		super(properties);
+
+		types = LoadLegend.getSortedPreferedLegendTypes();
 
 		XMLEntity xml = PluginServices.getPluginServices("es.udc.cartolab.gvsig.elle").getPersistentXML();
 		if (xml.contains(EllePreferencesPage.DEFAULT_LEGEND_DIR_KEY_NAME)) {
@@ -168,7 +170,9 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 		for (String type : types) {
 			overviewCB.addItem(type);
 		}
-
+		if (types.size() > 0) {
+			overviewCB.setSelectedIndex(0);
+		}
 		overviewPanel.add(overviewCB, "shrink, wrap");
 
 		return overviewPanel;
@@ -480,11 +484,15 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 		//table
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		model.setRowCount(0);
+		String type = "";
+		if (types.size()>0) {
+			type = types.get(0);
+		}
 		for (LayerProperties lp : layers) {
 			Object[] row = {
 					lp.save(),
 					lp.getShownname(),
-					"gvl"
+					type
 			};
 			model.addRow(row);
 		}

@@ -8,9 +8,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 import org.gvsig.symbology.fmap.drivers.sld.FMapSLDDriver;
 
+import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.drivers.gvl.FMapGVLDriver;
 import com.iver.cit.gvsig.fmap.drivers.legend.IFMapLegendDriver;
 import com.iver.cit.gvsig.fmap.drivers.legend.LegendDriverException;
@@ -18,7 +22,9 @@ import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.rendering.ILegend;
 import com.iver.cit.gvsig.fmap.rendering.IVectorLegend;
+import com.iver.utiles.XMLEntity;
 
+import es.udc.cartolab.gvsig.elle.gui.EllePreferencesPage;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 /**
@@ -201,11 +207,11 @@ public abstract class LoadLegend {
 	}
 
 	public static void createLegendtables() throws SQLException {
-		
+
 		boolean commit = false;
-		
+
 		DBSession dbs = DBSession.getCurrentSession();
-		
+
 		String sqlCreateMapStyle =  "CREATE TABLE " + dbs.getSchema() + "._map_style"
 		+ "("
 		+ "  nombre_capa character varying NOT NULL,"
@@ -217,7 +223,7 @@ public abstract class LoadLegend {
 		+ "WITH ("
 		+ "  OIDS=FALSE"
 		+ ")";
-		
+
 		String sqlCreateMapOverviewStyle = "CREATE TABLE " + dbs.getSchema() + "._map_overview_style"
 		+ "("
 		+ "  nombre_capa character varying NOT NULL,"
@@ -226,26 +232,53 @@ public abstract class LoadLegend {
 		+ "  definicion xml,"
 		+ "  CONSTRAINT overview_style_pk PRIMARY KEY (nombre_capa, nombre_estilo)"
 		+ ")";
-		
+
 		String sqlGrant = "GRANT SELECT ON TABLE " + dbs.getSchema() + ".%s TO public";
 
 		Connection con = dbs.getJavaConnection();
 		Statement stat = con.createStatement();
-		
+
 		if (!dbs.tableExists(dbs.getSchema(), "_map_style")) {
 			stat.execute(sqlCreateMapStyle);
 			stat.execute(String.format(sqlGrant, "_map_style"));
 			commit = true;
 		}
-		
+
 		if (!dbs.tableExists(dbs.getSchema(), "_map_overview_style")) {
 			stat.execute(sqlCreateMapOverviewStyle);
 			stat.execute(String.format(sqlGrant, "_map_style"));
 			commit = true;
 		}
-		
+
 		if (commit) {
 			con.commit();
 		}
+	}
+
+
+	public static List<String> getSortedPreferedLegendTypes() {
+
+		ArrayList<String> result = new ArrayList<String>();
+
+		PluginServices ps = PluginServices.getPluginServices("es.udc.cartolab.gvsig.elle");
+		XMLEntity xml = ps.getPersistentXML();
+
+		String type = EllePreferencesPage.DEFAULT_LEGEND_FILE_TYPE;
+		if (xml.contains(EllePreferencesPage.DEFAULT_LEGEND_FILE_TYPE_KEY_NAME)) {
+			type = xml.getStringProperty(EllePreferencesPage.DEFAULT_LEGEND_FILE_TYPE_KEY_NAME).toLowerCase();
+		}
+
+		result.add(type);
+		Set<String> set = drivers.keySet();
+		Iterator<String> it = set.iterator();
+		while (it.hasNext()) {
+			String aux = it.next().toLowerCase();
+			if (!type.equals(aux)) {
+				result.add(aux);
+			}
+		}
+
+		return result;
+
 	}
 }

@@ -6,6 +6,7 @@ import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -22,15 +23,18 @@ public class EllePreferencesPage extends AbstractPreferencePage implements Actio
 
 	/* key names */
 	public static final String DEFAULT_LEGEND_DIR_KEY_NAME = "LegendDir";
+	public static final String DEFAULT_LEGEND_FILE_TYPE_KEY_NAME = "LegendFileType";
 
 	/* default values */
 	private static final String DEFAULT_LEGEND_DIR = Launcher.getAppHomeDir();
+	public static final String DEFAULT_LEGEND_FILE_TYPE = "gvl";
 
 	protected String id;
 	private ImageIcon icon;
 	private boolean panelStarted = false;
 	private JTextField legendDirField;
 	private JButton legendDirButton;
+	private JComboBox legendTypeCBox;
 	private String title = "ELLE";
 
 	public EllePreferencesPage() {
@@ -51,6 +55,13 @@ public class EllePreferencesPage extends AbstractPreferencePage implements Actio
 		// TODO Auto-generated method stub
 		PluginServices ps = PluginServices.getPluginServices(this);
 		XMLEntity xml = ps.getPersistentXML();
+
+		storeDir(xml);
+		storeType(xml);
+
+	}
+
+	private void storeDir(XMLEntity xml) throws StoreException {
 		String legendDir = legendDirField.getText();
 		File f = new File(legendDir);
 		if (f.exists() && f.isDirectory() && f.canRead()) {
@@ -60,6 +71,11 @@ public class EllePreferencesPage extends AbstractPreferencePage implements Actio
 			String message = String.format("%s no es un directorio válido", legendDir);
 			throw new StoreException(message);
 		}
+	}
+
+	private void storeType(XMLEntity xml) {
+		String type = legendTypeCBox.getSelectedItem().toString();
+		xml.putProperty(DEFAULT_LEGEND_FILE_TYPE_KEY_NAME, type);
 	}
 
 	@Override
@@ -88,6 +104,13 @@ public class EllePreferencesPage extends AbstractPreferencePage implements Actio
 			legendDirButton = (JButton) form.getButton("legendButton");
 			legendDirButton.addActionListener(this);
 
+			JLabel legendTypeLabel = form.getLabel("legendTypeLabel");
+			legendTypeLabel.setText(PluginServices.getText(this, "legend_type_pref"));
+
+			legendTypeCBox = form.getComboBox("legendTypeCB");
+			legendTypeCBox.addItem("gvl");
+			legendTypeCBox.addItem("sld");
+
 			addComponent(form);
 
 		}
@@ -102,7 +125,21 @@ public class EllePreferencesPage extends AbstractPreferencePage implements Actio
 
 	@Override
 	public void initializeDefaults() {
+
 		legendDirField.setText(DEFAULT_LEGEND_DIR);
+
+		setCB(DEFAULT_LEGEND_FILE_TYPE);
+
+	}
+
+	private void setCB(String text) {
+		int itemCount = legendTypeCBox.getItemCount();
+		for (int i=0; i<itemCount; i++) {
+			if (text.equals(legendTypeCBox.getItemAt(i))) {
+				legendTypeCBox.setSelectedIndex(i);
+				break;
+			}
+		}
 	}
 
 	@Override
@@ -125,6 +162,13 @@ public class EllePreferencesPage extends AbstractPreferencePage implements Actio
 		}
 
 		legendDirField.setText(legendDir);
+
+		String type = DEFAULT_LEGEND_FILE_TYPE;
+		if (xml.contains(DEFAULT_LEGEND_FILE_TYPE_KEY_NAME)) {
+			type = xml.getStringProperty(DEFAULT_LEGEND_FILE_TYPE_KEY_NAME);
+		}
+
+		setCB(type.toLowerCase());
 
 	}
 
