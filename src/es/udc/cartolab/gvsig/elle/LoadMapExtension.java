@@ -3,12 +3,12 @@
  * 
  * This file is part of extELLE
  * 
- * extELLE is free software: you can redistribute it and/or modify it under the terms 
- * of the GNU General Public License as published by the Free Software Foundation, either 
+ * extELLE is free software: you can redistribute it and/or modify it under the terms
+ * of the GNU General Public License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
  * 
- * extELLE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+ * extELLE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License along with extELLE.
@@ -34,31 +34,27 @@ public class LoadMapExtension extends Extension implements IPreferenceExtension 
 	public static EllePreferencesPage ellePreferencesPage = new EllePreferencesPage();
 
 	public void execute(String actionCommand) {
-		// TODO Auto-generated method stub
 		LoadMapWizard wizard = new LoadMapWizard((View) PluginServices.getMDIManager().getActiveWindow());
 		wizard.open();
 	}
 
 	public void initialize() {
-		// TODO Auto-generated method stub
+
 		//		carga la pestaña en añadir capa
 		AddLayer.addWizard(ElleWizard.class);
 	}
 
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
 		return PluginServices.getMDIManager().getActiveWindow() instanceof View;
 	}
 
 	public boolean isVisible() {
-		// TODO Auto-generated method stub
 		DBSession dbs = DBSession.getCurrentSession();
 		return dbs!=null;
 	}
 
 	@Override
 	public IPreference[] getPreferencesPages() {
-		// TODO Auto-generated method stub
 		IPreference[] preferences=new IPreference[1];
 		preferences[0]=ellePreferencesPage;
 		return preferences;

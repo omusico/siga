@@ -3,12 +3,12 @@
  * 
  * This file is part of extELLE
  * 
- * extELLE is free software: you can redistribute it and/or modify it under the terms 
- * of the GNU General Public License as published by the Free Software Foundation, either 
+ * extELLE is free software: you can redistribute it and/or modify it under the terms
+ * of the GNU General Public License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
  * 
- * extELLE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+ * extELLE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License along with extELLE.
@@ -54,13 +54,12 @@ public class ElleWizard extends WizardPanel {
 
 	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public FLayer getLayer() {
-		// TODO Auto-generated method stub
+
 		DBSession dbs = DBSession.getCurrentSession();
 		FLayer layer = null;
 		if (dbs != null) {
@@ -78,7 +77,6 @@ public class ElleWizard extends WizardPanel {
 						((FLayers)layer).addLayer(getLayer(pos, proj));
 					}
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(this,
 							"SQLException: " + e.getMessage(),
 							"SQL Error",
@@ -86,11 +84,9 @@ public class ElleWizard extends WizardPanel {
 					try {
 						dbs = DBSession.reconnect();
 					} catch (DBException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				} catch (DBException e) {
-					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(this,
 							"SQLException: " + e.getMessage(),
 							"DB Error",
@@ -102,7 +98,6 @@ public class ElleWizard extends WizardPanel {
 				try {
 					layer = getLayer(pos, proj);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(this,
 							"SQLException: " + e.getMessage(),
 							"SQL Error",
@@ -110,11 +105,9 @@ public class ElleWizard extends WizardPanel {
 					try {
 						dbs = DBSession.reconnect();
 					} catch (DBException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				} catch (DBException e) {
-					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(this,
 							"SQLException: " + e.getMessage(),
 							"DB Error",
@@ -173,7 +166,6 @@ public class ElleWizard extends WizardPanel {
 		mainPanel.setLayout(new BorderLayout());
 
 		if (dbs != null) {
-			// TODO Auto-generated method stub
 
 			mainPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(
 					null, PluginServices.getText(this, "Choose_Layer"),
@@ -217,7 +209,6 @@ public class ElleWizard extends WizardPanel {
 					groupList.addListSelectionListener(new ListSelectionListener() {
 
 						public void valueChanged(ListSelectionEvent arg0) {
-							// TODO Auto-generated method stub
 							int[] selected = groupList.getSelectedIndices();
 							if (selected.length == 1) {
 								String where = String.format("where mapa ='%s'", groupList.getSelectedValues()[0]);
@@ -254,7 +245,6 @@ public class ElleWizard extends WizardPanel {
 					layerList.addListSelectionListener(new ListSelectionListener() {
 
 						public void valueChanged(ListSelectionEvent arg0) {
-							// TODO Auto-generated method stub
 							int[] selected = groupList.getSelectedIndices();
 							if (selected.length > 0) {
 								callStateChanged(true);
@@ -277,7 +267,6 @@ public class ElleWizard extends WizardPanel {
 				try {
 					dbs = DBSession.reconnect();
 				} catch (DBException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}

@@ -3,12 +3,12 @@
  * 
  * This file is part of extELLE
  * 
- * extELLE is free software: you can redistribute it and/or modify it under the terms 
- * of the GNU General Public License as published by the Free Software Foundation, either 
+ * extELLE is free software: you can redistribute it and/or modify it under the terms
+ * of the GNU General Public License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
  * 
- * extELLE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+ * extELLE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License along with extELLE.
@@ -73,8 +73,6 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 	private JCheckBox overviewCHB;
 	private JComboBox overviewCB;
 	private List<LayerProperties> layers;
-
-	//	private List<FLayer> layers;
 
 	private String legendDir = null;
 
@@ -280,7 +278,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 
 	@Override
 	public void finish() throws WizardException {
-		
+
 		boolean question = true;
 		Object aux = properties.get(PROPERTY_CREATE_TABLES_QUESTION);
 		if (aux != null && aux instanceof Boolean) {
@@ -289,7 +287,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 
 		if (!noLegendRB.isSelected()) {
 			DefaultTableModel model = (DefaultTableModel) table.getModel();
-			if ((fileRB.isSelected() && !fileStyles.equals("")) || (databaseRB.isSelected() && !dbStyles.equals(""))) {
+			if (fileRB.isSelected() && !fileStyles.equals("") || databaseRB.isSelected() && !dbStyles.equals("")) {
 				boolean cont = true;
 				boolean useNotGvl = false;
 				for (int i = 0; i<model.getRowCount(); i++) {
@@ -319,42 +317,42 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 					}
 				}
 				try {
-				DBSession dbs = DBSession.getCurrentSession();
-				boolean tableStylesExists = dbs.tableExists(dbs.getSchema(), "_map_style");
-				boolean tableOvStylesExists = dbs.tableExists(dbs.getSchema(), "_map_overview_style");
-				if (cont && (!tableStylesExists || !tableOvStylesExists)) {
-					boolean createTable = false;
-					boolean showMsg = false;
-					if (!question) {
-						createTable = true;
-					} else {
-						String message = String.format(PluginServices.getText(this, "tables_will_be_created"), dbs.getSchema());
-						int answer = JOptionPane.showConfirmDialog(
-								this,
-								message,
-								"",
-								JOptionPane.YES_NO_OPTION,
-								JOptionPane.QUESTION_MESSAGE,
-								null);
-						if (answer == 0) {
+					DBSession dbs = DBSession.getCurrentSession();
+					boolean tableStylesExists = dbs.tableExists(dbs.getSchema(), "_map_style");
+					boolean tableOvStylesExists = dbs.tableExists(dbs.getSchema(), "_map_overview_style");
+					if (cont && (!tableStylesExists || !tableOvStylesExists)) {
+						boolean createTable = false;
+						boolean showMsg = false;
+						if (!question) {
 							createTable = true;
-							showMsg = true;
-						}
-					}
-					if (createTable) {
-						LoadLegend.createLegendtables();
-						if (showMsg) {
-							JOptionPane.showMessageDialog(
+						} else {
+							String message = String.format(PluginServices.getText(this, "tables_will_be_created"), dbs.getSchema());
+							int answer = JOptionPane.showConfirmDialog(
 									this,
-									PluginServices.getText(this, "tables_created_correctly"),
+									message,
 									"",
-									JOptionPane.INFORMATION_MESSAGE);
+									JOptionPane.YES_NO_OPTION,
+									JOptionPane.QUESTION_MESSAGE,
+									null);
+							if (answer == 0) {
+								createTable = true;
+								showMsg = true;
+							}
 						}
-					} else {
-						cont = false;
+						if (createTable) {
+							LoadLegend.createLegendtables();
+							if (showMsg) {
+								JOptionPane.showMessageDialog(
+										this,
+										PluginServices.getText(this, "tables_created_correctly"),
+										"",
+										JOptionPane.INFORMATION_MESSAGE);
+							}
+						} else {
+							cont = false;
+						}
 					}
-				}
-				if (cont) {
+					if (cont) {
 						String dirName = fileStyles.getText();
 						File dir = null;
 						if (fileRB.isSelected()) {
@@ -388,9 +386,9 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 						} else {
 							throw new WizardException("", false, false);
 						}
-				} else {
-					throw new WizardException("", false, false);
-				}
+					} else {
+						throw new WizardException("", false, false);
+					}
 				} catch (WizardException e) {
 					throw e;
 				} catch (Exception e) {
