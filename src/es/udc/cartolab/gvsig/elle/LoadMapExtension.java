@@ -21,7 +21,9 @@ import com.iver.andami.PluginServices;
 import com.iver.andami.plugins.Extension;
 import com.iver.andami.preferences.IPreference;
 import com.iver.andami.preferences.IPreferenceExtension;
+import com.iver.cit.gvsig.About;
 import com.iver.cit.gvsig.AddLayer;
+import com.iver.cit.gvsig.gui.panels.FPanelAbout;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.udc.cartolab.gvsig.elle.gui.EllePreferencesPage;
@@ -39,6 +41,10 @@ public class LoadMapExtension extends Extension implements IPreferenceExtension 
 	}
 
 	public void initialize() {
+		About about=(About)PluginServices.getExtension(About.class);
+		FPanelAbout panelAbout=about.getAboutPanel();
+		java.net.URL aboutURL = this.getClass().getResource("/about.htm");
+		panelAbout.addAboutUrl("ELLE", aboutURL);
 
 		//		carga la pestaña en añadir capa
 		AddLayer.addWizard(ElleWizard.class);
