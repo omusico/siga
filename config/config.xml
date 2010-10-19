@@ -10,13 +10,23 @@
 	<extensions>
 		<extension class-name="es.udc.cartolab.gvsig.elle.LoadMapExtension" description="Load map" active="true">
 			<menu text="data_base_menu/Load_map"
+				icon="load-map"
 				action-command="LoadMap"
 				position="03"/> 
+			<tool-bar name="ELLE">
+				<action-tool icon="load-map" tooltip="Load_map"
+					action-command="LoadMap" position="1" name="load-map" />
+			</tool-bar>
 		</extension>
 		<extension class-name="es.udc.cartolab.gvsig.elle.LoadAllLegendsExtension" description="Load_several_legends" active="true">
 			<menu text="data_base_menu/load_legends"
+				icon="load-legends"
 				action-command="LOADLEGENDS"
 				position="0900"/>
+			<tool-bar name="ELLE">
+				<action-tool icon="load-legends" tooltip="load_legends"
+					action-command="LOADLEGENDS" position="3" name="load-legends" />
+			</tool-bar>
 		</extension>
 		<extension class-name="es.udc.cartolab.gvsig.elle.SaveAllLegendsExtension" description="Save_several_legends" active="true">
 			<menu text="data_base_menu/Save_legends/Leg_actives"
@@ -29,13 +39,23 @@
 				action-command="MAPOVERVIEW"
 				position="0930" />
 			<menu text="data_base_menu/Save_legends/Leg_all"
+				icon="save-all-legends"
 				action-command="ALL"
 				position="0940"/>
+			<tool-bar name="ELLE">
+				<action-tool icon="save-all-legends" tooltip="Save_legends"
+					action-command="ALL" position="4" name="save-all-legends" />
+			</tool-bar>
 		</extension>
 		<extension class-name="es.udc.cartolab.gvsig.elle.SaveMapExtension" description="save_map" active="true">
 			<menu text="data_base_menu/save_map"
+				icon="save-map"
 				action-command="SaveMap"
 				position="04" />
+			<tool-bar name="ELLE">
+				<action-tool icon="save-map" tooltip="save_map"
+					action-command="SaveMap" position="2" name="save-map" />
+			</tool-bar>
 		</extension>
 	</extensions>
 </plugin-config>
