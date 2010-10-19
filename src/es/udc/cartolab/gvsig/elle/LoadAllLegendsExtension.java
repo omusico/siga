@@ -33,6 +33,10 @@ public class LoadAllLegendsExtension extends Extension {
 	}
 
 	public void initialize() {
+		registerIcons();
+	}
+
+	protected void registerIcons() {
 		PluginServices.getIconTheme().registerDefault(
 				"load-legends",
 				this.getClass().getClassLoader().getResource("images/leycargar.png")

@@ -35,6 +35,10 @@ public class SaveMapExtension extends Extension {
 
 	@Override
 	public void initialize() {
+		registerIcons();
+	}
+
+	protected void registerIcons() {
 		PluginServices.getIconTheme().registerDefault(
 				"save-map",
 				this.getClass().getClassLoader().getResource("images/mapaguardar.png")

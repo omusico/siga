@@ -49,6 +49,11 @@ public class LoadMapExtension extends Extension implements IPreferenceExtension 
 		AddLayer.addWizard(ElleWizard.class);
 
 		//icons
+		registerIcons();
+	}
+
+	protected void registerIcons() {
+
 		PluginServices.getIconTheme().registerDefault(
 				"load-map",
 				this.getClass().getClassLoader().getResource("images/mapacargar.png")

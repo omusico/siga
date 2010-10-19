@@ -45,6 +45,10 @@ public class SaveAllLegendsExtension extends Extension {
 	}
 
 	public void initialize() {
+		registerIcons();
+	}
+
+	protected void registerIcons() {
 		PluginServices.getIconTheme().registerDefault(
 				"save-all-legends",
 				this.getClass().getClassLoader().getResource("images/leyguardar.png")
