@@ -1,16 +1,16 @@
 /*
  * Copyright (c) 2010. CartoLab, Universidad de A Coruña
- * 
+ *
  * This file is part of ELLE
- * 
+ *
  * ELLE is free software: you can redistribute it and/or modify it under the terms
  * of the GNU General Public License as published by the Free Software Foundation, either
  * version 3 of the License, or any later version.
- * 
+ *
  * ELLE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with ELLE.
  * If not, see <http://www.gnu.org/licenses/>.
 */
@@ -78,6 +78,8 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 	public SaveLegendsWizardComponent(Map<String, Object> properties) {
 		super(properties);
 
+
+		//get config
 		types = LoadLegend.getSortedPreferedLegendTypes();
 
 		XMLEntity xml = PluginServices.getPluginServices("es.udc.cartolab.gvsig.elle").getPersistentXML();
@@ -85,20 +87,22 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 			legendDir = xml.getStringProperty(EllePreferencesPage.DEFAULT_LEGEND_DIR_KEY_NAME);
 		}
 
+		//init components
+		noLegendRB = new JRadioButton(PluginServices.getText(this, "dont_save"));
+		databaseRB = new JRadioButton(PluginServices.getText(this, "save_to_db"));
+		fileRB = new JRadioButton(PluginServices.getText(this, "save_to_disk"));
+		dbPanel = getDBPanel();
+		filePanel = getFilePanel();
+		setTable();
+		JPanel optionsPanel = getOptionsPanel();
+
+		//place components
 		setLayout(new MigLayout("",
 				"10[grow]",
 		"[grow][]"));
-
-
-
-		dbPanel = getDBPanel();
-		filePanel = getFilePanel();
-
-		setTable();
 		add(new JScrollPane(table), "shrink, growx, growy, wrap");
+		add(optionsPanel, "shrink, growx, growy");
 
-		//options
-		add(getOptionsPanel(), "shrink, growx, growy");
 	}
 
 
@@ -112,7 +116,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 
 		panelOptions.add(getOverviewPanel(), "shrink, growx, growy, wrap");
 
-		noLegendRB = new JRadioButton(PluginServices.getText(this, "dont_save"));
+
 		noLegendRB.addActionListener(new ActionListener() {
 
 			@Override
@@ -124,7 +128,8 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 		});
 		panelOptions.add(noLegendRB, "wrap");
 
-		databaseRB = new JRadioButton(PluginServices.getText(this, "save_to_db"));
+
+		databaseRB.setEnabled(DBSession.getCurrentSession() != null);
 		databaseRB.addActionListener(new ActionListener() {
 
 			@Override
@@ -137,7 +142,6 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 		panelOptions.add(databaseRB, "shrink, growx, growy, wrap");
 		panelOptions.add(dbPanel, "shrink, growx, growy, wrap");
 
-		fileRB = new JRadioButton(PluginServices.getText(this, "save_to_disk"));
 		fileRB.addActionListener(new ActionListener() {
 
 			@Override
@@ -156,8 +160,6 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 		group.add(fileRB);
 
 		noLegendRB.setSelected(true);
-		dbSetEnabled(false);
-		fileSetEnabled(false);
 
 		return panelOptions;
 	}
@@ -236,11 +238,19 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 		"5[grow]5");
 		panel.setLayout(layout);
 
-		JLabel label = new JLabel(PluginServices.getText(this, "legends_group_name"));
-		dbStyles = new JTextField("", 20);
+		if (DBSession.getCurrentSession() != null) {
 
-		panel.add(label);
-		panel.add(dbStyles, "shrink, right, wrap");
+			JLabel label = new JLabel(PluginServices.getText(this, "legends_group_name"));
+			label.setEnabled(DBSession.getCurrentSession() != null);
+			dbStyles = new JTextField("", 20);
+
+			panel.add(label);
+			panel.add(dbStyles, "shrink, right, wrap");
+
+		} else {
+			panel.add(new JLabel(PluginServices.getText(this, "notConnectedError")));
+			databaseRB.setEnabled(false);
+		}
 
 		return panel;
 	}
@@ -259,6 +269,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 			panel.add(fileStyles, "shrink, right, wrap");
 		} else {
 			panel.add(new JLabel(PluginServices.getText(this, "no_dir_config")), "span 2");
+			fileRB.setEnabled(false);
 		}
 
 		return panel;

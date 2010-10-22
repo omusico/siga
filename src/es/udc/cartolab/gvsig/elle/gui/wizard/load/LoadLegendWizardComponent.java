@@ -1,16 +1,16 @@
 /*
  * Copyright (c) 2010. CartoLab, Universidad de A Coruña
- * 
+ *
  * This file is part of ELLE
- * 
+ *
  * ELLE is free software: you can redistribute it and/or modify it under the terms
  * of the GNU General Public License as published by the Free Software Foundation, either
  * version 3 of the License, or any later version.
- * 
+ *
  * ELLE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with ELLE.
  * If not, see <http://www.gnu.org/licenses/>.
 */
@@ -58,19 +58,40 @@ public class LoadLegendWizardComponent extends WizardComponent {
 	public LoadLegendWizardComponent(Map<String, Object> properties) {
 		super(properties);
 
+		//get config
 		XMLEntity xml = PluginServices.getPluginServices("es.udc.cartolab.gvsig.elle").getPersistentXML();
 		if (xml.contains(EllePreferencesPage.DEFAULT_LEGEND_DIR_KEY_NAME)) {
 			legendDir = xml.getStringProperty(EllePreferencesPage.DEFAULT_LEGEND_DIR_KEY_NAME);
 		}
 
+
+		//init components
+		noLegendRB = new JRadioButton(PluginServices.getText(this, "dont_load"));
+		databaseRB = new JRadioButton(PluginServices.getText(this, "load_from_db"));
+		fileRB = new JRadioButton(PluginServices.getText(this, "load_from_disk"));
+		dbCB = new JComboBox();
+		fileCB = new JComboBox();
+		dbPanel = getDBPanel();
+		filePanel = getFilePanel();
+		ButtonGroup group = new ButtonGroup();
+		group.add(noLegendRB);
+		group.add(databaseRB);
+		group.add(fileRB);
+
+
+		//components placement
 		setLayout(new MigLayout("inset 0, align center",
 				"20[grow]",
 		"[]15[][]15[][]"));
+		add(noLegendRB, "wrap");
+		add(databaseRB, "wrap");
+		add(dbPanel, "shrink, growx, growy, wrap");
+		add(fileRB, "wrap");
+		add(filePanel, "shrink, growx, growy, wrap");
 
-		dbPanel = getDBPanel();
-		filePanel = getFilePanel();
 
-		noLegendRB = new JRadioButton(PluginServices.getText(this, "dont_load"));
+
+		//listeners
 		noLegendRB.addActionListener(new ActionListener() {
 
 			@Override
@@ -80,9 +101,7 @@ public class LoadLegendWizardComponent extends WizardComponent {
 			}
 
 		});
-		add(noLegendRB, "wrap");
 
-		databaseRB = new JRadioButton(PluginServices.getText(this, "load_from_db"));
 		databaseRB.addActionListener(new ActionListener() {
 
 			@Override
@@ -92,10 +111,7 @@ public class LoadLegendWizardComponent extends WizardComponent {
 			}
 
 		});
-		add(databaseRB, "wrap");
-		add(dbPanel, "shrink, growx, growy, wrap");
 
-		fileRB = new JRadioButton(PluginServices.getText(this, "load_from_disk"));
 		fileRB.addActionListener(new ActionListener() {
 
 			@Override
@@ -105,14 +121,8 @@ public class LoadLegendWizardComponent extends WizardComponent {
 			}
 
 		});
-		add(fileRB, "wrap");
-		add(filePanel, "shrink, growx, growy, wrap");
 
-		ButtonGroup group = new ButtonGroup();
-		group.add(noLegendRB);
-		group.add(databaseRB);
-		group.add(fileRB);
-
+		//initial values
 		noLegendRB.setSelected(true);
 		dbSetEnabled(false);
 		fileSetEnabled(false);
@@ -136,11 +146,17 @@ public class LoadLegendWizardComponent extends WizardComponent {
 		"5[grow]5");
 		panel.setLayout(layout);
 
-		JLabel label = new JLabel(PluginServices.getText(this, "legends_group_name"));
-		dbCB = new JComboBox();
+		if (DBSession.getCurrentSession()!=null) {
+			dbCB.removeAllItems();
+			JLabel label = new JLabel(PluginServices.getText(this, "legends_group_name"));
+			label.setEnabled(DBSession.getCurrentSession() != null);
+			panel.add(label);
+			panel.add(dbCB, "wrap");
+		} else {
+			panel.add(new JLabel(PluginServices.getText(this, "notConnectedError")));
+			databaseRB.setEnabled(false);
+		}
 
-		panel.add(label);
-		panel.add(dbCB, "wrap");
 
 		return panel;
 	}
@@ -153,8 +169,8 @@ public class LoadLegendWizardComponent extends WizardComponent {
 		"5[grow]5");
 		panel.setLayout(layout);
 
-		fileCB = new JComboBox();
 		if (legendDir != null) {
+			fileCB.removeAllItems();
 			File f = new File(legendDir);
 			File[] files = f.listFiles();
 			for (int i=0; i<files.length; i++) {
@@ -165,6 +181,7 @@ public class LoadLegendWizardComponent extends WizardComponent {
 			panel.add(new JLabel(PluginServices.getText(this, "legends_group_name")));
 			panel.add(fileCB, "wrap");
 		} else {
+			fileRB.setEnabled(false);
 			panel.add(new JLabel(PluginServices.getText(this, "no_dir_config")), "span 2");
 		}
 
@@ -192,22 +209,24 @@ public class LoadLegendWizardComponent extends WizardComponent {
 		dbCB.removeAllItems();
 
 		DBSession dbs = DBSession.getCurrentSession();
-		try {
-			if (dbs.tableExists(dbs.getSchema(), "_map_style")) {
-				String[] legends = dbs.getDistinctValues("_map_style", dbs.getSchema(), "nombre_estilo", true, false);
-				for (String legend : legends) {
-					dbCB.addItem(legend);
-				}
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		if (dbs!=null) {
 			try {
-				dbs = DBSession.reconnect();
-			} catch (DBException e1) {
+				if (dbs.tableExists(dbs.getSchema(), "_map_style")) {
+					String[] legends = dbs.getDistinctValues("_map_style", dbs.getSchema(), "nombre_estilo", true, false);
+					for (String legend : legends) {
+						dbCB.addItem(legend);
+					}
+				}
+			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				try {
+					dbs = DBSession.reconnect();
+				} catch (DBException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				e.printStackTrace();
 			}
-			e.printStackTrace();
 		}
 	}
 
