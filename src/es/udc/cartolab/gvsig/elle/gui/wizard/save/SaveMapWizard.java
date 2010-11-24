@@ -42,7 +42,7 @@ public class SaveMapWizard extends WizardWindow {
 
 	}
 
-	@Override
+
 	public WindowInfo getWindowInfo() {
 		if (viewInfo == null) {
 			viewInfo = new WindowInfo(WindowInfo.MODALDIALOG | WindowInfo.RESIZABLE);
@@ -53,12 +53,12 @@ public class SaveMapWizard extends WizardWindow {
 		return viewInfo;
 	}
 
-	@Override
+
 	public Object getWindowProfile() {
 		return null;
 	}
 
-	@Override
+
 	protected void addWizardComponents() {
 		views.add(new SaveMapWizardComponent(properties));
 		views.add(new SaveLegendsWizardComponent(properties));

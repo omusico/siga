@@ -77,7 +77,7 @@ public class LoadMapWizardComponent extends WizardComponent implements ActionLis
 		return false;
 	}
 
-	@Override
+
 	public void actionPerformed(ActionEvent e) {
 		callStateChanged();
 	}

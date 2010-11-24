@@ -34,7 +34,7 @@ public class LoadMapWizard extends WizardWindow {
 
 	}
 
-	@Override
+
 	public WindowInfo getWindowInfo() {
 		if (viewInfo == null) {
 			viewInfo = new WindowInfo(WindowInfo.MODELESSDIALOG | WindowInfo.PALETTE);
@@ -45,7 +45,7 @@ public class LoadMapWizard extends WizardWindow {
 		return viewInfo;
 	}
 
-	@Override
+
 	public Object getWindowProfile() {
 		return null;
 	}

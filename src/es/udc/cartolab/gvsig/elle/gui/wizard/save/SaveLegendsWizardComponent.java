@@ -119,7 +119,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 
 		noLegendRB.addActionListener(new ActionListener() {
 
-			@Override
+
 			public void actionPerformed(ActionEvent e) {
 				dbSetEnabled(false);
 				fileSetEnabled(false);
@@ -132,7 +132,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 		databaseRB.setEnabled(DBSession.getCurrentSession() != null);
 		databaseRB.addActionListener(new ActionListener() {
 
-			@Override
+
 			public void actionPerformed(ActionEvent e) {
 				dbSetEnabled(true);
 				fileSetEnabled(false);
@@ -144,7 +144,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 
 		fileRB.addActionListener(new ActionListener() {
 
-			@Override
+
 			public void actionPerformed(ActionEvent e) {
 				dbSetEnabled(false);
 				fileSetEnabled(true);
@@ -173,7 +173,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 		overviewCHB = new JCheckBox(PluginServices.getText(this, "save_overview_legends"));
 		overviewCHB.addActionListener(new ActionListener() {
 
-			@Override
+
 			public void actionPerformed(ActionEvent e) {
 				overviewCB.setEnabled(overviewCHB.isSelected());
 			}

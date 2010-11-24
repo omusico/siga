@@ -94,7 +94,7 @@ public class LoadLegendWizardComponent extends WizardComponent {
 		//listeners
 		noLegendRB.addActionListener(new ActionListener() {
 
-			@Override
+
 			public void actionPerformed(ActionEvent e) {
 				dbSetEnabled(false);
 				fileSetEnabled(false);
@@ -104,7 +104,7 @@ public class LoadLegendWizardComponent extends WizardComponent {
 
 		databaseRB.addActionListener(new ActionListener() {
 
-			@Override
+
 			public void actionPerformed(ActionEvent e) {
 				dbSetEnabled(true);
 				fileSetEnabled(false);
@@ -114,7 +114,7 @@ public class LoadLegendWizardComponent extends WizardComponent {
 
 		fileRB.addActionListener(new ActionListener() {
 
-			@Override
+
 			public void actionPerformed(ActionEvent e) {
 				dbSetEnabled(false);
 				fileSetEnabled(true);

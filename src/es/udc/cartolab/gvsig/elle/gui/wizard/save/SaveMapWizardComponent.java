@@ -118,17 +118,17 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 
 		mapNameField.addKeyListener(new KeyListener() {
 
-			@Override
+
 			public void keyPressed(KeyEvent e) {
 
 			}
 
-			@Override
+
 			public void keyReleased(KeyEvent e) {
 				callStateChanged();
 			}
 
-			@Override
+
 			public void keyTyped(KeyEvent e) {
 
 			}
@@ -370,27 +370,27 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 		final LayerListPopupMenu popupmenu = new LayerListPopupMenu(this, mapTable, mapLayers);
 		mapTable.addMouseListener(new MouseListener() {
 
-			@Override
+
 			public void mouseClicked(MouseEvent e) {
 				if (e.isMetaDown()) {
 					popupmenu.show(e.getComponent(), e.getX(), e.getY());
 				}
 			}
 
-			@Override
+
 			public void mouseEntered(MouseEvent e) {
 				System.out.println("mouse entered");
 			}
 
-			@Override
+
 			public void mouseExited(MouseEvent e) {
 			}
 
-			@Override
+
 			public void mousePressed(MouseEvent e) {
 			}
 
-			@Override
+
 			public void mouseReleased(MouseEvent e) {
 			}
 
@@ -704,7 +704,7 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 		}
 	}
 
-	@Override
+
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource() == upButton) {

@@ -109,7 +109,7 @@ public class SaveLegendsWizard extends WizardWindow {
 
 	}
 
-	@Override
+
 	public WindowInfo getWindowInfo() {
 		if (viewInfo == null) {
 			viewInfo = new WindowInfo(WindowInfo.MODALDIALOG | WindowInfo.RESIZABLE);
@@ -120,7 +120,7 @@ public class SaveLegendsWizard extends WizardWindow {
 		return viewInfo;
 	}
 
-	@Override
+
 	public Object getWindowProfile() {
 		return null;
 	}

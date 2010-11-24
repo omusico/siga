@@ -92,17 +92,17 @@ public class EllePreferencesPage extends AbstractPreferencePage implements Actio
 		xml.putProperty(DEFAULT_LEGEND_FILE_TYPE_KEY_NAME, type);
 	}
 
-	@Override
+
 	public String getID() {
 		return id;
 	}
 
-	@Override
+
 	public ImageIcon getIcon() {
 		return icon;
 	}
 
-	@Override
+
 	public JPanel getPanel() {
 
 		if (!panelStarted ) {
@@ -132,12 +132,12 @@ public class EllePreferencesPage extends AbstractPreferencePage implements Actio
 		return this;
 	}
 
-	@Override
+
 	public String getTitle() {
 		return title;
 	}
 
-	@Override
+
 	public void initializeDefaults() {
 
 		legendDirField.setText(DEFAULT_LEGEND_DIR);
@@ -156,7 +156,7 @@ public class EllePreferencesPage extends AbstractPreferencePage implements Actio
 		}
 	}
 
-	@Override
+
 	public void initializeValues() {
 
 		if (!panelStarted) {
@@ -185,7 +185,7 @@ public class EllePreferencesPage extends AbstractPreferencePage implements Actio
 
 	}
 
-	@Override
+
 	public boolean isValueChanged() {
 		return super.hasChanged();
 	}

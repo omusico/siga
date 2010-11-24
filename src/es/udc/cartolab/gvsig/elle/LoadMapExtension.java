@@ -69,7 +69,6 @@ public class LoadMapExtension extends Extension implements IPreferenceExtension 
 		return dbs!=null;
 	}
 
-	@Override
 	public IPreference[] getPreferencesPages() {
 		IPreference[] preferences=new IPreference[1];
 		preferences[0]=ellePreferencesPage;

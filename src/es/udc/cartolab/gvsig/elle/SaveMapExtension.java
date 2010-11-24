@@ -26,14 +26,14 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class SaveMapExtension extends Extension {
 
-	@Override
+
 	public void execute(String actionCommand) {
 		View view = (View) PluginServices.getMDIManager().getActiveWindow();
 		SaveMapWizard wizard = new SaveMapWizard(view);
 		wizard.open();
 	}
 
-	@Override
+
 	public void initialize() {
 		registerIcons();
 	}
@@ -45,7 +45,7 @@ public class SaveMapExtension extends Extension {
 			);
 	}
 
-	@Override
+
 	public boolean isEnabled() {
 		if (PluginServices.getMDIManager().getActiveWindow() instanceof View) {
 			FLayers layers = ((View) PluginServices.getMDIManager().getActiveWindow()).getMapControl().getMapContext().getLayers();
@@ -54,7 +54,7 @@ public class SaveMapExtension extends Extension {
 		return false;
 	}
 
-	@Override
+
 	public boolean isVisible() {
 		if (PluginServices.getMDIManager().getActiveWindow() instanceof View) {
 			DBSession session = DBSession.getCurrentSession();
