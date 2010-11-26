@@ -1,16 +1,16 @@
 /*
  * Copyright (c) 2010. CartoLab, Universidad de A Coruña
- * 
+ *
  * This file is part of ELLE
- * 
+ *
  * ELLE is free software: you can redistribute it and/or modify it under the terms
  * of the GNU General Public License as published by the Free Software Foundation, either
  * version 3 of the License, or any later version.
- * 
+ *
  * ELLE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with ELLE.
  * If not, see <http://www.gnu.org/licenses/>.
 */
@@ -62,7 +62,7 @@ public class LoadMap {
 	/**
 	 * Get layers querying on '_map' table to the MapView.
 	 * Get layers querying on '_map_overview' table to the MapOverView.
-	 * 
+	 *
 	 * _MAP SCHEMA:
 	 * 0.- mapa character varying(255) NOT NULL,
 	 * 1.- nombre_capa character varying(255) NOT NULL,
@@ -74,9 +74,9 @@ public class LoadMap {
 	 * 7.- grupo character varying,
 	 * 8.- "schema" character varying,
 	 * 9.- localizador boolean
-	 * 
-	 * 
-	 * 
+	 *
+	 *
+	 *
 	 * @param view
 	 * @param mapName
 	 * @param proj
@@ -359,7 +359,7 @@ public class LoadMap {
 	public static void createMapTables() throws SQLException {
 
 		boolean commit = false;
-		
+
 		DBSession dbs = DBSession.getCurrentSession();
 
 		String sqlCreateMap = "CREATE TABLE " + dbs.getSchema() +"._map "
@@ -374,7 +374,7 @@ public class LoadMap {
 		+ "   grupo character varying,"
 		+ "   \"schema\" character varying,"
 		+ "   localizador boolean,"
-		+ "   CONSTRAINT \"_map_pkey\" PRIMARY KEY (mapa, nombre_capa)"
+		+ "   PRIMARY KEY (mapa, nombre_capa)"
 		+ ")";
 
 		String sqlCreateMapOverview =  "CREATE TABLE " + dbs.getSchema() + "._map_overview"
@@ -383,7 +383,7 @@ public class LoadMap {
 		+ "  nombre_capa character varying NOT NULL,"
 		+ "  \"schema\" character varying,"
 		+ "  posicion integer,"
-		+ "  CONSTRAINT _map_overview_pkey PRIMARY KEY (mapa, nombre_capa)"
+		+ "  PRIMARY KEY (mapa, nombre_capa)"
 		+ ")";
 
 		String sqlGrant = "GRANT SELECT ON TABLE " + dbs.getSchema() + ".%s TO public";

@@ -18,10 +18,6 @@ package es.udc.cartolab.gvsig.elle.gui.wizard.save;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -43,16 +39,17 @@ import javax.swing.table.TableColumn;
 import net.miginfocom.swing.MigLayout;
 
 import com.iver.andami.PluginServices;
-import com.iver.cit.gvsig.fmap.drivers.legend.LegendDriverException;
-import com.iver.cit.gvsig.fmap.layers.FLayer;
+import com.iver.cit.gvsig.fmap.drivers.DBException;
 import com.iver.cit.gvsig.fmap.layers.FLayers;
-import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 import com.iver.utiles.XMLEntity;
 
 import es.udc.cartolab.gvsig.elle.gui.EllePreferencesPage;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardComponent;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardException;
+import es.udc.cartolab.gvsig.elle.utils.AbstractLegendsManager;
+import es.udc.cartolab.gvsig.elle.utils.DBLegendsManager;
+import es.udc.cartolab.gvsig.elle.utils.FileLegendsManager;
 import es.udc.cartolab.gvsig.elle.utils.LoadLegend;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -223,11 +220,15 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 
 
 	private void dbSetEnabled(boolean enabled) {
-		dbStyles.setEnabled(enabled);
+		if (dbStyles != null) {
+			dbStyles.setEnabled(enabled);
+		}
 	}
 
 	private void fileSetEnabled(boolean enabled) {
-		fileStyles.setEnabled(enabled);
+		if (fileStyles != null) {
+			fileStyles.setEnabled(enabled);
+		}
 	}
 
 	private JPanel getDBPanel() {
@@ -276,18 +277,34 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 
 	}
 
-	@Override
 	public boolean canFinish() {
 		return true;
 	}
 
-	@Override
 	public boolean canNext() {
 		return true;
 	}
 
-	@Override
-	public void finish() throws WizardException {
+	private boolean useNotGVL() {
+		Object[] options = {PluginServices.getText(this, "ok"),
+				PluginServices.getText(this, "cancel")};
+		int n = JOptionPane.showOptionDialog(this,
+				PluginServices.getText(this, "legend_format_question"),
+				null,
+				JOptionPane.YES_NO_CANCEL_OPTION,
+				JOptionPane.WARNING_MESSAGE,
+				null,
+				options,
+				options[1]);
+		if (n!=0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	public boolean prepare(AbstractLegendsManager legendsManager) {
+
 
 		boolean question = true;
 		Object aux = properties.get(PROPERTY_CREATE_TABLES_QUESTION);
@@ -295,208 +312,172 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 			question = (Boolean) aux;
 		}
 
+		boolean prepare = false;
+		String message = legendsManager.getConfirmationMessage();
+		if (message != null) {
+			if (question) {
+				int answer = JOptionPane.showConfirmDialog(
+						this,
+						message,
+						"",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE,
+						null);
+
+				if (answer==0) {
+					prepare = true;
+				} else {
+					prepare = false;
+				}
+			} else {
+				prepare = true;
+			}
+
+
+			if (prepare) {
+				try {
+					legendsManager.prepare();
+				} catch (WizardException e) {
+					//TODO logger
+					return false;
+				}
+				if (question) {
+					JOptionPane.showMessageDialog(
+							this,
+							PluginServices.getText(this, "tables_created_correctly"),
+							"",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
+				return true;
+			} else {
+				return false;
+			}
+
+		} else {
+			return true;
+		}
+	}
+
+	private boolean overwriteLegends(AbstractLegendsManager legendsManager) {
+		if (legendsManager.exists()) {
+			Object[] options = {PluginServices.getText(this, "ok"),
+					PluginServices.getText(this, "cancel")};
+			String message = PluginServices.getText(this, "overwrite_legend_question");
+			int n = JOptionPane.showOptionDialog(this,
+					String.format(message, dbStyles.getText()),
+					PluginServices.getText(this, "overwrite_legend"),
+					JOptionPane.YES_NO_CANCEL_OPTION,
+					JOptionPane.WARNING_MESSAGE,
+					null,
+					options,
+					options[1]);
+			if (n!=0) {
+				return false;
+			} else {
+				try {
+					LoadLegend.deleteLegends(dbStyles.getText());
+				} catch (SQLException e) {
+					try {
+						DBSession.reconnect();
+					} catch (DBException e1) {
+						//TODO logger
+						return false;
+					}
+				}
+				return true;
+			}
+		} else {
+			return true;
+		}
+	}
+
+	public void finish() throws WizardException {
+
 		if (!noLegendRB.isSelected()) {
+
+			AbstractLegendsManager legendsManager;
+			if (databaseRB.isSelected()) {
+				String name = dbStyles.getText().trim();
+				if (!name.equals("")) {
+					legendsManager = new DBLegendsManager(name);
+				} else {
+					throw new WizardException(PluginServices.getText(this,"empty_legend_field"), false);
+				}
+			} else {
+				String name = fileStyles.getText().trim();
+				if (!name.equals("")) {
+					legendsManager = new FileLegendsManager(name);
+				} else {
+					throw new WizardException(PluginServices.getText(this, "empty_legend_field"), false);
+				}
+			}
 			DefaultTableModel model = (DefaultTableModel) table.getModel();
-			if (fileRB.isSelected() && !fileStyles.equals("") || databaseRB.isSelected() && !dbStyles.equals("")) {
-				boolean cont = true;
-				boolean useNotGvl = false;
-				for (int i = 0; i<model.getRowCount(); i++) {
-					String type = model.getValueAt(i, 2).toString();
-					boolean save = (Boolean) model.getValueAt(i, 0);
-					if (save && !type.toLowerCase().equals("gvl")) {
+
+			boolean useNotGvl = false;
+			for (int i = 0; i<model.getRowCount(); i++) {
+				String type = model.getValueAt(i, 2).toString().toLowerCase();
+				boolean save = (Boolean) model.getValueAt(i, 0);
+				if (save) {
+					LayerProperties lp = layers.get(i);
+					lp.setLegendType(type);
+					legendsManager.addLayer(layers.get(i));
+					if (!type.equals("gvl")) {
 						useNotGvl = true;
 						break;
 					}
 				}
-				if (overviewCHB.isSelected() && !overviewCB.getSelectedItem().toString().toLowerCase().equals("gvl")) {
-					useNotGvl = true;
-				}
-				if (useNotGvl) {
-					Object[] options = {PluginServices.getText(this, "ok"),
-							PluginServices.getText(this, "cancel")};
-					int n = JOptionPane.showOptionDialog(this,
-							PluginServices.getText(this, "legend_format_question"),
-							null,
-							JOptionPane.YES_NO_CANCEL_OPTION,
-							JOptionPane.WARNING_MESSAGE,
-							null,
-							options,
-							options[1]);
-					if (n!=0) {
-						cont = false;
-					}
-				}
-				try {
-					DBSession dbs = DBSession.getCurrentSession();
-					boolean tableStylesExists = dbs.tableExists(dbs.getSchema(), "_map_style");
-					boolean tableOvStylesExists = dbs.tableExists(dbs.getSchema(), "_map_overview_style");
-					if (cont && (!tableStylesExists || !tableOvStylesExists)) {
-						boolean createTable = false;
-						boolean showMsg = false;
-						if (!question) {
-							createTable = true;
-						} else {
-							String message = String.format(PluginServices.getText(this, "tables_will_be_created"), dbs.getSchema());
-							int answer = JOptionPane.showConfirmDialog(
-									this,
-									message,
-									"",
-									JOptionPane.YES_NO_OPTION,
-									JOptionPane.QUESTION_MESSAGE,
-									null);
-							if (answer == 0) {
-								createTable = true;
-								showMsg = true;
-							}
-						}
-						if (createTable) {
-							LoadLegend.createLegendtables();
-							if (showMsg) {
-								JOptionPane.showMessageDialog(
-										this,
-										PluginServices.getText(this, "tables_created_correctly"),
-										"",
-										JOptionPane.INFORMATION_MESSAGE);
-							}
-						} else {
-							cont = false;
-						}
-					}
-					if (cont) {
-						String dirName = fileStyles.getText();
-						File dir = null;
-						if (fileRB.isSelected()) {
-							dir = getDir(dirName);
-							if (dir == null) {
-								cont = false;
-							}
-						} else {
-							if (LoadLegend.legendExistsDB(dbStyles.getText())) {
-								Object[] options = {PluginServices.getText(this, "ok"),
-										PluginServices.getText(this, "cancel")};
-								String message = PluginServices.getText(this, "overwrite_legend_question");
-								int n = JOptionPane.showOptionDialog(this,
-										String.format(message, dbStyles.getText()),
-										PluginServices.getText(this, "overwrite_legend"),
-										JOptionPane.YES_NO_CANCEL_OPTION,
-										JOptionPane.WARNING_MESSAGE,
-										null,
-										options,
-										options[1]);
-								if (n!=0) {
-									cont = false;
-								} else {
-									LoadLegend.deleteLegends(dbStyles.getText());
-								}
-							}
-						}
-						if (cont) {
-							saveLegends(model, dir);
-							saveOverviewLegends(dir);
-						} else {
-							throw new WizardException("", false, false);
-						}
-					} else {
-						throw new WizardException("", false, false);
-					}
-				} catch (WizardException e) {
-					throw e;
-				} catch (Exception e) {
-					throw new WizardException(e);
-				}
 			}
+
+			if (overviewCHB.isSelected()) {
+				Object aux = properties.get(SaveMapWizard.PROPERTY_VIEW);
+				if (aux != null && aux instanceof View) {
+					FLayers ovLayers = ((View) aux).getMapOverview().getMapContext().getLayers();
+					legendsManager.addOverviewLayers(ovLayers);
+
+					if (!overviewCB.getSelectedItem().toString().toLowerCase().equals("gvl")) {
+						useNotGvl = true;
+					}
+				}
+
+			}
+
+			boolean cont = true;
+			if (useNotGvl) {
+				cont = useNotGVL();
+			}
+
+			if (cont) {
+				cont = prepare(legendsManager);
+			}
+
+			if (cont) {
+				cont = overwriteLegends(legendsManager);
+			}
+
+			if (cont) {
+				legendsManager.saveLegends();
+				if (overviewCHB.isSelected()) {
+					legendsManager.saveOverviewLegends(overviewCB.getSelectedItem().toString());
+				}
+			} else {
+				throw new WizardException("", false, false);
+			}
+
 		}
 
 	}
 
-	private void saveLegends(DefaultTableModel model, File dir) throws LegendDriverException, IOException, SQLException {
-		for (int i=0; i<model.getRowCount(); i++) {
-			if ((Boolean) model.getValueAt(i, 0)) {
-				FLayer layer = layers.get(i).getLayer();
-				if (layer instanceof FLyrVect) {
-					String type = model.getValueAt(i, 2).toString();
-					if (fileRB.isSelected()) {
-						saveFileLegend(dir, (FLyrVect) layer, type);
-					} else {
-						saveDBLegend(dbStyles.getText(), (FLyrVect) layer, type, "_map_style");
-					}
-				}
-			}
-		}
-	}
-
-	private void saveOverviewLegends(File dir) throws LegendDriverException, WizardException, IOException, SQLException {
-		Object aux = properties.get(SaveMapWizard.PROPERTY_VIEW);
-		if (aux != null && aux instanceof View) {
-			FLayers ovLayers = ((View) aux).getMapOverview().getMapContext().getLayers();
-			if (fileRB.isSelected()) {
-				File overviewDir = new File(dir.getAbsolutePath() + File.separator + "overview");
-				if (!overviewDir.exists()) {
-					overviewDir.mkdir();
-				}
-				if (!overviewDir.isDirectory()) {
-					String msg = PluginServices.getText(this, "legend_overview_error");
-					throw new WizardException(String.format(msg, overviewDir.getAbsolutePath()));
-				}
-			}
-			for (int i=0; i<ovLayers.getLayersCount(); i++) {
-				if (ovLayers.getLayer(i) instanceof FLyrVect) {
-					if (fileRB.isSelected()) {
-						File overviewDir = new File(dir.getAbsolutePath() + File.separator + "overview");
-						saveFileLegend(overviewDir, (FLyrVect) ovLayers.getLayer(i), overviewCB.getSelectedItem().toString().toLowerCase());
-					} else {
-						saveDBLegend(dbStyles.getText(), (FLyrVect) ovLayers.getLayer(i), overviewCB.getSelectedItem().toString().toLowerCase(), "_map_overview_style");
-					}
-				}
-			}
-		}
-	}
-
-	private void saveDBLegend(String legendName, FLyrVect layer, String type, String table) throws IOException, LegendDriverException, SQLException {
-		File legendFile = File.createTempFile("style", "." + type);
-		LoadLegend.saveLegend(layer, legendFile);
-		BufferedReader reader = new BufferedReader(new FileReader(legendFile.getAbsolutePath()));
-		StringBuffer buffer = new StringBuffer();
-		String line = reader.readLine();
-		while (line != null) {
-			buffer.append(line).append("\n");
-			line = reader.readLine();
-		}
-		String xml = buffer.toString();
-		String[] row = {
-				layer.getName(),
-				legendName,
-				type,
-				xml
-		};
-		DBSession dbs = DBSession.getCurrentSession();
-		dbs.insertRow(dbs.getSchema(), table, row);
-	}
-
-	private void saveFileLegend(File dir, FLyrVect layer, String type) throws LegendDriverException {
-		if (dir!=null) {
-			String path = dir.getAbsolutePath();
-			if (!path.endsWith(File.separator)) {
-				path = path + File.separator;
-			}
-			File legendFile = new File(path + layer.getName() + "." + type);
-			LoadLegend.saveLegend(layer, legendFile);
-		}
-	}
-
-
-	@Override
 	public String getWizardComponentName() {
 		return "save_legends";
 	}
 
-	@Override
+
 	public void setProperties() {
 		// Nothing to do
 
 	}
 
-	@Override
+
 	public void showComponent() throws WizardException {
 
 		Object aux = properties.get(SaveMapWizardComponent.PROPERTY_LAYERS_MAP);
@@ -530,69 +511,10 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 		overviewCB.setEnabled(overviewCHB.isSelected());
 	}
 
-	//checks if it's possible to save and then saves
-	private File getDir(String dir) throws WizardException {
-		PluginServices ps = PluginServices.getPluginServices("es.udc.cartolab.gvsig.elle");
-		XMLEntity xml = ps.getPersistentXML();
-		if (xml.contains(EllePreferencesPage.DEFAULT_LEGEND_DIR_KEY_NAME)) {
-			String path = xml.getStringProperty(EllePreferencesPage.DEFAULT_LEGEND_DIR_KEY_NAME);
-			if (path.endsWith(File.separator)) {
-				path = path + dir + File.separator;
-			} else {
-				path = path + File.separator + dir + File.separator;
-			}
-			File f = new File(path);
-			if (!f.exists()) {
-				if (!f.mkdir()) {
-					String message = PluginServices.getText(this, "legend_write_dir_error");
-					throw new WizardException(String.format(message, path));
-				} else {
-					return f;
-				}
-			} else {
-				if (!f.isDirectory()) {
-					throw new WizardException("legend_exist_file_error", false);
-				}
-				Object[] options = {PluginServices.getText(this, "ok"),
-						PluginServices.getText(this, "cancel")};
-				String message = PluginServices.getText(this, "overwrite_legend_question");
-				int n = JOptionPane.showOptionDialog(this,
-						String.format(message, dir),
-						PluginServices.getText(this, "overwrite_legend"),
-						JOptionPane.YES_NO_CANCEL_OPTION,
-						JOptionPane.WARNING_MESSAGE,
-						null,
-						options,
-						options[1]);
-				if (n==0) {
-					return f;
-				} else {
-					return null;
-				}
-			}
-
-		} else {
-			throw new WizardException(PluginServices.getText(this, "no_config_error"));
-		}
-	}
-
-	private FLayer getLayer(FLayers layers, String layerName) {
-		for (int i=layers.getLayersCount()-1; i>=0; i--) {
-			FLayer layer = layers.getLayer(i);
-			if (layer instanceof FLayers) {
-				return getLayer((FLayers) layer, layerName);
-			} else {
-				if (layerName.equals(layer.getName())) {
-					return layer;
-				}
-			}
-		}
-		return null;
-	}
 
 	private class LegendTableModel extends DefaultTableModel {
 
-		@Override
+
 		public Class<?> getColumnClass(int index) {
 			if (index == 0) {
 				return Boolean.class;
@@ -601,7 +523,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 			}
 		}
 
-		@Override
+
 		public boolean isCellEditable(int row, int column) {
 			if (column == 1) {
 				return false;

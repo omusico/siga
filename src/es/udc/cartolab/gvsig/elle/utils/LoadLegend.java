@@ -1,16 +1,16 @@
 /*
  * Copyright (c) 2010. CartoLab, Universidad de A Coruña
- * 
+ *
  * This file is part of ELLE
- * 
+ *
  * ELLE is free software: you can redistribute it and/or modify it under the terms
  * of the GNU General Public License as published by the Free Software Foundation, either
  * version 3 of the License, or any later version.
- * 
+ *
  * ELLE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with ELLE.
  * If not, see <http://www.gnu.org/licenses/>.
 */
@@ -231,7 +231,7 @@ public abstract class LoadLegend {
 		+ "  nombre_estilo character varying NOT NULL,"
 		+ "  type character varying(3),"
 		+ "  definicion xml,"
-		+ "  CONSTRAINT _map_style_pkey PRIMARY KEY (nombre_capa, nombre_estilo)"
+		+ "  PRIMARY KEY (nombre_capa, nombre_estilo)"
 		+ ")"
 		+ "WITH ("
 		+ "  OIDS=FALSE"
@@ -243,7 +243,7 @@ public abstract class LoadLegend {
 		+ "  nombre_estilo character varying NOT NULL,"
 		+ "  tipo character varying(3),"
 		+ "  definicion xml,"
-		+ "  CONSTRAINT overview_style_pk PRIMARY KEY (nombre_capa, nombre_estilo)"
+		+ "  PRIMARY KEY (nombre_capa, nombre_estilo)"
 		+ ")";
 
 		String sqlGrant = "GRANT SELECT ON TABLE " + dbs.getSchema() + ".%s TO public";
