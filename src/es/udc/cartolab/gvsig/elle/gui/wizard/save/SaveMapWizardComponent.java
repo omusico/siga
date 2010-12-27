@@ -1,16 +1,16 @@
 /*
  * Copyright (c) 2010. CartoLab, Universidad de A Coruña
- * 
+ *
  * This file is part of ELLE
- * 
+ *
  * ELLE is free software: you can redistribute it and/or modify it under the terms
  * of the GNU General Public License as published by the Free Software Foundation, either
  * version 3 of the License, or any later version.
- * 
+ *
  * ELLE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with ELLE.
  * If not, see <http://www.gnu.org/licenses/>.
 */
@@ -477,7 +477,7 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 							JOptionPane.QUESTION_MESSAGE,
 							null);
 					if (answer == 0) {
-						LoadMap.createMapTables();
+						LoadMap.getInstance().createMapTables();
 						properties.put(SaveLegendsWizardComponent.PROPERTY_CREATE_TABLES_QUESTION, false);
 						JOptionPane.showMessageDialog(
 								this,
@@ -494,7 +494,7 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 
 				String mapName = mapNameField.getText();
 
-				boolean mapExists = LoadMap.mapExists(mapName);
+				boolean mapExists = LoadMap.getInstance().mapExists(mapName);
 				if (mapExists) {
 					String question = PluginServices.getText(this, "overwrite_map_question");
 					question = String.format(question, mapName);
@@ -511,7 +511,7 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 					if (answer!=0) {
 						throw new WizardException("", false, false);
 					} else {
-						LoadMap.deleteMap(mapName);
+						LoadMap.getInstance().deleteMap(mapName);
 					}
 				}
 
@@ -587,7 +587,7 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 					return new String[]{mapoverviewError};
 				}
 			}
-			LoadMap.saveMap(rows.toArray(new Object[0][0]), mapName);
+			LoadMap.getInstance().saveMap(rows.toArray(new Object[0][0]), mapName);
 			return new String[0];
 		}
 
@@ -632,7 +632,7 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 				}
 			}
 		}
-		LoadMap.saveMapOverview(rows.toArray(new Object[0][0]), mapName);
+		LoadMap.getInstance().saveMapOverview(rows.toArray(new Object[0][0]), mapName);
 
 	}
 

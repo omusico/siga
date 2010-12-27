@@ -33,11 +33,30 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class LoadMap {
 
-	private LoadMap() {
+	private static LoadMap instance = null;
+
+	protected LoadMap() {
 
 	}
 
-	public static FLayer getLayer(String layerName, String tableName,
+	private synchronized static void createInstance() {
+		if (instance == null) {
+			instance = new LoadMap();
+		}
+	}
+
+	public static LoadMap getInstance() {
+		if (instance == null) {
+			createInstance();
+		}
+		return instance;
+	}
+
+	public Object clone() throws CloneNotSupportedException {
+		throw new CloneNotSupportedException();
+	}
+
+	public  FLayer getLayer(String layerName, String tableName,
 			String schema, String whereClause, IProjection proj,
 			boolean visible) throws SQLException, DBException {
 		DBSession dbs = DBSession.getCurrentSession();
@@ -54,7 +73,7 @@ public class LoadMap {
 		return layer;
 	}
 
-	public static void loadMap(View view, String mapName,
+	public  void loadMap(View view, String mapName,
 			IProjection proj) throws Exception {
 		loadMap(view, mapName, proj, null);
 	}
@@ -83,7 +102,7 @@ public class LoadMap {
 	 * @param loadCartBase
 	 * @throws Exception
 	 */
-	public static void loadMap(View view, String mapName,
+	public  void loadMap(View view, String mapName,
 			IProjection proj, String whereClause) throws Exception {
 
 		if (whereClause == null) {
@@ -127,33 +146,34 @@ public class LoadMap {
 				}
 
 				FLayer layer = getLayer(layers[i][1], layers[i][2], schema, whereClause, proj, visible);
-				if (maxScale >= minScale) {
-					if (maxScale > -1) {
-						layer.setMaxScale(maxScale);
+				if (layer != null) {
+					if (maxScale >= minScale) {
+						if (maxScale > -1) {
+							layer.setMaxScale(maxScale);
+						}
+						if (minScale > -1) {
+							layer.setMinScale(minScale);
+						}
 					}
-					if (minScale > -1) {
-						layer.setMinScale(minScale);
-					}
-				}
-				if (layers[i][7].length()>0) {
-					if (layers[i][7].equals(groupName)) {
-						group.addLayer(layer);
+					if (layers[i][7].length()>0) {
+						if (layers[i][7].equals(groupName)) {
+							group.addLayer(layer);
+						} else {
+							group = new FLayers();
+							group.setName(layers[i][7].toUpperCase());
+							group.setMapContext(view.getMapControl().getMapContext());
+							groupName = layers[i][7];
+							group.addLayer(layer);
+							view.getMapControl().getMapContext().getLayers().addLayer(group);
+						}
 					} else {
-						group = new FLayers();
-						group.setName(layers[i][7].toUpperCase());
-						group.setMapContext(view.getMapControl().getMapContext());
-						groupName = layers[i][7];
-						group.addLayer(layer);
-						view.getMapControl().getMapContext().getLayers().addLayer(group);
+						view.getMapControl().getMapContext().getLayers().addLayer(layer);
 					}
-				} else {
-					view.getMapControl().getMapContext().getLayers().addLayer(layer);
+					//				//Add to MapOverview (Localizator) the layer
+					//				if (layers[i][9].length()>0 && layers[i][9].equalsIgnoreCase("t")) {
+					//					view.getMapOverview().getMapContext().getLayers().addLayer(layer.cloneLayer());
+					//				}
 				}
-				//				//Add to MapOverview (Localizator) the layer
-				//				if (layers[i][9].length()>0 && layers[i][9].equalsIgnoreCase("t")) {
-				//					view.getMapOverview().getMapContext().getLayers().addLayer(layer.cloneLayer());
-				//				}
-
 			}
 
 			/////////////// MapOverview
@@ -176,7 +196,7 @@ public class LoadMap {
 
 	}
 
-	public static boolean isLayer(FLayers layers, String layerName) {
+	public  boolean isLayer(FLayers layers, String layerName) {
 
 		for (int i=0; i<layers.getLayersCount(); i++) {
 			boolean found = false;
@@ -203,7 +223,7 @@ public class LoadMap {
 	 * @return
 	 * @throws SQLException
 	 */
-	public static boolean isMapLoaded(View view, String mapName) throws SQLException {
+	public  boolean isMapLoaded(View view, String mapName) throws SQLException {
 
 		DBSession dbs = DBSession.getCurrentSession();
 		String where = "WHERE mapa='" + mapName + "'";
@@ -220,13 +240,13 @@ public class LoadMap {
 
 	}
 
-	public static void removeMap(View view, String mapName) throws SQLException {
+	public  void removeMap(View view, String mapName) throws SQLException {
 
 		FLayers layersOnView = view.getMapControl().getMapContext().getLayers();
 		removeMap(layersOnView, mapName, 0);
 	}
 
-	private static boolean removeMap(FLayers layers, String mapName, int depth) throws SQLException {
+	private  boolean removeMap(FLayers layers, String mapName, int depth) throws SQLException {
 		DBSession dbs = DBSession.getCurrentSession();
 		String where = "WHERE mapa='" + mapName + "'";
 		String[][] layersOnMap = dbs.getTable("_map", where);
@@ -268,7 +288,7 @@ public class LoadMap {
 		return layers.getLayersCount()==0;
 	}
 
-	public static boolean mapExists(String mapName) throws SQLException {
+	public  boolean mapExists(String mapName) throws SQLException {
 
 		DBSession dbs = DBSession.getCurrentSession();
 		String[] maps = dbs.getDistinctValues("_map", "mapa");
@@ -289,7 +309,7 @@ public class LoadMap {
 	 * @param mapName
 	 * @throws SQLException
 	 */
-	public static void saveMap(Object[][] rows, String mapName) throws SQLException {
+	public  void saveMap(Object[][] rows, String mapName) throws SQLException {
 
 		String auxMapName = "__aux__" + Double.toString(Math.random()*100000).trim();
 		DBSession dbs = DBSession.getCurrentSession();
@@ -322,7 +342,7 @@ public class LoadMap {
 		dbs.updateRows(dbs.getSchema(), "_map", new String[]{"mapa"}, new String[]{mapName}, "where mapa='" + auxMapName + "'");
 	}
 
-	public static void saveMapOverview(Object[][] rows, String mapName) throws SQLException {
+	public  void saveMapOverview(Object[][] rows, String mapName) throws SQLException {
 
 		String auxMapname = "__aux__" + Double.toString(Math.random()*100000).trim();
 		DBSession dbs = DBSession.getCurrentSession();
@@ -356,7 +376,7 @@ public class LoadMap {
 
 	}
 
-	public static void createMapTables() throws SQLException {
+	public  void createMapTables() throws SQLException {
 
 		boolean commit = false;
 
@@ -408,7 +428,7 @@ public class LoadMap {
 		}
 	}
 
-	public static void deleteMap(String mapName) throws SQLException {
+	public  void deleteMap(String mapName) throws SQLException {
 		DBSession dbs = DBSession.getCurrentSession();
 		String removeMap = "DELETE FROM " + dbs.getSchema() + "._map WHERE mapa=?";
 		String removeMapOverview = "DELETE FROM " + dbs.getSchema() + "._map_overview WHERE mapa=?";
