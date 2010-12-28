@@ -19,7 +19,6 @@ package es.udc.cartolab.gvsig.elle.gui.wizard.load;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Map;
@@ -230,45 +229,9 @@ public class LoadLegendWizardComponent extends WizardComponent {
 		}
 	}
 
-	private void loadDBLegend(FLyrVect layer, boolean overview) throws SQLException, IOException {
 
-		String table;
-		if (overview) {
-			table = "_map_overview_style";
-		} else {
-			table = "_map_style";
-		}
 
-		DBSession dbs = DBSession.getCurrentSession();
-		String layerName = layer.getName();
-		String styleName = dbCB.getSelectedItem().toString();
-		String[][] style = dbs.getTable(table, "where nombre_capa='" + layerName + "' and nombre_estilo='" + styleName + "'");
-		if (style.length == 1) {
-			String type = style[0][2];
-			String def = style[0][3];
 
-			File tmpLegend = File.createTempFile("style", layerName + "." + type);
-			FileWriter writer = new FileWriter(tmpLegend);
-			writer.write(def);
-			writer.close();
-			LoadLegend.setLegend(layer, tmpLegend.getAbsolutePath(), true);
-		}
-	}
-
-	private void loadFileLegend(FLyrVect layer, boolean overview) {
-		String stylePath;
-		if (legendDir.endsWith(File.separator)) {
-			stylePath = legendDir + fileCB.getSelectedItem().toString();
-		} else {
-			stylePath = legendDir + File.separator + fileCB.getSelectedItem().toString();
-		}
-		LoadLegend.setLegendPath(stylePath);
-		if (overview) {
-			LoadLegend.setOverviewLegend(layer);
-		} else {
-			LoadLegend.setLegend(layer);
-		}
-	}
 
 	@Override
 	public void finish() throws WizardException {
@@ -295,11 +258,16 @@ public class LoadLegendWizardComponent extends WizardComponent {
 		for (int i=0; i<layers.getLayersCount(); i++) {
 			FLayer layer = layers.getLayer(i);
 			if (layer instanceof FLyrVect) {
+				int source;
+				String styles;
 				if (databaseRB.isSelected()) {
-					loadDBLegend((FLyrVect) layer, overview);
+					source = LoadLegend.DB_LEGEND;
+					styles = dbCB.getSelectedItem().toString();
 				} else {
-					loadFileLegend((FLyrVect) layer, overview);
+					source = LoadLegend.FILE_LEGEND;
+					styles = fileCB.getSelectedItem().toString();
 				}
+				LoadLegend.loadLegend((FLyrVect) layer, styles, overview, source);
 			} else if (layer instanceof FLayers) {
 				loadLegends((FLayers) layer, overview);
 			}

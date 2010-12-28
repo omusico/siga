@@ -39,7 +39,8 @@ import com.jeta.forms.components.panel.FormPanel;
 
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardComponent;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardException;
-import es.udc.cartolab.gvsig.elle.utils.LoadMap;
+import es.udc.cartolab.gvsig.elle.utils.ELLEMap;
+import es.udc.cartolab.gvsig.elle.utils.MapDAO;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class LoadMapWizardComponent extends WizardComponent implements ActionListener {
@@ -207,7 +208,8 @@ public class LoadMapWizardComponent extends WizardComponent implements ActionLis
 		if (aux!=null && aux instanceof View) {
 			View view = (View) aux;
 			try {
-				LoadMap.getInstance().loadMap(view, mapList.getSelectedValue().toString(), crsPanel.getCurProj());
+				ELLEMap map = MapDAO.getInstance().getMap(view, mapList.getSelectedValue().toString(), "");
+				map.load(crsPanel.getCurProj());
 			} catch (Exception e) {
 				throw new WizardException(e);
 			}

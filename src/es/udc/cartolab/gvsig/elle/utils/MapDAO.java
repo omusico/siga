@@ -21,6 +21,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.cresques.cts.IProjection;
 
@@ -29,23 +30,25 @@ import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.fmap.layers.FLayers;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
+import es.udc.cartolab.gvsig.elle.gui.wizard.save.LayerProperties;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
-public class LoadMap {
+public class MapDAO {
 
-	private static LoadMap instance = null;
+	private static MapDAO instance = null;
+	private List<ELLEMap> loadedMaps;
 
-	protected LoadMap() {
-
+	protected MapDAO() {
+		loadedMaps = new ArrayList<ELLEMap>();
 	}
 
 	private synchronized static void createInstance() {
 		if (instance == null) {
-			instance = new LoadMap();
+			instance = new MapDAO();
 		}
 	}
 
-	public static LoadMap getInstance() {
+	public static MapDAO getInstance() {
 		if (instance == null) {
 			createInstance();
 		}
@@ -56,7 +59,7 @@ public class LoadMap {
 		throw new CloneNotSupportedException();
 	}
 
-	public  FLayer getLayer(String layerName, String tableName,
+	protected  FLayer getLayer(String layerName, String tableName,
 			String schema, String whereClause, IProjection proj,
 			boolean visible) throws SQLException, DBException {
 		DBSession dbs = DBSession.getCurrentSession();
@@ -73,9 +76,115 @@ public class LoadMap {
 		return layer;
 	}
 
-	public  void loadMap(View view, String mapName,
-			IProjection proj) throws Exception {
-		loadMap(view, mapName, proj, null);
+	public FLayer getLayer(LayerProperties lp, String whereClause, IProjection proj) throws SQLException, DBException {
+		return getLayer(lp.getLayername(), lp.getTablename(), lp.getSchema(),
+				whereClause, proj, lp.visible());
+	}
+
+	public ELLEMap getMap(View view, String mapName, String whereClause) throws Exception {
+		return getMap(view, mapName, whereClause, LoadLegend.NO_LEGEND, "");
+	}
+
+	protected List<LayerProperties> getViewLayers(String mapName) throws SQLException {
+
+		List<LayerProperties> viewLayers = new ArrayList<LayerProperties>();
+
+
+		DBSession dbs = DBSession.getCurrentSession();
+		if (dbs != null) {
+			String where = "WHERE mapa='" + mapName + "'";
+
+			System.out.println(where);
+
+			/////////////// MapControl
+			String[][] layers = dbs.getTable("_map", dbs.getSchema(), where, new String[]{"posicion"}, false);
+
+			for (int i=0; i<layers.length; i++) {
+				String schema=null;
+				if (layers[i][8].length()>0) {
+					schema = layers[i][8];
+				}
+				LayerProperties lp = new LayerProperties(schema, layers[i][2], layers[i][1]);
+
+				boolean visible = true;
+				if (!layers[i][4].equalsIgnoreCase("t")) {
+					visible = false;
+				}
+				lp.setVisible(visible);
+
+				double maxScale = -1;
+				try {
+					maxScale = Double.parseDouble(layers[i][5]);
+				} catch (NumberFormatException e) {
+					//do nothing
+				}
+				if (maxScale > -1) {
+					lp.setMaxScale(maxScale);
+				}
+
+				double minScale = -1;
+				try {
+					minScale = Double.parseDouble(layers[i][6]);
+				} catch (NumberFormatException e) {
+					//do nothing
+				}
+				if (minScale > -1) {
+					lp.setMinScale(minScale);
+				}
+
+				int position = 0;
+				try {
+					position = Integer.parseInt(layers[i][4]);
+				} catch (NumberFormatException e) {
+					//do nothing
+				}
+
+				lp.setPosition(position);
+
+				lp.setGroup(layers[i][7]);
+
+				viewLayers.add(lp);
+			}
+		}
+
+		return viewLayers;
+
+	}
+
+	protected List<LayerProperties> getOverviewLayers(String mapName) throws SQLException {
+
+		List<LayerProperties> overviewLayers = new ArrayList<LayerProperties>();
+
+
+		DBSession dbs = DBSession.getCurrentSession();
+		if (dbs != null) {
+			String where = "WHERE mapa='" + mapName + "'";
+
+			System.out.println(where);
+			String[][] layersOV = dbs.getTable("_map_overview", dbs.getSchema(), where, new String[]{"posicion"}, false);
+
+			for (int i=0; i<layersOV.length; i++) {
+				String schema=null;
+				if (layersOV[i][2].length()>0) {
+					schema = layersOV[i][2];
+				}
+
+				LayerProperties lp = new LayerProperties(schema, layersOV[i][1], layersOV[i][1]);
+
+				int position = 0;
+				try {
+					position = Integer.parseInt(layersOV[i][4]);
+				} catch (NumberFormatException e) {
+					//do nothing
+				}
+
+				lp.setPosition(position);
+
+				overviewLayers.add(lp);
+
+			}
+		}
+		return overviewLayers;
 	}
 
 	/**
@@ -99,104 +208,40 @@ public class LoadMap {
 	 * @param view
 	 * @param mapName
 	 * @param proj
-	 * @param loadCartBase
+	 * @param whereClause
+	 * @param stylesSource must fit with LoadLegend's NO_LEGEND, DB_LEGEND or FILE_LEGEND
+	 * @param stylesName
 	 * @throws Exception
 	 */
-	public  void loadMap(View view, String mapName,
-			IProjection proj, String whereClause) throws Exception {
+	public ELLEMap getMap(View view, String mapName,
+			String whereClause, int stylesSource, String stylesName) throws Exception {
 
 		if (whereClause == null) {
 			whereClause = "";
 		}
 
-		DBSession dbs = DBSession.getCurrentSession();
-		if (dbs != null) {
-			String where = "WHERE mapa='" + mapName + "'";
+		ELLEMap map = new ELLEMap(mapName, view);
+		map.setWhereClause(whereClause);
 
-			System.out.println(where);
-
-			/////////////// MapControl
-			String[][] layers = dbs.getTable("_map", dbs.getSchema(), where, new String[]{"posicion"}, false);
-
-			FLayers group = null;
-			String groupName = "default";
-			for (int i=0; i<layers.length; i++) {
-				String schema=null;
-				if (layers[i][8].length()>0) {
-					schema = layers[i][8];
-				}
-
-				boolean visible = true;
-				if (!layers[i][4].equalsIgnoreCase("t")) {
-					visible = false;
-				}
-
-				double maxScale = -1;
-				try {
-					maxScale = Double.parseDouble(layers[i][5]);
-				} catch (NumberFormatException e) {
-					//do nothing
-				}
-
-				double minScale = -1;
-				try {
-					minScale = Double.parseDouble(layers[i][6]);
-				} catch (NumberFormatException e) {
-					//do nothing
-				}
-
-				FLayer layer = getLayer(layers[i][1], layers[i][2], schema, whereClause, proj, visible);
-				if (layer != null) {
-					if (maxScale >= minScale) {
-						if (maxScale > -1) {
-							layer.setMaxScale(maxScale);
-						}
-						if (minScale > -1) {
-							layer.setMinScale(minScale);
-						}
-					}
-					if (layers[i][7].length()>0) {
-						if (layers[i][7].equals(groupName)) {
-							group.addLayer(layer);
-						} else {
-							group = new FLayers();
-							group.setName(layers[i][7].toUpperCase());
-							group.setMapContext(view.getMapControl().getMapContext());
-							groupName = layers[i][7];
-							group.addLayer(layer);
-							view.getMapControl().getMapContext().getLayers().addLayer(group);
-						}
-					} else {
-						view.getMapControl().getMapContext().getLayers().addLayer(layer);
-					}
-					//				//Add to MapOverview (Localizator) the layer
-					//				if (layers[i][9].length()>0 && layers[i][9].equalsIgnoreCase("t")) {
-					//					view.getMapOverview().getMapContext().getLayers().addLayer(layer.cloneLayer());
-					//				}
-				}
-			}
+		List<LayerProperties> viewLayers = getViewLayers(mapName);
+		for (LayerProperties lp : viewLayers) {
+			map.addLayer(lp);
+		}
 
 			/////////////// MapOverview
-			String[][] layersOV = dbs.getTable("_map_overview", dbs.getSchema(), where, new String[]{"posicion"}, false);
-
-			//			constants = Constants.getCurrentConstants();
-
-			for (int i=0; i<layersOV.length; i++) {
-				String schema=null;
-				if (layersOV[i][2].length()>0) {
-					schema = layersOV[i][2];
-				}
-
-				FLayer layer = getLayer(layersOV[i][1], layersOV[i][1], schema, whereClause, proj, true);
-				view.getMapOverview().getMapContext().getLayers().addLayer(layer.cloneLayer());
-
-			}
-
+		List<LayerProperties> overviewLayers = getOverviewLayers(mapName);
+		for (LayerProperties lp : overviewLayers) {
+			map.addOverviewLayer(lp);
 		}
+
+		map.setStyleSource(stylesSource);
+		map.setStyleName(stylesName);
+
+		return map;
 
 	}
 
-	public  boolean isLayer(FLayers layers, String layerName) {
+	private  boolean isLayer(FLayers layers, String layerName) {
 
 		for (int i=0; i<layers.getLayersCount(); i++) {
 			boolean found = false;
@@ -214,10 +259,16 @@ public class LoadMap {
 		return false;
 	}
 
+	public void addLoadedMap(ELLEMap map) {
+		loadedMaps.add(map);
+	}
+
+	public void removeLoadedMap(ELLEMap map) {
+		loadedMaps.remove(map);
+	}
+
 
 	/**
-	 * This function makes a DB call, so it shouldn't be used in functions that are
-	 * executed a lot of times like isVisible or isEnabled in a gvSIG extension.
 	 * @param view
 	 * @param mapName
 	 * @return
@@ -225,67 +276,17 @@ public class LoadMap {
 	 */
 	public  boolean isMapLoaded(View view, String mapName) throws SQLException {
 
-		DBSession dbs = DBSession.getCurrentSession();
-		String where = "WHERE mapa='" + mapName + "'";
-		String[][] layersOnMap = dbs.getTable("_map", where);
-		FLayers layersOnView = view.getMapControl().getMapContext().getLayers();
-		boolean result = true;
-		for (int i=0; i<layersOnMap.length; i++) {
-			result = result && isLayer(layersOnView, layersOnMap[i][1]);
-			if (!result) {
-				break;
+		for (ELLEMap map : loadedMaps) {
+			if (map.getView() == view && map.getName().equals(mapName)) {
+				return true;
 			}
 		}
-		return result;
+		return false;
 
 	}
 
-	public  void removeMap(View view, String mapName) throws SQLException {
-
-		FLayers layersOnView = view.getMapControl().getMapContext().getLayers();
-		removeMap(layersOnView, mapName, 0);
-	}
-
-	private  boolean removeMap(FLayers layers, String mapName, int depth) throws SQLException {
-		DBSession dbs = DBSession.getCurrentSession();
-		String where = "WHERE mapa='" + mapName + "'";
-		String[][] layersOnMap = dbs.getTable("_map", where);
-
-		ArrayList<Integer> removeIndexes = new ArrayList<Integer>();
-		for (int i=0; i<layers.getLayersCount(); i++) {
-
-			FLayer layer = layers.getLayer(i);
-			if (layer instanceof FLayers) {
-				boolean removedAll = removeMap((FLayers)layer, mapName, depth++);
-				if (removedAll) {
-					//						layers.removeLayer(layer);
-					removeIndexes.add(i);
-				}
-			}
-			for (int j=0; j<layersOnMap.length; j++) {
-				if (depth>0) {
-					if (layers.getName()!=null && !layersOnMap[j][7].equals("")) {
-						if (layers.getName().equalsIgnoreCase(layersOnMap[j][7]) && layer.getName().equals(layersOnMap[j][1])) {
-							//								layers.removeLayer(layer);
-							removeIndexes.add(i);
-							break;
-						}
-					}
-				} else {
-					if (layer.getName().equals(layersOnMap[j][1])) {
-						//							layers.removeLayer(layer);
-						removeIndexes.add(i);
-						break;
-					}
-				}
-			}
-
-		}
-		//remove all indexes backwards to avoid losing positions
-		for (int i=removeIndexes.size()-1; i>=0; i--) {
-			layers.removeLayer(i);
-		}
-		return layers.getLayersCount()==0;
+	public List<ELLEMap> getLoadedMaps() {
+		return loadedMaps;
 	}
 
 	public  boolean mapExists(String mapName) throws SQLException {

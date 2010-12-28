@@ -27,7 +27,7 @@ import com.iver.cit.gvsig.fmap.layers.VectorialDBAdapter;
 
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardException;
 
-public class LayerProperties {
+public class LayerProperties implements Comparable {
 
 
 	private String schema, tablename, layername;
@@ -54,6 +54,14 @@ public class LayerProperties {
 		}
 	}
 
+	public LayerProperties(String schema, String tablename, String layername) {
+
+		this.schema = schema;
+		this.tablename = tablename;
+		this.layername = layername;
+
+	}
+
 	public String getSchema() {
 		return schema;
 	}
@@ -63,8 +71,12 @@ public class LayerProperties {
 	}
 
 	public String getUserName() throws SQLException {
-		VectorialDriver driver = (layer).getSource().getDriver();
-		return ((ConnectionJDBC)((PostGisDriver) driver).getConnection()).getConnection().getMetaData().getUserName();
+		if (layer != null) {
+			VectorialDriver driver = (layer).getSource().getDriver();
+			return ((ConnectionJDBC)((PostGisDriver) driver).getConnection()).getConnection().getMetaData().getUserName();
+		} else {
+			return "";
+		}
 	}
 
 	public FLyrVect getLayer() {
@@ -145,5 +157,13 @@ public class LayerProperties {
 
 	public String getLegendType() {
 		return legendType;
+	}
+
+	public int compareTo(Object o) {
+		if (o instanceof LayerProperties) {
+			LayerProperties lp = (LayerProperties) o;
+			return position - lp.getPosition();
+		}
+		return 0;
 	}
 }

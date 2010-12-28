@@ -57,7 +57,7 @@ import com.iver.utiles.swing.jtable.JTable;
 
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardComponent;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardException;
-import es.udc.cartolab.gvsig.elle.utils.LoadMap;
+import es.udc.cartolab.gvsig.elle.utils.MapDAO;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class SaveMapWizardComponent extends WizardComponent implements ActionListener {
@@ -477,7 +477,7 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 							JOptionPane.QUESTION_MESSAGE,
 							null);
 					if (answer == 0) {
-						LoadMap.getInstance().createMapTables();
+						MapDAO.getInstance().createMapTables();
 						properties.put(SaveLegendsWizardComponent.PROPERTY_CREATE_TABLES_QUESTION, false);
 						JOptionPane.showMessageDialog(
 								this,
@@ -494,7 +494,7 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 
 				String mapName = mapNameField.getText();
 
-				boolean mapExists = LoadMap.getInstance().mapExists(mapName);
+				boolean mapExists = MapDAO.getInstance().mapExists(mapName);
 				if (mapExists) {
 					String question = PluginServices.getText(this, "overwrite_map_question");
 					question = String.format(question, mapName);
@@ -511,7 +511,7 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 					if (answer!=0) {
 						throw new WizardException("", false, false);
 					} else {
-						LoadMap.getInstance().deleteMap(mapName);
+						MapDAO.getInstance().deleteMap(mapName);
 					}
 				}
 
@@ -587,7 +587,7 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 					return new String[]{mapoverviewError};
 				}
 			}
-			LoadMap.getInstance().saveMap(rows.toArray(new Object[0][0]), mapName);
+			MapDAO.getInstance().saveMap(rows.toArray(new Object[0][0]), mapName);
 			return new String[0];
 		}
 
@@ -632,7 +632,7 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 				}
 			}
 		}
-		LoadMap.getInstance().saveMapOverview(rows.toArray(new Object[0][0]), mapName);
+		MapDAO.getInstance().saveMapOverview(rows.toArray(new Object[0][0]), mapName);
 
 	}
 

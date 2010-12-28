@@ -17,6 +17,8 @@
 package es.udc.cartolab.gvsig.elle.utils;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -49,22 +51,38 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
  */
 public abstract class LoadLegend {
 
+	public static final int NO_LEGEND = 0;
+	public static final int DB_LEGEND = 1;
+	public static final int FILE_LEGEND = 2;
+
 	private static String legendPath;
 	private static HashMap<String, Class<? extends IFMapLegendDriver>> drivers = new HashMap<String, Class<? extends IFMapLegendDriver>>();
+	private static String configLegendDir;
 
 	static {
 		drivers.put("gvl", FMapGVLDriver.class);
 		drivers.put("sld", FMapSLDDriver.class);
+
+		//get config
+		XMLEntity xml = PluginServices.getPluginServices("es.udc.cartolab.gvsig.elle").getPersistentXML();
+		if (xml.contains(EllePreferencesPage.DEFAULT_LEGEND_DIR_KEY_NAME)) {
+			configLegendDir = xml.getStringProperty(EllePreferencesPage.DEFAULT_LEGEND_DIR_KEY_NAME);
+			if (!configLegendDir.endsWith(File.separator)) {
+				configLegendDir = configLegendDir + File.separator;
+			}
+		}
+
 	}
 
-	public static void setLegendPath(String path) {
-		File f = new File(path);
-		if (f.exists() && f.isDirectory()) {
-			legendPath = path;
+	public static boolean setLegendStyleName(String stylesName) {
+		if (configLegendDir!=null) {
+			File f = new File(configLegendDir + stylesName);
+			if (f.exists() && f.isDirectory()) {
+				legendPath = configLegendDir + stylesName + File.separator;
+				return true;
+			}
 		}
-		if (!legendPath.endsWith(File.separator)) {
-			legendPath = legendPath + File.separator;
-		}
+		return false;
 	}
 
 	public static String getLegendPath(){
@@ -294,4 +312,60 @@ public abstract class LoadLegend {
 		return result;
 
 	}
+
+	private static void loadDBLegend(FLyrVect layer, String styleName, boolean overview) throws SQLException, IOException {
+
+		String table;
+		if (overview) {
+			table = "_map_overview_style";
+		} else {
+			table = "_map_style";
+		}
+
+		DBSession dbs = DBSession.getCurrentSession();
+		String layerName = layer.getName();
+//		String styleName = dbCB.getSelectedItem().toString();
+		String[][] style = dbs.getTable(table, "where nombre_capa='" + layerName + "' and nombre_estilo='" + styleName + "'");
+		if (style.length == 1) {
+			String type = style[0][2];
+			String def = style[0][3];
+
+			File tmpLegend = File.createTempFile("style", layerName + "." + type);
+			FileWriter writer = new FileWriter(tmpLegend);
+			writer.write(def);
+			writer.close();
+			setLegend(layer, tmpLegend.getAbsolutePath(), true);
+		}
+	}
+
+	private static void loadFileLegend(FLyrVect layer, String styleName, boolean overview) {
+
+		if (setLegendStyleName(styleName)) {
+			if (overview) {
+				setOverviewLegend(layer);
+			} else {
+				setLegend(layer);
+			}
+		}
+	}
+
+	public static void loadLegend(FLyrVect layer, String styleName, boolean overview, int source) throws SQLException, IOException {
+
+		switch (source) {
+		case DB_LEGEND : loadDBLegend(layer, styleName, overview);
+		break;
+		case FILE_LEGEND : loadFileLegend(layer, styleName, overview);
+		break;
+
+		}
+
+		for (ELLEMap map : MapDAO.getInstance().getLoadedMaps()) {
+			if (map.layerInMap(layer.getName())) {
+				map.setStyleSource(source);
+				map.setStyleName(styleName);
+			}
+		}
+
+	}
+
 }
