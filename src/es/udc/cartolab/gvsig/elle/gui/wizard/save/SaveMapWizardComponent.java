@@ -214,7 +214,7 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 			}
 		}
 
-		String shownNameError = PluginServices.getText(this, "error_empty_layer_name");
+		String emptyNameError = PluginServices.getText(this, "error_empty_layer_name");
 		String parseError = PluginServices.getText(this, "error_numeric_scale");
 		String minGreaterError = PluginServices.getText(this, "error_min_greater_than_max");
 		String repeatedLayerNameError = PluginServices.getText(this, "error_repeated_layer_name");
@@ -226,56 +226,69 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 
 		for (int i=model.getRowCount()-1; i>=0; i--) {
 
-			boolean save = (Boolean) model.getValueAt(i, 0);
+			String name = model.getValueAt(i,1).toString();
+			if (name.equals("")) {
+				if (!errors.contains(emptyNameError))  {
+					errors.add(emptyNameError);
+				}
+			}
 
-			boolean visible = (Boolean) model.getValueAt(i, 2);
-			Double maxScale = null, minScale = null;
-			Object aux;
-			try {
-				aux = model.getValueAt(i, 3);
-				if (aux!=null) {
-					String str = aux.toString();
-					if (!str.equals("")) {
-						maxScale = NumberFormat.getInstance().parse(str).doubleValue();
+			if (!layerNames.contains(name)) {
+
+				layerNames.add(name);
+
+				boolean save = (Boolean) model.getValueAt(i, 0);
+
+				boolean visible = (Boolean) model.getValueAt(i, 2);
+				Double maxScale = null, minScale = null;
+				Object aux;
+				try {
+					aux = model.getValueAt(i, 3);
+					if (aux!=null) {
+						String str = aux.toString();
+						if (!str.equals("")) {
+							maxScale = NumberFormat.getInstance().parse(str).doubleValue();
+						}
+					}
+				} catch (ParseException e) {
+					if (!errors.contains(parseError)) {
+						errors.add(parseError);
 					}
 				}
-			} catch (ParseException e) {
-				if (!errors.contains(parseError)) {
-					errors.add(parseError);
-				}
-			}
-			try {
-				aux = model.getValueAt(i, 4);
-				if (aux != null) {
-					String str = aux.toString();
-					if (!str.equals("")) {
-						minScale = NumberFormat.getInstance().parse(str).doubleValue();
+				try {
+					aux = model.getValueAt(i, 4);
+					if (aux != null) {
+						String str = aux.toString();
+						if (!str.equals("")) {
+							minScale = NumberFormat.getInstance().parse(str).doubleValue();
+						}
+					}
+				} catch (ParseException e) {
+					if (!errors.contains(parseError)) {
+						errors.add(parseError);
 					}
 				}
-			} catch (ParseException e) {
-				if (!errors.contains(parseError)) {
-					errors.add(parseError);
+				if (minScale!=null && maxScale!=null && minScale > maxScale) {
+					if (!errors.contains(minGreaterError)) {
+						errors.add(minGreaterError);
+					}
 				}
-			}
-			if (minScale!=null && maxScale!=null && minScale > maxScale) {
-				if (!errors.contains(minGreaterError)) {
-					errors.add(minGreaterError);
+
+				LayerProperties lp = mapLayers.get(i);
+				lp.setPosition(position);
+				lp.setVisible(visible);
+				if (maxScale != null) {
+					lp.setMaxScale(maxScale);
 				}
-			}
+				if (minScale != null) {
+					lp.setMinScale(minScale);
+				}
+				lp.setSave(save);
 
-			LayerProperties lp = mapLayers.get(i);
-			lp.setPosition(position);
-			lp.setVisible(visible);
-			if (maxScale != null) {
-				lp.setMaxScale(maxScale);
+				position++;
+			} else {
+				errors.add(String.format(repeatedLayerNameError, name));
 			}
-			if (minScale != null) {
-				lp.setMinScale(minScale);
-			}
-			lp.setSave(save);
-
-			position++;
-
 		}
 
 		return errors;
@@ -381,7 +394,6 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 					DBSession dbc = DBSession.getCurrentSession();
 					if (user != null && user.equals(dbc.getUserName())) {
 						//layer data to fill the table
-						String name = layer.getName();
 						String group = layer.getParentLayer().getName();
 						double maxScale = layer.getMaxScale();
 						if (maxScale >= 0) {
