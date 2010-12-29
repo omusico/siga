@@ -115,7 +115,7 @@ public class DBLegendsManager extends AbstractLegendsManager {
 		if (dbs != null) {
 
 			for (LayerProperties lp : layers) {
-				saveLeyend(lp.getLayer(), lp.getShownname(), styleTable, lp.getLegendType());
+				saveLeyend(lp.getLayer(), lp.getLayername(), styleTable, lp.getLegendType());
 			}
 		} else {
 			throw new WizardException(notConnected);

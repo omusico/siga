@@ -60,7 +60,7 @@ public class FileLegendsManager extends AbstractLegendsManager {
 				path = path + File.separator;
 			}
 			for (LayerProperties lp : layers) {
-				File legendFile = new File(path + lp.getShownname() + "." + lp.getLegendType());
+				File legendFile = new File(path + lp.getLayername() + "." + lp.getLegendType());
 				try {
 					LoadLegend.saveLegend(lp.getLayer(), legendFile);
 				} catch (LegendDriverException e) {

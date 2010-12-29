@@ -497,7 +497,7 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 		for (LayerProperties lp : layers) {
 			Object[] row = {
 					lp.save(),
-					lp.getShownname(),
+					lp.getLayername(),
 					type
 			};
 			model.addRow(row);

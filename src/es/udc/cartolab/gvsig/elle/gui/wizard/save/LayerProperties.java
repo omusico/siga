@@ -32,7 +32,7 @@ public class LayerProperties implements Comparable {
 
 	private String schema, tablename, layername;
 	private FLyrVect layer;
-	private String shownname = "", group = "";
+	private String group = "";
 	private boolean save = true, visible = false;
 	private double maxScale = -1, minScale = -1;
 	private int position;
@@ -105,18 +105,6 @@ public class LayerProperties implements Comparable {
 
 	public void setVisible(boolean visible) {
 		this.visible = visible;
-	}
-
-	/**
-	 * It returns the name of the layer as it'll be saved on the map.
-	 * @return
-	 */
-	public String getShownname() {
-		return shownname;
-	}
-
-	public void setShownname(String shownname) {
-		this.shownname = shownname;
 	}
 
 	public String getGroup() {
