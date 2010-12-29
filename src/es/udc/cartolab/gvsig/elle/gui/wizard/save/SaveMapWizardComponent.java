@@ -170,8 +170,6 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 
 		String[] header = {"",
 				PluginServices.getText(this, "layer"),
-				PluginServices.getText(this, "name"),
-				PluginServices.getText(this, "group"),
 				PluginServices.getText(this, "visible"),
 				PluginServices.getText(this, "max_scale"),
 				PluginServices.getText(this, "min_scale")};
@@ -185,11 +183,9 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 
 		mapTable.getColumnModel().getColumn(0).setMaxWidth(30);
 		mapTable.getColumnModel().getColumn(1).setMinWidth(120);
-		mapTable.getColumnModel().getColumn(2).setMinWidth(120);
-		mapTable.getColumnModel().getColumn(3).setMinWidth(100);
-		mapTable.getColumnModel().getColumn(4).setMinWidth(40);
-		mapTable.getColumnModel().getColumn(5).setMinWidth(60);
-		mapTable.getColumnModel().getColumn(6).setMinWidth(60);
+		mapTable.getColumnModel().getColumn(2).setMinWidth(40);
+		mapTable.getColumnModel().getColumn(3).setMinWidth(60);
+		mapTable.getColumnModel().getColumn(4).setMinWidth(60);
 
 	}
 
@@ -232,34 +228,11 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 
 			boolean save = (Boolean) model.getValueAt(i, 0);
 
-			Object aux = model.getValueAt(i, 2);
-			String shownName = null;
-			if (aux!=null) {
-				shownName = aux.toString();
-				if (shownName.equals("")) {
-					if (!errors.contains(shownNameError)) {
-						errors.add(shownNameError);
-					}
-				}
-			} else {
-				if (!errors.contains(shownNameError)) {
-					errors.add(shownNameError);
-				}
-			}
-			if (layerNames.contains(shownName)) {
-				errors.add(repeatedLayerNameError);
-			}
-			aux = model.getValueAt(i, 3);
-			String group = null;
-			if (aux!=null) {
-				if (!aux.toString().equals("")) {
-					group = aux.toString();
-				}
-			}
-			boolean visible = (Boolean) model.getValueAt(i, 4);
+			boolean visible = (Boolean) model.getValueAt(i, 2);
 			Double maxScale = null, minScale = null;
+			Object aux;
 			try {
-				aux = model.getValueAt(i, 5);
+				aux = model.getValueAt(i, 3);
 				if (aux!=null) {
 					String str = aux.toString();
 					if (!str.equals("")) {
@@ -272,7 +245,7 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 				}
 			}
 			try {
-				aux = model.getValueAt(i, 6);
+				aux = model.getValueAt(i, 4);
 				if (aux != null) {
 					String str = aux.toString();
 					if (!str.equals("")) {
@@ -291,7 +264,6 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 			}
 
 			LayerProperties lp = mapLayers.get(i);
-			lp.setShownname(shownName);
 			lp.setPosition(position);
 			lp.setVisible(visible);
 			if (maxScale != null) {
@@ -300,7 +272,6 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 			if (minScale != null) {
 				lp.setMinScale(minScale);
 			}
-			lp.setGroup(group);
 			lp.setSave(save);
 
 			position++;
@@ -357,8 +328,6 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 			}
 			Object[] row = {lp.save(),
 					lp.getLayername(),
-					lp.getShownname(),
-					lp.getGroup(),
 					lp.visible(),
 					maxScaleStr,
 					minScaleStr	};
@@ -426,7 +395,6 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 
 						lp.setVisible(visible);
 						lp.setGroup(group);
-						lp.setShownname(name);
 						lp.setPosition(mapLayers.size());
 						lp.setSave(true);
 
@@ -562,7 +530,7 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 					minScale = lp.getMinScale();
 				}
 				if (lp.save()) {
-					Object[] row = {lp.getShownname(),
+					Object[] row = {lp.getLayername(),
 							lp.getTablename(),
 							lp.getPosition(),
 							lp.visible(),
@@ -719,7 +687,7 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 
 		@Override
 		public Class<?> getColumnClass(int index) {
-			if (index == 0 || index == 4) {
+			if (index == 0 || index == 2) {
 				return Boolean.class;
 			} else {
 				return super.getColumnClass(index);
