@@ -189,18 +189,15 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 
 	}
 
-	@Override
 	public boolean canFinish() {
 		return canNext();
 	}
 
-	@Override
 	public boolean canNext() {
 		String mapname = mapNameField.getText();
 		return mapname != null && !mapname.equals("");
 	}
 
-	@Override
 	public String getWizardComponentName() {
 		return "save_map";
 	}
@@ -294,7 +291,6 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 		return errors;
 	}
 
-	@Override
 	public void setProperties() throws WizardException {
 		List<String> errors = parse();
 		if (errors.size()>0) {
@@ -309,7 +305,6 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public void showComponent() throws WizardException {
 		DefaultTableModel model = (DefaultTableModel) mapTable.getModel();
 		model.setRowCount(0);
@@ -431,7 +426,6 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 	}
 
 
-	@Override
 	public void finish() throws WizardException {
 
 		//check existence of tables _map and _map_overview
@@ -697,7 +691,6 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 
 	private class MapTableModel extends DefaultTableModel {
 
-		@Override
 		public Class<?> getColumnClass(int index) {
 			if (index == 0 || index == 2) {
 				return Boolean.class;
@@ -706,7 +699,6 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 			}
 		}
 
-		@Override
 		public boolean isCellEditable(int row, int column) {
 			if (column == 1) {
 				return false;

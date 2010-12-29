@@ -188,22 +188,18 @@ public class LoadLegendWizardComponent extends WizardComponent {
 
 	}
 
-	@Override
 	public boolean canFinish() {
 		return true;
 	}
 
-	@Override
 	public boolean canNext() {
 		return true;
 	}
 
-	@Override
 	public String getWizardComponentName() {
 		return "legend_wizard_component";
 	}
 
-	@Override
 	public void showComponent() {
 		dbCB.removeAllItems();
 
@@ -233,7 +229,6 @@ public class LoadLegendWizardComponent extends WizardComponent {
 
 
 
-	@Override
 	public void finish() throws WizardException {
 		Object aux = properties.get(LoadMapWizardComponent.PROPERTY_VEW);
 		if (aux!=null && aux instanceof View) {
@@ -274,7 +269,6 @@ public class LoadLegendWizardComponent extends WizardComponent {
 		}
 	}
 
-	@Override
 	public void setProperties() {
 		// Nothing to do
 	}

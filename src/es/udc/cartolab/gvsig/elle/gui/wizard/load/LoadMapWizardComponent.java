@@ -65,12 +65,10 @@ public class LoadMapWizardComponent extends WizardComponent implements ActionLis
 		add(getCRSPanel(), BorderLayout.SOUTH);
 	}
 
-	@Override
 	public boolean canFinish() {
 		return canNext();
 	}
 
-	@Override
 	public boolean canNext() {
 		if (mapList!=null) {
 			return mapList.getSelectedIndices().length == 1;
@@ -189,7 +187,6 @@ public class LoadMapWizardComponent extends WizardComponent implements ActionLis
 		return listPanel;
 	}
 
-	@Override
 	public String getWizardComponentName() {
 		return "load_map_wizard_component";
 	}
@@ -198,11 +195,9 @@ public class LoadMapWizardComponent extends WizardComponent implements ActionLis
 		return mapList.getSelectedValue().toString();
 	}
 
-	@Override
 	public void showComponent() {
 	}
 
-	@Override
 	public void finish() throws WizardException {
 		Object aux = properties.get(PROPERTY_VEW);
 		if (aux!=null && aux instanceof View) {
@@ -218,7 +213,6 @@ public class LoadMapWizardComponent extends WizardComponent implements ActionLis
 		}
 	}
 
-	@Override
 	public void setProperties() {
 		// Nothing to do
 	}

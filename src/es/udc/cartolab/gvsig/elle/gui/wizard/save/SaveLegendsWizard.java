@@ -50,7 +50,6 @@ public class SaveLegendsWizard extends WizardWindow {
 
 	}
 
-	@Override
 	protected void addWizardComponents() {
 		views.add(new SaveLegendsWizardComponent(properties));
 	}

@@ -64,7 +64,6 @@ public class SaveMapWizard extends WizardWindow {
 		views.add(new SaveLegendsWizardComponent(properties));
 	}
 
-	@Override
 	protected void finish() {
 		boolean close = true;
 		boolean success = true;

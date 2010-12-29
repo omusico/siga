@@ -51,12 +51,10 @@ public class ElleWizard extends WizardPanel {
 	private View view;
 
 
-	@Override
 	public void execute() {
 
 	}
 
-	@Override
 	public FLayer getLayer() {
 
 		DBSession dbs = DBSession.getCurrentSession();
@@ -149,7 +147,6 @@ public class ElleWizard extends WizardPanel {
 		}
 	}
 
-	@Override
 	public void initWizard() {
 		if (!(PluginServices.getMDIManager().getActiveWindow() instanceof View)) {
 			return;

@@ -26,14 +26,12 @@ public class LoadLegendWizard extends LoadMapWizard {
 
 	}
 
-	@Override
 	public WindowInfo getWindowInfo() {
 		WindowInfo wi = super.getWindowInfo();
 		wi.setHeight(300);
 		return wi;
 	}
 
-	@Override
 	protected void addWizardComponents() {
 		views.add(new LoadLegendWizardComponent(properties));
 	}

@@ -50,7 +50,6 @@ public class LoadMapWizard extends WizardWindow {
 		return null;
 	}
 
-	@Override
 	protected void addWizardComponents() {
 		views.add(new LoadMapWizardComponent(properties));
 		views.add(new LoadLegendWizardComponent(properties));

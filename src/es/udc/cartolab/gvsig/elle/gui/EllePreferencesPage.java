@@ -60,12 +60,10 @@ public class EllePreferencesPage extends AbstractPreferencePage implements Actio
 		panelStarted = false;
 	}
 
-	@Override
 	public void setChangesApplied() {
 		setChanged(false);
 	}
 
-	@Override
 	public void storeValues() throws StoreException {
 		PluginServices ps = PluginServices.getPluginServices(this);
 		XMLEntity xml = ps.getPersistentXML();
