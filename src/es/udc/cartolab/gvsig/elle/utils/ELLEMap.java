@@ -161,6 +161,7 @@ public class ELLEMap {
 					group = new FLayers();
 					group.setName(lp.getGroup());
 					group.setMapContext(view.getMapControl().getMapContext());
+					view.getMapControl().getMapContext().getLayers().addLayer(group);
 				}
 			} else {
 				group = view.getMapControl().getMapContext().getLayers();
