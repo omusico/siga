@@ -199,7 +199,7 @@ public class ELLEMap {
 		Collections.sort(overviewLayers);
 		for (LayerProperties lp : overviewLayers) {
 			try {
-				FLayer layer = MapDAO.getInstance().getLayer(lp, whereClause, proj);
+				FLayer layer = getMapDAO().getLayer(lp, whereClause, proj);
 				FLayer ovLayer = layer.cloneLayer();
 				view.getMapOverview().getMapContext().getLayers().addLayer(ovLayer);
 				if (ovLayer instanceof FLyrVect && styleSource != LoadLegend.NO_LEGEND) {
@@ -224,7 +224,7 @@ public class ELLEMap {
 			loadViewLayers(proj);
 			//load overview layers
 			loadOverviewLayers(proj);
-			MapDAO.getInstance().addLoadedMap(this);
+			getMapDAO().addLoadedMap(this);
 			loaded = true;
 			projection = proj;
 		}
@@ -276,7 +276,11 @@ public class ELLEMap {
 		removeViewLayers();
 		removeOverviewLayers();
 		loaded = false;
-		MapDAO.getInstance().removeLoadedMap(this);
+		getMapDAO().removeLoadedMap(this);
+	}
+
+	protected MapDAO getMapDAO() {
+		return MapDAO.getInstance();
 	}
 
 }
