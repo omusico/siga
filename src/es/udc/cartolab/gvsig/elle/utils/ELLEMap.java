@@ -168,17 +168,19 @@ public class ELLEMap {
 
 			FLayer layer;
 			try {
-				layer = MapDAO.getInstance().getLayer(lp, whereClause, proj);
-				if (lp.getMaxScale()>-1) {
-					layer.setMaxScale(lp.getMaxScale());
-				}
-				if (lp.getMinScale()>-1) {
-					layer.setMinScale(lp.getMinScale());
-				}
-				layer.setVisible(lp.visible());
-				group.addLayer(layer);
-				if (layer instanceof FLyrVect && styleSource != LoadLegend.NO_LEGEND) {
-					LoadLegend.loadLegend((FLyrVect) layer, styleName, false, styleSource);
+				layer = getMapDAO().getLayer(lp, whereClause, proj);
+				if (layer!=null) {
+					if (lp.getMaxScale()>-1) {
+						layer.setMaxScale(lp.getMaxScale());
+					}
+					if (lp.getMinScale()>-1) {
+						layer.setMinScale(lp.getMinScale());
+					}
+					layer.setVisible(lp.visible());
+					group.addLayer(layer);
+					if (layer instanceof FLyrVect && styleSource != LoadLegend.NO_LEGEND) {
+						LoadLegend.loadLegend((FLyrVect) layer, styleName, false, styleSource);
+					}
 				}
 			} catch (Exception e) {
 				if (e instanceof SQLException || e instanceof DBException) {
