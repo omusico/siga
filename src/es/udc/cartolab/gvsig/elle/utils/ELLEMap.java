@@ -202,11 +202,17 @@ public class ELLEMap {
 		Collections.sort(overviewLayers);
 		for (LayerProperties lp : overviewLayers) {
 			try {
-				FLayer layer = getMapDAO().getLayer(lp, whereClause, proj);
-				FLayer ovLayer = layer.cloneLayer();
-				view.getMapOverview().getMapContext().getLayers().addLayer(ovLayer);
-				if (ovLayer instanceof FLyrVect && styleSource != LoadLegend.NO_LEGEND) {
-					LoadLegend.loadLegend((FLyrVect) ovLayer, styleName, true, styleSource);
+				FLayer ovLayer = getMapDAO().getLayer(lp, whereClause, proj);
+				ovLayer.setVisible(true);
+				view.getMapOverview().getMapContext().beginAtomicEvent();
+				// FLayer ovLayer = layer.cloneLayer(); // why this????
+				view.getMapOverview().getMapContext().getLayers()
+						.addLayer(ovLayer);
+				view.getMapOverview().getMapContext().endAtomicEvent();
+				if (ovLayer instanceof FLyrVect
+						&& styleSource != LoadLegend.NO_LEGEND) {
+					LoadLegend.loadLegend((FLyrVect) ovLayer, styleName, true,
+							styleSource);
 				}
 			} catch (Exception e) {
 				if (e instanceof SQLException || e instanceof DBException) {

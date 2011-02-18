@@ -163,9 +163,9 @@ public class MapDAO {
 			System.out.println(where);
 			String[][] layersOV = dbs.getTable("_map_overview", dbs.getSchema(), where, new String[]{"posicion"}, false);
 
-			for (int i=0; i<layersOV.length; i++) {
-				String schema=null;
-				if (layersOV[i][2].length()>0) {
+			for (int i = 0; i < layersOV.length; i++) {
+				String schema = null;
+				if (layersOV[i][2].length() > 0) {
 					schema = layersOV[i][2];
 				}
 
