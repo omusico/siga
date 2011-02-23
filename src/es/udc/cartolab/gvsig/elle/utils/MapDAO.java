@@ -173,7 +173,7 @@ public class MapDAO {
 
 				int position = 0;
 				try {
-					position = Integer.parseInt(layersOV[i][4]);
+					position = Integer.parseInt(layersOV[i][3]);
 				} catch (NumberFormatException e) {
 					//do nothing
 				}
