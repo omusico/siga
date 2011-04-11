@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License along with ELLE.
  * If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package es.udc.cartolab.gvsig.elle.utils;
 
 import java.sql.Connection;
@@ -27,7 +27,6 @@ import org.cresques.cts.IProjection;
 
 import com.iver.cit.gvsig.fmap.drivers.DBException;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
-import com.iver.cit.gvsig.fmap.layers.FLayers;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.udc.cartolab.gvsig.elle.gui.wizard.save.LayerProperties;
@@ -169,7 +168,12 @@ public class MapDAO {
 					schema = layersOV[i][2];
 				}
 
-				LayerProperties lp = new LayerProperties(schema, layersOV[i][1], layersOV[i][1]);
+				LayerProperties lp = null;
+				try {
+					lp = new LayerProperties(schema, layersOV[i][4], layersOV[i][1]);
+				} catch (IndexOutOfBoundsException e) {
+					lp = new LayerProperties(schema, layersOV[i][1], layersOV[i][1]);
+				}
 
 				int position = 0;
 				try {
@@ -228,7 +232,7 @@ public class MapDAO {
 			map.addLayer(lp);
 		}
 
-			/////////////// MapOverview
+		/////////////// MapOverview
 		List<LayerProperties> overviewLayers = getOverviewLayers(mapName);
 		for (LayerProperties lp : overviewLayers) {
 			map.addOverviewLayer(lp);
@@ -239,24 +243,6 @@ public class MapDAO {
 
 		return map;
 
-	}
-
-	private  boolean isLayer(FLayers layers, String layerName) {
-
-		for (int i=0; i<layers.getLayersCount(); i++) {
-			boolean found = false;
-			if (layers.getLayer(i) instanceof FLayers) {
-				found = isLayer((FLayers)layers.getLayer(i), layerName);
-			} else {
-				if (layers.getLayer(i).getName().equals(layerName)) {
-					found = true;
-				}
-			}
-			if (found) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public void addLoadedMap(ELLEMap map) {
@@ -349,15 +335,30 @@ public class MapDAO {
 		DBSession dbs = DBSession.getCurrentSession();
 		for (int j=0; j<rows.length; j++) {
 			if (rows[j].length == 2 || rows[j].length == 3) {
-				Object[] rowToSave = new Object[4];
+
+
+				/* fpuga: This is hack. Previously _map_overview doesn't have a nombre_tabla column, so we must ensure
+				 * compatibility with previous versions.
+				 * Also, a more accurate approach will be have a hashmap 'columnName = valueName' because using this code
+				 * if the order of the columns changes it will not work.
+				 */
+				String[] columns = dbs.getColumns(dbs.getSchema(), "_map_overview");
+
+				//_map_overview structure: mapName, tablename, schema, position, [layername]
+				Object[] rowToSave = new Object[columns.length];
 				rowToSave[0] = auxMapname;
-				rowToSave[3] = j+1;
-				for (int i=0; i<rows[j].length; i++) {
-					rowToSave[i+1] = rows[j][i];
+				rowToSave[2] = rows[j][1]; // schema
+				rowToSave[3] = j+1; // position
+
+				if (columns.length == 5) {
+					rowToSave[4] = rows[j][0]; // tableName
+					rowToSave[1] = rows[j][2]; // layerName
+				} else {
+					rowToSave[1] =  rows[j][0]; // tablename
 				}
 
 				try {
-					dbs.insertRow(dbs.getSchema(), "_map_overview", rowToSave);
+					dbs.insertRow(dbs.getSchema(), "_map_overview", columns, rowToSave);
 				} catch (SQLException e) {
 					//undo insertions
 					try {
@@ -404,6 +405,7 @@ public class MapDAO {
 		+ "  nombre_capa character varying NOT NULL,"
 		+ "  \"schema\" character varying,"
 		+ "  posicion integer,"
+		+ "  nombre_tabla,"
 		+ "  PRIMARY KEY (mapa, nombre_capa)"
 		+ ")";
 

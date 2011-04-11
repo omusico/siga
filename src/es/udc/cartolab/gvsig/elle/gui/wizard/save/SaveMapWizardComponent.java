@@ -588,7 +588,8 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 							if (!knownTables.contains(layerDef.getComposedTableName())) {
 								String tablename = layerDef.getTableName();
 								String schema = layerDef.getSchema();
-								String[] row = {tablename, schema};
+								String layerName = layer.getName();
+								String[] row = {tablename, schema, layerName};
 								rows.add(row);
 								knownTables.add(layerDef.getComposedTableName());
 							}
@@ -607,7 +608,6 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 			}
 		}
 		MapDAO.getInstance().saveMapOverview(rows.toArray(new Object[0][0]), mapName);
-
 	}
 
 	private void moveRowsDown() {
