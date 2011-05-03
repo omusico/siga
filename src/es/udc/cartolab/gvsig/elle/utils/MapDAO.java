@@ -405,7 +405,7 @@ public class MapDAO {
 		+ "  nombre_capa character varying NOT NULL,"
 		+ "  \"schema\" character varying,"
 		+ "  posicion integer,"
-		+ "  nombre_tabla,"
+		+ "  nombre_tabla character varying,"
 		+ "  PRIMARY KEY (mapa, nombre_capa)"
 		+ ")";
 
