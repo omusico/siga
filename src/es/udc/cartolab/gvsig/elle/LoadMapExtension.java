@@ -84,7 +84,7 @@ public class LoadMapExtension extends Extension implements IPreferenceExtension 
     }
 
     public boolean isEnabled() {
-	return PluginServices.getMDIManager().getActiveWindow() instanceof View;
+	return true;
     }
 
     public boolean isVisible() {
