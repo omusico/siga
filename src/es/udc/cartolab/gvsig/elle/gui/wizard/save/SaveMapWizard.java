@@ -55,7 +55,7 @@ public class SaveMapWizard extends WizardWindow {
 
 
 	public Object getWindowProfile() {
-		return null;
+		return WindowInfo.DIALOG_PROFILE;
 	}
 
 

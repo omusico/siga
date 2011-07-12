@@ -120,7 +120,7 @@ public class SaveLegendsWizard extends WizardWindow {
 
 
 	public Object getWindowProfile() {
-		return null;
+		return WindowInfo.DIALOG_PROFILE;
 	}
 
 }

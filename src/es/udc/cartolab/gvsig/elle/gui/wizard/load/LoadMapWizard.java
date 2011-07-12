@@ -47,7 +47,7 @@ public class LoadMapWizard extends WizardWindow {
 
 
 	public Object getWindowProfile() {
-		return null;
+		return WindowInfo.DIALOG_PROFILE;
 	}
 
 	protected void addWizardComponents() {
