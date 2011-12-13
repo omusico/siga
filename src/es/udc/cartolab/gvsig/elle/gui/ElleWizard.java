@@ -38,6 +38,7 @@ import com.iver.cit.gvsig.gui.panels.CRSSelectPanel;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 import com.jeta.forms.components.panel.FormPanel;
 
+import es.udc.cartolab.gvsig.elle.utils.MapDAO;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class ElleWizard extends WizardPanel {
@@ -196,11 +197,11 @@ public class ElleWizard extends WizardPanel {
 
 				if (dbs.tableExists(dbs.getSchema(), "_map")) {
 
-					String[] groups = dbs.getDistinctValues("_map", "mapa");
+		    String[] maps = MapDAO.getInstance().getMaps();
 
 					layerList = form.getList("layerList");
 					groupList = form.getList("groupList");
-					groupList.setListData(groups);
+					groupList.setListData(maps);
 
 					groupList.addListSelectionListener(new ListSelectionListener() {
 

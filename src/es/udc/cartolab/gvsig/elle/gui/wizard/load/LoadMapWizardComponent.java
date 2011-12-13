@@ -111,11 +111,11 @@ public class LoadMapWizardComponent extends WizardComponent implements ActionLis
 
 				if (dbs.tableExists(dbs.getSchema(), "_map") && dbs.tableExists(dbs.getSchema(), "_map_overview")) {
 
-					String[] groups = dbs.getDistinctValues("_map", "mapa");
+		    String[] maps = MapDAO.getInstance().getMaps();
 
 					//layerList = form.getList("layerList");
 					mapList = form.getList("mapList");
-					mapList.setListData(groups);
+					mapList.setListData(maps);
 
 					layerTextArea = (JTextArea) form.getComponentByName("layerTextArea");
 					layerTextArea.setEditable(false);

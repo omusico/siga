@@ -277,17 +277,13 @@ public class MapDAO {
 
 	public  boolean mapExists(String mapName) throws SQLException {
 
-		DBSession dbs = DBSession.getCurrentSession();
-		String[] maps = dbs.getDistinctValues("_map", "mapa");
-		boolean found = false;
-		for (int i=0; i<maps.length; i++) {
-			if (mapName.equals(maps[i])) {
-				found = true;
-				break;
-			}
-		}
-		return found;
-
+	String[] maps = getMaps();
+	for (String map : maps) {
+	    if (mapName.equals(map)) {
+		return true;
+	    }
+	}
+	return false;
 	}
 
 	/**
@@ -448,6 +444,12 @@ public class MapDAO {
 
 		dbs.getJavaConnection().commit();
 	}
+
+    public String[] getMaps() throws SQLException {
+	String[] maps = DBSession.getCurrentSession().getDistinctValues("_map",
+		"mapa");
+	return maps;
+    }
 
 
 }
