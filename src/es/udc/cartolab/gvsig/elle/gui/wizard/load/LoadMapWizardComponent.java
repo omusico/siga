@@ -53,6 +53,7 @@ public class LoadMapWizardComponent extends WizardComponent implements ActionLis
 	private String[][] layers;
 
 	public final static String PROPERTY_VEW = "view";
+    public static final String PROPERTY_MAP_NAME = "property_map_name";
 
 	public LoadMapWizardComponent(Map<String, Object> properties) {
 		super(properties);
@@ -214,6 +215,7 @@ public class LoadMapWizardComponent extends WizardComponent implements ActionLis
 	}
 
 	public void setProperties() {
-		// Nothing to do
+	properties.put(LoadMapWizardComponent.PROPERTY_MAP_NAME,
+		(String) mapList.getSelectedValue());
 	}
 }

@@ -213,16 +213,27 @@ public class LoadLegendWizardComponent extends WizardComponent {
 	    try {
 		if (dbs.tableExists(dbs.getSchema(), "_map_style")) {
 		    String[] legends = dbs.getDistinctValues("_map_style", dbs.getSchema(), "nombre_estilo", true, false);
+		    Object tmp = properties
+			    .get(LoadMapWizardComponent.PROPERTY_MAP_NAME);
+		    boolean exists = false;
+		    String legendName = (tmp == null ? "" : tmp.toString());
 		    for (String legend : legends) {
 			dbCB.addItem(legend);
+			if (legendName.equals(legend)) {
+			    exists = true;
+			}
 		    }
+		    if (exists) {
+			dbCB.setSelectedItem(legendName);
+			databaseRB.setSelected(true);
+			dbSetEnabled(true);
+		    }
+
 		}
 	    } catch (SQLException e) {
-		// TODO Auto-generated catch block
 		try {
 		    dbs = DBSession.reconnect();
 		} catch (DBException e1) {
-		    // TODO Auto-generated catch block
 		    e1.printStackTrace();
 		}
 		e.printStackTrace();
