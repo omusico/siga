@@ -591,7 +591,9 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 								String tablename = layerDef.getTableName();
 								String schema = layerDef.getSchema();
 								String layerName = layer.getName();
-								String[] row = {tablename, schema, layerName};
+				String position = Integer.toString(i);
+				String[] row = { tablename, schema, layerName,
+					position };
 								rows.add(row);
 								knownTables.add(layerDef.getComposedTableName());
 							}

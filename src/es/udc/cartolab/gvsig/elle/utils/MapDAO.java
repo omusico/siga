@@ -330,7 +330,7 @@ public class MapDAO {
 		String auxMapname = "__aux__" + Double.toString(Math.random()*100000).trim();
 		DBSession dbs = DBSession.getCurrentSession();
 		for (int j=0; j<rows.length; j++) {
-			if (rows[j].length == 2 || rows[j].length == 3) {
+	    if (rows[j].length == 3 || rows[j].length == 4) {
 
 
 				/* fpuga: This is hack. Previously _map_overview doesn't have a nombre_tabla column, so we must ensure
@@ -344,7 +344,7 @@ public class MapDAO {
 				Object[] rowToSave = new Object[columns.length];
 				rowToSave[0] = auxMapname;
 				rowToSave[2] = rows[j][1]; // schema
-				rowToSave[3] = j+1; // position
+		rowToSave[3] = rows[j][3]; // position
 
 				if (columns.length == 5) {
 					rowToSave[4] = rows[j][0]; // tableName
