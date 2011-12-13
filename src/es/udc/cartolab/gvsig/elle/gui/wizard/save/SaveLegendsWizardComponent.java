@@ -244,7 +244,11 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 
 			JLabel label = new JLabel(PluginServices.getText(this, "legends_group_name"));
 			label.setEnabled(DBSession.getCurrentSession() != null);
-			dbStyles = new JTextField("", 20);
+
+	    Object mapName = properties
+		    .get(SaveMapWizardComponent.PROPERTY_MAP_NAME);
+	    dbStyles = new JTextField(
+		    mapName == null ? "" : mapName.toString(), 20);
 
 			panel.add(label);
 			panel.add(dbStyles, "shrink, right, wrap");
@@ -509,6 +513,10 @@ public class SaveLegendsWizardComponent extends WizardComponent {
 			overviewCHB.setSelected((Boolean) aux);
 		}
 		overviewCB.setEnabled(overviewCHB.isSelected());
+
+	Object mapName = properties
+		.get(SaveMapWizardComponent.PROPERTY_MAP_NAME);
+	dbStyles.setText(mapName == null ? "" : mapName.toString());
 	}
 
 

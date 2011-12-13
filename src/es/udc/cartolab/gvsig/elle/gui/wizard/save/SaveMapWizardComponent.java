@@ -62,7 +62,8 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class SaveMapWizardComponent extends WizardComponent implements ActionListener {
 
-	public final static String PROPERTY_LAYERS_MAP = "table_layers";
+    public static final String PROPERTY_LAYERS_MAP = "table_layers";
+    public static final String PROPERTY_MAP_NAME = "property_map_name";
 
 	private JButton upButton;
 	private JButton downButton;
@@ -301,7 +302,8 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 			}
 			throw new WizardException(msg);
 		}
-		properties.put(PROPERTY_LAYERS_MAP, mapLayers);
+		properties.put(SaveMapWizardComponent.PROPERTY_MAP_NAME, mapNameField.getText().trim());
+		properties.put(SaveMapWizardComponent.PROPERTY_LAYERS_MAP, mapLayers);
 		properties.put(SaveLegendsWizardComponent.PROPERTY_SAVE_OVERVIEW, overviewChb.isSelected());
 	}
 
@@ -519,8 +521,6 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 
 	private String[] saveMap(String mapName) throws SQLException {
 
-		String mapoverviewError = PluginServices.getText(this, "error_overview");
-
 		List<Object[]> rows = new ArrayList<Object[]>();
 
 		List<String> errors = parse();
@@ -559,7 +559,8 @@ public class SaveMapWizardComponent extends WizardComponent implements ActionLis
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					return new String[]{mapoverviewError};
+		    return new String[] { PluginServices.getText(this,
+			    "error_overview") };
 				}
 			}
 			MapDAO.getInstance().saveMap(rows.toArray(new Object[0][0]), mapName);
