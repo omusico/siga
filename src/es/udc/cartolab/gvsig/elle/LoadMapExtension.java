@@ -26,8 +26,9 @@ import com.iver.cit.gvsig.AddLayer;
 import com.iver.cit.gvsig.ProjectExtension;
 import com.iver.cit.gvsig.gui.panels.FPanelAbout;
 import com.iver.cit.gvsig.project.Project;
-import com.iver.cit.gvsig.project.ProjectFactory;
-import com.iver.cit.gvsig.project.documents.view.ProjectView;
+import com.iver.cit.gvsig.project.documents.ProjectDocument;
+import com.iver.cit.gvsig.project.documents.ProjectDocumentFactory;
+import com.iver.cit.gvsig.project.documents.view.ProjectViewFactory;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.udc.cartolab.gvsig.elle.gui.EllePreferencesPage;
@@ -59,18 +60,15 @@ public class LoadMapExtension extends Extension implements IPreferenceExtension 
 	if (iWindow instanceof View) {
 	    view = (View) iWindow;
 	} else {
-	    ProjectExtension pExt = (ProjectExtension) PluginServices
-		    .getExtension(ProjectExtension.class);
-	    Project project = pExt.getProject();
-	    ProjectView doc = ProjectFactory.createView(null);
-	    doc.setName("ELLE View");
-	    doc.setProject(project, 0);
-	    project.addDocument(doc);
-	    // Opening view
-	    view = new View();
-	    view.initialize();
-	    view.setModel(doc);
-	    view.getWindowInfo().setMaximizable(true);
+
+	    Project project = ((ProjectExtension) PluginServices
+		    .getExtension(ProjectExtension.class)).getProject();
+	    ProjectDocumentFactory viewFactory = Project
+		    .getProjectDocumentFactory(ProjectViewFactory.registerName);
+	    ProjectDocument projectDocument = viewFactory.create(project);
+	    projectDocument.setName("ELLE View");
+	    project.addDocument(projectDocument);
+	    view = (View) projectDocument.createWindow();
 	    view.getWindowInfo().setMaximized(true);
 	    PluginServices.getMDIManager().addWindow(view);
 	}
