@@ -1,0 +1,56 @@
+<project name="binaries w32" default="main" basedir=".">
+	<description>
+		Reorganiza el directorio binaries/w32, para que pueda usarse directamente por gvSIG.
+	</description>
+
+	<property name="targetDir" location="." />
+
+
+
+	<target name="main" depends="ecw, gdal, mrsid, crs, potrace" />
+
+	<target name="ecw">
+		<copy todir="${targetDir}">
+			<fileset dir="raster/ecw" includes="**/**" /> 
+		</copy>
+	</target>
+
+	<target name="gdal">
+		<copy todir="${targetDir}">
+			<fileset dir="raster/gdal" includes="**/**" />
+		</copy>
+	</target>
+
+	<target name="mrsid">
+		<copy todir="${targetDir}">
+			<fileset dir="raster/mrsid" includes="**/**" />
+		</copy>
+	</target>
+
+	<target name="system">
+		<copy todir="${targetDir}">
+			<fileset dir="system" includes="msv*.dll *.manifest" />
+		</copy>
+	</target>
+
+	<target name="crs">
+		<copy todir="${targetDir}">
+			<fileset dir="crs" includes="**/**" />
+		</copy>
+	</target>
+	
+	<target name="potrace">
+		<copy todir="${targetDir}">
+			<fileset dir="raster/potrace" includes="**/**" />
+		</copy>
+	</target>
+	
+
+
+	<target name="clean" >
+		<delete>
+			<fileset dir="${targetDir}" includes="*.dll *.lib *.jar *.manifest" />
+		</delete>
+	</target>
+
+</project>
