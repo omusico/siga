@@ -1,0 +1,3 @@
+SET PATH=C:\Documents and Settings\MyHome\Workspaces\gvsig1.9\binaries3D\w32;%PATH%
+echo %PATH%
+java -cp andami.jar;./lib/castor-0.9.5.3-xml.jar;./lib/log4j-1.2.8.jar;./lib/javaws.jar;./lib/iver-utiles.jar;./lib/tempFileManager.jar;./lib/xml-apis.jar;./lib/xerces_2_5_0.jar;./lib/commons-codec-1.3.jar;./lib/xmlrpc-2.0.1.jar;./lib/gvsig-i18n.jar;./lib/jcalendar.jar;./lib/kxml2.jar;./lib/JWizardComponent.jar;./lib/looks-2.1.4.jar;./lib/org.gvsig.ui.jar;./lib/jcommon-1.0.10.jar;./lib/jfreechart-1.0.6.jar;./lib/jh.jar;./lib/org.gvsig.exceptions.jar;./lib/jai_core.jar -Djava.library.path=../binaries/w32 -Xmx500M com.iver.andami.Launcher gvSIG gvSIG/extensiones %1
