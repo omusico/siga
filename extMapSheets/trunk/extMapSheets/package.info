@@ -1,0 +1,15 @@
+#Mon Aug 01 12:26:37 CEST 2011
+state=final
+name=org.gvsig.mapsheets.print.series
+official=true
+code=org.gvsig.mapsheets.print.series
+operating-system=all
+architecture=all
+java-version=j1_5
+gvSIG-version=1.11.0
+version=0.1.0
+type=plugin
+description=gvSIG basic extensions
+build=1305
+buildNumber=1
+model-version=1.0.0

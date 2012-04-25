@@ -1,0 +1,93 @@
+Introduccion
+===============
+
+Este documento cubre la descripcion de:
+
+* Informacion de version.
+
+* Instrucciones de compilacion.
+
+* Instrucciones de empaquetado.
+
+* Notas sobre internacionalizacion.
+
+
+Informacion sobre version
+============================
+
+La política seguida para incrementar el número de versión es la misma que sigue gvSIG pero teniendo en cuenta lo siguiente:
+
+- Cambios en el número micro sólamente indica que la versión es compatible hacia adelante y hacia atrás.
+
+- Cambios en el número menor indica que la versión es compatible hacia atrás.
+
+- Cambios en el número mayor indica que la versión puede no ser compatible ni hacia atrás ni hacia adelante.
+
+El número de versión está especificado en el fichero "install/intall.xml" 
+en el tag: <appversion>0.1.</appversion> y en el archivo imstall/build.properties.
+
+Debe cambiarse también en el fichero "config/about.htm" en el tag:
+<b>Version 0.1.0</b> 
+
+Instrucciones de compilacion
+===============================
+
+El código es compatible con la 1.5 JVM.
+
+Configurar previamente un workspace con la versión 1.12 de gvSIG y en este workspace incorporar este proyecto.
+
+Para su compilación desde el workspace se puede lanzar build.xml para generar el empaquetado necesario dentro de _fwAndami.
+
+Instrucciones de empaquetado
+===============================
+
+Para crear un instalador de paquete de este plugin, haga lo sguiente:
+
+- Asegurarse de que el archivo package.info está actualizado en cuanto a nombres, número de versión,
+build number, etc.
+- Ejecutar el target 'generate-without-source' de build.xml para que los binarios se
+coloquen en _fwAndami
+- Iniciar gvSIG en el workspace y usar la extensión org.gvsig.installer.app.extension para
+generar archivos de paquete e índices.
+- Hacer esos archivos accesibles a los usuarios finales y/o a los administradores de repositorios
+de plugin. Más información sobre el gestor de plugins:
+
+https://gvsig.org/web/projects/gvsig-desktop/docs/devel/gvsig-devel-guide/2.0.0/trabajar-con-un-proyecto/instalables-en-gvsig/generacion-desde-plugin-instalacion/view?set_language=en
+
+
+Notas sobre internacionalizacion
+===================================
+
+* Donde se encuentran las cadenas de traduccion.
+
+Las cadenas de traducción se encuentran dentro de los ficheros "text_*.properties", donde * es el código ISO 639-1 del idioma,
+en el directorio "config". Los idiomas a los que está traducido actualmente son:
+
++------------+--------------------+
+| *Idioma*   | *Código ISO 639-1* |
++------------+--------------------+
+| Castellano | es		          |
++------------+--------------------+
+| Gallego    | gl	              |
++------------+--------------------+
+
+* Que hay que hacer para incluir un nuevo idioma
+
+Para añadir un nuevo idioma, hay que crear un fichero con las claves de cualquiera de los que existe ahora mismo con el nombre 
+del idioma seguido de un guión bajo y el código ISO 639-1 del idioma y la extensión ".properties"
+
+Ej: Para el gallego será: "text_gl.properties"
+
+Se puede consultar la lista de códigos ISO 639-1 en el siguiente enlace: http://es.wikipedia.org/wiki/ISO_639-1
+
+
+Acceso público a herramientas de empaquetado
+============================================
+
+Las herramientas necesarias para empaquetar esta extensión se encuentran en
+el repositorio principal de gvSIG:
+
+https://svn.forge.osor.eu/svn/gvsig-desktop
+Carpeta: trunk/install
+
+Descarga la carpeta "install" como una carpeta en tu workspace de Eclipse.

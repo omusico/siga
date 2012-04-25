@@ -1,0 +1,92 @@
+Introduction
+============
+
+This document covers the description of:
+
+* Version information.
+
+* Build instructions.
+
+* Packaging instructions.
+
+* Internationalization notes.
+
+
+Version information
+===================
+
+The policy carried out in order to increment the version number is the same as gvSIG but taking into account the following:
+
+- Changes to the micro number only must be both forward- and backward-compatible.
+
+- Changes to the minor number must be backward-compatible.
+
+- Changes to the major number indicates that the version can not be forward- and backward-compatible.
+
+The version number is specified in the file "install/intall.xml" 
+in the tag: <appversion>0.1.0</appVersion> and in the file imstall/build.properties.
+
+It should also be changed in the file "config/about.htm" in tag:
+<b>Version 0.1.0</b> 
+
+
+Build instructions
+===============================
+
+The code is compatible with the 1.5 JVM. 
+
+Setting up a workspace to version 1.12 of gvSIG and then include this project into that workspace.
+
+To build it from the workspace can be launched build.xml to generate the necessary packaging within _fwAndami.
+
+
+Packaging instructions
+=============================== 
+
+To build an package installer with this plugin, do this:
+
+- Make sure that the file package.info is correctly updated (names, version number, build number, etc)
+- Run the 'generate-without-source' target in build.xml so that all the binaries are copied to _fwAndami
+- Start gvSIG in your workspace and use the org.gvsig.installer.app.extension extension to generate
+package file and index file.
+- Make those files available to final users and/or plugin repository administrators (more info
+about the plugin manager:
+
+https://gvsig.org/web/projects/gvsig-desktop/docs/devel/gvsig-devel-guide/2.0.0/trabajar-con-un-proyecto/instalables-en-gvsig/generacion-desde-plugin-instalacion/view?set_language=en
+ 
+
+Internationalization notes
+===================================
+
+* Where you can find the translation strings. 
+
+Translation strings are inside the files "text_*.properties", where * is the ISO 639-1 language code, 
+in the "config". The languages that are currently translated are:
+
++------------+--------------------+
+| *Language* | *ISO 639-1 code*   |
++------------+--------------------+
+| Spanish    | es		          |
++------------+--------------------+
+| English    | en	              |
++------------+--------------------+
+
+* What should I do to include a new language
+
+To add a new language, create a file, with the keys of one that already exists, with the language name 
+followed by an underscore and the ISO 639-1 language code followed by the extension ".properties" 
+
+Ex: For Galician: "text_gl.properties"
+
+You can get the list of ISO 639-1 codes on the following link: http://es.wikipedia.org/wiki/ISO_639-1
+
+Public access to package tools
+==============================
+
+The tools you need to package this extension are available in the gvSIG main SVN repo:
+
+https://svn.forge.osor.eu/svn/gvsig-desktop
+Folder: trunk/install
+
+Download the "install" folder as a new folder in your Eclipse workspace.
+
