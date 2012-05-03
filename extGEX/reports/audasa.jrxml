@@ -1,0 +1,1013 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="audasa" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="25"/>
+	<style name="Heading 1" fontSize="16" isBold="true"/>
+	<style name="Heading 4" fontSize="12" isBold="true" isItalic="true"/>
+	<style name="Default"/>
+	<style name="Heading 3" fontSize="14" isBold="true"/>
+	<style name="Text Body"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#EFF7FF"/>
+		</conditionalStyle>
+	</style>
+	<style name="audasa_celda" hAlign="Left" vAlign="Middle" fontSize="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false">
+		<box leftPadding="1"/>
+	</style>
+	<subDataset name="Table Dataset 1"/>
+	<parameter name="REVERSIONS_SUBREPORT" class="net.sf.jasperreports.engine.JasperReport"/>
+	<parameter name="REVERSIONS_DATASOURCE" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="FECHA_CONSULTA_EXPEDIENTE" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT * FROM audasa_expropiaciones.exp_finca;]]>
+	</queryString>
+	<field name="gid" class="java.lang.Integer"/>
+	<field name="id_finca" class="java.lang.String"/>
+	<field name="tramo" class="java.lang.String"/>
+	<field name="unidad_constructiva" class="java.lang.String"/>
+	<field name="ayuntamiento" class="java.lang.String"/>
+	<field name="parroquia_subtramo" class="java.lang.String"/>
+	<field name="numero_finca" class="java.lang.String"/>
+	<field name="seccion" class="java.lang.String"/>
+	<field name="titular" class="java.lang.String"/>
+	<field name="domicilio" class="java.lang.String"/>
+	<field name="codigo_postal" class="java.lang.Integer"/>
+	<field name="telefono" class="java.lang.String"/>
+	<field name="representante" class="java.lang.String"/>
+	<field name="superficie_finca_total" class="java.lang.Double"/>
+	<field name="tipo_ocupacion" class="java.lang.String"/>
+	<field name="paraje" class="java.lang.String"/>
+	<field name="lindero_norte" class="java.lang.String"/>
+	<field name="lindero_sur" class="java.lang.String"/>
+	<field name="lindero_este" class="java.lang.String"/>
+	<field name="lindero_oeste" class="java.lang.String"/>
+	<field name="superficie_expropiada_total" class="java.lang.Double"/>
+	<field name="superficie_complementaria" class="java.lang.Double"/>
+	<field name="deposito_previo_pagado_importe" class="java.lang.Double"/>
+	<field name="deposito_previo_pagado_concepto" class="java.lang.String"/>
+	<field name="deposito_previo_consignado_importe" class="java.lang.Double"/>
+	<field name="deposito_previo_consignado_concepto" class="java.lang.String"/>
+	<field name="anticipo_importe" class="java.lang.Double"/>
+	<field name="anticipo_concepto" class="java.lang.String"/>
+	<field name="mutuo_acuerdo_parcial_importe" class="java.lang.Double"/>
+	<field name="mutuo_acuerdo_parcial_concepto" class="java.lang.String"/>
+	<field name="limite_acuerdo_importe" class="java.lang.Double"/>
+	<field name="limite_acuerdo_concepto" class="java.lang.String"/>
+	<field name="mutuo_acuerdo_importe" class="java.lang.Double"/>
+	<field name="pagos_varios_importe" class="java.lang.Double"/>
+	<field name="pagos_varios_concepto" class="java.lang.String"/>
+	<field name="deposito_previo_levantado_importe" class="java.lang.Double"/>
+	<field name="importe_mejoras" class="java.lang.Double"/>
+	<field name="importe_mejoras_complementarias" class="java.lang.Double"/>
+	<field name="importe_pendiente_terrenos" class="java.lang.Double"/>
+	<field name="importe_pendiente_mejoras" class="java.lang.Double"/>
+	<field name="importe_pendiente_total" class="java.lang.Double"/>
+	<field name="importe_pagado_total" class="java.lang.Double"/>
+	<field name="desafeccion" class="java.lang.String"/>
+	<field name="resolucion" class="java.lang.String"/>
+	<field name="organismo" class="java.lang.String"/>
+	<field name="numero_expediente" class="java.lang.String"/>
+	<field name="almacen" class="java.lang.String"/>
+	<field name="pasillo" class="java.lang.String"/>
+	<field name="estanteria" class="java.lang.String"/>
+	<field name="baja_concepto" class="java.lang.String"/>
+	<field name="observaciones" class="java.lang.String"/>
+	<field name="resolucion_adjunta" class="java.lang.String"/>
+	<field name="afectado_por_policia_margenes" class="java.lang.String"/>
+	<field name="comentarios_policia_margenes" class="java.lang.String"/>
+	<field name="fecha_acta_previa" class="java.sql.Date"/>
+	<field name="deposito_previo_pagado_fecha" class="java.sql.Date"/>
+	<field name="deposito_previo_consignado_fecha" class="java.sql.Date"/>
+	<field name="anticipo_fecha" class="java.sql.Date"/>
+	<field name="mutuo_acuerdo_parcial_fecha" class="java.sql.Date"/>
+	<field name="limite_acuerdo_fecha" class="java.sql.Date"/>
+	<field name="mutuo_acuerdo_fecha" class="java.sql.Date"/>
+	<field name="pagos_varios_fecha" class="java.sql.Date"/>
+	<field name="deposito_previo_levantado_fecha" class="java.sql.Date"/>
+	<field name="fecha_desafeccion" class="java.sql.Date"/>
+	<field name="fecha_acta_complementaria" class="java.sql.Date"/>
+	<field name="baja_fecha" class="java.sql.Date"/>
+	<field name="expediente_alta_fecha" class="java.sql.Date"/>
+	<field name="expediente_en_archivo" class="java.lang.String"/>
+	<field name="dni" class="java.lang.String"/>
+	<field name="indemnizacion_importe" class="java.lang.Double"/>
+	<field name="indemnizacion_fecha" class="java.sql.Date"/>
+	<field name="indemnizacion_concepto" class="java.lang.String"/>
+	<field name="mejoras" class="java.lang.String"/>
+	<field name="justiprecio_importe" class="java.lang.Double"/>
+	<field name="justiprecio_fecha" class="java.sql.Date"/>
+	<field name="the_geom" class="java.lang.Object"/>
+	<field name="deposito_previo_consignado_indemnizacion" class="java.lang.Double"/>
+	<field name="image_from_view" class="java.lang.Object"/>
+	<field name="coordenada_utm_x" class="java.lang.String"/>
+	<field name="coordenada_utm_y" class="java.lang.String"/>
+	<field name="localizacion_tramo" class="java.lang.String"/>
+	<field name="localizacion_ayuntamiento" class="java.lang.String"/>
+	<field name="localizacion_parroquia_subtramo" class="java.lang.String"/>
+	<field name="localizacion_uc" class="java.lang.String"/>
+	<field name="tipo_cultivo_edificacion" class="java.lang.String"/>
+	<field name="tipo_cultivo_terreno" class="java.lang.String"/>
+	<field name="tipo_cultivo_inculto" class="java.lang.String"/>
+	<field name="tipo_cultivo_prado" class="java.lang.String"/>
+	<field name="tipo_cultivo_labradio" class="java.lang.String"/>
+	<field name="tipo_cultivo_vinha" class="java.lang.String"/>
+	<field name="tipo_cultivo_monte" class="java.lang.String"/>
+	<field name="tipo_cultivo_otros" class="java.lang.String"/>
+	<field name="desafeccion_ocupacion" class="java.lang.String"/>
+	<field name="desafeccion_superficie" class="java.lang.String"/>
+	<field name="desafeccion_fecha_acta" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="39" splitType="Stretch">
+			<line>
+				<reportElement x="3" y="37" width="535" height="1"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Default" x="93" y="21" width="445" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Patrimonio y expropiaciones]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Heading 1" x="93" y="0" width="445" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Autopistas del Atlántico, C.E.S.A]]></text>
+			</staticText>
+			<image>
+				<reportElement x="37" y="0" width="37" height="36"/>
+				<imageExpression><![CDATA["images/logo_audasa.gif"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="186" splitType="Prevent">
+			<frame>
+				<reportElement x="22" y="10" width="250" height="167" backcolor="#FFFFFF"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5" lineStyle="Double"/>
+					<topPen lineWidth="0.5" lineStyle="Double"/>
+					<leftPen lineWidth="0.5" lineStyle="Double"/>
+					<bottomPen lineWidth="0.5" lineStyle="Double"/>
+					<rightPen lineWidth="0.5" lineStyle="Double"/>
+				</box>
+				<image>
+					<reportElement x="2" y="2" width="246" height="163"/>
+					<imageExpression><![CDATA[$F{image_from_view}]]></imageExpression>
+				</image>
+			</frame>
+			<frame>
+				<reportElement x="282" y="10" width="256" height="167"/>
+				<box>
+					<pen lineStyle="Double"/>
+					<topPen lineWidth="0.5" lineStyle="Double"/>
+					<leftPen lineWidth="0.5" lineStyle="Double"/>
+					<bottomPen lineWidth="0.5" lineStyle="Double"/>
+					<rightPen lineWidth="0.5" lineStyle="Double"/>
+				</box>
+				<staticText>
+					<reportElement x="3" y="85" width="79" height="20"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Ubicación:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="84" y="85" width="28" height="20"/>
+					<box leftPadding="1"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{parroquia_subtramo}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="147" y="105" width="54" height="20"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Sección:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="201" y="105" width="52" height="20"/>
+					<box leftPadding="1"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{seccion}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="3" y="125" width="79" height="20"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Coord. UTM Y:]]></text>
+				</staticText>
+				<textField pattern="#,##0.000;-#,##0.000" isBlankWhenNull="true">
+					<reportElement x="84" y="125" width="86" height="20"/>
+					<box leftPadding="1"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{coordenada_utm_y}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="3" y="105" width="79" height="20"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Nº de finca:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Heading 3" x="3" y="3" width="250" height="20"/>
+					<box>
+						<bottomPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Localización de la finca]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="84" y="105" width="60" height="20"/>
+					<box leftPadding="1"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{numero_finca}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="3" y="26" width="79" height="20"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Tramo:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="3" y="65" width="79" height="20"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Ayuntamiento:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="84" y="65" width="28" height="20"/>
+					<box leftPadding="1"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{ayuntamiento}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="84" y="26" width="28" height="20"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{tramo}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="112" y="26" width="141" height="20"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{localizacion_tramo}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="112" y="65" width="141" height="20"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{localizacion_ayuntamiento}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="112" y="85" width="141" height="20"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{localizacion_parroquia_subtramo}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="112" y="45" width="141" height="20"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{localizacion_uc}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="84" y="45" width="28" height="20"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{unidad_constructiva}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="3" y="45" width="79" height="20"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[UC:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="3" y="145" width="79" height="20"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Coord. UTM X:]]></text>
+				</staticText>
+				<textField pattern="#,##0.000;-#,##0.000" isBlankWhenNull="true">
+					<reportElement x="84" y="145" width="86" height="20"/>
+					<box leftPadding="1"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{coordenada_utm_x}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+		<band height="214" splitType="Prevent">
+			<frame>
+				<reportElement x="21" y="30" width="393" height="20"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textField isBlankWhenNull="true">
+					<reportElement x="96" y="1" width="297" height="18"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{titular}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="Default" x="6" y="1" width="93" height="18"/>
+					<textElement verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Titularidad:]]></text>
+				</staticText>
+			</frame>
+			<staticText>
+				<reportElement style="Heading 3" x="2" y="0" width="536" height="20"/>
+				<textElement/>
+				<text><![CDATA[Descripción de la finca y expropiación]]></text>
+			</staticText>
+			<line>
+				<reportElement x="2" y="20" width="536" height="1" forecolor="#000000"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<frame>
+				<reportElement mode="Opaque" x="22" y="59" width="155" height="135" backcolor="#DFDFDF"/>
+				<staticText>
+					<reportElement style="Heading 4" x="6" y="0" width="146" height="22"/>
+					<box>
+						<bottomPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="false" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[Superficies]]></text>
+				</staticText>
+				<elementGroup>
+					<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+						<reportElement style="audasa_celda" x="97" y="25" width="53" height="20"/>
+						<textElement textAlignment="Right" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{superficie_expropiada_total}]]></textFieldExpression>
+					</textField>
+					<staticText>
+						<reportElement x="7" y="25" width="90" height="20"/>
+						<textElement verticalAlignment="Middle"/>
+						<text><![CDATA[Expropiada:]]></text>
+					</staticText>
+				</elementGroup>
+				<elementGroup>
+					<staticText>
+						<reportElement x="7" y="47" width="90" height="19"/>
+						<textElement verticalAlignment="Middle"/>
+						<text><![CDATA[Complementaria:]]></text>
+					</staticText>
+					<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+						<reportElement style="audasa_celda" x="97" y="47" width="53" height="19"/>
+						<textElement textAlignment="Right" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{superficie_complementaria}]]></textFieldExpression>
+					</textField>
+				</elementGroup>
+				<elementGroup>
+					<staticText>
+						<reportElement x="7" y="69" width="90" height="21"/>
+						<textElement verticalAlignment="Middle"/>
+						<text><![CDATA[Expropiada total:]]></text>
+					</staticText>
+					<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+						<reportElement x="97" y="69" width="53" height="21"/>
+						<textElement textAlignment="Right" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{superficie_expropiada_total} + $F{superficie_complementaria}]]></textFieldExpression>
+					</textField>
+				</elementGroup>
+				<elementGroup>
+					<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+						<reportElement style="audasa_celda" x="97" y="93" width="53" height="20"/>
+						<textElement textAlignment="Right" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{superficie_finca_total}]]></textFieldExpression>
+					</textField>
+					<staticText>
+						<reportElement x="7" y="93" width="90" height="20"/>
+						<textElement verticalAlignment="Middle"/>
+						<text><![CDATA[Total de la finca:]]></text>
+					</staticText>
+				</elementGroup>
+				<elementGroup>
+					<staticText>
+						<reportElement x="7" y="115" width="90" height="17"/>
+						<textElement verticalAlignment="Middle"/>
+						<text><![CDATA[Ocupación:]]></text>
+					</staticText>
+					<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+						<reportElement style="audasa_celda" x="97" y="115" width="53" height="17"/>
+						<textElement textAlignment="Right" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{tipo_ocupacion}]]></textFieldExpression>
+					</textField>
+				</elementGroup>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="182" y="59" width="232" height="109" backcolor="#DFDFDF"/>
+				<staticText>
+					<reportElement style="Heading 4" x="8" y="0" width="215" height="20"/>
+					<box>
+						<bottomPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="false" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[Linderos]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="8" y="23" width="36" height="20"/>
+					<box leftPadding="2"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Norte:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement style="audasa_celda" x="45" y="23" width="178" height="20"/>
+					<box leftPadding="2"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{lindero_norte}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="8" y="45" width="36" height="20"/>
+					<box leftPadding="2"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Sur:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement style="audasa_celda" x="45" y="45" width="178" height="20"/>
+					<box leftPadding="2"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{lindero_este}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="8" y="67" width="36" height="20"/>
+					<box leftPadding="2"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Este:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement style="audasa_celda" x="45" y="67" width="178" height="20"/>
+					<box leftPadding="2"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{lindero_sur}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="8" y="89" width="36" height="17"/>
+					<box leftPadding="2"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Oeste:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement style="audasa_celda" x="45" y="89" width="178" height="17"/>
+					<box leftPadding="2"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{lindero_oeste}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="426" y="29" width="111" height="184" backcolor="#DFDFDF"/>
+				<staticText>
+					<reportElement style="Heading 4" x="5" y="2" width="100" height="20"/>
+					<box>
+						<bottomPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="false" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[Cultivos]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="audasa_celda" x="5" y="123" width="63" height="20"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Terreno:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="audasa_celda" x="5" y="43" width="63" height="20"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Inculto:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="audasa_celda" x="5" y="24" width="63" height="20"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Edificación:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="audasa_celda" x="5" y="83" width="63" height="20"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Monte:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="audasa_celda" x="5" y="63" width="63" height="20"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Labradío:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="audasa_celda" x="5" y="143" width="63" height="20"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Viña:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="audasa_celda" x="5" y="103" width="63" height="20"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Prado:]]></text>
+				</staticText>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement x="68" y="24" width="37" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{tipo_cultivo_edificacion}]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement x="68" y="123" width="37" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{tipo_cultivo_terreno}]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement x="68" y="43" width="37" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{tipo_cultivo_inculto}]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement x="68" y="103" width="37" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{tipo_cultivo_prado}]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement x="68" y="63" width="37" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{tipo_cultivo_labradio}]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement x="68" y="83" width="37" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{tipo_cultivo_monte}]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement x="68" y="143" width="37" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{tipo_cultivo_vinha}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="audasa_celda" x="5" y="163" width="63" height="20"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Otros:]]></text>
+				</staticText>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement x="68" y="163" width="37" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{tipo_cultivo_otros}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="182" y="172" width="232" height="22" backcolor="#DFDFDF"/>
+				<staticText>
+					<reportElement style="Heading 4" x="8" y="3" width="37" height="17"/>
+					<box>
+						<bottomPen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[Paraje:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement style="audasa_celda" x="45" y="3" width="178" height="17"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{paraje}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+		<band height="208" splitType="Prevent">
+			<staticText>
+				<reportElement style="Heading 3" x="3" y="0" width="535" height="20"/>
+				<textElement/>
+				<text><![CDATA[Tramitación]]></text>
+			</staticText>
+			<line>
+				<reportElement x="3" y="20" width="535" height="1" forecolor="#000000"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<frame>
+				<reportElement mode="Opaque" x="21" y="74" width="230" height="95" backcolor="#DFDFDF"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<staticText>
+					<reportElement x="6" y="0" width="219" height="20"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+					<text><![CDATA[Depósito Previo]]></text>
+				</staticText>
+				<elementGroup>
+					<staticText>
+						<reportElement x="7" y="69" width="66" height="20"/>
+						<textElement verticalAlignment="Middle"/>
+						<text><![CDATA[Levantado:]]></text>
+					</staticText>
+					<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+						<reportElement x="162" y="69" width="64" height="20"/>
+						<textElement textAlignment="Center" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{deposito_previo_levantado_fecha}]]></textFieldExpression>
+					</textField>
+					<textField pattern="#,##0;-#,##0" isBlankWhenNull="true">
+						<reportElement x="75" y="69" width="80" height="20"/>
+						<textElement textAlignment="Center" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{deposito_previo_levantado_importe}]]></textFieldExpression>
+					</textField>
+					<staticText>
+						<reportElement x="154" y="69" width="8" height="20"/>
+						<textElement textAlignment="Center" verticalAlignment="Middle"/>
+						<text><![CDATA[ - ]]></text>
+					</staticText>
+				</elementGroup>
+				<elementGroup>
+					<staticText>
+						<reportElement x="7" y="21" width="66" height="20"/>
+						<textElement verticalAlignment="Middle"/>
+						<text><![CDATA[Consignado:]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="154" y="21" width="8" height="20"/>
+						<textElement textAlignment="Center" verticalAlignment="Middle"/>
+						<text><![CDATA[ - ]]></text>
+					</staticText>
+					<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+						<reportElement x="162" y="21" width="64" height="20"/>
+						<textElement textAlignment="Center" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{deposito_previo_consignado_fecha}]]></textFieldExpression>
+					</textField>
+					<textField pattern="#,##0;-#,##0" isBlankWhenNull="true">
+						<reportElement x="75" y="21" width="80" height="20"/>
+						<textElement textAlignment="Center" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{deposito_previo_consignado_importe}]]></textFieldExpression>
+					</textField>
+				</elementGroup>
+				<elementGroup>
+					<staticText>
+						<reportElement x="7" y="44" width="66" height="20"/>
+						<textElement verticalAlignment="Middle"/>
+						<text><![CDATA[Pagado:]]></text>
+					</staticText>
+					<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+						<reportElement x="162" y="44" width="64" height="20"/>
+						<textElement textAlignment="Center" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{deposito_previo_pagado_fecha}]]></textFieldExpression>
+					</textField>
+					<textField pattern="#,##0;-#,##0" isBlankWhenNull="true">
+						<reportElement x="75" y="44" width="80" height="20"/>
+						<textElement textAlignment="Center" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{deposito_previo_pagado_importe}]]></textFieldExpression>
+					</textField>
+					<staticText>
+						<reportElement x="154" y="44" width="8" height="20"/>
+						<textElement textAlignment="Center" verticalAlignment="Middle"/>
+						<text><![CDATA[ - ]]></text>
+					</staticText>
+				</elementGroup>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="263" y="56" width="275" height="85" backcolor="#DFDFDF"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textField pattern="#,##0;-#,##0" isBlankWhenNull="true">
+					<reportElement x="115" y="4" width="84" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{mutuo_acuerdo_parcial_importe}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="Default" x="5" y="4" width="109" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<text><![CDATA[Mut. acuerdo parcial:]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement x="207" y="4" width="62" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{mutuo_acuerdo_parcial_fecha}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="5" y="31" width="109" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<text><![CDATA[Límite acuerdo:]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement x="207" y="31" width="62" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{limite_acuerdo_fecha}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0;-#,##0" isBlankWhenNull="true">
+					<reportElement x="115" y="31" width="84" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{limite_acuerdo_importe}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="5" y="59" width="109" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<text><![CDATA[Pagos varios:]]></text>
+				</staticText>
+				<textField pattern="#,##0;-#,##0" isBlankWhenNull="true">
+					<reportElement x="115" y="59" width="84" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{pagos_varios_importe}]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement x="207" y="59" width="62" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{pagos_varios_fecha}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="6" y="27" width="263" height="1"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="6" y="54" width="263" height="1"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</line>
+				<staticText>
+					<reportElement x="199" y="4" width="8" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[ - ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="199" y="31" width="8" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[ - ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="199" y="59" width="8" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[ - ]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="263" y="30" width="275" height="23" backcolor="#DFDFDF"/>
+				<staticText>
+					<reportElement x="6" y="1" width="108" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<text><![CDATA[Anticipo:]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement x="207" y="1" width="62" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{anticipo_fecha}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0;-#,##0" isBlankWhenNull="true">
+					<reportElement x="115" y="1" width="84" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{anticipo_importe}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="199" y="1" width="8" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[ - ]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="21" y="29" width="230" height="42" backcolor="#DFDFDF"/>
+				<line>
+					<reportElement x="6" y="20" width="218" height="1"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</line>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement x="161" y="1" width="63" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{fecha_acta_previa}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="6" y="1" width="143" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<text><![CDATA[Acta previa ocupación:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="6" y="21" width="143" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<text><![CDATA[Acta complementaria:]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement x="161" y="21" width="63" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{fecha_acta_complementaria}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="20" y="172" width="231" height="26" backcolor="#DFDFDF"/>
+				<staticText>
+					<reportElement x="7" y="3" width="70" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Mut. acuerdo:]]></text>
+				</staticText>
+				<textField pattern="#,##0;-#,##0" isBlankWhenNull="true">
+					<reportElement x="77" y="3" width="79" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{mutuo_acuerdo_importe}]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement x="163" y="3" width="63" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{mutuo_acuerdo_fecha}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="155" y="3" width="8" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[ - ]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement x="263" y="177" width="275" height="20"/>
+				<textField pattern="#,##0;-#,##0" isBlankWhenNull="true">
+					<reportElement x="147" y="0" width="103" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{importe_pendiente_total}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="6" y="0" width="136" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Importe pendiente:]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement x="263" y="148" width="275" height="20"/>
+				<staticText>
+					<reportElement x="6" y="0" width="136" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Importe total de pagos:]]></text>
+				</staticText>
+				<textField pattern="#,##0;-#,##0" isBlankWhenNull="true">
+					<reportElement x="147" y="0" width="103" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{importe_pagado_total}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+		<band height="110">
+			<staticText>
+				<reportElement style="Heading 3" x="3" y="0" width="535" height="20"/>
+				<textElement/>
+				<text><![CDATA[Desafecciones y otros]]></text>
+			</staticText>
+			<line>
+				<reportElement x="3" y="20" width="535" height="1" forecolor="#000000"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<frame>
+				<reportElement mode="Opaque" x="20" y="30" width="518" height="20" backcolor="#DFDFDF"/>
+				<staticText>
+					<reportElement x="9" y="0" width="119" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Desafección:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="131" y="0" width="100" height="20"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{desafeccion_ocupacion}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00;-#,##0.00">
+					<reportElement x="244" y="0" width="100" height="20"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{desafeccion_superficie}]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd/MM/yyyy">
+					<reportElement x="374" y="0" width="100" height="20"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{desafeccion_fecha_acta}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="233" y="0" width="8" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[ - ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="355" y="0" width="8" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[ - ]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="20" y="54" width="518" height="20" backcolor="#DFDFDF"/>
+				<staticText>
+					<reportElement x="9" y="0" width="119" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Policía de márgenes:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="243" y="0" width="269" height="20"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{comentarios_policia_margenes}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="131" y="0" width="100" height="20"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{numero_expediente}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="233" y="0" width="8" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[ - ]]></text>
+				</staticText>
+			</frame>
+			<subreport>
+				<reportElement x="20" y="79" width="518" height="20"/>
+				<dataSourceExpression><![CDATA[$P{REVERSIONS_DATASOURCE}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{REVERSIONS_SUBREPORT}]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="15" splitType="Stretch">
+			<line>
+				<reportElement x="3" y="0" width="535" height="1"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="308" y="3" width="224" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Consulta descriptiva y gráfica]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="21" y="3" width="264" height="12"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Fecha de consulta: " + $P{FECHA_CONSULTA_EXPEDIENTE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
