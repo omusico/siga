@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.sql.SQLException;
 import java.util.Hashtable;
 
@@ -34,28 +35,27 @@ public class LoadWMS {
 	String whereC = DBNames.FIELD_LAYER_WMS + "=" + "'" + wmsName + "'";
 	try {
 	    // columns in order from wms table: id_wms[0], layer_name[1],
-	    // layer[2],
-	    // srs[3], format[4], host[5]
+	    // layer[2], srs[3], format[4], host[5]
 	    String[][] wmsValues = null;
 	    wmsValues = dbs.getTable(DBNames.TABLE_WMS, dbs.getSchema(), whereC);
 
-	    String host = wmsValues[0][5];
-	    URL url = null;
-	    url = new URL(host);
+	    String name = wmsValues[0][1];
 	    String sLayer = wmsValues[0][2];
 	    String srs = wmsValues[0][3];
 	    String format = wmsValues[0][4];
+	    String host = wmsValues[0][5];
+	    
+	    URL url = new URL(host);
 	    FLyrWMS layer = new FLyrWMS();
-
+	    
 	    layer.setHost(url);
 	    layer.setFullExtent(new Rectangle2D.Float(430819, 4623297, 286459,
 		    232149));
-
 	    layer.setFormat(format);
 	    layer.setLayerQuery(sLayer);
 	    layer.setInfoLayerQuery(sLayer);
 	    layer.setSRS(srs);
-	    ((FLayer) layer).setName(wmsValues[0][1]);
+	    ((FLayer) layer).setName(name);
 	    layer.setWmsTransparency(true);
 	    // Vector styles = new Vector();
 	    // String[] sLayers = sLayer.split(",");
@@ -67,16 +67,18 @@ public class LoadWMS {
 	    // "gvSIG Raster Driver";
 	    FMapWMSDriver driver;
 	    driver = FMapWMSDriverFactory.getFMapDriverForURL(url);
-	    layer.setDriver(driver);
+	    if (driver != null) {
+	    	layer.setDriver(driver);
+	    }
 
 	    Hashtable online_resources = new Hashtable();
-	    online_resources.put("GetFeatureInfo", wmsValues[0][5]);
-	    online_resources.put("GetMap", wmsValues[0][5]);
+	    online_resources.put("GetFeatureInfo", host);
+	    online_resources.put("GetMap", host);
 	    layer.setOnlineResources(online_resources);
 	    layer.setFixedSize(new Dimension(-1, -1));
 	    layer.setQueryable(false);
-
 	    ((FLayer) layer).setVisible(true);
+	    
 	    View v = (View) PluginServices.getMDIManager().getActiveWindow();
 	    MapContext mapContext = v.getModel().getMapContext();
 
@@ -84,12 +86,16 @@ public class LoadWMS {
 
 	} catch (SQLException e) {
 	    e.printStackTrace();
+	    return;
 	} catch (MalformedURLException e) {
 	    e.printStackTrace();
+	    return;
 	} catch (ConnectException e) {
 	    e.printStackTrace();
+	    return;
 	} catch (IOException e) {
 	    e.printStackTrace();
+	    return;
 	}
     }
 }
