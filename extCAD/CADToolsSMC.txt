@@ -1,1 +1,0 @@
-C:\eclipse\workspace\CADTools\sm>java -jar ../lib/Smc.jar -java -d ../src/gen CADTool.sm
