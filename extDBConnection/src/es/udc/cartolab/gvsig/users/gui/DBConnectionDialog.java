@@ -16,9 +16,12 @@
  */
 package es.udc.cartolab.gvsig.users.gui;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.io.File;
 
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -72,9 +75,11 @@ public class DBConnectionDialog extends AbstractGVWindow {
 	public static final String ID_PASSL = "passLabel";
 	public static final String ID_DBL = "dbLabel";
 	public static final String ID_SCHEMAL = "schemaLabel";
+	
+	static File header_image = new File("gvSIG/extensiones/es.udc.cartolab.gvsig.users/images/audasa.jpg");
 
 	public DBConnectionDialog() {
-		super(425, INIT_MIN_HEIGHT);
+		super(425, INIT_MIN_HEIGHT, new ImageIcon(header_image.getAbsolutePath()), Color.WHITE);
 		setTitle(PluginServices.getText(this, "Login"));
 	}
 
