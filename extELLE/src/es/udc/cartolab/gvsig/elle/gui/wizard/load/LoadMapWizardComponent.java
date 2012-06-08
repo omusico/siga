@@ -68,7 +68,7 @@ public class LoadMapWizardComponent extends WizardComponent implements ActionLis
 	}
 
 	public boolean canFinish() {
-		return canNext();
+		return false;
 	}
 
 	public boolean canNext() {
@@ -201,21 +201,21 @@ public class LoadMapWizardComponent extends WizardComponent implements ActionLis
 	}
 
 	public void finish() throws WizardException {
-		Object aux = properties.get(PROPERTY_VEW);
-		if (aux!=null && aux instanceof View) {
-			View view = (View) aux;
-			try {
-				ELLEMap map = MapDAO.getInstance().getMap(view, mapList.getSelectedValue().toString(), "");
-				map.load(crsPanel.getCurProj());
-				if (view.getModel().getName().equals("ELLE View") && (view.getModel() instanceof ProjectView)) {
-					((ProjectView) view.getModel()).setName(mapList.getSelectedValue().toString());
-				}
-			} catch (Exception e) {
-				throw new WizardException(e);
-			}
-		} else {
-			throw new WizardException("Couldn't retrieve the view");
-		}
+//		Object aux = properties.get(PROPERTY_VEW);
+//		if (aux!=null && aux instanceof View) {
+//			View view = (View) aux;
+//			try {
+//				ELLEMap map = MapDAO.getInstance().getMap(view, mapList.getSelectedValue().toString(), "");
+//				map.load(crsPanel.getCurProj());
+//				if (view.getModel().getName().equals("ELLE View") && (view.getModel() instanceof ProjectView)) {
+//					((ProjectView) view.getModel()).setName(mapList.getSelectedValue().toString());
+//				}
+//			} catch (Exception e) {
+//				throw new WizardException(e);
+//			}
+//		} else {
+//			throw new WizardException("Couldn't retrieve the view");
+//		}
 	}
 
 	public void setProperties() {

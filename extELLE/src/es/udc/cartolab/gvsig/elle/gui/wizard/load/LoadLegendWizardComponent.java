@@ -194,7 +194,7 @@ public class LoadLegendWizardComponent extends WizardComponent {
     }
 
     public boolean canFinish() {
-	return true;
+	return canNext();
     }
 
     public boolean canNext() {

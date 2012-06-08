@@ -52,6 +52,7 @@ public class LoadMapWizard extends WizardWindow {
 
 	protected void addWizardComponents() {
 		views.add(new LoadMapWizardComponent(properties));
+		views.add(new LoadConstantsWizardComponent(properties));
 		views.add(new LoadLegendWizardComponent(properties));
 	}
 
