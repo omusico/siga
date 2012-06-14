@@ -36,6 +36,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
     
     private String selectedConstant;
     private String selectedValue;
+    private Object[] selectedValuesList;
     
     public final static String PROPERTY_VIEW = "view";
 
@@ -90,9 +91,10 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 		    callStateChanged();
 
 		    if (selected.length == 1) {
-			selectedValue = (String) valuesList.getSelectedValues()[0];
+			selectedValue = (String) valuesList.getSelectedValue();
 		    } else {
-			//TODO: several constants selected at the same time	
+			//TODO: several constants selected at the same time
+			selectedValuesList = valuesList.getSelectedValues();
 		    }
 		}
 	    });
@@ -155,10 +157,18 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 		View view = (View) aux;
 		try {
 			ELLEMap map = MapDAO.getInstance().getMap(view, mapName, "");
-			if (selectedValue != null) {
-			    
-			    
-			    String where = "WHERE " + getFilteredFieldOfConstant() + " = " + "'" + selectedValue + "'";
+			String where = "WHERE ";
+			if (selectedValuesList != null && selectedValuesList.length > 1) {
+			    for (int i=0; i<selectedValuesList.length; i++) {
+				if (i != selectedValuesList.length-1) {
+				    where = where + getFilteredFieldOfConstant() + " = " + "'" + selectedValuesList[i].toString() + "'" + " OR ";
+				}else {
+				    where = where + getFilteredFieldOfConstant() + " = " + "'" + selectedValuesList[i].toString() + "'";
+				}
+			    }
+			    map.setWhereClause(where);
+			}else if (selectedValue != null) {
+			    where = where + getFilteredFieldOfConstant() + " = " + "'" + selectedValue + "'";
 			    map.setWhereClause(where);
 			}
 			map.load(view.getProjection());
