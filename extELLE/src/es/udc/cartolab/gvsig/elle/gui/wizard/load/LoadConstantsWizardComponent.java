@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.JLabel;
@@ -39,6 +41,11 @@ public class LoadConstantsWizardComponent extends WizardComponent {
     private Object[] selectedValuesList;
     
     public final static String PROPERTY_VIEW = "view";
+    
+    public final static String CONSTANTS_TABLE_NAME = "_constants";
+    public final static String CONSTANTS_CONSTANT_FIELD_NAME = "constante";
+    public final static String CONSTANTS_AFFECTED_TABLE_NAME = "nombre_tabla";
+    public final static String CONSTANTS_FILTER_FIELD_NAME = "campo_filtro";
 
     public LoadConstantsWizardComponent(Map<String, Object> properties) {
 	super(properties);
@@ -66,7 +73,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	    valuesList = form.getList("valuesList");
 	    JLabel valuesLabel = form.getLabel("valuesLabel");
 	    valuesLabel.setText(PluginServices.getText(this, "values_load"));
-	    valuesList.setListData(getValuesFromConstant());
+	    valuesList.setListData(getValuesFromConstant(selectedConstant));
 	    
 	    constantsList.addListSelectionListener(new ListSelectionListener() {
 
@@ -76,7 +83,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 
 		    if (selected.length == 1) {
 			selectedConstant = (String) constantsList.getSelectedValues()[0];
-			String[] values = getValuesFromConstant();
+			String[] values = getValuesFromConstant(selectedConstant);
 			valuesList.setListData(values);
 		    } else {
 			//TODO: several constants selected at the same time	
@@ -104,7 +111,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 
     private String[] getConstants() {
 	try {
-	    String[] constants = dbs.getDistinctValues("_constants", "constante");
+	    String[] constants = dbs.getDistinctValues(CONSTANTS_TABLE_NAME, CONSTANTS_CONSTANT_FIELD_NAME);
 	    return constants;
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -112,9 +119,10 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	return null;
     }
     
-    private String[] getValuesFromConstant() {
+    private String[] getValuesFromConstant(String constant) {
 	try {
-	    String[] values = dbs.getDistinctValues("exp_finca", getFilteredFieldOfConstant());
+	    String[] tables = getTablesAffectedbyConstant(constant);
+	    String[] values = dbs.getDistinctValues(tables[0], getFilteredFieldOfConstant(constant));
 	    return values;
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -122,8 +130,8 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	return null;
     }
     
-    private String getFilteredFieldOfConstant() {
-	String query = "SELECT campo_filtro FROM " + dbs.getSchema() + "._constants WHERE constante = " + "'" + selectedConstant + "'" + ";";
+    private String getFilteredFieldOfConstant(String constant) {
+	String query = "SELECT campo_filtro FROM " + dbs.getSchema() + "." + CONSTANTS_TABLE_NAME + " WHERE " + CONSTANTS_CONSTANT_FIELD_NAME +  " = " + "'" + constant + "'" + ";";
 	PreparedStatement statement;
 	try {
 	    statement = dbs.getJavaConnection().prepareStatement(query);
@@ -135,6 +143,33 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	    e.printStackTrace();
 	}
 	return null;
+    }
+    
+    private String[] getTablesAffectedbyConstant(String constant) {
+	String query = "SELECT nombre_tabla FROM " + dbs.getSchema() + "." + CONSTANTS_TABLE_NAME + " WHERE " + CONSTANTS_CONSTANT_FIELD_NAME +  " = " + "'" + constant + "'" + ";";
+	PreparedStatement statement;
+	    try {
+		statement = dbs.getJavaConnection().prepareStatement(query);
+		statement.execute();
+		ResultSet rs = statement.getResultSet();
+		
+		List <String>resultArray = new ArrayList<String>();
+		while (rs.next()) {
+			String val = rs.getString(CONSTANTS_AFFECTED_TABLE_NAME);
+			resultArray.add(val);
+		}
+		rs.close();
+
+		String[] result = new String[resultArray.size()];
+		for (int i=0; i<resultArray.size(); i++) {
+			result[i] = resultArray.get(i);
+		}
+
+		return result;
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
+	    return null;
     }
 
     @Override
@@ -161,14 +196,14 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 			if (selectedValuesList != null && selectedValuesList.length > 1) {
 			    for (int i=0; i<selectedValuesList.length; i++) {
 				if (i != selectedValuesList.length-1) {
-				    where = where + getFilteredFieldOfConstant() + " = " + "'" + selectedValuesList[i].toString() + "'" + " OR ";
+				    where = where + getFilteredFieldOfConstant(selectedConstant) + " = " + "'" + selectedValuesList[i].toString() + "'" + " OR ";
 				}else {
-				    where = where + getFilteredFieldOfConstant() + " = " + "'" + selectedValuesList[i].toString() + "'";
+				    where = where + getFilteredFieldOfConstant(selectedConstant) + " = " + "'" + selectedValuesList[i].toString() + "'";
 				}
 			    }
 			    map.setWhereClause(where);
 			}else if (selectedValue != null) {
-			    where = where + getFilteredFieldOfConstant() + " = " + "'" + selectedValue + "'";
+			    where = where + getFilteredFieldOfConstant(selectedConstant) + " = " + "'" + selectedValue + "'";
 			    map.setWhereClause(where);
 			}
 			map.load(view.getProjection());
