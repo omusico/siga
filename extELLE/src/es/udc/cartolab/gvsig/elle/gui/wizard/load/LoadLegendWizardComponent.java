@@ -39,6 +39,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 import com.iver.utiles.XMLEntity;
 
+import es.icarto.gvsig.elle.db.DBStructure;
 import es.udc.cartolab.gvsig.elle.gui.EllePreferencesPage;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardComponent;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardException;
@@ -81,7 +82,7 @@ public class LoadLegendWizardComponent extends WizardComponent {
 	//components placement
 	setLayout(new MigLayout("inset 0, align center",
 		"20[grow]",
-	"[]15[][]15[][]"));
+		"[]15[][]15[][]"));
 	add(noLegendRB, "wrap");
 	add(databaseRB, "wrap");
 	add(dbPanel, "shrink, growx, growy, wrap");
@@ -142,7 +143,7 @@ public class LoadLegendWizardComponent extends WizardComponent {
 	JPanel panel = new JPanel();
 	MigLayout layout = new MigLayout("inset 0, align center",
 		"10[grow][]50",
-	"5[grow]5");
+		"5[grow]5");
 	panel.setLayout(layout);
 
 	if (DBSession.getCurrentSession()!=null) {
@@ -165,7 +166,7 @@ public class LoadLegendWizardComponent extends WizardComponent {
 	JPanel panel = new JPanel();
 	MigLayout layout = new MigLayout("inset 0, align center",
 		"10[grow][]50",
-	"5[grow]5");
+		"5[grow]5");
 	panel.setLayout(layout);
 
 	boolean panelAdded = false;
@@ -211,8 +212,8 @@ public class LoadLegendWizardComponent extends WizardComponent {
 	DBSession dbs = DBSession.getCurrentSession();
 	if (dbs!=null) {
 	    try {
-		if (dbs.tableExists(dbs.getSchema(), "_map_style")) {
-		    String[] legends = dbs.getDistinctValues("_map_style", dbs.getSchema(), "nombre_estilo", true, false);
+		if (dbs.tableExists(DBStructure.getSchema(), DBStructure.getMapStyleTable())) {
+		    String[] legends = dbs.getDistinctValues(DBStructure.getMapStyleTable(), DBStructure.getSchema(), "nombre_estilo", true, false);
 		    Object tmp = properties
 			    .get(LoadMapWizardComponent.PROPERTY_MAP_NAME);
 		    boolean exists = false;
