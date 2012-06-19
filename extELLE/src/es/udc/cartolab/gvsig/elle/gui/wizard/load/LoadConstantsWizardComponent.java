@@ -191,7 +191,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	if (aux!=null && aux instanceof View) {
 		View view = (View) aux;
 		try {
-			ELLEMap map = MapDAO.getInstance().getMap(view, mapName, "");
+			ELLEMap map = MapDAO.getInstance().getMap(view, mapName);
 			String where = "WHERE ";
 			if (selectedValuesList != null && selectedValuesList.length > 1) {
 			    for (int i=0; i<selectedValuesList.length; i++) {
@@ -201,10 +201,10 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 				    where = where + getFilteredFieldOfConstant(selectedConstant) + " = " + "'" + selectedValuesList[i].toString() + "'";
 				}
 			    }
-			    map.setWhereClause(where);
+			    map.setWhereOnAllLayers(where);
 			}else if (selectedValue != null) {
 			    where = where + getFilteredFieldOfConstant(selectedConstant) + " = " + "'" + selectedValue + "'";
-			    map.setWhereClause(where);
+			    map.setWhereOnAllLayers(where);
 			}
 			map.load(view.getProjection());
 			if (view.getModel().getName().equals("ELLE View") && (view.getModel() instanceof ProjectView)) {

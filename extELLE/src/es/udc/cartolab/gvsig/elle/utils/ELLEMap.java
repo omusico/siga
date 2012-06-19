@@ -237,10 +237,10 @@ public class ELLEMap {
 			try {
 			    	//TODO: AUDASA - Making generic
 			    	if (!lp.getTablename().equalsIgnoreCase("exp_finca")) {
-			    	    layer = getMapDAO().getLayer(lp, null, proj);
-			    	}else {
-			    	    layer = getMapDAO().getLayer(lp, whereClause, proj);   
+			    	    lp.setWhere("");
 			    	}
+			    	layer = getMapDAO().getLayer(lp, proj);
+			    	
 				if (layer!=null) {
 					if (lp.getMaxScale()>-1) {
 						layer.setMaxScale(lp.getMaxScale());
