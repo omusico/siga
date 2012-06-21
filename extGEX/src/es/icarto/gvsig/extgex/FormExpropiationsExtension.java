@@ -9,7 +9,9 @@ import com.iver.andami.preferences.IPreference;
 import com.iver.andami.preferences.IPreferenceExtension;
 import com.iver.andami.preferences.StoreException;
 import com.iver.andami.ui.mdiManager.IWindow;
+import com.iver.cit.gvsig.About;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
+import com.iver.cit.gvsig.gui.panels.FPanelAbout;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.icarto.gvsig.extgex.forms.FormExpropiations;
@@ -53,6 +55,11 @@ IPreferenceExtension {
     }
 
     public void initialize() {
+	About about = (About) PluginServices.getExtension(About.class);
+	FPanelAbout panelAbout = about.getAboutPanel();
+	java.net.URL aboutURL = this.getClass().getResource("/about.htm");
+	panelAbout.addAboutUrl("GEX", aboutURL);
+	
 	registerIcons();
 	PreferencesPage page = new PreferencesPage();
 	try {
