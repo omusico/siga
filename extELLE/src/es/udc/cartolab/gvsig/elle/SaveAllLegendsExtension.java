@@ -56,11 +56,6 @@ public class SaveAllLegendsExtension extends Extension {
     }
 
     public boolean isEnabled() {
-	return true;
-    }
-
-    public boolean isVisible() {
-
 	IWindow window = PluginServices.getMDIManager().getActiveWindow();
 	if (window instanceof View) {
 	    if (((View) window).getMapControl().getMapContext().getLayers().getLayersCount()>0) {
@@ -68,6 +63,10 @@ public class SaveAllLegendsExtension extends Extension {
 	    }
 	}
 	return false;
+    }
+
+    public boolean isVisible() {
+	return true;
     }
 
 

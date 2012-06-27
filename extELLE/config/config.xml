@@ -7,54 +7,47 @@
 	<libraries library-dir="lib"/>
 	<resourceBundle name="text"/>
 	<extensions>
-		<extension class-name="es.udc.cartolab.gvsig.elle.LoadMapExtension" description="Load map" active="true">
-			<menu text="data_base_menu/Load_map"
-				icon="load-map"
-				action-command="LoadMap"
-				position="03"/> 
-			<tool-bar name="ELLE">
-				<action-tool icon="load-map" tooltip="Load_map"
-					action-command="LoadMap" position="1" name="load-map" />
-			</tool-bar>
-		</extension>
-		<extension class-name="es.udc.cartolab.gvsig.elle.LoadAllLegendsExtension" description="Load_several_legends" active="true">
-			<menu text="data_base_menu/load_legends"
-				icon="load-legends"
-				action-command="LOADLEGENDS"
-				position="0900"/>
-			<tool-bar name="ELLE">
-				<action-tool icon="load-legends" tooltip="load_legends"
-					action-command="LOADLEGENDS" position="3" name="load-legends" />
-			</tool-bar>
-		</extension>
-		<extension class-name="es.udc.cartolab.gvsig.elle.SaveAllLegendsExtension" description="Save_several_legends" active="true">
-			<menu text="data_base_menu/Save_legends/Leg_actives"
-				action-command="ACTIVES"
-				position="0910"/> 
-			<menu text="data_base_menu/Save_legends/Leg_visibles"
-				action-command="VISIBLES"
-				position="0920"/>
-			<menu text="data_base_menu/Save_legends/Leg_map_overview"
-				action-command="MAPOVERVIEW"
-				position="0930" />
-			<menu text="data_base_menu/Save_legends/Leg_all"
-				icon="save-all-legends"
-				action-command="ALL"
-				position="0940"/>
-			<tool-bar name="ELLE">
-				<action-tool icon="save-all-legends" tooltip="Save_legends"
-					action-command="ALL" position="4" name="save-all-legends" />
-			</tool-bar>
-		</extension>
-		<extension class-name="es.udc.cartolab.gvsig.elle.SaveMapExtension" description="save_map" active="true">
-			<menu text="data_base_menu/save_map"
-				icon="save-map"
-				action-command="SaveMap"
-				position="04" />
-			<tool-bar name="ELLE">
-				<action-tool icon="save-map" tooltip="save_map"
-					action-command="SaveMap" position="2" name="save-map" />
-			</tool-bar>
-		</extension>
-	</extensions>
+        <extension
+            class-name="es.udc.cartolab.gvsig.elle.LoadMapExtension"
+            active="true" description="Load map">
+            <menu action-command="LoadMap" icon="load-map"
+                text="data_base_menu/Load_map" position="20100"/>
+            <tool-bar name="ELLE" position="30">
+                <action-tool name="load-map" action-command="LoadMap"
+                    icon="load-map" tooltip="Load_map" position="1"/>
+            </tool-bar>
+        </extension>
+        <extension
+            class-name="es.udc.cartolab.gvsig.elle.LoadAllLegendsExtension"
+            active="true" description="Load_several_legends">
+            <menu action-command="LOADLEGENDS" icon="load-legends"
+                text="data_base_menu/load_legends" position="20300"/>
+            <tool-bar name="ELLE" position="30">
+                <action-tool name="load-legends"
+                    action-command="LOADLEGENDS" icon="load-legends"
+                    tooltip="load_legends" position="3"/>
+            </tool-bar>
+        </extension>
+        <extension
+            class-name="es.udc.cartolab.gvsig.elle.SaveAllLegendsExtension"
+            active="true" description="Save_several_legends">
+            <menu action-command="ALL" icon="save-all-legends"
+                text="data_base_menu/Save_legends" position="20400"/>
+            <tool-bar name="ELLE" position="30">
+                <action-tool name="save-all-legends"
+                    action-command="ALL" icon="save-all-legends"
+                    tooltip="Save_legends" position="4"/>
+            </tool-bar>
+        </extension>
+        <extension
+            class-name="es.udc.cartolab.gvsig.elle.SaveMapExtension"
+            active="true" description="save_map">
+            <menu action-command="SaveMap" icon="save-map"
+                text="data_base_menu/save_map" position="20200"/>
+            <tool-bar name="ELLE" position="30">
+                <action-tool name="save-map" action-command="SaveMap"
+                    icon="save-map" tooltip="save_map" position="2"/>
+            </tool-bar>
+        </extension>
+    </extensions>
 </plugin-config>

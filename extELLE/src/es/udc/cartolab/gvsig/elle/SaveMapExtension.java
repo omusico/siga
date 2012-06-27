@@ -56,13 +56,7 @@ public class SaveMapExtension extends Extension {
 
 
     public boolean isVisible() {
-	if (PluginServices.getMDIManager().getActiveWindow() instanceof View) {
-	    DBSession session = DBSession.getCurrentSession();
-	    if (session != null) {
-		return session.getDBUser().isAdmin();
-	    }
-	}
-	return false;
+	return true;
     }
 
 }

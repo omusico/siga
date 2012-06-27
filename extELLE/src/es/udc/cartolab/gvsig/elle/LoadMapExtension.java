@@ -97,12 +97,12 @@ public class LoadMapExtension extends Extension implements IPreferenceExtension 
     }
 
     public boolean isEnabled() {
-	return true;
+	DBSession dbs = DBSession.getCurrentSession();
+	return dbs != null;
     }
 
     public boolean isVisible() {
-	DBSession dbs = DBSession.getCurrentSession();
-	return dbs != null;
+	return true;
     }
 
     public IPreference[] getPreferencesPages() {

@@ -53,8 +53,7 @@ public class LoadAllLegendsExtension extends Extension {
     }
 
     public boolean isVisible() {
-	IWindow w = PluginServices.getMDIManager().getActiveWindow();
-	return w instanceof View;
+	return true;
     }
 
 }
