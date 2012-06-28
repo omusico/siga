@@ -122,7 +122,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
     private String[] getValuesFromConstant(String constant) {
 	try {
 	    String[] tables = getTablesAffectedbyConstant(constant);
-	    String[] values = dbs.getDistinctValues(tables[0], getFilteredFieldOfConstant(constant));
+	    String[] values = dbs.getDistinctValues(tables[0], dbs.getSchema(), getFilteredFieldOfConstant(constant), true, false);
 	    return values;
 	} catch (SQLException e) {
 	    e.printStackTrace();
