@@ -46,6 +46,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
     public final static String CONSTANTS_CONSTANT_FIELD_NAME = "constante";
     public final static String CONSTANTS_AFFECTED_TABLE_NAME = "nombre_tabla";
     public final static String CONSTANTS_FILTER_FIELD_NAME = "campo_filtro";
+    public final static String CONSTANTS_QUERY_FIELD_NAME = "campo_query";
 
     public LoadConstantsWizardComponent(Map<String, Object> properties) {
 	super(properties);
@@ -73,7 +74,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	    valuesList = form.getList("valuesList");
 	    JLabel valuesLabel = form.getLabel("valuesLabel");
 	    valuesLabel.setText(PluginServices.getText(this, "values_load"));
-	    valuesList.setListData(getValuesFromConstant(selectedConstant));
+	    valuesList.setListData(getValuesFromConstantByQuery(selectedConstant));
 	    
 	    constantsList.addListSelectionListener(new ListSelectionListener() {
 
@@ -83,7 +84,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 
 		    if (selected.length == 1) {
 			selectedConstant = (String) constantsList.getSelectedValues()[0];
-			String[] values = getValuesFromConstant(selectedConstant);
+			String[] values = getValuesFromConstantByQuery(selectedConstant);
 			valuesList.setListData(values);
 		    } else {
 			//TODO: several constants selected at the same time	
@@ -122,7 +123,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
     private String[] getValuesFromConstant(String constant) {
 	try {
 	    String[] tables = getTablesAffectedbyConstant(constant);
-	    String[] values = dbs.getDistinctValues(tables[0], dbs.getSchema(), getFilteredFieldOfConstant(constant), true, false);
+	    String[] values = dbs.getDistinctValues(tables[0], dbs.getSchema(), getValueOfFieldByConstant(constant, CONSTANTS_FILTER_FIELD_NAME), true, false);
 	    return values;
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -130,8 +131,35 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	return null;
     }
     
-    private String getFilteredFieldOfConstant(String constant) {
-	String query = "SELECT campo_filtro FROM " + dbs.getSchema() + "." + CONSTANTS_TABLE_NAME + " WHERE " + CONSTANTS_CONSTANT_FIELD_NAME +  " = " + "'" + constant + "'" + ";";
+    private String[] getValuesFromConstantByQuery(String constant) {
+	String query = getValueOfFieldByConstant(constant, CONSTANTS_QUERY_FIELD_NAME);
+	PreparedStatement statement;
+	try {
+	    statement = dbs.getJavaConnection().prepareStatement(query);
+	    statement.execute();
+	    ResultSet rs = statement.getResultSet();
+	    
+	    List <String>resultArray = new ArrayList<String>();
+	    while (rs.next()) {
+		String val = rs.getString(1);
+		resultArray.add(val);
+	    }
+	    rs.close();
+
+	    String[] result = new String[resultArray.size()];
+	    for (int i=0; i<resultArray.size(); i++) {
+		result[i] = resultArray.get(i);
+	    }
+
+	    return result;
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return null;
+    }
+    
+    private String getValueOfFieldByConstant(String constant, String field) {
+	String query = "SELECT " + field + " FROM " + dbs.getSchema() + "." + CONSTANTS_TABLE_NAME + " WHERE " + CONSTANTS_CONSTANT_FIELD_NAME +  " = " + "'" + constant + "'" + ";";
 	PreparedStatement statement;
 	try {
 	    statement = dbs.getJavaConnection().prepareStatement(query);
@@ -144,7 +172,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	}
 	return null;
     }
-    
+        
     private String[] getTablesAffectedbyConstant(String constant) {
 	String query = "SELECT nombre_tabla FROM " + dbs.getSchema() + "." + CONSTANTS_TABLE_NAME + " WHERE " + CONSTANTS_CONSTANT_FIELD_NAME +  " = " + "'" + constant + "'" + ";";
 	PreparedStatement statement;
@@ -196,14 +224,14 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 			if (selectedValuesList != null && selectedValuesList.length > 1) {
 			    for (int i=0; i<selectedValuesList.length; i++) {
 				if (i != selectedValuesList.length-1) {
-				    where = where + getFilteredFieldOfConstant(selectedConstant) + " = " + "'" + selectedValuesList[i].toString() + "'" + " OR ";
+				    where = where + getValueOfFieldByConstant(selectedConstant, CONSTANTS_FILTER_FIELD_NAME) + " = " + "'" + selectedValuesList[i].toString() + "'" + " OR ";
 				}else {
-				    where = where + getFilteredFieldOfConstant(selectedConstant) + " = " + "'" + selectedValuesList[i].toString() + "'";
+				    where = where + getValueOfFieldByConstant(selectedConstant, CONSTANTS_FILTER_FIELD_NAME) + " = " + "'" + selectedValuesList[i].toString() + "'";
 				}
 			    }
 			    map.setWhereOnAllLayers(where);
 			}else if (selectedValue != null) {
-			    where = where + getFilteredFieldOfConstant(selectedConstant) + " = " + "'" + selectedValue + "'";
+			    where = where + getValueOfFieldByConstant(selectedConstant, CONSTANTS_FILTER_FIELD_NAME) + " = " + "'" + selectedValue + "'";
 			    map.setWhereOnAllLayers(where);
 			}
 			map.load(view.getProjection());
