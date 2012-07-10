@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<METADATA>
+	<LAYER alias="PM">
+ 		<TABLENAME>exp_pm</TABLENAME>
+ 		<PRIMARYKEY>
+ 			<PKELEMENT>codigo</PKELEMENT>
+ 		</PRIMARYKEY>
+ 		<RECORDSET>
+ 		</RECORDSET>
+ 	</LAYER>
+</METADATA> 

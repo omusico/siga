@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<plugin-config>
+	<depends plugin-name="com.iver.cit.gvsig"/>
+	<depends plugin-name="es.udc.cartolab.gvsig.navtable"/>
+	<depends plugin-name="es.udc.cartolab.gvsig.users"/>
+	<libraries library-dir="lib"/>
+	<resourceBundle name="text"/>
+	<extensions>
+	<extension class-name="es.icarto.gvsig.extpm.FormPMExtension" description="FORMS_PANEL" active="true">
+			<tool-bar name="Formularios" position="70">
+				<action-tool icon="images/pm_form.png" tooltip="Expediente de Policía de Márgenes" action-command="PMFileExtension" position="1"/>
+			</tool-bar>
+			<menu text="PM/Formularios/Expediente PM" key="x" action-command="PMFileExtension" icon="images/pm_form.png" position="30000"/>
+		</extension>
+	</extensions>
+</plugin-config>
