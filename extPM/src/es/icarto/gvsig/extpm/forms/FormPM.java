@@ -11,10 +11,6 @@ import es.icarto.gvsig.navtableforms.AbstractForm;
 
 public class FormPM extends AbstractForm {
     
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
     private FormPanel form;
     
     public FormPM(FLyrVect layer) {

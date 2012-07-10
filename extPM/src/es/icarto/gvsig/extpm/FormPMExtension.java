@@ -2,10 +2,13 @@ package es.icarto.gvsig.extpm;
 
 import com.iver.andami.PluginServices;
 import com.iver.andami.plugins.Extension;
+import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
+import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.icarto.gvsig.extpm.utils.managers.TOCLayerManager;
 import es.icarto.gvsig.extpm.forms.FormPM;
+import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class FormPMExtension extends Extension {
     
@@ -29,13 +32,17 @@ public class FormPMExtension extends Extension {
 
     @Override
     public boolean isEnabled() {
-	// TODO Auto-generated method stub
-	return true;
+	if ((DBSession.getCurrentSession() != null) &&
+		hasView() &&
+		isLayerLoaded("PM")) {
+	    return true;
+	} else {
+	    return false;
+	}
     }
 
     @Override
     public boolean isVisible() {
-	// TODO Auto-generated method stub
 	return true;
     }
     
@@ -52,4 +59,20 @@ public class FormPMExtension extends Extension {
 	return toc.getLayerByName(layerName);
     }
 
+    private boolean isLayerLoaded(String layerName) {
+	TOCLayerManager toc = new TOCLayerManager();
+	FLyrVect layer = toc.getLayerByName(layerName);
+	if(layer == null) {
+	    return false;
+	}
+	return true;
+    }
+
+    private boolean hasView() {
+	IWindow window = PluginServices.getMDIManager().getActiveWindow();
+	if(window instanceof View) {
+	    return true;
+	}
+	return false;
+    }
 }
