@@ -6,6 +6,33 @@
  			<PKELEMENT>codigo</PKELEMENT>
  		</PRIMARYKEY>
  		<RECORDSET>
+ 			<FIELD>
+ 				<FIELDNAME>tipo_via</FIELDNAME>
+ 				<DOMAINREADER>
+            		<DRTYPE>db</DRTYPE>
+        			<DRDBTABLE>tipos_via</DRDBTABLE>
+        			<DRDBCOLUMNVALUE>id_via</DRDBCOLUMNVALUE>
+        			<DRDBCOLUMNALIAS>tipo_via</DRDBCOLUMNALIAS>
+        		</DOMAINREADER>
+ 			</FIELD>
+ 			 <FIELD>
+ 				<FIELDNAME>tramo</FIELDNAME>
+ 				<DOMAINREADER>
+            		<DRTYPE>db</DRTYPE>
+        			<DRDBTABLE>tramos</DRDBTABLE>
+        			<DRDBCOLUMNVALUE>id_tramo</DRDBCOLUMNVALUE>
+        			<DRDBCOLUMNALIAS>nombre_tramo</DRDBCOLUMNALIAS>
+        		</DOMAINREADER>
+ 			</FIELD>
+ 			 <FIELD>
+ 				<FIELDNAME>municipio</FIELDNAME>
+ 				<DOMAINREADER>
+            		<DRTYPE>db</DRTYPE>
+        			<DRDBTABLE>municipios</DRDBTABLE>
+        			<DRDBCOLUMNVALUE>id_municipio</DRDBCOLUMNVALUE>
+        			<DRDBCOLUMNALIAS>nombre_municipio</DRDBCOLUMNALIAS>
+        		</DOMAINREADER>
+ 			</FIELD>
  		</RECORDSET>
  	</LAYER>
 </METADATA> 
