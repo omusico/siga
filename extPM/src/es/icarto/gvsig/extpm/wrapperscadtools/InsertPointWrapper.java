@@ -1,15 +1,19 @@
 package es.icarto.gvsig.extpm.wrapperscadtools;
 
 import com.iver.andami.PluginServices;
+import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.cit.gvsig.InsertPointExtension;
 import com.iver.cit.gvsig.fmap.MapControl;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.fmap.layers.FLayers;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.project.documents.view.gui.BaseView;
+import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.icarto.gvsig.extpm.preferences.PreferencesPage;
+import es.icarto.gvsig.extpm.utils.managers.TOCLayerManager;
 import es.udc.cartolab.gvsig.navtable.ToggleEditing;
+import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 
 public class InsertPointWrapper extends InsertPointExtension {
@@ -28,7 +32,13 @@ public class InsertPointWrapper extends InsertPointExtension {
     }
 
     public boolean isEnabled() {
-	return true;
+	if ((DBSession.getCurrentSession() != null) &&
+		hasView() &&
+		isLayerLoaded(PreferencesPage.PM_LAYER_NAME)) {
+	    return true;
+	} else {
+	    return false;
+	}
     }
 
     public boolean isVisible() {
@@ -62,5 +72,22 @@ public class InsertPointWrapper extends InsertPointExtension {
 		layersInTOC.getLayer(i).setActive(true);
 	    }	
 	}
+    }
+    
+    private boolean isLayerLoaded(String layerName) {
+	TOCLayerManager toc = new TOCLayerManager();
+	FLyrVect layer = toc.getLayerByName(layerName);
+	if(layer == null) {
+	    return false;
+	}
+	return true;
+    }
+    
+    private boolean hasView() {
+	IWindow window = PluginServices.getMDIManager().getActiveWindow();
+	if(window instanceof View) {
+	    return true;
+	}
+	return false;
     }
 }
