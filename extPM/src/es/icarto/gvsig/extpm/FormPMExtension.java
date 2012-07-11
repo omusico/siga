@@ -6,6 +6,7 @@ import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
+import es.icarto.gvsig.extpm.preferences.PreferencesPage;
 import es.icarto.gvsig.extpm.utils.managers.TOCLayerManager;
 import es.icarto.gvsig.extpm.forms.FormPM;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
@@ -17,7 +18,7 @@ public class FormPMExtension extends Extension {
 
     @Override
     public void execute(String actionCommand) {
-	layer = getLayer();
+	layer = getPMLayer();
 	 dialog = new FormPM(layer);
 	    if (dialog.init()) {
 		PluginServices.getMDIManager().addWindow(dialog);
@@ -34,7 +35,7 @@ public class FormPMExtension extends Extension {
     public boolean isEnabled() {
 	if ((DBSession.getCurrentSession() != null) &&
 		hasView() &&
-		isLayerLoaded("PM")) {
+		isLayerLoaded(PreferencesPage.PM_LAYER_NAME)) {
 	    return true;
 	} else {
 	    return false;
@@ -53,10 +54,9 @@ public class FormPMExtension extends Extension {
 		.getResource("images/pm_form.png"));
     }
     
-    private FLyrVect getLayer() {
-	String layerName = "PM";
+    private FLyrVect getPMLayer() {
 	TOCLayerManager toc = new TOCLayerManager();
-	return toc.getLayerByName(layerName);
+	return toc.getLayerByName(PreferencesPage.PM_LAYER_NAME);
     }
 
     private boolean isLayerLoaded(String layerName) {

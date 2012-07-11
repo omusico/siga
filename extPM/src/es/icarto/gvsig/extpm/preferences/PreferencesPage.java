@@ -10,6 +10,8 @@ public class PreferencesPage extends AbstractPreferencePage {
     
  // ormlite
     public static final String XML_ORMLITE_RELATIVE_PATH = "data/extpm.xml";
+    
+    public static final String PM_LAYER_NAME = "PM";
 
     @Override
     public void setChangesApplied() {

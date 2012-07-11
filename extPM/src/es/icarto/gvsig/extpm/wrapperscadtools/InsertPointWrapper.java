@@ -8,6 +8,7 @@ import com.iver.cit.gvsig.fmap.layers.FLayers;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.project.documents.view.gui.BaseView;
 
+import es.icarto.gvsig.extpm.preferences.PreferencesPage;
 import es.udc.cartolab.gvsig.navtable.ToggleEditing;
 
 
@@ -57,7 +58,7 @@ public class InsertPointWrapper extends InsertPointExtension {
 	layersInTOC.setAllActives(false);
 	for (int i = 0; i < layersInTOC.getLayersCount(); i++) {
 	    String layerName = layersInTOC.getLayer(i).getName();
-	    if (layerName.equalsIgnoreCase("PM")) {
+	    if (layerName.equalsIgnoreCase(PreferencesPage.PM_LAYER_NAME)) {
 		layersInTOC.getLayer(i).setActive(true);
 	    }	
 	}
