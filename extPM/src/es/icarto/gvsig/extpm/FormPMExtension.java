@@ -3,18 +3,24 @@ package es.icarto.gvsig.extpm;
 import com.iver.andami.PluginServices;
 import com.iver.andami.plugins.Extension;
 import com.iver.andami.ui.mdiManager.IWindow;
+import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
+import com.iver.cit.gvsig.listeners.CADListenerManager;
+import com.iver.cit.gvsig.listeners.EndGeometryListener;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.icarto.gvsig.extpm.preferences.PreferencesPage;
 import es.icarto.gvsig.extpm.utils.managers.TOCLayerManager;
 import es.icarto.gvsig.extpm.forms.FormPM;
+import es.udc.cartolab.gvsig.navtable.NavTable;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class FormPMExtension extends Extension {
     
     private FLyrVect layer;
     private FormPM dialog;
+    
+    public static final String KEY_NAME = "es.udc.cartolab.gvsig.navtable";
 
     @Override
     public void execute(String actionCommand) {
@@ -27,8 +33,8 @@ public class FormPMExtension extends Extension {
 
     @Override
     public void initialize() {
-	// TODO Auto-generated method stub
-	
+	NTEndGeometryListener listener = new NTEndGeometryListener();
+	CADListenerManager.addEndGeometryListener(KEY_NAME, listener);
     }
 
     @Override
@@ -74,5 +80,19 @@ public class FormPMExtension extends Extension {
 	    return true;
 	}
 	return false;
+    }
+    
+    private class NTEndGeometryListener implements EndGeometryListener {
+
+	public void endGeometry(FLayer layer) {
+	    if (layer instanceof FLyrVect) {
+		FLyrVect l = (FLyrVect) layer;
+		l.setActive(true);
+		dialog = new FormPM(getPMLayer());
+		if (dialog.init()) {
+		    PluginServices.getMDIManager().addWindow(dialog);
+		}
+	    }
+	}
     }
 }
