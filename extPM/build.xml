@@ -66,6 +66,10 @@
 			<fileset dir="images" includes="*" />
 		</copy>
 	
+		<copy todir="${dist}/images/icons">
+			<fileset dir="images/icons" includes="*"/>
+		</copy>
+		
 		<copy todir="${dist}">
 			<fileset dir="forms" includes="*" />
 		</copy>
