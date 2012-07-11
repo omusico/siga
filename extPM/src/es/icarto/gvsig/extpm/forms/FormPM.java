@@ -1,23 +1,41 @@
 package es.icarto.gvsig.extpm.forms;
 
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
 import org.apache.log4j.Logger;
 
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.panel.FormPanel;
 
+import es.icarto.gvsig.extgex.navtable.NavTableComponentsFactory;
 import es.icarto.gvsig.extpm.preferences.PreferencesPage;
 import es.icarto.gvsig.navtableforms.AbstractForm;
+import es.udc.cartolab.gvsig.navtable.AbstractNavTable;
 
 public class FormPM extends AbstractForm {
     
     private FormPanel form;
+    private FLyrVect layer;
     
     public FormPM(FLyrVect layer) {
 	super(layer);
+	this.layer = layer;
 	initWindow();
+	addNewButtonsToActionsToolBar();
     }
 
+    private void addNewButtonsToActionsToolBar() {
+	JPanel actionsToolBar = this.getActionsToolBar();
+	NavTableComponentsFactory ntFactory = new NavTableComponentsFactory();
+	JButton filesLinkB = ntFactory.getFilesLinkButton(layer,
+		(AbstractNavTable) this);
+	if (filesLinkB != null) {
+	    actionsToolBar.add(filesLinkB);
+	}
+    }
+    
     @Override
     public String getXMLPath() {
 	return PluginServices.getPluginServices("es.icarto.gvsig.extpm")
