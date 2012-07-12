@@ -9,7 +9,7 @@ import com.iver.cit.gvsig.listeners.CADListenerManager;
 import com.iver.cit.gvsig.listeners.EndGeometryListener;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
-import es.icarto.gvsig.extpm.preferences.PreferencesPage;
+import es.icarto.gvsig.extpm.preferences.Preferences;
 import es.icarto.gvsig.extpm.utils.managers.TOCLayerManager;
 import es.icarto.gvsig.extpm.forms.FormPM;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
@@ -40,7 +40,7 @@ public class FormPMExtension extends Extension {
     public boolean isEnabled() {
 	if ((DBSession.getCurrentSession() != null) &&
 		hasView() &&
-		isLayerLoaded(PreferencesPage.PM_LAYER_NAME)) {
+		isLayerLoaded(Preferences.PM_LAYER_NAME)) {
 	    return true;
 	} else {
 	    return false;
@@ -61,7 +61,7 @@ public class FormPMExtension extends Extension {
     
     private FLyrVect getPMLayer() {
 	TOCLayerManager toc = new TOCLayerManager();
-	return toc.getLayerByName(PreferencesPage.PM_LAYER_NAME);
+	return toc.getLayerByName(Preferences.PM_LAYER_NAME);
     }
 
     private boolean isLayerLoaded(String layerName) {

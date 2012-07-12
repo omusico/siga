@@ -10,7 +10,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.panel.FormPanel;
 
 import es.icarto.gvsig.extgex.navtable.NavTableComponentsFactory;
-import es.icarto.gvsig.extpm.preferences.PreferencesPage;
+import es.icarto.gvsig.extpm.preferences.Preferences;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.udc.cartolab.gvsig.navtable.AbstractNavTable;
 
@@ -40,7 +40,7 @@ public class FormPM extends AbstractForm {
     public String getXMLPath() {
 	return PluginServices.getPluginServices("es.icarto.gvsig.extpm")
 		.getClassLoader()
-		.getResource(PreferencesPage.XML_ORMLITE_RELATIVE_PATH).getPath();
+		.getResource(Preferences.XML_ORMLITE_RELATIVE_PATH).getPath();
     }
     
     private void initWindow() {

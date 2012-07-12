@@ -10,7 +10,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.project.documents.view.gui.BaseView;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
-import es.icarto.gvsig.extpm.preferences.PreferencesPage;
+import es.icarto.gvsig.extpm.preferences.Preferences;
 import es.icarto.gvsig.extpm.utils.managers.TOCLayerManager;
 import es.udc.cartolab.gvsig.navtable.ToggleEditing;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
@@ -34,7 +34,7 @@ public class InsertPointWrapper extends InsertPointExtension {
     public boolean isEnabled() {
 	if ((DBSession.getCurrentSession() != null) &&
 		hasView() &&
-		isLayerLoaded(PreferencesPage.PM_LAYER_NAME)) {
+		isLayerLoaded(Preferences.PM_LAYER_NAME)) {
 	    return true;
 	} else {
 	    return false;
@@ -68,7 +68,7 @@ public class InsertPointWrapper extends InsertPointExtension {
 	layersInTOC.setAllActives(false);
 	for (int i = 0; i < layersInTOC.getLayersCount(); i++) {
 	    String layerName = layersInTOC.getLayer(i).getName();
-	    if (layerName.equalsIgnoreCase(PreferencesPage.PM_LAYER_NAME)) {
+	    if (layerName.equalsIgnoreCase(Preferences.PM_LAYER_NAME)) {
 		layersInTOC.getLayer(i).setActive(true);
 	    }	
 	}
