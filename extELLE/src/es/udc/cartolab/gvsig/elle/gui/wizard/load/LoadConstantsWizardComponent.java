@@ -23,6 +23,7 @@ import com.iver.cit.gvsig.project.documents.view.ProjectView;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 import com.jeta.forms.components.panel.FormPanel;
 
+import es.icarto.gvsig.elle.db.DBStructure;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardComponent;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardException;
 import es.udc.cartolab.gvsig.elle.utils.ELLEMap;
@@ -112,7 +113,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 
     private String[] getConstants() {
 	try {
-	    String[] constants = dbs.getDistinctValues(CONSTANTS_TABLE_NAME, CONSTANTS_CONSTANT_FIELD_NAME);
+	    String[] constants = dbs.getDistinctValues(CONSTANTS_TABLE_NAME, DBStructure.getSchema(), CONSTANTS_CONSTANT_FIELD_NAME);
 	    return constants;
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -123,7 +124,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
     private String[] getValuesFromConstant(String constant) {
 	try {
 	    String[] tables = getTablesAffectedbyConstant(constant);
-	    String[] values = dbs.getDistinctValues(tables[0], dbs.getSchema(), getValueOfFieldByConstant(constant, CONSTANTS_FILTER_FIELD_NAME), true, false);
+	    String[] values = dbs.getDistinctValues(tables[0], DBStructure.getSchema(), getValueOfFieldByConstant(constant, CONSTANTS_FILTER_FIELD_NAME), true, false);
 	    return values;
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -159,7 +160,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
     }
     
     private String getValueOfFieldByConstant(String constant, String field) {
-	String query = "SELECT " + field + " FROM " + dbs.getSchema() + "." + CONSTANTS_TABLE_NAME + " WHERE " + CONSTANTS_CONSTANT_FIELD_NAME +  " = " + "'" + constant + "'" + ";";
+	String query = "SELECT " + field + " FROM " + DBStructure.getSchema() + "." + CONSTANTS_TABLE_NAME + " WHERE " + CONSTANTS_CONSTANT_FIELD_NAME +  " = " + "'" + constant + "'" + ";";
 	PreparedStatement statement;
 	try {
 	    statement = dbs.getJavaConnection().prepareStatement(query);
@@ -174,7 +175,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
     }
         
     private String[] getTablesAffectedbyConstant(String constant) {
-	String query = "SELECT nombre_tabla FROM " + dbs.getSchema() + "." + CONSTANTS_TABLE_NAME + " WHERE " + CONSTANTS_CONSTANT_FIELD_NAME +  " = " + "'" + constant + "'" + ";";
+	String query = "SELECT nombre_tabla FROM " + DBStructure.getSchema() + "." + CONSTANTS_TABLE_NAME + " WHERE " + CONSTANTS_CONSTANT_FIELD_NAME +  " = " + "'" + constant + "'" + ";";
 	PreparedStatement statement;
 	    try {
 		statement = dbs.getJavaConnection().prepareStatement(query);

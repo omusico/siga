@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.icarto.gvsig.elle.db.DBStructure;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class ConstantsDAO {
@@ -16,7 +17,7 @@ public class ConstantsDAO {
     public final static String CONSTANTS_FILTER_FIELD_NAME = "campo_filtro";
     
     public static String[] getTablesAffectedbyConstant(String constant) {
-	String query = "SELECT nombre_tabla FROM " + DBSession.getCurrentSession().getSchema() + "." + CONSTANTS_TABLE_NAME + " WHERE " + CONSTANTS_CONSTANT_FIELD_NAME +  " = " + "'" + constant + "'" + ";";
+	String query = "SELECT nombre_tabla FROM " + DBStructure.getSchema() + "." + CONSTANTS_TABLE_NAME + " WHERE " + CONSTANTS_CONSTANT_FIELD_NAME +  " = " + "'" + constant + "'" + ";";
 	PreparedStatement statement;
 	    try {
 		statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
