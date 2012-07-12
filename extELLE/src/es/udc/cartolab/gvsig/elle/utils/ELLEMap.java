@@ -236,8 +236,15 @@ public class ELLEMap {
 			FLayer layer;
 			try {
 			    	//TODO: AUDASA - Making generic
-			    	if (!lp.getTablename().equalsIgnoreCase("exp_finca")) {
-			    	    lp.setWhere("");
+			    	String[] layers = ConstantsDAO.getTablesAffectedbyConstant("Municipio");
+			    	boolean coincidence = false;
+			    	for (int i=0; i<layers.length; i++) {	    	
+			    	    if (lp.getTablename().equalsIgnoreCase(layers[i])) {
+			    		coincidence = true;
+			    	    }
+			    	}
+			    	if (!coincidence) {
+			    	    lp.setWhere("");   
 			    	}
 			    	layer = getMapDAO().getLayer(lp, proj);
 			    	
