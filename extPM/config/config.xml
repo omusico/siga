@@ -8,16 +8,16 @@
 	<resourceBundle name="text"/>
 	<extensions>
 		<extension class-name="es.icarto.gvsig.extpm.FormPMExtension" description="FORMS_PANEL" active="true">
-			<tool-bar name="Márgenes" position="70">
+			<tool-bar name="Márgenes" position="72">
 				<action-tool icon="images/pm_form.png" tooltip="Expediente de Policía de Márgenes" action-command="PMFileExtension" position="2"/>
 			</tool-bar>
-			<menu text="PM/Expediente PM" key="x" action-command="PMFileExtension" icon="images/pm_form.png" position="30000"/>
+			<menu text="Policía Márgenes/Expediente PM" key="x" action-command="PMFileExtension" icon="images/pm_form.png" position="35050"/>
 		</extension>
 		<extension class-name="es.icarto.gvsig.extpm.CreateNewPMFileExtension" description="NEW_PM" active="true">
-			<tool-bar name="Márgenes" position="70">
+			<tool-bar name="Márgenes" position="72">
 				<action-tool icon="images/new_pm.png" tooltip="Crear nueva Policía de Márgenes" action-command="_point" position="1"/>
 			</tool-bar>
-			<menu text="PM/Crear nuevo" key="x" action-command="_point" icon="images/new_pm.png" position="40000"/>
+			<menu text="Policía Márgenes/Crear nuevo" key="x" action-command="_point" icon="images/new_pm.png" position="35000"/>
 		</extension>
 	</extensions>
 </plugin-config>
