@@ -10,8 +10,7 @@ public class DBStructure {
     public static String MAP_STYLE_TABLE = "_map_style";
     public static String OVERVIEW_STYLE_TABLE = "_map_overview_style";
     public static String WMS_TABLE = "_wms";
-    //public static String SCHEMA_NAME = "elle";
-    public static String SCHEMA_NAME = DBSession.getCurrentSession().getSchema();
+    public static String SCHEMA_NAME = "elle";
 
     public static String getMapTable() {
 	return MAP_TABLE;
