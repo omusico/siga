@@ -202,7 +202,7 @@ public class ElleWizard extends WizardPanel {
 		    
 		    layerList = form.getList("layerList");
 		    groupList = form.getList("groupList");
-		    groupList.setListData(maps);
+		    groupList.setListData(mapsToShow);
 		    
 		    groupList.addListSelectionListener(new ListSelectionListener() {
 
