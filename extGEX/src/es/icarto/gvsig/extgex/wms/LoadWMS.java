@@ -37,7 +37,7 @@ public class LoadWMS {
 	    // columns in order from wms table: id_wms[0], layer_name[1],
 	    // layer[2], srs[3], format[4], host[5]
 	    String[][] wmsValues = null;
-	    wmsValues = dbs.getTable(DBNames.TABLE_WMS, dbs.getSchema(), whereC);
+	    wmsValues = dbs.getTable(DBNames.TABLE_WMS, DBStructure.getSchema(), whereC);
 
 	    String name = wmsValues[0][1];
 	    String sLayer = wmsValues[0][2];
