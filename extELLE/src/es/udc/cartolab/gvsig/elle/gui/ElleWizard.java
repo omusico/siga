@@ -18,6 +18,8 @@ package es.udc.cartolab.gvsig.elle.gui;
 
 import java.awt.BorderLayout;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.Vector;
 
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -186,13 +188,22 @@ public class ElleWizard extends WizardPanel {
 		dbs = DBSession.getCurrentSession();
 
 		if (dbs.tableExists(DBStructure.getSchema(), DBStructure.getMapTable())) {
+		    Vector<String> mapsToShow = new Vector<String>();
 
 		    String[] maps = MapDAO.getInstance().getMaps();
-
+		    
+		    //Show only maps that starts like 'BDD_'
+		    for (int i=0; i<maps.length; i++) {
+			if (maps[i].startsWith("BDD_")) {
+			    mapsToShow.add(maps[i]);
+			}
+		    }
+		    Collections.sort(mapsToShow);
+		    
 		    layerList = form.getList("layerList");
 		    groupList = form.getList("groupList");
 		    groupList.setListData(maps);
-
+		    
 		    groupList.addListSelectionListener(new ListSelectionListener() {
 
 			public void valueChanged(ListSelectionEvent arg0) {

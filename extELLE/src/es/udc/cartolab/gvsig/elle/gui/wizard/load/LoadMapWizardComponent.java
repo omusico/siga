@@ -20,7 +20,9 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -115,12 +117,21 @@ public class LoadMapWizardComponent extends WizardComponent implements ActionLis
 		dbs = DBSession.getCurrentSession();
 
 		if (dbs.tableExists(DBStructure.getSchema(), DBStructure.getMapTable()) && dbs.tableExists(DBStructure.getSchema(), DBStructure.getOverviewTable())) {
-
+		    
+		    Vector<String> mapsToShow = new Vector<String>();
+		    
 		    String[] maps = MapDAO.getInstance().getMaps();
-
+		    
+		    //Show only maps that doesn't start like 'BDD_'
+		    for (int i=0; i<maps.length; i++) {
+			if (!maps[i].startsWith("BDD_")) {
+			    mapsToShow.add(maps[i]);
+			}
+		    }
+		    Collections.sort(mapsToShow);
 		    //layerList = form.getList("layerList");
 		    mapList = form.getList("mapList");
-		    mapList.setListData(maps);
+		    mapList.setListData(mapsToShow);
 
 		    layerTextArea = (JTextArea) form.getComponentByName("layerTextArea");
 		    layerTextArea.setEditable(false);
