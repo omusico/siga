@@ -123,7 +123,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
     
     private String[] getValuesFromConstant(String constant) {
 	try {
-	    String[] tables = getTablesAffectedbyConstant(constant);
+	    String[] tables = getTablesAffectedByConstant(constant);
 	    String[] values = dbs.getDistinctValues(tables[0], DBStructure.getSchema(), getValueOfFieldByConstant(constant, CONSTANTS_FILTER_FIELD_NAME), true, false);
 	    return values;
 	} catch (SQLException e) {
@@ -174,7 +174,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	return null;
     }
         
-    private String[] getTablesAffectedbyConstant(String constant) {
+    private String[] getTablesAffectedByConstant(String constant) {
 	String query = "SELECT nombre_tabla FROM " + DBStructure.getSchema() + "." + CONSTANTS_TABLE_NAME + " WHERE " + CONSTANTS_CONSTANT_FIELD_NAME +  " = " + "'" + constant + "'" + ";";
 	PreparedStatement statement;
 	    try {
@@ -235,7 +235,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 			    where = where + getValueOfFieldByConstant(selectedConstant, CONSTANTS_FILTER_FIELD_NAME) + " = " + "'" + selectedValue + "'";
 			    map.setWhereOnAllLayers(where);
 			}
-			map.load(view.getProjection());
+			map.load(view.getProjection(), getTablesAffectedByConstant(selectedConstant));
 			if (view.getModel().getName().equals("ELLE View") && (view.getModel() instanceof ProjectView)) {
 				((ProjectView) view.getModel()).setName(mapName);
 			}

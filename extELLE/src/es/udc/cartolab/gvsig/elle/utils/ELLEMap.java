@@ -210,7 +210,7 @@ public class ELLEMap {
     }
 
 	@SuppressWarnings("unchecked")
-	private void loadViewLayers(IProjection proj) {
+	private void loadViewLayers(IProjection proj, String[] layersAffectedByConstant) {
 		//load view layers
 		Collections.sort(layers);
 		for (LayerProperties lp : layers) {
@@ -236,10 +236,9 @@ public class ELLEMap {
 			FLayer layer;
 			try {
 			    	//TODO: AUDASA - Making generic
-			    	String[] layers = ConstantsDAO.getTablesAffectedbyConstant("Municipio");
 			    	boolean coincidence = false;
-			    	for (int i=0; i<layers.length; i++) {	    	
-			    	    if (lp.getTablename().equalsIgnoreCase(layers[i])) {
+			    	for (int i=0; i<layersAffectedByConstant.length; i++) {	    	
+			    	    if (lp.getTablename().equalsIgnoreCase(layersAffectedByConstant[i])) {
 			    		coincidence = true;
 			    	    }
 			    	}
@@ -326,10 +325,10 @@ public class ELLEMap {
 	}
     }
 
-    public void load(IProjection proj) {
+    public void load(IProjection proj, String[] layersAffectedByConstant) {
 	if (!loaded) {
 	    //load view layers
-	    loadViewLayers(proj);
+	    loadViewLayers(proj, layersAffectedByConstant);
 	    //load overview layers
 	    loadOverviewLayers(proj);
 	    getMapDAO().addLoadedMap(this);
@@ -351,10 +350,10 @@ public class ELLEMap {
      * reloads view layers
      * @param proj
      */
-    public void reload() {
+    public void reload(String[] layersAffectedByConstant) {
 	if (loaded) {
 	    removeViewLayers();
-	    loadViewLayers(projection);
+	    loadViewLayers(projection, layersAffectedByConstant);
 	}
     }
 
