@@ -239,6 +239,8 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 			if (view.getModel().getName().equals("ELLE View") && (view.getModel() instanceof ProjectView)) {
 				((ProjectView) view.getModel()).setName(mapName);
 			}
+			PluginServices.getMainFrame().getStatusBar().setMessage("constants",
+			selectedConstant + ": " + selectedValue);
 		} catch (Exception e) {
 			throw new WizardException(e);
 		}
