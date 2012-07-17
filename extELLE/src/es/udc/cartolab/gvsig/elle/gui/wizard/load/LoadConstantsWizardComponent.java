@@ -1,6 +1,7 @@
 package es.udc.cartolab.gvsig.elle.gui.wizard.load;
 
 import java.awt.BorderLayout;
+import java.awt.geom.Rectangle2D;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,9 +18,21 @@ import javax.swing.JTextArea;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import com.hardcode.gdbms.driver.exceptions.InitializeDriverException;
+import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
+import com.hardcode.gdbms.engine.values.Value;
+import com.hardcode.gdbms.engine.values.ValueWriter;
 import com.iver.andami.PluginServices;
+import com.iver.cit.gvsig.fmap.MapControl;
+import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.drivers.DBException;
+import com.iver.cit.gvsig.fmap.layers.FLayer;
+import com.iver.cit.gvsig.fmap.layers.FLayers;
+import com.iver.cit.gvsig.fmap.layers.FLyrVect;
+import com.iver.cit.gvsig.fmap.layers.ReadableVectorial;
+import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 import com.iver.cit.gvsig.project.documents.view.ProjectView;
+import com.iver.cit.gvsig.project.documents.view.gui.BaseView;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 import com.jeta.forms.components.panel.FormPanel;
 
@@ -48,6 +61,10 @@ public class LoadConstantsWizardComponent extends WizardComponent {
     public final static String CONSTANTS_AFFECTED_TABLE_NAME = "nombre_tabla";
     public final static String CONSTANTS_FILTER_FIELD_NAME = "campo_filtro";
     public final static String CONSTANTS_QUERY_FIELD_NAME = "campo_query";
+    
+    //ZoomToConstant
+    public final static String CONSTANTS_ZOOM_LAYER_FIELD = "municipio_nombre";
+    public final static String CONSTANTS_ZOOM_LAYER_NAME = "linea_exp_envelope";
 
     public LoadConstantsWizardComponent(Map<String, Object> properties) {
 	super(properties);
@@ -241,6 +258,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 			}
 			PluginServices.getMainFrame().getStatusBar().setMessage("constants",
 			selectedConstant + ": " + selectedValue);
+			zoomToConstant();
 		} catch (Exception e) {
 			throw new WizardException(e);
 		}
@@ -249,6 +267,72 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	}
     }
 
+    private void zoomToConstant() {
+	FLyrVect layer = (FLyrVect) getEnvelopeConstantLayer();
+	int i = getPositionOnEnvelope(layer);
+	if (layer != null && i != -1) {
+	    zoom(layer, i);
+	}
+    }
+
+    private int getPositionOnEnvelope(FLyrVect layer) {
+	try {
+	    SelectableDataSource ds = layer.getRecordset();
+	    int index = ds.getFieldIndexByName(CONSTANTS_ZOOM_LAYER_FIELD);
+	    for (int i = 0; i < ds.getRowCount(); i++) {
+		Value value = ds.getFieldValue(i, index);
+		String stringValue = value.getStringValue(ValueWriter.internalValueWriter);
+		if ((stringValue.compareToIgnoreCase("'" + selectedValue + "'") == 0)) {
+		    return i;
+		}
+	    }
+	} catch (ReadDriverException e) {
+	    e.printStackTrace();
+	}
+	return -1;
+    }
+
+    private FLayer getEnvelopeConstantLayer() {
+	FLayer layer = null;
+	BaseView view = (BaseView) PluginServices.getMDIManager()
+		.getActiveWindow();
+	MapControl mapControl = view.getMapControl();
+	FLayers flayers = mapControl.getMapContext().getLayers();
+	layer = flayers.getLayer(CONSTANTS_ZOOM_LAYER_NAME);
+	return layer;
+    }
+
+    private void zoom(FLyrVect layer, int pos) {
+	try {
+	    Rectangle2D rectangle = null;
+	    IGeometry g;
+	    ReadableVectorial source = (layer).getSource();
+	    source.start();
+	    g = source.getShape(pos);
+	    source.stop();
+	    /*
+	     * fix to avoid zoom problems when layer and view projections aren't
+	     * the same.
+	     */
+	    if (layer.getCoordTrans() != null) {
+		g.reProject(layer.getCoordTrans());
+	    }
+	    rectangle = g.getBounds2D();
+	    if (rectangle.getWidth() < 200) {
+		rectangle.setFrameFromCenter(rectangle.getCenterX(), rectangle
+			.getCenterY(), rectangle.getCenterX() + 100, rectangle
+			.getCenterY() + 100);
+	    }
+	    if (rectangle != null) {
+		layer.getMapContext().getViewPort().setExtent(rectangle);
+	    }
+	} catch (InitializeDriverException e) {
+	    e.printStackTrace();
+	} catch (ReadDriverException e) {
+	    e.printStackTrace();
+	}
+    }
+    
     @Override
     public String getWizardComponentName() {
 	return "constants_wizard_component";
