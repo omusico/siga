@@ -161,6 +161,10 @@ public class DBSession {
 	public String getSchema () {
 		return schema;
 	}
+	
+	public void setSchema(String schema) {
+	    this. schema = schema;
+	}
 
 	public void changeSchema(String schema) {
 		this.schema = schema;
