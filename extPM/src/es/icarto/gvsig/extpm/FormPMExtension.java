@@ -23,11 +23,12 @@ public class FormPMExtension extends Extension {
 
     @Override
     public void execute(String actionCommand) {
+	DBSession.getCurrentSession().setSchema(Preferences.PM_SCHEMA);
 	layer = getPMLayer();
-	 dialog = new FormPM(layer);
-	    if (dialog.init()) {
-		PluginServices.getMDIManager().addWindow(dialog);
-	    }
+	dialog = new FormPM(layer);
+	if (dialog.init()) {
+	    PluginServices.getMDIManager().addWindow(dialog);
+	}
     }
 
     @Override

@@ -1,6 +1,9 @@
 package es.icarto.gvsig.extgex.preferences;
 
 public class DBNames {
+    
+    //schemas
+    public static final String EXPROPIATIONS_SCHEMA = "audasa_expropiaciones";
 
     // IDs along the whole DB. They are the same within several tables
     public static final String FIELD_IDCULTIVO = "id_cultivo";

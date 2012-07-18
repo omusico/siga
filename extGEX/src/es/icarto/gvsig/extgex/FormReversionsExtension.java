@@ -20,6 +20,7 @@ public class FormReversionsExtension extends Extension {
     private FormReversions dialog = null;
 
     public void execute(String actionCommand) {
+	DBSession.getCurrentSession().setSchema(DBNames.EXPROPIATIONS_SCHEMA);
 	if (AlphanumericTableLoader.loadTables()) {
 	    layer = getLayer();
 	    dialog = new FormReversions(layer);

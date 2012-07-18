@@ -29,6 +29,7 @@ IPreferenceExtension {
     private FormExpropiations dialog;
 
     public void execute(String actionCommand) {
+	DBSession.getCurrentSession().setSchema(DBNames.EXPROPIATIONS_SCHEMA);
 	if (AlphanumericTableLoader.loadTables()) {
 	    layer = getLayer();
 	    dialog = new FormExpropiations(layer);
