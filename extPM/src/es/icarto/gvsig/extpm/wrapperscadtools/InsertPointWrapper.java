@@ -11,7 +11,7 @@ import com.iver.cit.gvsig.project.documents.view.gui.BaseView;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.icarto.gvsig.extpm.preferences.Preferences;
-import es.icarto.gvsig.extpm.utils.managers.TOCLayerManager;
+import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
 import es.udc.cartolab.gvsig.navtable.ToggleEditing;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
