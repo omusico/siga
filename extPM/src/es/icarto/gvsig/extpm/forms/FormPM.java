@@ -11,6 +11,7 @@ import com.jeta.forms.components.panel.FormPanel;
 
 import es.icarto.gvsig.extgex.navtable.NavTableComponentsFactory;
 import es.icarto.gvsig.extpm.preferences.Preferences;
+import es.icarto.gvsig.extpm.reports.NavTableComponentsPrintButton;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.udc.cartolab.gvsig.navtable.AbstractNavTable;
 
@@ -29,10 +30,14 @@ public class FormPM extends AbstractForm {
     private void addNewButtonsToActionsToolBar() {
 	JPanel actionsToolBar = this.getActionsToolBar();
 	NavTableComponentsFactory ntFactory = new NavTableComponentsFactory();
+	NavTableComponentsPrintButton ntPrintButton = new NavTableComponentsPrintButton();
 	JButton filesLinkB = ntFactory.getFilesLinkButton(layer,
 		(AbstractNavTable) this);
-	if (filesLinkB != null) {
+	JButton printReportB = ntPrintButton.getPrintButton(layer,
+		(AbstractNavTable) this);
+	if (filesLinkB != null && printReportB != null) {
 	    actionsToolBar.add(filesLinkB);
+	    actionsToolBar.add(printReportB);
 	}
     }
     

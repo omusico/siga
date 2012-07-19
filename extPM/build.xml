@@ -70,6 +70,10 @@
 			<fileset dir="images/icons" includes="*"/>
 		</copy>
 		
+		<copy todir="${dist}/reports">
+			<fileset dir="reports" includes="*" />
+		</copy>
+	
 		<copy todir="${dist}">
 			<fileset dir="forms" includes="*" />
 		</copy>

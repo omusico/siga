@@ -21,5 +21,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/extDBConnection"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/extCAD"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/extGEX"/>
+	<classpathentry kind="lib" path="/extGEX/lib/jasperreports-4.1.1.jar" sourcepath="/jasperreports-4.1.1/src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
