@@ -269,8 +269,8 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 
     private void zoomToConstant() {
 	FLyrVect layer = (FLyrVect) getEnvelopeConstantLayer();
-	int i = getPositionOnEnvelope(layer);
-	if (layer != null && i != -1) {
+	if (layer != null) {
+	    int i = getPositionOnEnvelope(layer);
 	    zoom(layer, i);
 	}
     }
