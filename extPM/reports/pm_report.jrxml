@@ -5,8 +5,9 @@
 	<property name="ireport.y" value="0"/>
 	<style name="Heading 1" fontSize="16" isBold="true"/>
 	<style name="Heading 4" fontSize="12" isBold="true" isItalic="true"/>
-	<queryString language="SQL">
-		<![CDATA[select * from audasa_pm.exp_pm]]>
+	<parameter name="PM_QUERY_WHERE" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select * from audasa_pm.exp_pm where gid = $P{PM_QUERY_WHERE}]]>
 	</queryString>
 	<field name="gid" class="java.lang.Integer"/>
 	<field name="area" class="java.lang.String"/>
