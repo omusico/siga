@@ -3,7 +3,9 @@ package es.icarto.gvsig.extpm.reports;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.net.URL;
 import java.sql.Connection;
+import java.util.HashMap;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporter;
@@ -27,7 +29,6 @@ public class PrintPMReportObserver implements ActionListener {
     
     private FLyrVect layer;
     private AbstractNavTable dialog;
-    
     private File outputFile;
     
     public PrintPMReportObserver(FLyrVect layer, AbstractNavTable dialog) {
@@ -39,29 +40,28 @@ public class PrintPMReportObserver implements ActionListener {
     public void actionPerformed(ActionEvent arg0) {
 	SaveFileDialog sfd = new SaveFileDialog("PDF files", "pdf");
 	outputFile = sfd.showDialog();
-	
-	
-	Connection conn = null;
-	try {
-	    JasperPrint print = JasperFillManager.fillReport(
-	    	    "/home/psanxiao/workspace/audasa3/_fwAndami/gvSIG/extensiones/es.icarto.gvsig.extpm/reports/pm_report.jasper", null, conn);
-	    // Create a PDF exporter
-	    JRExporter exporter = new JRPdfExporter();
 
-	    // Configure the exporter (set output file name and print object)
-	    exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
-		    outputFile);
-	   // exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
-
-	    // Export the PDF file
-	    exporter.exportReport();
-	} catch (JRException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
+	if (outputFile != null) {
+	    PrintPMReportAction reportAction = new PrintPMReportAction();
+	    reportAction.print(outputFile.getAbsolutePath(), getReportPath(), getReportParameters());
 	}
-
-	
-
     }
 
+    private String getReportPath() {
+	 java.net.URL reportPath = PluginServices
+		.getPluginServices("es.icarto.gvsig.extpm").getClassLoader()
+		.getResource("reports/pm_report.jasper");
+	 return reportPath.getPath();
+    }
+    
+    private HashMap<String, Object> getReportParameters() {
+	HashMap<String, Object> parameters = new HashMap<String, Object>();
+	parameters.put("PM_QUERY_WHERE", Integer.valueOf(getPMFileId()+1));
+	return parameters;
+    }
+    
+    private int getPMFileId() {
+	long currentPosition = dialog.getPosition();
+	return Long.valueOf(currentPosition).intValue();
+    }
 }

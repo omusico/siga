@@ -3,7 +3,7 @@
 	<LAYER alias="PM">
  		<TABLENAME>exp_pm</TABLENAME>
  		<PRIMARYKEY>
- 			<PKELEMENT>codigo</PKELEMENT>
+ 			<PKELEMENT>gid</PKELEMENT>
  		</PRIMARYKEY>
  		<RECORDSET>
  			<FIELD>
