@@ -33,8 +33,7 @@ public class FormPM extends AbstractForm {
 	NavTableComponentsPrintButton ntPrintButton = new NavTableComponentsPrintButton();
 	JButton filesLinkB = ntFactory.getFilesLinkButton(layer,
 		(AbstractNavTable) this);
-	JButton printReportB = ntPrintButton.getPrintButton(layer,
-		(AbstractNavTable) this);
+	JButton printReportB = ntPrintButton.getPrintButton((AbstractNavTable) this);
 	if (filesLinkB != null && printReportB != null) {
 	    actionsToolBar.add(filesLinkB);
 	    actionsToolBar.add(printReportB);

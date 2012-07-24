@@ -11,11 +11,11 @@ import es.udc.cartolab.gvsig.navtable.AbstractNavTable;
 
 public class NavTableComponentsPrintButton extends NavTableComponentsFactory {
     
-    public JButton getPrintButton(FLyrVect layer, AbstractNavTable dialog) {
+    public JButton getPrintButton(AbstractNavTable dialog) {
 	NavTableComponentsFactory ntFactory = new NavTableComponentsFactory();
 	JButton printReportB = ntFactory.createButton(PluginServices.getText(
 		this, "printReportsToolTip"), getIcon("/print-report.jpg"),
-		new PrintPMReportObserver(layer, dialog));
+		new PrintPMReportObserver(dialog));
 	return printReportB;
     }
 
