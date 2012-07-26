@@ -20,8 +20,7 @@
  				<DOMAINREADER>
             		<DRTYPE>db</DRTYPE>
         			<DRDBTABLE>tramos</DRDBTABLE>
-        			<DRDBCOLUMNVALUE>id_tramo</DRDBCOLUMNVALUE>
-        			<DRDBCOLUMNALIAS>nombre_tramo</DRDBCOLUMNALIAS>
+        			<DRDBCOLUMNVALUE>nombre_tramo</DRDBCOLUMNVALUE>
         		</DOMAINREADER>
  			</FIELD>
  			 <FIELD>
@@ -29,8 +28,7 @@
  				<DOMAINREADER>
             		<DRTYPE>db</DRTYPE>
         			<DRDBTABLE>municipios</DRDBTABLE>
-        			<DRDBCOLUMNVALUE>id_municipio</DRDBCOLUMNVALUE>
-        			<DRDBCOLUMNALIAS>nombre_municipio</DRDBCOLUMNALIAS>
+        			<DRDBCOLUMNVALUE>nombre_municipio</DRDBCOLUMNVALUE>
         		</DOMAINREADER>
  			</FIELD>
  		</RECORDSET>
