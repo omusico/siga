@@ -1,7 +1,7 @@
 package es.icarto.gvsig.extgex.preferences;
 
 public class DBNames {
-    
+
     //schemas
     public static final String EXPROPIATIONS_SCHEMA = "audasa_expropiaciones";
 
@@ -16,30 +16,32 @@ public class DBNames {
     // table tramos
     public static final String TABLE_TRAMOS = "tramos";
     public static final String FIELD_NOMBRETRAMO_TRAMOS = "nombre_tramo";
-    
+
     // table uc
     public static final String TABLE_UC = "uc";
     public static final String FIELD_NOMBREUC_UC = "nombre_uc";
-    
+
     // table ayuntamientos
     public static final String TABLE_AYUNTAMIENTOS = "ayuntamientos";
     public static final String FIELD_NOMBREAYUNTAMIENTO_AYUNTAMIENTO = "nombre_ayuntamiento";
 
     // table parroquias_subtramos
     public static final String TABLE_PARROQUIASSUBTRAMOS = "parroquias_subtramos";
-
-    // LocalizactionRetriever
-    public static final String FIELD_TRAMO = "tramo";
-    public static final String FIELD_UC = "unidad_constructiva";
-    public static final String FIELD_AYUNTAMIENTO = "ayuntamiento";
-    public static final String FIELD_PARROQUIASUBTRAMO = "parroquia_subtramo";
-    public static final String FIELD_NUMFINCA = "numero_finca";
-    public static final String FIELD_SECCION = "seccion";
+    public static final String FIELD_NOMBREPARROQUIA_PARROQUIASUBTRAMOS = "nombre_parroquia";
 
     // more widgets for expropiationsform
-//    public static final String FIELD_IMPORTEPDTEMEJORAS = "importe_pendiente_mejoras";
-//    public static final String FIELD_IMPORTEPDTETERRENOS = "importe_pendiente_terrenos";
-//    public static final String FIELD_IMPORTEPDTETOTAL = "importe_pendiente_total";
+    //    public static final String FIELD_IMPORTEPDTEMEJORAS = "importe_pendiente_mejoras";
+    //    public static final String FIELD_IMPORTEPDTETERRENOS = "importe_pendiente_terrenos";
+    //    public static final String FIELD_IMPORTEPDTETOTAL = "importe_pendiente_total";
+
+    // table exp_finca
+    public static final String TABLE_FINCAS = "exp_finca";
+    public static final String FIELD_NUMEROFINCA_FINCAS = "numero_finca";
+    public static final String FIELD_SECCION_FINCAS = "seccion";
+    public static final String FIELD_TRAMO_FINCAS = "tramo";
+    public static final String FIELD_UC_FINCAS = "unidad_constructiva";
+    public static final String FIELD_AYUNTAMIENTO_FINCAS = "ayuntamiento";
+    public static final String FIELD_PARROQUIASUBTRAMO_FINCAS = "parroquia_subtramo";
 
     // table reversiones
     public static final String LAYER_REVERSIONES = "Reversiones";
@@ -64,11 +66,11 @@ public class DBNames {
     public static final String FIELD_SUPERFICIE_DESAFECCIONES = "superficie";
     public static final String FIELD_OCUPACION_DESAFECCIONES = "ocupacion";
     public static final String FIELD_FECHAACTA_DESAFECCIONES = "fecha_acta_desafeccion";
-    
+
     // more tables
     public static final String LAYER_FINCAS = "Fincas";
     public static final String TABLE_EXPROPIACIONES = "expropiaciones";
-    public static final String TABLE_FINCASREVERSIONES = "fincas_reversiones";    
+    public static final String TABLE_FINCASREVERSIONES = "fincas_reversiones";
     public static final String LAYER_MUNICIPIOS = "Municipios";
     public static final String LAYER_PARROQUIAS = "Parroquias";
     public static final String LAYER_PKS = "PKs_AP9";

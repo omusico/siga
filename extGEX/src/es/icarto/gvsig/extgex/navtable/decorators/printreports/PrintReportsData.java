@@ -37,7 +37,6 @@ import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
 import es.icarto.gvsig.extgex.utils.retrievers.CultivosRetriever;
 import es.icarto.gvsig.extgex.utils.retrievers.DesafeccionRetriever;
 import es.icarto.gvsig.extgex.utils.retrievers.LocalizacionRetriever;
-import es.udc.cartolab.gvsig.navtable.format.DoubleFormatNT;
 
 public class PrintReportsData implements JRDataSource {
 
@@ -107,7 +106,7 @@ public class PrintReportsData implements JRDataSource {
 	    for (int index = 0; index < sds.getFieldCount(); index++) {
 		if (java.sql.Types.INTEGER == sds.getFieldType(index)) {
 		    value = sds.getFieldValue(currentPosition, index)
-			    .toString();
+		    .toString();
 		    if (!value.equals("")) {
 			value = Integer.parseInt((String) value);
 		    } else {
@@ -115,7 +114,7 @@ public class PrintReportsData implements JRDataSource {
 		    }
 		} else if (java.sql.Types.DOUBLE == sds.getFieldType(index)) {
 		    value = sds.getFieldValue(currentPosition, index)
-			    .toString();
+		    .toString();
 		    if (!value.equals("")) {
 			value = Double.parseDouble((String) value);
 		    } else {
@@ -140,13 +139,13 @@ public class PrintReportsData implements JRDataSource {
 	LocalizacionRetriever localizacion = new LocalizacionRetriever(
 		getIDFinca());
 	values.put(JASPER_LOCALIZACION_UC,
-		localizacion.getValue(DBNames.FIELD_UC));
+		localizacion.getValue(DBNames.FIELD_UC_FINCAS));
 	values.put(JASPER_LOCALIZACION_TRAMO,
-		localizacion.getValue(DBNames.FIELD_TRAMO));
+		localizacion.getValue(DBNames.FIELD_TRAMO_FINCAS));
 	values.put(JASPER_LOCALIZACION_AYUNTAMIENTO,
-		localizacion.getValue(DBNames.FIELD_AYUNTAMIENTO));
+		localizacion.getValue(DBNames.FIELD_AYUNTAMIENTO_FINCAS));
 	values.put(JASPER_LOCALIZACION_PARROQUIASUBTRAMO,
-		localizacion.getValue(DBNames.FIELD_PARROQUIASUBTRAMO));
+		localizacion.getValue(DBNames.FIELD_PARROQUIASUBTRAMO_FINCAS));
 	values.put(JASPER_COORDENADA_UTM_X, getCoordinateXFromView());
 	values.put(JASPER_COORDENADA_UTM_Y, getCoordinateYFromView());
 
@@ -182,7 +181,7 @@ public class PrintReportsData implements JRDataSource {
     }
 
     private Date getDateValue(SelectableDataSource sds, int index)
-	    throws ReadDriverException {
+    throws ReadDriverException {
 	Value val = sds.getFieldValue(currentPosition, index);
 	if (val instanceof NullValue) {
 	    return null;
@@ -246,7 +245,7 @@ public class PrintReportsData implements JRDataSource {
 
     private Object getScaleFromView() {
 	BaseView view = (BaseView) PluginServices.getMDIManager()
-		.getActiveWindow();
+	.getActiveWindow();
 	MapContext mapContext = view.getMapControl().getMapContext();
 	return Double.toString(mapContext.getScaleView());
     }
@@ -254,31 +253,31 @@ public class PrintReportsData implements JRDataSource {
     private Object getImageFromView() {
 	if (isGeometryNull()) {
 	    return PluginServices.getPluginServices("es.icarto.gvsig.extgex")
-		    .getClassLoader()
-		    .getResource("images/image-not-available.png");
+	    .getClassLoader()
+	    .getResource("images/image-not-available.png");
 	}
 	BufferedImage bufferedImage = calculateImage();
 	java.net.URL mapInReport = PluginServices
-		.getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
-		.getResource("images/map-for-report.png");
+	.getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
+	.getResource("images/map-for-report.png");
 	try {
 	    ImageIO.write(bufferedImage, "png", new File(mapInReport.getFile()));
 	    return mapInReport;
 	} catch (IOException e) {
 	    e.printStackTrace();
 	    return PluginServices.getPluginServices("es.icarto.gvsig.extgex")
-		    .getClassLoader()
-		    .getResource("images/image-not-available.png");
+	    .getClassLoader()
+	    .getResource("images/image-not-available.png");
 	} catch (NullPointerException npe) {
 	    return PluginServices.getPluginServices("es.icarto.gvsig.extgex")
-		    .getClassLoader()
-		    .getResource("images/image-not-available.png");
+	    .getClassLoader()
+	    .getResource("images/image-not-available.png");
 	}
     }
 
     private BufferedImage calculateImage() {
 	BaseView view = (BaseView) PluginServices.getMDIManager()
-		.getActiveWindow();
+	.getActiveWindow();
 	MapControl mapControl = view.getMapControl();
 	ViewPort vp = mapControl.getViewPort();
 	int widthImageFromJasperReport = JASPER_IMAGEWIDTH;

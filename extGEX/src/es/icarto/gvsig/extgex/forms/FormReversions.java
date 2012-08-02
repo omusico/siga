@@ -26,7 +26,6 @@ import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.gui.tables.TableModelFactory;
 import es.icarto.gvsig.navtableforms.launcher.ILauncherForm;
 import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
-import es.udc.cartolab.gvsig.navtable.AbstractNavTable;
 
 public class FormReversions extends AbstractForm implements ILauncherForm {
 
@@ -54,7 +53,7 @@ public class FormReversions extends AbstractForm implements ILauncherForm {
 	JPanel actionsToolBar = this.getActionsToolBar();
 	NavTableComponentsFactory ntFactory = new NavTableComponentsFactory();
 	JButton filesLinkB = ntFactory.getFilesLinkButton(layer,
-		(AbstractNavTable) this);
+		this);
 	if (filesLinkB != null) {
 	    actionsToolBar.add(filesLinkB);
 	}
@@ -80,7 +79,7 @@ public class FormReversions extends AbstractForm implements ILauncherForm {
 	fincasAfectadas.addMouseListener(expropiationsLauncher);
 
 	idReversion = (JTextField) widgets.get(DBNames.FIELD_IDREVERSION_REVERSIONES);
-	tramo = (JComboBox) widgets.get(DBNames.FIELD_TRAMO);
+	tramo = (JComboBox) widgets.get(DBNames.FIELD_TRAMO_FINCAS);
 
 	numeroReversion = (JTextField) widgets.get(DBNames.FIELD_NUMEROREVERSION_REVERSIONES);
 	idReversionHandler = new IDReversionHandler();
@@ -106,23 +105,23 @@ public class FormReversions extends AbstractForm implements ILauncherForm {
 
     private void setIDReversion() {
 	idReversion.setText(formatIDReversion());
-	getFormController().setValue(DBNames.FIELD_IDREVERSION_REVERSIONES, 
+	getFormController().setValue(DBNames.FIELD_IDREVERSION_REVERSIONES,
 		idReversion.getText());
     }
 
     private String formatIDReversion() {
 	String num_rev;
 	try {
-	    num_rev = String.format("%1$04d", Integer.parseInt(numeroReversion.getText()));	    
+	    num_rev = String.format("%1$04d", Integer.parseInt(numeroReversion.getText()));
 	} catch (NumberFormatException nfe) {
 	    num_rev = "0000";
 	    System.out.print(nfe.getMessage());
 	}
 	numeroReversion.setText(num_rev);
-	getFormController().setValue(DBNames.FIELD_NUMEROREVERSION_REVERSIONES, 
+	getFormController().setValue(DBNames.FIELD_NUMEROREVERSION_REVERSIONES,
 		numeroReversion.getText());
 	return ((KeyValue) tramo.getSelectedItem()).getKey()+
-		numeroReversion.getText();
+	numeroReversion.getText();
     }
 
     @Override
@@ -155,7 +154,7 @@ public class FormReversions extends AbstractForm implements ILauncherForm {
 	columnasFincas.add(DBNames.FIELD_SUPERFICIE_FINCAS_REVERSIONES);
 	columnasFincas.add(DBNames.FIELD_IMPORTE_FINCAS_REVERSIONES);
 	fincasAfectadas.setModel(TableModelFactory.createFromTable(
-		DBNames.TABLE_FINCASREVERSIONES, 
+		DBNames.TABLE_FINCASREVERSIONES,
 		DBNames.FIELD_IDREVERSION_REVERSIONES, formatIDReversion(),
 		columnasFincas));
     }
@@ -197,8 +196,8 @@ public class FormReversions extends AbstractForm implements ILauncherForm {
     @Override
     public String getXMLPath() {
 	return PluginServices.getPluginServices("es.icarto.gvsig.extgex")
-		.getClassLoader()
-		.getResource(PreferencesPage.XML_ORMLITE_RELATIVE_PATH).getPath();
+	.getClassLoader()
+	.getResource(PreferencesPage.XML_ORMLITE_RELATIVE_PATH).getPath();
     }
 
 }

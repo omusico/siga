@@ -32,7 +32,6 @@ import es.icarto.gvsig.navtableforms.launcher.ILauncherForm;
 import es.icarto.gvsig.navtableforms.launcher.LauncherParams;
 import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
 import es.icarto.gvsig.navtableforms.validation.listeners.DependentComboboxesHandler;
-import es.udc.cartolab.gvsig.navtable.AbstractNavTable;
 
 public class FormExpropiations extends AbstractForm implements ILauncherForm {
 
@@ -75,9 +74,9 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm {
 	JPanel actionsToolBar = this.getActionsToolBar();
 	NavTableComponentsFactory ntFactory = new NavTableComponentsFactory();
 	JButton filesLinkB = ntFactory.getFilesLinkButton(layer,
-		(AbstractNavTable) this);
+		this);
 	JButton printReportB = ntFactory.getPrintButton(layer,
-		(AbstractNavTable) this);
+		this);
 	if ((filesLinkB != null) && (printReportB != null)) {
 	    actionsToolBar.add(filesLinkB);
 	    actionsToolBar.add(printReportB);
@@ -110,13 +109,13 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm {
 	// RETRIEVE WIDGETS
 	HashMap<String, JComponent> widgets = getWidgetComponents();
 
-	tramo = (JComboBox) widgets.get(DBNames.FIELD_TRAMO);
-	uc = (JComboBox) widgets.get(DBNames.FIELD_UC);
-	ayuntamiento = (JComboBox) widgets.get(DBNames.FIELD_AYUNTAMIENTO);
-	subtramo = (JComboBox) widgets.get(DBNames.FIELD_PARROQUIASUBTRAMO);
+	tramo = (JComboBox) widgets.get(DBNames.FIELD_TRAMO_FINCAS);
+	uc = (JComboBox) widgets.get(DBNames.FIELD_UC_FINCAS);
+	ayuntamiento = (JComboBox) widgets.get(DBNames.FIELD_AYUNTAMIENTO_FINCAS);
+	subtramo = (JComboBox) widgets.get(DBNames.FIELD_PARROQUIASUBTRAMO_FINCAS);
 
-	numFinca = (JTextField) widgets.get(DBNames.FIELD_NUMFINCA);
-	seccion = (JTextField) widgets.get(DBNames.FIELD_SECCION);
+	numFinca = (JTextField) widgets.get(DBNames.FIELD_NUMEROFINCA_FINCAS);
+	seccion = (JTextField) widgets.get(DBNames.FIELD_SECCION_FINCAS);
 
 	finca = (JTextField) widgets.get(DBNames.FIELD_IDFINCA);
 	finca.setEnabled(false);
@@ -155,7 +154,7 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm {
 	LauncherParams expropiationsParams = new LauncherParams(this,
 		DBNames.TABLE_EXPROPIACIONES,
 		"Cultivos",
-		"Abrir cultivos");
+	"Abrir cultivos");
 	tableExpropiationsLauncher = new AlphanumericNavTableLauncher(
 		this, expropiationsParams);
 	formReversionsLauncher = new FormReversionsLauncher(this);
@@ -189,11 +188,11 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm {
 		&& (subtramo.getSelectedItem() instanceof KeyValue)) {
 	    // will update id_finca only when comboboxes have proper values
 	    String id_finca = LocalizadorFormatter.getTramo(((KeyValue) tramo.getSelectedItem()).getKey())
-		    + LocalizadorFormatter.getUC(((KeyValue) uc.getSelectedItem()).getKey()) 
-		    + LocalizadorFormatter.getAyuntamiento(((KeyValue) ayuntamiento.getSelectedItem()).getKey())
-		    + LocalizadorFormatter.getSubtramo(((KeyValue) subtramo.getSelectedItem()).getKey())
-		    + getStringNroFincaFormatted()
-		    + getStringSeccionFormatted();
+	    + LocalizadorFormatter.getUC(((KeyValue) uc.getSelectedItem()).getKey())
+	    + LocalizadorFormatter.getAyuntamiento(((KeyValue) ayuntamiento.getSelectedItem()).getKey())
+	    + LocalizadorFormatter.getSubtramo(((KeyValue) subtramo.getSelectedItem()).getKey())
+	    + getStringNroFincaFormatted()
+	    + getStringSeccionFormatted();
 	    finca.setText(id_finca);
 	    getFormController().setValue(DBNames.FIELD_IDFINCA, id_finca);
 	}
@@ -232,22 +231,22 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm {
 	HashMap<String, String> values = getFormController().getValuesChanged();
 	try {
 	    String formatted = LocalizadorFormatter.getNroFinca(
-		    values.get(DBNames.FIELD_NUMFINCA));
+		    values.get(DBNames.FIELD_NUMEROFINCA_FINCAS));
 	    numFinca.setText(formatted);
-	    getFormController().setValue(DBNames.FIELD_NUMFINCA, formatted);
+	    getFormController().setValue(DBNames.FIELD_NUMEROFINCA_FINCAS, formatted);
 	    return formatted;
 	} catch (NumberFormatException nfe) {
 	    numFinca.setText(LocalizadorFormatter.FINCA_DEFAULT_VALUE);
-	    getFormController().setValue(DBNames.FIELD_NUMFINCA, LocalizadorFormatter.FINCA_DEFAULT_VALUE);
+	    getFormController().setValue(DBNames.FIELD_NUMEROFINCA_FINCAS, LocalizadorFormatter.FINCA_DEFAULT_VALUE);
 	    return LocalizadorFormatter.FINCA_DEFAULT_VALUE;
 	}
     }
 
     private String getStringSeccionFormatted() {
 	HashMap<String, String> values = getFormController().getValuesChanged();
-	String formatted = values.get(DBNames.FIELD_SECCION);
+	String formatted = values.get(DBNames.FIELD_SECCION_FINCAS);
 	seccion.setText(formatted);
-	getFormController().setValue(DBNames.FIELD_SECCION, formatted);
+	getFormController().setValue(DBNames.FIELD_SECCION_FINCAS, formatted);
 	return formatted;
     }
 
@@ -355,8 +354,8 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm {
     public String getSQLQuery(String queryID) {
 	if (queryID.equalsIgnoreCase("EXPROPIACIONES")) {
 	    return "select * from " + "'"
-		    + DBNames.TABLE_EXPROPIACIONES + "'"
-		    + "where " + DBNames.FIELD_IDFINCA + " = " + "'" + getIDFinca() + "'" + ";";
+	    + DBNames.TABLE_EXPROPIACIONES + "'"
+	    + "where " + DBNames.FIELD_IDFINCA + " = " + "'" + getIDFinca() + "'" + ";";
 	}
 	return null;
     }
@@ -368,8 +367,8 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm {
     @Override
     public String getXMLPath() {
 	return PluginServices.getPluginServices("es.icarto.gvsig.extgex")
-		.getClassLoader()
-		.getResource(PreferencesPage.XML_ORMLITE_RELATIVE_PATH).getPath();
+	.getClassLoader()
+	.getResource(PreferencesPage.XML_ORMLITE_RELATIVE_PATH).getPath();
     }
 
 }

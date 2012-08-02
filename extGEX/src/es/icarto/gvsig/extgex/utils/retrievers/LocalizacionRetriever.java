@@ -54,7 +54,7 @@ public class LocalizacionRetriever {
 
     private String getTramoValue() {
 	DomainValues dv = ORMLite.getAplicationDomainObject(getXMLPath())
-		.getDomainValuesForComponent(DBNames.FIELD_TRAMO);
+	.getDomainValuesForComponent(DBNames.FIELD_TRAMO_FINCAS);
 	ArrayList<KeyValue> kvs = dv.getValues();
 	String value = null;
 	for (KeyValue kv : kvs) {
@@ -67,7 +67,7 @@ public class LocalizacionRetriever {
 
     private String getUCValue() {
 	DomainValues dv = ORMLite.getAplicationDomainObject(getXMLPath())
-		.getDomainValuesForComponent(DBNames.FIELD_UC);
+	.getDomainValuesForComponent(DBNames.FIELD_UC_FINCAS);
 	ArrayList<String> foreignKeys = new ArrayList<String>();
 	foreignKeys.add(tramo.getKey());
 	ArrayList<KeyValue> kvs = dv.getValuesFilteredBy(foreignKeys);
@@ -82,7 +82,7 @@ public class LocalizacionRetriever {
 
     private String getAyuntamientoValue() {
 	DomainValues dv = ORMLite.getAplicationDomainObject(getXMLPath())
-		.getDomainValuesForComponent(DBNames.FIELD_AYUNTAMIENTO);
+	.getDomainValuesForComponent(DBNames.FIELD_AYUNTAMIENTO_FINCAS);
 	ArrayList<String> foreignKeys = new ArrayList<String>();
 	foreignKeys.add(uc.getKey());
 	ArrayList<KeyValue> kvs = dv.getValuesFilteredBy(foreignKeys);
@@ -97,7 +97,7 @@ public class LocalizacionRetriever {
 
     private String getParroquiaSubtramoValue() {
 	DomainValues dv = ORMLite.getAplicationDomainObject(getXMLPath())
-		.getDomainValuesForComponent(DBNames.FIELD_PARROQUIASUBTRAMO);
+	.getDomainValuesForComponent(DBNames.FIELD_PARROQUIASUBTRAMO_FINCAS);
 	ArrayList<String> foreignKeys = new ArrayList<String>();
 	foreignKeys.add(uc.getKey());
 	foreignKeys.add(ayuntamiento.getKey());
@@ -112,17 +112,17 @@ public class LocalizacionRetriever {
     }
 
     public String getValue(String component) {
-	if (component.equalsIgnoreCase(DBNames.FIELD_TRAMO)) {
+	if (component.equalsIgnoreCase(DBNames.FIELD_TRAMO_FINCAS)) {
 	    return tramo.getValue();
-	} else if (component.equalsIgnoreCase(DBNames.FIELD_UC)) {
+	} else if (component.equalsIgnoreCase(DBNames.FIELD_UC_FINCAS)) {
 	    return uc.getValue();
-	} else if (component.equalsIgnoreCase(DBNames.FIELD_AYUNTAMIENTO)) {
+	} else if (component.equalsIgnoreCase(DBNames.FIELD_AYUNTAMIENTO_FINCAS)) {
 	    return ayuntamiento.getValue();
-	} else if (component.equalsIgnoreCase(DBNames.FIELD_PARROQUIASUBTRAMO)) {
+	} else if (component.equalsIgnoreCase(DBNames.FIELD_PARROQUIASUBTRAMO_FINCAS)) {
 	    return parroquia_subtramo.getValue();
-	} else if (component.equalsIgnoreCase(DBNames.FIELD_NUMFINCA)) {
+	} else if (component.equalsIgnoreCase(DBNames.FIELD_NUMEROFINCA_FINCAS)) {
 	    return nro_finca.getValue();
-	} else if (component.equalsIgnoreCase(DBNames.FIELD_SECCION)) {
+	} else if (component.equalsIgnoreCase(DBNames.FIELD_SECCION_FINCAS)) {
 	    return seccion.getValue();
 	} else {
 	    return null;
@@ -130,17 +130,17 @@ public class LocalizacionRetriever {
     }
 
     public String getKey(String component) {
-	if (component.equalsIgnoreCase(DBNames.FIELD_TRAMO)) {
+	if (component.equalsIgnoreCase(DBNames.FIELD_TRAMO_FINCAS)) {
 	    return tramo.getKey();
-	} else if (component.equalsIgnoreCase(DBNames.FIELD_UC)) {
+	} else if (component.equalsIgnoreCase(DBNames.FIELD_UC_FINCAS)) {
 	    return uc.getKey();
-	} else if (component.equalsIgnoreCase(DBNames.FIELD_AYUNTAMIENTO)) {
+	} else if (component.equalsIgnoreCase(DBNames.FIELD_AYUNTAMIENTO_FINCAS)) {
 	    return ayuntamiento.getKey();
-	} else if (component.equalsIgnoreCase(DBNames.FIELD_PARROQUIASUBTRAMO)) {
+	} else if (component.equalsIgnoreCase(DBNames.FIELD_PARROQUIASUBTRAMO_FINCAS)) {
 	    return parroquia_subtramo.getKey();
-	} else if (component.equalsIgnoreCase(DBNames.FIELD_NUMFINCA)) {
+	} else if (component.equalsIgnoreCase(DBNames.FIELD_NUMEROFINCA_FINCAS)) {
 	    return nro_finca.getKey();
-	} else if (component.equalsIgnoreCase(DBNames.FIELD_SECCION)) {
+	} else if (component.equalsIgnoreCase(DBNames.FIELD_SECCION_FINCAS)) {
 	    return seccion.getKey();
 	} else {
 	    return null;
@@ -149,8 +149,8 @@ public class LocalizacionRetriever {
 
     private String getXMLPath() {
 	return PluginServices.getPluginServices("es.icarto.gvsig.extgex")
-		.getClassLoader()
-		.getResource(PreferencesPage.XML_ORMLITE_RELATIVE_PATH)
-		.getPath();
+	.getClassLoader()
+	.getResource(PreferencesPage.XML_ORMLITE_RELATIVE_PATH)
+	.getPath();
     }
 }

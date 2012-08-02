@@ -26,7 +26,6 @@ import javax.swing.table.TableColumn;
 
 import org.apache.log4j.Logger;
 
-import com.hardcode.gdbms.engine.values.Value;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.drivers.DBException;
 import com.jeta.forms.components.panel.FormPanel;
@@ -36,14 +35,14 @@ import es.icarto.gvsig.extgex.utils.gvWindow;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class QueriesPanel extends gvWindow implements TableModelListener,
-	ActionListener {
+ActionListener {
 
     private static final String DEFAULT_FILTER = "--TODOS--";
 
     // Attribute Class
-    private FormPanel formBody;
-    private JScrollPane scrollPane;
-    private boolean isReport;
+    private final FormPanel formBody;
+    private final JScrollPane scrollPane;
+    private final boolean isReport;
 
     public final String ID_FORMLABEL = "formLabel";
     private JLabel formLabel;
@@ -127,10 +126,10 @@ public class QueriesPanel extends gvWindow implements TableModelListener,
 	uc = (JComboBox) formBody.getComponentByName(ID_UCCB);
 	uc.addItem(new String(DEFAULT_FILTER));
 	ayuntamiento = (JComboBox) formBody
-		.getComponentByName(ID_AYUNTAMIENTOCB);
+	.getComponentByName(ID_AYUNTAMIENTOCB);
 	ayuntamiento.addItem(new String(DEFAULT_FILTER));
 	parroquia_subtramo = (JComboBox) formBody
-		.getComponentByName(ID_PARROQUIA_SUBTRAMOCB);
+	.getComponentByName(ID_PARROQUIA_SUBTRAMOCB);
 	parroquia_subtramo.setEnabled(false);
 
 	try {
@@ -215,21 +214,21 @@ public class QueriesPanel extends gvWindow implements TableModelListener,
 		parroquiaSelected = null;
 	    } else {
 		parroquiaSelected = (String) parroquia_subtramo
-			.getSelectedItem();
+		.getSelectedItem();
 	    }
 	}
     }
 
     private String getTramoId() throws SQLException {
 	String whereSQL = DBNames.FIELD_NOMBRETRAMO_TRAMOS + " = "
-		+ "'" + tramoSelected + "'";
+	+ "'" + tramoSelected + "'";
 	String tramoId = getIDFromCB(DBNames.FIELD_IDTRAMO, DBNames.TABLE_TRAMOS, whereSQL);
 	return tramoId;
     }
 
     private String getUcId() throws SQLException {
 	String whereSQL = DBNames.FIELD_NOMBREUC_UC + " = " + "'"
-		+ ucSelected + "'";
+	+ ucSelected + "'";
 	String uc = getIDFromCB(DBNames.FIELD_IDUC, DBNames.TABLE_UC, whereSQL);
 	return uc;
     }
@@ -245,7 +244,7 @@ public class QueriesPanel extends gvWindow implements TableModelListener,
 	    String whereClause) throws SQLException {
 	Connection con = dbs.getJavaConnection();
 	String query = "SELECT " + fieldID + " FROM " + DBNames.SCHEMA_DATA
-		+ "." + tablename + " WHERE " + whereClause;
+	+ "." + tablename + " WHERE " + whereClause;
 	Statement st = con.createStatement();
 	ResultSet resultSet = st.executeQuery(query);
 	resultSet.first();
@@ -263,7 +262,7 @@ public class QueriesPanel extends gvWindow implements TableModelListener,
 		order[0] = DBNames.FIELD_IDUC;
 		String tramoSelectedId = getTramoId();
 		String whereClause = DBNames.FIELD_IDTRAMO + " = " + "'" + tramoSelectedId
-			+ "'";
+		+ "'";
 		String[][] ucs = dbs.getTable(DBNames.TABLE_UC, DBNames.SCHEMA_DATA,
 			whereClause, order, false);
 		uc.removeAllItems();
@@ -313,8 +312,8 @@ public class QueriesPanel extends gvWindow implements TableModelListener,
 		String ucSelectedId = getUcId();
 		String ayuntamientoSelectedId = getAyuntamientoId();
 		String whereClause = DBNames.FIELD_IDAYUNTAMIENTO + " = " + "'"
-			+ ayuntamientoSelectedId + "'" + " and " + DBNames.FIELD_IDUC + " = "
-			+ "'" + ucSelectedId + "'";
+		+ ayuntamientoSelectedId + "'" + " and " + DBNames.FIELD_IDUC + " = "
+		+ "'" + ucSelectedId + "'";
 		String[][] parroquias = dbs.getTable(DBNames.TABLE_PARROQUIASSUBTRAMOS,
 			DBNames.SCHEMA_DATA, whereClause, order, false);
 		if (parroquias.length <= 0) {
@@ -385,16 +384,17 @@ public class QueriesPanel extends gvWindow implements TableModelListener,
 
 	private Statement st = null;
 	private ResultSet rs = null;
-	private Connection con;
+	private final Connection con;
 	private boolean finished = false;
 	private String error = null;
-	private String query;
+	private final String query;
 
 	public RunStatementThread(Connection con, String query) {
 	    this.con = con;
 	    this.query = query;
 	}
 
+	@Override
 	public void run() {
 	    try {
 		st = con.createStatement();
@@ -477,8 +477,8 @@ public class QueriesPanel extends gvWindow implements TableModelListener,
     private class QueriesTask extends SwingWorker<String, Void> {
 
 	private RunStatementThread thread = null;
-	private boolean sqlError = false;
-	private String error = "";
+	private final boolean sqlError = false;
+	private final String error = "";
 	private ArrayList<ResultTableModel> resultsMap;
 
 	@Override
@@ -486,7 +486,7 @@ public class QueriesPanel extends gvWindow implements TableModelListener,
 	    DBSession dbs = DBSession.getCurrentSession();
 
 	    DefaultTableModel model = (DefaultTableModel) queriesTable
-		    .getModel();
+	    .getModel();
 
 	    setProgress(0);
 
@@ -561,20 +561,20 @@ public class QueriesPanel extends gvWindow implements TableModelListener,
 		whereC = " AND ";
 	    }
 	    if (tramoSelected.compareToIgnoreCase(DEFAULT_FILTER) != 0) {
-		whereC = whereC + " " + DBNames.FIELD_TRAMO + " = " + "'" + getTramoId() + "'";
+		whereC = whereC + " " + DBNames.FIELD_TRAMO_FINCAS + " = " + "'" + getTramoId() + "'";
 	    }
 	    if (ucSelected.compareToIgnoreCase(DEFAULT_FILTER) != 0) {
-		whereC = whereC + " AND " + DBNames.FIELD_UC + " = " + "'" + getUcId() + "'";
+		whereC = whereC + " AND " + DBNames.FIELD_UC_FINCAS + " = " + "'" + getUcId() + "'";
 	    }
 	    if (ayuntamientoSelected.compareToIgnoreCase(DEFAULT_FILTER) != 0) {
-		whereC = whereC + " AND " + DBNames.FIELD_AYUNTAMIENTO + " = " + "'"
-			+ getAyuntamientoId() + "'";
+		whereC = whereC + " AND " + DBNames.FIELD_AYUNTAMIENTO_FINCAS + " = " + "'"
+		+ getAyuntamientoId() + "'";
 	    }
 	    if(whereC.equalsIgnoreCase("WHERE")) {
 		whereC = ""; //has no combobox selected
 	    }
 	    if(whereC.equalsIgnoreCase(" AND ")) {
-	    whereC = "AND 1=1";	
+		whereC = "AND 1=1";
 	    }
 	    return whereC;
 	}
@@ -605,6 +605,7 @@ public class QueriesPanel extends gvWindow implements TableModelListener,
 	    return contents;
 	}
 
+	@Override
 	public void done() {
 	    if (!isCancelled() && !sqlError) {
 		try {
@@ -628,7 +629,7 @@ public class QueriesPanel extends gvWindow implements TableModelListener,
 		}
 	    } else if (sqlError) {
 		String message = error + "\n"
-			+ PluginServices.getText(this, "checkSchema");
+		+ PluginServices.getText(this, "checkSchema");
 		JOptionPane.showMessageDialog(null, message, PluginServices
 			.getText(this, "validationError"),
 			JOptionPane.ERROR_MESSAGE);
@@ -664,11 +665,11 @@ public class QueriesPanel extends gvWindow implements TableModelListener,
 	}
 
 	private void resultSetToTable(ResultTableModel result, ResultSet rs)
-		throws SQLException {
+	throws SQLException {
 	    // TODO: don't create empty ResultTableModel
 	    ResultSetMetaData metaData = rs.getMetaData();
 	    int numColumns = metaData.getColumnCount();
-	    
+
 
 	    for (int i = 0; i < numColumns; i++) {
 		result.addColumn(metaData.getColumnLabel(i + 1));
@@ -681,7 +682,7 @@ public class QueriesPanel extends gvWindow implements TableModelListener,
 		// errorsFound++;
 		Object rowData[] = new Object[numColumns];
 		for (int i = 0; i < numColumns; i++) {
-			rowData[i] = rs.getObject(i + 1);
+		    rowData[i] = rs.getObject(i + 1);
 		}
 		result.addRow(rowData);
 	    }
