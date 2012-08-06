@@ -24,8 +24,6 @@ import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.queries.QueriesPanel;
 import es.icarto.gvsig.extgex.utils.gvWindow;
 import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
-import es.icarto.gvsig.extgex.utils.retrievers.IDFincaRetriever;
-import es.icarto.gvsig.extgex.utils.retrievers.PositionRetriever;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
@@ -120,8 +118,8 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
 	ayuntamiento.addActionListener(ayuntamientoListener);
 	parroquiaListener = new ParroquiaListener();
 	parroquiaSubtramo.addActionListener(parroquiaListener);
-	fincasListener = new FincasListener();
-	fincaSeccion.addActionListener(fincasListener);
+	//fincasListener = new FincasListener();
+	//fincaSeccion.addActionListener(fincasListener);
     }
 
     public class TramoListener implements ActionListener {
@@ -314,10 +312,14 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
     }
 
     private String getParroquiaId() throws SQLException {
-	String whereSQL = DBNames.FIELD_NOMBREPARROQUIA_PARROQUIASUBTRAMOS + " = " + "'" + parroquiaSelected + "'";
-	String parroquia = getIDFromCB(DBNames.FIELD_IDPARROQUIA, DBNames.TABLE_PARROQUIASSUBTRAMOS,
-		whereSQL);
-	return parroquia;
+	if (parroquiaSelected==null) {
+	    return "0";
+	}else {
+	    String whereSQL = DBNames.FIELD_NOMBREPARROQUIA_PARROQUIASUBTRAMOS + " = " + "'" + parroquiaSelected + "'";
+	    String parroquia = getIDFromCB(DBNames.FIELD_IDPARROQUIA, DBNames.TABLE_PARROQUIASSUBTRAMOS,
+		    whereSQL);
+	    return parroquia;
+	}
     }
 
     private String getIDFromCB(String fieldID, String tablename,
@@ -331,19 +333,32 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
 	return resultSet.getString(1);
     }
 
+    private String getFincaID() {
+	try {
+	    String numFinca = fincaSeccion.getSelectedItem().toString().split("-")[0];
+	    String seccion = fincaSeccion.getSelectedItem().toString().split("-")[1];
+	    return getTramoId() + getUcId() + getAyuntamientoId() + getParroquiaId() + numFinca + seccion;
+
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	    return null;
+	}
+    }
+
     @Override
     public int getPosition() {
-	IDFincaRetriever idFincaRetriever = new IDFincaRetriever(
-		tramo,
-		uc,
-		ayuntamiento,
-		parroquiaSubtramo,
-		fincaSeccion);
-	PositionRetriever positionRetriever = new PositionRetriever(
-		getLayer(),
-		DBNames.FIELD_IDFINCA,
-		idFincaRetriever.getIDFinca());
-	return positionRetriever.getPosition();
+	try {
+	    String query = "SELECT gid FROM " + DBNames.EXPROPIATIONS_SCHEMA + "." + DBNames.TABLE_FINCAS +
+	    " WHERE id_finca = " + "'" + getFincaID() + "';";
+	    Connection con = dbs.getJavaConnection();
+	    Statement st = con.createStatement();
+	    ResultSet resultSet = st.executeQuery(query);
+	    resultSet.first();
+	    return resultSet.getInt(1)-1;
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	    return -1;
+	}
     }
 
     @Override
