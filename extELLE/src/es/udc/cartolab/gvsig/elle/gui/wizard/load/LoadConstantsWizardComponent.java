@@ -256,6 +256,9 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 		if (view.getModel().getName().equals("ELLE View") && (view.getModel() instanceof ProjectView)) {
 		    ((ProjectView) view.getModel()).setName(mapName);
 		}
+		if (selectedValue == null) {
+		    selectedValue = "TODOS";
+		}
 		PluginServices.getMainFrame().getStatusBar().setMessage("constants",
 			selectedConstant + ": " + selectedValue);
 		zoomToConstant();
