@@ -24,6 +24,7 @@ import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.queries.QueriesPanel;
 import es.icarto.gvsig.extgex.utils.gvWindow;
 import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
+import es.udc.cartolab.gvsig.elle.utils.ELLEMap;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
@@ -91,6 +92,11 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
 
 	formOpener = new FormOpener(this);
 	openForm.addActionListener(formOpener);
+
+	if (ELLEMap.getFiltered()) {
+	    zoom.setEnabled(false);
+	    openForm.setEnabled(false);
+	}
 
 	TOCLayerManager toc = new TOCLayerManager();
 	if(toc.getLayerByName(DBNames.LAYER_FINCAS) != null) {

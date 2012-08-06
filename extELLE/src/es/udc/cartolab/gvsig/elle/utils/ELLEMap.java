@@ -40,12 +40,13 @@ public class ELLEMap {
 
     private String name;
     private int styleSource = LoadLegend.NO_LEGEND;
-    private List<LayerProperties> layers;
+    private final List<LayerProperties> layers;
     private String styleName = "";
     private BaseView view;
     private boolean loaded = false;
-    private List<LayerProperties> overviewLayers;
+    private final List<LayerProperties> overviewLayers;
     private IProjection projection;
+    private static boolean filtered = false;
 
     public ELLEMap(String name, BaseView view) {
 	this.setName(name);
@@ -106,6 +107,14 @@ public class ELLEMap {
 
     private void setView(BaseView view) {
 	this.view = view;
+    }
+
+    public static boolean getFiltered() {
+	return filtered;
+    }
+
+    public static void setFiltered(boolean filter) {
+	filtered = filter;
     }
 
     /**
@@ -209,68 +218,68 @@ public class ELLEMap {
 	return groupNames;
     }
 
-	@SuppressWarnings("unchecked")
-	private void loadViewLayers(IProjection proj, String[] layersAffectedByConstant) {
-		//load view layers
-		Collections.sort(layers);
-		for (LayerProperties lp : layers) {
-			FLayers group;
-			if (!lp.getGroup().equals("")) {
-				List<String> groupNames = getGroupNames(lp.getGroup());
-				FLayers currentGroup = view.getMapControl().getMapContext().getLayers();
-				for (String name:groupNames) {
-					group = getGroup(currentGroup, name);
-					if (group == null) {
-						group = new FLayers();
-						group.setName(name);
-						group.setMapContext(view.getMapControl().getMapContext());
-						currentGroup.addLayer(group);
-					}
-					currentGroup = group;
-				}
-				group = currentGroup;
-			} else {
-				group = view.getMapControl().getMapContext().getLayers();
-			}
-
-			FLayer layer;
-			try {
-			    	//TODO: AUDASA - Making generic
-			    	boolean coincidence = false;
-			    	for (int i=0; i<layersAffectedByConstant.length; i++) {	    	
-			    	    if (lp.getTablename().equalsIgnoreCase(layersAffectedByConstant[i])) {
-			    		coincidence = true;
-			    	    }
-			    	}
-			    	if (!coincidence) {
-			    	    lp.setWhere("");   
-			    	}
-			    	layer = getMapDAO().getLayer(lp, proj);
-			    	
-				if (layer!=null) {
-					if (lp.getMaxScale()>-1) {
-						layer.setMaxScale(lp.getMaxScale());
-					}
-					if (lp.getMinScale()>-1) {
-						layer.setMinScale(lp.getMinScale());
-					}
-					layer.setVisible(lp.visible());
-					group.addLayer(layer);
-					if (layer instanceof FLyrVect && styleSource != LoadLegend.NO_LEGEND) {
-						LoadLegend.loadLegend((FLyrVect) layer, styleName, false, styleSource);
-					}
-				}
-			} catch (Exception e) {
-				if (e instanceof SQLException || e instanceof DBException) {
-					try {
-						DBSession.reconnect();
-					} catch (DBException e1) {
-						e1.printStackTrace();
-					}
-				}
-				e.printStackTrace(); //TODO change this to logger
-			}
+    @SuppressWarnings("unchecked")
+    private void loadViewLayers(IProjection proj, String[] layersAffectedByConstant) {
+	//load view layers
+	Collections.sort(layers);
+	for (LayerProperties lp : layers) {
+	    FLayers group;
+	    if (!lp.getGroup().equals("")) {
+		List<String> groupNames = getGroupNames(lp.getGroup());
+		FLayers currentGroup = view.getMapControl().getMapContext().getLayers();
+		for (String name:groupNames) {
+		    group = getGroup(currentGroup, name);
+		    if (group == null) {
+			group = new FLayers();
+			group.setName(name);
+			group.setMapContext(view.getMapControl().getMapContext());
+			currentGroup.addLayer(group);
+		    }
+		    currentGroup = group;
 		}
+		group = currentGroup;
+	    } else {
+		group = view.getMapControl().getMapContext().getLayers();
+	    }
+
+	    FLayer layer;
+	    try {
+		//TODO: AUDASA - Making generic
+		boolean coincidence = false;
+		for (int i=0; i<layersAffectedByConstant.length; i++) {
+		    if (lp.getTablename().equalsIgnoreCase(layersAffectedByConstant[i])) {
+			coincidence = true;
+		    }
+		}
+		if (!coincidence) {
+		    lp.setWhere("");
+		}
+		layer = getMapDAO().getLayer(lp, proj);
+
+		if (layer!=null) {
+		    if (lp.getMaxScale()>-1) {
+			layer.setMaxScale(lp.getMaxScale());
+		    }
+		    if (lp.getMinScale()>-1) {
+			layer.setMinScale(lp.getMinScale());
+		    }
+		    layer.setVisible(lp.visible());
+		    group.addLayer(layer);
+		    if (layer instanceof FLyrVect && styleSource != LoadLegend.NO_LEGEND) {
+			LoadLegend.loadLegend((FLyrVect) layer, styleName, false, styleSource);
+		    }
+		}
+	    } catch (Exception e) {
+		if (e instanceof SQLException || e instanceof DBException) {
+		    try {
+			DBSession.reconnect();
+		    } catch (DBException e1) {
+			e1.printStackTrace();
+		    }
+		}
+		e.printStackTrace(); //TODO change this to logger
+	    }
+	}
     }
 
     private FLayers getGroup(LayerProperties lp) {
