@@ -8,13 +8,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 
 import org.apache.log4j.Logger;
 
+import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
+import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 import com.jeta.forms.components.panel.FormPanel;
 
 import es.icarto.gvsig.extgex.locators.actions.FormOpener;
@@ -31,7 +34,7 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 public class LocatorByFinca extends gvWindow implements IPositionRetriever {
     private static final Logger logger = Logger.getLogger(QueriesPanel.class);
 
-    private static final String DEFAULT_FILTER = "--TODOS--";
+    private static final String DEFAULT_FILTER = "--SELECCIONAR--";
 
     private final FormPanel formBody;
 
@@ -48,8 +51,8 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
 
     // Filters
     String tramoSelected = DEFAULT_FILTER;
-    String ucSelected = DEFAULT_FILTER;
-    String ayuntamientoSelected = DEFAULT_FILTER;
+    String ucSelected = null;
+    String ayuntamientoSelected = null;
     String parroquiaSelected = null;
 
     // Listeners
@@ -76,12 +79,19 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
 	initListeners();
 
 	try {
-	    String[] order = new String[1];
-	    order[0] = DBNames.FIELD_IDTRAMO;
-	    String[][] tramos = dbs.getTable(DBNames.TABLE_TRAMOS, DBNames.SCHEMA_DATA,
-		    order, false);
-	    for (int i = 0; i < tramos.length; i++) {
-		tramo.addItem(tramos[i][1]);
+	    if (!ELLEMap.getFiltered()) {
+		String[] order = new String[1];
+		order[0] = DBNames.FIELD_IDTRAMO;
+		String[][] tramos = dbs.getTable(DBNames.TABLE_TRAMOS, DBNames.SCHEMA_DATA,
+			order, false);
+		for (int i=0; i<tramos.length; i++) {
+		    tramo.addItem(tramos[i][1]);
+		}
+	    }else {
+		Vector<String> tramos = getTramosFromMunicipios(ELLEMap.getConstantValuesSelected());
+		for (int i=0; i<tramos.size(); i++) {
+		    tramo.addItem(tramos.elementAt(i));
+		}
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -93,11 +103,6 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
 	formOpener = new FormOpener(this);
 	openForm.addActionListener(formOpener);
 
-	if (ELLEMap.getFiltered()) {
-	    zoom.setEnabled(false);
-	    openForm.setEnabled(false);
-	}
-
 	TOCLayerManager toc = new TOCLayerManager();
 	if(toc.getLayerByName(DBNames.LAYER_FINCAS) != null) {
 	    return true;
@@ -105,8 +110,47 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
 	return false;
     }
 
+    private Vector<String> getTramosFromMunicipios(String[] municipios) {
+	PreparedStatement statement;
+	String query = null;
+	try {
+	    if (municipios.length == 1) {
+		query = "SELECT distinct " + DBNames.FIELD_NOMBRETRAMO_TRAMOS + "," + "b.id_tramo " +
+		"FROM " + DBNames.EXPROPIATIONS_SCHEMA + "." + DBNames.TABLE_TRAMOS + " a, " +
+		DBNames.EXPROPIATIONS_SCHEMA + "." + DBNames.TABLE_MUNICIPIO_TRAMOS + " b " +
+		"WHERE a.id_tramo = b.id_tramo and "+ DBNames.FIELD_MUNICIPIO_MUNICIPIO_TRAMOS +
+		" = " + "'" + municipios[0] + "' order by b.id_tramo;" ;
+	    } else {
+		query = "SELECT distinct " + DBNames.FIELD_NOMBRETRAMO_TRAMOS + "," + "b.id_tramo " +
+		"FROM " + DBNames.EXPROPIATIONS_SCHEMA + "." + DBNames.TABLE_TRAMOS + " a, " +
+		DBNames.EXPROPIATIONS_SCHEMA + "." + DBNames.TABLE_MUNICIPIO_TRAMOS + " b " +
+		"WHERE a.id_tramo = b.id_tramo and " + DBNames.FIELD_MUNICIPIO_MUNICIPIO_TRAMOS +
+		" in (";
+		for (int i=0; i<municipios.length; i++) {
+		    query = query + "'" + municipios[i] + "',";
+		}
+		query = query.substring(0, query.length()-1) + ") order by b.id_tramo;";
+	    }
+
+	    statement = dbs.getJavaConnection().prepareStatement(query);
+	    statement.execute();
+	    ResultSet rs = statement.getResultSet();
+	    Vector<String> tramos = new Vector<String>();
+	    while (rs.next()) {
+		tramos.add(rs.getString(1));
+	    }
+	    rs.close();
+	    return tramos;
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	    return null;
+	}
+    }
+
     private void initWidgets() {
 	tramo = (JComboBox) formBody.getComponentByName("tramo");
+	tramo.addItem(new String(DEFAULT_FILTER));
+	tramo.setSelectedIndex(1);
 	uc = (JComboBox) formBody.getComponentByName("unidad_constructiva");
 	ayuntamiento = (JComboBox) formBody.getComponentByName("ayuntamiento");
 	parroquiaSubtramo = (JComboBox) formBody.getComponentByName("parroquia_subtramo");
@@ -124,14 +168,12 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
 	ayuntamiento.addActionListener(ayuntamientoListener);
 	parroquiaListener = new ParroquiaListener();
 	parroquiaSubtramo.addActionListener(parroquiaListener);
-	//fincasListener = new FincasListener();
-	//fincaSeccion.addActionListener(fincasListener);
     }
 
     public class TramoListener implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
-	    tramoSelected = (String) tramo.getSelectedItem();
+	    tramoSelected = tramo.getSelectedItem().toString();
 	    updateUCDependingOnTramo();
 
 	}
@@ -180,7 +222,7 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
 
 	if (tramoSelected.compareToIgnoreCase(DEFAULT_FILTER) == 0) {
 	    uc.removeAllItems();
-	    uc.addItem(new String(DEFAULT_FILTER));
+	    uc.addItem(new String(""));
 	} else {
 	    try {
 		String[] order = new String[1];
@@ -191,7 +233,6 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
 		String[][] ucs = dbs.getTable(DBNames.TABLE_UC, DBNames.SCHEMA_DATA,
 			whereClause, order, false);
 		uc.removeAllItems();
-		//uc.addItem(new String(DEFAULT_FILTER));
 		for (int i = 0; i < ucs.length; i++) {
 		    uc.addItem(ucs[i][2]);
 		}
@@ -203,9 +244,9 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
 
     private void updateAyuntamientoDependingOnUC() {
 
-	if (ucSelected.compareToIgnoreCase(DEFAULT_FILTER) == 0) {
+	if (tramoSelected.compareToIgnoreCase(DEFAULT_FILTER) == 0) {
 	    ayuntamiento.removeAllItems();
-	    ayuntamiento.addItem(new String(DEFAULT_FILTER));
+	    ayuntamiento.addItem(new String(""));
 	} else {
 	    try {
 		String[] order = new String[1];
@@ -215,7 +256,6 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
 		String[][] ayuntamientos = dbs.getTable(DBNames.TABLE_AYUNTAMIENTOS,
 			DBNames.SCHEMA_DATA, whereClause, order, false);
 		ayuntamiento.removeAllItems();
-		//ayuntamiento.addItem(new String(DEFAULT_FILTER));
 		for (int i = 0; i < ayuntamientos.length; i++) {
 		    ayuntamiento.addItem(ayuntamientos[i][2]);
 		}
@@ -243,12 +283,15 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
 			DBNames.SCHEMA_DATA, whereClause, order, false);
 		if (parroquias.length <= 0) {
 		    parroquiaSubtramo.setEnabled(false);
+		    parroquiaSelected = null;
+		    parroquiaSubtramo.removeAllItems();
 		} else if (parroquias[0][0].compareToIgnoreCase("0")==0) {
 		    parroquiaSubtramo.setEnabled(false);
+		    parroquiaSelected = null;
+		    parroquiaSubtramo.removeAllItems();
 		} else {
 		    parroquiaSubtramo.setEnabled(true);
 		    parroquiaSubtramo.removeAllItems();
-		    // parroquiaSubtramo.addItem(new String(DEFAULT_FILTER));
 		    for (int i = 0; i < parroquias.length; i++) {
 			parroquiaSubtramo.addItem(parroquias[i][3]);
 		    }
@@ -260,39 +303,41 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
     }
 
     private void updateFincaDependingOnAyuntamientoAndUCAndTramo() {
-	String query = null;
-	PreparedStatement statement;
-	fincaSeccion.removeAllItems();
-	try {
-	    if ((parroquiaSelected != null) && (!parroquiaSelected.equalsIgnoreCase(DEFAULT_FILTER))) {
-		query = "SELECT " + DBNames.FIELD_NUMEROFINCA_FINCAS + ", " + DBNames.FIELD_SECCION_FINCAS +
-		" FROM " + DBNames.EXPROPIATIONS_SCHEMA + "." + DBNames.TABLE_FINCAS +
-		" WHERE " + DBNames.FIELD_TRAMO_FINCAS + " = " + "'" + getTramoId() +
-		"' AND " + DBNames.FIELD_UC_FINCAS + " = " + "'" + getUcId() +
-		"' AND " + DBNames.FIELD_AYUNTAMIENTO_FINCAS + " = " + "'" + getAyuntamientoId() +
-		"' AND " + DBNames.FIELD_PARROQUIASUBTRAMO_FINCAS + " = " + "'" + getParroquiaId() + "'";
-	    }else {
-		query = "SELECT " + DBNames.FIELD_NUMEROFINCA_FINCAS + ", " + DBNames.FIELD_SECCION_FINCAS +
-		" FROM " + DBNames.EXPROPIATIONS_SCHEMA + "." + DBNames.TABLE_FINCAS +
-		" WHERE " + DBNames.FIELD_TRAMO_FINCAS + " = " + "'" + getTramoId() +
-		"' AND " + DBNames.FIELD_UC_FINCAS + " = " + "'" + getUcId() +
-		"' AND " + DBNames.FIELD_AYUNTAMIENTO_FINCAS + " = " + "'" + getAyuntamientoId() + "'";
+	if (tramoSelected.compareToIgnoreCase(DEFAULT_FILTER) == 0) {
+	    fincaSeccion.removeAllItems();
+	    ayuntamiento.addItem(new String(""));
+	} else {
+	    String query = null;
+	    PreparedStatement statement;
+	    fincaSeccion.removeAllItems();
+	    try {
+		if ((parroquiaSelected != null) && (!parroquiaSelected.equalsIgnoreCase(DEFAULT_FILTER))) {
+		    query = "SELECT " + DBNames.FIELD_NUMEROFINCA_FINCAS + ", " + DBNames.FIELD_SECCION_FINCAS +
+		    " FROM " + DBNames.EXPROPIATIONS_SCHEMA + "." + DBNames.TABLE_FINCAS +
+		    " WHERE " + DBNames.FIELD_TRAMO_FINCAS + " = " + "'" + getTramoId() +
+		    "' AND " + DBNames.FIELD_UC_FINCAS + " = " + "'" + getUcId() +
+		    "' AND " + DBNames.FIELD_AYUNTAMIENTO_FINCAS + " = " + "'" + getAyuntamientoId() +
+		    "' AND " + DBNames.FIELD_PARROQUIASUBTRAMO_FINCAS + " = " + "'" + getParroquiaId() + "'";
+		}else {
+		    query = "SELECT " + DBNames.FIELD_NUMEROFINCA_FINCAS + ", " + DBNames.FIELD_SECCION_FINCAS +
+		    " FROM " + DBNames.EXPROPIATIONS_SCHEMA + "." + DBNames.TABLE_FINCAS +
+		    " WHERE " + DBNames.FIELD_TRAMO_FINCAS + " = " + "'" + getTramoId() +
+		    "' AND " + DBNames.FIELD_UC_FINCAS + " = " + "'" + getUcId() +
+		    "' AND " + DBNames.FIELD_AYUNTAMIENTO_FINCAS + " = " + "'" + getAyuntamientoId() + "'";
+		}
+		statement = dbs.getJavaConnection().prepareStatement(query);
+		statement.execute();
+		ResultSet rs = statement.getResultSet();
+		while (rs.next()) {
+		    String value = rs.getString(DBNames.FIELD_NUMEROFINCA_FINCAS) + "-" +
+		    rs.getString(DBNames.FIELD_SECCION_FINCAS);
+		    fincaSeccion.addItem(value);
+		}
+		rs.close();
+	    } catch (SQLException e) {
+		logger.error(query, e);
+		e.printStackTrace();
 	    }
-
-	    System.out.println("====Query: " + query);
-
-	    statement = dbs.getJavaConnection().prepareStatement(query);
-	    statement.execute();
-	    ResultSet rs = statement.getResultSet();
-	    while (rs.next()) {
-		String value = rs.getString(DBNames.FIELD_NUMEROFINCA_FINCAS) + "-" +
-		rs.getString(DBNames.FIELD_SECCION_FINCAS);
-		fincaSeccion.addItem(value);
-	    }
-	    rs.close();
-	} catch (SQLException e) {
-	    logger.error(query, e);
-	    e.printStackTrace();
 	}
     }
 
@@ -354,17 +399,33 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
     @Override
     public int getPosition() {
 	try {
-	    String query = "SELECT gid FROM " + DBNames.EXPROPIATIONS_SCHEMA + "." + DBNames.TABLE_FINCAS +
-	    " WHERE id_finca = " + "'" + getFincaID() + "';";
-	    Connection con = dbs.getJavaConnection();
-	    Statement st = con.createStatement();
-	    ResultSet resultSet = st.executeQuery(query);
-	    resultSet.first();
-	    return resultSet.getInt(1)-1;
+	    if (ELLEMap.getFiltered()) {
+		TOCLayerManager tm = new TOCLayerManager();
+		FLyrVect fincasLayer = tm.getLayerByName(DBNames.LAYER_FINCAS);
+		SelectableDataSource rs = fincasLayer.getRecordset();
+		int index = rs.getFieldIndexByName(DBNames.FIELD_IDFINCA);
+		for (int i=0; i<rs.getRowCount();i++) {
+		    if (rs.getFieldValue(i, index).toString().compareTo(getFincaID()) == 0) {
+			return i;
+		    }
+		}
+	    }else {
+		String query = "SELECT gid FROM " + DBNames.EXPROPIATIONS_SCHEMA + "." + DBNames.TABLE_FINCAS +
+		" WHERE id_finca = " + "'" + getFincaID() + "';";
+		Connection con = dbs.getJavaConnection();
+		Statement st = con.createStatement();
+		ResultSet resultSet = st.executeQuery(query);
+		resultSet.first();
+		return resultSet.getInt(1)-1;
+	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	    return -1;
+	} catch (ReadDriverException e) {
+	    e.printStackTrace();
+	    return -1;
 	}
+	return -1;
     }
 
     @Override
