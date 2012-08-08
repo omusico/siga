@@ -285,10 +285,16 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
 		    parroquiaSubtramo.setEnabled(false);
 		    parroquiaSelected = null;
 		    parroquiaSubtramo.removeAllItems();
-		} else if (parroquias[0][0].compareToIgnoreCase("0")==0) {
+		} else if (parroquias.length==1 && parroquias[0][0].compareToIgnoreCase("0")==0) {
 		    parroquiaSubtramo.setEnabled(false);
 		    parroquiaSelected = null;
 		    parroquiaSubtramo.removeAllItems();
+		} else if (parroquias[0][0].compareToIgnoreCase("0")==0) {
+		    parroquiaSubtramo.setEnabled(true);
+		    parroquiaSubtramo.removeAllItems();
+		    for (int i = 1; i < parroquias.length; i++) {
+			parroquiaSubtramo.addItem(parroquias[i][3]);
+		    }
 		} else {
 		    parroquiaSubtramo.setEnabled(true);
 		    parroquiaSubtramo.removeAllItems();
