@@ -353,7 +353,6 @@ public class MapSheetsLayoutTemplate extends Layout implements IMapSheetsIdentif
 		w_cm, h_cm));
 	viewFrame.setFrameLayoutFactory(viewFrameFactory);
 
-	viewFrame.setView(pView);
 	viewFrame.setLayout(this);
 	viewFrame.setName("main_frame");
 	viewFrame.setTypeScale(MapSheetFrameView.MANUAL);
@@ -364,6 +363,7 @@ public class MapSheetsLayoutTemplate extends Layout implements IMapSheetsIdentif
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
+	viewFrame.setView(pView);
 
 	if (is_test) {
 	    getLayoutContext().getEFS().startComplexCommand();
@@ -848,8 +848,8 @@ public class MapSheetsLayoutTemplate extends Layout implements IMapSheetsIdentif
 		    try {
 			update(int_obj.intValue());
 			// ==========================================
-			    // ==========================================
-				jobNuevo = aux_m_cachePrintService.createPrintJob();
+			// ==========================================
+			jobNuevo = aux_m_cachePrintService.createPrintJob();
 			aux_doc = new SimpleDoc(new MapSheetsPrint(this),flavor, null);
 			jobNuevo.print(aux_doc, aux_att);
 		    } catch (Exception e) {

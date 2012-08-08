@@ -104,4 +104,8 @@ public class DBNames {
     public static final String COD_PARROQUIA = "codparro";
     public static final String NOME_PARROQUIA = "nome_corto";
 
+    // Table municipio_tramos
+    public static final String TABLE_MUNICIPIO_TRAMOS = "municipio_tramos";
+    public static final String FIELD_MUNICIPIO_MUNICIPIO_TRAMOS = "municipio";
+
 }

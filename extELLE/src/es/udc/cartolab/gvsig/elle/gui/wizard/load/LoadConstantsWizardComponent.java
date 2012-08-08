@@ -111,12 +111,21 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 		public void valueChanged(ListSelectionEvent arg0) {
 		    int[] selected = valuesList.getSelectedIndices();
 		    callStateChanged();
+		    String[] valuesSelected = null;
 
 		    if (selected.length == 1) {
 			selectedValue = (String) valuesList.getSelectedValue();
+			valuesSelected = new String[1];
+			valuesSelected[0] = selectedValue;
+			ELLEMap.setConstantValuesSelected(valuesSelected);
 		    } else {
 			//TODO: several constants selected at the same time
 			selectedValuesList = valuesList.getSelectedValues();
+			String[] values = new String[selectedValuesList.length];
+			for (int i=0; i<selectedValuesList.length;i++) {
+			    values[i] = selectedValuesList[i].toString();
+			}
+			ELLEMap.setConstantValuesSelected(values);
 		    }
 		}
 	    });
