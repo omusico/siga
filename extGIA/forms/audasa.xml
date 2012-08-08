@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<METADATA>
+  <LAYER alias="taludes">
+    <TABLENAME>taludes</TABLENAME>
+    <RECORDSET>
+      <FIELD>
+        <FIELDNAME>id_talud</FIELDNAME>
+        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+      </FIELD>
+            
+      <FIELD>
+        <FIELDNAME>numero_talud</FIELDNAME>
+        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+        <VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+      </FIELD>
+      
+      <FIELD>
+        <FIELDNAME>tramo</FIELDNAME>
+        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+         <DOMAINREADER>
+         	<DRTYPE>db</DRTYPE>
+    		<DRDBTABLE>tramo</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+      </FIELD>
+      
+      <FIELD>
+        <FIELDNAME>base_contratista</FIELDNAME>
+        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+         <DOMAINREADER>
+         	<DRTYPE>db</DRTYPE>
+    		<DRDBTABLE>base_contratista</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+      </FIELD>
+      
+      <FIELD>
+        <FIELDNAME>tipo_via_pi</FIELDNAME>
+        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+         <DOMAINREADER>
+         	<DRTYPE>db</DRTYPE>
+    		<DRDBTABLE>tipo_via</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+      </FIELD>
+      
+	<FIELD>
+		<FIELDNAME>ramal_pi</FIELDNAME>
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+    		<DRDBTABLE>ramal</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+	
+      <FIELD>
+        <FIELDNAME>tipo_via_pf</FIELDNAME>
+        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+         <DOMAINREADER>
+         	<DRTYPE>db</DRTYPE>
+    		<DRDBTABLE>tipo_via</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+      </FIELD>
+      
+      <FIELD>
+		<FIELDNAME>ramal_pf</FIELDNAME>
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+    		<DRDBTABLE>ramal</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>sentido</FIELDNAME>
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+    		<DRDBTABLE>sentido</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>margen</FIELDNAME>
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+    		<DRDBTABLE>margen</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>tipo_talud</FIELDNAME>
+		<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+    		<DRDBTABLE>tipo_talud</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>longitud</FIELDNAME>
+		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>inclinacion_media</FIELDNAME>
+		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>altura_max_talud</FIELDNAME>
+		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>sup_total_analitica</FIELDNAME>
+		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>sup_mecanizada_analitica</FIELDNAME>
+		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>sup_manual_analitica</FIELDNAME>
+		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>sup_restada_analitica</FIELDNAME>
+		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>sup_total_campo</FIELDNAME>
+		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>sup_mecanizada_real</FIELDNAME>
+		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>sup_restada_campo</FIELDNAME>
+		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>sup_manual_real</FIELDNAME>
+		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>sup_complementaria</FIELDNAME>
+		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+	</FIELD>
+
+	<FIELD>
+		<FIELDNAME>concepto</FIELDNAME>
+		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>sup_desbrozada_y_complementaria</FIELDNAME>
+		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+	</FIELD>
+
+    </RECORDSET>
+  </LAYER>
+</METADATA>
+

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="src-test"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="/_fwAndami"/>
+	<classpathentry kind="src" path="/libFMap"/>
+	<classpathentry kind="lib" path="lib/es.icarto.gvsig.navtableforms.jar" sourcepath="/navtableforms/src"/>
+	<classpathentry kind="lib" path="/_fwAndami/lib/log4j-1.2.14.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/extNavTable"/>
+	<classpathentry kind="lib" path="lib/formsrt.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/extDBConnection"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/libDriverManager"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
