@@ -30,7 +30,10 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.log4j.Logger;
 import org.exolab.castor.xml.MarshalException;
@@ -81,6 +84,8 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 	public static final int WIDTH = 645;
 	public static final int HEIGHT = 445 - 175;
 
+	private static String OPEN_TEMPLATE_FILE_CHOOSER_ID = "OPEN_TEMPLATE_FILE_CHOOSER_ID";
+
 	private static final long serialVersionUID = 1L;
 	private JPanel areaPanel = null;
 	
@@ -95,6 +100,10 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 	private JRadioButton templateA3DimensionesWithLoc;
 	private JRadioButton templateA3ConsultasWithLoc;
 	private JRadioButton templateA4ConsultasWithLoc;
+	private JRadioButton templateCustom;
+	private JTextField templateFile;
+	private JButton templateFileButton;
+	private JFileChooser templateFileChooser;
 
 	private JRadioButton coverView = null;
 	private JRadioButton basedOnFeatures = null;
@@ -242,7 +251,7 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 	    if(templatesPanel == null) {
 		templatesPanel = new JPanel();
 		templatesPanel.setLayout(null);
-		templatesPanel.setBounds(new Rectangle(5, 135+13+40-112+68, 631, 21*3+30));
+		templatesPanel.setBounds(new Rectangle(5, 135+13+40-112+68, 631, 21*4+30));
 		templatesPanel.setBorder(BorderFactory.createTitledBorder(null, 
 			PluginServices.getText(this, "Template_type"),
 			TitledBorder.DEFAULT_JUSTIFICATION, 
@@ -274,6 +283,22 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 		templateA4ConsultasWithLoc.setBounds(new Rectangle(15+275, 21+21+21, 315-15-15, 21));
 		templateA4ConsultasWithLoc.setSelected(false);
 		templateA4ConsultasWithLoc.addActionListener(this);
+		templateCustom = new JRadioButton(AudasaPreferences.PERSONALIZADA);
+		templateCustom.setBounds(new Rectangle(15, 21+21+21+21, 110, 21));
+		templateCustom.setSelected(false);
+		templateCustom.addActionListener(this);
+		templateFile = new JTextField(200);
+		templateFile.setEditable(false);
+		templateFile.setEnabled(false);
+		templateFile.setBounds(new Rectangle(125, 21+21+21+21, 350, 22));
+		templateFileButton = new JButton("...");
+		templateFileButton.setBounds(new Rectangle(480, 21+21+21+21, 50, 21));
+		templateFileButton.addActionListener(this);
+		templateFileButton.setEnabled(false);
+
+		templateFileChooser = new JFileChooser(OPEN_TEMPLATE_FILE_CHOOSER_ID, System.getProperty("user.home"));
+		templateFileChooser.setAcceptAllFileFilterUsed(false);
+		templateFileChooser.setFileFilter(new FileNameExtensionFilter("GVT", "gvt"));
 
 		templatesPanel.add(templateA3Dimensiones, null);
 		templatesPanel.add(templateA3Consultas, null);
@@ -281,6 +306,9 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 		templatesPanel.add(templateA3DimensionesWithLoc, null);
 		templatesPanel.add(templateA3ConsultasWithLoc, null);
 		templatesPanel.add(templateA4ConsultasWithLoc, null);
+		templatesPanel.add(templateCustom, null);
+		templatesPanel.add(templateFile, null);
+		templatesPanel.add(templateFileButton, null);
 
 		ArrayList<JRadioButton> group = new ArrayList<JRadioButton>();
 		group.add(templateA3Dimensiones);
@@ -289,6 +317,7 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 		group.add(templateA3DimensionesWithLoc);
 		group.add(templateA3ConsultasWithLoc);
 		group.add(templateA4ConsultasWithLoc);
+		group.add(templateCustom);
 		MapSheetsUtils.joinRadioButtons(group);
 	    }
 	    return templatesPanel;
@@ -626,6 +655,29 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 			(src == templateA4ConsultasWithLoc)) {
 
 		    selectedTemplate = ((JRadioButton) src).getText();
+		    templateFile.setEnabled(false);
+		    templateFileButton.setEnabled(false);
+		    templateFile.setBackground(UIManager.getColor("TextField.inactiveBackground"));
+		    acceptButton.setEnabled(true);
+		}
+
+		if (src == templateCustom) {
+		    selectedTemplate = templateFile.getText();
+		    templateFile.setEnabled(true);
+		    templateFileButton.setEnabled(true);
+		    templateFile.setBackground(UIManager.getColor("TextField.background"));
+		    acceptButton.setEnabled(templateFile.getText().toLowerCase().endsWith(".gvt"));
+		}
+
+		if (src == templateFileButton) {
+		    int returnVal = templateFileChooser.showOpenDialog(this);
+
+		    if (returnVal == JFileChooser.APPROVE_OPTION) {
+			templateFile.setText(templateFileChooser.getSelectedFile().getAbsolutePath());
+			selectedTemplate = templateFile.getText();
+		    }
+
+		    acceptButton.setEnabled(templateFile.getText().toLowerCase().endsWith(".gvt"));
 		}
 		
 	}
@@ -635,7 +687,11 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 	}
 
 	public Layout getMapLayout() {
-	    return getLayoutFromFile(AudasaPreferences.getSelectedFile(selectedTemplate));
+	    if (selectedTemplate.toLowerCase().endsWith(".gvt")) {
+		return getLayoutFromFile(new File(selectedTemplate));
+	    } else {
+		return getLayoutFromFile(AudasaPreferences.getSelectedFile(selectedTemplate));
+	    }
 	}
 
 	public Layout getLayoutFromFile(File layoutFile) {

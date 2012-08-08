@@ -12,6 +12,7 @@ import javax.swing.JFileChooser;
 
 import org.apache.log4j.Logger;
 import org.gvsig.mapsheets.print.audasa.AudasaPreferences;
+import org.gvsig.mapsheets.print.audasa.AudasaTemplate;
 import org.gvsig.mapsheets.print.audasa.VariablesTemplatePanel;
 import org.gvsig.mapsheets.print.series.fmap.MapSheetGrid;
 import org.gvsig.mapsheets.print.series.gui.MapSheetSelectionDialog;
@@ -173,9 +174,15 @@ public class MapSheetsCreationExtension extends Extension {
 				     return;
 				 }
 
-				 // ask the user 
-				 VariablesTemplatePanel variablesPanel = new VariablesTemplatePanel(panel.getSelectedTemplate());
-				 PluginServices.getMDIManager().addCentredWindow((IWindow) variablesPanel);
+				 AudasaTemplate variables;
+				 if (panel.getSelectedTemplate().toLowerCase().endsWith(".gvt")) {
+					 variables = new AudasaTemplate();
+				 } else {
+					 // ask the user
+					 VariablesTemplatePanel variablesPanel = new VariablesTemplatePanel(panel.getSelectedTemplate());
+					 PluginServices.getMDIManager().addCentredWindow((IWindow) variablesPanel);
+					 variables = variablesPanel.getAudasaTemplateVariables();
+				 }
 
 				 //preload selection dialog variables
 				 Layout layout = panel.getMapLayout();
@@ -184,7 +191,7 @@ public class MapSheetsCreationExtension extends Extension {
 
 
 				 Object[] grid_auxlyt = dlg.getSelectedAndAuxLayout();
-				 MapSheetGrid msg = (MapSheetGrid) grid_auxlyt[0]; 
+				 MapSheetGrid msg = (MapSheetGrid) grid_auxlyt[0];
 				 Layout auxlayout = (Layout) grid_auxlyt[1];
 				 
 				 if (msg != null) {
@@ -238,7 +245,7 @@ public class MapSheetsCreationExtension extends Extension {
 						 msg, 
 						 cloned_pv, 
 						 auxlayout, 
-						 variablesPanel.getAudasaTemplateVariables());
+						 variables);
 					 // mslt.setGrid(msg);
 					 ProjectMap _pmap = ProjectFactory.createMap("Sheets layout");
 					 

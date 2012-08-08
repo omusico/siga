@@ -23,6 +23,8 @@ public class AudasaPreferences {
 	    "Estado dimensiones (A3)";
     public static final String A3_DIMENSIONES_LOCALIZADOR = 
 	    "Estado dimensiones modificado (A3)";
+    public static final String PERSONALIZADA =
+        "Otra plantilla:";
 
     // Variables for templates
     public static final String INGENIERO_DIRECTOR = "ingeniero_director";
