@@ -362,7 +362,8 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
     }
 
     private String getAyuntamientoId() throws SQLException {
-	String whereSQL = DBNames.FIELD_NOMBREAYUNTAMIENTO_AYUNTAMIENTO + " = " + "'" + ayuntamientoSelected + "'";
+	String whereSQL = DBNames.FIELD_IDUC + " = " + "'" + getUcId() + "'" + " and " +
+	DBNames.FIELD_NOMBREAYUNTAMIENTO_AYUNTAMIENTO + " = " + "'" + ayuntamientoSelected + "'";
 	String ayuntamiento = getIDFromCB(DBNames.FIELD_IDAYUNTAMIENTO, DBNames.TABLE_AYUNTAMIENTOS,
 		whereSQL);
 	return ayuntamiento;
