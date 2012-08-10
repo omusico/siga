@@ -9,16 +9,16 @@ import com.iver.cit.gvsig.listeners.CADListenerManager;
 import com.iver.cit.gvsig.listeners.EndGeometryListener;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
-import es.icarto.gvsig.extpm.preferences.Preferences;
-import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
 import es.icarto.gvsig.extpm.forms.FormPM;
+import es.icarto.gvsig.extpm.preferences.Preferences;
+import es.icarto.gvsig.extpm.utils.managers.TOCLayerManager;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class FormPMExtension extends Extension {
-    
+
     private FLyrVect layer;
     private FormPM dialog;
-    
+
     public static final String KEY_NAME = "es.udc.cartolab.gvsig.navtable";
 
     @Override
@@ -52,14 +52,14 @@ public class FormPMExtension extends Extension {
     public boolean isVisible() {
 	return true;
     }
-    
+
     protected void registerIcons() {
 	PluginServices.getIconTheme().registerDefault(
 		"extpm-pmForm",
 		this.getClass().getClassLoader()
 		.getResource("images/pm_form.png"));
     }
-    
+
     private FLyrVect getPMLayer() {
 	TOCLayerManager toc = new TOCLayerManager();
 	return toc.getLayerByName(Preferences.PM_LAYER_NAME);
@@ -81,7 +81,7 @@ public class FormPMExtension extends Extension {
 	}
 	return false;
     }
-    
+
     private class NTEndGeometryListener implements EndGeometryListener {
 
 	public void endGeometry(FLayer layer) {
@@ -91,6 +91,7 @@ public class FormPMExtension extends Extension {
 		dialog = new FormPM(getPMLayer());
 		if (dialog.init()) {
 		    PluginServices.getMDIManager().addWindow(dialog);
+		    dialog.last();
 		}
 	    }
 	}
