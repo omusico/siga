@@ -11,16 +11,18 @@ import com.iver.cit.gvsig.project.documents.view.gui.BaseView;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.icarto.gvsig.extpm.preferences.Preferences;
-import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
+import es.icarto.gvsig.extpm.utils.managers.TOCLayerManager;
 import es.udc.cartolab.gvsig.navtable.ToggleEditing;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 
 public class InsertPointWrapper extends InsertPointExtension {
+    @Override
     public void initialize() {
 	super.initialize();
     }
 
+    @Override
     public void execute(String s) {
 	setActiveLayerForPM();
 	ToggleEditing te = new ToggleEditing();
@@ -31,6 +33,7 @@ public class InsertPointWrapper extends InsertPointExtension {
 	super.execute(s);
     }
 
+    @Override
     public boolean isEnabled() {
 	if ((DBSession.getCurrentSession() != null) &&
 		hasView() &&
@@ -41,6 +44,7 @@ public class InsertPointWrapper extends InsertPointExtension {
 	}
     }
 
+    @Override
     public boolean isVisible() {
 	return true;
     }
@@ -70,10 +74,10 @@ public class InsertPointWrapper extends InsertPointExtension {
 	    String layerName = layersInTOC.getLayer(i).getName();
 	    if (layerName.equalsIgnoreCase(Preferences.PM_LAYER_NAME)) {
 		layersInTOC.getLayer(i).setActive(true);
-	    }	
+	    }
 	}
     }
-    
+
     private boolean isLayerLoaded(String layerName) {
 	TOCLayerManager toc = new TOCLayerManager();
 	FLyrVect layer = toc.getLayerByName(layerName);
@@ -82,7 +86,7 @@ public class InsertPointWrapper extends InsertPointExtension {
 	}
 	return true;
     }
-    
+
     private boolean hasView() {
 	IWindow window = PluginServices.getMDIManager().getActiveWindow();
 	if(window instanceof View) {
