@@ -2,10 +2,11 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pm_report2" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0d90b9b9-f3c8-4dfa-ba91-22d53ecea2e1">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="96"/>
+	<property name="ireport.y" value="50"/>
 	<style name="Heading 1" fontSize="16" isBold="true"/>
 	<style name="Heading 4" fontSize="12" isBold="true" isItalic="true"/>
 	<parameter name="PM_QUERY_WHERE" class="java.lang.Integer"/>
+	<parameter name="MAIN_IMAGE_PATH" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select * from audasa_pm.exp_pm where gid = $P{PM_QUERY_WHERE}]]>
 	</queryString>
@@ -13,14 +14,11 @@
 	<field name="area" class="java.lang.String"/>
 	<field name="codigo" class="java.lang.String"/>
 	<field name="fecha" class="java.sql.Date"/>
-	<field name="id" class="java.lang.String"/>
-	<field name="referencia" class="java.lang.String"/>
 	<field name="tramo" class="java.lang.String"/>
 	<field name="tipo_via" class="java.lang.String"/>
 	<field name="sentido" class="java.lang.String"/>
-	<field name="pk" class="java.lang.Double"/>
+	<field name="pk_inicial" class="java.math.BigDecimal"/>
 	<field name="municipio" class="java.lang.String"/>
-	<field name="parroquia" class="java.lang.String"/>
 	<field name="num_parcela" class="java.lang.String"/>
 	<field name="poligono" class="java.lang.String"/>
 	<field name="num_parcela_audasa" class="java.lang.String"/>
@@ -31,9 +29,9 @@
 	<field name="edificacion" class="java.lang.Boolean"/>
 	<field name="expropiacion" class="java.lang.Boolean"/>
 	<field name="localizacion" class="java.lang.String"/>
-	<field name="descripcion" class="java.lang.String"/>
+	<field name="motivos" class="java.lang.String"/>
 	<field name="fecha_comentario" class="java.sql.Date"/>
-	<field name="comentario" class="java.lang.String"/>
+	<field name="comentarios" class="java.lang.String"/>
 	<field name="razon_social_responsable" class="java.lang.String"/>
 	<field name="razon_social_propietario" class="java.lang.String"/>
 	<field name="domicilio_responsable" class="java.lang.String"/>
@@ -41,6 +39,15 @@
 	<field name="telefono_responsable" class="java.lang.String"/>
 	<field name="telefono_propietario" class="java.lang.String"/>
 	<field name="the_geom" class="java.lang.Object"/>
+	<field name="nombre_via" class="java.lang.String"/>
+	<field name="pk_final" class="java.math.BigDecimal"/>
+	<field name="num_exp_audasa" class="java.lang.String"/>
+	<field name="referencia_exp_audasa" class="java.lang.String"/>
+	<field name="num_exp_pm" class="java.lang.String"/>
+	<field name="referencia_exp_pm" class="java.lang.String"/>
+	<field name="num_exp_reversion" class="java.lang.String"/>
+	<field name="referencia_exp_reversion" class="java.lang.String"/>
+	<field name="parroquia" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -123,11 +130,6 @@
 					<text><![CDATA[Municipio:]]></text>
 				</staticText>
 				<textField>
-					<reportElement uuid="7256d91b-e1f3-43a1-86d7-4ae8ba8cc5d0" x="76" y="31" width="100" height="20"/>
-					<textElement/>
-					<textFieldExpression><![CDATA[select nombre_tramo from audasa_pm.tramos where id_tramo = $F{tramo}]]></textFieldExpression>
-				</textField>
-				<textField>
 					<reportElement uuid="78a34879-f2e0-47d7-a2e5-0dccdc01e3b4" x="76" y="51" width="100" height="20"/>
 					<textElement/>
 					<textFieldExpression><![CDATA[$F{tipo_via}]]></textFieldExpression>
@@ -136,11 +138,6 @@
 					<reportElement uuid="25dc2190-f6e5-4853-813b-56ee21d012bc" x="76" y="75" width="100" height="20"/>
 					<textElement/>
 					<textFieldExpression><![CDATA[$F{sentido}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement uuid="b890dc1e-5cc6-4ece-ab58-7c43167f159b" x="76" y="97" width="100" height="20"/>
-					<textElement/>
-					<textFieldExpression><![CDATA[$F{pk}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement uuid="6b978987-b212-4fab-a8a8-e39934585cb7" x="76" y="114" width="100" height="20"/>
@@ -152,7 +149,7 @@
 				<reportElement uuid="7c26737f-f5f8-4cd3-b953-5a0617ab6be4" x="240" y="10" width="322" height="254"/>
 				<image>
 					<reportElement uuid="bee07977-d00c-4e0e-97b2-09e4b59df796" mode="Transparent" x="0" y="1" width="322" height="253"/>
-					<imageExpression><![CDATA["/home/psanxiao/workspace/audasa3/extPM/images/image-not-available.png"]]></imageExpression>
+					<imageExpression><![CDATA[$P{MAIN_IMAGE_PATH}]]></imageExpression>
 				</image>
 			</frame>
 			<frame>
@@ -194,11 +191,6 @@
 					<textFieldExpression><![CDATA[$F{area}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement uuid="5ea1ae4e-a67c-472e-bea0-229c7c786572" x="56" y="52" width="100" height="20"/>
-					<textElement/>
-					<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
-				</textField>
-				<textField>
 					<reportElement uuid="3dc2d29a-7c5d-4290-ae1c-d1459a17dd9f" x="56" y="75" width="100" height="20"/>
 					<textElement/>
 					<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
@@ -234,11 +226,6 @@
 				</textElement>
 				<text><![CDATA[Localización]]></text>
 			</staticText>
-			<textField>
-				<reportElement uuid="18c7f356-d2bb-494b-8766-96c817447400" x="18" y="504" width="544" height="126"/>
-				<textElement textAlignment="Justified"/>
-				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
-			</textField>
 			<textField>
 				<reportElement uuid="44c3f330-c439-440f-95ec-7d8ed4d9d0d1" x="274" y="318" width="276" height="126"/>
 				<textElement textAlignment="Justified"/>
@@ -306,11 +293,6 @@
 			</textField>
 		</band>
 		<band height="176">
-			<textField>
-				<reportElement uuid="e196a899-69db-4abc-b3fc-d9ddabb6309a" x="18" y="60" width="544" height="72"/>
-				<textElement textAlignment="Justified"/>
-				<textFieldExpression><![CDATA[$F{comentario}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement uuid="2a74664c-956d-49c5-abd5-2001fe546944" style="Heading 4" x="17" y="18" width="146" height="22"/>
 				<box>
