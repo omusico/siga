@@ -2,6 +2,7 @@ package es.udc.cartolab.gvsig.elle;
 
 import java.sql.SQLException;
 
+import com.iver.andami.PluginServices;
 import com.iver.andami.plugins.Extension;
 
 import es.icarto.gvsig.elle.db.DBStructure;
@@ -11,11 +12,19 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 public class DeleteMapExtension extends Extension {
 
     public void initialize() {
+	registerIcons();
     }
 
     public void execute(String actionCommand) {
 	DeleteMapWizard wizard = new DeleteMapWizard();
 	wizard.open();
+    }
+
+    protected void registerIcons() {
+	PluginServices.getIconTheme().registerDefault(
+		"delete-map",
+		this.getClass().getClassLoader().getResource(
+		"images/mapaborrar.png"));
     }
 
     public boolean isEnabled() {
@@ -37,5 +46,4 @@ public class DeleteMapExtension extends Extension {
     public boolean isVisible() {
 	return true;
     }
-
 }
