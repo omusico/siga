@@ -37,7 +37,7 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 public class MapDAO {
 
     private static MapDAO instance = null;
-    private List<ELLEMap> loadedMaps;
+    private final List<ELLEMap> loadedMaps;
 
     protected MapDAO() {
 	loadedMaps = new ArrayList<ELLEMap>();
@@ -56,6 +56,7 @@ public class MapDAO {
 	return instance;
     }
 
+    @Override
     public Object clone() throws CloneNotSupportedException {
 	throw new CloneNotSupportedException();
     }
@@ -75,7 +76,7 @@ public class MapDAO {
     }
 
     public FLayer getLayer(LayerProperties lp, IProjection proj)
-	    throws SQLException, DBException {
+    throws SQLException, DBException {
 	return getLayer(lp.getLayername(), lp.getTablename(), lp.getSchema(),
 		lp.getWhere(), proj, lp.visible());
     }
@@ -377,7 +378,7 @@ public class MapDAO {
 	    DBSession dbs = DBSession.getCurrentSession();
 	    Connection con = dbs.getJavaConnection();
 	    String sqlCreateSchema = "DROP SCHEMA " + DBStructure.getSchema()
-		    + " CASCADE";
+	    + " CASCADE";
 	    try {
 		Statement stat = con.createStatement();
 		stat.execute(sqlCreateSchema);
@@ -421,7 +422,7 @@ public class MapDAO {
 	DBSession dbs = DBSession.getCurrentSession();
 	Connection con = dbs.getJavaConnection();
 	String sqlHasSchema = "SELECT COUNT(*) AS schemaCount FROM information_schema.schemata WHERE schema_name = '"
-		+ DBStructure.getSchema() + "'";
+	    + DBStructure.getSchema() + "'";
 	try {
 	    Statement stat = con.createStatement();
 	    ResultSet rs = stat.executeQuery(sqlHasSchema);
@@ -444,29 +445,29 @@ public class MapDAO {
 	DBSession dbs = DBSession.getCurrentSession();
 
 	String sqlCreateMap = "CREATE TABLE " + DBStructure.getSchema() +"."+DBStructure.getMapTable()+" "
-		+ "("
-		+ "   mapa character varying(255) NOT NULL,"
-		+ "   nombre_capa character varying(255) NOT NULL,"
-		+ "   nombre_tabla character varying(255),"
-		+ "   posicion integer NOT NULL DEFAULT 0,"
-		+ "   visible boolean,"
-		+ "   max_escala character varying(50),"
-		+ "   min_escala character varying(50),"
-		+ "   grupo character varying,"
-		+ "   \"schema\" character varying,"
-		+ "   localizador boolean,"
-		+ "   PRIMARY KEY (mapa, nombre_capa)"
-		+ ")";
+	+ "("
+	+ "   mapa character varying(255) NOT NULL,"
+	+ "   nombre_capa character varying(255) NOT NULL,"
+	+ "   nombre_tabla character varying(255),"
+	+ "   posicion integer NOT NULL DEFAULT 0,"
+	+ "   visible boolean,"
+	+ "   max_escala character varying(50),"
+	+ "   min_escala character varying(50),"
+	+ "   grupo character varying,"
+	+ "   \"schema\" character varying,"
+	+ "   localizador boolean,"
+	+ "   PRIMARY KEY (mapa, nombre_capa)"
+	+ ")";
 
 	String sqlCreateMapOverview =  "CREATE TABLE " + DBStructure.getSchema() + "."+DBStructure.getOverviewTable()
-		+ "("
-		+ "  mapa character varying NOT NULL,"
-		+ "  nombre_capa character varying NOT NULL,"
-		+ "  \"schema\" character varying,"
-		+ "  posicion integer,"
-		+ "  nombre_tabla character varying,"
-		+ "  PRIMARY KEY (mapa, nombre_capa)"
-		+ ")";
+	+ "("
+	+ "  mapa character varying NOT NULL,"
+	+ "  nombre_capa character varying NOT NULL,"
+	+ "  \"schema\" character varying,"
+	+ "  posicion integer,"
+	+ "  nombre_tabla character varying,"
+	+ "  PRIMARY KEY (mapa, nombre_capa)"
+	+ ")";
 
 	String sqlGrant = "GRANT SELECT ON TABLE " + DBStructure.getSchema() + ".%s TO public";
 
@@ -498,12 +499,27 @@ public class MapDAO {
 	String removeMap = "DELETE FROM " + DBStructure.getSchema() + "."+DBStructure.getMapTable()+" WHERE mapa=?";
 	String removeMapOverview = "DELETE FROM " + DBStructure.getSchema() + "."+DBStructure.getOverviewTable()+" WHERE mapa=?";
 
+	// Delete also legends group with the same name of map
+	String removeMapLegend = "DELETE FROM " + DBStructure.getSchema() + "."+DBStructure.getMapStyleTable()+" WHERE nombre_estilo=?";
+	String removeMapOverviewLegend = "DELETE FROM " + DBStructure.getSchema() + "."+DBStructure.getOverviewStyleTable()+" WHERE nombre_estilo=?";
+
 	PreparedStatement ps = dbs.getJavaConnection().prepareStatement(removeMap);
 	ps.setString(1, mapName);
 	ps.executeUpdate();
 	ps.close();
 
 	ps = dbs.getJavaConnection().prepareStatement(removeMapOverview);
+	ps.setString(1, mapName);
+	ps.executeUpdate();
+	ps.close();
+
+	// Delete also legends group with the same name of map
+	ps = dbs.getJavaConnection().prepareStatement(removeMapLegend);
+	ps.setString(1, mapName);
+	ps.executeUpdate();
+	ps.close();
+
+	ps = dbs.getJavaConnection().prepareStatement(removeMapOverviewLegend);
 	ps.setString(1, mapName);
 	ps.executeUpdate();
 	ps.close();
