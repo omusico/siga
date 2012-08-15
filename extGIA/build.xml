@@ -41,10 +41,10 @@
 			<fileset dir="images" includes="*" />
 		</copy>
 
-		<copy todir="${dist}">
+		<copy todir="${dist}/forms">
 			<fileset dir="forms" includes="*" excludes="*.jfpr" />
 		</copy>
-		<copy file="forms/audasa.xml" todir="${dist}" overwrite="yes" />
+		<copy file="data/audasa.xml" todir="${dist}" overwrite="yes" />
 
 	</target>
 

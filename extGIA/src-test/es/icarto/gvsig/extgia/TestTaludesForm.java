@@ -78,8 +78,7 @@ public class TestTaludesForm {
     public void test_domainValuesMatchWidgetNames() throws Exception {
 
 	final HashMap<String, DomainValues> domainValues = ORMLite
-		.getAplicationDomainObject("forms/audasa.xml")
-		.getDomainValues();
+		.getAplicationDomainObject("data/audasa.xml").getDomainValues();
 
 	for (final String domainValue : domainValues.keySet()) {
 	    assertNotNull(domainValue, this.widgets.get(domainValue));
@@ -90,7 +89,7 @@ public class TestTaludesForm {
     public void test_validationRulesMatchWidgetNames() throws Exception {
 
 	final HashMap<String, Set<ValidationRule>> validationRules = ORMLite
-		.getAplicationDomainObject("forms/audasa.xml")
+		.getAplicationDomainObject("data/audasa.xml")
 		.getValidationRules();
 
 	for (final String validationRule : validationRules.keySet()) {

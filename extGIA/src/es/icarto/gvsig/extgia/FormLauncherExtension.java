@@ -4,9 +4,9 @@ import com.iver.andami.PluginServices;
 import com.iver.andami.plugins.Extension;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
+import es.icarto.gvsig.extgia.preferences.Preferences;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
-import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class FormLauncherExtension extends Extension {
 
@@ -44,10 +44,7 @@ public class FormLauncherExtension extends Extension {
 
     @Override
     public boolean isEnabled() {
-	if (DBSession.getCurrentSession() != null && isExampleDataSetLoaded()) {
-	    return true;
-	}
-	return false;
+	return true;
     }
 
     private boolean isExampleDataSetLoaded() {

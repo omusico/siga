@@ -10,7 +10,7 @@ import es.icarto.gvsig.navtableforms.AbstractForm;
 @SuppressWarnings("serial")
 public class TaludesForm extends AbstractForm {
 
-    public static final String ABEILLE_FILENAME = "taludes.xml";
+    public static final String ABEILLE_FILENAME = "forms/taludes.xml";
     private FormPanel form;
 
     // private JCheckBox chb;
@@ -23,8 +23,8 @@ public class TaludesForm extends AbstractForm {
     }
 
     private void initWindow() {
-	this.viewInfo.setHeight(400);
-	this.viewInfo.setWidth(500);
+	this.viewInfo.setHeight(625);
+	this.viewInfo.setWidth(800);
 	this.viewInfo.setTitle("Taludes");
     }
 
@@ -40,9 +40,6 @@ public class TaludesForm extends AbstractForm {
 	// .toString());
 
 	if (this.form == null) {
-	    // this.form = new FormPanel(PluginServices.getPluginServices(this)
-	    // .getPluginDirectory().getAbsolutePath()
-	    // + "/" + "test.jfrm");
 	    this.form = new FormPanel(TaludesForm.ABEILLE_FILENAME);
 	}
 	return this.form;
