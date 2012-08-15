@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgia;
+package es.icarto.gvsig.extgia.preferences;
 
 import java.io.File;
 
