@@ -1,10 +1,15 @@
 package es.icarto.gvsig.extgia;
 
+import javax.swing.JComboBox;
+import javax.swing.JTextField;
+
 import org.apache.log4j.Logger;
 
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.panel.FormPanel;
 
+import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.extgia.preferences.Preferences;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 
 @SuppressWarnings("serial")
@@ -12,10 +17,11 @@ public class TaludesForm extends AbstractForm {
 
     public static final String ABEILLE_FILENAME = "forms/taludes.xml";
     private FormPanel form;
-
-    // private JCheckBox chb;
-    // private JTextField cmp;
-    // private ComponentEnablerListener componentEnablerListener;
+    JComboBox tipoTaludWidget;
+    JTextField numeroTaludWidget;
+    JComboBox baseContratistaWidget;
+    JTextField taludIDWidget;
+    CalculateWidgetValue taludid;
 
     public TaludesForm(FLyrVect layer) {
 	super(layer);
@@ -70,24 +76,20 @@ public class TaludesForm extends AbstractForm {
     // }
     // }
 
-    // @Override
-    // protected void setListeners() {
-    // super.setListeners();
-    //
-    // HashMap<String, JComponent> widgets = getWidgetComponents();
-    //
-    // cmp = (JTextField) widgets.get("resultado");
-    // chb = (JCheckBox) widgets.get("hay_anali");
-    //
-    // componentEnablerListener = new ComponentEnablerListener();
-    // chb.addActionListener(componentEnablerListener);
-    // }
+    @Override
+    protected void setListeners() {
+	super.setListeners();
+	taludid = new CalculateWidgetValue(this, DBFieldNames.ID_TALUD,
+		DBFieldNames.TIPO_TALUD, DBFieldNames.NUMERO_TALUD,
+		DBFieldNames.BASE_CONTRATISTA);
+	taludid.setListeners();
+    }
 
-    // @Override
-    // protected void removeListeners() {
-    // chb.removeActionListener(componentEnablerListener);
-    // super.removeListeners();
-    // }
+    @Override
+    protected void removeListeners() {
+	taludid.removeListeners();
+	super.removeListeners();
+    }
 
     // public class ComponentEnablerListener implements ActionListener {
     //
