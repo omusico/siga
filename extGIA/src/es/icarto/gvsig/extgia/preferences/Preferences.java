@@ -1,17 +1,23 @@
 package es.icarto.gvsig.extgia.preferences;
 
-import java.io.File;
-
 public class Preferences {
 
-    private static final String EXTENSION_PATH = "gvSIG" + File.separator
-	    + "extensiones" + File.separator + "es.icarto.gvsig.extgia"
-	    + File.separator;
+    private static Preferences preferences;
 
-    // private static final String EXTENSION_PATH = PluginServices
-    // .getPluginServices(Preferences.class).getPluginDirectory()
-    // .getAbsolutePath();
+    private Preferences() {
 
-    public static final String XMLDATAFILE_PATH = EXTENSION_PATH + "audasa.xml";
+    }
+
+    public static Preferences getPreferences() {
+	if (preferences == null) {
+	    preferences = new Preferences();
+	}
+	return preferences;
+    }
+
+    public String getXMLFilePath() {
+	return this.getClass().getClassLoader().getResource("data/audasa.xml")
+		.getPath();
+    }
 
 }

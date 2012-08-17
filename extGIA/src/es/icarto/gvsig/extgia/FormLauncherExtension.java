@@ -24,7 +24,8 @@ public class FormLauncherExtension extends Extension {
 
     private FLyrVect getLayerFromTOC() {
 	final String layerName = ORMLite
-		.getDataBaseObject(Preferences.XMLDATAFILE_PATH)
+		.getDataBaseObject(
+			Preferences.getPreferences().getXMLFilePath())
 		.getTable("taludes").getTableName();
 	final TOCLayerManager toc = new TOCLayerManager();
 	return toc.getLayerByName(layerName);

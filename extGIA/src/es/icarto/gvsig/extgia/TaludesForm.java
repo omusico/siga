@@ -53,7 +53,7 @@ public class TaludesForm extends AbstractForm {
 
     @Override
     public String getXMLPath() {
-	return Preferences.XMLDATAFILE_PATH;
+	return Preferences.getPreferences().getXMLFilePath();
     }
 
     @Override
