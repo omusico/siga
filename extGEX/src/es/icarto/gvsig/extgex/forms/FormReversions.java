@@ -15,6 +15,7 @@ import javax.swing.event.InternalFrameEvent;
 
 import org.apache.log4j.Logger;
 
+import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.panel.FormPanel;
@@ -153,10 +154,15 @@ public class FormReversions extends AbstractForm implements ILauncherForm {
 	columnasFincas.add(DBNames.FIELD_IDEXPROPIACION_FINCAS_REVERSIONES);
 	columnasFincas.add(DBNames.FIELD_SUPERFICIE_FINCAS_REVERSIONES);
 	columnasFincas.add(DBNames.FIELD_IMPORTE_FINCAS_REVERSIONES);
-	fincasAfectadas.setModel(TableModelFactory.createFromTable(
-		DBNames.TABLE_FINCASREVERSIONES,
-		DBNames.FIELD_IDREVERSION_REVERSIONES, formatIDReversion(),
-		columnasFincas));
+	try {
+	    fincasAfectadas.setModel(TableModelFactory.createFromTable(
+		    DBNames.TABLE_FINCASREVERSIONES,
+		    DBNames.FIELD_IDREVERSION_REVERSIONES, formatIDReversion(),
+		    columnasFincas, columnasFincas));
+	} catch (ReadDriverException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
     }
 
     @Override

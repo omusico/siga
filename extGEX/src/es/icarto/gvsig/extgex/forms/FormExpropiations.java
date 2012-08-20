@@ -17,6 +17,7 @@ import javax.swing.event.InternalFrameEvent;
 
 import org.apache.log4j.Logger;
 
+import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.panel.FormPanel;
@@ -306,19 +307,29 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm {
 	ArrayList<String> columnasCultivos = new ArrayList<String>();
 	columnasCultivos.add(DBNames.FIELD_SUPERFICIE_EXPROPIACIONES);
 	columnasCultivos.add(DBNames.FIELD_IDCULTIVO_EXPROPIACIONES);
-	expropiaciones.setModel(TableModelFactory.createFromTable(
-		DBNames.TABLE_EXPROPIACIONES,
-		DBNames.FIELD_IDFINCA, finca.getText(),
-		columnasCultivos));
+	try {
+	    expropiaciones.setModel(TableModelFactory.createFromTable(
+		    DBNames.TABLE_EXPROPIACIONES,
+		    DBNames.FIELD_IDFINCA, finca.getText(),
+		    columnasCultivos, columnasCultivos));
+	} catch (ReadDriverException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
 
 	ArrayList<String> columnasReversiones = new ArrayList<String>();
 	columnasReversiones.add(DBNames.FIELD_IDREVERSION_FINCAS_REVERSIONES);
 	columnasReversiones.add(DBNames.FIELD_SUPERFICIE_FINCAS_REVERSIONES);
 	columnasReversiones.add(DBNames.FIELD_IMPORTE_FINCAS_REVERSIONES);
-	reversiones.setModel(TableModelFactory.createFromTable(
-		DBNames.TABLE_FINCASREVERSIONES,
-		DBNames.FIELD_IDFINCA, finca.getText(),
-		columnasReversiones));
+	try {
+	    reversiones.setModel(TableModelFactory.createFromTable(
+		    DBNames.TABLE_FINCASREVERSIONES,
+		    DBNames.FIELD_IDFINCA, finca.getText(),
+		    columnasReversiones, columnasReversiones));
+	} catch (ReadDriverException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
     }
 
     @Override
