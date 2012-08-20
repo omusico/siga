@@ -12,15 +12,15 @@
 	</queryString>
 	<field name="gid" class="java.lang.Integer"/>
 	<field name="area" class="java.lang.String"/>
-	<field name="codigo" class="java.lang.String"/>
+	<field name="numero_pm" class="java.lang.String"/>
 	<field name="fecha" class="java.sql.Date"/>
 	<field name="tramo" class="java.lang.String"/>
 	<field name="tipo_via" class="java.lang.String"/>
 	<field name="sentido" class="java.lang.String"/>
 	<field name="pk_inicial" class="java.math.BigDecimal"/>
 	<field name="municipio" class="java.lang.String"/>
-	<field name="num_parcela" class="java.lang.String"/>
-	<field name="poligono" class="java.lang.String"/>
+	<field name="num_parcela_catastro" class="java.lang.String"/>
+	<field name="poligono_catastro" class="java.lang.String"/>
 	<field name="num_parcela_audasa" class="java.lang.String"/>
 	<field name="tramo_expropiacion" class="java.lang.String"/>
 	<field name="dominio_publico" class="java.lang.Boolean"/>
@@ -30,7 +30,6 @@
 	<field name="expropiacion" class="java.lang.Boolean"/>
 	<field name="localizacion" class="java.lang.String"/>
 	<field name="motivos" class="java.lang.String"/>
-	<field name="fecha_comentario" class="java.sql.Date"/>
 	<field name="comentarios" class="java.lang.String"/>
 	<field name="razon_social_responsable" class="java.lang.String"/>
 	<field name="razon_social_propietario" class="java.lang.String"/>
@@ -48,6 +47,11 @@
 	<field name="num_exp_reversion" class="java.lang.String"/>
 	<field name="referencia_exp_reversion" class="java.lang.String"/>
 	<field name="parroquia" class="java.lang.String"/>
+	<field name="ramal" class="java.lang.String"/>
+	<field name="nombre_responsable" class="java.lang.String"/>
+	<field name="nombre_propietario" class="java.lang.String"/>
+	<field name="fecha_salida_contestacion" class="java.sql.Date"/>
+	<field name="fecha_salida_alta" class="java.sql.Date"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -185,16 +189,6 @@
 					</textElement>
 					<text><![CDATA[Datos Expediente]]></text>
 				</staticText>
-				<textField>
-					<reportElement uuid="45122d92-da2d-4d53-adc2-b4930dbf2009" x="56" y="30" width="100" height="20"/>
-					<textElement/>
-					<textFieldExpression><![CDATA[$F{area}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement uuid="3dc2d29a-7c5d-4290-ae1c-d1459a17dd9f" x="56" y="75" width="100" height="20"/>
-					<textElement/>
-					<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
-				</textField>
 			</frame>
 			<staticText>
 				<reportElement uuid="2a74664c-956d-49c5-abd5-2001fe546944" style="Heading 4" x="17" y="278" width="146" height="22"/>
