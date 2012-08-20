@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <METADATA>
-	<LAYER alias="PM">
+	<LAYER alias="Policia_Margenes">
  		<TABLENAME>exp_pm</TABLENAME>
  		<PRIMARYKEY>
- 			<PKELEMENT>gid</PKELEMENT>
+ 			<PKELEMENT>numero_pm</PKELEMENT>
  		</PRIMARYKEY>
  		<RECORDSET>
  			 <FIELD>

@@ -40,7 +40,7 @@ public class NavTableComponentsFactory {
 	return printReportB;
     }
 
-    private ImageIcon getIcon(String iconName) {
+    public ImageIcon getIcon(String iconName) {
 	java.net.URL imgURL = getClass().getResource(iconName);
 	if (imgURL == null) {
 	    imgURL = AbstractNavTable.class.getResource(iconName);
