@@ -6,7 +6,15 @@
  			<PKELEMENT>gid</PKELEMENT>
  		</PRIMARYKEY>
  		<RECORDSET>
- 			<FIELD>
+ 			 <FIELD>
+ 				<FIELDNAME>tramo</FIELDNAME>
+ 				<DOMAINREADER>
+            		<DRTYPE>db</DRTYPE>
+        			<DRDBTABLE>tramos</DRDBTABLE>
+        			<DRDBCOLUMNVALUE>nombre_tramo</DRDBCOLUMNVALUE>
+        		</DOMAINREADER>
+ 			</FIELD>
+ 			 <FIELD>
  				<FIELDNAME>tipo_via</FIELDNAME>
  				<DOMAINREADER>
             		<DRTYPE>db</DRTYPE>
@@ -16,11 +24,11 @@
         		</DOMAINREADER>
  			</FIELD>
  			 <FIELD>
- 				<FIELDNAME>tramo</FIELDNAME>
+ 				<FIELDNAME>ramal</FIELDNAME>
  				<DOMAINREADER>
             		<DRTYPE>db</DRTYPE>
-        			<DRDBTABLE>tramos</DRDBTABLE>
-        			<DRDBCOLUMNVALUE>nombre_tramo</DRDBCOLUMNVALUE>
+        			<DRDBTABLE>ramales</DRDBTABLE>
+        			<DRDBCOLUMNVALUE>nombre_ramal</DRDBCOLUMNVALUE>
         		</DOMAINREADER>
  			</FIELD>
  			 <FIELD>
