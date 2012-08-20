@@ -51,7 +51,6 @@ import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 
 import es.udc.cartolab.gvsig.navtable.format.ValueFactoryNT;
 
-
 /**
  * @author Nacho Varela
  * @author Javier Estevez
@@ -72,6 +71,7 @@ public class AlphanumericNavTable extends NavTable {
 	this.model = model;
 	this.model.addEditionListener(listener);
 	this.indexesOfRowsAdded = new ArrayList<Integer>();
+	this.openEmptyLayers = true;
     }
 
     public AlphanumericNavTable(IEditableSource model, String dataName,
@@ -81,6 +81,7 @@ public class AlphanumericNavTable extends NavTable {
 	this.model = model;
 	this.defaultValues = defaultValues;
 	this.model.addEditionListener(listener);
+	this.openEmptyLayers = true;
     }
 
     @Override
@@ -119,7 +120,7 @@ public class AlphanumericNavTable extends NavTable {
     }
 
     @Override
-    public SelectableDataSource getRecordset(){
+    public SelectableDataSource getRecordset() {
 	try {
 	    return model.getRecordset();
 	} catch (ReadDriverException e) {
@@ -129,9 +130,18 @@ public class AlphanumericNavTable extends NavTable {
     }
 
     @Override
-    @Deprecated
-    protected void saveRegister() {
-	saveRecord();
+    protected boolean isEditing() {
+	return model.isEditing();
+    }
+
+    @Override
+    protected void updateValue(int row, int col, String newValue) {
+	ToggleEditing te = new ToggleEditing();
+	try {
+	    te.modifyValue(model, row, col, newValue);
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
     }
 
     @Override
@@ -143,11 +153,12 @@ public class AlphanumericNavTable extends NavTable {
 	    int currentPos = Long.valueOf(getPosition()).intValue();
 	    try {
 		ToggleEditing te = new ToggleEditing();
-		if (!model.isEditing()) {
+		boolean wasEditing = model.isEditing();
+		if (!wasEditing) {
 		    te.startEditing(model);
 		}
 		te.modifyValues(model, currentPos, attIndexes, attValues);
-		if (model.isEditing()) {
+		if (!wasEditing) {
 		    te.stopEditing(model);
 		}
 		setChangedValues(false);
@@ -160,11 +171,6 @@ public class AlphanumericNavTable extends NavTable {
 	    }
 	}
 	return false;
-    }
-
-    @Deprecated
-    private void addRow() {
-	addRecord();
     }
 
     public void addRecord() {
@@ -183,8 +189,8 @@ public class AlphanumericNavTable extends NavTable {
 		int numAttr = sds.getFieldCount();
 		Value[] values = createDefaultValues(numAttr);
 		IRow row = new DefaultRow(values);
-		indexesOfRowsAdded.add(
-			model.doAddRow(row, EditionEvent.ALPHANUMERIC)+1);
+		indexesOfRowsAdded.add(model.doAddRow(row,
+			EditionEvent.ALPHANUMERIC) + 1);
 
 		setChangedValues(true);
 		setPosition(sds.getRowCount());
@@ -196,18 +202,19 @@ public class AlphanumericNavTable extends NavTable {
 
     private Value[] createDefaultValues(int numAttr) {
 	Value[] values = new Value[numAttr];
-	if (defaultValues == null)
+	if (defaultValues == null) {
 	    for (int i = 0; i < numAttr; i++) {
 		values[i] = ValueFactoryNT.createNullValue();
 	    }
-	else {
+	} else {
 	    SelectableDataSource sds = getRecordset();
 	    for (int i = 0; i < numAttr; i++) {
-		if (defaultValues.get(sds.getFieldAlias(i)) == null)
+		if (defaultValues.get(sds.getFieldAlias(i)) == null) {
 		    values[i] = ValueFactoryNT.createNullValue();
-		else
-		    values[i] = ValueFactoryNT.createValue(
-			    defaultValues.get(sds.getFieldAlias(i)));
+		} else {
+		    values[i] = ValueFactoryNT.createValue(defaultValues
+			    .get(sds.getFieldAlias(i)));
+		}
 	    }
 	}
 	return values;
@@ -271,7 +278,7 @@ public class AlphanumericNavTable extends NavTable {
 	    model.doRemoveRow((int) getPosition(), EditionEvent.ALPHANUMERIC);
 	    model.stopEdition(writer, EditionEvent.ALPHANUMERIC);
 
-	    //keep the current position within boundaries
+	    // keep the current position within boundaries
 	    setPosition(getPosition());
 
 	} catch (StartWriterVisitorException e) {

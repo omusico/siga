@@ -1,27 +1,28 @@
 package es.udc.cartolab.gvsig.navtable.format;
 
-import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class IntegerFormatNT {
 
-    private static final String INTEGER_PATTERN_ON_DISPLAY = "###,###,###,###,###,##0";
-    private static DecimalFormat integerFormatOnDisplay;
-    private static final String INTEGER_PATTERN_ON_EDIT = "#################0";
-    private static DecimalFormat integerFormatOnEdit;
+    private static NumberFormat integerFormatOnDisplay;
+    private static NumberFormat integerFormatOnEdit;
 
-    public static DecimalFormat getDisplayingFormat() {
-	if(integerFormatOnDisplay != null) {
-	    return integerFormatOnDisplay;
+    public static NumberFormat getDisplayingFormat() {
+	if (integerFormatOnDisplay == null) {
+	    integerFormatOnDisplay = NumberFormat.getInstance(Locale
+		    .getDefault());
+	    integerFormatOnDisplay.setGroupingUsed(false);
 	}
-	integerFormatOnDisplay = new DecimalFormat(INTEGER_PATTERN_ON_DISPLAY);
 	return integerFormatOnDisplay;
     }
 
-    public static DecimalFormat getEditingFormat() {
-	if(integerFormatOnEdit != null) {
-	    return integerFormatOnEdit;
+    public static NumberFormat getEditingFormat() {
+	if (integerFormatOnEdit == null) {
+	    integerFormatOnEdit = NumberFormat.getNumberInstance(Locale
+		    .getDefault());
+	    integerFormatOnEdit.setGroupingUsed(false);
 	}
-	integerFormatOnEdit = new DecimalFormat(INTEGER_PATTERN_ON_EDIT);
 	return integerFormatOnEdit;
     }
 

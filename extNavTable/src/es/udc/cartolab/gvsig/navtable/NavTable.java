@@ -20,6 +20,7 @@
  *   Pablo Sanxiao Roca <psanxiao (at) gmail (dot) com>
  *   Javier Est�vez Vali�as <valdaris (at) gmail (dot) com>
  *   Andres Maneiro <andres.maneiro@gmail.com>
+ *   Jorge Lopez Fernandez <jlopez (at) cartolab (dot) es>
  */
 package es.udc.cartolab.gvsig.navtable;
 
@@ -27,6 +28,7 @@ import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.HeadlessException;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -45,6 +47,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
@@ -58,7 +61,6 @@ import com.hardcode.gdbms.engine.values.NullValue;
 import com.hardcode.gdbms.engine.values.Value;
 import com.hardcode.gdbms.engine.values.ValueWriter;
 import com.iver.andami.PluginServices;
-import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
@@ -74,6 +76,7 @@ import com.vividsolutions.jts.geom.Geometry;
 
 import es.udc.cartolab.gvsig.navtable.contextualmenu.INavTableContextMenu;
 import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
+import es.udc.cartolab.gvsig.navtable.format.ValueFormatNT;
 import es.udc.cartolab.gvsig.navtable.listeners.PositionEvent;
 import es.udc.cartolab.gvsig.navtable.listeners.PositionListener;
 import es.udc.cartolab.gvsig.navtable.preferences.Preferences;
@@ -97,11 +100,11 @@ import es.udc.cartolab.gvsig.navtable.table.NavTableModel;
  * @author Nacho Varela
  * @author Pablo Sanxiao
  * @author Andres Maneiro
+ * @author Jorge Lopez
  */
 public class NavTable extends AbstractNavTable implements PositionListener {
 
     private static final long serialVersionUID = 1L;
-    private IWindow window;
     protected WindowInfo viewInfo = null;
 
     private boolean isFillingValues = false;
@@ -231,6 +234,23 @@ public class NavTable extends AbstractNavTable implements PositionListener {
 	     */
 	    if (e.getButton() == BUTTON_RIGHT) {
 
+		if ((e.getSource() != null) && (e.getSource().equals(table))) {
+		    // get the coordinates of the mouse click
+		    Point p = e.getPoint();
+
+		    // get the row index that contains that coordinate
+		    int rowNumber = table.rowAtPoint( p );
+
+		    if (rowNumber > -1) {
+			// Get the ListSelectionModel of the JTable
+			ListSelectionModel model = table.getSelectionModel();
+
+			// set the selected interval of rows. Using the "rowNumber"
+			// variable for the beginning and end selects only that one row.
+			model.setSelectionInterval( rowNumber, rowNumber );
+		    }
+		}
+
 		JPopupMenu popup = new JPopupMenu();
 
 		ExtensionPoint extensionPoint = (ExtensionPoint) ExtensionPointsSingleton
@@ -297,9 +317,37 @@ public class NavTable extends AbstractNavTable implements PositionListener {
     class MyTableModelListener implements TableModelListener {
 	public void tableChanged(TableModelEvent e) {
 	    if (e.getType() == TableModelEvent.UPDATE && !isFillingValues()) {
-		setChangedValues();
-		enableSaveButton(isChangedValues());
+		// if layer is on edition, we need to update the recordset
+		// with the values that changed. If not, the values will be
+		// saved in "batch mode" when clicking on saving button
+		if (isEditing()) {
+		    updateValueInRecordset(e);
+		} else {
+		    setChangedValues();
+		    enableSaveButton(isChangedValues());
+		}
 	    }
+	}
+
+	private void updateValueInRecordset(TableModelEvent e) {
+	    int col = 1; // edition only happens on editing column
+	    int row = e.getFirstRow();
+	    String newValue = ((DefaultTableModel) table.getModel())
+		    .getValueAt(row, col).toString();
+	    updateValue(Long.valueOf(getPosition()).intValue(), row, newValue);
+	}
+    }
+
+    protected boolean isEditing() {
+	return layer.isEditing();
+    }
+
+    protected void updateValue(int row, int col, String newValue) {
+	ToggleEditing te = new ToggleEditing();
+	try {
+	    te.modifyValue(layer, row, col, newValue);
+	} catch (Exception e) {
+	    e.printStackTrace();
 	}
     }
 
@@ -337,11 +385,11 @@ public class NavTable extends AbstractNavTable implements PositionListener {
 	SelectableDataSource sds = getRecordset();
 	sds.addSelectionListener(this);
 	this.addPositionListener(this);
-	window = PluginServices.getMDIManager().getActiveWindow();
 	try {
-	    if (sds.getRowCount() <= 0) {
+	    if ((!openEmptyLayers) && (sds.getRowCount() <= 0)) {
 		JOptionPane.showMessageDialog(this,
 			PluginServices.getText(this, "emptyLayer"));
+		this.layer.removeLayerListener(this.listener);
 		return false;
 	    }
 	} catch (HeadlessException e) {
@@ -363,6 +411,7 @@ public class NavTable extends AbstractNavTable implements PositionListener {
 	getThisSouthPanel().add(southPanel);
 
 	fillAttributes();
+	setPosition(0);
 
 	refreshGUI();
 	super.repaint();
@@ -511,17 +560,7 @@ public class NavTable extends AbstractNavTable implements PositionListener {
 	    setFillingValues(true);
 	    DefaultTableModel model = (DefaultTableModel) table.getModel();
 	    for (int i = 0; i < sds.getFieldCount(); i++) {
-		Value value = sds.getFieldValue(getPosition(), i);
-		String textoValue;
-		if (value instanceof NullValue) {
-		    textoValue = "";
-		} else if (value instanceof DateValue) {
-		    textoValue = DateFormatNT.convertDateValueToString(value);
-		} else {
-		    textoValue = value
-			    .getStringValue(ValueWriter.internalValueWriter);
-		    textoValue = textoValue.replaceAll("'", "");
-		}
+		String textoValue = sds.getFieldValue(getPosition(), i).getStringValue(new ValueFormatNT());
 		model.setValueAt(textoValue, i, 1);
 	    }
 
@@ -602,21 +641,8 @@ public class NavTable extends AbstractNavTable implements PositionListener {
 	table.setRowSelectionInterval(row, row);
     }
 
-    @Override
-    @Deprecated
-    protected void saveRegister() {
-	saveRecord();
-    }
-
     protected boolean isSaveable() {
 	stopCellEdition();
-
-	// close all windows until get the view we're working on as the active
-	// window.
-	while (!window.equals(PluginServices.getMDIManager().getActiveWindow())) {
-	    PluginServices.getMDIManager().closeWindow(
-		    PluginServices.getMDIManager().getActiveWindow());
-	}
 
 	if (layer.isWritable()) {
 	    return true;

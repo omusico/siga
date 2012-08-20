@@ -1,22 +1,26 @@
-NavTable was written and maintained by this team:
+NavTable was build thanks a a collaborative effort of a number of people involved. Some of them are:
 
-DEVELOPERS:
+Developers (in order of appearance):
+
 - Juan Ignacio Varela García <nvarela (at) cartolab (dot) es>
 - Pablo Sanxiao Roca <psanxiao (at) icarto (dot) es>
 - Javier Estévez Valiñas <jestevez (at) cartolab (dot) es>
 - Francisco Puga <fpuga (at) cartolab (dot) es
 - Andrés Maneiro <amaneiro (at) icarto (dot) es>
+- Jorge López <jlopez (at) cartolab (dot) es>
 
 Important suggestions, bug reports, etc. from:
+
 - Francisco Alberto Varela García [C]
 - Daniel Díaz Grandío [C]
-- Gonzalo Martínez Crespo [C]
+- Gonzalo Martínez Crespo [iC]
 - Adrián Eirís Torres [C]
 - Jorge Ocampo [iC]
 - Carmen Molejón [iC]
-- Juan Fuentes [C]
+- Vanessa Ros Candeira [C]
 
 Special thanks to:
+
 - Francisco José Peñarrubia [G]
 - Joaquim Rocha
 - Artur Juen
@@ -25,16 +29,18 @@ Special thanks to:
 - Nacho Brodin
 - Benjamin Ducke [OA]
 - Agustín Diez Castillo [UV]
-- Francisco José Peñarrubia [G]
-- Joaquim Rocha
 - Jordi Torres
+- Giuliano Ramat
+- José Antonio Canalejo
 
 Installer image designed by:
+
 - Daniel Díaz Grandío [C]
 
 ---------------------
+
 [C]: CartoLab
 [G]: gvSIG
+[iC]: iCarto
 [OA]: Oxford Archaeology
 [UV]: Universitat de València
-[iC]: iCarto

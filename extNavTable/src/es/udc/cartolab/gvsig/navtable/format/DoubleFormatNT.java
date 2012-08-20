@@ -1,28 +1,31 @@
 package es.udc.cartolab.gvsig.navtable.format;
 
-import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class DoubleFormatNT {
 
-    private static final String FORMAT_DOUBLE_ON_DISPLAY = "###,###,###,###,###,##0.00";
-    private static DecimalFormat doubleFormatOnDisplay;
-    private static final String FORMAT_DOUBLE_ON_EDIT = "##################.##";
-    private static DecimalFormat doubleFormatOnEdit;
+    private static NumberFormat doubleFormatOnDisplay;
+    private static NumberFormat doubleFormatOnEdit;
 
-    public static DecimalFormat getDisplayingFormat() {
-	if(doubleFormatOnDisplay != null) {
-	    return doubleFormatOnDisplay;
+    public static NumberFormat getDisplayingFormat() {
+	if (doubleFormatOnDisplay == null) {
+	    doubleFormatOnDisplay = NumberFormat.getNumberInstance(Locale
+		    .getDefault());
+	    doubleFormatOnDisplay.setGroupingUsed(false);
+	    doubleFormatOnDisplay.setMinimumFractionDigits(0);
+	    doubleFormatOnDisplay.setMaximumFractionDigits(100);
 	}
-	doubleFormatOnDisplay = new DecimalFormat(FORMAT_DOUBLE_ON_DISPLAY);
 	return doubleFormatOnDisplay;
     }
 
-    public static DecimalFormat getEditingFormat() {
-	if(doubleFormatOnEdit != null) {
-	    return doubleFormatOnEdit;
+    public static NumberFormat getEditingFormat() {
+	if (doubleFormatOnEdit == null) {
+	    doubleFormatOnEdit = NumberFormat.getNumberInstance(Locale
+		    .getDefault());
+	    doubleFormatOnEdit.setGroupingUsed(false);
 	}
-	doubleFormatOnEdit = new DecimalFormat(FORMAT_DOUBLE_ON_EDIT);
-	return doubleFormatOnEdit;	
+	return doubleFormatOnEdit;
     }
-    
+
 }

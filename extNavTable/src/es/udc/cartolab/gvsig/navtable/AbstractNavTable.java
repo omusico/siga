@@ -20,6 +20,7 @@
  *   Juan Ignacio Varela García <nachouve (at) gmail (dot) com>
  *   Pablo Sanxiao Roca <psanxiao (at) gmail (dot) com>
  *   Javier Estévez Valiñas <valdaris (at) gmail (dot) com>
+ *   Jorge Lopez Fernandez <jlopez (at) cartolab (dot) es>
  */
 package es.udc.cartolab.gvsig.navtable;
 
@@ -30,7 +31,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
-import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -48,12 +48,9 @@ import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.andami.ui.mdiManager.IWindowListener;
 import com.iver.andami.ui.mdiManager.WindowInfo;
-import com.iver.cit.gvsig.CADExtension;
 import com.iver.cit.gvsig.FiltroExtension;
 import com.iver.cit.gvsig.exceptions.expansionfile.ExpansionFileReadException;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
-import com.iver.cit.gvsig.fmap.edition.EditionEvent;
-import com.iver.cit.gvsig.fmap.edition.VectorialEditableAdapter;
 import com.iver.cit.gvsig.fmap.layers.FBitSet;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.ReadableVectorial;
@@ -61,7 +58,6 @@ import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 import com.iver.cit.gvsig.fmap.layers.SelectionEvent;
 import com.iver.cit.gvsig.fmap.layers.SelectionListener;
 import com.iver.cit.gvsig.fmap.layers.layerOperations.AlphanumericData;
-import com.iver.cit.gvsig.layers.VectorialLayerEdited;
 import com.iver.utiles.extensionPoints.ExtensionPoint;
 import com.iver.utiles.extensionPoints.ExtensionPoints;
 import com.iver.utiles.extensionPoints.ExtensionPointsSingleton;
@@ -94,6 +90,7 @@ import es.udc.cartolab.gvsig.navtable.utils.EditionListener;
  * @author Javier Estevez
  * @author Pablo Sanxiao
  * @author Andres Maneiro
+ * @author Jorge Lopez
  * 
  */
 public abstract class AbstractNavTable extends JPanel implements IWindow,
@@ -139,6 +136,7 @@ ActionListener, SelectionListener, IWindowListener {
     protected JButton selectionB = null;
     protected JButton saveB = null;
     protected JButton removeB = null;
+    protected JButton undoB = null;
     // navigation buttons
     protected JButton firstB = null;
     protected JButton beforeB = null;
@@ -155,6 +153,7 @@ ActionListener, SelectionListener, IWindowListener {
     private JPanel actionsToolBar;
     private JPanel optionsPanel;
 
+    protected boolean openEmptyLayers = false;
     protected boolean isAlphanumericNT = false;
 
     /**
@@ -248,31 +247,11 @@ ActionListener, SelectionListener, IWindowListener {
     public abstract void fillEmptyValues();
 
     /**
-     * Deprecated method. Use instead {@link #setPosition(long)}
-     * @param rowPosition
-     */
-    @Deprecated
-    public void fillValues(long rowPosition) {
-	currentPosition = rowPosition;
-	refreshGUI();
-    }
-
-    /**
      * It selects a specific row into the table.
      * 
      * @param row
      */
     public abstract void selectRow(int row);
-
-    /**
-     * Checks if there's changed values.
-     * 
-     * @return a vector with the position of the values that have changed.
-     */
-    @Deprecated
-    protected Vector checkChangedValues() {
-	return new Vector();
-    }
 
     /**
      * @return true is some value has changed, false otherwise
@@ -285,16 +264,8 @@ ActionListener, SelectionListener, IWindowListener {
      * Set true or false the boolean variable changedValues
      */
     protected void setChangedValues(boolean bool) {
+	undoB.setEnabled(bool);
 	changedValues = bool;
-    }
-
-    /**
-     * Saves the changes of the current data row.
-     * 
-     */
-    @Deprecated
-    protected void saveRegister() {
-	saveRecord();
     }
 
     /**
@@ -456,21 +427,6 @@ ActionListener, SelectionListener, IWindowListener {
 	return actionsToolBar;
     }
 
-    /**
-     * Deprecated method: the original aim for this method was enable the
-     * developers to have a way to override the buttons on the south panel for
-     * their child applications (add more, delete, etc). If you are a developer
-     * and want to get that behaviour, check NAVTABLE_ACTIONS_TOOLBAR
-     * extensionPoint. Through it, you will have complete access to the toolbar.
-     * Check also #registerNavTableButtonsOnActionsToolBarExtensionPoint()
-     * method for a concrete example on the prefered way to do it.
-     */
-    @Deprecated
-    protected void initNavTableSouthPanelButtons() {
-	registerNavTableButtonsOnNavigationToolBarExtensionPoint();
-	registerNavTableButtonsOnActionToolBarExtensionPoint();
-    }
-
     private void registerNavTableButtonsOnNavigationToolBarExtensionPoint() {
 	firstB = getNavTableButton(firstB, "/go-first.png",
 		"goFirstButtonTooltip");
@@ -520,6 +476,10 @@ ActionListener, SelectionListener, IWindowListener {
 
 	removeB = getNavTableButton(removeB, "/delete.png", "delete_register");
 	extensionPoints.add(NAVTABLE_ACTIONS_TOOLBAR, "button-remove", removeB);
+
+	undoB = getNavTableButton(undoB, "/edit-undo.png", "clearChangesButtonTooltip");
+	undoB.setEnabled(false);
+	extensionPoints.add(NAVTABLE_ACTIONS_TOOLBAR, "button-clear-changes", undoB);
     }
 
     /**
@@ -828,13 +788,13 @@ ActionListener, SelectionListener, IWindowListener {
 	    f.setLayout(new BorderLayout());
 	    f.add(getNorthPanel(), BorderLayout.NORTH);
 	    f.pack();
-	    viewInfo.setWidth(f.getWidth() + 25);
 	    f.add(getSouthPanel(), BorderLayout.SOUTH);
 	    JPanel centerPanel = getCenterPanel();
 	    if (centerPanel != null) {
 		f.add(centerPanel, BorderLayout.CENTER);
 	    }
 	    f.pack();
+	    viewInfo.setWidth(f.getWidth() + 25);
 	    viewInfo.setHeight(f.getHeight());
 	}
 	return viewInfo;
@@ -1129,6 +1089,10 @@ ActionListener, SelectionListener, IWindowListener {
 	    if (answer == 0) {
 		deleteRecord();
 	    }
+	} else if (e.getSource() == undoB) {
+	    fillValues();
+	    setChangedValues(false);
+	    refreshGUI();
 	}
     }
 
@@ -1143,16 +1107,19 @@ ActionListener, SelectionListener, IWindowListener {
 		    layerEditing = false;
 		    te.startEditing(layer);
 		}
-		VectorialLayerEdited vle = CADExtension.getCADTool().getVLE();
-		VectorialEditableAdapter vea = vle.getVEA();
-		vea.removeRow((int) getPosition(), CADExtension.getCADTool()
-			.getName(), EditionEvent.GRAPHIC);
-		layer.getSelectionSupport().removeSelectionListener(vle);
+		te.deleteRow(layer, (int) getPosition());
+		// keep the current position within boundaries
+		setPosition(getPosition());
 		if (!layerEditing) {
 		    te.stopEditing(layer, false);
 		}
 		layer.setActive(true);
-		refreshGUI();
+		if (layer.getSource().getRecordset().getRowCount() <= 0) {
+		    PluginServices.getMDIManager().closeWindow(this);
+		    JOptionPane.showMessageDialog(this,
+			    PluginServices.getText(this, "emptyLayer"));
+		    return;
+		}
 	    }
 	} catch (ExpansionFileReadException e) {
 	    logger.error(e.getMessage(), e);
