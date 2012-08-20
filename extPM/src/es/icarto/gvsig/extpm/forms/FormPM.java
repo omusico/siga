@@ -1,5 +1,8 @@
 package es.icarto.gvsig.extpm.forms;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -13,13 +16,17 @@ import es.icarto.gvsig.extgex.navtable.NavTableComponentsFactory;
 import es.icarto.gvsig.extpm.preferences.Preferences;
 import es.icarto.gvsig.extpm.reports.NavTableComponentsPrintButton;
 import es.icarto.gvsig.navtableforms.AbstractForm;
-import es.udc.cartolab.gvsig.navtable.AbstractNavTable;
 
 public class FormPM extends AbstractForm {
-    
+
     private FormPanel form;
-    private FLyrVect layer;
-    
+    private final FLyrVect layer;
+
+    // WIDGETS
+    private JButton editParcelasButton;
+
+    EditParcelasAfectadasListener editParcelasAfectadasListener;
+
     public FormPM(FLyrVect layer) {
 	super(layer);
 	this.layer = layer;
@@ -32,21 +39,29 @@ public class FormPM extends AbstractForm {
 	NavTableComponentsFactory ntFactory = new NavTableComponentsFactory();
 	NavTableComponentsPrintButton ntPrintButton = new NavTableComponentsPrintButton();
 	JButton filesLinkB = ntFactory.getFilesLinkButton(layer,
-		(AbstractNavTable) this);
-	JButton printReportB = ntPrintButton.getPrintButton((AbstractNavTable) this);
+		this);
+	JButton printReportB = ntPrintButton.getPrintButton(this);
 	if (filesLinkB != null && printReportB != null) {
 	    actionsToolBar.add(filesLinkB);
 	    actionsToolBar.add(printReportB);
 	}
     }
-    
+
+    @Override
+    protected void setListeners() {
+	super.setListeners();
+	editParcelasAfectadasListener = new EditParcelasAfectadasListener();
+	editParcelasButton = (JButton) getFormBody().getComponentByName("num_parcela_audasa_button");
+	editParcelasButton.addActionListener(editParcelasAfectadasListener);
+    }
+
     @Override
     public String getXMLPath() {
 	return PluginServices.getPluginServices("es.icarto.gvsig.extpm")
-		.getClassLoader()
-		.getResource(Preferences.XML_ORMLITE_RELATIVE_PATH).getPath();
+	.getClassLoader()
+	.getResource(Preferences.XML_ORMLITE_RELATIVE_PATH).getPath();
     }
-    
+
     private void initWindow() {
 	viewInfo.setHeight(830);
 	viewInfo.setWidth(700);
@@ -56,7 +71,7 @@ public class FormPM extends AbstractForm {
     @Override
     protected void fillSpecificValues() {
 	// TODO Auto-generated method stub
-	
+
     }
 
     @Override
@@ -71,6 +86,17 @@ public class FormPM extends AbstractForm {
     public Logger getLoggerName() {
 	// TODO Auto-generated method stub
 	return null;
+    }
+
+    public class EditParcelasAfectadasListener implements ActionListener {
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+	    System.out.println("=====LISTENER");
+	    SubFormPMParcelasAfectadas subForm = new SubFormPMParcelasAfectadas();
+	    PluginServices.getMDIManager().addWindow(subForm);
+	}
+
     }
 
 }
