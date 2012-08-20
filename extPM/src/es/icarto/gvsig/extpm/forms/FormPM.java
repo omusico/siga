@@ -12,9 +12,9 @@ import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.panel.FormPanel;
 
-import es.icarto.gvsig.extpm.filesLink.NavTableComponentsFilesLinkButton;
+import es.icarto.gvsig.extpm.forms.filesLink.NavTableComponentsFilesLinkButton;
+import es.icarto.gvsig.extpm.forms.reports.NavTableComponentsPrintButton;
 import es.icarto.gvsig.extpm.preferences.Preferences;
-import es.icarto.gvsig.extpm.reports.NavTableComponentsPrintButton;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 
 public class FormPM extends AbstractForm {

@@ -29,7 +29,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package es.icarto.gvsig.extpm.reports.imagefilechooser;
+package es.icarto.gvsig.extpm.forms.reports.imagefilechooser;
 
 import java.awt.Dimension;
 import java.awt.Graphics;

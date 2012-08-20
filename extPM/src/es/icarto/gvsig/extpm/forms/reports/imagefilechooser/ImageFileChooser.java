@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extpm.reports.imagefilechooser;
+package es.icarto.gvsig.extpm.forms.reports.imagefilechooser;
 
 import java.io.File;
 

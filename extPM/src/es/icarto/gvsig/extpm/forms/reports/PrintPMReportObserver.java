@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 import com.iver.andami.PluginServices;
 
 import es.icarto.gvsig.extgex.utils.SaveFileDialog;
-import es.icarto.gvsig.extpm.reports.imagefilechooser.ImageFileChooser;
+import es.icarto.gvsig.extpm.forms.reports.imagefilechooser.ImageFileChooser;
 import es.udc.cartolab.gvsig.navtable.AbstractNavTable;
 
 public class PrintPMReportObserver implements ActionListener {
@@ -82,7 +82,9 @@ public class PrintPMReportObserver implements ActionListener {
     private HashMap<String, Object> getReportParameters() {
 	HashMap<String, Object> parameters = new HashMap<String, Object>();
 	parameters.put("PM_QUERY_WHERE", Integer.valueOf(getPMFileId()+1));
-	parameters.put("MAIN_IMAGE_PATH", inputImageFile.getAbsolutePath());
+	if (inputImageFile != null) {
+	    parameters.put("MAIN_IMAGE_PATH", inputImageFile.getAbsolutePath());
+	}
 	return parameters;
     }
 
