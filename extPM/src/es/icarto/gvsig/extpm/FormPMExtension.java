@@ -25,7 +25,7 @@ public class FormPMExtension extends Extension {
     public void execute(String actionCommand) {
 	DBSession.getCurrentSession().setSchema(Preferences.PM_SCHEMA);
 	layer = getPMLayer();
-	dialog = new FormPM(layer);
+	dialog = new FormPM(layer, false);
 	if (dialog.init()) {
 	    PluginServices.getMDIManager().addWindow(dialog);
 	}
@@ -88,7 +88,7 @@ public class FormPMExtension extends Extension {
 	    if (layer instanceof FLyrVect) {
 		FLyrVect l = (FLyrVect) layer;
 		l.setActive(true);
-		dialog = new FormPM(getPMLayer());
+		dialog = new FormPM(getPMLayer(), true);
 		if (dialog.init()) {
 		    PluginServices.getMDIManager().addWindow(dialog);
 		    dialog.last();

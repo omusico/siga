@@ -2,14 +2,24 @@ package es.icarto.gvsig.extpm.forms;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 
+import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
+import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 import com.jeta.forms.components.panel.FormPanel;
 
 import es.icarto.gvsig.extpm.forms.filesLink.NavTableComponentsFilesLinkButton;
@@ -21,15 +31,21 @@ public class FormPM extends AbstractForm {
 
     private FormPanel form;
     private final FLyrVect layer;
+    private final boolean newRegister;
 
     // WIDGETS
     private JButton editParcelasButton;
+    private JComboBox area;
+    private JTextField fecha;
+    private JTextField numeroPM;
 
     EditParcelasAfectadasListener editParcelasAfectadasListener;
+    CalculatePMNumberListener calculatePMNumberListener;
 
-    public FormPM(FLyrVect layer) {
+    public FormPM(FLyrVect layer, boolean newRegister) {
 	super(layer);
 	this.layer = layer;
+	this.newRegister = newRegister;
 	initWindow();
 	addNewButtonsToActionsToolBar();
     }
@@ -50,9 +66,23 @@ public class FormPM extends AbstractForm {
     @Override
     protected void setListeners() {
 	super.setListeners();
+
+	HashMap<String, JComponent> widgets = getWidgetComponents();
+
 	editParcelasAfectadasListener = new EditParcelasAfectadasListener();
+	calculatePMNumberListener = new CalculatePMNumberListener();
+
+	numeroPM = (JTextField) widgets.get("numero_pm");
+
 	editParcelasButton = (JButton) getFormBody().getComponentByName("num_parcela_audasa_button");
 	editParcelasButton.addActionListener(editParcelasAfectadasListener);
+
+	area = (JComboBox) widgets.get("area");
+	area.addActionListener(calculatePMNumberListener);
+
+	fecha = (JTextField) widgets.get("fecha");
+	fecha.addKeyListener(calculatePMNumberListener);
+
     }
 
     @Override
@@ -88,11 +118,102 @@ public class FormPM extends AbstractForm {
 	return null;
     }
 
+
+    /**
+     * This method calculates the PM Number. It depends on the selected values in
+     * area (JComboBox) and fecha (JTextField)
+     * 
+     * PM Number is generated like this: "PM.Year.Area.ID(serial)"
+     * Ej: "PM.2012.N.001"
+     * 
+     * @return PM Number
+     */
+    private String calculatePMNumber() {
+	String area;
+	String year = "";
+	String currentPmNumber;
+
+	String date;
+	date = fecha.getText();
+	if (date.contains("/")) {
+	    String[] dateArray = date.split("/");
+	    if (dateArray.length == 3) {
+		year = dateArray[2];
+	    }
+	}
+
+	String areaSelectedValue = this.area.getSelectedItem().toString();
+	if (areaSelectedValue.equalsIgnoreCase("Norte")) {
+	    area = "N";
+	} else if (areaSelectedValue.equalsIgnoreCase("Sur")) {
+	    area = "S";
+	} else {
+	    area = "";
+	}
+
+	String id = "";
+	currentPmNumber = numeroPM.getText();
+	if (!newRegister && currentPmNumber.contains(".")) {
+	    String[] pmNumberArray = currentPmNumber.split("\\.");
+	    if (pmNumberArray.length ==4) {
+		id = pmNumberArray[3];
+		return "PM" + "." + year +"." + area + "." + id;
+	    }
+	    return currentPmNumber;
+	}
+
+	return "PM" + "." + year +"." + area + "." + getID();
+    }
+
+    private String getID() {
+	try {
+	    SelectableDataSource recordset = layer.getRecordset();
+	    int columnIndex = recordset.getFieldIndexByName("gid");
+	    ArrayList<Integer> pmID = new ArrayList<Integer>();
+	    for (int rowIndex=0; rowIndex<recordset.getRowCount(); rowIndex++) {
+		String id = recordset.getFieldValue(rowIndex, columnIndex).toString();
+		if (!id.equals("")) {
+		    pmID.add(Integer.parseInt(id));
+		}
+	    }
+	    Arrays.sort(pmID.toArray(new Integer[] {0}));
+	    int biggerPmID = pmID.get(pmID.size()-1);
+	    return String.format("%1$03d", biggerPmID+1);
+	} catch (ReadDriverException e) {
+	    e.printStackTrace();
+	}
+	return null;
+    }
+
+    public class CalculatePMNumberListener implements ActionListener, KeyListener {
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+	    numeroPM.setText(calculatePMNumber());
+
+	}
+
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+	    // TODO Auto-generated method stub
+	    numeroPM.setText(calculatePMNumber());
+
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+	}
+
+    }
+
     public class EditParcelasAfectadasListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-	    System.out.println("=====LISTENER");
 	    SubFormPMParcelasAfectadas subForm = new SubFormPMParcelasAfectadas();
 	    PluginServices.getMDIManager().addWindow(subForm);
 	}
