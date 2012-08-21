@@ -49,9 +49,6 @@ public class FormPM extends AbstractForm {
 	this.newRegister = newRegister;
 	initWindow();
 	addNewButtonsToActionsToolBar();
-	if (newRegister) {
-	    super.saveB.setEnabled(true);
-	}
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -77,6 +74,7 @@ public class FormPM extends AbstractForm {
 	calculatePMNumberListener = new CalculatePMNumberListener();
 
 	numeroPM = (JTextField) widgets.get("numero_pm");
+	numeroPM.setEnabled(false);
 
 	editParcelasButton = (JButton) getFormBody().getComponentByName("num_parcela_audasa_button");
 	editParcelasButton.addActionListener(editParcelasAfectadasListener);
