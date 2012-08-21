@@ -36,15 +36,6 @@ public class TaludesForm extends AbstractForm {
 
     @Override
     public FormPanel getFormBody() {
-	// System.out.println(System.getProperty("user.dir"));
-	// System.out.println(PluginServices.getPluginServices(this)
-	// .getPluginDirectory().getAbsolutePath());
-	// System.out.println(this.getClass().getClassLoader()
-	// .getResource("taludes.xml").toString());
-	// System.out.println(Preferences.XMLDATAFILE_PATH);
-	// System.out.println(this.getClass().getResource("taludes.xml")
-	// .toString());
-
 	if (this.form == null) {
 	    this.form = new FormPanel(TaludesForm.ABEILLE_FILENAME);
 	}

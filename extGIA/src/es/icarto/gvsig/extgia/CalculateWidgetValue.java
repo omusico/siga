@@ -115,11 +115,11 @@ public class CalculateWidgetValue {
 		.get(DBFieldNames.BASE_CONTRATISTA);
 
 	if (validate()) {
-	    String taludID = ((KeyValue) tipoTaludWidget.getSelectedItem())
-		    .getValue().substring(0, 1);
+	    String taludID = ((KeyValue) baseContratistaWidget
+		    .getSelectedItem()).getValue().substring(0, 1);
 	    taludID += "-";
-	    taludID += numeroTaludWidget.getText();
-	    taludID += ((KeyValue) baseContratistaWidget.getSelectedItem())
+	    taludID += String.format("%03d", numeroTaludWidget.getText());
+	    taludID += ((KeyValue) tipoTaludWidget.getSelectedItem())
 		    .getValue().substring(0, 1);
 	    taludidWidget.setText(taludID);
 	    // TODO: Test if needed

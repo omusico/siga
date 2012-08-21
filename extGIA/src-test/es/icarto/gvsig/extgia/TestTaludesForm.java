@@ -3,6 +3,7 @@ package es.icarto.gvsig.extgia;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.sql.SQLException;
@@ -21,7 +22,6 @@ import javax.swing.JTextField;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.iver.cit.gvsig.fmap.crs.CRSFactory;
@@ -76,7 +76,6 @@ public class TestTaludesForm {
     // see
     // http://java.net/nonav/projects/abeille/lists/users/archive/2005-06/message/7
     @Test
-    @Ignore
     public void test_allWidgetsHaveName() {
 
 	for (final JComponent widget : this.widgets.values()) {
@@ -86,19 +85,36 @@ public class TestTaludesForm {
     }
 
     @Test
-    @Ignore
-    public void test_domainValuesMatchWidgetNames() throws Exception {
+    public void test_domainValuesMatchComboBoxesNames() throws Exception {
 
 	final HashMap<String, DomainValues> domainValues = ORMLite
 		.getAplicationDomainObject("data/audasa.xml").getDomainValues();
 
 	for (final String domainValue : domainValues.keySet()) {
-	    assertNotNull(domainValue, this.widgets.get(domainValue));
+	    JComponent cb = this.widgets.get(domainValue);
+	    if (!(cb instanceof JComboBox)) {
+		fail(domainValue);
+	    }
 	}
+	assertTrue(true);
     }
 
     @Test
-    @Ignore
+    public void test_ComboBoxesNamesMatchDomainValues() {
+	final HashMap<String, DomainValues> domainValues = ORMLite
+		.getAplicationDomainObject("data/audasa.xml").getDomainValues();
+
+	for (JComponent cb : widgets.values()) {
+	    if (cb instanceof JComboBox) {
+		if (domainValues.get(cb.getName()) == null) {
+		    fail(cb.getName());
+		}
+	    }
+	}
+	assertTrue(true);
+    }
+
+    @Test
     public void test_validationRulesMatchWidgetNames() throws Exception {
 
 	final HashMap<String, Set<ValidationRule>> validationRules = ORMLite
@@ -111,7 +127,6 @@ public class TestTaludesForm {
     }
 
     @Test
-    @Ignore
     public void test_widgetsWithOutDatabaseField() throws SQLException {
 	final Set<String> columnsSet = getColums();
 
@@ -187,40 +202,44 @@ public class TestTaludesForm {
     // test_comboboxWidgetsWithOutDomain
     // test_widgetWithOutValidationRule
 
+    // test lanzar los valid values directamente contra la base de datos
     private HashMap<String, String> getValidValues() {
 	HashMap<String, String> validValues = new HashMap<String, String>();
-	validValues.put("id_talud", "N-583D");
-	validValues.put("numero_talud", "583");
-	// validValues.put("tramo", "0");
-	// validValues.put("base_contratista", "Sur");
-	// validValues.put("tipo_via_pi", "0");
+	validValues.put("id_talud", "D-005N");
+	validValues.put("numero_talud", "5");
+	validValues.put("area_mantenimiento", "0");
+	validValues.put("base_contratista", "Norte");
+	validValues.put("tramo", "0");
+	validValues.put("tipo_via_pi", "0");
 	validValues.put("nombre_pi", "0");
-	validValues.put("pk_inicial_pi", "5");
+	validValues.put("pk_inicial", "5");
 	validValues.put("ramal_pi", "0");
-	// validValues.put("tipo_via_pf", "0");
+	validValues.put("direccion_pi", "0");
+	validValues.put("tipo_via_pf", "0");
 	validValues.put("nombre_pf", "0");
-	validValues.put("pk_final_pf", "0");
+	validValues.put("pk_final", "0");
 	validValues.put("ramal_pf", "0");
+	validValues.put("direccion_pf", "0");
 	validValues.put("sentido", "0");
-	validValues.put("margen", "0");
-	// validValues.put("tipo_talud", "0");
+	validValues.put("margen", "Derecho");
+	validValues.put("tipo_talud", "Desmonte");
 	validValues.put("roca", "false");
 	validValues.put("arboles", "true");
 	validValues.put("gunita", "false");
 	validValues.put("escollera", "false");
-	validValues.put("gaviones", "false");
+	validValues.put("maleza", "false");
 	validValues.put("malla", "false");
 	validValues.put("observaciones", "0");
 	validValues.put("arcen", "false");
-	validValues.put("barrera_seguridad", "true");
+	validValues.put("barrera_seguridad", "false");
 	validValues.put("cuneta_pie", "false");
 	validValues.put("cuneta_pie_revestida", "false");
 	validValues.put("cuneta_cabeza", "false");
 	validValues.put("cuneta_cabeza_revestida", "false");
-	validValues.put("berma", "true");
+	validValues.put("berma", "false");
 	validValues.put("longitud", "0");
-	validValues.put("sector", "0");
-	validValues.put("inclinacion_media", "0");
+	validValues.put("sector_inclinacion", "");
+	validValues.put("inclinacion_media", "");
 	validValues.put("altura_max_talud", "0");
 	validValues.put("sup_total_analitica", "0");
 	validValues.put("sup_mecanizada_analitica", "0");
@@ -232,7 +251,7 @@ public class TestTaludesForm {
 	validValues.put("sup_manual_real", "0");
 	validValues.put("sup_complementaria", "0");
 	validValues.put("concepto", "0");
-	validValues.put("sup_desbrozada_y_complementaria", "0");
+
 	return validValues;
     }
 }
