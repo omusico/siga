@@ -12,7 +12,7 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.icarto.gvsig.extpm.preferences.Preferences;
 import es.icarto.gvsig.extpm.utils.managers.TOCLayerManager;
-import es.udc.cartolab.gvsig.navtable.ToggleEditing;
+import es.icarto.gvsig.extpm.utils.managers.ToggleEditingManager;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 
@@ -25,10 +25,10 @@ public class InsertPointWrapper extends InsertPointExtension {
     @Override
     public void execute(String s) {
 	setActiveLayerForPM();
-	ToggleEditing te = new ToggleEditing();
+	ToggleEditingManager tem = new ToggleEditingManager();
 	FLayer activeLayer = getActiveLayer();
 	if (!activeLayer.isEditing()) {
-	    te.startEditing(activeLayer);
+	    tem.startEditing(activeLayer);
 	}
 	super.execute(s);
     }
