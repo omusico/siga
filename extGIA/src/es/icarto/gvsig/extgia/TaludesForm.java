@@ -1,5 +1,6 @@
 package es.icarto.gvsig.extgia;
 
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
@@ -22,6 +23,8 @@ public class TaludesForm extends AbstractForm {
     JComboBox baseContratistaWidget;
     JTextField taludIDWidget;
     CalculateWidgetValue taludid;
+    private EnableComponentBasedOnCheckBox cunetaPie;
+    private EnableComponentBasedOnCheckBox cunetaCabeza;
 
     public TaludesForm(FLyrVect layer) {
 	super(layer);
@@ -54,18 +57,10 @@ public class TaludesForm extends AbstractForm {
 
     @Override
     protected void fillSpecificValues() {
-	// enableComponentIfCheckBoxIsSelected("hay_anali", "resultado");
-    }
+	cunetaCabeza.fillSpecificValues();
+	cunetaPie.fillSpecificValues();
 
-    // private void enableComponentIfCheckBoxIsSelected(String chbName,
-    // String cmpName) {
-    //
-    // if (chb.isSelected()) {
-    // cmp.setEnabled(true);
-    // } else {
-    // cmp.setEnabled(false);
-    // }
-    // }
+    }
 
     @Override
     protected void setListeners() {
@@ -74,20 +69,26 @@ public class TaludesForm extends AbstractForm {
 		DBFieldNames.TIPO_TALUD, DBFieldNames.NUMERO_TALUD,
 		DBFieldNames.BASE_CONTRATISTA);
 	taludid.setListeners();
+
+	cunetaCabeza = new EnableComponentBasedOnCheckBox(
+		(JCheckBox) getWidgetComponents().get("cuneta_cabeza"),
+		getWidgetComponents().get("cuneta_cabeza_revestida"));
+	cunetaCabeza.setRemoveDependentValues(true);
+	cunetaCabeza.setListeners();
+	cunetaPie = new EnableComponentBasedOnCheckBox(
+		(JCheckBox) getWidgetComponents().get("cuneta_pie"),
+		getWidgetComponents().get("cuneta_pie_revestida"));
+	cunetaPie.setRemoveDependentValues(true);
+	cunetaPie.setListeners();
+
     }
 
     @Override
     protected void removeListeners() {
 	taludid.removeListeners();
+	cunetaCabeza.removeListeners();
+	cunetaPie.removeListeners();
 	super.removeListeners();
     }
-
-    // public class ComponentEnablerListener implements ActionListener {
-    //
-    // public void actionPerformed(ActionEvent e) {
-    // enableComponentIfCheckBoxIsSelected("hay_anali", "resultado");
-    // }
-    //
-    // }
 
 }
