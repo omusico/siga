@@ -25,6 +25,7 @@ import com.jeta.forms.components.panel.FormPanel;
 import es.icarto.gvsig.extpm.forms.filesLink.NavTableComponentsFilesLinkButton;
 import es.icarto.gvsig.extpm.forms.reports.NavTableComponentsPrintButton;
 import es.icarto.gvsig.extpm.preferences.Preferences;
+import es.icarto.gvsig.extpm.utils.managers.ToggleEditingManager;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 
 public class FormPM extends AbstractForm {
@@ -48,6 +49,9 @@ public class FormPM extends AbstractForm {
 	this.newRegister = newRegister;
 	initWindow();
 	addNewButtonsToActionsToolBar();
+	if (newRegister) {
+	    super.saveB.setEnabled(true);
+	}
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -105,6 +109,15 @@ public class FormPM extends AbstractForm {
     }
 
     @Override
+    protected void enableSaveButton(boolean bool) {
+	if (!isChangedValues()) {
+	    saveB.setEnabled(false);
+	} else {
+	    saveB.setEnabled(bool);
+	}
+    }
+
+    @Override
     public FormPanel getFormBody() {
 	if (form == null) {
 	    return new FormPanel("pm.xml");
@@ -118,6 +131,14 @@ public class FormPM extends AbstractForm {
 	return null;
     }
 
+    @Override
+    public void windowClosed() {
+	super.windowClosed();
+	ToggleEditingManager tem = new ToggleEditingManager();
+	if (layer.isEditing()) {
+	    tem.stopEditing(layer, false);
+	}
+    }
 
     /**
      * This method calculates the PM Number. It depends on the selected values in
