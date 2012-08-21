@@ -104,6 +104,8 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 	private JTextField templateFile;
 	private JButton templateFileButton;
 	private JFileChooser templateFileChooser;
+	private JLabel formatLabel;
+	private JComboBox formatCombobox;
 
 	private JRadioButton coverView = null;
 	private JRadioButton basedOnFeatures = null;
@@ -290,15 +292,25 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 		templateFile = new JTextField(200);
 		templateFile.setEditable(false);
 		templateFile.setEnabled(false);
-		templateFile.setBounds(new Rectangle(125, 21+21+21+21, 350, 22));
+		templateFile.setBounds(new Rectangle(125, 21+21+21+21, 270, 22));
 		templateFileButton = new JButton("...");
-		templateFileButton.setBounds(new Rectangle(480, 21+21+21+21, 50, 21));
+		templateFileButton.setBounds(new Rectangle(400, 21+21+21+21, 50, 21));
 		templateFileButton.addActionListener(this);
 		templateFileButton.setEnabled(false);
 
 		templateFileChooser = new JFileChooser(OPEN_TEMPLATE_FILE_CHOOSER_ID, System.getProperty("user.home"));
 		templateFileChooser.setAcceptAllFileFilterUsed(false);
 		templateFileChooser.setFileFilter(new FileNameExtensionFilter("GVT", "gvt"));
+
+		formatLabel = new JLabel();
+		formatLabel.setText(PluginServices.getText(this, "Format"));
+		formatLabel.setBounds(new Rectangle(465, 21+21+21+21, 60, 21));
+		formatLabel.setEnabled(false);
+		formatCombobox = new JComboBox();
+		formatCombobox.addItem(new String("A4"));
+		formatCombobox.addItem(new String("A3"));
+		formatCombobox.setBounds(new Rectangle(525, 21+21+21+21, 40, 21));
+		formatCombobox.setEnabled(false);
 
 		templatesPanel.add(templateA3Dimensiones, null);
 		templatesPanel.add(templateA3Consultas, null);
@@ -309,6 +321,8 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 		templatesPanel.add(templateCustom, null);
 		templatesPanel.add(templateFile, null);
 		templatesPanel.add(templateFileButton, null);
+		templatesPanel.add(formatLabel, null);
+		templatesPanel.add(formatCombobox, null);
 
 		ArrayList<JRadioButton> group = new ArrayList<JRadioButton>();
 		group.add(templateA3Dimensiones);
@@ -544,7 +558,9 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 			    	double grid_width;
 			    	double grid_height;
 			    	if(selectedTemplate.equals(AudasaPreferences.A4_CONSULTAS) || 
-			    		selectedTemplate.equals(AudasaPreferences.A4_CONSULTAS_LOCALIZADOR)) {
+					selectedTemplate.equals(AudasaPreferences.A4_CONSULTAS_LOCALIZADOR) ||
+					(templateCustom.isSelected() &&
+					formatCombobox.getSelectedItem().equals("A4"))) {
 			    	    grid_width = AudasaPreferences.VIEW_WIDTH_A4;
 			    	    grid_height = AudasaPreferences.VIEW_HEIGHT_A4;
 			    	} else { // any A3 template
@@ -658,6 +674,8 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 		    templateFile.setEnabled(false);
 		    templateFileButton.setEnabled(false);
 		    templateFile.setBackground(UIManager.getColor("TextField.inactiveBackground"));
+		    formatLabel.setEnabled(false);
+		    formatCombobox.setEnabled(false);
 		    acceptButton.setEnabled(true);
 		}
 
@@ -667,6 +685,8 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 		    templateFileButton.setEnabled(true);
 		    templateFile.setBackground(UIManager.getColor("TextField.background"));
 		    acceptButton.setEnabled(templateFile.getText().toLowerCase().endsWith(".gvt"));
+		    formatLabel.setEnabled(templateFile.getText().toLowerCase().endsWith(".gvt"));
+		    formatCombobox.setEnabled(templateFile.getText().toLowerCase().endsWith(".gvt"));
 		}
 
 		if (src == templateFileButton) {
@@ -675,9 +695,18 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 		    if (returnVal == JFileChooser.APPROVE_OPTION) {
 			templateFile.setText(templateFileChooser.getSelectedFile().getAbsolutePath());
 			selectedTemplate = templateFile.getText();
+			if (templateFile.getText().toLowerCase().endsWith(".gvt") &&
+				templateFile.getText().contains("A4")) {
+			    formatCombobox.setSelectedItem("A4");
+			} else if (templateFile.getText().toLowerCase().endsWith(".gvt") &&
+				templateFile.getText().contains("A3")) {
+			    formatCombobox.setSelectedItem("A3");
+			}
 		    }
 
 		    acceptButton.setEnabled(templateFile.getText().toLowerCase().endsWith(".gvt"));
+		    formatLabel.setEnabled(templateFile.getText().toLowerCase().endsWith(".gvt"));
+		    formatCombobox.setEnabled(templateFile.getText().toLowerCase().endsWith(".gvt"));
 		}
 		
 	}
