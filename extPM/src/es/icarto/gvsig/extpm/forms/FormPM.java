@@ -118,7 +118,7 @@ public class FormPM extends AbstractForm {
     @Override
     public FormPanel getFormBody() {
 	if (form == null) {
-	    return new FormPanel("pm.xml");
+	    form = new FormPanel("pm.xml");
 	}
 	return form;
     }
@@ -205,12 +205,17 @@ public class FormPM extends AbstractForm {
 	return null;
     }
 
+    private void setNumeroPMValue() {
+	String calculatePMNumber = calculatePMNumber();
+	numeroPM.setText(calculatePMNumber);
+	getFormController().setValue("numero_pm", calculatePMNumber);
+    }
+
     public class CalculatePMNumberListener implements ActionListener, KeyListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-	    numeroPM.setText(calculatePMNumber());
-
+	    setNumeroPMValue();
 	}
 
 	@Override
@@ -219,9 +224,7 @@ public class FormPM extends AbstractForm {
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-	    // TODO Auto-generated method stub
-	    numeroPM.setText(calculatePMNumber());
-
+	    setNumeroPMValue();
 	}
 
 	@Override
