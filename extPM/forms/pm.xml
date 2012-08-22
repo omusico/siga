@@ -6589,12 +6589,32 @@
             <at name="scrollableTracksViewportWidth">true</at>
             <at name="height">87</at>
             <at name="width">483</at>
-            <at name="name"></at>
+            <at name="name">localizacion</at>
             <at name="scollBars">
              <object classname="com.jeta.forms.store.properties.ScrollBarsProperty">
               <at name="name">scollBars</at>
               <at name="verticalpolicy">20</at>
               <at name="horizontalpolicy">30</at>
+              <at name="border">
+               <object classname="com.jeta.forms.store.properties.CompoundBorderProperty">
+                <super classname="com.jeta.forms.store.properties.BorderProperty">
+                 <at name="name">border</at>
+                </super>
+                <at name="borders">
+                 <object classname="java.util.LinkedList">
+                  <item >
+                   <at name="value">
+                    <object classname="com.jeta.forms.store.properties.DefaultBorderProperty">
+                     <super classname="com.jeta.forms.store.properties.BorderProperty">
+                      <at name="name">border</at>
+                     </super>
+                    </object>
+                   </at>
+                  </item>
+                 </object>
+                </at>
+               </object>
+              </at>
              </object>
             </at>
             <at name="border">

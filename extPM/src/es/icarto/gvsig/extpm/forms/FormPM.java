@@ -73,18 +73,27 @@ public class FormPM extends AbstractForm {
 	editParcelasAfectadasListener = new EditParcelasAfectadasListener();
 	calculatePMNumberListener = new CalculatePMNumberListener();
 
-	numeroPM = (JTextField) widgets.get("numero_pm");
+	numeroPM = (JTextField) widgets.get(Preferences.PM_FORM_WIDGET_PM_NUMBER);
 	numeroPM.setEnabled(false);
 
-	editParcelasButton = (JButton) getFormBody().getComponentByName("num_parcela_audasa_button");
+	editParcelasButton = (JButton) form.getComponentByName(Preferences.PM_FORM_WIDGET_PARCELAS_BUTTON);
 	editParcelasButton.addActionListener(editParcelasAfectadasListener);
 
-	area = (JComboBox) widgets.get("area");
+	area = (JComboBox) widgets.get(Preferences.PM_FORM_WIDGET_AREA);
 	area.addActionListener(calculatePMNumberListener);
 
-	fecha = (JTextField) widgets.get("fecha");
+	fecha = (JTextField) widgets.get(Preferences.PM_FORM_WIDGET_FECHA);
 	fecha.addKeyListener(calculatePMNumberListener);
 
+    }
+
+    @Override
+    protected void removeListeners() {
+	super.removeListeners();
+
+	editParcelasButton.removeActionListener(editParcelasAfectadasListener);
+	area.removeActionListener(calculatePMNumberListener);
+	fecha.removeKeyListener(calculatePMNumberListener);
     }
 
     @Override
@@ -97,7 +106,7 @@ public class FormPM extends AbstractForm {
     private void initWindow() {
 	viewInfo.setHeight(830);
 	viewInfo.setWidth(700);
-	viewInfo.setTitle("Policía de Márgenes");
+	viewInfo.setTitle(Preferences.PM_FORM_TITLE);
     }
 
     @Override
@@ -118,7 +127,7 @@ public class FormPM extends AbstractForm {
     @Override
     public FormPanel getFormBody() {
 	if (form == null) {
-	    form = new FormPanel("pm.xml");
+	    form = new FormPanel(Preferences.PM_FORM_FILE);
 	}
 	return form;
     }
@@ -208,7 +217,7 @@ public class FormPM extends AbstractForm {
     private void setNumeroPMValue() {
 	String calculatePMNumber = calculatePMNumber();
 	numeroPM.setText(calculatePMNumber);
-	getFormController().setValue("numero_pm", calculatePMNumber);
+	getFormController().setValue(Preferences.PM_FORM_WIDGET_PM_NUMBER, calculatePMNumber);
     }
 
     public class CalculatePMNumberListener implements ActionListener, KeyListener {
