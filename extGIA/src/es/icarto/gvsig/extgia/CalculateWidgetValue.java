@@ -114,17 +114,18 @@ public class CalculateWidgetValue {
 	JComboBox baseContratistaWidget = (JComboBox) baseWidgets
 		.get(DBFieldNames.BASE_CONTRATISTA);
 
+	String taludID = "";
 	if (validate()) {
-	    String taludID = ((KeyValue) baseContratistaWidget
-		    .getSelectedItem()).getValue().substring(0, 1);
+	    taludID = ((KeyValue) baseContratistaWidget.getSelectedItem())
+		    .getValue().substring(0, 1);
 	    taludID += "-";
-	    taludID += String.format("%03d", numeroTaludWidget.getText());
+	    taludID += String.format("%03d",
+		    Integer.valueOf(numeroTaludWidget.getText()));
 	    taludID += ((KeyValue) tipoTaludWidget.getSelectedItem())
 		    .getValue().substring(0, 1);
-	    taludidWidget.setText(taludID);
-	    // TODO: Test if needed
-	    form.getFormController().setValue(DBFieldNames.ID_TALUD, taludID);
 	}
+	taludidWidget.setText(taludID);
+	form.getFormController().setValue(DBFieldNames.ID_TALUD, taludID);
     }
 
     void removeListeners() {
