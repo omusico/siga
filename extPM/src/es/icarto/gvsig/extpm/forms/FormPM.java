@@ -174,7 +174,8 @@ public class FormPM extends AbstractForm {
 	currentPmNumber = numeroPM.getText();
 	if (!newRegister && currentPmNumber.contains(".")) {
 	    String[] pmNumberArray = currentPmNumber.split("\\.");
-	    if (pmNumberArray.length ==4) {
+	    if (pmNumberArray.length ==4 && !year.equals("") &&
+		    !area.equals("")) {
 		id = pmNumberArray[3];
 		return "PM" + "." + year +"." + area + "." + id;
 	    }
