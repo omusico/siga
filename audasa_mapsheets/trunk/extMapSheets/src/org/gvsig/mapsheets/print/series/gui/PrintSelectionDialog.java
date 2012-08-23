@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -23,12 +24,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.log4j.Logger;
+import org.gvsig.gui.beans.swing.JFileChooser;
 import org.gvsig.mapsheets.print.series.fmap.MapSheetGrid;
 import org.gvsig.mapsheets.print.series.fmap.MapSheetGridGraphic;
 import org.gvsig.mapsheets.print.series.gui.utils.LayerComboItem;
@@ -54,10 +59,11 @@ import com.iver.cit.gvsig.project.documents.view.ProjectView;
 public class PrintSelectionDialog extends JPanel implements IWindow, ActionListener, ListSelectionListener {
 
 	private static Logger logger = Logger.getLogger(PrintSelectionDialog.class);
+	private static String PDF_OUTPUT_DIR_FILE_CHOOSER_ID = "PDF_OUTPUT_DIR_FILE_CHOOSER_ID";
 
 	public static final int WIDTH = 336+50;
 	public static final int BUTTONS_PANEL_WIDTH = 300;
-	public static final int HEIGHT = 320;
+	public static final int HEIGHT = 370;
 	
 	private static final int BUTTON_LEN = 111;
 	private static final int BUTTON_SEP = 15;
@@ -83,8 +89,12 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 	private JRadioButton printSelRB = null;
 	private JCheckBox useThisBackLayerChk = null;
 	private JComboBox backLayerCombo = null;
-	
-	private JButton printPdfButton = null;
+
+	private JCheckBox printPdfCheckbox;
+	private JLabel pdfOutputDirLabel;
+	private JTextField pdfOutputDirTextfield;
+	private JButton pdfOutputDirButton;
+	private JFileChooser pdfOutputDirFileChooser;
 	
 	private JButton printPrinterButton = null;
 	private JCheckBox winPrinterSettsChk = null;
@@ -156,7 +166,7 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 			
 			buttonsPanel = new JPanel();
 			buttonsPanel.setLayout(new FlowLayout());
-			buttonsPanel.setPreferredSize(new Dimension(BUTTONS_PANEL_WIDTH, 50));
+			buttonsPanel.setPreferredSize(new Dimension(BUTTONS_PANEL_WIDTH, 40));
 			// buttonsPanel.add(getAcceptButton(), null);
 			buttonsPanel.add(getCancelButton(), null);
 
@@ -221,21 +231,17 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 	 * 	
 	 * @return javax.swing.JButton	
 	 */
-	private JButton getPrintPdfButton() {
-		if (printPdfButton == null) {
-			printPdfButton = new JButton(PluginServices.getText(null, "Print_as_pdf"));
-			printPdfButton.setPreferredSize(new Dimension(
-					BUTTON_WIDTH_LONG + BUTTON_SEP + PRINTER_CHK_WIDTH, BUTTON_HEIGHT));
-			/*
-			printPdfButton.setBounds(new Rectangle(
-					(WIDTH-BUTTON_SEP-2*BUTTON_LEN)/2,
-					15,
-					BUTTON_LEN, 26));
-			*/
-			printPdfButton.addActionListener(this);
+	private JCheckBox getPrintPdfCheckBox() {
+		if (printPdfCheckbox == null) {
+			printPdfCheckbox = new JCheckBox(PluginServices.getText(null, "Print_as_pdf"));
+			printPdfCheckbox.addActionListener(this);
+			printPdfCheckbox.setBounds(
+					MARGIN_LEFT,
+					getPrintSelRB().getBounds().y + 4*COMPONENT_SEP/3,
+					WIDTH / 3, 21);
 			
 		}
-		return printPdfButton;
+		return printPdfCheckbox;
 	}
 	
 	/**
@@ -245,7 +251,7 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 	 */
 	private JButton getPrintPrinterButton(boolean less_space) {
 		if (printPrinterButton == null) {
-			printPrinterButton = new JButton(PluginServices.getText(null, "Print_in_dots"));
+			printPrinterButton = new JButton(PluginServices.getText(null, "Print_button"));
 			
 			if (less_space) {
 				printPrinterButton.setPreferredSize(new Dimension(
@@ -280,8 +286,49 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 		}
 		return closeButton;
 	}
-
 	
+	/**
+	 * This method initializes the PDF output directory label
+	 *
+	 * @return javax.swing.JLabel
+	 */
+	private JLabel getPdfOutputDirLabel() {
+		if (pdfOutputDirLabel == null) {
+			pdfOutputDirLabel = new JLabel(PluginServices.getText(null, "Print_in_label"));
+			pdfOutputDirLabel.setEnabled(false);
+		}
+		return pdfOutputDirLabel;
+	}
+
+	/**
+	 * This method initializes the text field which displays the chosen PDF output directory
+	 *
+	 * @return javax.swing.JTextField
+	 */
+	private JTextField getPdfOutputDirTextField() {
+		if (pdfOutputDirTextfield == null) {
+			pdfOutputDirTextfield = new JTextField(System.getProperty("user.home"));
+			pdfOutputDirTextfield.setBounds(new Rectangle(10, 0, 180, 21));
+			pdfOutputDirTextfield.setEditable(false);
+			pdfOutputDirTextfield.setEnabled(false);
+		}
+		return pdfOutputDirTextfield;
+	}
+
+	/**
+	 * This method initializes the PDF output directory selection button
+	 *
+	 * @return javax.swing.JButton
+	 */
+	private JButton getPdfOutputDirButton() {
+		if (pdfOutputDirButton == null) {
+			pdfOutputDirButton = new JButton("...");
+			pdfOutputDirButton.setEnabled(false);
+			pdfOutputDirButton.setBounds(new Rectangle(200, 0, 30, 21));
+			pdfOutputDirButton.addActionListener(this);
+		}
+		return pdfOutputDirButton;
+	}
 
 
 	private JPanel getOtherSettingsPanel() {
@@ -315,10 +362,18 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 			otherSettingsPanel.add(auxp);
 			
 			otherSettingsPanel.add(new JLabel());
-			
-			auxp = new JPanel(new FlowLayout());
-			auxp.add(getPrintPdfButton());
+
+			otherSettingsPanel.add(getPrintPdfCheckBox());
+			otherSettingsPanel.add(getPdfOutputDirLabel());
+			auxp = new JPanel();
+			auxp.setLayout(null);
+			auxp.add(getPdfOutputDirTextField(), null);
+			auxp.add(getPdfOutputDirButton(), null);
 			otherSettingsPanel.add(auxp);
+
+			pdfOutputDirFileChooser = new JFileChooser(PDF_OUTPUT_DIR_FILE_CHOOSER_ID, System.getProperty("user.home"));
+			pdfOutputDirFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
 			
 			auxp = new JPanel(new FlowLayout());
 			auxp.add(getPrintPrinterButton(getIsWindows()));
@@ -465,58 +520,90 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 			return;
 		}
 		
-		if (src == getPrintPdfButton()) {
-			
-			MapSheetsUtils.forceTargetFolderCreation();
-			
-			LayerComboItem sel_back = null;
-			
-			if (this.getUseThisBackLayerChk().isSelected()) {
-				sel_back = (LayerComboItem) getBackLayerCombo().getSelectedItem();
+		if (src == getPrintPdfCheckBox()) {
+			if (printPdfCheckbox.isSelected()) {
+			    pdfOutputDirTextfield.setEnabled(true);
+			    pdfOutputDirButton.setEnabled(true);
+			    pdfOutputDirTextfield.setBackground(UIManager.getColor("TextField.background"));
+			    pdfOutputDirLabel.setEnabled(true);
+			} else {
+			    pdfOutputDirTextfield.setEnabled(false);
+			    pdfOutputDirButton.setEnabled(false);
+			    pdfOutputDirTextfield.setBackground(UIManager.getColor("TextField.inactiveBackground"));
+			    pdfOutputDirLabel.setEnabled(false);
 			}
+		}
 
-			PrintTaskWindow.startPrintTask(
-					layout_template,
-					this.getPrintAllRB().isSelected(),
-					sel_back == null ? null : sel_back.getLayer(),
-					System.getProperty("user.home") + File.separator + "mapsheets",
-					PluginServices.getText(this, "sheet"), this, false);
-			getBackLayerCombo().setEnabled(getUseThisBackLayerChk().isSelected());
-			return;
+		if (src == pdfOutputDirButton) {
+		    int returnVal = pdfOutputDirFileChooser.showOpenDialog(this);
+
+		    if (returnVal == JFileChooser.APPROVE_OPTION) {
+		    pdfOutputDirTextfield.setText(pdfOutputDirFileChooser.getSelectedFile().getAbsolutePath());
+		    }
+
 		}
 		
 		if (src == getPrintPrinterButton(getIsWindows())) {
 
-			LayerComboItem sel_back = null;
-			FLayer b_l = null;
-			
-			PluginServices.getMDIManager().closeWindow(this);
-			
-			JOptionPane.showMessageDialog(
-					layout_template,
-					PluginServices.getText(this, "Se_va_a_cerrar_mapa_para_acelerar_proceso"),
-					PluginServices.getText(this, "Print"),
-					JOptionPane.INFORMATION_MESSAGE);
+			if (printPdfCheckbox.isSelected()) {
 
-			PluginServices.getMDIManager().closeWindow(layout_template);
-			
-			if (this.getUseThisBackLayerChk().isSelected()) {
-				sel_back = (LayerComboItem) getBackLayerCombo().getSelectedItem();
-			}
-			
-			if (sel_back != null) {
-				b_l = sel_back.getLayer();
-				b_l.setVisible(true);
-				MapSheetsUtils.addBackLayer(layout_template, b_l);
-			}
-			
-			boolean p_all = getPrintAllRB().isSelected();
-			layout_template.setPrintSelectedOnly(!p_all);
+				if (!new File(pdfOutputDirTextfield.getText()).canWrite()) {
+					JOptionPane.showMessageDialog(this,
+							PluginServices.getText(this, "Directory_not_writable"),
+							PluginServices.getText(this, "Error"), JOptionPane.ERROR_MESSAGE);
+					return;
 
-			MapSheetsUtils.printMapSheetsLayout(layout_template, getUserWantsPrinterSettings());
-			
-			if (b_l != null) {
-				MapSheetsUtils.removeLayer(layout_template, b_l);
+				}
+
+				LayerComboItem sel_back = null;
+
+				if (this.getUseThisBackLayerChk().isSelected()) {
+					sel_back = (LayerComboItem) getBackLayerCombo().getSelectedItem();
+				}
+
+				PrintTaskWindow.startPrintTask(
+						layout_template,
+						this.getPrintAllRB().isSelected(),
+						sel_back == null ? null : sel_back.getLayer(),
+						pdfOutputDirTextfield.getText(),
+						PluginServices.getText(this, "sheet"), this, false);
+				getBackLayerCombo().setEnabled(getUseThisBackLayerChk().isSelected());
+				return;
+
+			} else {
+
+				LayerComboItem sel_back = null;
+				FLayer b_l = null;
+
+				PluginServices.getMDIManager().closeWindow(this);
+
+				JOptionPane.showMessageDialog(
+						layout_template,
+						PluginServices.getText(this, "Se_va_a_cerrar_mapa_para_acelerar_proceso"),
+						PluginServices.getText(this, "Print"),
+						JOptionPane.INFORMATION_MESSAGE);
+
+				PluginServices.getMDIManager().closeWindow(layout_template);
+
+				if (this.getUseThisBackLayerChk().isSelected()) {
+					sel_back = (LayerComboItem) getBackLayerCombo().getSelectedItem();
+				}
+
+				if (sel_back != null) {
+					b_l = sel_back.getLayer();
+					b_l.setVisible(true);
+					MapSheetsUtils.addBackLayer(layout_template, b_l);
+				}
+
+				boolean p_all = getPrintAllRB().isSelected();
+				layout_template.setPrintSelectedOnly(!p_all);
+
+				MapSheetsUtils.printMapSheetsLayout(layout_template, getUserWantsPrinterSettings());
+
+				if (b_l != null) {
+					MapSheetsUtils.removeLayer(layout_template, b_l);
+				}
+
 			}
 		}
 		
