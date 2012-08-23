@@ -11,6 +11,8 @@ public class AudasaPreferences {
     public static final String TITULO_VENTANA = "Crear mapa";
 
     // Templates
+    public static final String CONSULTAS =
+	    "Expediente consultas";
     public static final String A3_CONSULTAS = 
 	    "Expediente consultas (A3)";
     public static final String A3_CONSULTAS_LOCALIZADOR = 
@@ -19,12 +21,22 @@ public class AudasaPreferences {
 	    "Expediente consultas (A4)";
     public static final String A4_CONSULTAS_LOCALIZADOR = 
 	    "Expediente consultas modificado (A4)";
+    public static final String DIMENSIONES =
+	    "Estado dimensiones";
     public static final String A3_DIMENSIONES = 
 	    "Estado dimensiones (A3)";
     public static final String A3_DIMENSIONES_LOCALIZADOR = 
 	    "Estado dimensiones modificado (A3)";
-    public static final String PERSONALIZADA =
-        "Otra plantilla:";
+    public static final String POLICIA_MARGENES =
+	    "Policía de márgenes";
+    public static final String A3_POLICIA_MARGENES =
+	    "Policía de márgenes (A3)";
+    public static final String A3_POLICIA_MARGENES_LEYENDA =
+	    "Policía de márgenes con leyenda (A3)";
+    public static final String A4_POLICIA_MARGENES =
+	    "Policía de márgenes (A4)";
+    public static final String A4_POLICIA_MARGENES_LEYENDA =
+	    "Policía de márgenes con leyenda (A4)";
 
     // Variables for templates
     public static final String INGENIERO_DIRECTOR = "ingeniero_director";
@@ -81,10 +93,26 @@ public class AudasaPreferences {
 	    return new File(PluginServices
 			.getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
 			.getResource("plantillas/Informes_A3_Estado_Dimensiones_Modificado.gvt").getFile());
-	} else {
+	} else if(sourceButton.endsWith(A3_DIMENSIONES)) {
 	    return new File(PluginServices
 			.getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
 			.getResource("plantillas/Informes_A3_Estado_Dimensiones.gvt").getFile());
+	} else if(sourceButton.endsWith(A3_POLICIA_MARGENES)) {
+	    return new File(PluginServices
+			.getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
+			.getResource("plantillas/Informes_A3_Policia_margenes.gvt").getFile());
+	} else if(sourceButton.endsWith(A3_POLICIA_MARGENES_LEYENDA)) {
+	    return new File(PluginServices
+			.getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
+			.getResource("plantillas/Informes_A3_Policia_margenes_leyenda.gvt").getFile());
+	} else if(sourceButton.endsWith(A4_POLICIA_MARGENES)) {
+	    return new File(PluginServices
+			.getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
+			.getResource("plantillas/Informes_A4_Policia_margenes.gvt").getFile());
+	} else {
+	    return new File(PluginServices
+			.getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
+			.getResource("plantillas/Informes_A4_Policia_margenes_leyenda.gvt").getFile());
 	}
     }
 

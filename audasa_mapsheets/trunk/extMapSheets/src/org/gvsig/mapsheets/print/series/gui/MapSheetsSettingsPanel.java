@@ -21,6 +21,8 @@ import java.util.prefs.Preferences;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -30,6 +32,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileFilter;
@@ -94,12 +97,14 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 	// private JPanel metaBoxPanel = null;
 
 	private JPanel templatesPanel;
-	private JRadioButton templateA3Dimensiones;
-	private JRadioButton templateA3Consultas;
-	private JRadioButton templateA4Consultas;
-	private JRadioButton templateA3DimensionesWithLoc;
-	private JRadioButton templateA3ConsultasWithLoc;
-	private JRadioButton templateA4ConsultasWithLoc;
+	private JRadioButton templateDimensiones;
+	private JRadioButton templateConsultas;
+	private JRadioButton templatePolicia;
+	private JLabel templateSpecificLabel;
+	private JComboBox templateSpecific;
+	private ComboBoxModel templatesDimensiones;
+	private ComboBoxModel templatesConsultas;
+	private ComboBoxModel templatesPolicia;
 	private JRadioButton templateCustom;
 	private JTextField templateFile;
 	private JButton templateFileButton;
@@ -261,40 +266,50 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 			new Font("Dialog", Font.BOLD, 12), 
 			new Color(51, 51, 51)));
 		
-		templateA3Dimensiones = new JRadioButton(AudasaPreferences.A3_DIMENSIONES);
-		templateA3Dimensiones.setBounds(new Rectangle(15, 21, 300-15-15, 21));
-		templateA3Dimensiones.setSelected(true);
-		templateA3Dimensiones.addActionListener(this);
-		templateA3Consultas = new JRadioButton(AudasaPreferences.A3_CONSULTAS);
-		templateA3Consultas.setBounds(new Rectangle(15, 21+21, 300-15-15, 21));
-		templateA3Consultas.setSelected(false);
-		templateA3Consultas.addActionListener(this);
-		templateA4Consultas = new JRadioButton(AudasaPreferences.A4_CONSULTAS);
-		templateA4Consultas.setBounds(new Rectangle(15, 21+21+21, 300-15-15, 21));
-		templateA4Consultas.setSelected(false);
-		templateA4Consultas.addActionListener(this);
-		templateA3DimensionesWithLoc = new JRadioButton(AudasaPreferences.A3_DIMENSIONES_LOCALIZADOR);
-		templateA3DimensionesWithLoc.setBounds(new Rectangle(15+275, 21, 315-15-15, 21));
-		templateA3DimensionesWithLoc.setSelected(false);
-		templateA3DimensionesWithLoc.addActionListener(this);
-		templateA3ConsultasWithLoc = new JRadioButton(AudasaPreferences.A3_CONSULTAS_LOCALIZADOR);
-		templateA3ConsultasWithLoc.setBounds(new Rectangle(15+275, 21+21, 315-15-15, 21));
-		templateA3ConsultasWithLoc.setSelected(false);
-		templateA3ConsultasWithLoc.addActionListener(this);
-		templateA4ConsultasWithLoc = new JRadioButton(AudasaPreferences.A4_CONSULTAS_LOCALIZADOR);
-		templateA4ConsultasWithLoc.setBounds(new Rectangle(15+275, 21+21+21, 315-15-15, 21));
-		templateA4ConsultasWithLoc.setSelected(false);
-		templateA4ConsultasWithLoc.addActionListener(this);
-		templateCustom = new JRadioButton(AudasaPreferences.PERSONALIZADA);
-		templateCustom.setBounds(new Rectangle(15, 21+21+21+21, 110, 21));
+		templateDimensiones = new JRadioButton(AudasaPreferences.DIMENSIONES);
+		templateDimensiones.setBounds(new Rectangle(15, 21, 200-15-15, 21));
+		templateDimensiones.setSelected(true);
+		templateDimensiones.addActionListener(this);
+		templateConsultas = new JRadioButton(AudasaPreferences.CONSULTAS);
+		templateConsultas.setBounds(new Rectangle(15+200, 21, 200-15-15, 21));
+		templateConsultas.setSelected(false);
+		templateConsultas.addActionListener(this);
+		templatePolicia = new JRadioButton(AudasaPreferences.POLICIA_MARGENES);
+		templatePolicia.setBounds(new Rectangle(15+200+200, 21, 200-15-15, 21));
+		templatePolicia.setSelected(false);
+		templatePolicia.addActionListener(this);
+		String[] plantillas = new String[4];
+		plantillas[0] = AudasaPreferences.A4_CONSULTAS;
+		plantillas[1] = AudasaPreferences.A4_CONSULTAS_LOCALIZADOR;
+		plantillas[2] = AudasaPreferences.A3_CONSULTAS;
+		plantillas[3] = AudasaPreferences.A3_CONSULTAS_LOCALIZADOR;
+		templatesConsultas = new DefaultComboBoxModel(plantillas);
+		plantillas = new String[2];
+		plantillas[0] = AudasaPreferences.A3_DIMENSIONES;
+		plantillas[1] = AudasaPreferences.A3_DIMENSIONES_LOCALIZADOR;
+		templatesDimensiones = new DefaultComboBoxModel(plantillas);
+		plantillas = new String[4];
+		plantillas[0] = AudasaPreferences.A4_POLICIA_MARGENES;
+		plantillas[1] = AudasaPreferences.A4_POLICIA_MARGENES_LEYENDA;
+		plantillas[2] = AudasaPreferences.A3_POLICIA_MARGENES;
+		plantillas[3] = AudasaPreferences.A3_POLICIA_MARGENES_LEYENDA;
+		templatesPolicia = new DefaultComboBoxModel(plantillas);
+		templateSpecificLabel = new JLabel(PluginServices.getText(this, "Choose_template"));
+		templateSpecificLabel.setBounds(new Rectangle(95, 21+25, 150, 21));
+		templateSpecific = new JComboBox();
+		templateSpecific.addActionListener(this);
+		templateSpecific.setModel(templatesDimensiones);
+		templateSpecific.setBounds(new Rectangle(200, 21+25, 300, 21));
+		templateCustom = new JRadioButton(PluginServices.getText(this, "Other_template"));
+		templateCustom.setBounds(new Rectangle(15, 21+25+28, 110, 21));
 		templateCustom.setSelected(false);
 		templateCustom.addActionListener(this);
 		templateFile = new JTextField(200);
 		templateFile.setEditable(false);
 		templateFile.setEnabled(false);
-		templateFile.setBounds(new Rectangle(125, 21+21+21+21, 270, 22));
+		templateFile.setBounds(new Rectangle(125, 21+25+28, 270, 22));
 		templateFileButton = new JButton("...");
-		templateFileButton.setBounds(new Rectangle(400, 21+21+21+21, 50, 21));
+		templateFileButton.setBounds(new Rectangle(400, 21+25+28, 50, 21));
 		templateFileButton.addActionListener(this);
 		templateFileButton.setEnabled(false);
 
@@ -304,20 +319,19 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 
 		formatLabel = new JLabel();
 		formatLabel.setText(PluginServices.getText(this, "Format"));
-		formatLabel.setBounds(new Rectangle(465, 21+21+21+21, 60, 21));
+		formatLabel.setBounds(new Rectangle(465, 21+25+28, 60, 21));
 		formatLabel.setEnabled(false);
 		formatCombobox = new JComboBox();
 		formatCombobox.addItem(new String("A4"));
 		formatCombobox.addItem(new String("A3"));
-		formatCombobox.setBounds(new Rectangle(525, 21+21+21+21, 40, 21));
+		formatCombobox.setBounds(new Rectangle(525, 21+25+28, 40, 21));
 		formatCombobox.setEnabled(false);
 
-		templatesPanel.add(templateA3Dimensiones, null);
-		templatesPanel.add(templateA3Consultas, null);
-		templatesPanel.add(templateA4Consultas, null);
-		templatesPanel.add(templateA3DimensionesWithLoc, null);
-		templatesPanel.add(templateA3ConsultasWithLoc, null);
-		templatesPanel.add(templateA4ConsultasWithLoc, null);
+		templatesPanel.add(templateDimensiones, null);
+		templatesPanel.add(templateConsultas, null);
+		templatesPanel.add(templatePolicia, null);
+		templatesPanel.add(templateSpecificLabel, null);
+		templatesPanel.add(templateSpecific, null);
 		templatesPanel.add(templateCustom, null);
 		templatesPanel.add(templateFile, null);
 		templatesPanel.add(templateFileButton, null);
@@ -325,12 +339,9 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 		templatesPanel.add(formatCombobox, null);
 
 		ArrayList<JRadioButton> group = new ArrayList<JRadioButton>();
-		group.add(templateA3Dimensiones);
-		group.add(templateA3Consultas);
-		group.add(templateA4Consultas);
-		group.add(templateA3DimensionesWithLoc);
-		group.add(templateA3ConsultasWithLoc);
-		group.add(templateA4ConsultasWithLoc);
+		group.add(templateDimensiones);
+		group.add(templateConsultas);
+		group.add(templatePolicia);
 		group.add(templateCustom);
 		MapSheetsUtils.joinRadioButtons(group);
 	    }
@@ -559,6 +570,8 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 			    	double grid_height;
 			    	if(selectedTemplate.equals(AudasaPreferences.A4_CONSULTAS) || 
 					selectedTemplate.equals(AudasaPreferences.A4_CONSULTAS_LOCALIZADOR) ||
+					selectedTemplate.equals(AudasaPreferences.A4_POLICIA_MARGENES) ||
+					selectedTemplate.equals(AudasaPreferences.A4_POLICIA_MARGENES_LEYENDA) ||
 					(templateCustom.isSelected() &&
 					formatCombobox.getSelectedItem().equals("A4"))) {
 			    	    grid_width = AudasaPreferences.VIEW_WIDTH_A4;
@@ -663,14 +676,11 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 			getSelectedOnlyCB().setEnabled(getBasedOnFeaturesRB().isSelected());
 		}
 
-		if((src == templateA3Dimensiones) || 
-			(src == templateA3Consultas) || 
-			(src == templateA4Consultas) ||
-			(src == templateA3DimensionesWithLoc) ||
-			(src == templateA3ConsultasWithLoc) ||
-			(src == templateA4ConsultasWithLoc)) {
-
-		    selectedTemplate = ((JRadioButton) src).getText();
+		if(src == templateDimensiones) {
+		    templateSpecific.setEnabled(true);
+		    templateSpecific.setModel(templatesDimensiones);
+		    templateSpecificLabel.setEnabled(true);
+		    selectedTemplate = (templateSpecific.getSelectedItem().toString());
 		    templateFile.setEnabled(false);
 		    templateFileButton.setEnabled(false);
 		    templateFile.setBackground(UIManager.getColor("TextField.inactiveBackground"));
@@ -679,7 +689,39 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 		    acceptButton.setEnabled(true);
 		}
 
+		if(src == templateConsultas) {
+		    templateSpecific.setEnabled(true);
+		    templateSpecific.setModel(templatesConsultas);
+		    templateSpecificLabel.setEnabled(true);
+		    selectedTemplate = (templateSpecific.getSelectedItem().toString());
+		    templateFile.setEnabled(false);
+		    templateFileButton.setEnabled(false);
+		    templateFile.setBackground(UIManager.getColor("TextField.inactiveBackground"));
+		    formatLabel.setEnabled(false);
+		    formatCombobox.setEnabled(false);
+		    acceptButton.setEnabled(true);
+		}
+
+		if(src == templatePolicia) {
+		    templateSpecific.setEnabled(true);
+		    templateSpecific.setModel(templatesPolicia);
+		    templateSpecificLabel.setEnabled(true);
+		    selectedTemplate = (templateSpecific.getSelectedItem().toString());
+		    templateFile.setEnabled(false);
+		    templateFileButton.setEnabled(false);
+		    templateFile.setBackground(UIManager.getColor("TextField.inactiveBackground"));
+		    formatLabel.setEnabled(false);
+		    formatCombobox.setEnabled(false);
+		    acceptButton.setEnabled(true);
+		}
+
+		if(src == templateSpecific) {
+		    selectedTemplate = (templateSpecific.getSelectedItem().toString());
+		}
+
 		if (src == templateCustom) {
+		    templateSpecificLabel.setEnabled(false);
+		    templateSpecific.setEnabled(false);
 		    selectedTemplate = templateFile.getText();
 		    templateFile.setEnabled(true);
 		    templateFileButton.setEnabled(true);
