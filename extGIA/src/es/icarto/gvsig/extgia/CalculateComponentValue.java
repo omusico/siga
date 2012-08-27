@@ -14,18 +14,18 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
 import es.icarto.gvsig.navtableforms.validation.ComponentValidator;
 
-public class CalculateWidgetValue {
+public abstract class CalculateComponentValue {
 
-    private JTextField taludidWidget;
-    private AbstractForm form;
-    private HashMap<String, JComponent> baseWidgets;
-    private BaseWidgetsListener handler;
-    private ArrayList<ComponentValidator> baseValidators;
+    protected JTextField resultComponent;
+    protected String resultComponentName;
+    protected AbstractForm form;
+    protected HashMap<String, JComponent> operatorComponents;
+    protected ArrayList<ComponentValidator> operatorValidators;
+    protected OperatorComponentsListener handler;
 
     /**
      * in the setListeners of the Form we must call the setListeners of this
@@ -35,38 +35,40 @@ public class CalculateWidgetValue {
     // TODO: The ideal behavior should be create this object in
     // fillSpecificValues and have the listeners registered in the form, so we
     // don't have to make specific calls
-    public CalculateWidgetValue(AbstractForm form, String taludidName,
-	    String... baseNames) {
+    public CalculateComponentValue(AbstractForm form,
+	    String resultComponentName, String... operatorComponentsNames) {
 	this.form = form;
+	this.resultComponentName = resultComponentName;
 
-	setBaseWidgets(taludidName, baseNames);
-	setBaseValidators(baseNames);
+	setComponents(resultComponentName, operatorComponentsNames);
+	setOperatorValidators(operatorComponentsNames);
 
-	this.handler = new BaseWidgetsListener();
+	this.handler = new OperatorComponentsListener();
     }
 
-    private void setBaseWidgets(String taludidName, String[] baseNames) {
+    private void setComponents(String resultComponentName,
+	    String[] operatorComponentsNames) {
 	HashMap<String, JComponent> allFormWidgets = form.getWidgetComponents();
-	taludidWidget = (JTextField) allFormWidgets.get(taludidName);
-	baseWidgets = new HashMap<String, JComponent>();
-	for (String name : baseNames) {
-	    baseWidgets.put(name, allFormWidgets.get(name));
+	resultComponent = (JTextField) allFormWidgets.get(resultComponentName);
+	operatorComponents = new HashMap<String, JComponent>();
+	for (String name : operatorComponentsNames) {
+	    operatorComponents.put(name, allFormWidgets.get(name));
 	}
     }
 
-    private void setBaseValidators(String[] baseNames) {
-	baseValidators = new ArrayList<ComponentValidator>();
-	for (String name : baseNames) {
+    private void setOperatorValidators(String[] operatorComponentsNames) {
+	operatorValidators = new ArrayList<ComponentValidator>();
+	for (String name : operatorComponentsNames) {
 	    ComponentValidator cv = form.getFormValidator()
 		    .getComponentValidator(name);
 	    if (cv != null) {
-		baseValidators.add(cv);
+		operatorValidators.add(cv);
 	    }
 	}
     }
 
     private boolean validate() {
-	for (JComponent widget : baseWidgets.values()) {
+	for (JComponent widget : operatorComponents.values()) {
 	    if (widget instanceof JComboBox) {
 		if (!(((JComboBox) widget).getSelectedItem() instanceof KeyValue)) {
 		    return false;
@@ -74,7 +76,7 @@ public class CalculateWidgetValue {
 	    }
 	}
 
-	for (ComponentValidator v : baseValidators) {
+	for (ComponentValidator v : operatorValidators) {
 	    if (!v.validate()) {
 		return false;
 	    }
@@ -83,7 +85,7 @@ public class CalculateWidgetValue {
     }
 
     void setListeners() {
-	for (JComponent widget : baseWidgets.values()) {
+	for (JComponent widget : operatorComponents.values()) {
 	    if (widget instanceof JFormattedTextField) {
 		((JFormattedTextField) widget).addKeyListener(handler);
 	    } else if (widget instanceof JTextField) {
@@ -98,38 +100,10 @@ public class CalculateWidgetValue {
 	}
     }
 
-    /**
-     * (primera letra "Tipo de Talud")&-&("Número de Talud")&(Primera letra de
-     * "Base decontratista") ; EJ: D-584N
-     * 
-     */
-    void setValue() {
-
-	// TODO: Aplicar el formato adecuado a los valores base
-
-	JComboBox tipoTaludWidget = (JComboBox) baseWidgets
-		.get(DBFieldNames.TIPO_TALUD);
-	JTextField numeroTaludWidget = (JTextField) baseWidgets
-		.get(DBFieldNames.NUMERO_TALUD);
-	JComboBox baseContratistaWidget = (JComboBox) baseWidgets
-		.get(DBFieldNames.BASE_CONTRATISTA);
-
-	String taludID = "";
-	if (validate()) {
-	    taludID = ((KeyValue) baseContratistaWidget.getSelectedItem())
-		    .getValue().substring(0, 1);
-	    taludID += "-";
-	    taludID += String.format("%03d",
-		    Integer.valueOf(numeroTaludWidget.getText()));
-	    taludID += ((KeyValue) tipoTaludWidget.getSelectedItem())
-		    .getValue().substring(0, 1);
-	}
-	taludidWidget.setText(taludID);
-	form.getFormController().setValue(DBFieldNames.ID_TALUD, taludID);
-    }
+    public abstract void setValue(boolean validate);
 
     void removeListeners() {
-	for (JComponent widget : baseWidgets.values()) {
+	for (JComponent widget : operatorComponents.values()) {
 	    if (widget instanceof JFormattedTextField) {
 		((JFormattedTextField) widget).removeKeyListener(handler);
 	    } else if (widget instanceof JTextField) {
@@ -144,7 +118,8 @@ public class CalculateWidgetValue {
 	}
     }
 
-    public class BaseWidgetsListener implements KeyListener, ActionListener {
+    public class OperatorComponentsListener implements KeyListener,
+	    ActionListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -156,15 +131,18 @@ public class CalculateWidgetValue {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-	    if (!form.isFillingValues()) {
-		setValue();
-	    }
+	    delegate();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+	    delegate();
+	}
+
+	private void delegate() {
 	    if (!form.isFillingValues()) {
-		setValue();
+		boolean validate = validate();
+		setValue(validate);
 	    }
 	}
     }

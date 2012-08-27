@@ -22,7 +22,8 @@ public class TaludesForm extends AbstractForm {
     JTextField numeroTaludWidget;
     JComboBox baseContratistaWidget;
     JTextField taludIDWidget;
-    CalculateWidgetValue taludid;
+    CalculateComponentValue taludid;
+    private CalculateComponentValue inclinacionMedia;
     private EnableComponentBasedOnCheckBox cunetaPie;
     private EnableComponentBasedOnCheckBox cunetaCabeza;
 
@@ -65,10 +66,14 @@ public class TaludesForm extends AbstractForm {
     @Override
     protected void setListeners() {
 	super.setListeners();
-	taludid = new CalculateWidgetValue(this, DBFieldNames.ID_TALUD,
+	taludid = new CalculateTaludIDValue(this, DBFieldNames.ID_TALUD,
 		DBFieldNames.TIPO_TALUD, DBFieldNames.NUMERO_TALUD,
 		DBFieldNames.BASE_CONTRATISTA);
 	taludid.setListeners();
+
+	inclinacionMedia = new CalculateInclinacionMediaValue(this,
+		DBFieldNames.INCLINACION_MEDIA, DBFieldNames.SECTOR_INCLINACION);
+	inclinacionMedia.setListeners();
 
 	cunetaCabeza = new EnableComponentBasedOnCheckBox(
 		(JCheckBox) getWidgetComponents().get("cuneta_cabeza"),
@@ -86,6 +91,7 @@ public class TaludesForm extends AbstractForm {
     @Override
     protected void removeListeners() {
 	taludid.removeListeners();
+	inclinacionMedia.removeListeners();
 	cunetaCabeza.removeListeners();
 	cunetaPie.removeListeners();
 	super.removeListeners();
