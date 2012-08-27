@@ -705,6 +705,23 @@ public class FLyrVect extends FLyrDefault implements ILabelable,
     					if (sym == null) {
     						continue;
     					}
+
+    					SelectionSupport selectionSupport=getSelectionSupport();
+
+    					//Código para poder acceder a los índices para ver si está seleccionado un Feature
+    					ReadableVectorial rv=getSource();
+    					int selectionIndex=-1;
+    					if (rv instanceof ISpatialDB){
+        					selectionIndex = ((ISpatialDB)rv).getRowIndexByFID(feat);
+        				} else {
+        					selectionIndex = Integer.parseInt(feat.getID());
+        				}
+    					if (selectionIndex!=-1) {
+        					if (selectionSupport.isSelected(selectionIndex)) {
+        						sym = sym.getSymbolForSelection();
+        					}
+        				}
+
     					if (useZSort) {
     						int[] symLevels = zSort.getLevels(sym);
     						if(symLevels != null){
