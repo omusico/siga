@@ -4,6 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,18 +30,22 @@ import es.icarto.gvsig.extpm.forms.reports.NavTableComponentsPrintButton;
 import es.icarto.gvsig.extpm.preferences.Preferences;
 import es.icarto.gvsig.extpm.utils.managers.ToggleEditingManager;
 import es.icarto.gvsig.navtableforms.AbstractForm;
+import es.udc.cartolab.gvsig.users.utils.DBSession;
 
-public class FormPM extends AbstractForm {
+public class FormPM extends AbstractForm implements ActionListener {
 
     private FormPanel form;
     private final FLyrVect layer;
     private final boolean newRegister;
+    private final boolean fillingValues;
 
     // WIDGETS
     private JButton editParcelasButton;
     private JComboBox area;
     private JTextField fecha;
     private JTextField numeroPM;
+    private JComboBox municipio;
+    private JComboBox parroquia;
 
     EditParcelasAfectadasListener editParcelasAfectadasListener;
     CalculatePMNumberListener calculatePMNumberListener;
@@ -47,7 +54,9 @@ public class FormPM extends AbstractForm {
 	super(layer);
 	this.layer = layer;
 	this.newRegister = newRegister;
+	this.fillingValues = this.isFillingValues();
 	initWindow();
+	initWidgets();
 	addNewButtonsToActionsToolBar();
     }
 
@@ -76,6 +85,8 @@ public class FormPM extends AbstractForm {
 	numeroPM = (JTextField) widgets.get(Preferences.PM_FORM_WIDGET_PM_NUMBER);
 	numeroPM.setEnabled(false);
 
+	parroquia = (JComboBox) widgets.get(Preferences.PM_FORM_WIDGET_PARROQUIA);
+
 	editParcelasButton = (JButton) form.getComponentByName(Preferences.PM_FORM_WIDGET_PARCELAS_BUTTON);
 	editParcelasButton.addActionListener(editParcelasAfectadasListener);
 
@@ -84,6 +95,9 @@ public class FormPM extends AbstractForm {
 
 	fecha = (JTextField) widgets.get(Preferences.PM_FORM_WIDGET_FECHA);
 	fecha.addKeyListener(calculatePMNumberListener);
+
+	municipio = (JComboBox) widgets.get(Preferences.PM_FORM_WIDGET_MUNICIPIO);
+	municipio.addActionListener(this);
 
     }
 
@@ -250,6 +264,39 @@ public class FormPM extends AbstractForm {
 	    PluginServices.getMDIManager().addWindow(subForm);
 	}
 
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent arg0) {
+	if (!((AbstractForm) this).isFillingValues()) {
+	    parroquia.removeAllItems();
+	    parroquia.addItem(" ");
+	    PreparedStatement statement;
+	    String query ;
+	    try {
+		query = "SELECT " + Preferences.PARROQUIAS_FIELD_NAME +
+		" FROM " + Preferences.PARROQUIAS_TABLENAME +
+		" WHERE " + Preferences.PARROQUIAS_FIELD_CODIGO +
+		" = " + "(SELECT " + Preferences.MUNICIPIOS_FIELD_CODIGO +
+		" FROM " + Preferences.MUNICIPIOS_TABLENAME +
+		" WHERE " + Preferences.MUNICIPIOS_FIELD_NAME +
+		" = " + "'" + municipio.getSelectedItem() + "');";
+		statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+		statement.execute();
+		ResultSet rs = statement.getResultSet();
+		ArrayList<String> parroquias = new ArrayList<String>();
+		while (rs.next()) {
+		    parroquias.add(rs.getString(1));
+		}
+		rs.close();
+		for (String parroquia_name : parroquias) {
+		    parroquia.addItem(parroquia_name);
+		}
+
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
+	}
     }
 
 }

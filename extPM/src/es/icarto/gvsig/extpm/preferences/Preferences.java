@@ -18,5 +18,16 @@ public class Preferences {
     public static final String PM_FORM_WIDGET_PARCELAS_BUTTON = "num_parcela_audasa_button";
     public static final String PM_FORM_WIDGET_AREA = "area";
     public static final String PM_FORM_WIDGET_FECHA = "fecha";
+    public static final String PM_FORM_WIDGET_MUNICIPIO = "municipio";
+    public static final String PM_FORM_WIDGET_PARROQUIA = "parroquia";
+
+    // DBNAMES
+    public static final String PARROQUIAS_TABLENAME = "audasa_cartografia_base.parroquias";
+    public static final String PARROQUIAS_FIELD_NAME = "nome_corto";
+    public static final String PARROQUIAS_FIELD_CODIGO = "cdconc";
+
+    public static final String MUNICIPIOS_TABLENAME = "audasa_cartografia_base.municipios";
+    public static final String MUNICIPIOS_FIELD_CODIGO = "cdconc";
+    public static final String MUNICIPIOS_FIELD_NAME = "nome";
 
 }

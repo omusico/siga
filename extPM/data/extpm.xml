@@ -35,8 +35,9 @@
  				<FIELDNAME>municipio</FIELDNAME>
  				<DOMAINREADER>
             		<DRTYPE>db</DRTYPE>
+            		<DRDBSCHEMA>audasa_cartografia_base</DRDBSCHEMA>
         			<DRDBTABLE>municipios</DRDBTABLE>
-        			<DRDBCOLUMNVALUE>nombre_municipio</DRDBCOLUMNVALUE>
+        			<DRDBCOLUMNVALUE>nome</DRDBCOLUMNVALUE>
         		</DOMAINREADER>
  			</FIELD>
  		</RECORDSET>
