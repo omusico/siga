@@ -36,17 +36,15 @@ public class CalculateTaludIDValue extends CalculateComponentValue {
 
 	String taludID = "";
 	if (validate) {
-	    taludID = ((KeyValue) baseContratistaWidget.getSelectedItem())
-		    .getValue().substring(0, 1);
-	    taludID += "-";
-	    taludID += String.format("%03d",
-		    Integer.valueOf(numeroTaludWidget.getText()));
-	    taludID += ((KeyValue) tipoTaludWidget.getSelectedItem())
-		    .getValue().substring(0, 1);
+
+	    taludID = String.format("%s-%03d%s", ((KeyValue) tipoTaludWidget
+		    .getSelectedItem()).getValue().substring(0, 1), Integer
+		    .valueOf(numeroTaludWidget.getText()),
+		    ((KeyValue) baseContratistaWidget.getSelectedItem())
+			    .getValue().substring(0, 1));
 	}
 	resultComponent.setText(taludID);
 	form.getFormController().setValue(resultComponentName, taludID);
 
     }
-
 }

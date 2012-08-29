@@ -12,6 +12,7 @@ import com.jeta.forms.components.panel.FormPanel;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.preferences.Preferences;
 import es.icarto.gvsig.navtableforms.AbstractForm;
+import es.icarto.gvsig.navtableforms.validation.listeners.DependentComboboxesHandler;
 
 @SuppressWarnings("serial")
 public class TaludesForm extends AbstractForm {
@@ -26,6 +27,10 @@ public class TaludesForm extends AbstractForm {
     private CalculateComponentValue inclinacionMedia;
     private EnableComponentBasedOnCheckBox cunetaPie;
     private EnableComponentBasedOnCheckBox cunetaCabeza;
+    private JComboBox tipoViaPI;
+    private JComboBox tipoViaPF;
+    private DependentComboboxesHandler direccionPIDomainHandler;
+    private DependentComboboxesHandler direccionPFDomainHandler;
 
     public TaludesForm(FLyrVect layer) {
 	super(layer);
@@ -34,7 +39,7 @@ public class TaludesForm extends AbstractForm {
 
     private void initWindow() {
 	this.viewInfo.setHeight(625);
-	this.viewInfo.setWidth(800);
+	this.viewInfo.setWidth(775);
 	this.viewInfo.setTitle("Taludes");
     }
 
@@ -86,6 +91,19 @@ public class TaludesForm extends AbstractForm {
 	cunetaPie.setRemoveDependentValues(true);
 	cunetaPie.setListeners();
 
+	JComboBox direccionPI = (JComboBox) getWidgetComponents().get(
+		"direccion_pi");
+	tipoViaPI = (JComboBox) getWidgetComponents().get("tipo_via_pi");
+	direccionPIDomainHandler = new DependentComboboxesHandler(this,
+		tipoViaPI, direccionPI);
+	tipoViaPI.addActionListener(direccionPIDomainHandler);
+
+	JComboBox direccionPF = (JComboBox) getWidgetComponents().get(
+		"direccion_pf");
+	tipoViaPF = (JComboBox) getWidgetComponents().get("tipo_via_pf");
+	direccionPFDomainHandler = new DependentComboboxesHandler(this,
+		tipoViaPF, direccionPF);
+	tipoViaPF.addActionListener(direccionPFDomainHandler);
     }
 
     @Override
@@ -94,6 +112,8 @@ public class TaludesForm extends AbstractForm {
 	inclinacionMedia.removeListeners();
 	cunetaCabeza.removeListeners();
 	cunetaPie.removeListeners();
+	tipoViaPI.removeActionListener(direccionPIDomainHandler);
+	tipoViaPF.removeActionListener(direccionPFDomainHandler);
 	super.removeListeners();
     }
 
