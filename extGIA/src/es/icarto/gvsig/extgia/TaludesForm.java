@@ -1,17 +1,21 @@
 package es.icarto.gvsig.extgia;
 
+import java.io.File;
+
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 
+import com.iver.andami.Launcher;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.panel.FormPanel;
 
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.preferences.Preferences;
 import es.icarto.gvsig.navtableforms.AbstractForm;
+import es.icarto.gvsig.navtableforms.fileslink.FilesLink;
 import es.icarto.gvsig.navtableforms.validation.listeners.DependentComboboxesHandler;
 
 @SuppressWarnings("serial")
@@ -35,6 +39,13 @@ public class TaludesForm extends AbstractForm {
     public TaludesForm(FLyrVect layer) {
 	super(layer);
 	initWindow();
+
+	String baseDirectory = null;
+	baseDirectory = Launcher.getAppHomeDir() + File.separator
+		+ "Inventario" + File.separator + "FILES" + File.separator
+		+ layer.getName();
+
+	new FilesLink(this, baseDirectory);
     }
 
     private void initWindow() {
@@ -65,6 +76,8 @@ public class TaludesForm extends AbstractForm {
     protected void fillSpecificValues() {
 	cunetaCabeza.fillSpecificValues();
 	cunetaPie.fillSpecificValues();
+	direccionPIDomainHandler.updateComboBoxValues();
+	direccionPFDomainHandler.updateComboBoxValues();
 
     }
 
