@@ -50,6 +50,7 @@ import org.gvsig.mapsheets.print.series.fmap.MemoryDriverImpl;
 import org.gvsig.mapsheets.print.series.fmap.SheetMemoryDriver;
 import org.gvsig.mapsheets.print.series.gui.utils.IProgressListener;
 import org.gvsig.mapsheets.print.series.gui.utils.SheetComboItem;
+import org.gvsig.mapsheets.print.series.layout.MapSheetFrameView;
 import org.gvsig.mapsheets.print.series.layout.MapSheetsFrameText;
 import org.gvsig.mapsheets.print.series.layout.MapSheetsLayoutTemplate;
 import org.gvsig.mapsheets.print.series.print.MapSheetsPrint;
@@ -221,6 +222,7 @@ public class MapSheetsUtils {
     public static void createPdfMaps(
     		MapSheetsLayoutTemplate lay_template,
     		boolean all_sheets,
+    		boolean highlight,
     		FLayer back_lyr,
     		File targetFolder,
     		String base_name,
@@ -231,7 +233,11 @@ public class MapSheetsUtils {
     	SheetMemoryDriver drv = gri.getTheMemoryDriver();
 
     	ArrayList sel_ind = null;
-    	
+
+		if (lay_template.getMainViewFrame() instanceof MapSheetFrameView) {
+			((MapSheetFrameView) lay_template.getMainViewFrame()).setHighlight(highlight);
+		}
+
     	if (all_sheets) {
     		int n = 0;
     		sel_ind = new ArrayList();
@@ -285,7 +291,11 @@ public class MapSheetsUtils {
     			NotificationManager.addError(ex);
     		}
     	}
-    	
+
+		if (lay_template.getMainViewFrame() instanceof MapSheetFrameView) {
+			((MapSheetFrameView) lay_template.getMainViewFrame()).setHighlight(false);
+		}
+
 		if (progListen != null) {
 			progListen.progress(count+1, count+1);
 		}

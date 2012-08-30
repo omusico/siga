@@ -705,7 +705,7 @@ public class MapContext implements Projected {
 	 * @see FLayers#print(Graphics2D, ViewPort, Cancellable, double, PrintRequestAttributeSet)
 	 * @see GraphicLayer#draw(BufferedImage, Graphics2D, ViewPort, Cancellable, double)
 	 */
-	public void print(Graphics2D g, double scale, PrintRequestAttributeSet properties) throws ReadDriverException {
+	public void print(Graphics2D g, double scale, PrintRequestAttributeSet properties, boolean highlight) throws ReadDriverException {
 		RenderingHints renderHints = new RenderingHints(
 				RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
@@ -714,8 +714,16 @@ public class MapContext implements Projected {
 		g.setRenderingHints(renderHints);
 
 		Cancel cancel = new Cancel();
-		this.getMapContextDrawer().print(this.layers, g, cancel, scale,properties);
+		if ((this.getMapContextDrawer()) instanceof DefaultMapContextDrawer) {
+			((DefaultMapContextDrawer) this.getMapContextDrawer()).print(this.layers, g, cancel, scale,properties, highlight);
+		} else {
+			this.getMapContextDrawer().print(this.layers, g, cancel, scale,properties);
+		}
 		tracLayer.draw(null, g, viewPort, cancel, scale);
+	}
+
+	public void print(Graphics2D g, double scale, PrintRequestAttributeSet properties) throws ReadDriverException {
+		print(g, scale, properties, false);
 	}
 
 	/**

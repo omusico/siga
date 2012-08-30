@@ -629,7 +629,7 @@ public class FLyrVect extends FLyrDefault implements ILabelable,
     }
 
     public void _print(Graphics2D g, ViewPort viewPort, Cancellable cancel,
-    		double scale, PrintRequestAttributeSet properties) throws ReadDriverException {
+    		double scale, PrintRequestAttributeSet properties, boolean highlight) throws ReadDriverException {
     	boolean bDrawShapes = true;
     	if (legend instanceof SingleSymbolLegend) {
     		bDrawShapes = legend.getDefaultSymbol().isShapeVisible();
@@ -708,19 +708,21 @@ public class FLyrVect extends FLyrDefault implements ILabelable,
 
     					SelectionSupport selectionSupport=getSelectionSupport();
 
-    					//Código para poder acceder a los índices para ver si está seleccionado un Feature
-    					ReadableVectorial rv=getSource();
-    					int selectionIndex=-1;
-    					if (rv instanceof ISpatialDB){
-        					selectionIndex = ((ISpatialDB)rv).getRowIndexByFID(feat);
-        				} else {
-        					selectionIndex = Integer.parseInt(feat.getID());
-        				}
-    					if (selectionIndex!=-1) {
-        					if (selectionSupport.isSelected(selectionIndex)) {
-        						sym = sym.getSymbolForSelection();
-        					}
-        				}
+    					if (highlight) {
+	    					//Código para poder acceder a los índices para ver si está seleccionado un Feature
+	    					ReadableVectorial rv=getSource();
+	    					int selectionIndex=-1;
+	    					if (rv instanceof ISpatialDB){
+	        					selectionIndex = ((ISpatialDB)rv).getRowIndexByFID(feat);
+	        				} else {
+	        					selectionIndex = Integer.parseInt(feat.getID());
+	        				}
+	    					if (selectionIndex!=-1) {
+	        					if (selectionSupport.isSelected(selectionIndex)) {
+	        						sym = sym.getSymbolForSelection();
+	        					}
+	        				}
+    					}
 
     					if (useZSort) {
     						int[] symLevels = zSort.getLevels(sym);
@@ -781,8 +783,13 @@ public class FLyrVect extends FLyrDefault implements ILabelable,
 
     public void print(Graphics2D g, ViewPort viewPort, Cancellable cancel,
             double scale, PrintRequestAttributeSet properties) throws ReadDriverException {
+    	print(g, viewPort, cancel, scale, properties, false);
+    }
+
+    public void print(Graphics2D g, ViewPort viewPort, Cancellable cancel,
+            double scale, PrintRequestAttributeSet properties, boolean highlight) throws ReadDriverException {
     	if (isVisible() && isWithinScale(scale)) {
-    		_print(g, viewPort, cancel, scale, properties);
+    		_print(g, viewPort, cancel, scale, properties, highlight);
     	}
     }
 

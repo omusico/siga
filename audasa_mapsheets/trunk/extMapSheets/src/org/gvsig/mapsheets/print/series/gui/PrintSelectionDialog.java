@@ -37,6 +37,7 @@ import org.gvsig.mapsheets.print.series.fmap.MapSheetGrid;
 import org.gvsig.mapsheets.print.series.fmap.MapSheetGridGraphic;
 import org.gvsig.mapsheets.print.series.gui.utils.LayerComboItem;
 import org.gvsig.mapsheets.print.series.gui.utils.SheetComboItem;
+import org.gvsig.mapsheets.print.series.layout.MapSheetFrameView;
 import org.gvsig.mapsheets.print.series.layout.MapSheetsLayoutTemplate;
 import org.gvsig.mapsheets.print.series.utils.MapSheetsUtils;
 
@@ -63,7 +64,7 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 
 	public static final int WIDTH = 336+50;
 	public static final int BUTTONS_PANEL_WIDTH = 300;
-	public static final int HEIGHT = 370;
+	public static final int HEIGHT = 365;
 	
 	private static final int BUTTON_LEN = 111;
 	private static final int BUTTON_SEP = 15;
@@ -89,6 +90,8 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 	private JRadioButton printSelRB = null;
 	private JCheckBox useThisBackLayerChk = null;
 	private JComboBox backLayerCombo = null;
+
+	private JCheckBox highlightSelectionCheckbox;
 
 	private JCheckBox printPdfCheckbox;
 	private JLabel pdfOutputDirLabel;
@@ -241,7 +244,25 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 
 
 	/**
-	 * This method initializes acceptButton	
+	 * This method initializes HighlightSelection checkbox
+	 *
+	 * @return javax.swing.JButton
+	 */
+	private JCheckBox getHighlightSelectionCheckBox() {
+		if (highlightSelectionCheckbox == null) {
+			highlightSelectionCheckbox = new JCheckBox(PluginServices.getText(null, "Highlight_selection"));
+			highlightSelectionCheckbox.addActionListener(this);
+			highlightSelectionCheckbox.setBounds(
+					MARGIN_LEFT,
+					getPrintSelRB().getBounds().y + 4*COMPONENT_SEP/3,
+					WIDTH / 3, 21);
+		}
+		return highlightSelectionCheckbox;
+	}
+
+
+	/**
+	 * This method initializes PrintPdf checkbox
 	 * 	
 	 * @return javax.swing.JButton	
 	 */
@@ -369,13 +390,13 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 			lis.add(getPrintSelRB());
 			MapSheetsUtils.joinRadioButtons(lis);
 			
-			otherSettingsPanel.add(this.getUseThisBackLayerChk());
-			
-			JPanel auxp = new JPanel(new FlowLayout());
-			auxp.add(getBackLayerCombo());
+			otherSettingsPanel.add(getUseThisBackLayerChk());
+			JPanel auxp = new JPanel();
+			auxp.setLayout(null);
+			auxp.add(getBackLayerCombo(), null);
 			otherSettingsPanel.add(auxp);
-			
-			otherSettingsPanel.add(new JLabel());
+
+			otherSettingsPanel.add(getHighlightSelectionCheckBox());
 
 			otherSettingsPanel.add(getPrintPdfCheckBox());
 			otherSettingsPanel.add(getPdfOutputDirLabel());
@@ -542,6 +563,7 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 		if (backLayerCombo == null) {
 			backLayerCombo = new JComboBox();
 			backLayerCombo.setEnabled(false);
+			backLayerCombo.setBounds(new Rectangle(10, 0, 200, 21));
 //			backLayerCombo.setBounds(
 //					2 * MARGIN_LEFT / 3,
 //					getUseThisBackLayerChk().getBounds().y + COMPONENT_SEP_small,
@@ -609,6 +631,7 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 				PrintTaskWindow.startPrintTask(
 						layout_template,
 						this.getPrintAllRB().isSelected(),
+						highlightSelectionCheckbox.isSelected(),
 						sel_back == null ? null : sel_back.getLayer(),
 						pdfOutputDirTextfield.getText(),
 						PluginServices.getText(this, "sheet"), this, false);

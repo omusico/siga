@@ -24,6 +24,7 @@ public class PdfPrintTask implements Runnable, Cancellable {
 	private IProgressListener proListener;
 	
 	private boolean isCancel = false;
+	private boolean highlight = false;
 	
 	private MapSheetsLayoutTemplate layoutTemplate = null;
 	private boolean allSheets = false;
@@ -32,6 +33,7 @@ public class PdfPrintTask implements Runnable, Cancellable {
 	public PdfPrintTask(
 			MapSheetsLayoutTemplate lay_template,
 			boolean all_sheets,
+			boolean highlight,
 			FLayer back_lyr,
 			String out_folder,
 			String bname,
@@ -43,6 +45,7 @@ public class PdfPrintTask implements Runnable, Cancellable {
 		baseFolder = new File(out_folder);
 		baseName = bname;
 		proListener = pro_listener;
+		this.highlight = highlight;
 	}
 	
 	public static boolean WORKING = false;
@@ -57,6 +60,7 @@ public class PdfPrintTask implements Runnable, Cancellable {
 		MapSheetsUtils.createPdfMaps(
 				layoutTemplate,
 				allSheets,
+				highlight,
 				backLayer,
 				baseFolder,
 				baseName,

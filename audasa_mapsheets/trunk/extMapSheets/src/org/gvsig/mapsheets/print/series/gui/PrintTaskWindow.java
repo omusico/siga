@@ -98,6 +98,7 @@ public class PrintTaskWindow extends JPanel implements IWindow, IProgressListene
 	public static void startPrintTask(
 			MapSheetsLayoutTemplate lay_template,
 			boolean all_sheets,
+			boolean highlight,
 			FLayer back_lyr,
 			String out_folder,
 			String bname,
@@ -116,6 +117,7 @@ public class PrintTaskWindow extends JPanel implements IWindow, IProgressListene
 		task = new PdfPrintTask(
 				lay_template,
 				all_sheets,
+				highlight,
 				back_lyr,
 				out_folder,
 				bname, ptw);

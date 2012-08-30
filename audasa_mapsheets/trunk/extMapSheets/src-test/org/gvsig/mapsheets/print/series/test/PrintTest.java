@@ -31,6 +31,7 @@ public class PrintTest extends TestCase {
 		PrintTaskWindow.startPrintTask(
 				template,
 				false,
+				false,
 				null,
 				System.getProperty("user.home") + File.separator + "mapsheets_test",
 				PluginServices.getText(this, "sheet"), null, true);

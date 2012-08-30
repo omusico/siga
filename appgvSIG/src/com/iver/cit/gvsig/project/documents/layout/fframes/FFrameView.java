@@ -517,7 +517,7 @@ public class FFrameView extends FFrame implements ViewPortListener,
         draw(g, at, null, null);
     }
 
-    private void printX(Graphics2D g, AffineTransform at) {
+    protected void printX(Graphics2D g, AffineTransform at) {
         Rectangle2D.Double r = getBoundingBox(at);
 
         // Dibujamos en impresora

@@ -14,6 +14,7 @@ import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.cit.gvsig.fmap.core.ILabelable;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.fmap.layers.FLayers;
+import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.LayersIterator;
 import com.iver.cit.gvsig.fmap.layers.layerOperations.ComposedLayer;
 import com.iver.cit.gvsig.fmap.layers.layerOperations.LayerCollection;
@@ -218,7 +219,7 @@ public class DefaultMapContextDrawer implements MapContextDrawer {
 	}
 
 	private void print(Object layerOrComposed,Graphics2D g, Cancellable cancel,
-			double scale, PrintRequestAttributeSet properties) throws ReadDriverException{
+			double scale, PrintRequestAttributeSet properties, boolean highlight) throws ReadDriverException{
 		ILabelable labelable= null;
 		ILabelable tmp= null;
 		if (layerOrComposed instanceof ILabelable){
@@ -232,10 +233,13 @@ public class DefaultMapContextDrawer implements MapContextDrawer {
 			}
 		}
 
-		if (layerOrComposed instanceof FLayer){
+		if (layerOrComposed instanceof FLyrVect){
+			FLyrVect layer = (FLyrVect) layerOrComposed;
+			layer.print(g, viewPort, cancel, scale, properties, highlight);
+		} else if (layerOrComposed instanceof FLayer){
 			FLayer layer = (FLayer) layerOrComposed;
 			layer.print(g, viewPort, cancel, scale, properties);
-		} else{
+		} else {
 			ComposedLayer composed = (ComposedLayer) layerOrComposed;
 			composed.print(g, viewPort, cancel, scale, properties);
 		}
@@ -416,7 +420,7 @@ public class DefaultMapContextDrawer implements MapContextDrawer {
 	 * @see com.iver.cit.gvsig.fmap.MapContextDrawer#print(com.iver.cit.gvsig.fmap.layers.FLayers, java.awt.Graphics2D, com.iver.utiles.swing.threads.Cancellable, double, javax.print.attribute.PrintRequestAttributeSet)
 	 */
 	public void print(FLayers root, Graphics2D g, Cancellable cancel,
-			double scale, PrintRequestAttributeSet properties)
+			double scale, PrintRequestAttributeSet properties, boolean highlight)
 			throws ReadDriverException {
 		this.checkIntilalized();
 
@@ -478,7 +482,7 @@ public class DefaultMapContextDrawer implements MapContextDrawer {
 					}
 				} else {
 //					System.out.println("=======Imprimiendo composicion de pintado "+ (layerPos-1)+" ============");
-					this.print(composed, g, cancel, scale, properties);
+					this.print(composed, g, cancel, scale, properties, highlight);
 //					composed.print( g, viewPort, cancel, scale,properties);
 					composed = layer.newComposedLayer();
 					if (composed != null){
@@ -493,19 +497,26 @@ public class DefaultMapContextDrawer implements MapContextDrawer {
 				}
 			}
 //			System.out.println("=== imprimiendo "+ layerPos+ " "+layer.getName());
-			this.print(layer, g, cancel, scale, properties);
+			this.print(layer, g, cancel, scale, properties, highlight);
 //			layer.print(g, viewPort, cancel, scale,properties);
 			// *** Pintado de capa/composicion de capa ***
 			if (composed != null){
 				// si la composicion no se ha pintado la pintamos
 //				System.out.println("=======Imprimiendo composicion de pintado "+ (layerPos-1)+" (ultimo) ============");
-				this.print(composed, g, cancel, scale, properties);
+				this.print(composed, g, cancel, scale, properties, highlight);
 //				composed.print(g, viewPort, cancel, scale, properties);
 				composed = null;
 			}
 		}
 
 
+	}
+
+	public void print(FLayers root, Graphics2D g, Cancellable cancel,
+			double scale, PrintRequestAttributeSet properties)
+			throws ReadDriverException {
+		print(root, g, cancel, scale, properties, false);
+				
 	}
 
 	private DrawList createDrawList(FLayers root,Cancellable cancel,double scale){
