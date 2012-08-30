@@ -3,8 +3,11 @@ package es.icarto.gvsig.extpm;
 import com.iver.andami.PluginServices;
 import com.iver.andami.plugins.Extension;
 import com.iver.andami.ui.mdiManager.IWindow;
+import com.iver.cit.gvsig.CADExtension;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
+import com.iver.cit.gvsig.gui.cad.CADTool;
+import com.iver.cit.gvsig.gui.cad.tools.PointCADTool;
 import com.iver.cit.gvsig.listeners.CADListenerManager;
 import com.iver.cit.gvsig.listeners.EndGeometryListener;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
@@ -25,7 +28,7 @@ public class FormPMExtension extends Extension {
     public void execute(String actionCommand) {
 	DBSession.getCurrentSession().setSchema(Preferences.PM_SCHEMA);
 	layer = getPMLayer();
-	dialog = new FormPM(layer, false);
+	dialog = new FormPM(layer, false, -1);
 	if (dialog.init()) {
 	    PluginServices.getMDIManager().addWindow(dialog);
 	}
@@ -85,10 +88,12 @@ public class FormPMExtension extends Extension {
     private class NTEndGeometryListener implements EndGeometryListener {
 
 	public void endGeometry(FLayer layer) {
+	    CADTool cadTool = CADExtension.getCADTool();
+	    int insertedRow = ((PointCADTool) cadTool).getInsertedRow();
 	    if (layer instanceof FLyrVect) {
 		FLyrVect l = (FLyrVect) layer;
 		l.setActive(true);
-		dialog = new FormPM(getPMLayer(), true);
+		dialog = new FormPM(getPMLayer(), true, insertedRow);
 		if (dialog.init()) {
 		    PluginServices.getMDIManager().addWindow(dialog);
 		    dialog.last();

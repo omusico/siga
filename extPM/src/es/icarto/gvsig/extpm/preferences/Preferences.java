@@ -30,4 +30,12 @@ public class Preferences {
     public static final String MUNICIPIOS_FIELD_CODIGO = "cdconc";
     public static final String MUNICIPIOS_FIELD_NAME = "nome";
 
+    public static final String FINCAS_TABLENAME = "audasa_expropiaciones.exp_finca";
+    public static final String FINCAS_FIELD_TRAMO = "tramo";
+    public static final String FINCAS_FIELD_IDFINCA = "id_finca";
+
+    public static final String TRAMOS_TABLENAME = "audasa_expropiaciones.tramos";
+    public static final String TRAMOS_FIELD_NOMBRE = "nombre_tramo";
+    public static final String TRAMOS_FIELD_ID = "id_tramo";
+
 }

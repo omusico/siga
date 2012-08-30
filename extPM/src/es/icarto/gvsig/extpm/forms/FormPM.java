@@ -37,6 +37,7 @@ public class FormPM extends AbstractForm implements ActionListener {
     private FormPanel form;
     private final FLyrVect layer;
     private final boolean newRegister;
+    private final int insertedRow;
     private final boolean fillingValues;
 
     // WIDGETS
@@ -50,10 +51,11 @@ public class FormPM extends AbstractForm implements ActionListener {
     EditParcelasAfectadasListener editParcelasAfectadasListener;
     CalculatePMNumberListener calculatePMNumberListener;
 
-    public FormPM(FLyrVect layer, boolean newRegister) {
+    public FormPM(FLyrVect layer, boolean newRegister, int insertedRow) {
 	super(layer);
 	this.layer = layer;
 	this.newRegister = newRegister;
+	this.insertedRow = insertedRow;
 	this.fillingValues = this.isFillingValues();
 	initWindow();
 	initWidgets();
@@ -260,7 +262,7 @@ public class FormPM extends AbstractForm implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-	    SubFormPMParcelasAfectadas subForm = new SubFormPMParcelasAfectadas();
+	    SubFormPMParcelasAfectadas subForm = new SubFormPMParcelasAfectadas(layer, insertedRow);
 	    PluginServices.getMDIManager().addWindow(subForm);
 	}
 
