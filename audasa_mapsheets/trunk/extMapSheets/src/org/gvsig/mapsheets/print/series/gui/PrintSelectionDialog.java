@@ -30,7 +30,6 @@ import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.log4j.Logger;
 import org.gvsig.gui.beans.swing.JFileChooser;
@@ -373,6 +372,10 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 
 			pdfOutputDirFileChooser = new JFileChooser(PDF_OUTPUT_DIR_FILE_CHOOSER_ID, System.getProperty("user.home"));
 			pdfOutputDirFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+			if (pdfOutputDirFileChooser.getLastPath() != null) {
+				getPdfOutputDirTextField().setText(pdfOutputDirFileChooser.getLastPath().getAbsolutePath());
+			}
 
 			
 			auxp = new JPanel(new FlowLayout());
