@@ -32,7 +32,7 @@ import es.icarto.gvsig.extpm.utils.managers.ToggleEditingManager;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
-public class FormPM extends AbstractForm implements ActionListener {
+public class FormPM extends AbstractForm {
 
     private FormPanel form;
     private final FLyrVect layer;
@@ -270,6 +270,7 @@ public class FormPM extends AbstractForm implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent arg0) {
+	super.actionPerformed(arg0);
 	if (!((AbstractForm) this).isFillingValues()) {
 	    parroquia.removeAllItems();
 	    parroquia.addItem(" ");
