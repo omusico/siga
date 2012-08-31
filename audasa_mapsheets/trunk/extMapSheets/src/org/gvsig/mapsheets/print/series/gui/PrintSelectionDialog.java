@@ -46,6 +46,7 @@ import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.fmap.layers.FLayers;
+import com.iver.cit.gvsig.fmap.layers.SelectionSupport;
 import com.iver.cit.gvsig.project.documents.view.ProjectView;
 
 /**
@@ -206,13 +207,24 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 			int cont = gr.getSource().getShapeCount();
 			DefaultListModel dlm = new DefaultListModel(); 
 			for (int i=0; i<cont; i++) {
-				dlm.addElement(new SheetComboItem(
-						(MapSheetGridGraphic) gr.getGraphic(i)
-						));
+				SheetComboItem item = new SheetComboItem(
+						(MapSheetGridGraphic) gr.getGraphic(i));
+				int position = 0;
+				if (dlm.getSize() > 0) {
+					do {
+						if (item.toString().compareTo(
+								dlm.get(position).toString()) < 0) {
+							break;
+						}
+						position++;
+					} while (position < dlm.getSize());
+				}
+				dlm.add(position, new SheetComboItem(
+						(MapSheetGridGraphic) gr.getGraphic(i)));
 			}
 			sheetList = new JList(dlm);
 			// sheetList.setPreferredSize(new Dimension(100,100));
-			sheetList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			sheetList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 			sheetList.addListSelectionListener(this);
 			
 		}
@@ -499,7 +511,30 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 		
 	}
 	
+	private int selectListMapsOnGrid() {
 
+		try {
+			Object[] values = this.getSheetList().getSelectedValues();
+			SelectionSupport selection = layout_template.getGrid().getSelectionSupport();
+			selection.clearSelection();
+
+			for(Object value:values) {
+				SheetComboItem item = (SheetComboItem) value;
+				for (int i = 0; i < layout_template.getGrid().getTheMemoryDriver().getShapeCount(); i++) {
+					MapSheetGridGraphic grid_item = layout_template.getGrid().getGraphic(i);
+					if (item.getObject().equals(grid_item)) {
+						selection.getSelection().set(i);
+					}
+				}
+			}
+
+			return values.length;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+
+	}
 	private JComboBox getBackLayerCombo() {
 		if (backLayerCombo == null) {
 			backLayerCombo = new JComboBox();
@@ -547,6 +582,10 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 		}
 		
 		if (src == getPrintPrinterButton(getIsWindows())) {
+
+			if (!this.getPrintAllRB().isSelected()) {
+				selectListMapsOnGrid();
+			}
 
 			if (printPdfCheckbox.isSelected()) {
 
@@ -622,7 +661,7 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 		Object src = e.getSource();
 		
 		try {
-			if (src == this.getSheetList()) {
+			if ((src == this.getSheetList()) && (this.getSheetList().getSelectedValues().length == 1)) {
 				SheetComboItem sci = (SheetComboItem) getSheetList().getSelectedValue();
 				layout_template.updateWithSheet(sci.getObject());
 			}
