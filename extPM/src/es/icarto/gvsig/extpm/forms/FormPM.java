@@ -38,7 +38,8 @@ public class FormPM extends AbstractForm {
     private final FLyrVect layer;
     private final boolean newRegister;
     private final int insertedRow;
-    private final boolean fillingValues;
+
+    private static ArrayList<String> parcelasAfectadas;
 
     // WIDGETS
     private JButton editParcelasButton;
@@ -56,10 +57,18 @@ public class FormPM extends AbstractForm {
 	this.layer = layer;
 	this.newRegister = newRegister;
 	this.insertedRow = insertedRow;
-	this.fillingValues = this.isFillingValues();
 	initWindow();
 	initWidgets();
 	addNewButtonsToActionsToolBar();
+	parcelasAfectadas = new ArrayList<String>();
+    }
+
+    public static ArrayList<String> getParcelasAfectadas() {
+	return parcelasAfectadas;
+    }
+
+    public static void setParcelasAfectadas (ArrayList<String> parcelasAfectadasByPM) {
+	parcelasAfectadas = parcelasAfectadasByPM;
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -127,8 +136,37 @@ public class FormPM extends AbstractForm {
 
     @Override
     protected void fillSpecificValues() {
-	// TODO Auto-generated method stub
+	PreparedStatement statement;
+	try {
+	    String query = "SELECT id_finca from audasa_pm.fincas_pm " +
+	    "where numero_pm='" + numeroPM.getText() + "'";
+	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+	    statement.execute();
+	    ResultSet rs = statement.getResultSet();
+	    while (rs.next()) {
+		parcelasAfectadas.add(rs.getString(1));
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+    }
 
+    @Override
+    public boolean saveRecord() {
+	PreparedStatement statement;
+	String query = null;
+	try {
+	    for (String idParcela : parcelasAfectadas) {
+		query = "INSERT INTO audasa_pm.fincas_pm "
+		    + "VALUES (" + "'" + idParcela + "', '" + numeroPM.getText() + "')";
+
+		statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+		statement.execute();
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return super.saveRecord();
     }
 
     @Override

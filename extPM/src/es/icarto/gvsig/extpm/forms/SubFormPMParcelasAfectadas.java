@@ -2,6 +2,8 @@ package es.icarto.gvsig.extpm.forms;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,7 +29,7 @@ import es.icarto.gvsig.extpm.preferences.Preferences;
 import es.icarto.gvsig.extpm.utils.managers.TOCLayerManager;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
-public class SubFormPMParcelasAfectadas extends JPanel implements IWindow, ActionListener {
+public class SubFormPMParcelasAfectadas extends JPanel implements IWindow, ActionListener, WindowListener {
 
     private final double INTERSECTION_BUFFER = 250.0;
 
@@ -70,11 +72,20 @@ public class SubFormPMParcelasAfectadas extends JPanel implements IWindow, Actio
 	    model.addColumn(columnName);
 	}
 	parcelasAfectadas.setModel(model);
+	updateParcelasAfectadasTable();
 
 	addFinca = (JButton)form.getComponentByName("addFincaButton");
 	addFinca.addActionListener(this);
 	removeFinca = (JButton)form.getComponentByName("removeFincaButton");
 	removeFinca.addActionListener(this);
+    }
+
+    private void updateParcelasAfectadasTable() {
+	ArrayList<String> data = FormPM.getParcelasAfectadas();
+	for (String parcela : data) {
+	    String[] parcelaValues = getFincaValuesFromID(parcela);
+	    model.addRow(parcelaValues);
+	}
     }
 
     private String[] getFincaValuesFromID(String idFinca) {
@@ -171,6 +182,51 @@ public class SubFormPMParcelasAfectadas extends JPanel implements IWindow, Actio
 	    }
 
 	}
+    }
+
+    @Override
+    public void windowActivated(WindowEvent arg0) {
+	// TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void windowClosed(WindowEvent arg0) {
+	ArrayList<String> parcelas = new ArrayList<String>();
+	for (int i=0; i<model.getRowCount(); i++) {
+	    parcelas.add(model.getValueAt(i, 1).toString());
+	}
+	FormPM.setParcelasAfectadas(parcelas);
+    }
+
+    @Override
+    public void windowClosing(WindowEvent arg0) {
+	// TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent arg0) {
+	// TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent arg0) {
+	// TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void windowIconified(WindowEvent arg0) {
+	// TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void windowOpened(WindowEvent arg0) {
+	// TODO Auto-generated method stub
+
     }
 
 }
