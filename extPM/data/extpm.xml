@@ -12,6 +12,7 @@
             		<DRTYPE>db</DRTYPE>
         			<DRDBTABLE>tramos</DRDBTABLE>
         			<DRDBCOLUMNVALUE>nombre_tramo</DRDBCOLUMNVALUE>
+        			<DRDBCOLUMNALIAS>nombre_tramo</DRDBCOLUMNALIAS>
         		</DOMAINREADER>
  			</FIELD>
  			 <FIELD>
@@ -19,7 +20,7 @@
  				<DOMAINREADER>
             		<DRTYPE>db</DRTYPE>
         			<DRDBTABLE>tipos_via</DRDBTABLE>
-        			<DRDBCOLUMNVALUE>id_via</DRDBCOLUMNVALUE>
+        			<DRDBCOLUMNVALUE>tipo_via</DRDBCOLUMNVALUE>
         			<DRDBCOLUMNALIAS>tipo_via</DRDBCOLUMNALIAS>
         		</DOMAINREADER>
  			</FIELD>
@@ -29,6 +30,7 @@
             		<DRTYPE>db</DRTYPE>
         			<DRDBTABLE>ramales</DRDBTABLE>
         			<DRDBCOLUMNVALUE>nombre_ramal</DRDBCOLUMNVALUE>
+        			<DRDBCOLUMNALIAS>nombre_ramal</DRDBCOLUMNALIAS>
         		</DOMAINREADER>
  			</FIELD>
  			 <FIELD>
