@@ -142,6 +142,7 @@ public class FormPM extends AbstractForm {
 
     @Override
     protected void fillSpecificValues() {
+	parcelasAfectadas.clear();
 	PreparedStatement statement;
 	try {
 	    // Parcelas afected by this PM File
