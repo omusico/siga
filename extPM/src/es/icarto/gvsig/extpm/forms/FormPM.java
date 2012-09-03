@@ -51,6 +51,7 @@ public class FormPM extends AbstractForm {
 
     EditParcelasAfectadasListener editParcelasAfectadasListener;
     CalculatePMNumberListener calculatePMNumberListener;
+    UpdateParroquiaListener updateParroquiaListener;
 
     public FormPM(FLyrVect layer, boolean newRegister, int insertedRow) {
 	super(layer);
@@ -95,6 +96,7 @@ public class FormPM extends AbstractForm {
 
 	editParcelasAfectadasListener = new EditParcelasAfectadasListener();
 	calculatePMNumberListener = new CalculatePMNumberListener();
+	updateParroquiaListener = new UpdateParroquiaListener();
 
 	numeroPM = (JTextField) widgets.get(Preferences.PM_FORM_WIDGET_PM_NUMBER);
 	numeroPM.setEnabled(false);
@@ -111,7 +113,7 @@ public class FormPM extends AbstractForm {
 	fecha.addKeyListener(calculatePMNumberListener);
 
 	municipio = (JComboBox) widgets.get(Preferences.PM_FORM_WIDGET_MUNICIPIO);
-	municipio.addActionListener(this);
+	municipio.addActionListener(updateParroquiaListener);
 
     }
 
@@ -122,6 +124,7 @@ public class FormPM extends AbstractForm {
 	editParcelasButton.removeActionListener(editParcelasAfectadasListener);
 	area.removeActionListener(calculatePMNumberListener);
 	fecha.removeKeyListener(calculatePMNumberListener);
+	municipio.removeActionListener(updateParroquiaListener);
     }
 
     @Override
@@ -141,13 +144,29 @@ public class FormPM extends AbstractForm {
     protected void fillSpecificValues() {
 	PreparedStatement statement;
 	try {
-	    String query = "SELECT id_finca from audasa_pm.fincas_pm " +
-	    "where numero_pm='" + numeroPM.getText() + "'";
-	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+	    // Parcelas afected by this PM File
+	    String parcelasQuery = "SELECT " + Preferences.FINCAS_PM_FIELD_IDFINCA +
+	    " FROM " + Preferences.FINCAS_PM_TABLENAME +
+	    " WHERE " + Preferences.FINCAS_PM_FIELD_NUMEROPM + " = '" + numeroPM.getText() + "'";
+	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(parcelasQuery);
 	    statement.execute();
-	    ResultSet rs = statement.getResultSet();
-	    while (rs.next()) {
-		parcelasAfectadas.add(rs.getString(1));
+	    ResultSet parcelasRs = statement.getResultSet();
+	    while (parcelasRs.next()) {
+		parcelasAfectadas.add(parcelasRs.getString(1));
+	    }
+
+	    // Parroquia
+	    String parroquiaQuery = "SELECT " + Preferences.PM_FIELD_PARROQUIA +
+	    " FROM " + Preferences.PM_TABLENAME +
+	    " WHERE " + Preferences.PM_FIELD_NUMEROPM + " = '" + numeroPM.getText() + "'";
+	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(parroquiaQuery);
+	    statement.execute();
+	    ResultSet parroquiaRs = statement.getResultSet();
+	    while (parroquiaRs.next()) {
+		if (parroquiaRs.getString(1) != null) {
+		    parroquia.addItem(parroquiaRs.getString(1));
+		    parroquia.setSelectedItem(parroquiaRs.getString(1));
+		}
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -309,36 +328,41 @@ public class FormPM extends AbstractForm {
 
     }
 
-    @Override
-    public void actionPerformed(ActionEvent arg0) {
-	super.actionPerformed(arg0);
-	if (!((AbstractForm) this).isFillingValues()) {
-	    parroquia.removeAllItems();
-	    parroquia.addItem(" ");
-	    PreparedStatement statement;
-	    String query ;
-	    try {
-		query = "SELECT " + Preferences.PARROQUIAS_FIELD_NAME +
-		" FROM " + Preferences.PARROQUIAS_TABLENAME +
-		" WHERE " + Preferences.PARROQUIAS_FIELD_CODIGO +
-		" = " + "(SELECT " + Preferences.MUNICIPIOS_FIELD_CODIGO +
-		" FROM " + Preferences.MUNICIPIOS_TABLENAME +
-		" WHERE " + Preferences.MUNICIPIOS_FIELD_NAME +
-		" = " + "'" + municipio.getSelectedItem() + "');";
-		statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
-		statement.execute();
-		ResultSet rs = statement.getResultSet();
-		ArrayList<String> parroquias = new ArrayList<String>();
-		while (rs.next()) {
-		    parroquias.add(rs.getString(1));
-		}
-		rs.close();
-		for (String parroquia_name : parroquias) {
-		    parroquia.addItem(parroquia_name);
-		}
+    private boolean isFillingValuesFormPM() {
+	return ((AbstractForm) this).isFillingValues();
+    }
 
-	    } catch (SQLException e) {
-		e.printStackTrace();
+    public class UpdateParroquiaListener implements ActionListener {
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    if (!isFillingValues()) {
+		parroquia.removeAllItems();
+		parroquia.addItem(" ");
+		PreparedStatement statement;
+		String query ;
+		try {
+		    query = "SELECT " + Preferences.PARROQUIAS_FIELD_NAME +
+		    " FROM " + Preferences.PARROQUIAS_TABLENAME +
+		    " WHERE " + Preferences.PARROQUIAS_FIELD_CODIGO +
+		    " = " + "(SELECT " + Preferences.MUNICIPIOS_FIELD_CODIGO +
+		    " FROM " + Preferences.MUNICIPIOS_TABLENAME +
+		    " WHERE " + Preferences.MUNICIPIOS_FIELD_NAME +
+		    " = " + "'" + municipio.getSelectedItem() + "');";
+		    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+		    statement.execute();
+		    ResultSet rs = statement.getResultSet();
+		    ArrayList<String> parroquias = new ArrayList<String>();
+		    while (rs.next()) {
+			parroquias.add(rs.getString(1));
+		    }
+		    rs.close();
+		    for (String parroquia_name : parroquias) {
+			parroquia.addItem(parroquia_name);
+		    }
+		} catch (SQLException e1) {
+		    e1.printStackTrace();
+		}
 	    }
 	}
     }
