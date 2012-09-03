@@ -68,6 +68,9 @@ public class FormPM extends AbstractForm {
     }
 
     public static void setParcelasAfectadas (ArrayList<String> parcelasAfectadasByPM) {
+	if (parcelasAfectadas == null) {
+	    parcelasAfectadas = new ArrayList<String>();
+	}
 	parcelasAfectadas = parcelasAfectadasByPM;
     }
 
