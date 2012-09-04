@@ -355,7 +355,8 @@ public class FormPM extends AbstractForm {
 		    " = " + "(SELECT " + Preferences.MUNICIPIOS_FIELD_CODIGO +
 		    " FROM " + Preferences.MUNICIPIOS_TABLENAME +
 		    " WHERE " + Preferences.MUNICIPIOS_FIELD_NAME +
-		    " = " + "'" + municipio.getSelectedItem() + "');";
+		    " = " + "'" + municipio.getSelectedItem() + "')" +
+		    " ORDER BY " + Preferences.PARROQUIAS_FIELD_NAME + ";";
 		    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
 		    statement.execute();
 		    ResultSet rs = statement.getResultSet();
