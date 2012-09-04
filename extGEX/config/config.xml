@@ -95,6 +95,9 @@
 		<extension class-name="es.icarto.gvsig.extgex.WMSLoadPUClasesDeSueloExtension" description="LOAD_PUClasesDeSuelo_WMS" active="true">
 			<menu text="Expropiaciones/WMS/Planeamiento Urbanístico (Clases de Suelo)" action-command="LoadPUClasesDeSueloExtension" position="30340"/>
 		</extension>
+		<extension class-name="es.icarto.gvsig.extgex.WMSLoadEstadoDimensionesExtension" description="LOAD_EstadoDimensiones_WMS" active="true">
+			<menu text="Expropiaciones/WMS/Planos Estado de Dimensiones" action-command="LoadEstadoDimensionesExtension" position="30350"/>
+		</extension>
 
 	</extensions>
 </plugin-config>
