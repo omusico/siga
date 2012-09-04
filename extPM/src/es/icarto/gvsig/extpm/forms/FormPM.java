@@ -43,6 +43,8 @@ public class FormPM extends AbstractForm {
     private static ArrayList<String> parcelasAfectadas;
 
     // WIDGETS
+    private JTextField numParcelaCatastro;
+    private JTextField poligonoCatastro;
     private JButton editParcelasButton;
     private JComboBox area;
     private JTextField fecha;
@@ -94,6 +96,11 @@ public class FormPM extends AbstractForm {
 	super.setListeners();
 
 	HashMap<String, JComponent> widgets = getWidgetComponents();
+
+	numParcelaCatastro = (JTextField) widgets.get(Preferences.PM_FORM_WIDGETS_NUM_PARCELA_CATASTRO);
+	numParcelaCatastro.setToolTipText("Si hay varias parcelas separar con guión (-)");
+	poligonoCatastro = (JTextField) widgets.get(Preferences.PM_FORM_WIDGETS_POLIGONO_CATASTRO);
+	poligonoCatastro.setToolTipText("Si hay varios polígonos separar con guión (-)");
 
 	editParcelasAfectadasListener = new EditParcelasAfectadasListener();
 	calculatePMNumberListener = new CalculatePMNumberListener();

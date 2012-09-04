@@ -25,7 +25,7 @@
     <at name="componentclass">com.jeta.forms.gui.form.FormComponent</at>
    </super>
    <at name="id">/home/psanxiao/workspace/audasa3/extPM/forms/pm.xml</at>
-   <at name="rowspecs">CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:2DLU:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE</at>
+   <at name="rowspecs">CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:2DLU:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE,CENTER:DEFAULT:NONE,CENTER:2DLU:NONE,CENTER:DEFAULT:NONE</at>
    <at name="colspecs">FILL:4DLU:NONE,FILL:4DLU:NONE,FILL:4DLU:NONE,FILL:DEFAULT:NONE,FILL:140PX:NONE,FILL:DEFAULT:NONE,FILL:150PX:NONE,FILL:DEFAULT:NONE,FILL:DEFAULT:NONE,FILL:DEFAULT:NONE,FILL:140PX:NONE,FILL:DEFAULT:NONE,FILL:150PX:NONE,FILL:DEFAULT:NONE,FILL:4DLU:NONE,FILL:4DLU:NONE,FILL:4DLU:NONE</at>
    <at name="components">
     <object classname="java.util.LinkedList">
@@ -1098,7 +1098,7 @@
          <at name="cellconstraints">
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
            <at name="column">5</at>
-           <at name="row">93</at>
+           <at name="row">94</at>
            <at name="colspan">1</at>
            <at name="rowspan">1</at>
            <at name="halign">default</at>
@@ -1160,7 +1160,7 @@
            <at name="column">4</at>
            <at name="row">82</at>
            <at name="colspan">1</at>
-           <at name="rowspan">14</at>
+           <at name="rowspan">15</at>
            <at name="halign">default</at>
            <at name="valign">default</at>
            <at name="insets" object="insets">0,0,0,0</at>
@@ -1175,7 +1175,7 @@
           <at name="classname">com.jeta.forms.components.border.TitledBorderSide</at>
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
-            <at name="height">188</at>
+            <at name="height">204</at>
             <at name="name"/>
             <at name="width">12</at>
             <at name="border">
@@ -1214,7 +1214,7 @@
            <at name="column">14</at>
            <at name="row">82</at>
            <at name="colspan">1</at>
-           <at name="rowspan">14</at>
+           <at name="rowspan">15</at>
            <at name="halign">default</at>
            <at name="valign">default</at>
            <at name="insets" object="insets">0,0,0,0</at>
@@ -1230,7 +1230,7 @@
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="orientation">1</at>
-            <at name="height">188</at>
+            <at name="height">204</at>
             <at name="name"/>
             <at name="width">12</at>
             <at name="border">
@@ -1269,7 +1269,7 @@
            <at name="column">8</at>
            <at name="row">82</at>
            <at name="colspan">1</at>
-           <at name="rowspan">14</at>
+           <at name="rowspan">15</at>
            <at name="halign">default</at>
            <at name="valign">default</at>
            <at name="insets" object="insets">0,0,0,0</at>
@@ -1285,7 +1285,7 @@
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="orientation">1</at>
-            <at name="height">188</at>
+            <at name="height">204</at>
             <at name="name"/>
             <at name="width">12</at>
             <at name="border">
@@ -1322,7 +1322,7 @@
          <at name="cellconstraints">
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
            <at name="column">5</at>
-           <at name="row">95</at>
+           <at name="row">96</at>
            <at name="colspan">3</at>
            <at name="rowspan">1</at>
            <at name="halign">default</at>
@@ -1431,7 +1431,7 @@
          <at name="cellconstraints">
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
            <at name="column">7</at>
-           <at name="row">93</at>
+           <at name="row">94</at>
            <at name="colspan">1</at>
            <at name="rowspan">1</at>
            <at name="halign">default</at>
@@ -1542,7 +1542,7 @@
            <at name="column">10</at>
            <at name="row">82</at>
            <at name="colspan">1</at>
-           <at name="rowspan">14</at>
+           <at name="rowspan">15</at>
            <at name="halign">default</at>
            <at name="valign">default</at>
            <at name="insets" object="insets">0,0,0,0</at>
@@ -1557,7 +1557,7 @@
           <at name="classname">com.jeta.forms.components.border.TitledBorderSide</at>
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
-            <at name="height">188</at>
+            <at name="height">204</at>
             <at name="name"/>
             <at name="width">12</at>
             <at name="border">
@@ -1594,7 +1594,7 @@
          <at name="cellconstraints">
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
            <at name="column">11</at>
-           <at name="row">95</at>
+           <at name="row">96</at>
            <at name="colspan">3</at>
            <at name="rowspan">1</at>
            <at name="halign">default</at>
@@ -1708,7 +1708,7 @@
          <at name="cellconstraints">
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
            <at name="column">11</at>
-           <at name="row">93</at>
+           <at name="row">94</at>
            <at name="colspan">1</at>
            <at name="rowspan">1</at>
            <at name="halign">default</at>
@@ -1823,7 +1823,7 @@
          <at name="cellconstraints">
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
            <at name="column">13</at>
-           <at name="row">93</at>
+           <at name="row">94</at>
            <at name="colspan">1</at>
            <at name="rowspan">1</at>
            <at name="halign">default</at>
@@ -4186,7 +4186,7 @@
          <at name="cellconstraints">
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
            <at name="column">5</at>
-           <at name="row">97</at>
+           <at name="row">98</at>
            <at name="colspan">9</at>
            <at name="rowspan">1</at>
            <at name="halign">default</at>
@@ -4241,7 +4241,7 @@
          <at name="cellconstraints">
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
            <at name="column">5</at>
-           <at name="row">99</at>
+           <at name="row">100</at>
            <at name="colspan">3</at>
            <at name="rowspan">1</at>
            <at name="halign">default</at>
@@ -4301,7 +4301,7 @@
          <at name="cellconstraints">
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
            <at name="column">5</at>
-           <at name="row">101</at>
+           <at name="row">102</at>
            <at name="colspan">3</at>
            <at name="rowspan">1</at>
            <at name="halign">default</at>
@@ -4361,7 +4361,7 @@
          <at name="cellconstraints">
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
            <at name="column">11</at>
-           <at name="row">99</at>
+           <at name="row">100</at>
            <at name="colspan">3</at>
            <at name="rowspan">1</at>
            <at name="halign">default</at>
@@ -4415,7 +4415,7 @@
          <at name="cellconstraints">
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
            <at name="column">11</at>
-           <at name="row">101</at>
+           <at name="row">102</at>
            <at name="colspan">3</at>
            <at name="rowspan">1</at>
            <at name="halign">default</at>
@@ -4469,7 +4469,7 @@
          <at name="cellconstraints">
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
            <at name="column">4</at>
-           <at name="row">97</at>
+           <at name="row">98</at>
            <at name="colspan">1</at>
            <at name="rowspan">7</at>
            <at name="halign">default</at>
@@ -4523,7 +4523,7 @@
          <at name="cellconstraints">
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
            <at name="column">14</at>
-           <at name="row">97</at>
+           <at name="row">98</at>
            <at name="colspan">1</at>
            <at name="rowspan">7</at>
            <at name="halign">default</at>
@@ -4578,7 +4578,7 @@
          <at name="cellconstraints">
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
            <at name="column">5</at>
-           <at name="row">103</at>
+           <at name="row">104</at>
            <at name="colspan">9</at>
            <at name="rowspan">1</at>
            <at name="halign">default</at>
@@ -6396,7 +6396,7 @@
            <at name="column">7</at>
            <at name="row">88</at>
            <at name="colspan">1</at>
-           <at name="rowspan">4</at>
+           <at name="rowspan">5</at>
            <at name="halign">default</at>
            <at name="valign">default</at>
            <at name="insets" object="insets">0,0,0,0</at>
@@ -6411,9 +6411,10 @@
           <at name="classname">javax.swing.JTextArea</at>
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
+            <at name="lineWrap">true</at>
             <at name="scrollableTracksViewportWidth">true</at>
-            <at name="height">60</at>
-            <at name="width">144</at>
+            <at name="height">80</at>
+            <at name="width">129</at>
             <at name="name">domicilio_responsable</at>
             <at name="scollBars">
              <object classname="com.jeta.forms.store.properties.ScrollBarsProperty">
@@ -6442,7 +6443,7 @@
               </at>
              </object>
             </at>
-            <at name="scrollableTracksViewportHeight">true</at>
+            <at name="wrapStyleWord">true</at>
            </object>
           </at>
          </object>
@@ -6579,7 +6580,7 @@
            <at name="column">13</at>
            <at name="row">88</at>
            <at name="colspan">1</at>
-           <at name="rowspan">4</at>
+           <at name="rowspan">5</at>
            <at name="halign">default</at>
            <at name="valign">default</at>
            <at name="insets" object="insets">0,0,0,0</at>
@@ -6594,9 +6595,10 @@
           <at name="classname">javax.swing.JTextArea</at>
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
+            <at name="lineWrap">true</at>
             <at name="scrollableTracksViewportWidth">true</at>
-            <at name="height">60</at>
-            <at name="width">144</at>
+            <at name="height">80</at>
+            <at name="width">129</at>
             <at name="name">domicilio_propietario</at>
             <at name="scollBars">
              <object classname="com.jeta.forms.store.properties.ScrollBarsProperty">
@@ -6625,7 +6627,7 @@
               </at>
              </object>
             </at>
-            <at name="scrollableTracksViewportHeight">true</at>
+            <at name="wrapStyleWord">true</at>
            </object>
           </at>
          </object>
@@ -6690,7 +6692,7 @@
    <at name="cellpainters">
     <object classname="com.jeta.forms.store.support.Matrix">
      <at name="rows">
-      <object classname="[Ljava.lang.Object;" size="104">
+      <object classname="[Ljava.lang.Object;" size="105">
        <at name="item" index="0">
         <object classname="[Ljava.lang.Object;" size="17"/>
        </at>
@@ -7001,6 +7003,9 @@
         <object classname="[Ljava.lang.Object;" size="17"/>
        </at>
        <at name="item" index="103">
+        <object classname="[Ljava.lang.Object;" size="17"/>
+       </at>
+       <at name="item" index="104">
         <object classname="[Ljava.lang.Object;" size="17"/>
        </at>
       </object>
