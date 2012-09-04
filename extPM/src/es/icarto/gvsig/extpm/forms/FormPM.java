@@ -1,5 +1,6 @@
 package es.icarto.gvsig.extpm.forms;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -171,6 +172,11 @@ public class FormPM extends AbstractForm {
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
+	}
+	// Fecha (how should be written)
+	if (fecha.getText().equalsIgnoreCase("")) {
+	    fecha.setText("dd/mm/aaaa");
+	    fecha.setForeground(Color.GRAY);
 	}
     }
 
