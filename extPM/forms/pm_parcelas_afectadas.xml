@@ -55,8 +55,15 @@
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="text">ID Finca:</at>
             <at name="height">14</at>
-            <at name="name"/>
+            <at name="font">
+             <object classname="com.jeta.forms.store.properties.FontProperty">
+              <at name="family">Arial</at>
+              <at name="style">0</at>
+              <at name="size">12</at>
+             </object>
+            </at>
             <at name="width">141</at>
+            <at name="name"></at>
             <at name="fill">
              <object classname="com.jeta.forms.store.properties.effects.PaintProperty">
               <at name="name">fill</at>
@@ -119,6 +126,13 @@
               <at name="name">items</at>
              </object>
             </at>
+            <at name="font">
+             <object classname="com.jeta.forms.store.properties.FontProperty">
+              <at name="family">Arial</at>
+              <at name="style">0</at>
+              <at name="size">12</at>
+             </object>
+            </at>
             <at name="width">136</at>
             <at name="name">id_finca</at>
             <at name="border">
@@ -174,6 +188,13 @@
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="text">Añadir</at>
             <at name="height">22</at>
+            <at name="font">
+             <object classname="com.jeta.forms.store.properties.FontProperty">
+              <at name="family">Arial</at>
+              <at name="style">0</at>
+              <at name="size">12</at>
+             </object>
+            </at>
             <at name="width">78</at>
             <at name="name">addFincaButton</at>
             <at name="actionCommand">Añadir</at>
@@ -230,8 +251,16 @@
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="text">Parcelas afectadas:</at>
             <at name="height">19</at>
-            <at name="name"/>
+            <at name="font">
+             <object classname="com.jeta.forms.store.properties.FontProperty">
+              <at name="family">Arial</at>
+              <at name="style">1</at>
+              <at name="size">14</at>
+             </object>
+            </at>
             <at name="width">386</at>
+            <at name="name"></at>
+            <at name="titleColor" object="color">0,102,255</at>
             <at name="border">
              <object classname="com.jeta.forms.store.properties.CompoundBorderProperty">
               <super classname="com.jeta.forms.store.properties.BorderProperty">
@@ -252,6 +281,7 @@
               </at>
              </object>
             </at>
+            <at name="foreground" object="color">0,102,255</at>
            </object>
           </at>
          </object>
@@ -284,6 +314,13 @@
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="height">32</at>
+            <at name="font">
+             <object classname="com.jeta.forms.store.properties.FontProperty">
+              <at name="family">Arial</at>
+              <at name="style">0</at>
+              <at name="size">12</at>
+             </object>
+            </at>
             <at name="width">384</at>
             <at name="name">parcelas_afectadas_table</at>
             <at name="scollBars">
@@ -419,8 +456,8 @@
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="height">-1</at>
+            <at name="name"/>
             <at name="width">386</at>
-            <at name="name"></at>
             <at name="border">
              <object classname="com.jeta.forms.store.properties.CompoundBorderProperty">
               <super classname="com.jeta.forms.store.properties.BorderProperty">
@@ -529,6 +566,13 @@
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="text">Eliminar</at>
             <at name="height">22</at>
+            <at name="font">
+             <object classname="com.jeta.forms.store.properties.FontProperty">
+              <at name="family">Arial</at>
+              <at name="style">0</at>
+              <at name="size">12</at>
+             </object>
+            </at>
             <at name="width">78</at>
             <at name="name">removeFincaButton</at>
             <at name="actionCommand">Eliminar</at>
