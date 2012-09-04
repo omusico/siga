@@ -50,6 +50,7 @@ import org.gvsig.mapsheets.print.series.gui.utils.LayerComboItem;
 import org.gvsig.mapsheets.print.series.gui.utils.MeasureUnitComboItem;
 import org.gvsig.mapsheets.print.series.gui.utils.NumericDocument;
 import org.gvsig.mapsheets.print.series.utils.MapSheetsUtils;
+import org.gvsig.tools.file.PathGenerator;
 
 import com.hardcode.gdbms.engine.values.ValueFactory;
 import com.iver.andami.PluginServices;
@@ -759,7 +760,9 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 
 	public Layout getMapLayout() {
 	    if (selectedTemplate.toLowerCase().endsWith(".gvt")) {
-		return getLayoutFromFile(new File(selectedTemplate));
+		File templateFile = new File(selectedTemplate);
+		PathGenerator.getInstance().setBasePath(templateFile.getParent());
+		return getLayoutFromFile(templateFile);
 	    } else {
 		return getLayoutFromFile(AudasaPreferences.getSelectedFile(selectedTemplate));
 	    }

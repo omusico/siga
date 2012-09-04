@@ -456,6 +456,8 @@ public class MapSheetsLayoutTemplate extends Layout implements IMapSheetsIdentif
 		if(audasaTemplate.hasKey(((FFrameText) framesFromTemplate[i]).getTitle())) {
 		    ((FFrameText) framesFromTemplate[i]).addText(
 			    audasaTemplate.getProperty(((FFrameText) framesFromTemplate[i]).getTitle()));
+		} else {
+			((FFrameText) framesFromTemplate[i]).addText("");
 		}
 	    } else if (framesFromTemplate[i] instanceof FFrameScaleBar) {
 		((FFrameScaleBar) framesFromTemplate[i]).setFFrameDependence(viewFrame);
