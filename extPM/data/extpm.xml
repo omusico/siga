@@ -10,6 +10,7 @@
  				<FIELDNAME>tramo</FIELDNAME>
  				<DOMAINREADER>
             		<DRTYPE>db</DRTYPE>
+            		<DRDBSCHEMA>audasa_pm</DRDBSCHEMA>
         			<DRDBTABLE>tramos</DRDBTABLE>
         			<DRDBCOLUMNVALUE>nombre_tramo</DRDBCOLUMNVALUE>
         			<DRDBCOLUMNALIAS>nombre_tramo</DRDBCOLUMNALIAS>
@@ -19,6 +20,7 @@
  				<FIELDNAME>tipo_via</FIELDNAME>
  				<DOMAINREADER>
             		<DRTYPE>db</DRTYPE>
+            		<DRDBSCHEMA>audasa_pm</DRDBSCHEMA>
         			<DRDBTABLE>tipos_via</DRDBTABLE>
         			<DRDBCOLUMNVALUE>tipo_via</DRDBCOLUMNVALUE>
         			<DRDBCOLUMNALIAS>tipo_via</DRDBCOLUMNALIAS>
@@ -36,18 +38,10 @@
  				<FIELDNAME>ramal</FIELDNAME>
  				<DOMAINREADER>
             		<DRTYPE>db</DRTYPE>
+            		<DRDBSCHEMA>audasa_pm</DRDBSCHEMA>
         			<DRDBTABLE>ramales</DRDBTABLE>
         			<DRDBCOLUMNVALUE>nombre_ramal</DRDBCOLUMNVALUE>
         			<DRDBCOLUMNALIAS>nombre_ramal</DRDBCOLUMNALIAS>
-        		</DOMAINREADER>
- 			</FIELD>
- 			 <FIELD>
- 				<FIELDNAME>municipio</FIELDNAME>
- 				<DOMAINREADER>
-            		<DRTYPE>db</DRTYPE>
-            		<DRDBSCHEMA>audasa_cartografia_base</DRDBSCHEMA>
-        			<DRDBTABLE>municipios</DRDBTABLE>
-        			<DRDBCOLUMNVALUE>nome</DRDBCOLUMNVALUE>
         		</DOMAINREADER>
  			</FIELD>
  		</RECORDSET>

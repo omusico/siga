@@ -27,6 +27,7 @@ public class Preferences {
     // PM
     public static final String PM_TABLENAME = "audasa_pm.exp_pm";
     public static final String PM_FIELD_NUMEROPM = "numero_pm";
+    public static final String PM_FIELD_MUNICIPIO = "municipio";
     public static final String PM_FIELD_PARROQUIA = "parroquia";
 
     // Parroquias
@@ -53,5 +54,10 @@ public class Preferences {
     public static final String FINCAS_PM_TABLENAME = "audasa_pm.fincas_pm";
     public static final String FINCAS_PM_FIELD_IDFINCA = "id_finca";
     public static final String FINCAS_PM_FIELD_NUMEROPM = "numero_pm";
+
+    // Municipios Aux
+    public static final String MUNICIPIOS_AUX_TABLENAME = "audasa_aplicaciones.orden_ayuntamientos";
+    public static final String MUNICIPIOS_AUX_FIELD_NOMBRE = "nombre";
+    public static final String MUNICIPIOS_AUX_FIELD_ORDEN = "orden";
 
 }
