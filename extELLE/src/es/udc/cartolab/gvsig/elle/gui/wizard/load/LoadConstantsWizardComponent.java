@@ -60,7 +60,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 
     //ZoomToConstant
     public final static String CONSTANTS_ZOOM_LAYER_FIELD = "municipio_nombre";
-    public final static String CONSTANTS_ZOOM_LAYER_NAME = "linea_exp_envelope";
+    public final static String CONSTANTS_ZOOM_LAYER_NAME = "Constante";
 
     public LoadConstantsWizardComponent(Map<String, Object> properties) {
 	super(properties);
