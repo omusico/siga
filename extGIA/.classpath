@@ -14,5 +14,10 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/libDriverManager"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/extJDBC"/>
 	<classpathentry kind="lib" path="/libFMap/lib/org.cresques.cts.jar" sourcepath="/libProjection/src"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/libGDBMS"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/libExceptions"/>
+	<classpathentry kind="lib" path="lib/jcalendar-1.4.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/appgvSIG"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/libIverUtiles"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,17 +1,22 @@
 package es.icarto.gvsig.extgia;
 
+import java.util.HashMap;
+
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JTextField;
 
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.navtableforms.AbstractForm;
+import es.icarto.gvsig.navtableforms.controller.Controller;
 import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
 
 public class CalculateTaludIDValue extends CalculateComponentValue {
 
-    public CalculateTaludIDValue(AbstractForm form, String resultComponentName,
-	    String... operatorComponentsNames) {
-	super(form, resultComponentName, operatorComponentsNames);
+    public CalculateTaludIDValue(Controller form,
+	    HashMap<String, JComponent> allFormWidgets,
+	    String resultComponentName, String... operatorComponentsNames) {
+	super(form, allFormWidgets, resultComponentName,
+		operatorComponentsNames);
     }
 
     /**

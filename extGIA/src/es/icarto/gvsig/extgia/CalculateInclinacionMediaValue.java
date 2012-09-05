@@ -1,16 +1,21 @@
 package es.icarto.gvsig.extgia;
 
+import java.util.HashMap;
+
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.navtableforms.AbstractForm;
+import es.icarto.gvsig.navtableforms.controller.Controller;
 import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
 
 public class CalculateInclinacionMediaValue extends CalculateComponentValue {
 
-    public CalculateInclinacionMediaValue(AbstractForm form,
+    public CalculateInclinacionMediaValue(Controller form,
+	    HashMap<String, JComponent> allFormWidgets,
 	    String resultComponentName, String... operatorComponentsNames) {
-	super(form, resultComponentName, operatorComponentsNames);
+	super(form, allFormWidgets, resultComponentName,
+		operatorComponentsNames);
     }
 
     @Override

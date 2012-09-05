@@ -4,6 +4,7 @@ import java.io.File;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
@@ -17,6 +18,7 @@ import es.icarto.gvsig.extgia.preferences.Preferences;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.fileslink.FilesLink;
 import es.icarto.gvsig.navtableforms.validation.listeners.DependentComboboxesHandler;
+import es.udc.cartolab.gvsig.navtable.listeners.PositionEvent;
 
 @SuppressWarnings("serial")
 public class TaludesForm extends AbstractForm {
@@ -35,6 +37,9 @@ public class TaludesForm extends AbstractForm {
     private JComboBox tipoViaPF;
     private DependentComboboxesHandler direccionPIDomainHandler;
     private DependentComboboxesHandler direccionPFDomainHandler;
+
+    private ReconocimientoEstadoTaludesTable reconocimientoEstadoTaludesTable;
+    private TrabajosTaludesTable trabajosTaludesTable;
 
     public TaludesForm(FLyrVect layer) {
 	super(layer);
@@ -78,19 +83,23 @@ public class TaludesForm extends AbstractForm {
 	cunetaPie.fillSpecificValues();
 	direccionPIDomainHandler.updateComboBoxValues();
 	direccionPFDomainHandler.updateComboBoxValues();
-
+	reconocimientoEstadoTaludesTable.updateTable(getFormController()
+		.getValue("id_talud"));
+	trabajosTaludesTable.updateTable(getFormController().getValue(
+		"id_talud"));
     }
 
     @Override
     protected void setListeners() {
 	super.setListeners();
-	taludid = new CalculateTaludIDValue(this, DBFieldNames.ID_TALUD,
-		DBFieldNames.TIPO_TALUD, DBFieldNames.NUMERO_TALUD,
-		DBFieldNames.BASE_CONTRATISTA);
+	taludid = new CalculateTaludIDValue(controller, getWidgetsVector(),
+		DBFieldNames.ID_TALUD, DBFieldNames.TIPO_TALUD,
+		DBFieldNames.NUMERO_TALUD, DBFieldNames.BASE_CONTRATISTA);
 	taludid.setListeners();
 
-	inclinacionMedia = new CalculateInclinacionMediaValue(this,
-		DBFieldNames.INCLINACION_MEDIA, DBFieldNames.SECTOR_INCLINACION);
+	inclinacionMedia = new CalculateInclinacionMediaValue(controller,
+		getWidgetsVector(), DBFieldNames.INCLINACION_MEDIA,
+		DBFieldNames.SECTOR_INCLINACION);
 	inclinacionMedia.setListeners();
 
 	cunetaCabeza = new EnableComponentBasedOnCheckBox(
@@ -117,6 +126,16 @@ public class TaludesForm extends AbstractForm {
 	direccionPFDomainHandler = new DependentComboboxesHandler(this,
 		tipoViaPF, direccionPF);
 	tipoViaPF.addActionListener(direccionPFDomainHandler);
+
+	reconocimientoEstadoTaludesTable = new ReconocimientoEstadoTaludesTable(
+		(JTable) this.getWidgetComponents().get(
+			"taludes_reconocimiento_estado"));
+	reconocimientoEstadoTaludesTable.setListeners();
+
+	trabajosTaludesTable = new TrabajosTaludesTable((JTable) this
+		.getWidgetComponents().get("taludes_trabajos"));
+	trabajosTaludesTable.setListeners();
+
     }
 
     @Override
@@ -127,7 +146,18 @@ public class TaludesForm extends AbstractForm {
 	cunetaPie.removeListeners();
 	tipoViaPI.removeActionListener(direccionPIDomainHandler);
 	tipoViaPF.removeActionListener(direccionPFDomainHandler);
+	reconocimientoEstadoTaludesTable.removeListeners();
+	trabajosTaludesTable.removeListeners();
 	super.removeListeners();
+    }
+
+    @Override
+    public void onPositionChange(PositionEvent e) {
+	super.onPositionChange(e);
+	reconocimientoEstadoTaludesTable.updateTable(getFormController()
+		.getValue("id_talud"));
+	trabajosTaludesTable.updateTable(getFormController().getValue(
+		"id_talud"));
     }
 
 }

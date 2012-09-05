@@ -1,5 +1,7 @@
 package es.icarto.gvsig.extgia;
 
+import javax.swing.JOptionPane;
+
 import com.iver.andami.PluginServices;
 import com.iver.andami.plugins.Extension;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
@@ -14,19 +16,31 @@ public class FormLauncherExtension extends Extension {
 
     @Override
     public void execute(String actionCommand) {
-	this.layer = getLayerFromTOC();
-	final TaludesForm form = new TaludesForm(this.layer);
-	if (form.init()) {
-	    PluginServices.getMDIManager().addWindow(form);
+	// TODO. check if layer and tables are correctly loaded
+
+	if (actionCommand.equals("form_launcher")) {
+	    new Foo().execute();
+	    actionCommand = "taludes";
 	}
 
+	this.layer = getLayerFromTOC(actionCommand);
+	if (this.layer != null) {
+	    final TaludesForm form = new TaludesForm(this.layer);
+	    if (form.init()) {
+		PluginServices.getMDIManager().addWindow(form);
+	    }
+	} else {
+	    JOptionPane.showMessageDialog(null, "La capa " + actionCommand
+		    + " no está cargada en el TOC", "Capa no encontrada",
+		    JOptionPane.ERROR_MESSAGE);
+	}
     }
 
-    private FLyrVect getLayerFromTOC() {
+    private FLyrVect getLayerFromTOC(String actionCommand) {
 	final String layerName = ORMLite
 		.getDataBaseObject(
 			Preferences.getPreferences().getXMLFilePath())
-		.getTable("taludes").getTableName();
+		.getTable(actionCommand).getTableName();
 	final TOCLayerManager toc = new TOCLayerManager();
 	return toc.getLayerByName(layerName);
     }
@@ -45,13 +59,6 @@ public class FormLauncherExtension extends Extension {
 
     @Override
     public boolean isEnabled() {
-	return true;
-    }
-
-    private boolean isExampleDataSetLoaded() {
-	if (getLayerFromTOC() == null) {
-	    return false;
-	}
 	return true;
     }
 

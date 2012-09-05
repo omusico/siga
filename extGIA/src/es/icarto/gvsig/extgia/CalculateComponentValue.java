@@ -14,7 +14,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import es.icarto.gvsig.navtableforms.AbstractForm;
+import es.icarto.gvsig.navtableforms.controller.Controller;
 import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
 import es.icarto.gvsig.navtableforms.validation.ComponentValidator;
 
@@ -22,10 +22,11 @@ public abstract class CalculateComponentValue {
 
     protected JTextField resultComponent;
     protected String resultComponentName;
-    protected AbstractForm form;
+    protected Controller form;
     protected HashMap<String, JComponent> operatorComponents;
     protected ArrayList<ComponentValidator> operatorValidators;
     protected OperatorComponentsListener handler;
+    private HashMap<String, JComponent> allFormWidgets;
 
     /**
      * in the setListeners of the Form we must call the setListeners of this
@@ -35,10 +36,12 @@ public abstract class CalculateComponentValue {
     // TODO: The ideal behavior should be create this object in
     // fillSpecificValues and have the listeners registered in the form, so we
     // don't have to make specific calls
-    public CalculateComponentValue(AbstractForm form,
+    public CalculateComponentValue(Controller form,
+	    HashMap<String, JComponent> allFormWidgets,
 	    String resultComponentName, String... operatorComponentsNames) {
 	this.form = form;
 	this.resultComponentName = resultComponentName;
+	this.allFormWidgets = allFormWidgets;
 
 	setComponents(resultComponentName, operatorComponentsNames);
 	setOperatorValidators(operatorComponentsNames);
@@ -48,7 +51,8 @@ public abstract class CalculateComponentValue {
 
     private void setComponents(String resultComponentName,
 	    String[] operatorComponentsNames) {
-	HashMap<String, JComponent> allFormWidgets = form.getWidgetComponents();
+	// HashMap<String, JComponent> allFormWidgets =
+	// form.getWidgetComponents();
 	resultComponent = (JTextField) allFormWidgets.get(resultComponentName);
 	operatorComponents = new HashMap<String, JComponent>();
 	for (String name : operatorComponentsNames) {

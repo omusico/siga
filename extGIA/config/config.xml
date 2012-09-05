@@ -3,15 +3,20 @@
 	<depends plugin-name="com.iver.cit.gvsig"/>
 	<depends plugin-name="es.udc.cartolab.gvsig.navtable"/>
 	<depends plugin-name="es.udc.cartolab.gvsig.users"/>
-	
+
 	<libraries library-dir="lib"/>
 	<resourceBundle name="text"/>
 	<extensions>
 		<extension class-name="es.icarto.gvsig.extgia.FormLauncherExtension" description="form_launcher" active="true">
-			<tool-bar name="extGIA">
+
+		<menu text="Inventario/Taludes" action-command="taludes"/>
+
+
+<!--			<tool-bar name="extGIA">
 				<action-tool icon="extgia-openform" tooltip="form_launcher"
 					action-command="form_launcher" />
 			</tool-bar>
+-->
 		</extension>
 	</extensions>
 </plugin-config>
