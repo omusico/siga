@@ -9,7 +9,7 @@
 	<extensions>
 		<extension class-name="es.icarto.gvsig.extgia.FormLauncherExtension" description="form_launcher" active="true">
 
-		<menu text="Inventario/Taludes" action-command="taludes"/>
+		<menu text="Inventario/Taludes" action-command="taludes" position="36000"/>
 
 
 <!--			<tool-bar name="extGIA">
