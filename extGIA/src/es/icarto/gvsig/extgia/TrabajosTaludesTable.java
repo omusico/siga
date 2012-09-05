@@ -15,10 +15,11 @@ public class TrabajosTaludesTable {
     private AlphanumericFormView formView;
     private JTable table;
     private JTableContextualMenu contextualMenu;
+    private TaludesForm parentPanel;
 
-    public TrabajosTaludesTable(JTable table) {
+    public TrabajosTaludesTable(JTable table, TaludesForm parentPanel) {
 	this.table = table;
-
+	this.parentPanel = parentPanel;
 	formView = new TrabajosTaludesForm(getTableModel(null));
     }
 
@@ -46,7 +47,7 @@ public class TrabajosTaludesTable {
 	table.setModel(model);
 	formView.setModel(model);
 	formView.setForeignKey(rowFilterValue);
-	table.repaint();
+	parentPanel.repaint();
     }
 
     private TableModelAlphanumeric getTableModel(String rowFilterValue) {

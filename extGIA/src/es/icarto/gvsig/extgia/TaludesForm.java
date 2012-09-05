@@ -153,11 +153,11 @@ public class TaludesForm extends AbstractForm {
 
 	reconocimientoEstadoTaludesTable = new ReconocimientoEstadoTaludesTable(
 		(JTable) this.getWidgetComponents().get(
-			"taludes_reconocimiento_estado"));
+			"taludes_reconocimiento_estado"), this);
 	reconocimientoEstadoTaludesTable.setListeners();
 
 	trabajosTaludesTable = new TrabajosTaludesTable((JTable) this
-		.getWidgetComponents().get("taludes_trabajos"));
+		.getWidgetComponents().get("taludes_trabajos"), this);
 	trabajosTaludesTable.setListeners();
 
     }
@@ -182,6 +182,9 @@ public class TaludesForm extends AbstractForm {
 		.getValue("id_talud"));
 	trabajosTaludesTable.updateTable(getFormController().getValue(
 		"id_talud"));
+
+	// It should be better to repaint only the table but it don't seem to
+	// work. More research is needed
     }
 
 }

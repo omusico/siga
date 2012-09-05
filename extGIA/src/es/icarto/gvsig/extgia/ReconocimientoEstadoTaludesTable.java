@@ -14,10 +14,12 @@ public class ReconocimientoEstadoTaludesTable {
     private AlphanumericFormView formView;
     private JTable table;
     private JTableContextualMenu contextualMenu;
+    private TaludesForm parentPanel;
 
-    public ReconocimientoEstadoTaludesTable(JTable table) {
+    public ReconocimientoEstadoTaludesTable(JTable table,
+	    TaludesForm parentPanel) {
 	this.table = table;
-
+	this.parentPanel = parentPanel;
 	formView = new ReconocimientoEstadoTaludesForm(getTableModel(null));
     }
 
@@ -49,7 +51,7 @@ public class ReconocimientoEstadoTaludesTable {
 	table.setModel(model);
 	formView.setModel(model);
 	formView.setForeignKey(rowFilterValue);
-	table.repaint();
+	parentPanel.repaint();
     }
 
     private TableModelAlphanumeric getTableModel(String rowFilterValue) {
