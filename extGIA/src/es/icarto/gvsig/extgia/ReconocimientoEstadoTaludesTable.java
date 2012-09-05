@@ -32,9 +32,9 @@ public class ReconocimientoEstadoTaludesTable {
 
     private ArrayList<String> getColAlias() {
 	ArrayList<String> colAliases = new ArrayList<String>();
-	colAliases.add("NÂº InspecciÃ³n");
-	colAliases.add("Fecha InspecciÃ³n");
-	colAliases.add("Ãndice Estado");
+	colAliases.add("Nº Inspección");
+	colAliases.add("Fecha Inspección");
+	colAliases.add("Índice Estado");
 	// colAliases.add("nombre_revisor");
 	return colAliases;
     }
