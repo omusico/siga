@@ -15,6 +15,7 @@ import com.iver.andami.Launcher;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.panel.FormPanel;
 
+import es.icarto.gvsig.extgex.preferences.PreferencesPage;
 import es.icarto.gvsig.extgia.forms.reports.NavTableComponentsPrintButton;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.preferences.Preferences;
@@ -49,8 +50,17 @@ public class TaludesForm extends AbstractForm {
 	initWindow();
 
 	String baseDirectory = null;
-	baseDirectory = Launcher.getAppHomeDir() + File.separator
-		+ "Inventario" + File.separator + "FILES" + File.separator
+	try {
+	    baseDirectory = PreferencesPage.getBaseDirectory();
+	} catch (Exception e) {
+	}
+
+	if (baseDirectory == null || baseDirectory.isEmpty()) {
+	    baseDirectory = Launcher.getAppHomeDir();
+	}
+
+	baseDirectory = baseDirectory + File.separator + "FILES"
+		+ File.separator + "inventario" + File.separator
 		+ layer.getName();
 
 	new FilesLink(this, baseDirectory);
