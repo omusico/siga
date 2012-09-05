@@ -46,6 +46,10 @@
 		</copy>
 		<copy file="data/audasa.xml" todir="${dist}/data" overwrite="yes" />
 
+		<copy todir="${dist}/reports">
+			<fileset dir="reports" includes="*" />
+		</copy>
+		
 	</target>
 
 	<target name="copy-libs">

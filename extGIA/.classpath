@@ -19,5 +19,9 @@
 	<classpathentry kind="lib" path="lib/jcalendar-1.4.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/appgvSIG"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/libIverUtiles"/>
+	<classpathentry kind="lib" path="lib/jasperreports-4.6.0.jar"/>
+	<classpathentry kind="lib" path="lib/commons-digester-1.7.jar"/>
+	<classpathentry kind="lib" path="lib/groovy-2.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/asm-4.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

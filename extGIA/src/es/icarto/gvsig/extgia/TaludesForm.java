@@ -2,8 +2,10 @@ package es.icarto.gvsig.extgia;
 
 import java.io.File;
 
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
@@ -13,6 +15,7 @@ import com.iver.andami.Launcher;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.panel.FormPanel;
 
+import es.icarto.gvsig.extgia.forms.reports.NavTableComponentsPrintButton;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.preferences.Preferences;
 import es.icarto.gvsig.navtableforms.AbstractForm;
@@ -51,6 +54,17 @@ public class TaludesForm extends AbstractForm {
 		+ layer.getName();
 
 	new FilesLink(this, baseDirectory);
+
+	addNewButtonsToActionsToolBar();
+    }
+
+    private void addNewButtonsToActionsToolBar() {
+	JPanel actionsToolBar = this.getActionsToolBar();
+	NavTableComponentsPrintButton ntPrintButton = new NavTableComponentsPrintButton();
+	JButton printReportB = ntPrintButton.getPrintButton(this);
+	if (printReportB != null) {
+	    actionsToolBar.add(printReportB);
+	}
     }
 
     private void initWindow() {
