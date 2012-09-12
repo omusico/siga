@@ -17,6 +17,7 @@ import org.gvsig.mapsheets.print.audasa.VariablesTemplatePanel;
 import org.gvsig.mapsheets.print.series.fmap.MapSheetGrid;
 import org.gvsig.mapsheets.print.series.gui.MapSheetSelectionDialog;
 import org.gvsig.mapsheets.print.series.gui.MapSheetsSettingsPanel;
+import org.gvsig.mapsheets.print.series.layout.MapSheetFrameViewFactory;
 import org.gvsig.mapsheets.print.series.layout.MapSheetsLayoutTemplate;
 import org.gvsig.mapsheets.print.series.layout.MapSheetsProjectMap;
 import org.gvsig.mapsheets.print.series.layout.MapSheetsProjectMapFactory;
@@ -81,6 +82,7 @@ public class MapSheetsCreationExtension extends Extension {
 				 MapSheetGrid.class);
 		 
 		 MapSheetsProjectMapFactory.register();
+		 MapSheetFrameViewFactory.register();
 		 registerIcons();
 		 
         // about
@@ -227,7 +229,7 @@ public class MapSheetsCreationExtension extends Extension {
 					 
 					 ProjectView cloned_pv = new ProjectView();
 					 
-					 cloned_pv.setName("");
+					 cloned_pv.setName(_pv.getName());
 					 cloned_pv.setProjectDocumentFactory(new ProjectViewFactory());
 					 cloned_pv.setMapContext(clo_mc);
 					 cloned_pv.setMapOverViewContext(clo_omc);

@@ -40,6 +40,7 @@ import com.iver.cit.gvsig.fmap.drivers.FieldDescription;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.fmap.layers.FLayers;
 import com.iver.cit.gvsig.project.Project;
+import com.iver.cit.gvsig.project.documents.ProjectDocument;
 import com.iver.cit.gvsig.project.documents.exceptions.OpenException;
 import com.iver.cit.gvsig.project.documents.exceptions.SaveException;
 import com.iver.cit.gvsig.project.documents.layout.Attributes;
@@ -577,6 +578,7 @@ public class MapSheetsLayoutTemplate extends Layout implements IMapSheetsIdentif
 	resp.putProperty("type", atts.getType());
 	resp.putProperty("type_unit", atts.getSelTypeUnit());
 	resp.putProperty("landscape", atts.isLandSpace());
+	resp.putProperty("gridName", grid.getName());
 	return resp;
     }
 
@@ -615,6 +617,7 @@ public class MapSheetsLayoutTemplate extends Layout implements IMapSheetsIdentif
 	int cnt = ch_fra.getChildrenCount();
 	XMLEntity fra_ite = null;
 	IFFrame ifra = null;
+	String gridName = xml.getStringProperty("gridName");
 	for (int i=0; i<cnt; i++) {
 	    fra_ite = ch_fra.getChild(i);
 	    ifra = createFrame(fra_ite, p);
@@ -636,8 +639,19 @@ public class MapSheetsLayoutTemplate extends Layout implements IMapSheetsIdentif
 	     */
 	}
 
-	int aa = 0;
+	IFFrame[] frames = getLayoutContext().getAllFFrames();
+	for (IFFrame frame: frames) {
+		if (frame instanceof FFrameScaleBar) {
+			((FFrameScaleBar) frame).initDependence(frames);
+		}
+	}
 
+
+	FLayer lyr = viewFrame.getView().getMapContext().getLayers().getLayer(gridName);
+	if (lyr instanceof MapSheetGrid) {
+		setViewGrid(viewFrame.getView(), (MapSheetGrid) lyr);
+	}
+	viewFrame.setView(MapSheetsUtils.cloneProjectView(viewFrame.getView()));
 
     }
 

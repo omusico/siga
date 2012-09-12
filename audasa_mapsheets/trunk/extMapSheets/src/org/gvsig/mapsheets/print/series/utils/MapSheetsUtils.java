@@ -1776,7 +1776,7 @@ public class MapSheetsUtils {
 		 
 		 ProjectView cloned_pv = new ProjectView();
 		 
-		 cloned_pv.setName("");
+		 cloned_pv.setName(_pv.getName());
 		 cloned_pv.setProjectDocumentFactory(new ProjectViewFactory());
 		 cloned_pv.setMapContext(clo_mc);
 		 cloned_pv.setMapOverViewContext(clo_omc);

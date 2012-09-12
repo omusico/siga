@@ -4,9 +4,11 @@ import java.awt.geom.Point2D;
 
 import org.gvsig.mapsheets.print.series.utils.IMapSheetsIdentified;
 
+import com.iver.cit.gvsig.project.documents.exceptions.SaveException;
 import com.iver.cit.gvsig.project.documents.layout.fframes.FFrameView;
 import com.iver.cit.gvsig.project.documents.layout.fframes.IFFrame;
 import com.iver.cit.gvsig.project.documents.layout.gui.Layout;
+import com.iver.utiles.XMLEntity;
 
 /**
  * Special view frame to prevent the user from resizing it.
@@ -55,5 +57,12 @@ public class MapSheetFrameView extends FFrameView implements IMapSheetsIdentifie
 		msid = id;
 		try { Thread.sleep(40); } catch (Exception e) {}
 	}
+
+    public XMLEntity getXMLEntity() throws SaveException {
+        XMLEntity xml = super.getXMLEntity();
+        xml.remove("className");
+        xml.putProperty("className", MapSheetFrameView.class.getName());
+        return xml;
+    }
 
 }
