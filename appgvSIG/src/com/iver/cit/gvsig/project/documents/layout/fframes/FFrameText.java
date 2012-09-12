@@ -569,6 +569,9 @@ public class FFrameText extends FFrame {
 
         String[] s = xml.getStringArrayProperty("s");
 
+        if (s.length == 0) {
+            m_text.add("");
+        }
         for (int i = 0; i < s.length; i++) {
             this.m_text.add(s[i]);
         }
