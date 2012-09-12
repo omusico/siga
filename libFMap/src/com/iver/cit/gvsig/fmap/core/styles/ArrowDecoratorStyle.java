@@ -159,7 +159,9 @@ public class ArrowDecoratorStyle implements IStyle {
 		if (arrowMarkerCount <= 0) return;
 
 		PathLength pl = new PathLength(shp);
-		float size = (float) marker.getSize();
+		double percentSize = (float) marker.getSize();
+		float size = (float) (percentSize *  pl.lengthOfPath() / 100);
+		marker.setSize(size);
 		float myLineLength = pl.lengthOfPath()-size; // length without the first and last arrow
 		float step = arrowMarkerCount>2 ? myLineLength/(arrowMarkerCount-1) : pl.lengthOfPath();
 		float rotation1; // rotation at the arrow's vertex
@@ -254,6 +256,9 @@ public class ArrowDecoratorStyle implements IStyle {
 				marker.draw(g, affineTransform, startP, null);
 			}
 		}
+
+		marker.setSize(percentSize);
+
 	}
 
 	public void drawInsideRectangle(Graphics2D g, Rectangle r) {
