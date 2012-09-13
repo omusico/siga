@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -42,7 +41,6 @@ import org.gvsig.mapsheets.print.series.fmap.MapSheetGrid;
 import org.gvsig.mapsheets.print.series.fmap.MapSheetGridGraphic;
 import org.gvsig.mapsheets.print.series.gui.utils.LayerComboItem;
 import org.gvsig.mapsheets.print.series.gui.utils.SheetComboItem;
-import org.gvsig.mapsheets.print.series.layout.MapSheetFrameView;
 import org.gvsig.mapsheets.print.series.layout.MapSheetsLayoutTemplate;
 import org.gvsig.mapsheets.print.series.utils.MapSheetsUtils;
 
@@ -67,22 +65,6 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 	private static Logger logger = Logger.getLogger(PrintSelectionDialog.class);
 	private static String PDF_OUTPUT_DIR_FILE_CHOOSER_ID = "PDF_OUTPUT_DIR_FILE_CHOOSER_ID";
 
-	public static final int WIDTH = 336+50;
-	public static final int BUTTONS_PANEL_WIDTH = 300;
-	public static final int HEIGHT = 365;
-	
-	private static final int BUTTON_LEN = 111;
-	private static final int BUTTON_SEP = 15;
-	
-	private static final int MARGIN_LEFT = 15;
-	private static final int MARGIN_TOP = 15;
-	private static final int COMPONENT_SEP = 35;
-	private static final int COMPONENT_SEP_small = 30;
-	
-	private static final int BUTTON_WIDTH_LONG = 130;
-	private static final int PRINTER_CHK_WIDTH = 35 - BUTTON_SEP;
-	private static final int BUTTON_HEIGHT = 26;
-
 	private MapSheetsLayoutTemplate layout_template = null;
 	private WindowInfo winfo = null;
 	
@@ -103,6 +85,8 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 	private JTextField pdfOutputDirTextfield;
 	private JButton pdfOutputDirButton;
 	private JFileChooser pdfOutputDirFileChooser;
+	private JLabel pdfFilesPrefixLabel;
+	private JTextField pdfFilesPrefixTextfield;
 	
 	private JButton printPrinterButton = null;
 	private JCheckBox winPrinterSettsChk = null;
@@ -138,8 +122,7 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 	private void init() {
 		
 		isWindows = findOutWindows();
-		
-		this.setSize(WIDTH, HEIGHT);
+
 		this.setLayout(new BorderLayout());
 
 		this.add(getOtherSettingsPanel(), BorderLayout.EAST);
@@ -174,8 +157,6 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 			
 			buttonsPanel = new JPanel();
 			buttonsPanel.setLayout(new FlowLayout());
-			buttonsPanel.setPreferredSize(new Dimension(BUTTONS_PANEL_WIDTH, 40));
-			// buttonsPanel.add(getAcceptButton(), null);
 			buttonsPanel.add(getCancelButton(), null);
 
 		}
@@ -257,10 +238,6 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 		if (highlightSelectionCheckbox == null) {
 			highlightSelectionCheckbox = new JCheckBox(PluginServices.getText(null, "Highlight_selection"));
 			highlightSelectionCheckbox.addActionListener(this);
-			highlightSelectionCheckbox.setBounds(
-					MARGIN_LEFT,
-					getPrintSelRB().getBounds().y + 4*COMPONENT_SEP/3,
-					WIDTH / 3, 21);
 		}
 		return highlightSelectionCheckbox;
 	}
@@ -303,7 +280,9 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 	private JButton getCancelButton() {
 		if (closeButton == null) {
 			closeButton = new JButton(PluginServices.getText(null, "Close"));
-			closeButton.setPreferredSize(new Dimension(BUTTON_LEN, 26));
+			closeButton.setPreferredSize(new Dimension(
+					(int) (closeButton.getPreferredSize().width * 2.5),
+					(int) (closeButton.getPreferredSize().height * 1.2)));
 			closeButton.addActionListener(this);
 		}
 		return closeButton;
@@ -348,6 +327,37 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 			pdfOutputDirButton.addActionListener(this);
 		}
 		return pdfOutputDirButton;
+	}
+ 	
+ 	/**
+	 * This method initializes the name prefix for the PDF output files label
+	 *
+	 * @return javax.swing.JLabel
+	 */
+	private JLabel getPdfFilesPrefixLabel() {
+		if (pdfFilesPrefixLabel == null) {
+			pdfFilesPrefixLabel = new JLabel(PluginServices.getText(null, "File_name_prefix"),
+					new ImageIcon(getClass().getClassLoader().getResource("images" + File.separator + "help.png")),
+					JLabel.LEADING);
+			pdfFilesPrefixLabel.setEnabled(false);
+			pdfFilesPrefixLabel.setToolTipText(PluginServices.getText(null, "File_name_prefix_help"));
+		}
+		return pdfFilesPrefixLabel;
+	}
+	
+
+	/**
+	 * This method initializes the text field which displays the chosen name prefix for the PDF output files
+	 *
+	 * @return javax.swing.JTextField
+	 */
+	private JTextField getPdfFilesPrefixTextField() {
+		if (pdfFilesPrefixTextfield == null) {
+			pdfFilesPrefixTextfield = new JTextField(PluginServices.getText(this, "sheet"), 15);
+			pdfFilesPrefixTextfield.setEnabled(false);
+		    pdfFilesPrefixTextfield.setBackground(UIManager.getColor("TextField.inactiveBackground"));
+		}
+		return pdfFilesPrefixTextfield;
 	}
 
 
@@ -419,6 +429,26 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 			pdfOutputVertical.addComponent(getPdfOutputDirButton(), GroupLayout.PREFERRED_SIZE,
 					getPdfOutputDirButton().getPreferredSize().height, GroupLayout.PREFERRED_SIZE);
 			vertical.addGroup(pdfOutputVertical);
+			vertical.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED);
+			
+            horizontal.addComponent(getPdfFilesPrefixLabel());
+            vertical.addComponent(getPdfFilesPrefixLabel());
+			vertical.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED);
+			
+			SequentialGroup pdfPrefixHorizontal = layout.createSequentialGroup();
+			pdfPrefixHorizontal.addGap(LayoutStyle.getInstance().getPreferredGap(getPdfFilesPrefixTextField(),
+					getPdfFilesPrefixTextField(), LayoutStyle.ComponentPlacement.INDENT,
+					SwingConstants.EAST, this));
+			pdfPrefixHorizontal.addComponent(getPdfFilesPrefixTextField(), GroupLayout.PREFERRED_SIZE,
+					getPdfFilesPrefixTextField().getPreferredSize().width, GroupLayout.PREFERRED_SIZE);
+			horizontal.addGroup(pdfPrefixHorizontal);
+			
+			ParallelGroup pdfPrefixVertical = layout.createParallelGroup();
+			pdfPrefixVertical.addComponent(getPdfFilesPrefixLabel(), GroupLayout.PREFERRED_SIZE,
+					getPdfFilesPrefixLabel().getPreferredSize().height, GroupLayout.PREFERRED_SIZE);
+			pdfPrefixVertical.addComponent(getPdfFilesPrefixTextField(), GroupLayout.PREFERRED_SIZE,
+					getPdfFilesPrefixTextField().getPreferredSize().height, GroupLayout.PREFERRED_SIZE);
+			vertical.addGroup(pdfPrefixVertical);
 			vertical.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED);
 
 			pdfOutputDirFileChooser = new JFileChooser(PDF_OUTPUT_DIR_FILE_CHOOSER_ID,System.getProperty("user.home"));
@@ -611,11 +641,17 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 			    pdfOutputDirButton.setEnabled(true);
 			    pdfOutputDirTextfield.setBackground(UIManager.getColor("TextField.background"));
 			    pdfOutputDirLabel.setEnabled(true);
+			    pdfFilesPrefixLabel.setEnabled(true);
+			    pdfFilesPrefixTextfield.setEnabled(true);
+			    pdfFilesPrefixTextfield.setBackground(UIManager.getColor("TextField.background"));
 			} else {
 			    pdfOutputDirTextfield.setEnabled(false);
 			    pdfOutputDirButton.setEnabled(false);
 			    pdfOutputDirTextfield.setBackground(UIManager.getColor("TextField.inactiveBackground"));
 			    pdfOutputDirLabel.setEnabled(false);
+			    pdfFilesPrefixLabel.setEnabled(false);
+			    pdfFilesPrefixTextfield.setEnabled(false);
+			    pdfFilesPrefixTextfield.setBackground(UIManager.getColor("TextField.inactiveBackground"));
 			}
 		}
 
@@ -656,7 +692,7 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 						highlightSelectionCheckbox.isSelected(),
 						sel_back == null ? null : sel_back.getLayer(),
 						pdfOutputDirTextfield.getText(),
-						PluginServices.getText(this, "sheet"), this, false);
+						pdfFilesPrefixTextfield.getText(), this, false);
 				getBackLayerCombo().setEnabled(getUseThisBackLayerChk().isSelected());
 				return;
 
