@@ -1,5 +1,6 @@
 <project name="extAudasaCommons" default="generate-without-source" basedir=".">
 
+
   	<!-- set global properties for this build -->
 	<property name="src" location="src"/>
 	<property name="build" location="bin"/>
@@ -7,6 +8,8 @@
 	<property name="dist"  location="dist"/>
 	<property name="plugin" value="es.icarto.gvsig.audasacommons"/>
 	<property name="extensionsDir" location="../_fwAndami/gvSIG/extensiones"/>
+
+	<import file="../binaries/ant/utilities.xml" />
 
 	<target name="batch-build" depends="init, compile, create-jar, copy-data-files, copy-libs, move-to-andami">
 	</target>
@@ -44,7 +47,7 @@
 		<copy todir="${dist}/forms">
 			<fileset dir="forms" includes="*" excludes="*.jfpr" />
 		</copy>
-		
+
 	</target>
 
 	<target name="copy-libs">
@@ -68,4 +71,46 @@
 		<delete dir="${dist}"/>
 		<delete dir="${build}"/>
 	</target>
+
+
+
+	<!--
+				=====================
+				Build audasa projects
+				=====================
+	-->
+
+
+		<property name="gvSIG-audasa_projects" value="
+			extMapSheets,
+			extDBConnection,
+			ELLE,
+			extAudasaCommons,
+			extGEX,
+			extGIA,
+			extPM
+		"/>
+
+
+		<target name="build-audasa-projects"
+			description="calls the default target for the audasa projects">
+			<foreach list="${gvSIG-audasa_projects}" trim="true" delimiter="," target="default-ant-target" param="da-target.name"/>
+		</target>
+
+		<target name="default-ant-target">
+				<property name="da-target.dir" location="../${da-target.name}"/>
+				<if>
+					<available file="${da-target.dir}" type="dir"/>
+					<then>
+						<ant dir="${da-target.dir}" inheritAll="false" />
+					</then>
+					<else>
+						<echo>
+							Skip ${da-target.name} project from Batch build
+						</echo>
+					</else>
+				</if>
+		</target>
+
+
 </project>
