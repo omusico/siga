@@ -14,6 +14,9 @@ import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.ParallelGroup;
+import javax.swing.GroupLayout.SequentialGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -25,7 +28,9 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.LayoutStyle;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -112,8 +117,8 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 		if (winfo == null) {
 			winfo = new WindowInfo(WindowInfo.MODELESSDIALOG);
 			winfo.setTitle(PluginServices.getText(this, "Browse_print_sheets"));
-			winfo.setHeight(HEIGHT);
-			winfo.setWidth(WIDTH);
+			winfo.setHeight(otherSettingsPanel.getPreferredSize().height + buttonsPanel.getPreferredSize().height);
+			winfo.setWidth(otherSettingsPanel.getPreferredSize().width + sheetListPanel.getPreferredSize().width);
 		}
 		return winfo;
 	}
@@ -270,11 +275,6 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 		if (printPdfCheckbox == null) {
 			printPdfCheckbox = new JCheckBox(PluginServices.getText(null, "Print_as_pdf"));
 			printPdfCheckbox.addActionListener(this);
-			printPdfCheckbox.setBounds(
-					MARGIN_LEFT,
-					getPrintSelRB().getBounds().y + 4*COMPONENT_SEP/3,
-					WIDTH / 3, 21);
-			
 		}
 		return printPdfCheckbox;
 	}
@@ -287,23 +287,10 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 	private JButton getPrintPrinterButton(boolean less_space) {
 		if (printPrinterButton == null) {
 			printPrinterButton = new JButton(PluginServices.getText(null, "Print_button"));
-			
-			if (less_space) {
-				printPrinterButton.setPreferredSize(new Dimension(
-						BUTTON_WIDTH_LONG - 10, BUTTON_HEIGHT));
-			} else {
-				printPrinterButton.setPreferredSize(new Dimension(
-						BUTTON_WIDTH_LONG + BUTTON_SEP + PRINTER_CHK_WIDTH, BUTTON_HEIGHT));
-			}
-			
-			/*
-			printPrinterButton.setBounds(new Rectangle(
-					(WIDTH-BUTTON_SEP-2*BUTTON_LEN)/2,
-					15,
-					BUTTON_LEN, 26));
-			*/
+			printPrinterButton.setPreferredSize(new Dimension(
+					(int) (printPrinterButton.getPreferredSize().width * 2.5),
+					(int) (printPrinterButton.getPreferredSize().height * 1.2)));
 			printPrinterButton.addActionListener(this);
-			
 		}
 		return printPrinterButton;
 	}
@@ -342,8 +329,7 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 	 */
 	private JTextField getPdfOutputDirTextField() {
 		if (pdfOutputDirTextfield == null) {
-			pdfOutputDirTextfield = new JTextField(System.getProperty("user.home"));
-			pdfOutputDirTextfield.setBounds(new Rectangle(10, 0, 180, 21));
+			pdfOutputDirTextfield = new JTextField(System.getProperty("user.home"), 15);
 			pdfOutputDirTextfield.setEditable(false);
 			pdfOutputDirTextfield.setEnabled(false);
 		}
@@ -359,7 +345,6 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 		if (pdfOutputDirButton == null) {
 			pdfOutputDirButton = new JButton("...");
 			pdfOutputDirButton.setEnabled(false);
-			pdfOutputDirButton.setBounds(new Rectangle(200, 0, 30, 21));
 			pdfOutputDirButton.addActionListener(this);
 		}
 		return pdfOutputDirButton;
@@ -370,7 +355,9 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 		
 		if (otherSettingsPanel == null) {
 			otherSettingsPanel = new JPanel();
-			otherSettingsPanel.setLayout(new GridLayout(0,1));
+			GroupLayout layout = new GroupLayout(otherSettingsPanel);
+			otherSettingsPanel.setLayout(layout);
+			layout.setAutoCreateGaps(true);
 			
 			otherSettingsPanel.setBorder(BorderFactory.createTitledBorder(
 					null, PluginServices.getText(this, "Print_options"),
@@ -379,47 +366,98 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 					new Font("Dialog", Font.BOLD, 12),
 					new Color(51, 51, 51)));
 			
-			otherSettingsPanel.setPreferredSize(new Dimension(250,140));
-			otherSettingsPanel.add(this.getPrintAllRB());
-			otherSettingsPanel.add(this.getPrintSelRB());
+			int sepDistance = LayoutStyle.getInstance().getPreferredGap(getPdfOutputDirLabel(),
+							getPdfOutputDirTextField(), LayoutStyle.ComponentPlacement.UNRELATED,
+							SwingConstants.EAST, this);
 			
-			otherSettingsPanel.add(new JLabel());
+			ParallelGroup horizontal = layout.createParallelGroup(GroupLayout.Alignment.LEADING);
+			SequentialGroup vertical = layout.createSequentialGroup();
+			vertical.addGap(LayoutStyle.getInstance().getPreferredGap(getPdfOutputDirLabel(),
+					getPdfOutputDirTextField(), LayoutStyle.ComponentPlacement.INDENT,
+					SwingConstants.EAST, this));
+			horizontal.addComponent(getPrintAllRB());
+			vertical.addComponent(getPrintAllRB());
+			horizontal.addComponent(getPrintSelRB());
+			vertical.addComponent(getPrintSelRB());
+			vertical.addGap(sepDistance);
+            horizontal.addComponent(getUseThisBackLayerChk());
+            vertical.addComponent(getUseThisBackLayerChk());
+			vertical.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED);
+            horizontal.addComponent(getBackLayerCombo(), GroupLayout.PREFERRED_SIZE,
+            		getBackLayerCombo().getPreferredSize().width, GroupLayout.PREFERRED_SIZE);
+            vertical.addComponent(getBackLayerCombo(),GroupLayout.PREFERRED_SIZE,
+            		getBackLayerCombo().getPreferredSize().height, GroupLayout.PREFERRED_SIZE);
+			vertical.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED);
+			vertical.addGap(sepDistance);
+			vertical.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED);
+            horizontal.addComponent(getHighlightSelectionCheckBox());
+            vertical.addComponent(getHighlightSelectionCheckBox());
+			vertical.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED);
+			vertical.addGap(sepDistance);
+			vertical.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED);
+            horizontal.addComponent(getPrintPdfCheckBox());
+            vertical.addComponent(getPrintPdfCheckBox());
+			vertical.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED);
+            horizontal.addComponent(getPdfOutputDirLabel());
+            vertical.addComponent(getPdfOutputDirLabel());
+			vertical.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED);
 			
-			ArrayList lis = new ArrayList();
-			lis.add(getPrintAllRB());
-			lis.add(getPrintSelRB());
-			MapSheetsUtils.joinRadioButtons(lis);
+			SequentialGroup pdfOutputHorizontal = layout.createSequentialGroup();
+			pdfOutputHorizontal.addGap(LayoutStyle.getInstance().getPreferredGap(getPdfOutputDirLabel(),
+					getPdfOutputDirTextField(), LayoutStyle.ComponentPlacement.INDENT,
+					SwingConstants.EAST, this));
+			pdfOutputHorizontal.addComponent(getPdfOutputDirTextField(), GroupLayout.PREFERRED_SIZE,
+            		getPdfOutputDirTextField().getPreferredSize().width, GroupLayout.PREFERRED_SIZE);
+			pdfOutputHorizontal.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED);
+			pdfOutputHorizontal.addComponent(getPdfOutputDirButton(), GroupLayout.PREFERRED_SIZE,
+					getPdfOutputDirButton().getPreferredSize().width, GroupLayout.PREFERRED_SIZE);
+			horizontal.addGroup(pdfOutputHorizontal);
 			
-			otherSettingsPanel.add(getUseThisBackLayerChk());
-			JPanel auxp = new JPanel();
-			auxp.setLayout(null);
-			auxp.add(getBackLayerCombo(), null);
-			otherSettingsPanel.add(auxp);
+			ParallelGroup pdfOutputVertical = layout.createParallelGroup();
+			pdfOutputVertical.addComponent(getPdfOutputDirTextField(), GroupLayout.PREFERRED_SIZE,
+            		getPdfOutputDirTextField().getPreferredSize().height, GroupLayout.PREFERRED_SIZE);
+			pdfOutputVertical.addComponent(getPdfOutputDirButton(), GroupLayout.PREFERRED_SIZE,
+					getPdfOutputDirButton().getPreferredSize().height, GroupLayout.PREFERRED_SIZE);
+			vertical.addGroup(pdfOutputVertical);
+			vertical.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED);
 
-			otherSettingsPanel.add(getHighlightSelectionCheckBox());
-
-			otherSettingsPanel.add(getPrintPdfCheckBox());
-			otherSettingsPanel.add(getPdfOutputDirLabel());
-			auxp = new JPanel();
-			auxp.setLayout(null);
-			auxp.add(getPdfOutputDirTextField(), null);
-			auxp.add(getPdfOutputDirButton(), null);
-			otherSettingsPanel.add(auxp);
-
-			pdfOutputDirFileChooser = new JFileChooser(PDF_OUTPUT_DIR_FILE_CHOOSER_ID, System.getProperty("user.home"));
+			pdfOutputDirFileChooser = new JFileChooser(PDF_OUTPUT_DIR_FILE_CHOOSER_ID,System.getProperty("user.home"));
 			pdfOutputDirFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
 			if (pdfOutputDirFileChooser.getLastPath() != null) {
 				getPdfOutputDirTextField().setText(pdfOutputDirFileChooser.getLastPath().getAbsolutePath());
 			}
 
+			vertical.addGap(sepDistance);
+			vertical.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED);
 			
-			auxp = new JPanel(new FlowLayout());
-			auxp.add(getPrintPrinterButton(getIsWindows()));
+			ParallelGroup printSettings = layout.createParallelGroup(GroupLayout.Alignment.CENTER);
+
+			printSettings.addComponent(getPrintPrinterButton(getIsWindows()), GroupLayout.PREFERRED_SIZE,
+					getPrintPrinterButton(getIsWindows()).getPreferredSize().width, GroupLayout.PREFERRED_SIZE);
+			vertical.addComponent(getPrintPrinterButton(getIsWindows()), GroupLayout.PREFERRED_SIZE,
+					getPrintPrinterButton(getIsWindows()).getPreferredSize().height, GroupLayout.PREFERRED_SIZE);
 			if (getIsWindows()) {
-				auxp.add(getWindowsPrinterSettsPanel());
+				printSettings.addComponent(getWindowsPrinterSettsPanel(), GroupLayout.PREFERRED_SIZE,
+						getWindowsPrinterSettsPanel().getPreferredSize().width, GroupLayout.PREFERRED_SIZE);
+				vertical.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED);
+				vertical.addComponent(getWindowsPrinterSettsPanel(), GroupLayout.PREFERRED_SIZE,
+						getWindowsPrinterSettsPanel().getPreferredSize().height, GroupLayout.PREFERRED_SIZE);
 			}
-			otherSettingsPanel.add(auxp);
+
+			// We add gaps before and after the main groups and also a group which contains the leading one and the centered one
+			layout.setHorizontalGroup(layout.createSequentialGroup() 
+					.addGap(LayoutStyle.getInstance().getPreferredGap(getPdfOutputDirLabel(),
+					getPdfOutputDirTextField(), LayoutStyle.ComponentPlacement.INDENT, SwingConstants.EAST, this))
+					.addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER).addGroup(horizontal)
+					.addGroup(printSettings)).addGap(LayoutStyle.getInstance().getPreferredGap(getPdfOutputDirLabel(),
+					getPdfOutputDirTextField(), LayoutStyle.ComponentPlacement.INDENT, SwingConstants.EAST, this)));
+			layout.setVerticalGroup(vertical);
+
+			ArrayList<JRadioButton> lis = new ArrayList<JRadioButton>();
+			lis.add(getPrintAllRB());
+			lis.add(getPrintSelRB());
+			MapSheetsUtils.joinRadioButtons(lis);
 
 
 		}
@@ -469,7 +507,6 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 			
 			sheetListPanel = new JPanel();
 			sheetListPanel.setLayout(new BorderLayout());
-			// sheetListPanel.setBounds(new Rectangle(5, 5, 631, 67));
 			sheetListPanel.setBorder(BorderFactory.createTitledBorder(
 					null, PluginServices.getText(this, "Preview"),
 					TitledBorder.DEFAULT_JUSTIFICATION,
@@ -478,6 +515,7 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 					new Color(51, 51, 51)));
 			
 			sheetListPanel.add(getSheetsScroll(), BorderLayout.CENTER);
+			sheetListPanel.setPreferredSize(new Dimension(125, 300));
 		}
 		return sheetListPanel;
 	}
@@ -498,9 +536,6 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 			printAllRB = new JRadioButton();
 			printAllRB.setText(PluginServices.getText(this, "Print_all_sheets"));
 			printAllRB.addActionListener(this);
-			printAllRB.setBounds(
-					MARGIN_LEFT, MARGIN_TOP,
-					WIDTH / 3, 21);
 		}
 		return printAllRB;
 	}
@@ -511,10 +546,6 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 			printSelRB = new JRadioButton();
 			printSelRB.setText(PluginServices.getText(this, "Print_sel_sheets"));
 			printSelRB.addActionListener(this);
-			printSelRB.setBounds(
-					MARGIN_LEFT,
-					getPrintAllRB().getBounds().y + COMPONENT_SEP,
-					WIDTH / 3, 21);
 		}
 		return printSelRB;
 	}
@@ -526,10 +557,6 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 			useThisBackLayerChk.setText(PluginServices.getText(this,
 					"Use_back_layer"));
 			useThisBackLayerChk.addActionListener(this);
-			useThisBackLayerChk.setBounds(
-					MARGIN_LEFT,
-					getPrintSelRB().getBounds().y + 4*COMPONENT_SEP/3,
-					WIDTH / 3, 21);
 		}
 		return useThisBackLayerChk;
 		
@@ -563,12 +590,7 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 		if (backLayerCombo == null) {
 			backLayerCombo = new JComboBox();
 			backLayerCombo.setEnabled(false);
-			backLayerCombo.setBounds(new Rectangle(10, 0, 200, 21));
-//			backLayerCombo.setBounds(
-//					2 * MARGIN_LEFT / 3,
-//					getUseThisBackLayerChk().getBounds().y + COMPONENT_SEP_small,
-//					180, 21);
-			
+			backLayerCombo.setPreferredSize(new Dimension(200, backLayerCombo.getPreferredSize().height));
 		}
 		return backLayerCombo;
 	}
