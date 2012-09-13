@@ -39,11 +39,11 @@
 
 	<target name="copy-data-files">
 	    <copy file="config/config.xml" todir="${dist}" />
-<!--
+
 		<copy todir="${dist}/images">
 			<fileset dir="images" includes="*" />
 		</copy>
--->
+
 		<copy todir="${dist}/forms">
 			<fileset dir="forms" includes="*" excludes="*.jfpr" />
 		</copy>

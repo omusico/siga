@@ -16,7 +16,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.panel.FormPanel;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
-import es.icarto.gvsig.extgia.forms.reports.NavTableComponentsPrintButton;
+import es.icarto.gvsig.audasacommons.forms.reports.NavTableComponentsPrintButton;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.preferences.Preferences;
 import es.icarto.gvsig.navtableforms.AbstractForm;

@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgia.forms.reports;
+package es.icarto.gvsig.audasacommons.forms.reports;
 
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 
 import com.iver.andami.PluginServices;
 
-import es.icarto.gvsig.extgia.forms.reports.imagefilechooser.ImageFileChooser;
+import es.icarto.gvsig.audasacommons.forms.reports.imagefilechooser.ImageFileChooser;
 import es.udc.cartolab.gvsig.navtable.AbstractNavTable;
 
 public class PrintPMReportObserver implements ActionListener {
