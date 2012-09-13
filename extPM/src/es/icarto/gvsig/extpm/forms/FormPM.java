@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,8 +27,9 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 import com.jeta.forms.components.panel.FormPanel;
 
+import es.icarto.gvsig.audasacommons.forms.reports.NavTableComponentsPrintButton;
 import es.icarto.gvsig.extpm.forms.filesLink.NavTableComponentsFilesLinkButton;
-import es.icarto.gvsig.extpm.forms.reports.NavTableComponentsPrintButton;
+
 import es.icarto.gvsig.extpm.preferences.Preferences;
 import es.icarto.gvsig.extpm.utils.managers.ToggleEditingManager;
 import es.icarto.gvsig.navtableforms.AbstractForm;
@@ -79,12 +81,14 @@ public class FormPM extends AbstractForm {
     }
 
     private void addNewButtonsToActionsToolBar() {
+	URL reportPath = this.getClass().getClassLoader()
+		.getResource("reports/pm_report.jasper");
 	JPanel actionsToolBar = this.getActionsToolBar();
 	NavTableComponentsFilesLinkButton ntFilesLinkButton = new NavTableComponentsFilesLinkButton();
 	NavTableComponentsPrintButton ntPrintButton = new NavTableComponentsPrintButton();
 	JButton filesLinkB = ntFilesLinkButton.getFilesLinkButton(layer,
 		this);
-	JButton printReportB = ntPrintButton.getPrintButton(this);
+	JButton printReportB = ntPrintButton.getPrintButton(this, reportPath.getPath());
 	if (filesLinkB != null && printReportB != null) {
 	    actionsToolBar.add(filesLinkB);
 	    actionsToolBar.add(printReportB);

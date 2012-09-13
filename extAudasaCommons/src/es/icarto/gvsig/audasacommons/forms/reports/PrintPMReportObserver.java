@@ -9,8 +9,6 @@ import java.util.HashMap;
 
 import javax.swing.JOptionPane;
 
-import com.iver.andami.PluginServices;
-
 import es.icarto.gvsig.audasacommons.forms.reports.imagefilechooser.ImageFileChooser;
 import es.udc.cartolab.gvsig.navtable.AbstractNavTable;
 
@@ -19,9 +17,11 @@ public class PrintPMReportObserver implements ActionListener {
     private final AbstractNavTable dialog;
     private File inputImageFile;
     private File outputFile;
+    private String reportPath;
 
-    public PrintPMReportObserver(AbstractNavTable dialog) {
+    public PrintPMReportObserver(AbstractNavTable dialog, String reportPath) {
 	this.dialog = dialog;
+	this.reportPath = reportPath;
     }
 
     @Override
@@ -67,10 +67,7 @@ public class PrintPMReportObserver implements ActionListener {
     }
 
     private String getReportPath() {
-	java.net.URL reportPath = PluginServices
-		.getPluginServices("es.icarto.gvsig.extgia").getClassLoader()
-		.getResource("reports/taludes.jasper");
-	return reportPath.getPath();
+	return this.reportPath;
     }
 
     private HashMap<String, Object> getReportParameters() {

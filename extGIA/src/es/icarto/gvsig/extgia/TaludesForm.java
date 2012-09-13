@@ -1,6 +1,7 @@
 package es.icarto.gvsig.extgia;
 
 import java.io.File;
+import java.net.URL;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -69,9 +70,12 @@ public class TaludesForm extends AbstractForm {
     }
 
     private void addNewButtonsToActionsToolBar() {
+	URL reportPath = this.getClass().getClassLoader()
+		.getResource("reports/taludes.jasper");
 	JPanel actionsToolBar = this.getActionsToolBar();
 	NavTableComponentsPrintButton ntPrintButton = new NavTableComponentsPrintButton();
-	JButton printReportB = ntPrintButton.getPrintButton(this);
+	JButton printReportB = ntPrintButton.getPrintButton(this,
+		reportPath.getPath());
 	if (printReportB != null) {
 	    actionsToolBar.add(printReportB);
 	}
