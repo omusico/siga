@@ -19,11 +19,11 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/extDBConnection"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/extCAD"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/extGEX"/>
-	<classpathentry kind="lib" path="lib/jasperreports-4.6.0.jar"/>
-	<classpathentry kind="lib" path="lib/groovy-2.0.0.jar"/>
-	<classpathentry kind="lib" path="lib/antlr-2.7.7.jar"/>
-	<classpathentry kind="lib" path="lib/asm-4.0.jar"/>
 	<classpathentry kind="src" path="/extAudasaCommons"/>
 	<classpathentry kind="lib" path="/extAudasaCommons/lib/formsrt.jar"/>
+	<classpathentry kind="lib" path="/extAudasaCommons/lib/asm-4.0.jar"/>
+	<classpathentry kind="lib" path="/extAudasaCommons/lib/commons-digester-1.7.jar"/>
+	<classpathentry kind="lib" path="/extAudasaCommons/lib/groovy-2.0.0.jar"/>
+	<classpathentry kind="lib" path="/extAudasaCommons/lib/jasperreports-4.6.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
