@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="lib/formsrt.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.8.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/extNavTable"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/libFMap"/>
@@ -28,6 +27,7 @@
 	<classpathentry kind="lib" path="/libFMap/lib/jts-1.12.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/extELLE"/>
+	<classpathentry kind="lib" path="/extAudasaCommons/lib/formsrt.jar"/>
 	<classpathentry kind="src" path="/extAudasaCommons"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="lib/formsrt.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.8.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/libFMap"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/_fwAndami"/>
@@ -25,5 +24,6 @@
 	<classpathentry kind="lib" path="lib/antlr-2.7.7.jar"/>
 	<classpathentry kind="lib" path="lib/asm-4.0.jar"/>
 	<classpathentry kind="src" path="/extAudasaCommons"/>
+	<classpathentry kind="lib" path="/extAudasaCommons/lib/formsrt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
