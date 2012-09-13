@@ -5,7 +5,7 @@ import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 
-import es.icarto.gvsig.extgex.preferences.PreferencesPage;
+import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.extpm.preferences.Preferences;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 

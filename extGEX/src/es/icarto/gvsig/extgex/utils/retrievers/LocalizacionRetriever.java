@@ -2,10 +2,8 @@ package es.icarto.gvsig.extgex.utils.retrievers;
 
 import java.util.ArrayList;
 
-import com.iver.andami.PluginServices;
-
 import es.icarto.gvsig.extgex.preferences.DBNames;
-import es.icarto.gvsig.extgex.preferences.PreferencesPage;
+import es.icarto.gvsig.extgex.preferences.GEXPreferences;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.ormlite.domain.DomainValues;
 import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
@@ -148,9 +146,6 @@ public class LocalizacionRetriever {
     }
 
     private String getXMLPath() {
-	return PluginServices.getPluginServices("es.icarto.gvsig.extgex")
-	.getClassLoader()
-	.getResource(PreferencesPage.XML_ORMLITE_RELATIVE_PATH)
-	.getPath();
+	return GEXPreferences.getPreferences().getXMLFilePath();
     }
 }

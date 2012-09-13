@@ -1,11 +1,11 @@
 package es.icarto.gvsig.extgex.navtable.decorators.fileslink;
 
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
-import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 
-import es.icarto.gvsig.extgex.preferences.PreferencesPage;
+import es.icarto.gvsig.audasacommons.PreferencesPage;
+import es.icarto.gvsig.extgex.preferences.GEXPreferences;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 
 public class FilesLinkData {
@@ -34,9 +34,7 @@ public class FilesLinkData {
     }
 
     public String getDirectoryFieldName() {
-	String xmlFilePath = PluginServices
-		.getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
-		.getResource(PreferencesPage.XML_ORMLITE_RELATIVE_PATH).getPath();
+	String xmlFilePath = GEXPreferences.getPreferences().getXMLFilePath();
 	return ORMLite.getDataBaseObject(xmlFilePath).getTable(layer.getName())
 		.getPrimaryKey()[0];
 

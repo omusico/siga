@@ -8,7 +8,6 @@
 	<classpathentry kind="lib" path="lib/es.icarto.gvsig.navtableforms.jar" sourcepath="/navtableforms/src"/>
 	<classpathentry kind="lib" path="/_fwAndami/lib/log4j-1.2.14.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/extNavTable"/>
-	<classpathentry kind="lib" path="lib/formsrt.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/extDBConnection"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/libDriverManager"/>
@@ -23,6 +22,7 @@
 	<classpathentry kind="lib" path="lib/commons-digester-1.7.jar"/>
 	<classpathentry kind="lib" path="lib/groovy-2.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/asm-4.0.jar"/>
-	<classpathentry kind="src" path="/extGEX"/>
+	<classpathentry kind="lib" path="/extAudasaCommons/lib/formsrt.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/extAudasaCommons"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -5,9 +5,6 @@ import javax.swing.JOptionPane;
 import com.iver.andami.PluginServices;
 import com.iver.andami.plugins.Extension;
 import com.iver.andami.plugins.IExtension;
-import com.iver.andami.preferences.IPreference;
-import com.iver.andami.preferences.IPreferenceExtension;
-import com.iver.andami.preferences.StoreException;
 import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.cit.gvsig.About;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
@@ -16,14 +13,12 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.icarto.gvsig.extgex.forms.FormExpropiations;
 import es.icarto.gvsig.extgex.preferences.DBNames;
-import es.icarto.gvsig.extgex.preferences.PreferencesPage;
 import es.icarto.gvsig.extgex.utils.AlphanumericTableLoader;
 import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
 import es.udc.cartolab.gvsig.users.DBConnectionExtension;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
-public class FormExpropiationsExtension extends Extension implements
-IPreferenceExtension {
+public class FormExpropiationsExtension extends Extension {
 
     private FLyrVect layer;
     private FormExpropiations dialog;
@@ -60,14 +55,8 @@ IPreferenceExtension {
 	FPanelAbout panelAbout = about.getAboutPanel();
 	java.net.URL aboutURL = this.getClass().getResource("/about.htm");
 	panelAbout.addAboutUrl("GEX", aboutURL);
-	
+
 	registerIcons();
-	PreferencesPage page = new PreferencesPage();
-	try {
-	    page.setBaseDirectory(PreferencesPage.DEFAULT_FILES_DIR);
-	} catch (StoreException e) {
-	    e.printStackTrace();
-	}
     }
 
     public void postInitialize() {
@@ -92,12 +81,6 @@ IPreferenceExtension {
 	return true;
     }
 
-    @Override
-    public IPreference[] getPreferencesPages() {
-	IPreference[] preferences = new IPreference[1];
-	preferences[0] = new PreferencesPage();
-	return preferences;
-    }
 
     private boolean isLayerLoaded(String layerName) {
 	TOCLayerManager toc = new TOCLayerManager();

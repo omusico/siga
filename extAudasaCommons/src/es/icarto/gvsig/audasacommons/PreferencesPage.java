@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgex.preferences;
+package es.icarto.gvsig.audasacommons;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,23 +18,22 @@ import com.iver.andami.preferences.StoreException;
 import com.iver.utiles.XMLEntity;
 import com.jeta.forms.components.panel.FormPanel;
 
+@SuppressWarnings("serial")
 public class PreferencesPage extends AbstractPreferencePage implements
 	ActionListener {
 
-    // ormlite
-    public static final String XML_ORMLITE_RELATIVE_PATH = "data/extgex.xml";
+    private static final String PLUGIN_NAME = "es.icarto.gvsig.audasacommons";
 
     // fileslink
-    public static final String DEFAULT_FILES_DIR_KEY_NAME = "FilesDir";
+    private static final String DEFAULT_FILES_DIR_KEY_NAME = "FilesDir";
 
-    public static final String DEFAULT_FILES_DIR = Launcher.getAppHomeDir();
+    private static final String DEFAULT_FILES_DIR = Launcher.getAppHomeDir();
 
-    protected String id;
+    private String id;
     private boolean panelStarted = false;
     private JTextField filesDirField;
     private JButton filesDirButton;
     private String title = "Audasa";
-
 
     static String baseDirectory = "";
 
@@ -55,20 +54,23 @@ public class PreferencesPage extends AbstractPreferencePage implements
 	setBaseDirectory(legendDir);
     }
 
+    @Override
     public String getID() {
 	return id;
     }
 
+    @Override
     public ImageIcon getIcon() {
 	// TODO Auto-generated method stub
 	return null;
     }
 
+    @Override
     public JPanel getPanel() {
 	if (!panelStarted) {
 	    panelStarted = true;
 
-	    FormPanel form = new FormPanel("preferences.jfrm");
+	    FormPanel form = new FormPanel("forms/preferences.xml");
 	    form.setFocusTraversalPolicyProvider(true);
 
 	    JLabel legendLabel = form.getLabel("filesLabel");
@@ -86,15 +88,18 @@ public class PreferencesPage extends AbstractPreferencePage implements
 	return this;
     }
 
+    @Override
     public String getTitle() {
 	return title;
     }
 
+    @Override
     public void initializeDefaults() {
 	filesDirField.setText(DEFAULT_FILES_DIR);
 
     }
 
+    @Override
     public void initializeValues() {
 	if (!panelStarted) {
 	    getPanel();
@@ -105,9 +110,8 @@ public class PreferencesPage extends AbstractPreferencePage implements
 
 	// Default Projection
 	String filesDir = null;
-	if (xml.contains(PreferencesPage.DEFAULT_FILES_DIR_KEY_NAME)) {
-	    filesDir = xml
-		    .getStringProperty(PreferencesPage.DEFAULT_FILES_DIR_KEY_NAME);
+	if (xml.contains(DEFAULT_FILES_DIR_KEY_NAME)) {
+	    filesDir = xml.getStringProperty(DEFAULT_FILES_DIR_KEY_NAME);
 	} else {
 	    filesDir = DEFAULT_FILES_DIR;
 	}
@@ -116,10 +120,12 @@ public class PreferencesPage extends AbstractPreferencePage implements
 
     }
 
+    @Override
     public boolean isValueChanged() {
 	return super.hasChanged();
     }
 
+    @Override
     public void actionPerformed(ActionEvent event) {
 	if (event.getSource() == filesDirButton) {
 	    File currentDirectory = new File(filesDirField.getText());
@@ -145,22 +151,20 @@ public class PreferencesPage extends AbstractPreferencePage implements
     }
 
     public static String getBaseDirectory() {
-	XMLEntity xml = PluginServices.getPluginServices(
-		"es.icarto.gvsig.extgex").getPersistentXML();
+	XMLEntity xml = PluginServices.getPluginServices(PLUGIN_NAME)
+		.getPersistentXML();
 	if (xml.contains(DEFAULT_FILES_DIR_KEY_NAME)) {
 	    baseDirectory = xml.getStringProperty(DEFAULT_FILES_DIR_KEY_NAME);
 	}
 	return baseDirectory;
     }
 
-
     public void setBaseDirectory(String baseDirectory) throws StoreException {
 	PluginServices ps = PluginServices.getPluginServices(this);
 	XMLEntity xml = ps.getPersistentXML();
 	File f = new File(baseDirectory);
 	if (f.exists() && f.isDirectory() && f.canRead()) {
-	    xml.putProperty(PreferencesPage.DEFAULT_FILES_DIR_KEY_NAME,
-		    baseDirectory);
+	    xml.putProperty(DEFAULT_FILES_DIR_KEY_NAME, baseDirectory);
 	} else {
 	    String message = String.format("%s no es un directorio válido",
 		    baseDirectory);

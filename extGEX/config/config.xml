@@ -5,6 +5,7 @@
 	<depends plugin-name="es.udc.cartolab.gvsig.users"/>
 	<depends plugin-name="es.udc.cartolab.gvsig.elle"/>
 	<depends plugin-name="org.gvsig.mapsheets.print.series"/>
+	<depends plugin-name="es.icarto.gvsig.audasacommons"/>
 	<libraries library-dir="lib"/>
 	<resourceBundle name="text"/>
 	<extensions>

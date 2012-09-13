@@ -16,13 +16,12 @@ import javax.swing.event.InternalFrameEvent;
 import org.apache.log4j.Logger;
 
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
-import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.panel.FormPanel;
 
 import es.icarto.gvsig.extgex.navtable.NavTableComponentsFactory;
 import es.icarto.gvsig.extgex.preferences.DBNames;
-import es.icarto.gvsig.extgex.preferences.PreferencesPage;
+import es.icarto.gvsig.extgex.preferences.GEXPreferences;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.gui.tables.TableModelFactory;
 import es.icarto.gvsig.navtableforms.launcher.ILauncherForm;
@@ -201,9 +200,7 @@ public class FormReversions extends AbstractForm implements ILauncherForm {
 
     @Override
     public String getXMLPath() {
-	return PluginServices.getPluginServices("es.icarto.gvsig.extgex")
-	.getClassLoader()
-	.getResource(PreferencesPage.XML_ORMLITE_RELATIVE_PATH).getPath();
+	return GEXPreferences.getPreferences().getXMLFilePath();
     }
 
 }
