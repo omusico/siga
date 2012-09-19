@@ -14,10 +14,14 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.print.PrinterJob;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.sql.Types;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -34,6 +38,7 @@ import javax.swing.table.DefaultTableModel;
 
 import org.apache.log4j.Logger;
 import org.cresques.cts.IProjection;
+import org.exolab.castor.xml.Marshaller;
 import org.gvsig.mapsheets.print.series.MapSheetsCreationExtension;
 import org.gvsig.mapsheets.print.series.fmap.MapSheetGrid;
 import org.gvsig.mapsheets.print.series.fmap.MapSheetGridGraphic;
@@ -101,6 +106,8 @@ import com.iver.cit.gvsig.project.documents.view.ProjectViewFactory;
 import com.iver.utiles.SimpleFileFilter;
 import com.iver.utiles.XMLEntity;
 import com.iver.utiles.swing.threads.Cancellable;
+import com.iver.utiles.xml.XMLEncodingUtils;
+import com.iver.utiles.xmlEntity.generate.XmlTag;
 import com.lowagie.text.Document;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfContentByte;
@@ -1222,6 +1229,56 @@ public class MapSheetsUtils {
 
 
 
+	public static MapSheetGrid loadMapSheetsGrid(File gridfile) throws Exception {
+		String encoding = XMLEncodingUtils.getEncoding(new FileInputStream(gridfile));
+		InputStreamReader reader=null;
+		MapSheetGrid msg;
+		if (encoding!=null) {
+			try {
+				reader = new InputStreamReader(new FileInputStream(gridfile), encoding);
+			} catch (UnsupportedEncodingException e) {
+				reader = new InputStreamReader(new FileInputStream(gridfile));
+			}
+		} else {
+			reader = new InputStreamReader(new FileInputStream(gridfile));
+		}
+		XmlTag tag = (XmlTag) XmlTag.unmarshal(reader);
+		XMLEntity xml=new XMLEntity(tag);
+		msg = new MapSheetGrid();
+		msg.setXMLEntity(xml);
+
+		return msg;
+	}
+
+
+
+	public static void saveMapSheetsGrid(File gridfile, MapSheetGrid msg) throws Exception {
+		if(gridfile.exists()){
+			int resp = JOptionPane.showConfirmDialog(
+					(Component) PluginServices.getMainFrame(),PluginServices.getText(MapSheetsUtils.class,"gridfile_already_exists"),
+					PluginServices.getText(MapSheetsUtils.class,"guardar"), JOptionPane.YES_NO_OPTION);
+			if (resp != JOptionPane.YES_OPTION) {
+				return;
+			}
+		}
+		// write it out as XML
+		try {
+            FileOutputStream fos = new FileOutputStream(gridfile.getAbsolutePath());
+            OutputStreamWriter writer = new OutputStreamWriter(fos, ProjectExtension.PROJECTENCODING);
+			Marshaller m = new Marshaller(writer);
+			m.setEncoding(ProjectExtension.PROJECTENCODING);
+			XMLEntity xml = msg.getXMLEntity();
+			m.marshal(xml.getXmlTag());
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(
+					(Component) PluginServices.getMainFrame(),PluginServices.getText(MapSheetsUtils.class,"error_writing_project")+":\n-"
+					+ PluginServices.getText(MapSheetsUtils.class,"the_user_cannot_edit_the_project_because_it_has_not_write_permissions")+".",
+					PluginServices.getText(MapSheetsUtils.class,"warning"), JOptionPane.OK_OPTION);
+		}
+	}
+
+
+
 	private static Value getDefValueForType(int ty) {
 		
 		switch (ty) {
@@ -1899,6 +1956,4 @@ public class MapSheetsUtils {
 		
 	}
 
-
-	
 }
