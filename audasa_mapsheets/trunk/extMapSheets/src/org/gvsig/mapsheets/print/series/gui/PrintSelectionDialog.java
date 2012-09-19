@@ -226,6 +226,9 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 			// sheetList.setPreferredSize(new Dimension(100,100));
 			sheetList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 			sheetList.addListSelectionListener(this);
+
+			//int[] sheets = MapSheetsUtils.filterMapSheetGridSheets(dlm, gr, "MUNICIPIO", ValueFactory.createValue("TEST"));
+			//sheetList.setSelectedIndices(sheets);
 			
 		}
 		return sheetList;
@@ -670,7 +673,6 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 		}
 		
 	}
-
 	
 
 }

@@ -28,12 +28,14 @@ import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.print.attribute.standard.PrintQuality;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.ListModel;
 import javax.swing.table.DefaultTableModel;
 
 import org.apache.log4j.Logger;
@@ -47,6 +49,7 @@ import org.gvsig.mapsheets.print.series.fmap.MapSheetsGridWriteTask;
 import org.gvsig.mapsheets.print.series.fmap.MemoryDriverImpl;
 import org.gvsig.mapsheets.print.series.fmap.SheetMemoryDriver;
 import org.gvsig.mapsheets.print.series.gui.utils.IProgressListener;
+import org.gvsig.mapsheets.print.series.gui.utils.SheetComboItem;
 import org.gvsig.mapsheets.print.series.layout.MapSheetsFrameText;
 import org.gvsig.mapsheets.print.series.layout.MapSheetsLayoutTemplate;
 import org.gvsig.mapsheets.print.series.print.MapSheetsPrint;
@@ -1954,6 +1957,44 @@ public class MapSheetsUtils {
 		
 		
 		
+	}
+
+
+	public static int[] filterMapSheetGridSheets(ListModel model, MapSheetGrid grid, String fieldName, Value value) {
+		int field = -1;
+		List<FieldDescription> descriptions;
+		try {
+			descriptions = grid.getFieldDescs();
+			for (int i=0; i<descriptions.size(); i++) {
+				if (descriptions.get(i).getFieldName().equals(fieldName)) {
+					field = i;
+					break;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		if (field == -1) {
+			return new int[0];
+		}
+
+		List<Integer> sheets = new ArrayList<Integer>();
+
+		for(int n=0; n<model.getSize(); n++) {
+			if (((SheetComboItem) (model.getElementAt(n))).getObject()
+					.getAttributes()[field].equals((Object)value)) {
+				sheets.add(n);
+			}
+		}
+
+		int[] integers = new int[sheets.size()];
+
+		for (int n=0; n<integers.length; n++) {
+			integers[n] = sheets.get(n).intValue();
+		}
+
+		return integers;
 	}
 
 }
