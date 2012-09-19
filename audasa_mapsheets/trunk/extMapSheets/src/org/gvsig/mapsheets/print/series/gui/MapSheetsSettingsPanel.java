@@ -69,6 +69,7 @@ import com.iver.cit.gvsig.project.documents.layout.gui.Layout;
 import com.iver.cit.gvsig.project.documents.view.IProjectView;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 import com.iver.utiles.GenericFileFilter;
+import com.iver.utiles.SimpleFileFilter;
 import com.iver.utiles.XMLEntity;
 import com.iver.utiles.xml.XMLEncodingUtils;
 import com.iver.utiles.xmlEntity.generate.XmlTag;
@@ -86,7 +87,7 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 	private static Logger logger = Logger.getLogger(MapSheetsSettingsPanel.class.getName());
 	
 	public static final int WIDTH = 645;
-	public static final int HEIGHT = 445 - 175;
+	public static final int HEIGHT = 475 - 175;
 
 	private static String OPEN_TEMPLATE_FILE_CHOOSER_ID = "OPEN_TEMPLATE_FILE_CHOOSER_ID";
 
@@ -116,8 +117,11 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 	private JRadioButton coverView = null;
 	private JRadioButton basedOnFeatures = null;
 	private JComboBox vecLayerToUse = null;
-
 	private JCheckBox selectedOnly = null;
+	private JRadioButton gridCustom;
+	private JTextField gridFile;
+	private JButton gridFileButton;
+	private JFileChooser gridFileChooser;
 	
 	private JSpinner overlapSpinner = null;
 	
@@ -167,7 +171,7 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 		this.setLayout(null);
 		this.add(getAreaPanel(), null);
 		// this.add(getLayoutPanel(), null);
-		this.add(getScalePanel(), null);
+		//this.add(getScalePanel(), null);
 		this.add(getTemplatesPanel(), null);
 		// this.add(getBaseLayerPanel(), null);
 		// this.add(getMetaboxPanel(), null);
@@ -200,7 +204,7 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 		if (areaPanel == null) {
 			areaPanel = new JPanel();
 			areaPanel.setLayout(null);
-			areaPanel.setBounds(new Rectangle(5, 5, 631, 67));
+			areaPanel.setBounds(new Rectangle(5, 5, 631, 157));
 			String bor_txt = PluginServices.getText(this, "Area_selection");
 			areaPanel.setBorder(BorderFactory.createTitledBorder(null, bor_txt, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
 			
@@ -208,10 +212,20 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 			areaPanel.add(getBasedOnFeaturesRB(), null);
 			areaPanel.add(getVectLayerToUseCB(), null);
 			areaPanel.add(getSelectedOnlyCB(), null);
+			areaPanel.add(getScalePanel(), null);
+			areaPanel.add(getGridCustomRB(), null);
+			areaPanel.add(getGridFileTF(), null);
+			areaPanel.add(getGridFileB(), null);
+
+			gridFileChooser = new JFileChooser(OPEN_TEMPLATE_FILE_CHOOSER_ID, System.getProperty("user.home"));
+			gridFileChooser.setAcceptAllFileFilterUsed(false);
+			gridFileChooser.setFileFilter(new SimpleFileFilter("grid",
+					PluginServices.getText(MapSheetsUtils.class, "grid_files")));
 			
 			ArrayList rbb = new ArrayList();
 			rbb.add(getCoverViewRB());
 			rbb.add(getBasedOnFeaturesRB());
+			rbb.add(getGridCustomRB());
 			MapSheetsUtils.joinRadioButtons(rbb);
 		}
 		return areaPanel;
@@ -230,10 +244,11 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 		if (scalePanel == null) {
 			scalePanel = new JPanel();
 			scalePanel.setLayout(null);
-			scalePanel.setBounds(new Rectangle(5, 135+13+40-112, 631, 68));//+120-15));
+			scalePanel.setBounds(new Rectangle(8, 110+13+40-112, 615, 68));//+120-15));
 			
 			String bor_txt = PluginServices.getText(this, "Choose_scale_or_grid_division");
-			scalePanel.setBorder(BorderFactory.createTitledBorder(null, bor_txt, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
+			scalePanel.setBorder(BorderFactory.createTitledBorder(null, bor_txt, TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.PLAIN, 12), new Color(51, 51, 51)));
+			((TitledBorder) scalePanel.getBorder()).setTitleColor(UIManager.getColor("Label.foreground"));
 			
 			scalePanel.add(getScaleLabel(), null);
 			scalePanel.add(getOneLabel(), null);
@@ -254,12 +269,29 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 		}
 		return scalePanel;
 	}
+
+
+
+	/**
+	 * This method does setEnabled onto all scalePanel's components
+	 */
+	private void setEnabledScalePanel(boolean enabled) {
+		for (Component component:scalePanel.getComponents()) {
+			component.setEnabled(enabled);
+			if (component instanceof JTextField) {
+				Color tFColor = enabled
+						? UIManager.getColor("TextField.background")
+						: UIManager.getColor("TextField.inactiveBackground");
+				component.setBackground(tFColor);
+			}
+		}
+	}
 	
 	private JPanel getTemplatesPanel() {
 	    if(templatesPanel == null) {
 		templatesPanel = new JPanel();
 		templatesPanel.setLayout(null);
-		templatesPanel.setBounds(new Rectangle(5, 135+13+40-112+68, 631, 21*4+30));
+		templatesPanel.setBounds(new Rectangle(5, 165+13+40-112+68, 631, 21*4+30));
 		templatesPanel.setBorder(BorderFactory.createTitledBorder(null, 
 			PluginServices.getText(this, "Template_type"),
 			TitledBorder.DEFAULT_JUSTIFICATION, 
@@ -457,10 +489,55 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 		if (coverView == null) {
 			coverView = new JRadioButton();
 			coverView.setText(PluginServices.getText(this, "Cover_view"));
-			coverView.setBounds(new Rectangle(20, 27, 150, 21));
+			coverView.setBounds(new Rectangle(15, 27, 110, 21));
 			coverView.addActionListener(this);
 		}
 		return coverView;
+	}
+
+	/**
+	 * This method initializes gridCustom
+	 *
+	 * @return javax.swing.JRadioButton
+	 */
+	private JRadioButton getGridCustomRB() {
+		if (gridCustom == null) {
+			gridCustom = new JRadioButton(PluginServices.getText(this, "Load_grid"));
+			gridCustom.setBounds(new Rectangle(15, 110+13+40-112+75, 200, 21));
+			gridCustom.setSelected(false);
+			gridCustom.addActionListener(this);
+		}
+		return gridCustom;
+	}
+
+	/**
+	 * This method initializes gridFile
+	 *
+	 * @return javax.swing.JTextField
+	 */
+	private JTextField getGridFileTF() {
+		if (gridFile == null) {
+			gridFile = new JTextField(200);
+			gridFile.setEditable(false);
+			gridFile.setEnabled(false);
+			gridFile.setBounds(new Rectangle(220, 110+13+40-112+75, 270, 22));
+		}
+		return gridFile;
+	}
+
+	/**
+	 * This method initializes gridFileButton
+	 *
+	 * @return javax.swing.JButton
+	 */
+	private JButton getGridFileB() {
+		if (gridFileButton == null) {
+			gridFileButton = new JButton("...");
+			gridFileButton.setBounds(new Rectangle(495, 110+13+40-112+75, 50, 21));
+			gridFileButton.addActionListener(this);
+			gridFileButton.setEnabled(false);
+		}
+		return gridFileButton;
 	}
 
 	/**
@@ -472,7 +549,7 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 		if (basedOnFeatures == null) {
 			basedOnFeatures = new JRadioButton();
 			basedOnFeatures.setText(PluginServices.getText(this, "Based_on_features"));
-			basedOnFeatures.setBounds(new Rectangle(180, 27, 140, 21));
+			basedOnFeatures.setBounds(new Rectangle(140, 27, 160, 21));
 			basedOnFeatures.addActionListener(this);
 		}
 		return basedOnFeatures;
@@ -506,7 +583,7 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 	private JButton getAcceptButton() {
 		if (acceptButton == null) {
 			acceptButton = new JButton(PluginServices.getText(null, "Aceptar"));
-			acceptButton.setBounds(new Rectangle(205, 440-175, 111, 26));
+			acceptButton.setBounds(new Rectangle(205, 470-175, 111, 26));
 			acceptButton.setMnemonic(KeyEvent.VK_A);
 			acceptButton.addActionListener(this);
 		}
@@ -521,7 +598,7 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 	private JButton getCancelButton() {
 		if (cancelButton == null) {
 			cancelButton = new JButton(PluginServices.getText(null, "Cancel"));
-			cancelButton.setBounds(new Rectangle(331, 440-175, 111, 26));
+			cancelButton.setBounds(new Rectangle(331, 470-175, 111, 26));
 			cancelButton.setMnemonic(KeyEvent.VK_C);
 			cancelButton.addActionListener(this);
 		}
@@ -567,76 +644,80 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 		if (src == this.getAcceptButton()) {
 			hasCancelled = false;
 			try {
-			    	double grid_width;
-			    	double grid_height;
-			    	if(selectedTemplate.equals(AudasaPreferences.A4_CONSULTAS) || 
-					selectedTemplate.equals(AudasaPreferences.A4_CONSULTAS_LOCALIZADOR) ||
-					selectedTemplate.equals(AudasaPreferences.A4_POLICIA_MARGENES) ||
-					selectedTemplate.equals(AudasaPreferences.A4_POLICIA_MARGENES_LEYENDA) ||
-					(templateCustom.isSelected() &&
-					formatCombobox.getSelectedItem().equals("A4"))) {
-			    	    grid_width = AudasaPreferences.VIEW_WIDTH_A4;
-			    	    grid_height = AudasaPreferences.VIEW_HEIGHT_A4;
-			    	} else { // any A3 template
-			    	    grid_width = AudasaPreferences.VIEW_WIDTH_A3;
-			    	    grid_height = AudasaPreferences.VIEW_HEIGHT_A3;
-			    	}
-				//Long.parseLong(this.getWidthText().getText());
-				//Long.parseLong(this.getHeightText().getText());
-				double w = 1.0 * grid_width;
-				double h = 1.0 * grid_height; 
-//				MeasureUnitComboItem muci = (MeasureUnitComboItem) getMeasureUnitCombo().getSelectedItem();
-				MeasureUnitComboItem muci = MeasureUnitComboItem.MEASURE_UNIT_CM;
-				w = 100 * muci.getMetersPerUnit() * w;
-				h = 100 * muci.getMetersPerUnit() * h;
-				
-				Rectangle2D use_map_r = new Rectangle2D.Double(0,0,w,h);
-				long s = Long.parseLong(this.getScaleField().getText());
-				int opc = Integer.parseInt(this.getOverlapSpinner().getValue().toString());
-				
-				FLyrVect lyrv = null;
-				LayerComboItem lci = (LayerComboItem) getVectLayerToUseCB().getSelectedItem();
-				if (lci != null) {
-					lyrv = (FLyrVect) lci.getLayer();
-				}
-				
-				ArrayList[] igs_codes = MapSheetsUtils.createFrames(
-						this.coverView.isSelected(),
-						this.selectedOnly.isSelected(),
-						use_map_r,
-						getView().getMapControl().getViewPort(),
-						s, opc, getView().getProjection(), lyrv);
+				MapSheetGrid newgrid;
+				if (getGridCustomRB().isSelected()) {
+					newgrid = MapSheetsUtils.loadMapSheetsGrid(gridFileChooser.getSelectedFile());
+				} else {
+					double grid_width;
+					double grid_height;
+					if(selectedTemplate.equals(AudasaPreferences.A4_CONSULTAS) ||
+							selectedTemplate.equals(AudasaPreferences.A4_CONSULTAS_LOCALIZADOR) ||
+							selectedTemplate.equals(AudasaPreferences.A4_POLICIA_MARGENES) ||
+							selectedTemplate.equals(AudasaPreferences.A4_POLICIA_MARGENES_LEYENDA) ||
+							(templateCustom.isSelected() &&
+							formatCombobox.getSelectedItem().equals("A4"))) {
+						grid_width = AudasaPreferences.VIEW_WIDTH_A4;
+						grid_height = AudasaPreferences.VIEW_HEIGHT_A4;
+					} else { // any A3 template
+						grid_width = AudasaPreferences.VIEW_WIDTH_A3;
+						grid_height = AudasaPreferences.VIEW_HEIGHT_A3;
+					}
+					//Long.parseLong(this.getWidthText().getText());
+					//Long.parseLong(this.getHeightText().getText());
+					double w = 1.0 * grid_width;
+					double h = 1.0 * grid_height;
+					//MeasureUnitComboItem muci = (MeasureUnitComboItem) getMeasureUnitCombo().getSelectedItem();
+					MeasureUnitComboItem muci = MeasureUnitComboItem.MEASURE_UNIT_CM;
+					w = 100 * muci.getMetersPerUnit() * w;
+					h = 100 * muci.getMetersPerUnit() * h;
 
-				ArrayList igs = igs_codes[0];
-				ArrayList cods = igs_codes[1];
-				HashMap atts_hm = null;
-				
-				MapSheetGrid newgrid = MapSheetGrid.createMapSheetGrid(
-						MapSheetGrid.createNewName(),
-						getView().getProjection(),
-						MapSheetGrid.createDefaultLyrDesc());
+					Rectangle2D use_map_r = new Rectangle2D.Double(0,0,w,h);
+					long s = Long.parseLong(this.getScaleField().getText());
+					int opc = Integer.parseInt(this.getOverlapSpinner().getValue().toString());
+					
+					FLyrVect lyrv = null;
+					LayerComboItem lci = (LayerComboItem) getVectLayerToUseCB().getSelectedItem();
+					if (lci != null) {
+						lyrv = (FLyrVect) lci.getLayer();
+					}
 
-				
-				int sz = igs.size();
-				for (int i=0; i<sz; i++) {
-					atts_hm = new HashMap();
+					ArrayList[] igs_codes = MapSheetsUtils.createFrames(
+							this.coverView.isSelected(),
+							this.selectedOnly.isSelected(),
+							use_map_r,
+							getView().getMapControl().getViewPort(),
+							s, opc, getView().getProjection(), lyrv);
+
+					ArrayList igs = igs_codes[0];
+					ArrayList cods = igs_codes[1];
+					HashMap atts_hm = null;
 					
-					atts_hm.put(MapSheetGrid.ATT_NAME_CODE,
-							ValueFactory.createValue((String) cods.get(i)));
-					atts_hm.put(MapSheetGrid.ATT_NAME_ROT_RAD,
-							ValueFactory.createValue(new Double(0)));
-					atts_hm.put(MapSheetGrid.ATT_NAME_OVERLAP,
-							ValueFactory.createValue(new Double(opc)));
-					atts_hm.put(MapSheetGrid.ATT_NAME_SCALE,
-							ValueFactory.createValue(new Double(s)));
-					atts_hm.put(MapSheetGrid.ATT_NAME_DIMX_CM,
-							ValueFactory.createValue(new Double(w)));
-					atts_hm.put(MapSheetGrid.ATT_NAME_DIMY_CM,
-							ValueFactory.createValue(new Double(h)));
-					
-					newgrid.addSheet(
-							(IGeometry) igs.get(i),
-							atts_hm);
+					newgrid = MapSheetGrid.createMapSheetGrid(
+							MapSheetGrid.createNewName(),
+							getView().getProjection(),
+							MapSheetGrid.createDefaultLyrDesc());
+
+					int sz = igs.size();
+					for (int i=0; i<sz; i++) {
+						atts_hm = new HashMap();
+
+						atts_hm.put(MapSheetGrid.ATT_NAME_CODE,
+								ValueFactory.createValue((String) cods.get(i)));
+						atts_hm.put(MapSheetGrid.ATT_NAME_ROT_RAD,
+								ValueFactory.createValue(new Double(0)));
+						atts_hm.put(MapSheetGrid.ATT_NAME_OVERLAP,
+								ValueFactory.createValue(new Double(opc)));
+						atts_hm.put(MapSheetGrid.ATT_NAME_SCALE,
+								ValueFactory.createValue(new Double(s)));
+						atts_hm.put(MapSheetGrid.ATT_NAME_DIMX_CM,
+								ValueFactory.createValue(new Double(w)));
+						atts_hm.put(MapSheetGrid.ATT_NAME_DIMY_CM,
+								ValueFactory.createValue(new Double(h)));
+
+						newgrid.addSheet(
+								(IGeometry) igs.get(i),
+								atts_hm);
+					}
 				}
 				
 				//before adding the new layer, delete all MapSheetGrids in TOC
@@ -672,9 +753,21 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 		}
 
 		
-		if (src == getCoverViewRB() || src == getBasedOnFeaturesRB()) {
+		if (src == getCoverViewRB() || src == getBasedOnFeaturesRB() || src == getGridCustomRB()) {
 			getVectLayerToUseCB().setEnabled(getBasedOnFeaturesRB().isSelected());
 			getSelectedOnlyCB().setEnabled(getBasedOnFeaturesRB().isSelected());
+			getGridFileTF().setEnabled(getGridCustomRB().isSelected());
+			getGridFileB().setEnabled(getGridCustomRB().isSelected());
+			setEnabledScalePanel(!getGridCustomRB().isSelected());
+			Color color = getGridCustomRB().isSelected()
+					? UIManager.getColor("TextField.background")
+					: UIManager.getColor("TextField.inactiveBackground");
+			getGridFileTF().setBackground(color);
+			color = getGridCustomRB().isSelected()
+					? UIManager.getColor("Label.disabledForeground")
+					: UIManager.getColor("Label.foreground");
+			((TitledBorder) getScalePanel().getBorder()).setTitleColor(color);
+			getScalePanel().repaint();
 		}
 
 		if(src == templateDimensiones) {
@@ -685,9 +778,6 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 		    templateFile.setEnabled(false);
 		    templateFileButton.setEnabled(false);
 		    templateFile.setBackground(UIManager.getColor("TextField.inactiveBackground"));
-		    formatLabel.setEnabled(false);
-		    formatCombobox.setEnabled(false);
-		    acceptButton.setEnabled(true);
 		}
 
 		if(src == templateConsultas) {
@@ -698,9 +788,6 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 		    templateFile.setEnabled(false);
 		    templateFileButton.setEnabled(false);
 		    templateFile.setBackground(UIManager.getColor("TextField.inactiveBackground"));
-		    formatLabel.setEnabled(false);
-		    formatCombobox.setEnabled(false);
-		    acceptButton.setEnabled(true);
 		}
 
 		if(src == templatePolicia) {
@@ -711,9 +798,6 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 		    templateFile.setEnabled(false);
 		    templateFileButton.setEnabled(false);
 		    templateFile.setBackground(UIManager.getColor("TextField.inactiveBackground"));
-		    formatLabel.setEnabled(false);
-		    formatCombobox.setEnabled(false);
-		    acceptButton.setEnabled(true);
 		}
 
 		if(src == templateSpecific) {
@@ -727,9 +811,6 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 		    templateFile.setEnabled(true);
 		    templateFileButton.setEnabled(true);
 		    templateFile.setBackground(UIManager.getColor("TextField.background"));
-		    acceptButton.setEnabled(templateFile.getText().toLowerCase().endsWith(".gvt"));
-		    formatLabel.setEnabled(templateFile.getText().toLowerCase().endsWith(".gvt"));
-		    formatCombobox.setEnabled(templateFile.getText().toLowerCase().endsWith(".gvt"));
 		}
 
 		if (src == templateFileButton) {
@@ -746,12 +827,42 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 			    formatCombobox.setSelectedItem("A3");
 			}
 		    }
-
-		    acceptButton.setEnabled(templateFile.getText().toLowerCase().endsWith(".gvt"));
-		    formatLabel.setEnabled(templateFile.getText().toLowerCase().endsWith(".gvt"));
-		    formatCombobox.setEnabled(templateFile.getText().toLowerCase().endsWith(".gvt"));
 		}
-		
+
+		if (src == gridFileButton) {
+		    int returnVal = gridFileChooser.showOpenDialog(this);
+
+		    if (returnVal == JFileChooser.APPROVE_OPTION) {
+			    gridFile.setText(gridFileChooser.getSelectedFile().getAbsolutePath());
+		    }
+		}
+
+		checkAcceptButtonEnabled();
+		checkFormatComponentsEnabled();
+
+	}
+
+	private void checkAcceptButtonEnabled() {
+		boolean enabled = true;
+		if (gridCustom.isSelected()) {
+			enabled &= gridFile.getText().toLowerCase().endsWith(".grid");
+		}
+		if (this.templateCustom.isSelected()) {
+			enabled &= templateFile.getText().toLowerCase().endsWith(".gvt");
+		}
+		getAcceptButton().setEnabled(enabled);
+	}
+
+	private void checkFormatComponentsEnabled() {
+		boolean enabled = this.templateCustom.isSelected();
+		if (gridCustom.isSelected()) {
+			enabled &= false;
+		}
+		if (this.templateCustom.isSelected()) {
+			enabled &= templateFile.getText().toLowerCase().endsWith(".gvt");
+		}
+		formatLabel.setEnabled(enabled);
+		formatCombobox.setEnabled(enabled);
 	}
 
 	public boolean hasCancelled() {
@@ -830,7 +941,7 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 	public JComboBox getVectLayerToUseCB() {
 		if (vecLayerToUse == null) {
 			vecLayerToUse = new JComboBox();
-			vecLayerToUse.setBounds(new Rectangle(330, 27, 150, 21));
+			vecLayerToUse.setBounds(new Rectangle(310, 27, 150, 21));
 			vecLayerToUse.setEnabled(false);
 			// 
 		}
@@ -868,11 +979,11 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 		
 	}
 	
-	public JCheckBox getSelectedOnlyCB() {
+	private JCheckBox getSelectedOnlyCB() {
 		if (selectedOnly == null) {
 			selectedOnly = new JCheckBox();
 			selectedOnly.setText(PluginServices.getText(this, "Selected_only"));
-			selectedOnly.setBounds(new Rectangle(490, 27, 135, 21));
+			selectedOnly.setBounds(new Rectangle(470, 27, 155, 21));
 			selectedOnly.setEnabled(false);
 		}
 		return selectedOnly;
