@@ -21,6 +21,7 @@ import com.iver.cit.gvsig.fmap.core.FShape;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.drivers.BoundedShapes;
 import com.iver.cit.gvsig.fmap.drivers.DriverAttributes;
+import com.iver.cit.gvsig.fmap.drivers.FieldDescription;
 import com.iver.cit.gvsig.fmap.drivers.VectorialDriver;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 import com.iver.cit.gvsig.fmap.layers.XMLException;
@@ -411,15 +412,18 @@ implements VectorialDriver, ObjectDriver, BoundedShapes {
 	}
 
 	public boolean isWritable() {
-		return false;
+		return true;
 	}
 
 	private int[] pk = {0};
 	public int[] getPrimaryKeys() throws ReadDriverException {
 		return pk;
 	}
-	
-    public void setFieldValue(long row, int fieldId, Value value) throws WriteDriverException, ReadDriverException { }
+
+    public void setValues(int row, Value[] values) throws WriteDriverException, ReadDriverException {
+	    ((MapSheetGridGraphic) graphics.get(row)).setAttributes(values);
+    }
+
 	public void write(DataWare dataWare) throws WriteDriverException, ReadDriverException { }
 
     public void beginTrans() throws ReadDriverException { }
