@@ -69,6 +69,7 @@ public class MapSheetGrid extends FLyrVect implements  IMapSheetsIdentified {
 		theSmd.addDefault(ATT_NAME_DIMY_CM, ValueFactory.createValue(1d));
 		theSmd.addDefault(ATT_NAME_OVERLAP, ValueFactory.createValue(10d));
 		theSmd.addDefault(ATT_NAME_ROT_RAD, ValueFactory.createValue(0d));
+		theSmd.addDefault(ATT_NAME_MUNIC, ValueFactory.createValue(""));
 	}
 	
 	/**
@@ -80,13 +81,15 @@ public class MapSheetGrid extends FLyrVect implements  IMapSheetsIdentified {
 	public static final String ATT_NAME_DIMY_CM = "DIMY_CM";
 	public static final String ATT_NAME_OVERLAP = "OVERLAP";
 	public static final String ATT_NAME_ROT_RAD = "ROT_RAD";
+	public static final String ATT_NAME_MUNIC = "MUNICIPIO";
 	public static final String[] SORTED_GRID_FIELD_NAMES = {
 		ATT_NAME_CODE,
 		ATT_NAME_SCALE,
 		ATT_NAME_DIMX_CM,
 		ATT_NAME_DIMY_CM,
 		ATT_NAME_OVERLAP,
-		ATT_NAME_ROT_RAD
+		ATT_NAME_ROT_RAD,
+		ATT_NAME_MUNIC
 	};
 
 	public static final String CODE_NEW_PREF = "XX";
@@ -330,7 +333,7 @@ public class MapSheetGrid extends FLyrVect implements  IMapSheetsIdentified {
 	public static LayerDefinition createDefaultLyrDesc() {
 		
 		LayerDefinition resp = new LayerDefinition();
-		FieldDescription[] flds = new FieldDescription[6];
+		FieldDescription[] flds = new FieldDescription[7];
 		
 		FieldDescription fld = null;
 		
@@ -375,6 +378,13 @@ public class MapSheetGrid extends FLyrVect implements  IMapSheetsIdentified {
 		fld.setFieldDecimalCount(10);
 		fld.setFieldType(Types.DOUBLE);
 		flds[5] = fld;
+
+		fld = new FieldDescription();
+		fld.setFieldName(ATT_NAME_MUNIC);
+		fld.setFieldLength(10);
+		fld.setFieldDecimalCount(10);
+		fld.setFieldType(Types.VARCHAR);
+		flds[6] = fld;
 
 		resp.setFieldsDesc(flds);
 		return resp;
@@ -587,15 +597,9 @@ public class MapSheetGrid extends FLyrVect implements  IMapSheetsIdentified {
 		return resp;
 	}
 	
-
-
-
-	
-	
-	
-
-	
-
+	public boolean isWritable() {
+		return true;
+	}
 
 
 }

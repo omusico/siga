@@ -72,9 +72,15 @@ public class MapSheetGridGraphic extends FGraphic {
 			String[] typ_arr_split = typ_arr.split(","); 
 			
 			for (int i=0; i<n; i++) {
-				atts[i] = ValueFactory.createValueByType(
-						val_arr_split[i],
-						Integer.parseInt(typ_arr_split[i]));
+				if (i>=val_arr_split.length) {
+					atts[i] = ValueFactory.createValueByType(
+							"",
+							Integer.parseInt(typ_arr_split[i]));
+				} else {
+					atts[i] = ValueFactory.createValueByType(
+							val_arr_split[i],
+							Integer.parseInt(typ_arr_split[i]));
+				}
 			}
 		} catch (Exception ex) {
 			atts = new Value[0];
