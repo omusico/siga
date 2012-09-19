@@ -1,6 +1,5 @@
 package es.icarto.gvsig.extgex.queries;
 
-import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -28,7 +27,6 @@ import com.lowagie.text.Table;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfPageEvent;
 import com.lowagie.text.pdf.PdfPageEventHelper;
 import com.lowagie.text.pdf.PdfTemplate;
 import com.lowagie.text.pdf.PdfWriter;
@@ -42,12 +40,13 @@ public class Report {
     protected static final int RTF = 0;
     protected static final int PDF = 1;
 
-    private Font cellBoldStyle = FontFactory.getFont("arial", 6, Font.BOLD);
-    private Font bodyBoldStyle = FontFactory.getFont("arial", 8, Font.BOLD);
+    private final Font cellBoldStyle = FontFactory.getFont("arial", 6, Font.BOLD);
+    private final Font bodyBoldStyle = FontFactory.getFont("arial", 8, Font.BOLD);
 
     private static final float TITULAR_COLUMN_WIDTH = 200f;
-    
-    private Locale loc = new Locale("es");
+    private static final float PAGOS_COLUMN_WIDTH = 50f;
+
+    private final Locale loc = new Locale("es");
 
     private String[] tableHeader;
     private boolean startNewReport;
@@ -168,13 +167,13 @@ public class Report {
 	}
     }
 
-    private float[] getColumnsWidth(PdfPTable table, int columnCount) {
+    private float[] getColumnsWidth(PdfPTable table, int columnCount, float specialWith) {
 	float[] columnsWidth = new float[columnCount];
 	for (int i = 0; i < columnCount; i++) {
 	    if (i == 1) {
-		columnsWidth[i] = TITULAR_COLUMN_WIDTH; 
+		columnsWidth[i] = specialWith;
 	    }else {
-		columnsWidth[i] = (table.getTotalWidth() - TITULAR_COLUMN_WIDTH)/(columnCount-1);
+		columnsWidth[i] = (table.getTotalWidth() - specialWith)/(columnCount-1);
 	    }
 	}
 	return columnsWidth;
@@ -249,7 +248,7 @@ public class Report {
 	    boolean isFirstPage = true;
 
 	    for (ResultTableModel result : resultMap) {
-		document.setPageCount(0);
+		document.setPageCount(1);
 		startNewReport = true;
 		if (!isFirstPage) {
 		    document.setHeader(null);
@@ -292,7 +291,9 @@ public class Report {
 		table.setTotalWidth(document.getPageSize().getWidth() - document.leftMargin() - document.rightMargin());
 		table.setLockedWidth(true);
 		if (!title.equalsIgnoreCase("listado de pagos")) {
-		    table.setWidths(getColumnsWidth(table, columnCount));
+		    table.setWidths(getColumnsWidth(table, columnCount, TITULAR_COLUMN_WIDTH));
+		}else {
+		    table.setWidths(getColumnsWidth(table, columnCount, PAGOS_COLUMN_WIDTH));
 		}
 
 		String[] headerCells = new String[columnCount];
@@ -318,7 +319,7 @@ public class Report {
 		for (int row = 0; row < result.getRowCount(); row++) {
 		    for (int column = 0; column < columnCount; column++) {
 			if (result.getValueAt(row, column) != null) {
-			    if (result.getValueAt(row, column).getClass().getName().equalsIgnoreCase("java.lang.Integer") || 
+			    if (result.getValueAt(row, column).getClass().getName().equalsIgnoreCase("java.lang.Integer") ||
 				    result.getValueAt(row, column).getClass().getName().equalsIgnoreCase("java.lang.Double")) {
 				valueFormatted = nf.format(result.getValueAt(row, column));
 				value = new Paragraph(valueFormatted,
@@ -402,15 +403,16 @@ public class Report {
     }
 
     public class MyPageEvent extends PdfPageEventHelper {
-	private PdfWriter pdfWriter;
-	private Document document;
-	private ArrayList<ResultTableModel> resultMap;
+	private final PdfWriter pdfWriter;
+	private final Document document;
+	private final ArrayList<ResultTableModel> resultMap;
 
 	public MyPageEvent(PdfWriter pdfWriter, Document document, ArrayList<ResultTableModel> resultMap) {
 	    this.pdfWriter = pdfWriter;
 	    this.document = document;
 	    this.resultMap = resultMap;
 	}
+	@Override
 	public void onStartPage(PdfWriter pdfWriter, Document document) {
 	    try {
 		if (!startNewReport) {
@@ -421,7 +423,9 @@ public class Report {
 			table.setLockedWidth(true);
 			for (ResultTableModel result : resultMap) {
 			    if (!result.getTitle().equalsIgnoreCase("listado de pagos")) {
-				table.setWidths(getColumnsWidth(table, tableHeader.length));
+				table.setWidths(getColumnsWidth(table, tableHeader.length, TITULAR_COLUMN_WIDTH));
+			    }else {
+				table.setWidths(getColumnsWidth(table, tableHeader.length, PAGOS_COLUMN_WIDTH));
 			    }
 			}
 			for (int i = 0; i < tableHeader.length; i++) {

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -18,9 +19,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -151,15 +154,12 @@ ActionListener {
 	// QUERIES TABLE
 	DefaultTableModel model = new QueriesTableModel();
 	queriesTable.setModel(model);
-	String[] columnNames = { "Ejecutar", "Código", "Descripción" };
+	String[] columnNames = { "Código", "Descripción" };
 
 	model.setRowCount(0);
 	queriesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	queriesTable.setRowSelectionAllowed(true);
 	queriesTable.setColumnSelectionAllowed(false);
-
-	TableColumn column00 = new TableColumn();
-	model.addColumn(column00);
 
 	TableColumn column01 = new TableColumn();
 	model.addColumn(column01);
@@ -167,16 +167,17 @@ ActionListener {
 	TableColumn column02 = new TableColumn();
 	model.addColumn(column02);
 
+	DefaultTableCellRenderer columnCentered = new DefaultTableCellRenderer();
+	columnCentered.setHorizontalAlignment(SwingConstants.CENTER);
+	queriesTable.getColumnModel().getColumn(0).setCellRenderer(columnCentered);
+
 	queriesTable.getColumnModel().getColumn(0).setHeaderValue(
 		columnNames[0]);
-	queriesTable.getColumnModel().getColumn(0).setMaxWidth(100);
+	queriesTable.getColumnModel().getColumn(0).setMinWidth(100);
+	queriesTable.getColumnModel().getColumn(0).setMaxWidth(110);
 	queriesTable.getColumnModel().getColumn(1).setHeaderValue(
 		columnNames[1]);
-	queriesTable.getColumnModel().getColumn(1).setMinWidth(100);
-	queriesTable.getColumnModel().getColumn(1).setMaxWidth(110);
-	queriesTable.getColumnModel().getColumn(2).setHeaderValue(
-		columnNames[2]);
-	queriesTable.getColumnModel().getColumn(2).setMaxWidth(500);
+	queriesTable.getColumnModel().getColumn(1).setMaxWidth(500);
     }
 
     public class TramoListener implements ActionListener {
@@ -346,10 +347,9 @@ ActionListener {
 	    int numRows = 0;
 	    for (int i = 0; i < tableContent.length; i++) {
 		Object[] row = new Object[5];
-		row[0] = new Boolean(false);
 		// Table Schema: 0-codigo, 1-consulta(SQL), 2-descripcion
-		row[1] = tableContent[i][DBNames.INDEX_CODIGO_QUERIES];
-		row[2] = tableContent[i][DBNames.INDEX_DESCRIPCION_QUERIES];
+		row[0] = tableContent[i][DBNames.INDEX_CODIGO_QUERIES];
+		row[1] = tableContent[i][DBNames.INDEX_DESCRIPCION_QUERIES];
 		model.addRow(row);
 		numRows++;
 		model.fireTableRowsInserted(0, model.getRowCount() - 1);
@@ -477,7 +477,6 @@ ActionListener {
 
     private class QueriesTask extends SwingWorker<String, Void> {
 
-	private RunStatementThread thread = null;
 	private final boolean sqlError = false;
 	private final String error = "";
 	private ArrayList<ResultTableModel> resultsMap;
@@ -492,55 +491,41 @@ ActionListener {
 	    setProgress(0);
 
 	    resultsMap = new ArrayList<ResultTableModel>();
-	    // check queries
-	    int count = 0;
 	    Connection con = null;
-	    for (int i = 0; i < model.getRowCount(); i++) {
-		try {
-		    if (!isCancelled()) {
-			Object isChecked = model.getValueAt(i, 0);
-			if (isChecked instanceof Boolean && (Boolean) isChecked) {
+	    try {
 
-			    String queryCode = (String) model.getValueAt(i, 1);
+		int i = queriesTable.getSelectedRow();
 
-			    String[] queryContents = doQuery(queryCode);
+		String queryCode = (String) model.getValueAt(i, 0);
 
-			    String queryDescription = queryContents[1];
-			    String queryTitle = queryContents[2];
-			    String querySubtitle = queryContents[3];
+		String[] queryContents = doQuery(queryCode);
 
-			    con = dbs.getJavaConnection();
-			    thread = new RunStatementThread(con,
-				    queryContents[0]);
-			    logger.info(queryCode + ": " + queryContents[0]);
-			    thread.start();
-			    thread.join();
-			    ResultTableModel result = new ResultTableModel(
-				    queryCode, queryDescription, queryTitle,
-				    querySubtitle, getFilters());
-			    // result.setQueryTables(getValidationTables(query));
-			    resultSetToTable(result, thread.getResult());
-			    resultsMap.add(result);
+		String queryDescription = queryContents[1];
+		String queryTitle = queryContents[2];
+		String querySubtitle = queryContents[3];
 
-			    count++;
-			    setProgress(count * 100
-				    / getCheckedQueriesCount(model));
-			    thread = null;
-			}
-		    } else {
-			break;
-		    }
-		} catch (InterruptedException e) {
-		    System.out.println("Interrupted");
-		    if (thread != null) {
-			thread.cancel();
-		    }
-		    break;
-		} catch (Exception ex) {
-		    logger.error(ex.getMessage());
-		    con.close();
-		}
+		setProgress(50);
+
+		con = dbs.getJavaConnection();
+		PreparedStatement statement = con.prepareStatement(queryContents[0]);
+		statement.execute();
+		ResultSet rs = statement.getResultSet();
+
+		setProgress(75);
+
+		ResultTableModel result = new ResultTableModel(
+			queryCode, queryDescription, queryTitle,
+			querySubtitle, getFilters());
+		resultSetToTable(result, rs);
+		resultsMap.add(result);
+
+
+
+	    } catch (Exception ex) {
+		logger.error(ex.getMessage());
+		con.close();
 	    }
+	    setProgress(99);
 	    String html = showResultsAsHTML(resultsMap);
 	    return html;
 	}
