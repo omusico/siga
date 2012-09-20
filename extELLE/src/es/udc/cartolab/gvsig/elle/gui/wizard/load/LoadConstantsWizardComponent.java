@@ -243,13 +243,13 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	    View view = (View) aux;
 	    try {
 		ELLEMap map = MapDAO.getInstance().getMap(view, mapName);
-		String where = "WHERE ";
+		String where = "WHERE (";
 		if (selectedValuesList != null && selectedValuesList.length > 1) {
 		    for (int i=0; i<selectedValuesList.length; i++) {
 			if (i != selectedValuesList.length-1) {
 			    where = where + getValueOfFieldByConstant(selectedConstant, CONSTANTS_FILTER_FIELD_NAME) + " = " + "'" + selectedValuesList[i].toString() + "'" + " OR ";
 			}else {
-			    where = where + getValueOfFieldByConstant(selectedConstant, CONSTANTS_FILTER_FIELD_NAME) + " = " + "'" + selectedValuesList[i].toString() + "'";
+			    where = where + getValueOfFieldByConstant(selectedConstant, CONSTANTS_FILTER_FIELD_NAME) + " = " + "'" + selectedValuesList[i].toString() + "')";
 			}
 		    }
 		    map.setWhereOnAllLayers(where);
