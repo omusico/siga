@@ -6,12 +6,12 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 
 import es.icarto.gvsig.extgia.navtableforms.utils.CalculateComponentValue;
-import es.icarto.gvsig.navtableforms.controller.Controller;
+import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
 
 public class CalculateIndiceEstado extends CalculateComponentValue {
 
-    public CalculateIndiceEstado(Controller form,
+    public CalculateIndiceEstado(AbstractForm form,
 	    HashMap<String, JComponent> allFormWidgets,
 	    String resultComponentName, String... operatorComponentsNames) {
 	super(form, allFormWidgets, resultComponentName,

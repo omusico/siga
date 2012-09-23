@@ -14,7 +14,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import es.icarto.gvsig.navtableforms.controller.Controller;
+import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
 import es.icarto.gvsig.navtableforms.validation.ComponentValidator;
 
@@ -22,11 +22,11 @@ public abstract class CalculateComponentValue {
 
     protected JTextField resultComponent;
     protected String resultComponentName;
-    protected Controller form;
     protected HashMap<String, JComponent> operatorComponents;
     protected ArrayList<ComponentValidator> operatorValidators;
     protected OperatorComponentsListener handler;
     private HashMap<String, JComponent> allFormWidgets;
+	protected AbstractForm form;
 
     /**
      * in the setListeners of the Form we must call the setListeners of this
@@ -36,7 +36,7 @@ public abstract class CalculateComponentValue {
     // TODO: The ideal behavior should be create this object in
     // fillSpecificValues and have the listeners registered in the form, so we
     // don't have to make specific calls
-    public CalculateComponentValue(Controller form,
+    public CalculateComponentValue(AbstractForm form,
 	    HashMap<String, JComponent> allFormWidgets,
 	    String resultComponentName, String... operatorComponentsNames) {
 	this.form = form;
@@ -88,7 +88,7 @@ public abstract class CalculateComponentValue {
 	return true;
     }
 
-    void setListeners() {
+    public void setListeners() {
 	for (JComponent widget : operatorComponents.values()) {
 	    if (widget instanceof JFormattedTextField) {
 		((JFormattedTextField) widget).addKeyListener(handler);
@@ -106,7 +106,7 @@ public abstract class CalculateComponentValue {
 
     public abstract void setValue(boolean validate);
 
-    void removeListeners() {
+    public void removeListeners() {
 	for (JComponent widget : operatorComponents.values()) {
 	    if (widget instanceof JFormattedTextField) {
 		((JFormattedTextField) widget).removeKeyListener(handler);

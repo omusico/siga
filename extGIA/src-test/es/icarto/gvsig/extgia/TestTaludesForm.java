@@ -19,7 +19,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.taludes.TaludesForm;
 import es.icarto.gvsig.extgia.navtableforms.CommonMethodsForTestForms;
-import es.icarto.gvsig.navtableforms.dataacces.IModel;
+import es.icarto.gvsig.navtableforms.utils.LayerController;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class TestTaludesForm extends CommonMethodsForTestForms {
@@ -34,7 +34,7 @@ public class TestTaludesForm extends CommonMethodsForTestForms {
 
 	TaludesForm dialog = new TaludesForm(layer);
 	dialog.init();
-	IModel formController = dialog.getFormController();
+	LayerController formController = dialog.getFormController();
 	HashMap<String, JComponent> myWidgets = dialog.getWidgetComponents();
 
 	for (JComponent c : myWidgets.values()) {

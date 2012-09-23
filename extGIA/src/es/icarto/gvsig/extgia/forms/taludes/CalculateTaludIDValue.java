@@ -8,12 +8,12 @@ import javax.swing.JTextField;
 
 import es.icarto.gvsig.extgia.navtableforms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.navtableforms.controller.Controller;
+import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
 
 public class CalculateTaludIDValue extends CalculateComponentValue {
 
-    public CalculateTaludIDValue(Controller form,
+    public CalculateTaludIDValue(AbstractForm form,
 	    HashMap<String, JComponent> allFormWidgets,
 	    String resultComponentName, String... operatorComponentsNames) {
 	super(form, allFormWidgets, resultComponentName,

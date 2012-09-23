@@ -7,7 +7,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
@@ -23,9 +22,10 @@ import es.icarto.gvsig.extgia.navtableforms.utils.EnableComponentBasedOnCheckBox
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.preferences.Preferences;
 import es.icarto.gvsig.navtableforms.AbstractForm;
-import es.icarto.gvsig.navtableforms.fileslink.FilesLink;
+import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkButton;
+import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkData;
+import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.validation.listeners.DependentComboboxesHandler;
-import es.udc.cartolab.gvsig.navtable.listeners.PositionEvent;
 
 @SuppressWarnings("serial")
 public class TaludesForm extends AbstractForm {
@@ -45,28 +45,13 @@ public class TaludesForm extends AbstractForm {
     private DependentComboboxesHandler direccionPIDomainHandler;
     private DependentComboboxesHandler direccionPFDomainHandler;
 
-    private ReconocimientoEstadoTaludesTable reconocimientoEstadoTaludesTable;
-    private TrabajosTaludesTable trabajosTaludesTable;
-
     public TaludesForm(FLyrVect layer) {
 	super(layer);
 	initWindow();
 
-	String baseDirectory = null;
-	try {
-	    baseDirectory = PreferencesPage.getBaseDirectory();
-	} catch (Exception e) {
-	}
+	
 
-	if (baseDirectory == null || baseDirectory.isEmpty()) {
-	    baseDirectory = Launcher.getAppHomeDir();
-	}
-
-	baseDirectory = baseDirectory + File.separator + "FILES"
-		+ File.separator + "inventario" + File.separator
-		+ layer.getName();
-
-	new FilesLink(this, baseDirectory);
+	
 
 	addNewButtonsToActionsToolBar();
     }
@@ -75,6 +60,34 @@ public class TaludesForm extends AbstractForm {
 	URL reportPath = this.getClass().getClassLoader()
 		.getResource("reports/taludes.jasper");
 	JPanel actionsToolBar = this.getActionsToolBar();
+	
+FilesLinkButton filesLinkButton = new FilesLinkButton(this, new FilesLinkData() {
+		
+		@Override
+		public String getRegisterField() {
+			return ORMLite.getDataBaseObject(getXMLPath()).getTable("").getPrimaryKey()[0];
+		}
+		
+		@Override
+		public String getBaseDirectory() {
+			String baseDirectory = null;
+			try {
+			    baseDirectory = PreferencesPage.getBaseDirectory();
+			} catch (Exception e) {
+			}
+
+			if (baseDirectory == null || baseDirectory.isEmpty()) {
+			    baseDirectory = Launcher.getAppHomeDir();
+			}
+
+			baseDirectory = baseDirectory + File.separator + "FILES"
+				+ File.separator + "inventario" + File.separator
+				+ "taludes";
+		
+			return baseDirectory;
+		}
+	});
+	actionsToolBar.add(filesLinkButton);
 	NavTableComponentsPrintButton ntPrintButton = new NavTableComponentsPrintButton();
 	JButton printReportB = ntPrintButton.getPrintButton(this,
 		reportPath.getPath());
@@ -113,22 +126,19 @@ public class TaludesForm extends AbstractForm {
 	cunetaPie.fillSpecificValues();
 	direccionPIDomainHandler.updateComboBoxValues();
 	direccionPFDomainHandler.updateComboBoxValues();
-	reconocimientoEstadoTaludesTable.updateTable(getFormController()
-		.getValue("id_talud"));
-	trabajosTaludesTable.updateTable(getFormController().getValue(
-		"id_talud"));
+	
     }
 
     @Override
     protected void setListeners() {
 	super.setListeners();
-	taludid = new CalculateTaludIDValue(controller, getWidgetsVector(),
+	taludid = new CalculateTaludIDValue(this, getWidgetComponents(),
 		DBFieldNames.ID_TALUD, DBFieldNames.TIPO_TALUD,
 		DBFieldNames.NUMERO_TALUD, DBFieldNames.BASE_CONTRATISTA);
 	taludid.setListeners();
 
-	inclinacionMedia = new CalculateInclinacionMediaValue(controller,
-		getWidgetsVector(), DBFieldNames.INCLINACION_MEDIA,
+	inclinacionMedia = new CalculateInclinacionMediaValue(this,
+			getWidgetComponents(), DBFieldNames.INCLINACION_MEDIA,
 		DBFieldNames.SECTOR_INCLINACION);
 	inclinacionMedia.setListeners();
 
@@ -157,15 +167,6 @@ public class TaludesForm extends AbstractForm {
 		tipoViaPF, direccionPF);
 	tipoViaPF.addActionListener(direccionPFDomainHandler);
 
-	reconocimientoEstadoTaludesTable = new ReconocimientoEstadoTaludesTable(
-		(JTable) this.getWidgetComponents().get(
-			"taludes_reconocimiento_estado"), this);
-	reconocimientoEstadoTaludesTable.setListeners();
-
-	trabajosTaludesTable = new TrabajosTaludesTable((JTable) this
-		.getWidgetComponents().get("taludes_trabajos"), this);
-	trabajosTaludesTable.setListeners();
-
     }
 
     @Override
@@ -176,21 +177,8 @@ public class TaludesForm extends AbstractForm {
 	cunetaPie.removeListeners();
 	tipoViaPI.removeActionListener(direccionPIDomainHandler);
 	tipoViaPF.removeActionListener(direccionPFDomainHandler);
-	reconocimientoEstadoTaludesTable.removeListeners();
-	trabajosTaludesTable.removeListeners();
 	super.removeListeners();
     }
 
-    @Override
-    public void onPositionChange(PositionEvent e) {
-	super.onPositionChange(e);
-	reconocimientoEstadoTaludesTable.updateTable(getFormController()
-		.getValue("id_talud"));
-	trabajosTaludesTable.updateTable(getFormController().getValue(
-		"id_talud"));
-
-	// It should be better to repaint only the table but it don't seem to
-	// work. More research is needed
-    }
 
 }
