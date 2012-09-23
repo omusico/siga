@@ -33,10 +33,9 @@ import es.icarto.gvsig.navtableforms.utils.AbeilleParser;
 import es.icarto.gvsig.navtableforms.validation.rules.ValidationRule;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
-public abstract class CommonMethodsForTestForms {
+public abstract class CommonMethodsForTestDBForms {
 
-    private static final String XML_FILE = "data/audasa.xml";
-    private static ORMLiteAplicationDomain ado;
+    private ORMLiteAplicationDomain ado;
     private FormPanel form;
     private HashMap<String, JComponent> widgets;
 
@@ -46,8 +45,7 @@ public abstract class CommonMethodsForTestForms {
 	    initializegvSIGDrivers();
 	    DBSession.createConnection("localhost", 5434, "audasa_test", null,
 		    "postgres", "postgres");
-	    ado = ORMLite
-		    .getAplicationDomainObject(CommonMethodsForTestForms.XML_FILE);
+	   
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
@@ -55,6 +53,7 @@ public abstract class CommonMethodsForTestForms {
 
     @Before
     public void doSetup() {
+    ado = ORMLite.getAplicationDomainObject(getXmlFile());
 	form = new FormPanel(getAbeilleForm());
 	widgets = AbeilleParser.getWidgetsFromContainer(form);
     }
@@ -62,7 +61,7 @@ public abstract class CommonMethodsForTestForms {
     @Test
     public void test_xmlIsValid() throws SAXException {
 	try {
-	    new XMLSAXParser(XML_FILE);
+	    new XMLSAXParser(getXmlFile());
 	} catch (ParserConfigurationException e) {
 
 	} catch (IOException e) {
@@ -74,7 +73,9 @@ public abstract class CommonMethodsForTestForms {
 
     // protected abstract ConnectionParameters getConnectionParameters();
 
-    private static void initializegvSIGDrivers() throws Exception {
+    protected abstract String getXmlFile();
+
+	private static void initializegvSIGDrivers() throws Exception {
 	final String fwAndamiDriverPath = "../_fwAndami/gvSIG/extensiones/com.iver.cit.gvsig/drivers";
 	final File baseDriversPath = new File(fwAndamiDriverPath);
 	if (!baseDriversPath.exists()) {

@@ -16,7 +16,7 @@ public class Preferences {
     }
 
     public String getXMLFilePath() {
-	return this.getClass().getClassLoader().getResource("data/audasa.xml")
+	return this.getClass().getClassLoader().getResource("rules/taludes.xml")
 		.getPath();
     }
 
