@@ -84,10 +84,11 @@
 		<property name="gvSIG-audasa_projects" value="
 			extMapSheets,
 			extDBConnection,
-			ELLE,
+			extELLE,
 			extAudasaCommons,
 			extGEX,
 			extGIA,
+			extNavTable,
 			extPM
 		"/>
 
