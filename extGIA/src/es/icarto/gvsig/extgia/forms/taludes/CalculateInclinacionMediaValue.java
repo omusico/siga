@@ -1,10 +1,11 @@
-package es.icarto.gvsig.extgia;
+package es.icarto.gvsig.extgia.forms.taludes;
 
 import java.util.HashMap;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 
+import es.icarto.gvsig.extgia.navtableforms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.controller.Controller;
 import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;

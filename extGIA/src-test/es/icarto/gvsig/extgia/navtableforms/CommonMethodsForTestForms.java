@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgia;
+package es.icarto.gvsig.extgia.navtableforms;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;

@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgia;
+package es.icarto.gvsig.extgia.navtableforms.subforms;
 
 import java.beans.PropertyVetoException;
 

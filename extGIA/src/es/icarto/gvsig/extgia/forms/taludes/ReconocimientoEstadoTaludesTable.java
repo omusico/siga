@@ -1,39 +1,44 @@
-package es.icarto.gvsig.extgia;
+package es.icarto.gvsig.extgia.forms.taludes;
 
 import java.util.ArrayList;
 
 import javax.swing.JTable;
 
+import es.icarto.gvsig.extgia.navtableforms.subforms.AlphanumericTableLoader;
 import es.icarto.gvsig.navtableforms.gui.tables.JTableContextualMenu;
 import es.icarto.gvsig.navtableforms.gui.tables.TableModelFactory;
 import es.icarto.gvsig.navtableforms.model.TableModelAlphanumeric;
 import es.icarto.gvsig.navtableforms.view.AlphanumericFormView;
 
-public class TrabajosTaludesTable {
+public class ReconocimientoEstadoTaludesTable {
 
-    private static final String TABLE_NAME = "taludes_trabajos";
     private AlphanumericFormView formView;
     private JTable table;
     private JTableContextualMenu contextualMenu;
     private TaludesForm parentPanel;
 
-    public TrabajosTaludesTable(JTable table, TaludesForm parentPanel) {
+    public ReconocimientoEstadoTaludesTable(JTable table,
+	    TaludesForm parentPanel) {
 	this.table = table;
 	this.parentPanel = parentPanel;
-	formView = new TrabajosTaludesForm(getTableModel(null));
+	formView = new ReconocimientoEstadoTaludesForm(getTableModel(null));
     }
 
     private ArrayList<String> getColNames() {
 	ArrayList<String> colNames = new ArrayList<String>();
-	colNames.add("id_trabajo");
-	colNames.add("fecha");
+	colNames.add("n_inspeccion");
+	colNames.add("fecha_inspeccion");
+	colNames.add("indice_estado");
+	// colNames.add("nombre_revisor");
 	return colNames;
     }
 
     private ArrayList<String> getColAlias() {
 	ArrayList<String> colAliases = new ArrayList<String>();
-	colAliases.add("ID de trabajo");
-	colAliases.add("Fecha");
+	colAliases.add("Nº Inspección");
+	colAliases.add("Fecha Inspección");
+	colAliases.add("Índice Estado");
+	// colAliases.add("nombre_revisor");
 	return colAliases;
     }
 
@@ -56,7 +61,7 @@ public class TrabajosTaludesTable {
 	try {
 	    AlphanumericTableLoader.loadTables();
 	    model = TableModelFactory.createFromTable(
-		    TrabajosTaludesTable.TABLE_NAME, "id_talud",
+		    "taludes_reconocimiento_estado", "id_talud",
 		    rowFilterValue, getColNames(), getColAlias());
 	} catch (Exception e) {
 	    e.printStackTrace();

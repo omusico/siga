@@ -17,6 +17,8 @@ import org.junit.Test;
 import com.iver.cit.gvsig.fmap.crs.CRSFactory;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
+import es.icarto.gvsig.extgia.forms.taludes.TaludesForm;
+import es.icarto.gvsig.extgia.navtableforms.CommonMethodsForTestForms;
 import es.icarto.gvsig.navtableforms.dataacces.IModel;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 

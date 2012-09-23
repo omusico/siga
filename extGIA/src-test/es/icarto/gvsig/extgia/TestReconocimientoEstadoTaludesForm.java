@@ -1,5 +1,8 @@
 package es.icarto.gvsig.extgia;
 
+import es.icarto.gvsig.extgia.forms.taludes.ReconocimientoEstadoTaludesForm;
+import es.icarto.gvsig.extgia.navtableforms.CommonMethodsForTestForms;
+
 public class TestReconocimientoEstadoTaludesForm extends
 	CommonMethodsForTestForms {
 

@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgia;
+package es.icarto.gvsig.extgia.forms.taludes;
 
 import java.io.File;
 import java.net.URL;
@@ -18,6 +18,8 @@ import com.jeta.forms.components.panel.FormPanel;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.audasacommons.forms.reports.NavTableComponentsPrintButton;
+import es.icarto.gvsig.extgia.navtableforms.utils.CalculateComponentValue;
+import es.icarto.gvsig.extgia.navtableforms.utils.EnableComponentBasedOnCheckBox;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.preferences.Preferences;
 import es.icarto.gvsig.navtableforms.AbstractForm;

@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgia;
+package es.icarto.gvsig.extgia.forms.taludes;
 
 import java.awt.Dimension;
 
@@ -13,15 +13,12 @@ import es.icarto.gvsig.navtableforms.model.TableModelAlphanumeric;
 import es.icarto.gvsig.navtableforms.view.AlphanumericFormView;
 
 @SuppressWarnings("serial")
-public class ReconocimientoEstadoTaludesForm extends AlphanumericFormView {
+public class TrabajosTaludesForm extends AlphanumericFormView {
 
-    public static final String ABEILLE_FILENAME = "forms/taludes_reconocimiento_estado.xml";
-
+    public static final String ABEILLE_FILENAME = "forms/taludes_trabajos.xml";
     private WindowInfo windowInfo;
 
-    private CalculateIndiceEstado calculateIndiceEstado;
-
-    public ReconocimientoEstadoTaludesForm(TableModelAlphanumeric tableModel) {
+    public TrabajosTaludesForm(TableModelAlphanumeric tableModel) {
 	super(tableModel);
     }
 
@@ -31,29 +28,12 @@ public class ReconocimientoEstadoTaludesForm extends AlphanumericFormView {
     }
 
     @Override
-    protected void setListeners() {
-	super.setListeners();
-	calculateIndiceEstado = new CalculateIndiceEstado(controller,
-		getWidgetsVector(), "indice_estado",
-		"existencia_deformaciones_o_grietas",
-		"peligro_caida_materiales", "bajante_deteriorada",
-		"elementos_proteccion_talud");
-	calculateIndiceEstado.setListeners();
-    }
-
-    @Override
-    protected void removeListeners() {
-	calculateIndiceEstado.removeListeners();
-	super.removeListeners();
-    }
-
-    @Override
     public WindowInfo getWindowInfo() {
 	if (windowInfo == null) {
 	    windowInfo = new WindowInfo(WindowInfo.MODALDIALOG
 		    | WindowInfo.RESIZABLE | WindowInfo.PALETTE);
 	    windowInfo.setTitle(PluginServices.getText(this,
-		    "Taludes - Reconocimiento Estado"));
+		    "Taludes - Trabajos"));
 	    Dimension dim = getPreferredSize();
 	    MDIFrame a = (MDIFrame) PluginServices.getMainFrame();
 	    int maxHeight = a.getHeight() - 175;
