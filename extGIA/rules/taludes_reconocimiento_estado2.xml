@@ -1,0 +1,24 @@
+	  <LAYER alias="taludes_reconocimiento_estado">
+    <TABLENAME>taludes_reconocimiento_estado</TABLENAME>
+    <PRIMARYKEY>
+    	<PKELEMENT>id_talud</PKELEMENT>
+    </PRIMARYKEY>
+    <RECORDSET>
+      <FIELD>
+        <FIELDNAME>id_talud</FIELDNAME>
+          <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+      </FIELD>
+      
+      <FIELD>
+		<FIELDNAME>unidad</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>unidad</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+	
+       </RECORDSET>
+	  </LAYER>
