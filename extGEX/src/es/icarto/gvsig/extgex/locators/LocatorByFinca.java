@@ -3,6 +3,7 @@ package es.icarto.gvsig.extgex.locators;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,6 +20,7 @@ import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 import com.jeta.forms.components.panel.FormPanel;
+import com.jeta.forms.gui.common.FormException;
 
 import es.icarto.gvsig.extgex.locators.actions.FormOpener;
 import es.icarto.gvsig.extgex.locators.actions.IPositionRetriever;
@@ -67,7 +69,14 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
 
     public LocatorByFinca() {
 	super(400, 330);
-	formBody = new FormPanel("LocatorByFinca.xml");
+	InputStream stream = getClass().getClassLoader().getResourceAsStream("LocatorByFinca.xml");
+	FormPanel result = null;
+	try {
+		result = new FormPanel(stream);
+	} catch (FormException e) {
+		e.printStackTrace();
+	}
+	formBody = result;
 	formBody.setVisible(true);
 	this.add(formBody, BorderLayout.CENTER);
 	this.setTitle("Localizador por Finca");

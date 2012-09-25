@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Rectangle2D;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -31,6 +32,7 @@ import com.iver.cit.gvsig.fmap.layers.ReadableVectorial;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 import com.iver.cit.gvsig.project.documents.view.gui.BaseView;
 import com.jeta.forms.components.panel.FormPanel;
+import com.jeta.forms.gui.common.FormException;
 
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.utils.gvWindow;
@@ -56,7 +58,14 @@ public class LocatorByPK extends gvWindow implements ActionListener {
 
     public LocatorByPK() {
 	super(400, 200);
-	formBody = new FormPanel("LocatorByPK.xml");
+	InputStream stream = getClass().getClassLoader().getResourceAsStream("LocatorByPK.xml");
+	FormPanel result = null;
+	try {
+		result = new FormPanel(stream);
+	} catch (FormException e) {
+		e.printStackTrace();
+	}
+	formBody = result;
 	formBody.setVisible(true);
 	this.add(formBody, BorderLayout.CENTER);
 	this.setTitle("Localizador por PK");

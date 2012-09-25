@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.net.URL;
+import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,6 +27,7 @@ import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 import com.jeta.forms.components.panel.FormPanel;
+import com.jeta.forms.gui.common.FormException;
 
 import es.icarto.gvsig.audasacommons.forms.reports.NavTableComponentsPrintButton;
 import es.icarto.gvsig.extpm.forms.filesLink.NavTableComponentsFilesLinkButton;
@@ -252,7 +254,14 @@ public class FormPM extends AbstractForm {
     @Override
     public FormPanel getFormBody() {
 	if (form == null) {
-	    form = new FormPanel(Preferences.PM_FORM_FILE);
+	    InputStream stream = getClass().getClassLoader().getResourceAsStream(Preferences.PM_FORM_FILE);
+	    FormPanel result = null;
+	    try {
+		result = new FormPanel(stream);
+	    } catch (FormException e) {
+		e.printStackTrace();
+	    }
+	    form = result;
 	}
 	return form;
     }

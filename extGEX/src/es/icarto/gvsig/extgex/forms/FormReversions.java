@@ -2,6 +2,7 @@ package es.icarto.gvsig.extgex.forms;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -18,6 +19,7 @@ import org.apache.log4j.Logger;
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.panel.FormPanel;
+import com.jeta.forms.gui.common.FormException;
 
 import es.icarto.gvsig.extgex.navtable.NavTableComponentsFactory;
 import es.icarto.gvsig.extgex.preferences.DBNames;
@@ -138,7 +140,14 @@ public class FormReversions extends AbstractForm implements ILauncherForm {
     @Override
     public FormPanel getFormBody() {
 	if (form == null) {
-	    return new FormPanel("reversiones.xml");
+		InputStream stream = getClass().getClassLoader().getResourceAsStream("reversiones.xml");
+		FormPanel result = null;
+		try {
+			result = new FormPanel(stream);
+		} catch (FormException e) {
+			e.printStackTrace();
+		}
+	    form = result;
 	}
 	return form;
     }

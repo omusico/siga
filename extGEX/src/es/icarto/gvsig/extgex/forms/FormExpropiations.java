@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -20,7 +22,9 @@ import org.apache.log4j.Logger;
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.panel.FormPanel;
+import com.jeta.forms.gui.common.FormException;
 
+import es.icarto.gvsig.extgex.FormExpropiationsExtension;
 import es.icarto.gvsig.extgex.navtable.NavTableComponentsFactory;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.preferences.GEXPreferences;
@@ -97,7 +101,14 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm {
     @Override
     public FormPanel getFormBody() {
 	if (form == null) {
-	    return new FormPanel("expropiaciones.xml");
+		InputStream stream = getClass().getClassLoader().getResourceAsStream("expropiaciones.xml");
+		FormPanel result = null;
+		try {
+			result = new FormPanel(stream);
+		} catch (FormException e) {
+			e.printStackTrace();
+		}
+	    form = result;
 	}
 	return form;
     }

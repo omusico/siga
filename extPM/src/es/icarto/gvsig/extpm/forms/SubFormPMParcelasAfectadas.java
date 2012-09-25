@@ -2,6 +2,7 @@ package es.icarto.gvsig.extpm.forms;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,6 +23,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.ReadableVectorial;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 import com.jeta.forms.components.panel.FormPanel;
+import com.jeta.forms.gui.common.FormException;
 import com.vividsolutions.jts.geom.Geometry;
 
 import es.icarto.gvsig.extpm.preferences.Preferences;
@@ -48,7 +50,14 @@ public class SubFormPMParcelasAfectadas extends JPanel implements IWindow, Actio
     private final int height = 200;
 
     public SubFormPMParcelasAfectadas(FLyrVect layer, int insertedRow) {
-	form = new FormPanel("pm_parcelas_afectadas.xml");
+	InputStream stream = getClass().getClassLoader().getResourceAsStream("pm_parcelas_afectadas.xml");
+	FormPanel result = null;
+	try {
+		result = new FormPanel(stream);
+	} catch (FormException e) {
+		e.printStackTrace();
+	}
+	form = result;
 	this.add(form);
 	this.layer = layer;
 	this.insertedRow = insertedRow;

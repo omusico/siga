@@ -3,6 +3,7 @@ package es.icarto.gvsig.extgex.locators;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -11,6 +12,7 @@ import javax.swing.JOptionPane;
 
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.panel.FormPanel;
+import com.jeta.forms.gui.common.FormException;
 
 import es.icarto.gvsig.extgex.locators.actions.IPositionRetriever;
 import es.icarto.gvsig.extgex.locators.actions.ZoomToHandler;
@@ -31,7 +33,14 @@ public class LocatorByMunicipio extends gvWindow implements IPositionRetriever, 
 
     public LocatorByMunicipio() {
 	super(400, 200);
-	formBody = new FormPanel("LocatorByMunicipio.xml");
+	InputStream stream = getClass().getClassLoader().getResourceAsStream("LocatorByMunicipio.xml");
+	FormPanel result = null;
+	try {
+		result = new FormPanel(stream);
+	} catch (FormException e) {
+		e.printStackTrace();
+	}
+	formBody = result;
 	formBody.setVisible(true);
 	this.add(formBody, BorderLayout.CENTER);
 	this.setTitle("Localizador por Municipio o Parroquia");
