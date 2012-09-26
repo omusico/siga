@@ -18,8 +18,10 @@ public class PrintPMReportObserver implements ActionListener {
     private File inputImageFile;
     private File outputFile;
     private String reportPath;
+    private String extensionPath;
 
-    public PrintPMReportObserver(AbstractNavTable dialog, String reportPath) {
+    public PrintPMReportObserver(AbstractNavTable dialog, String extensionPath, String reportPath) {
+	this.extensionPath = extensionPath;
 	this.dialog = dialog;
 	this.reportPath = reportPath;
     }
@@ -73,6 +75,7 @@ public class PrintPMReportObserver implements ActionListener {
     private HashMap<String, Object> getReportParameters() {
 	HashMap<String, Object> parameters = new HashMap<String, Object>();
 	parameters.put("PM_QUERY_WHERE", Integer.valueOf(getPMFileId() + 1));
+	parameters.put("EXTENSION_PATH", extensionPath);
 	if (inputImageFile != null) {
 	    parameters.put("MAIN_IMAGE_PATH", inputImageFile.getAbsolutePath());
 	}

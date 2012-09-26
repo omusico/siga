@@ -59,6 +59,7 @@ public class TaludesForm extends AbstractForm {
     private void addNewButtonsToActionsToolBar() {
 	URL reportPath = this.getClass().getClassLoader()
 		.getResource("reports/taludes.jasper");
+	String extensionPath = reportPath.getPath().replace("reports/taludes.jasper", "");
 	JPanel actionsToolBar = this.getActionsToolBar();
 	
 FilesLinkButton filesLinkButton = new FilesLinkButton(this, new FilesLinkData() {
@@ -89,7 +90,7 @@ FilesLinkButton filesLinkButton = new FilesLinkButton(this, new FilesLinkData() 
 	});
 	actionsToolBar.add(filesLinkButton);
 	NavTableComponentsPrintButton ntPrintButton = new NavTableComponentsPrintButton();
-	JButton printReportB = ntPrintButton.getPrintButton(this,
+	JButton printReportB = ntPrintButton.getPrintButton(this, extensionPath,
 		reportPath.getPath());
 	if (printReportB != null) {
 	    actionsToolBar.add(printReportB);

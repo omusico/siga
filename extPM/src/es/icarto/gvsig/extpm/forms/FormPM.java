@@ -85,12 +85,13 @@ public class FormPM extends AbstractForm {
     private void addNewButtonsToActionsToolBar() {
 	URL reportPath = this.getClass().getClassLoader()
 		.getResource("reports/pm_report.jasper");
+	String extensionPath = reportPath.getPath().replace("reports/pm_report.jasper", "");
 	JPanel actionsToolBar = this.getActionsToolBar();
 	NavTableComponentsFilesLinkButton ntFilesLinkButton = new NavTableComponentsFilesLinkButton();
 	NavTableComponentsPrintButton ntPrintButton = new NavTableComponentsPrintButton();
 	JButton filesLinkB = ntFilesLinkButton.getFilesLinkButton(layer,
 		this);
-	JButton printReportB = ntPrintButton.getPrintButton(this, reportPath.getPath());
+	JButton printReportB = ntPrintButton.getPrintButton(this, extensionPath, reportPath.getPath());
 	if (filesLinkB != null && printReportB != null) {
 	    actionsToolBar.add(filesLinkB);
 	    actionsToolBar.add(printReportB);

@@ -2,11 +2,12 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="policia_margenes" language="groovy" pageWidth="595" pageHeight="842" columnWidth="511" leftMargin="56" rightMargin="28" topMargin="28" bottomMargin="28" uuid="deae6293-c4c5-422f-b68a-e394415360ad">
 	<property name="ireport.zoom" value="1.6105100000000068"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="215"/>
+	<property name="ireport.y" value="0"/>
 	<style name="Heading" fontSize="14"/>
 	<style name="Heading 1" fontSize="16" isBold="true"/>
 	<parameter name="PM_QUERY_WHERE" class="java.lang.Integer"/>
 	<parameter name="MAIN_IMAGE_PATH" class="java.lang.String"/>
+	<parameter name="EXTENSION_PATH" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select * from audasa_pm.exp_pm where gid = $P{PM_QUERY_WHERE}]]>
 	</queryString>
@@ -59,7 +60,7 @@
 		<band height="52">
 			<image>
 				<reportElement uuid="7d1a1d82-41db-41f4-9b37-5e7f85d23951" x="0" y="0" width="38" height="38"/>
-				<imageExpression><![CDATA["images/logo_audasa.gif"]]></imageExpression>
+				<imageExpression><![CDATA[($P{EXTENSION_PATH}) + "images/logo_audasa.gif"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement uuid="1fcbe1d9-52c1-4d99-b66d-91a1c7c12ba9" style="Heading" x="0" y="14" width="511" height="38"/>
