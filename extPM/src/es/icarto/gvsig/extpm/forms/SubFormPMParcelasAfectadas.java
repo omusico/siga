@@ -53,9 +53,9 @@ public class SubFormPMParcelasAfectadas extends JPanel implements IWindow, Actio
 	InputStream stream = getClass().getClassLoader().getResourceAsStream("pm_parcelas_afectadas.xml");
 	FormPanel result = null;
 	try {
-		result = new FormPanel(stream);
+	    result = new FormPanel(stream);
 	} catch (FormException e) {
-		e.printStackTrace();
+	    e.printStackTrace();
 	}
 	form = result;
 	this.add(form);
@@ -101,11 +101,11 @@ public class SubFormPMParcelasAfectadas extends JPanel implements IWindow, Actio
 	String[] fincaValues = new String[2];
 	try {
 	    String query = "SELECT " + Preferences.TRAMOS_FIELD_NOMBRE + ", "
-	    + Preferences.FINCAS_FIELD_IDFINCA +
-	    " FROM " + Preferences.FINCAS_TABLENAME + " a, " +
-	    Preferences.TRAMOS_TABLENAME + " b " +
-	    " WHERE " + Preferences.FINCAS_FIELD_TRAMO + " = " + Preferences.TRAMOS_FIELD_ID +
-	    " AND " + Preferences.FINCAS_FIELD_IDFINCA + "=" + "'" + idFinca + "';";
+		    + Preferences.FINCAS_FIELD_IDFINCA +
+		    " FROM " + Preferences.FINCAS_TABLENAME + " a, " +
+		    Preferences.TRAMOS_TABLENAME + " b " +
+		    " WHERE " + Preferences.FINCAS_FIELD_TRAMO + " = " + Preferences.TRAMOS_FIELD_ID +
+		    " AND " + Preferences.FINCAS_FIELD_IDFINCA + "=" + "'" + idFinca + "';";
 	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
 	    statement.execute();
 	    ResultSet rs = statement.getResultSet();
@@ -146,11 +146,11 @@ public class SubFormPMParcelasAfectadas extends JPanel implements IWindow, Actio
 			Geometry auxJTSGeom = gvGeom.toJTSGeometry();
 			if ((jtsPmGeometry.buffer(INTERSECTION_BUFFER)).intersects(auxJTSGeom)) {
 			    String parcela = fincasRecordset.getFieldValue(i, tramoIndex).toString() +
-			    fincasRecordset.getFieldValue(i, ucIndex).toString() +
-			    fincasRecordset.getFieldValue(i, municipioIndex).toString() +
-			    fincasRecordset.getFieldValue(i, parroquiaIndex).toString() + "-" +
-			    fincasRecordset.getFieldValue(i, numFincaIndex).toString() + "-" +
-			    fincasRecordset.getFieldValue(i, seccionIndex).toString();
+				    fincasRecordset.getFieldValue(i, ucIndex).toString() +
+				    fincasRecordset.getFieldValue(i, municipioIndex).toString() +
+				    fincasRecordset.getFieldValue(i, parroquiaIndex).toString() + "-" +
+				    fincasRecordset.getFieldValue(i, numFincaIndex).toString() + "-" +
+				    fincasRecordset.getFieldValue(i, seccionIndex).toString();
 			    parcelas.add(parcela);
 			}
 		    }
@@ -186,7 +186,9 @@ public class SubFormPMParcelasAfectadas extends JPanel implements IWindow, Actio
 	if (e.getSource() == removeFinca) {
 	    int[] selectedRows = parcelasAfectadas.getSelectedRows();
 	    for (int i=0; i<selectedRows.length; i++) {
-		model.removeRow(i);
+		int rowIndex = selectedRows[i];
+		model.removeRow(rowIndex);
+		this.repaint();
 	    }
 
 	}
