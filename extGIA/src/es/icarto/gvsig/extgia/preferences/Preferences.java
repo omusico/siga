@@ -16,7 +16,7 @@ public class Preferences {
     }
 
     public String getXMLFilePath() {
-	return this.getClass().getClassLoader().getResource("rules/taludes.xml")
+	return this.getClass().getClassLoader().getResource("rules/extgia.xml")
 		.getPath();
     }
 

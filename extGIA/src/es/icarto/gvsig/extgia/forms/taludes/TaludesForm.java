@@ -66,7 +66,7 @@ FilesLinkButton filesLinkButton = new FilesLinkButton(this, new FilesLinkData() 
 		
 		@Override
 		public String getRegisterField() {
-			return ORMLite.getDataBaseObject(getXMLPath()).getTable("").getPrimaryKey()[0];
+			return ORMLite.getDataBaseObject(getXMLPath()).getTable("taludes").getPrimaryKey()[0];
 		}
 		
 		@Override
