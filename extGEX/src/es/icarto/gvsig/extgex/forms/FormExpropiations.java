@@ -4,8 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.BufferedInputStream;
 import java.io.InputStream;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -16,18 +18,24 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
 
 import org.apache.log4j.Logger;
 
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
+import com.hardcode.gdbms.engine.values.Value;
+import com.hardcode.gdbms.engine.values.ValueFactory;
+import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 
-import es.icarto.gvsig.extgex.FormExpropiationsExtension;
 import es.icarto.gvsig.extgex.navtable.NavTableComponentsFactory;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.preferences.GEXPreferences;
+import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
 import es.icarto.gvsig.extgex.utils.retrievers.LocalizadorFormatter;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.gui.tables.TableModelFactory;
@@ -36,8 +44,9 @@ import es.icarto.gvsig.navtableforms.launcher.ILauncherForm;
 import es.icarto.gvsig.navtableforms.launcher.LauncherParams;
 import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
 import es.icarto.gvsig.navtableforms.validation.listeners.DependentComboboxesHandler;
+import es.udc.cartolab.gvsig.users.utils.DBSession;
 
-public class FormExpropiations extends AbstractForm implements ILauncherForm {
+public class FormExpropiations extends AbstractForm implements ILauncherForm, TableModelListener {
 
     private static final String WIDGET_REVERSIONES = "tabla_reversiones_afectan";
     private static final String WIDGET_EXPROPIACIONES = "tabla_expropiaciones";
@@ -56,6 +65,11 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm {
     //    private JTextField impTotalPdte;
     private JTable expropiaciones;
     private JTable reversiones;
+
+    private AddReversionsListener addReversionsListener;
+    private DeleteReversionsListener deleteReversionsListener;
+    private JButton addReversionsButton;
+    private JButton deleteReversionsButton;
 
     private DependentComboboxesHandler ucDomainHandler;
     private DependentComboboxesHandler ayuntamientoDomainHandler;
@@ -89,7 +103,7 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm {
 
     private void initWindow() {
 	viewInfo.setHeight(650);
-	viewInfo.setWidth(670);
+	viewInfo.setWidth(750);
 	viewInfo.setTitle("Expediente de expropiaciones");
     }
 
@@ -101,13 +115,13 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm {
     @Override
     public FormPanel getFormBody() {
 	if (form == null) {
-		InputStream stream = getClass().getClassLoader().getResourceAsStream("expropiaciones.xml");
-		FormPanel result = null;
-		try {
-			result = new FormPanel(stream);
-		} catch (FormException e) {
-			e.printStackTrace();
-		}
+	    InputStream stream = getClass().getClassLoader().getResourceAsStream("expropiaciones.xml");
+	    FormPanel result = null;
+	    try {
+		result = new FormPanel(stream);
+	    } catch (FormException e) {
+		e.printStackTrace();
+	    }
 	    form = result;
 	}
 	return form;
@@ -139,6 +153,14 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm {
 	expropiaciones = (JTable) widgets.get(WIDGET_EXPROPIACIONES);
 	reversiones = (JTable) widgets.get(WIDGET_REVERSIONES);
 
+	addReversionsListener = new AddReversionsListener();
+	addReversionsButton = (JButton) form.getComponentByName("add_reversions_button");
+	addReversionsButton.addActionListener(addReversionsListener);
+
+	deleteReversionsListener = new DeleteReversionsListener();
+	deleteReversionsButton = (JButton) form.getComponentByName("delete_reversions_button");
+	deleteReversionsButton.addActionListener(deleteReversionsListener);
+
 	// BIND LISTENERS TO WIDGETS
 	ucDomainHandler = new DependentComboboxesHandler(this, tramo, uc);
 	tramo.addActionListener(ucDomainHandler);
@@ -165,7 +187,7 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm {
 	LauncherParams expropiationsParams = new LauncherParams(this,
 		DBNames.TABLE_EXPROPIACIONES,
 		"Cultivos",
-	"Abrir cultivos");
+		"Abrir cultivos");
 	tableExpropiationsLauncher = new AlphanumericNavTableLauncher(
 		this, expropiationsParams);
 	formReversionsLauncher = new FormReversionsLauncher(this);
@@ -192,6 +214,30 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm {
 	reversiones.removeMouseListener(formReversionsLauncher);
     }
 
+    public class AddReversionsListener implements ActionListener {
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+	    SubFormExpropiationsAddReversions subForm = new SubFormExpropiationsAddReversions(layer, reversiones, getIDFinca());
+	    PluginServices.getMDIManager().addWindow(subForm);
+	}
+
+    }
+
+    public class DeleteReversionsListener implements ActionListener {
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+	    int[] selectedRows = reversiones.getSelectedRows();
+	    DefaultTableModel model = (DefaultTableModel) reversiones.getModel();
+	    for (int i=0; i<selectedRows.length; i++) {
+		int rowIndex = selectedRows[i];
+		model.removeRow(rowIndex);
+		repaint();
+	    }
+	}
+    }
+
     private void setIDFinca() {
 	if ((tramo.getSelectedItem() instanceof KeyValue)
 		&& (uc.getSelectedItem() instanceof KeyValue)
@@ -199,11 +245,11 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm {
 		&& (subtramo.getSelectedItem() instanceof KeyValue)) {
 	    // will update id_finca only when comboboxes have proper values
 	    String id_finca = LocalizadorFormatter.getTramo(((KeyValue) tramo.getSelectedItem()).getKey())
-	    + LocalizadorFormatter.getUC(((KeyValue) uc.getSelectedItem()).getKey())
-	    + LocalizadorFormatter.getAyuntamiento(((KeyValue) ayuntamiento.getSelectedItem()).getKey())
-	    + LocalizadorFormatter.getSubtramo(((KeyValue) subtramo.getSelectedItem()).getKey())
-	    + getStringNroFincaFormatted()
-	    + getStringSeccionFormatted();
+		    + LocalizadorFormatter.getUC(((KeyValue) uc.getSelectedItem()).getKey())
+		    + LocalizadorFormatter.getAyuntamiento(((KeyValue) ayuntamiento.getSelectedItem()).getKey())
+		    + LocalizadorFormatter.getSubtramo(((KeyValue) subtramo.getSelectedItem()).getKey())
+		    + getStringNroFincaFormatted()
+		    + getStringSeccionFormatted();
 	    finca.setText(id_finca);
 	    getFormController().setValue(DBNames.FIELD_IDFINCA, id_finca);
 	}
@@ -331,15 +377,70 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm {
 	columnasReversiones.add(DBNames.FIELD_IDREVERSION_FINCAS_REVERSIONES);
 	columnasReversiones.add(DBNames.FIELD_SUPERFICIE_FINCAS_REVERSIONES);
 	columnasReversiones.add(DBNames.FIELD_IMPORTE_FINCAS_REVERSIONES);
+	//	try {
+	//	    reversiones.setModel(TableModelFactory.createFromTable(
+	//		    DBNames.TABLE_FINCASREVERSIONES,
+	//		    DBNames.FIELD_IDFINCA, finca.getText(),
+	//		    columnasReversiones, columnasReversiones));
+	//	} catch (ReadDriverException e) {
+	//	    // TODO Auto-generated catch block
+	//	    e.printStackTrace();
+	//	}
 	try {
-	    reversiones.setModel(TableModelFactory.createFromTable(
-		    DBNames.TABLE_FINCASREVERSIONES,
-		    DBNames.FIELD_IDFINCA, finca.getText(),
-		    columnasReversiones, columnasReversiones));
-	} catch (ReadDriverException e) {
-	    // TODO Auto-generated catch block
+	    DefaultTableModel tableModel;
+	    tableModel = new DefaultTableModel();
+	    for (String columnName : columnasReversiones) {
+		tableModel.addColumn(columnName);
+	    }
+	    reversiones.setModel(tableModel);
+	    Value[] reversionData = new Value[3];
+	    PreparedStatement statement;
+	    String query = "SELECT id_reversion, superficie, importe " +
+		    "FROM audasa_expropiaciones.fincas_reversiones " +
+		    "WHERE id_finca = '" + getIDFinca() + "';";
+	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+	    statement.execute();
+	    ResultSet rs = statement.getResultSet();
+	    while (rs.next()) {
+		reversionData[0] = ValueFactory.createValue(rs.getString(1));
+		reversionData[1] = ValueFactory.createValue(rs.getDouble(2));
+		reversionData[2] = ValueFactory.createValue(rs.getInt(3));
+		tableModel.addRow(reversionData);
+	    }
+	    repaint();
+	    tableModel.addTableModelListener(this);
+	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
+
+    }
+
+    @Override
+    public boolean saveRecord() {
+	PreparedStatement statement;
+	String query = null;
+	String idReversion;
+	String superficie;
+	String importe;
+	try {
+	    query = "DELETE FROM audasa_expropiaciones.fincas_reversiones " +
+		    "WHERE id_finca = '" + getIDFinca() + "';";
+	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+	    statement.execute();
+	    for (int i=0; i<reversiones.getRowCount(); i++) {
+		idReversion = reversiones.getModel().getValueAt(i, 0).toString();
+		superficie = reversiones.getModel().getValueAt(i, 1).toString();
+		importe = reversiones.getModel().getValueAt(i, 2).toString();
+		query = "INSERT INTO audasa_expropiaciones.fincas_reversiones " +
+			"VALUES ('" + getIDFinca() + "', '" + idReversion + "', '" +
+			superficie + "', '" + importe + "');";
+		statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+		statement.execute();
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return super.saveRecord();
     }
 
     @Override
@@ -368,15 +469,15 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm {
 
     @Override
     public void internalFrameDeactivated(InternalFrameEvent e) {
-	updateJTables();
+	//	updateJTables();
     }
 
     @Override
     public String getSQLQuery(String queryID) {
 	if (queryID.equalsIgnoreCase("EXPROPIACIONES")) {
 	    return "select * from " + "'"
-	    + DBNames.TABLE_EXPROPIACIONES + "'"
-	    + "where " + DBNames.FIELD_IDFINCA + " = " + "'" + getIDFinca() + "'" + ";";
+		    + DBNames.TABLE_EXPROPIACIONES + "'"
+		    + "where " + DBNames.FIELD_IDFINCA + " = " + "'" + getIDFinca() + "'" + ";";
 	}
 	return null;
     }
@@ -388,6 +489,19 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm {
     @Override
     public String getXMLPath() {
 	return GEXPreferences.getPreferences().getXMLFilePath();
+    }
+
+    @Override
+    public void tableChanged(TableModelEvent e) {
+	super.setChangedValues(true);
+	super.saveB.setEnabled(true);
+	//super.refreshGUI();
+
+    }
+
+    private FLyrVect getReversionsLayer() {
+	TOCLayerManager toc = new TOCLayerManager();
+	return toc.getLayerByName(DBNames.LAYER_REVERSIONES);
     }
 
 }
