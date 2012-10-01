@@ -1,6 +1,8 @@
 package es.icarto.gvsig.extgia.forms.taludes;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.net.URL;
 
 import javax.swing.JButton;
@@ -14,6 +16,7 @@ import org.apache.log4j.Logger;
 import com.iver.andami.Launcher;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.panel.FormPanel;
+import com.jeta.forms.gui.common.FormException;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.audasacommons.forms.reports.NavTableComponentsPrintButton;
@@ -106,7 +109,12 @@ FilesLinkButton filesLinkButton = new FilesLinkButton(this, new FilesLinkData() 
     @Override
     public FormPanel getFormBody() {
 	if (this.form == null) {
-	    this.form = new FormPanel(TaludesForm.ABEILLE_FILENAME);
+		InputStream stream = getClass().getClassLoader().getResourceAsStream(TaludesForm.ABEILLE_FILENAME);
+	    try {
+			this.form = new FormPanel(stream);
+		} catch (FormException e) {
+			e.printStackTrace();
+		}
 	}
 	return this.form;
     }
