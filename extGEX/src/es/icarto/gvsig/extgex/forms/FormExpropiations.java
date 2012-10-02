@@ -76,6 +76,8 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
     private FormReversionsLauncher formReversionsLauncher;
     private FLyrVect layer = null;
 
+    private ArrayList<String> deletedReversions;
+
     public FormExpropiations(FLyrVect layer) {
 	super(layer);
 	this.layer = layer;
@@ -214,10 +216,12 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+	    deletedReversions = new ArrayList<String>();
 	    int[] selectedRows = reversiones.getSelectedRows();
 	    DefaultTableModel model = (DefaultTableModel) reversiones.getModel();
 	    for (int i=0; i<selectedRows.length; i++) {
 		int rowIndex = selectedRows[i];
+		deletedReversions.add(model.getValueAt(rowIndex, 0).toString());
 		model.removeRow(rowIndex);
 		repaint();
 	    }
@@ -355,6 +359,23 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	String idReversion;
 	String superficie;
 	String importe;
+
+	//Deleted Fincas
+	if (deletedReversions.size()>0) {
+	    for (int i=0; i<deletedReversions.size(); i++) {
+		try {
+		    query = "DELETE FROM audasa_expropiaciones.fincas_reversiones " +
+			    "WHERE id_finca = '" + getIDFinca() + "' AND " +
+			    "id_reversion = '" + deletedReversions.get(i) + "';";
+		    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+		    statement.executeQuery();
+		} catch (SQLException e) {
+		    e.printStackTrace();
+		    continue;
+		}
+	    }
+	    deletedReversions.clear();
+	}
 
 	for (int i=0; i<reversiones.getRowCount(); i++) {
 	    try {
