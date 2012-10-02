@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
@@ -41,12 +42,14 @@ public class SubFormExpropiationsAddReversions extends JPanel implements IWindow
     private final String idFinca;
 
     private JComboBox idReversion;
+    private JTextField superficie;
+    private JTextField importe;
     private JButton addReversionButton;
 
     protected WindowInfo viewInfo = null;
     private final String title = "Añadir Reversiones";
     private final int width = 275;
-    private final int height = 75;
+    private final int height = 125;
 
     public SubFormExpropiationsAddReversions(FLyrVect layer, JTable reversionsTable, String idFinca) {
 	InputStream stream = getClass().getClassLoader().getResourceAsStream("expropiaciones_add_reversiones.xml");
@@ -69,6 +72,9 @@ public class SubFormExpropiationsAddReversions extends JPanel implements IWindow
 
 	addReversionButton = (JButton) form.getComponentByName("add_reversion_button");
 	addReversionButton.addActionListener(this);
+
+	superficie =  (JTextField) form.getComponentByName("superficie");
+	importe = (JTextField) form.getComponentByName("importe");
 
 	idReversion = (JComboBox) form.getComponentByName("id_reversion");
 	for (String id_reversion : getReversionsFromFinca()) {
@@ -149,26 +155,14 @@ public class SubFormExpropiationsAddReversions extends JPanel implements IWindow
 	}
     }
 
-    private Value[] getReversionData(String numReversion) {
+    private Value[] getReversionData(String idReversion) {
 	Value[] reversionData = new Value[3];
-	PreparedStatement statement;
-	try {
-	    String query = "SELECT superficie, importe_reversion " +
-		    "FROM audasa_expropiaciones.exp_reversion " +
-		    "WHERE id_reversion = '" + numReversion + "';" ;
-	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
-	    statement.execute();
-	    ResultSet rs = statement.getResultSet();
 
-	    while (rs.next()) {
-		reversionData[0] = ValueFactory.createValue(numReversion);
-		reversionData[1] = ValueFactory.createValue(rs.getDouble(1));
-		reversionData[2] = ValueFactory.createValue(rs.getInt(2));
-	    }
-	    rs.close();
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
+	reversionData[0] = ValueFactory.createValue(idReversion);
+	reversionData[1] = ValueFactory.createValue(Double.parseDouble(superficie.getText()));
+	reversionData[2] = ValueFactory.createValue(Integer.parseInt(importe.getText()));
+
+
 	return reversionData;
     }
 }

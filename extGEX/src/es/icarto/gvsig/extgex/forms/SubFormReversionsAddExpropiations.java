@@ -1,0 +1,169 @@
+package es.icarto.gvsig.extgex.forms;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.InputStream;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
+import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
+import com.hardcode.gdbms.engine.values.Value;
+import com.hardcode.gdbms.engine.values.ValueFactory;
+import com.iver.andami.ui.mdiManager.IWindow;
+import com.iver.andami.ui.mdiManager.WindowInfo;
+import com.iver.cit.gvsig.fmap.core.IGeometry;
+import com.iver.cit.gvsig.fmap.layers.FLyrVect;
+import com.iver.cit.gvsig.fmap.layers.ReadableVectorial;
+import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
+import com.jeta.forms.components.panel.FormPanel;
+import com.jeta.forms.gui.common.FormException;
+import com.vividsolutions.jts.geom.Geometry;
+
+import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
+import es.udc.cartolab.gvsig.users.utils.DBSession;
+
+public class SubFormReversionsAddExpropiations extends JPanel implements IWindow, ActionListener {
+
+    private final double INTERSECTION_BUFFER = 100.0;
+
+    private final FormPanel form;
+    private final FLyrVect layer;
+    private int currentRow;
+    private final JTable fincasTable;
+    private final String idReversion;
+
+    private JComboBox idFinca;
+    private JTextField superficie;
+    private JTextField importe;
+    private JButton addExpropiationButton;
+
+    protected WindowInfo viewInfo = null;
+    private final String title = "Añadir Fincas";
+    private final int width = 275;
+    private final int height = 125;
+
+    public SubFormReversionsAddExpropiations(FLyrVect layer, JTable fincasTable, String idReversion) {
+	InputStream stream = getClass().getClassLoader().getResourceAsStream("reversiones_add_expropiaciones.xml");
+	FormPanel result = null;
+	try {
+	    result = new FormPanel(stream);
+	    this.add(result);
+	} catch (FormException e) {
+	    e.printStackTrace();
+	}
+	this.form = result;
+	this.layer = layer;
+	this.fincasTable = fincasTable;
+	this.idReversion = idReversion;
+	initWidgets();
+    }
+
+    private void initWidgets() {
+	updateCurrentRowFromIDReversion(idReversion);
+
+	addExpropiationButton = (JButton) form.getComponentByName("add_expropiation_button");
+	addExpropiationButton.addActionListener(this);
+
+	superficie =  (JTextField) form.getComponentByName("superficie");
+	importe = (JTextField) form.getComponentByName("importe");
+
+	idFinca = (JComboBox) form.getComponentByName("id_finca");
+	for (String id_finca : getFincasFromReversion()) {
+	    idFinca.addItem(id_finca);
+	}
+    }
+
+    private ArrayList<String> getFincasFromReversion() {
+	ArrayList<String> fincas = null;
+	try {
+	    fincas = new ArrayList<String>();
+
+	    TOCLayerManager tm = new TOCLayerManager();
+	    FLyrVect fincasLayer = tm.getLayerByName("Fincas");
+	    SelectableDataSource fincasRecordset = fincasLayer.getRecordset();
+	    IGeometry reversionGeometry = layer.getSource().getFeature(currentRow).getGeometry();
+	    Geometry jtsReversionGeometry = reversionGeometry.toJTSGeometry();
+
+	    int idFincaIndex = fincasRecordset.getFieldIndexByName("id_finca");
+	    ReadableVectorial layerSourceFeats = fincasLayer.getSource();
+	    for (int i = 0; i < fincasRecordset.getRowCount(); i++) {
+		IGeometry gvGeom = layerSourceFeats.getShape(i);
+		if (gvGeom != null) {
+		    if (!gvGeom.equals(jtsReversionGeometry)) {
+			Geometry auxJTSGeom = gvGeom.toJTSGeometry();
+			if ((jtsReversionGeometry.buffer(INTERSECTION_BUFFER)).intersects(auxJTSGeom)) {
+			    String finca = fincasRecordset.getFieldValue(i, idFincaIndex).toString();
+			    fincas.add(finca);
+			}
+		    }
+		}
+	    }
+	} catch (ReadDriverException e) {
+	    e.printStackTrace();
+	}
+	return fincas;
+    }
+
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+	if (e.getSource() == addExpropiationButton) {
+	    String numReversion = idFinca.getSelectedItem().toString();
+	    Value[] fincaData = getFincaData(numReversion);
+	    DefaultTableModel tableModel = (DefaultTableModel) fincasTable.getModel();
+	    tableModel.addRow(fincaData);
+	}
+    }
+
+    @Override
+    public WindowInfo getWindowInfo() {
+	viewInfo = new WindowInfo(WindowInfo.MODALDIALOG);
+	viewInfo.setTitle(title);
+	viewInfo.setWidth(width);
+	viewInfo.setHeight(height);
+	return viewInfo;
+    }
+
+    @Override
+    public Object getWindowProfile() {
+	// TODO Auto-generated method stub
+	return null;
+    }
+
+    public void updateCurrentRowFromIDReversion(String idReversion) {
+	PreparedStatement statement;
+	String query = "SELECT gid " +
+		"FROM audasa_expropiaciones.exp_reversion " +
+		"WHERE id_reversion = " +
+		"'" + idReversion + "';";
+	try {
+	    statement = DBSession.getCurrentSession().getJavaConnection().prepareCall(query);
+	    statement.execute();
+	    ResultSet rs = statement.getResultSet();
+	    rs.next();
+	    currentRow = Integer.parseInt(rs.getString(1));
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+    }
+
+    private Value[] getFincaData(String idFinca) {
+	Value[] reversionData = new Value[3];
+
+	reversionData[0] = ValueFactory.createValue(idFinca);
+	reversionData[1] = ValueFactory.createValue(Double.parseDouble(superficie.getText()));
+	reversionData[2] = ValueFactory.createValue(Integer.parseInt(importe.getText()));
+
+	return reversionData;
+    }
+
+}

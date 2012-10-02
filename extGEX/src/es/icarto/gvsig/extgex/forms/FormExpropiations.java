@@ -35,7 +35,6 @@ import com.jeta.forms.gui.common.FormException;
 import es.icarto.gvsig.extgex.navtable.NavTableComponentsFactory;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.preferences.GEXPreferences;
-import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
 import es.icarto.gvsig.extgex.utils.retrievers.LocalizadorFormatter;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.gui.tables.TableModelFactory;
@@ -60,9 +59,6 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
     private JTextField finca;
     private JTextField numFinca;
     private JTextField seccion;
-    //    private JTextField impTerrenosPdte;
-    //    private JTextField impMejorasPdte;
-    //    private JTextField impTotalPdte;
     private JTable expropiaciones;
     private JTable reversiones;
 
@@ -75,7 +71,6 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
     private DependentComboboxesHandler ayuntamientoDomainHandler;
     private DependentComboboxesHandler subtramoDomainHandler;
     private UpdateNroFincaHandler updateNroFincaHandler;
-    //    private UpdateImpTotalPdteHandler updateImpTotalPdteHandler;
 
     private AlphanumericNavTableLauncher tableExpropiationsLauncher;
     private FormReversionsLauncher formReversionsLauncher;
@@ -145,11 +140,6 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	finca = (JTextField) widgets.get(DBNames.FIELD_IDFINCA);
 	finca.setEnabled(false);
 
-	//	impTerrenosPdte = (JTextField) widgets.get(DBNames.FIELD_IMPORTEPDTETERRENOS);
-	//	impMejorasPdte = (JTextField) widgets.get(DBNames.FIELD_IMPORTEPDTEMEJORAS);
-	//	impTotalPdte = (JTextField) widgets.get(DBNames.FIELD_IMPORTEPDTETOTAL);
-	//	impTotalPdte.setEnabled(false);
-
 	expropiaciones = (JTable) widgets.get(WIDGET_EXPROPIACIONES);
 	reversiones = (JTable) widgets.get(WIDGET_REVERSIONES);
 
@@ -179,10 +169,6 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	numFinca.addKeyListener(updateNroFincaHandler);
 	seccion.addKeyListener(updateNroFincaHandler);
 
-	//	updateImpTotalPdteHandler = new UpdateImpTotalPdteHandler();
-	//	impTerrenosPdte.addKeyListener(updateImpTotalPdteHandler);
-	//	impMejorasPdte.addKeyListener(updateImpTotalPdteHandler);
-
 	// BIND LAUNCHERS TO WIDGETS
 	LauncherParams expropiationsParams = new LauncherParams(this,
 		DBNames.TABLE_EXPROPIACIONES,
@@ -207,11 +193,11 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	numFinca.removeKeyListener(updateNroFincaHandler);
 	seccion.removeKeyListener(updateNroFincaHandler);
 
-	//	impTerrenosPdte.removeKeyListener(updateImpTotalPdteHandler);
-	//	impMejorasPdte.removeKeyListener(updateImpTotalPdteHandler);
-
 	expropiaciones.removeMouseListener(tableExpropiationsLauncher);
 	reversiones.removeMouseListener(formReversionsLauncher);
+
+	addReversionsButton.removeActionListener(addReversionsListener);
+	deleteReversionsButton.removeActionListener(deleteReversionsListener);
     }
 
     public class AddReversionsListener implements ActionListener {
@@ -255,34 +241,9 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	}
     }
 
-    //    private void setImpTotalPdte() {
-    //	Double impTotal = getDoubleImpTerrenosPdte()
-    //		+ getDoubleImpMejorasPdte();
-    //	impTotalPdte.setText(impTotal.toString());
-    //	super.setWidgetValues(DBNames.FIELD_IMPORTEPDTETOTAL, impTotal.toString());
-    //    }
-
     public String getIDFinca() {
 	return finca.getText();
     }
-
-    //    private Double getDoubleImpTerrenosPdte() {
-    //	String impTerrenosValue = impTerrenosPdte.getText();
-    //	try {
-    //	    return Double.parseDouble(impTerrenosValue);
-    //	} catch (NumberFormatException nfe) {
-    //	    return 0.0;
-    //	}
-    //    }
-
-    //    private Double getDoubleImpMejorasPdte() {
-    //	String impMejorasValue = impMejorasPdte.getText();
-    //	try {
-    //	    return Double.parseDouble(impMejorasValue);
-    //	} catch (NumberFormatException nfe) {
-    //	    return 0.0;
-    //	}
-    //    }
 
     private String getStringNroFincaFormatted() {
 	HashMap<String, String> values = getFormController().getValuesChanged();
@@ -332,25 +293,6 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	}
     }
 
-    //    public class UpdateImpTotalPdteHandler implements KeyListener {
-    //
-    //	@Override
-    //	public void keyTyped(KeyEvent e) {
-    //	}
-    //
-    //	@Override
-    //	public void keyPressed(KeyEvent e) {
-    //	}
-    //
-    //	@Override
-    //	public void keyReleased(KeyEvent e) {
-    //	    if (!isFillingValues()) {
-    //		setImpTotalPdte();
-    //	    }
-    //	}
-    //
-    //    }
-
     @Override
     protected void fillSpecificValues() {
 	ucDomainHandler.updateComboBoxValues();
@@ -369,7 +311,6 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 		    DBNames.FIELD_IDFINCA, finca.getText(),
 		    columnasCultivos, columnasCultivos));
 	} catch (ReadDriverException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
 
@@ -377,15 +318,7 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	columnasReversiones.add(DBNames.FIELD_IDREVERSION_FINCAS_REVERSIONES);
 	columnasReversiones.add(DBNames.FIELD_SUPERFICIE_FINCAS_REVERSIONES);
 	columnasReversiones.add(DBNames.FIELD_IMPORTE_FINCAS_REVERSIONES);
-	//	try {
-	//	    reversiones.setModel(TableModelFactory.createFromTable(
-	//		    DBNames.TABLE_FINCASREVERSIONES,
-	//		    DBNames.FIELD_IDFINCA, finca.getText(),
-	//		    columnasReversiones, columnasReversiones));
-	//	} catch (ReadDriverException e) {
-	//	    // TODO Auto-generated catch block
-	//	    e.printStackTrace();
-	//	}
+
 	try {
 	    DefaultTableModel tableModel;
 	    tableModel = new DefaultTableModel();
@@ -422,12 +355,9 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	String idReversion;
 	String superficie;
 	String importe;
-	try {
-	    query = "DELETE FROM audasa_expropiaciones.fincas_reversiones " +
-		    "WHERE id_finca = '" + getIDFinca() + "';";
-	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
-	    statement.execute();
-	    for (int i=0; i<reversiones.getRowCount(); i++) {
+
+	for (int i=0; i<reversiones.getRowCount(); i++) {
+	    try {
 		idReversion = reversiones.getModel().getValueAt(i, 0).toString();
 		superficie = reversiones.getModel().getValueAt(i, 1).toString();
 		importe = reversiones.getModel().getValueAt(i, 2).toString();
@@ -436,9 +366,10 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 			superficie + "', '" + importe + "');";
 		statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
 		statement.execute();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+		continue;
 	    }
-	} catch (SQLException e) {
-	    e.printStackTrace();
 	}
 	return super.saveRecord();
     }
@@ -469,7 +400,7 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 
     @Override
     public void internalFrameDeactivated(InternalFrameEvent e) {
-	//	updateJTables();
+	updateJTables();
     }
 
     @Override
@@ -495,13 +426,6 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
     public void tableChanged(TableModelEvent e) {
 	super.setChangedValues(true);
 	super.saveB.setEnabled(true);
-	//super.refreshGUI();
-
-    }
-
-    private FLyrVect getReversionsLayer() {
-	TOCLayerManager toc = new TOCLayerManager();
-	return toc.getLayerByName(DBNames.LAYER_REVERSIONES);
     }
 
 }

@@ -1,8 +1,13 @@
 package es.icarto.gvsig.extgex.forms;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.InputStream;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -13,10 +18,15 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
 
 import org.apache.log4j.Logger;
 
-import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
+import com.hardcode.gdbms.engine.values.Value;
+import com.hardcode.gdbms.engine.values.ValueFactory;
+import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
@@ -25,11 +35,11 @@ import es.icarto.gvsig.extgex.navtable.NavTableComponentsFactory;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.preferences.GEXPreferences;
 import es.icarto.gvsig.navtableforms.AbstractForm;
-import es.icarto.gvsig.navtableforms.gui.tables.TableModelFactory;
 import es.icarto.gvsig.navtableforms.launcher.ILauncherForm;
 import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
+import es.udc.cartolab.gvsig.users.utils.DBSession;
 
-public class FormReversions extends AbstractForm implements ILauncherForm {
+public class FormReversions extends AbstractForm implements ILauncherForm, TableModelListener {
 
     private static final String WIDGET_TABLAFINCASAFECTADAS = "tabla_fincas_afectadas";
 
@@ -40,6 +50,11 @@ public class FormReversions extends AbstractForm implements ILauncherForm {
     private JTextField idReversion;
     private IDReversionHandler idReversionHandler;
     private JComboBox tramo;
+
+    private AddExpropiationsListener addExpropiationsListener;
+    private DeleteExpropiationsListener deleteExpropiationsListener;
+    private JButton addExpropiationsButton;
+    private JButton deleteExpropiationsButton;
 
     private FormExpropiationsLauncher expropiationsLauncher;
 
@@ -63,7 +78,7 @@ public class FormReversions extends AbstractForm implements ILauncherForm {
 
     private void initWindow() {
 	viewInfo.setHeight(650);
-	viewInfo.setWidth(630);
+	viewInfo.setWidth(550);
 	viewInfo.setTitle("Expediente de reversiones");
     }
 
@@ -86,6 +101,14 @@ public class FormReversions extends AbstractForm implements ILauncherForm {
 	numeroReversion = (JTextField) widgets.get(DBNames.FIELD_NUMEROREVERSION_REVERSIONES);
 	idReversionHandler = new IDReversionHandler();
 	numeroReversion.addKeyListener(idReversionHandler);
+
+	addExpropiationsListener = new AddExpropiationsListener();
+	addExpropiationsButton = (JButton) form.getComponentByName("add_expropiations_button");
+	addExpropiationsButton.addActionListener(addExpropiationsListener);
+
+	deleteExpropiationsListener = new DeleteExpropiationsListener();
+	deleteExpropiationsButton = (JButton) form.getComponentByName("delete_expropiations_button");
+	deleteExpropiationsButton.addActionListener(deleteExpropiationsListener);
 
     }
 
@@ -111,6 +134,10 @@ public class FormReversions extends AbstractForm implements ILauncherForm {
 		idReversion.getText());
     }
 
+    private String getIDReversion() {
+	return idReversion.getText();
+    }
+
     private String formatIDReversion() {
 	String num_rev;
 	try {
@@ -123,13 +150,41 @@ public class FormReversions extends AbstractForm implements ILauncherForm {
 	getFormController().setValue(DBNames.FIELD_NUMEROREVERSION_REVERSIONES,
 		numeroReversion.getText());
 	return ((KeyValue) tramo.getSelectedItem()).getKey()+
-	numeroReversion.getText();
+		numeroReversion.getText();
     }
 
     @Override
     protected void removeListeners() {
 	super.removeListeners();
 	fincasAfectadas.removeMouseListener(expropiationsLauncher);
+
+	addExpropiationsButton.removeActionListener(addExpropiationsListener);
+	deleteExpropiationsButton.removeActionListener(deleteExpropiationsListener);
+    }
+
+    public class AddExpropiationsListener implements ActionListener {
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+	    SubFormReversionsAddExpropiations subForm =
+		    new SubFormReversionsAddExpropiations(layer, fincasAfectadas, idReversion.getText());
+	    PluginServices.getMDIManager().addWindow(subForm);
+	}
+
+    }
+
+    public class DeleteExpropiationsListener implements ActionListener {
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+	    int[] selectedRows = fincasAfectadas.getSelectedRows();
+	    DefaultTableModel model = (DefaultTableModel) fincasAfectadas.getModel();
+	    for (int i=0; i<selectedRows.length; i++) {
+		int rowIndex = selectedRows[i];
+		model.removeRow(rowIndex);
+		repaint();
+	    }
+	}
     }
 
     @Override
@@ -140,13 +195,13 @@ public class FormReversions extends AbstractForm implements ILauncherForm {
     @Override
     public FormPanel getFormBody() {
 	if (form == null) {
-		InputStream stream = getClass().getClassLoader().getResourceAsStream("reversiones.xml");
-		FormPanel result = null;
-		try {
-			result = new FormPanel(stream);
-		} catch (FormException e) {
-			e.printStackTrace();
-		}
+	    InputStream stream = getClass().getClassLoader().getResourceAsStream("reversiones.xml");
+	    FormPanel result = null;
+	    try {
+		result = new FormPanel(stream);
+	    } catch (FormException e) {
+		e.printStackTrace();
+	    }
 	    form = result;
 	}
 	return form;
@@ -162,15 +217,60 @@ public class FormReversions extends AbstractForm implements ILauncherForm {
 	columnasFincas.add(DBNames.FIELD_IDEXPROPIACION_FINCAS_REVERSIONES);
 	columnasFincas.add(DBNames.FIELD_SUPERFICIE_FINCAS_REVERSIONES);
 	columnasFincas.add(DBNames.FIELD_IMPORTE_FINCAS_REVERSIONES);
+
 	try {
-	    fincasAfectadas.setModel(TableModelFactory.createFromTable(
-		    DBNames.TABLE_FINCASREVERSIONES,
-		    DBNames.FIELD_IDREVERSION_REVERSIONES, formatIDReversion(),
-		    columnasFincas, columnasFincas));
-	} catch (ReadDriverException e) {
-	    // TODO Auto-generated catch block
+	    DefaultTableModel tableModel;
+	    tableModel = new DefaultTableModel();
+	    for (String columnName : columnasFincas) {
+		tableModel.addColumn(columnName);
+	    }
+	    fincasAfectadas.setModel(tableModel);
+	    Value[] reversionData = new Value[3];
+	    PreparedStatement statement;
+	    String query = "SELECT id_finca, superficie, importe " +
+		    "FROM audasa_expropiaciones.fincas_reversiones " +
+		    "WHERE id_reversion = '" + getIDReversion() + "';";
+	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+	    statement.execute();
+	    ResultSet rs = statement.getResultSet();
+	    while (rs.next()) {
+		reversionData[0] = ValueFactory.createValue(rs.getString(1));
+		reversionData[1] = ValueFactory.createValue(rs.getDouble(2));
+		reversionData[2] = ValueFactory.createValue(rs.getInt(3));
+		tableModel.addRow(reversionData);
+	    }
+	    repaint();
+	    tableModel.addTableModelListener(this);
+	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
+
+    }
+
+    @Override
+    public boolean saveRecord() {
+	PreparedStatement statement;
+	String query = null;
+	String idFinca;
+	String superficie;
+	String importe;
+
+	for (int i=0; i<fincasAfectadas.getRowCount(); i++) {
+	    try {
+		idFinca = fincasAfectadas.getModel().getValueAt(i, 0).toString();
+		superficie = fincasAfectadas.getModel().getValueAt(i, 1).toString();
+		importe = fincasAfectadas.getModel().getValueAt(i, 2).toString();
+		query = "INSERT INTO audasa_expropiaciones.fincas_reversiones " +
+			"VALUES ('" + idFinca + "', '" + getIDReversion() + "', '" +
+			superficie + "', '" + importe + "');";
+		statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+		statement.executeQuery();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+		continue;
+	    }
+	}
+	return super.saveRecord();
     }
 
     @Override
@@ -210,6 +310,12 @@ public class FormReversions extends AbstractForm implements ILauncherForm {
     @Override
     public String getXMLPath() {
 	return GEXPreferences.getPreferences().getXMLFilePath();
+    }
+
+    @Override
+    public void tableChanged(TableModelEvent arg0) {
+	super.setChangedValues(true);
+	super.saveB.setEnabled(true);
     }
 
 }
