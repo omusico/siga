@@ -76,7 +76,7 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
     private FormReversionsLauncher formReversionsLauncher;
     private FLyrVect layer = null;
 
-    private ArrayList<String> deletedReversions;
+    private ArrayList<String> oldReversions;
 
     public FormExpropiations(FLyrVect layer) {
 	super(layer);
@@ -216,12 +216,10 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-	    deletedReversions = new ArrayList<String>();
 	    int[] selectedRows = reversiones.getSelectedRows();
 	    DefaultTableModel model = (DefaultTableModel) reversiones.getModel();
 	    for (int i=0; i<selectedRows.length; i++) {
 		int rowIndex = selectedRows[i];
-		deletedReversions.add(model.getValueAt(rowIndex, 0).toString());
 		model.removeRow(rowIndex);
 		repaint();
 	    }
@@ -306,6 +304,8 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
     }
 
     private void updateJTables() {
+	oldReversions = new ArrayList<String>();
+
 	ArrayList<String> columnasCultivos = new ArrayList<String>();
 	columnasCultivos.add(DBNames.FIELD_SUPERFICIE_EXPROPIACIONES);
 	columnasCultivos.add(DBNames.FIELD_IDCULTIVO_EXPROPIACIONES);
@@ -340,9 +340,20 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	    ResultSet rs = statement.getResultSet();
 	    while (rs.next()) {
 		reversionData[0] = ValueFactory.createValue(rs.getString(1));
-		reversionData[1] = ValueFactory.createValue(rs.getDouble(2));
-		reversionData[2] = ValueFactory.createValue(rs.getInt(3));
+		if (rs.getObject(2) != null) {
+		    reversionData[1] = ValueFactory.createValue(rs.getDouble(2));
+		}else {
+		    reversionData[1] = null;
+		}
+		if (rs.getObject(3) != null) {
+		    reversionData[2] = ValueFactory.createValue(rs.getInt(3));
+		}else {
+		    reversionData[2] = null;
+		}
 		tableModel.addRow(reversionData);
+		//Save current Fincas in order to remove them
+		//from database when there is some change in the table model
+		oldReversions.add(rs.getString(1));
 	    }
 	    repaint();
 	    tableModel.addTableModelListener(this);
@@ -360,31 +371,46 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	String superficie;
 	String importe;
 
-	//Deleted Fincas
-	if (deletedReversions.size()>0) {
-	    for (int i=0; i<deletedReversions.size(); i++) {
-		try {
-		    query = "DELETE FROM audasa_expropiaciones.fincas_reversiones " +
-			    "WHERE id_finca = '" + getIDFinca() + "' AND " +
-			    "id_reversion = '" + deletedReversions.get(i) + "';";
-		    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
-		    statement.executeQuery();
-		} catch (SQLException e) {
-		    e.printStackTrace();
-		    continue;
-		}
+	// First, we remove old Reversions on this Finca
+	for (String ReversionID : oldReversions) {
+	    try {
+		query = "DELETE FROM audasa_expropiaciones.fincas_reversiones " +
+			"WHERE id_finca = '" + getIDFinca() + "' AND " +
+			"id_reversion = '" + ReversionID + "';";
+		statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+		statement.execute();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+		continue;
 	    }
-	    deletedReversions.clear();
 	}
 
+	// Now, we save into database current state of JTable
 	for (int i=0; i<reversiones.getRowCount(); i++) {
 	    try {
 		idReversion = reversiones.getModel().getValueAt(i, 0).toString();
-		superficie = reversiones.getModel().getValueAt(i, 1).toString();
-		importe = reversiones.getModel().getValueAt(i, 2).toString();
+		if (reversiones.getModel().getValueAt(i, 1) != null) {
+		    superficie = reversiones.getModel().getValueAt(i, 1).toString();
+		}else {
+		    superficie = null;
+		}
+		if (reversiones.getModel().getValueAt(i, 2) != null) {
+		    importe = reversiones.getModel().getValueAt(i, 2).toString();
+		}else {
+		    importe = null;
+		}
 		query = "INSERT INTO audasa_expropiaciones.fincas_reversiones " +
-			"VALUES ('" + getIDFinca() + "', '" + idReversion + "', '" +
-			superficie + "', '" + importe + "');";
+			"VALUES ('" + getIDFinca() + "', '" + idReversion + "',";
+		if (superficie != null) {
+		    query = query + " '" + superficie + "',";
+		}else {
+		    query = query + " null,";
+		}
+		if (importe != null) {
+		    query = query + " '" + importe + "');";
+		}else {
+		    query = query + " null );";
+		}
 		statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
 		statement.execute();
 	    } catch (SQLException e) {
