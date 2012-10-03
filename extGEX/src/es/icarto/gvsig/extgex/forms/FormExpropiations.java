@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -29,9 +30,11 @@ import com.hardcode.gdbms.engine.values.Value;
 import com.hardcode.gdbms.engine.values.ValueFactory;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
+import com.jeta.forms.components.image.ImageComponent;
 import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 
+import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.extgex.navtable.NavTableComponentsFactory;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.preferences.GEXPreferences;
@@ -131,6 +134,10 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	// RETRIEVE WIDGETS
 	HashMap<String, JComponent> widgets = getWidgetComponents();
 
+	ImageComponent image = (ImageComponent) form.getComponentByName("image");
+	ImageIcon icon = new ImageIcon (PreferencesPage.AUDASA_ICON);
+	image.setIcon(icon);
+
 	tramo = (JComboBox) widgets.get(DBNames.FIELD_TRAMO_FINCAS);
 	uc = (JComboBox) widgets.get(DBNames.FIELD_UC_FINCAS);
 	ayuntamiento = (JComboBox) widgets.get(DBNames.FIELD_AYUNTAMIENTO_FINCAS);
@@ -140,7 +147,7 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	seccion = (JTextField) widgets.get(DBNames.FIELD_SECCION_FINCAS);
 
 	finca = (JTextField) widgets.get(DBNames.FIELD_IDFINCA);
-	finca.setEnabled(false);
+	//	finca.setEnabled(false);
 
 	expropiaciones = (JTable) widgets.get(WIDGET_EXPROPIACIONES);
 	reversiones = (JTable) widgets.get(WIDGET_REVERSIONES);

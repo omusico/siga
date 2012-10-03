@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -28,9 +29,11 @@ import com.hardcode.gdbms.engine.values.Value;
 import com.hardcode.gdbms.engine.values.ValueFactory;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
+import com.jeta.forms.components.image.ImageComponent;
 import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 
+import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.extgex.navtable.NavTableComponentsFactory;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.preferences.GEXPreferences;
@@ -80,7 +83,7 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 
     private void initWindow() {
 	viewInfo.setHeight(650);
-	viewInfo.setWidth(550);
+	viewInfo.setWidth(600);
 	viewInfo.setTitle("Expediente de reversiones");
     }
 
@@ -94,6 +97,10 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 	super.setListeners();
 
 	HashMap<String, JComponent> widgets = getWidgetComponents();
+
+	ImageComponent image = (ImageComponent) form.getComponentByName("image");
+	ImageIcon icon = new ImageIcon (PreferencesPage.AUDASA_ICON);
+	image.setIcon(icon);
 
 	fincasAfectadas = (JTable) widgets.get(WIDGET_TABLAFINCASAFECTADAS);
 	fincasAfectadas.addMouseListener(expropiationsLauncher);
