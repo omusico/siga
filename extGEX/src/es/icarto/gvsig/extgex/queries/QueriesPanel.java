@@ -13,6 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -32,9 +33,11 @@ import org.apache.log4j.Logger;
 
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.drivers.DBException;
+import com.jeta.forms.components.image.ImageComponent;
 import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 
+import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.utils.gvWindow;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
@@ -98,9 +101,9 @@ ActionListener {
 	InputStream stream = getClass().getClassLoader().getResourceAsStream("consultas.xml");
 	FormPanel result = null;
 	try {
-		result = new FormPanel(stream);
+	    result = new FormPanel(stream);
 	} catch (FormException e) {
-		e.printStackTrace();
+	    e.printStackTrace();
 	}
 	formBody = result;
 	formBody.setVisible(true);
@@ -124,6 +127,9 @@ ActionListener {
     }
 
     public void initWidgets() {
+	ImageComponent image = (ImageComponent) formBody.getComponentByName("image");
+	ImageIcon icon = new ImageIcon (PreferencesPage.AUDASA_ICON);
+	image.setIcon(icon);
 	formLabel = (JLabel) formBody.getComponentByName(ID_FORMLABEL);
 	runQueriesB = (JButton) formBody.getComponentByName(ID_RUNQUERIES);
 	runQueriesB.addActionListener(this);
@@ -138,10 +144,10 @@ ActionListener {
 	uc = (JComboBox) formBody.getComponentByName(ID_UCCB);
 	uc.addItem(new String(DEFAULT_FILTER));
 	ayuntamiento = (JComboBox) formBody
-	.getComponentByName(ID_AYUNTAMIENTOCB);
+		.getComponentByName(ID_AYUNTAMIENTOCB);
 	ayuntamiento.addItem(new String(DEFAULT_FILTER));
 	parroquia_subtramo = (JComboBox) formBody
-	.getComponentByName(ID_PARROQUIA_SUBTRAMOCB);
+		.getComponentByName(ID_PARROQUIA_SUBTRAMOCB);
 	parroquia_subtramo.setEnabled(false);
 
 	try {
@@ -224,28 +230,28 @@ ActionListener {
 		parroquiaSelected = null;
 	    } else {
 		parroquiaSelected = (String) parroquia_subtramo
-		.getSelectedItem();
+			.getSelectedItem();
 	    }
 	}
     }
 
     private String getTramoId() throws SQLException {
 	String whereSQL = DBNames.FIELD_NOMBRETRAMO_TRAMOS + " = "
-	+ "'" + tramoSelected + "'";
+		+ "'" + tramoSelected + "'";
 	String tramoId = getIDFromCB(DBNames.FIELD_IDTRAMO, DBNames.TABLE_TRAMOS, whereSQL);
 	return tramoId;
     }
 
     private String getUcId() throws SQLException {
 	String whereSQL = DBNames.FIELD_NOMBREUC_UC + " = " + "'"
-	+ ucSelected + "'";
+		+ ucSelected + "'";
 	String uc = getIDFromCB(DBNames.FIELD_IDUC, DBNames.TABLE_UC, whereSQL);
 	return uc;
     }
 
     private String getAyuntamientoId() throws SQLException {
 	String whereSQL = DBNames.FIELD_IDUC + " = " + "'" + getUcId() + "'" + " and " +
-	DBNames.FIELD_NOMBREAYUNTAMIENTO_AYUNTAMIENTO + " = " + "'" + ayuntamientoSelected + "'";
+		DBNames.FIELD_NOMBREAYUNTAMIENTO_AYUNTAMIENTO + " = " + "'" + ayuntamientoSelected + "'";
 	String ayuntamiento = getIDFromCB(DBNames.FIELD_IDAYUNTAMIENTO, DBNames.TABLE_AYUNTAMIENTOS,
 		whereSQL);
 	return ayuntamiento;
@@ -255,7 +261,7 @@ ActionListener {
 	    String whereClause) throws SQLException {
 	Connection con = dbs.getJavaConnection();
 	String query = "SELECT " + fieldID + " FROM " + DBNames.SCHEMA_DATA
-	+ "." + tablename + " WHERE " + whereClause;
+		+ "." + tablename + " WHERE " + whereClause;
 	Statement st = con.createStatement();
 	ResultSet resultSet = st.executeQuery(query);
 	resultSet.first();
@@ -273,7 +279,7 @@ ActionListener {
 		order[0] = DBNames.FIELD_IDUC;
 		String tramoSelectedId = getTramoId();
 		String whereClause = DBNames.FIELD_IDTRAMO + " = " + "'" + tramoSelectedId
-		+ "'";
+			+ "'";
 		String[][] ucs = dbs.getTable(DBNames.TABLE_UC, DBNames.SCHEMA_DATA,
 			whereClause, order, false);
 		uc.removeAllItems();
@@ -323,8 +329,8 @@ ActionListener {
 		String ucSelectedId = getUcId();
 		String ayuntamientoSelectedId = getAyuntamientoId();
 		String whereClause = DBNames.FIELD_IDAYUNTAMIENTO + " = " + "'"
-		+ ayuntamientoSelectedId + "'" + " and " + DBNames.FIELD_IDUC + " = "
-		+ "'" + ucSelectedId + "'";
+			+ ayuntamientoSelectedId + "'" + " and " + DBNames.FIELD_IDUC + " = "
+			+ "'" + ucSelectedId + "'";
 		String[][] parroquias = dbs.getTable(DBNames.TABLE_PARROQUIASSUBTRAMOS,
 			DBNames.SCHEMA_DATA, whereClause, order, false);
 		if (parroquias.length <= 0) {
@@ -495,7 +501,7 @@ ActionListener {
 	    DBSession dbs = DBSession.getCurrentSession();
 
 	    DefaultTableModel model = (DefaultTableModel) queriesTable
-	    .getModel();
+		    .getModel();
 
 	    setProgress(0);
 
@@ -563,7 +569,7 @@ ActionListener {
 	    }
 	    if (ayuntamientoSelected.compareToIgnoreCase(DEFAULT_FILTER) != 0) {
 		whereC = whereC + " AND " + DBNames.FIELD_AYUNTAMIENTO_FINCAS + " = " + "'"
-		+ getAyuntamientoId() + "'";
+			+ getAyuntamientoId() + "'";
 	    }
 	    if(whereC.equalsIgnoreCase("WHERE")) {
 		whereC = ""; //has no combobox selected
@@ -624,7 +630,7 @@ ActionListener {
 		}
 	    } else if (sqlError) {
 		String message = error + "\n"
-		+ PluginServices.getText(this, "checkSchema");
+			+ PluginServices.getText(this, "checkSchema");
 		JOptionPane.showMessageDialog(null, message, PluginServices
 			.getText(this, "validationError"),
 			JOptionPane.ERROR_MESSAGE);
@@ -660,7 +666,7 @@ ActionListener {
 	}
 
 	private void resultSetToTable(ResultTableModel result, ResultSet rs)
-	throws SQLException {
+		throws SQLException {
 	    // TODO: don't create empty ResultTableModel
 	    ResultSetMetaData metaData = rs.getMetaData();
 	    int numColumns = metaData.getColumnCount();

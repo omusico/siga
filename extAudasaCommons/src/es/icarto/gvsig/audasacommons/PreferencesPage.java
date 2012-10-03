@@ -20,20 +20,21 @@ import com.jeta.forms.components.panel.FormPanel;
 
 @SuppressWarnings("serial")
 public class PreferencesPage extends AbstractPreferencePage implements
-	ActionListener {
+ActionListener {
 
     private static final String PLUGIN_NAME = "es.icarto.gvsig.audasacommons";
+    public static final String AUDASA_ICON = "gvSIG/extensiones/es.icarto.gvsig.audasacommons/images/logo_audasa.png";
 
     // fileslink
     private static final String DEFAULT_FILES_DIR_KEY_NAME = "FilesDir";
 
     private static final String DEFAULT_FILES_DIR = Launcher.getAppHomeDir();
 
-    private String id;
+    private final String id;
     private boolean panelStarted = false;
     private JTextField filesDirField;
     private JButton filesDirButton;
-    private String title = "Audasa";
+    private final String title = "Audasa";
 
     static String baseDirectory = "";
 
@@ -75,7 +76,7 @@ public class PreferencesPage extends AbstractPreferencePage implements
 
 	    JLabel legendLabel = form.getLabel("filesLabel");
 	    legendLabel
-		    .setText(PluginServices.getText(this, "files_directory"));
+	    .setText(PluginServices.getText(this, "files_directory"));
 
 	    filesDirField = form.getTextField("filesField");
 	    filesDirButton = (JButton) form.getButton("filesButton");
