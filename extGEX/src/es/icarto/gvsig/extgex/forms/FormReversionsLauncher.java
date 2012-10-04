@@ -27,16 +27,16 @@ public class FormReversionsLauncher implements MouseListener {
 
     private static final int BUTTON_RIGHT = 3;
 
-    private FormExpropiations formExpropiations;
+    private final FormExpropiations formExpropiations;
     private FormReversions formReversions;
     private JTable table;
-    private FLyrVect layerReversions;
+    private final FLyrVect layerReversions;
     private IEditableSource tableFincasReversions;
 
     public FormReversionsLauncher(FormExpropiations form) {
 	this.formExpropiations = form;
 	this.layerReversions = getLayer();
-	this.tableFincasReversions = getSource();
+	//	this.tableFincasReversions = getSource();
     }
 
     @Override
@@ -88,8 +88,8 @@ public class FormReversionsLauncher implements MouseListener {
 
     private void openForm() {
 	try {
-	    int index = (int) TableUtils.getFeatureIndexFromJTable(table, 
-		    layerReversions.getRecordset(), 
+	    int index = (int) TableUtils.getFeatureIndexFromJTable(table,
+		    layerReversions.getRecordset(),
 		    DBNames.FIELD_IDREVERSION_FINCAS_REVERSIONES);
 	    if (index != AbstractNavTable.EMPTY_REGISTER) {
 		formReversions = new FormReversions(layerReversions);
@@ -110,7 +110,7 @@ public class FormReversionsLauncher implements MouseListener {
 
     private void openANT() {
 	try {
-	    int index = (int) TableUtils.getFeatureIndexFromJTable(table, 
+	    int index = (int) TableUtils.getFeatureIndexFromJTable(table,
 		    tableFincasReversions.getRecordset());
 	    if(index != AbstractNavTable.EMPTY_REGISTER) {
 		AlphanumericNavTable ant = new AlphanumericNavTable(
@@ -134,7 +134,7 @@ public class FormReversionsLauncher implements MouseListener {
 	try {
 	    ArrayList<Long> rowIndexes = TableUtils.getFeatureIndexesFromJTable(
 		    table,
-		    layerReversions.getRecordset(), 
+		    layerReversions.getRecordset(),
 		    DBNames.FIELD_IDREVERSION_FINCAS_REVERSIONES);
 	    formReversions.clearSelectedFeatures();
 	    formReversions.setOnlySelected(false);
@@ -152,7 +152,7 @@ public class FormReversionsLauncher implements MouseListener {
     }
 
     private FLyrVect getLayer() {
-	if(layerReversions == null) {	    
+	if(layerReversions == null) {
 	    TOCLayerManager toc = new TOCLayerManager();
 	    return toc.getLayerByName(DBNames.LAYER_REVERSIONES);
 	}
@@ -160,7 +160,7 @@ public class FormReversionsLauncher implements MouseListener {
     }
 
     private IEditableSource getSource() {
-	if(tableFincasReversions == null) {	    
+	if(tableFincasReversions == null) {
 	    TableLayerManager tableManager = new TableLayerManager();
 	    return tableManager.getTableByName(
 		    DBNames.TABLE_FINCASREVERSIONES).getModel().getModelo();

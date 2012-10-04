@@ -12,6 +12,8 @@ import com.iver.cit.gvsig.listeners.CADListenerManager;
 import com.iver.cit.gvsig.listeners.EndGeometryListener;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
+import es.icarto.gvsig.extgex.preferences.DBNames;
+import es.icarto.gvsig.extgex.utils.AlphanumericTableLoader;
 import es.icarto.gvsig.extpm.forms.FormPM;
 import es.icarto.gvsig.extpm.preferences.Preferences;
 import es.icarto.gvsig.extpm.utils.managers.TOCLayerManager;
@@ -88,15 +90,36 @@ public class FormPMExtension extends Extension {
     private class NTEndGeometryListener implements EndGeometryListener {
 
 	public void endGeometry(FLayer layer) {
-	    CADTool cadTool = CADExtension.getCADTool();
-	    int insertedRow = ((PointCADTool) cadTool).getInsertedRow();
-	    if (layer instanceof FLyrVect) {
+	    if (layer.getName().equalsIgnoreCase(Preferences.PM_LAYER_NAME)) {
+		CADTool cadTool = CADExtension.getCADTool();
+		int insertedRow = ((PointCADTool) cadTool).getInsertedRow();
+		if (layer instanceof FLyrVect) {
+		    FLyrVect l = (FLyrVect) layer;
+		    l.setActive(true);
+		    dialog = new FormPM(getPMLayer(), true, insertedRow);
+		    if (dialog.init()) {
+			PluginServices.getMDIManager().addWindow(dialog);
+			dialog.last();
+		    }
+		}
+	    }else if (layer.getName().equalsIgnoreCase("Reversiones")) {
 		FLyrVect l = (FLyrVect) layer;
 		l.setActive(true);
-		dialog = new FormPM(getPMLayer(), true, insertedRow);
+		es.icarto.gvsig.extgex.forms.FormReversions dialog = new es.icarto.gvsig.extgex.forms.FormReversions((FLyrVect) layer);
 		if (dialog.init()) {
 		    PluginServices.getMDIManager().addWindow(dialog);
 		    dialog.last();
+		}
+	    }else if (layer.getName().equalsIgnoreCase("Fincas")) {
+		FLyrVect l = (FLyrVect) layer;
+		l.setActive(true);
+		DBSession.getCurrentSession().setSchema(DBNames.EXPROPIATIONS_SCHEMA);
+		if (AlphanumericTableLoader.loadTables()) {
+		    es.icarto.gvsig.extgex.forms.FormExpropiations dialog = new es.icarto.gvsig.extgex.forms.FormExpropiations((FLyrVect) layer);
+		    if (dialog.init()) {
+			PluginServices.getMDIManager().addWindow(dialog);
+			dialog.last();
+		    }
 		}
 	    }
 	}

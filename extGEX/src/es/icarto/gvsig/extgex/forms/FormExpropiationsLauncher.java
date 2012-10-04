@@ -27,7 +27,7 @@ public class FormExpropiationsLauncher implements MouseListener {
 
     private static final int BUTTON_RIGHT = 3;
 
-    private FormReversions formReversions;
+    private final FormReversions formReversions;
     private FormExpropiations formExpropiations;
     private JTable table;
     private FLyrVect layerExpropiations;
@@ -36,7 +36,7 @@ public class FormExpropiationsLauncher implements MouseListener {
     public FormExpropiationsLauncher(FormReversions form) {
 	this.formReversions = form;
 	this.layerExpropiations = getLayer();
-	this.tableFincasReversions = getSource();
+	//	this.tableFincasReversions = getSource();
     }
 
     @Override
@@ -113,11 +113,11 @@ public class FormExpropiationsLauncher implements MouseListener {
 	    int rowIndex = (int) TableUtils.getFeatureIndexFromJTable(
 		    table,
 		    tableFincasReversions.getRecordset());
-	    if(rowIndex != AbstractNavTable.EMPTY_REGISTER) {    
+	    if(rowIndex != AbstractNavTable.EMPTY_REGISTER) {
 		AlphanumericNavTable ant = new AlphanumericNavTable(
 			tableFincasReversions,
 			"Enlace fincas-reversiones");
-		if(ant.init()) {		
+		if(ant.init()) {
 		    ant.setPosition(rowIndex);
 		    PluginServices.getMDIManager().addWindow(ant);
 		    // Listening closing actions of formReversions
@@ -135,7 +135,7 @@ public class FormExpropiationsLauncher implements MouseListener {
 	try {
 	    ArrayList<Long> rowIndexes = TableUtils.getFeatureIndexesFromJTable(
 		    table,
-		    layerExpropiations.getRecordset(), 
+		    layerExpropiations.getRecordset(),
 		    DBNames.FIELD_IDEXPROPIACION_FINCAS_REVERSIONES);
 	    formExpropiations.clearSelectedFeatures();
 	    for (long rowIndex : rowIndexes) {
@@ -152,13 +152,13 @@ public class FormExpropiationsLauncher implements MouseListener {
     private FLyrVect getLayer() {
 	if(layerExpropiations == null) {
 	    TOCLayerManager toc = new TOCLayerManager();
-	    layerExpropiations = toc.getLayerByName(DBNames.LAYER_FINCAS); 
+	    layerExpropiations = toc.getLayerByName(DBNames.LAYER_FINCAS);
 	}
 	return layerExpropiations;
     }
 
     private IEditableSource getSource() {
-	if(tableFincasReversions == null) {	    
+	if(tableFincasReversions == null) {
 	    TableLayerManager tableManager = new TableLayerManager();
 	    return tableManager.getTableByName(
 		    DBNames.TABLE_FINCASREVERSIONES).getModel().getModelo();

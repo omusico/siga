@@ -29,5 +29,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/extELLE"/>
 	<classpathentry kind="lib" path="/extAudasaCommons/lib/formsrt.jar"/>
 	<classpathentry kind="src" path="/extAudasaCommons"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/extCAD"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
