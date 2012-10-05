@@ -113,11 +113,11 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 	numeroReversion.addKeyListener(idReversionHandler);
 
 	addExpropiationsListener = new AddExpropiationsListener();
-	addExpropiationsButton = (JButton) form.getComponentByName("add_expropiations_button");
+	addExpropiationsButton = (JButton) form.getComponentByName(DBNames.REVERSIONS_ADD_EXPROPIATIONS_BUTTON);
 	addExpropiationsButton.addActionListener(addExpropiationsListener);
 
 	deleteExpropiationsListener = new DeleteExpropiationsListener();
-	deleteExpropiationsButton = (JButton) form.getComponentByName("delete_expropiations_button");
+	deleteExpropiationsButton = (JButton) form.getComponentByName(DBNames.REVERSIONS_DELETE_EXPROPIATIONS_BUTTON);
 	deleteExpropiationsButton.addActionListener(deleteExpropiationsListener);
 
     }
@@ -240,9 +240,12 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 	    fincasAfectadas.setModel(tableModel);
 	    Value[] reversionData = new Value[3];
 	    PreparedStatement statement;
-	    String query = "SELECT id_finca, superficie, importe " +
-		    "FROM audasa_expropiaciones.fincas_reversiones " +
-		    "WHERE id_reversion = '" + getIDReversion() + "';";
+	    String query = "SELECT " +
+		    DBNames.FIELD_IDEXPROPIACION_FINCAS_REVERSIONES + ", " +
+		    DBNames.FIELD_SUPERFICIE_FINCAS_REVERSIONES + ", " +
+		    DBNames.FIELD_IMPORTE_FINCAS_REVERSIONES + " " +
+		    "FROM " + DBNames.SCHEMA_DATA + "." + DBNames.TABLE_FINCASREVERSIONES + " " +
+		    "WHERE " + DBNames.FIELD_IDREVERSION_FINCAS_REVERSIONES + " = '" + getIDReversion() + "';";
 	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
 	    statement.execute();
 	    ResultSet rs = statement.getResultSet();
@@ -268,7 +271,6 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
-
     }
 
     @Override
@@ -282,9 +284,11 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 	// First, we remove old Fincas on this reversions
 	for (String FincaID : oldFincasAfectadas) {
 	    try {
-		query = "DELETE FROM audasa_expropiaciones.fincas_reversiones " +
-			"WHERE id_finca = '" + FincaID + "' AND " +
-			"id_reversion = '" + getIDReversion() + "';";
+		query = "DELETE FROM " +
+			DBNames.SCHEMA_DATA + "." + DBNames.TABLE_FINCASREVERSIONES + " " +
+			"WHERE " + DBNames.FIELD_IDEXPROPIACION_FINCAS_REVERSIONES + " = '"
+			+ FincaID + "' AND " + DBNames.FIELD_IDREVERSION_FINCAS_REVERSIONES +
+			" = '" + getIDReversion() + "';";
 		statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
 		statement.execute();
 	    } catch (SQLException e) {
@@ -307,7 +311,7 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 		importe = null;
 	    }
 	    try {
-		query = "INSERT INTO audasa_expropiaciones.fincas_reversiones " +
+		query = "INSERT INTO " + DBNames.SCHEMA_DATA + "." + DBNames.TABLE_FINCASREVERSIONES + " " +
 			"VALUES ('" + idFinca + "', '" + getIDReversion() + "',";
 		if (superficie != null) {
 		    query = query + " '" + superficie + "',";

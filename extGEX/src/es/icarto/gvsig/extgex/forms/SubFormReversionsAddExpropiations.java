@@ -28,6 +28,7 @@ import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 import com.vividsolutions.jts.geom.Geometry;
 
+import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -70,13 +71,13 @@ public class SubFormReversionsAddExpropiations extends JPanel implements IWindow
     private void initWidgets() {
 	updateCurrentRowFromIDReversion(idReversion);
 
-	addExpropiationButton = (JButton) form.getComponentByName("add_expropiation_button");
+	addExpropiationButton = (JButton) form.getComponentByName(DBNames.SUBFORMREVERSIONS_ADD_EXPROPIATIONS_BUTTON);
 	addExpropiationButton.addActionListener(this);
 
-	superficie =  (JTextField) form.getComponentByName("superficie");
-	importe = (JTextField) form.getComponentByName("importe");
+	superficie =  (JTextField) form.getComponentByName(DBNames.SUBFORMREVERSIONS_SUPERFICIE);
+	importe = (JTextField) form.getComponentByName(DBNames.SUBFORMREVERSIONS_IMPORTE);
 
-	idFinca = (JComboBox) form.getComponentByName("id_finca");
+	idFinca = (JComboBox) form.getComponentByName(DBNames.SUBFORMSREVERSIONS_IDFINCA);
 	for (String id_finca : getFincasFromReversion()) {
 	    idFinca.addItem(id_finca);
 	}
@@ -88,12 +89,12 @@ public class SubFormReversionsAddExpropiations extends JPanel implements IWindow
 	    fincas = new ArrayList<String>();
 
 	    TOCLayerManager tm = new TOCLayerManager();
-	    FLyrVect fincasLayer = tm.getLayerByName("Fincas");
+	    FLyrVect fincasLayer = tm.getLayerByName(DBNames.LAYER_FINCAS);
 	    SelectableDataSource fincasRecordset = fincasLayer.getRecordset();
 	    IGeometry reversionGeometry = layer.getSource().getFeature(currentRow).getGeometry();
 	    Geometry jtsReversionGeometry = reversionGeometry.toJTSGeometry();
 
-	    int idFincaIndex = fincasRecordset.getFieldIndexByName("id_finca");
+	    int idFincaIndex = fincasRecordset.getFieldIndexByName(DBNames.FIELD_IDFINCA_FINCAS);
 	    ReadableVectorial layerSourceFeats = fincasLayer.getSource();
 	    for (int i = 0; i < fincasRecordset.getRowCount(); i++) {
 		IGeometry gvGeom = layerSourceFeats.getShape(i);
@@ -141,9 +142,9 @@ public class SubFormReversionsAddExpropiations extends JPanel implements IWindow
 
     public void updateCurrentRowFromIDReversion(String idReversion) {
 	PreparedStatement statement;
-	String query = "SELECT gid " +
-		"FROM audasa_expropiaciones.exp_reversion " +
-		"WHERE id_reversion = " +
+	String query = "SELECT " + DBNames.FIELD_GID_REVERSIONES + " " +
+		"FROM " + DBNames.SCHEMA_DATA + "." + DBNames.TABLE_REVERSIONES + " " +
+		"WHERE " + DBNames.FIELD_IDREVERSION_REVERSIONES + " = " +
 		"'" + idReversion + "';";
 	try {
 	    statement = DBSession.getCurrentSession().getJavaConnection().prepareCall(query);

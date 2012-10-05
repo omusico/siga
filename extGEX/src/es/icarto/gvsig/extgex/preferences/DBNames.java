@@ -36,12 +36,14 @@ public class DBNames {
 
     // table exp_finca
     public static final String TABLE_FINCAS = "exp_finca";
+    public static final String FIELD_IDFINCA_FINCAS = "id_finca";
     public static final String FIELD_NUMEROFINCA_FINCAS = "numero_finca";
     public static final String FIELD_SECCION_FINCAS = "seccion";
     public static final String FIELD_TRAMO_FINCAS = "tramo";
     public static final String FIELD_UC_FINCAS = "unidad_constructiva";
     public static final String FIELD_AYUNTAMIENTO_FINCAS = "ayuntamiento";
     public static final String FIELD_PARROQUIASUBTRAMO_FINCAS = "parroquia_subtramo";
+    public static final String FIELD_GID_FINCAS = "gid";
 
     // table reversiones
     public static final String LAYER_REVERSIONES = "Reversiones";
@@ -50,8 +52,10 @@ public class DBNames {
     public static final String FIELD_FECHAACTA_REVERSIONES = "fecha_acta_reversion";
     public static final String FIELD_IDREVERSION_REVERSIONES = "id_reversion";
     public static final String FIELD_NUMEROREVERSION_REVERSIONES = "numero_reversion";
+    public static final String FIELD_GID_REVERSIONES = "gid";
 
     //table fincas_reversiones
+    public static final String TABLE_REVERSIONES = "exp_reversion";
     public static final String FIELD_IDREVERSION_FINCAS_REVERSIONES = "id_reversion";
     public static final String FIELD_IDEXPROPIACION_FINCAS_REVERSIONES = "id_finca";
     public static final String FIELD_SUPERFICIE_FINCAS_REVERSIONES = "superficie";
@@ -107,5 +111,20 @@ public class DBNames {
     // Table municipio_tramos
     public static final String TABLE_MUNICIPIO_TRAMOS = "municipio_tramos";
     public static final String FIELD_MUNICIPIO_MUNICIPIO_TRAMOS = "municipio";
+
+    // Other widgets
+    public static final String REVERSIONS_ADD_EXPROPIATIONS_BUTTON = "add_expropiations_button";
+    public static final String REVERSIONS_DELETE_EXPROPIATIONS_BUTTON = "delete_expropiations_button";
+    public static final String SUBFORMREVERSIONS_ADD_EXPROPIATIONS_BUTTON = "add_expropiation_button";
+    public static final String SUBFORMSREVERSIONS_IDFINCA = "id_finca";
+    public static final String SUBFORMREVERSIONS_SUPERFICIE = "superficie";
+    public static final String SUBFORMREVERSIONS_IMPORTE = "importe";
+
+    public static final String EXPROPIATIONS_ADD_REVERSIONS_BUTTON = "add_reversions_button";
+    public static final String EXPROPIATIONS_DELETE_REVERSIONS_BUTTON = "delete_reversions_button";
+    public static final String SUBFORMEXPROPIATIONS_ADD_REVERSIONS_BUTTON = "add_reversion_button";
+    public static final String SUBFORMSEXPROPIATIONS_IDREVERSIONS = "id_reversion";
+    public static final String SUBFORMEXPROPIATIONS_SUPERFICIE = "superficie";
+    public static final String SUBFORMEXPROPIATIONS_IMPORTE = "importe";
 
 }
