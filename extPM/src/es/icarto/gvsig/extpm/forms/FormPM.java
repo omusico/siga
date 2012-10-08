@@ -5,8 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.net.URL;
 import java.io.InputStream;
+import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -26,12 +27,13 @@ import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
+import com.jeta.forms.components.image.ImageComponent;
 import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 
+import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.audasacommons.forms.reports.NavTableComponentsPrintButton;
 import es.icarto.gvsig.extpm.forms.filesLink.NavTableComponentsFilesLinkButton;
-
 import es.icarto.gvsig.extpm.preferences.Preferences;
 import es.icarto.gvsig.extpm.utils.managers.ToggleEditingManager;
 import es.icarto.gvsig.navtableforms.AbstractForm;
@@ -104,6 +106,10 @@ public class FormPM extends AbstractForm {
 
 	HashMap<String, JComponent> widgets = getWidgetComponents();
 
+	ImageComponent image = (ImageComponent) form.getComponentByName("image");
+	ImageIcon icon = new ImageIcon (PreferencesPage.AUDASA_ICON);
+	image.setIcon(icon);
+
 	numParcelaCatastro = (JTextField) widgets.get(Preferences.PM_FORM_WIDGETS_NUM_PARCELA_CATASTRO);
 	numParcelaCatastro.setToolTipText("Si hay varias parcelas separar con guión (-)");
 	poligonoCatastro = (JTextField) widgets.get(Preferences.PM_FORM_WIDGETS_POLIGONO_CATASTRO);
@@ -144,8 +150,8 @@ public class FormPM extends AbstractForm {
     @Override
     public String getXMLPath() {
 	return PluginServices.getPluginServices("es.icarto.gvsig.extpm")
-	.getClassLoader()
-	.getResource(Preferences.XML_ORMLITE_RELATIVE_PATH).getPath();
+		.getClassLoader()
+		.getResource(Preferences.XML_ORMLITE_RELATIVE_PATH).getPath();
     }
 
     private void initWindow() {
@@ -161,8 +167,8 @@ public class FormPM extends AbstractForm {
 	try {
 	    // Parcelas afected by this PM File
 	    String parcelasQuery = "SELECT " + Preferences.FINCAS_PM_FIELD_IDFINCA +
-	    " FROM " + Preferences.FINCAS_PM_TABLENAME +
-	    " WHERE " + Preferences.FINCAS_PM_FIELD_NUMEROPM + " = '" + numeroPM.getText() + "'";
+		    " FROM " + Preferences.FINCAS_PM_TABLENAME +
+		    " WHERE " + Preferences.FINCAS_PM_FIELD_NUMEROPM + " = '" + numeroPM.getText() + "'";
 	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(parcelasQuery);
 	    statement.execute();
 	    ResultSet parcelasRs = statement.getResultSet();
@@ -175,8 +181,8 @@ public class FormPM extends AbstractForm {
 	    try {
 		// Filling municipio ComboBox with all municipios of AP9 way
 		municipioQuery = "SELECT " + Preferences.MUNICIPIOS_AUX_FIELD_NOMBRE +
-		" FROM " + Preferences.MUNICIPIOS_AUX_TABLENAME +
-		" ORDER BY " + Preferences.MUNICIPIOS_AUX_FIELD_ORDEN + ";";
+			" FROM " + Preferences.MUNICIPIOS_AUX_TABLENAME +
+			" ORDER BY " + Preferences.MUNICIPIOS_AUX_FIELD_ORDEN + ";";
 		statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(municipioQuery);
 		statement.execute();
 		ResultSet municipioRs = statement.getResultSet();
@@ -189,8 +195,8 @@ public class FormPM extends AbstractForm {
 
 		// Check if there is a specific municipio value saved and if so, set as selected
 		municipioQuery = "SELECT " + Preferences.PM_FIELD_MUNICIPIO +
-		" FROM " + Preferences.PM_TABLENAME +
-		" WHERE " + Preferences.PM_FIELD_NUMEROPM + " = '" + numeroPM.getText() + "';";
+			" FROM " + Preferences.PM_TABLENAME +
+			" WHERE " + Preferences.PM_FIELD_NUMEROPM + " = '" + numeroPM.getText() + "';";
 		statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(municipioQuery);
 		statement.execute();
 		municipioRs = statement.getResultSet();
@@ -203,8 +209,8 @@ public class FormPM extends AbstractForm {
 
 	    // Parroquia
 	    String parroquiaQuery = "SELECT " + Preferences.PM_FIELD_PARROQUIA +
-	    " FROM " + Preferences.PM_TABLENAME +
-	    " WHERE " + Preferences.PM_FIELD_NUMEROPM + " = '" + numeroPM.getText() + "';";
+		    " FROM " + Preferences.PM_TABLENAME +
+		    " WHERE " + Preferences.PM_FIELD_NUMEROPM + " = '" + numeroPM.getText() + "';";
 	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(parroquiaQuery);
 	    statement.execute();
 	    ResultSet parroquiaRs = statement.getResultSet();
@@ -232,7 +238,7 @@ public class FormPM extends AbstractForm {
 	try {
 	    for (String idParcela : parcelasAfectadas) {
 		query = "INSERT INTO audasa_pm.fincas_pm "
-		    + "VALUES (" + "'" + idParcela + "', '" + numeroPM.getText() + "')";
+			+ "VALUES (" + "'" + idParcela + "', '" + numeroPM.getText() + "')";
 
 		statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
 		statement.execute();
@@ -402,13 +408,13 @@ public class FormPM extends AbstractForm {
 		String query ;
 		try {
 		    query = "SELECT " + Preferences.PARROQUIAS_FIELD_NAME +
-		    " FROM " + Preferences.PARROQUIAS_TABLENAME +
-		    " WHERE " + Preferences.PARROQUIAS_FIELD_CODIGO +
-		    " = " + "(SELECT " + Preferences.MUNICIPIOS_FIELD_CODIGO +
-		    " FROM " + Preferences.MUNICIPIOS_TABLENAME +
-		    " WHERE " + Preferences.MUNICIPIOS_FIELD_NAME +
-		    " = " + "'" + municipio.getSelectedItem() + "')" +
-		    " ORDER BY " + Preferences.PARROQUIAS_FIELD_NAME + ";";
+			    " FROM " + Preferences.PARROQUIAS_TABLENAME +
+			    " WHERE " + Preferences.PARROQUIAS_FIELD_CODIGO +
+			    " = " + "(SELECT " + Preferences.MUNICIPIOS_FIELD_CODIGO +
+			    " FROM " + Preferences.MUNICIPIOS_TABLENAME +
+			    " WHERE " + Preferences.MUNICIPIOS_FIELD_NAME +
+			    " = " + "'" + municipio.getSelectedItem() + "')" +
+			    " ORDER BY " + Preferences.PARROQUIAS_FIELD_NAME + ";";
 		    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
 		    statement.execute();
 		    ResultSet rs = statement.getResultSet();
