@@ -41,6 +41,7 @@ public class SubFormReversionsAddExpropiations extends JPanel implements IWindow
     private int currentRow;
     private final JTable fincasTable;
     private final String idReversion;
+    private final IGeometry insertedGeom;
 
     private JComboBox idFinca;
     private JTextField superficie;
@@ -52,7 +53,7 @@ public class SubFormReversionsAddExpropiations extends JPanel implements IWindow
     private final int width = 275;
     private final int height = 125;
 
-    public SubFormReversionsAddExpropiations(FLyrVect layer, JTable fincasTable, String idReversion) {
+    public SubFormReversionsAddExpropiations(FLyrVect layer, JTable fincasTable, String idReversion, IGeometry insertedGeom) {
 	InputStream stream = getClass().getClassLoader().getResourceAsStream("reversiones_add_expropiaciones.xml");
 	FormPanel result = null;
 	try {
@@ -65,6 +66,7 @@ public class SubFormReversionsAddExpropiations extends JPanel implements IWindow
 	this.layer = layer;
 	this.fincasTable = fincasTable;
 	this.idReversion = idReversion;
+	this.insertedGeom = insertedGeom;
 	initWidgets();
     }
 
@@ -91,7 +93,12 @@ public class SubFormReversionsAddExpropiations extends JPanel implements IWindow
 	    TOCLayerManager tm = new TOCLayerManager();
 	    FLyrVect fincasLayer = tm.getLayerByName(DBNames.LAYER_FINCAS);
 	    SelectableDataSource fincasRecordset = fincasLayer.getRecordset();
-	    IGeometry reversionGeometry = layer.getSource().getFeature(currentRow).getGeometry();
+	    IGeometry reversionGeometry;
+	    if (insertedGeom != null) {
+		reversionGeometry = insertedGeom;
+	    }else {
+		reversionGeometry = layer.getSource().getFeature(currentRow).getGeometry();
+	    }
 	    Geometry jtsReversionGeometry = reversionGeometry.toJTSGeometry();
 
 	    int idFincaIndex = fincasRecordset.getFieldIndexByName(DBNames.FIELD_IDFINCA_FINCAS);

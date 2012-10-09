@@ -92,7 +92,7 @@ public class FormReversionsLauncher implements MouseListener {
 		    layerReversions.getRecordset(),
 		    DBNames.FIELD_IDREVERSION_FINCAS_REVERSIONES);
 	    if (index != AbstractNavTable.EMPTY_REGISTER) {
-		formReversions = new FormReversions(layerReversions);
+		formReversions = new FormReversions(layerReversions, null);
 		if (formReversions.init()) {
 		    formReversions.setPosition(index);
 		    selectFeaturesInForm();

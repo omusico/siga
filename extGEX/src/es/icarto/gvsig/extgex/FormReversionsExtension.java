@@ -23,7 +23,7 @@ public class FormReversionsExtension extends Extension {
 	DBSession.getCurrentSession().setSchema(DBNames.EXPROPIATIONS_SCHEMA);
 	if (AlphanumericTableLoader.loadTables()) {
 	    layer = getLayer();
-	    dialog = new FormReversions(layer);
+	    dialog = new FormReversions(layer, null);
 	    if (dialog.init()) {
 		PluginServices.getMDIManager().addWindow(dialog);
 	    }

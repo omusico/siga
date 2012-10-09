@@ -4,9 +4,11 @@ import com.iver.andami.PluginServices;
 import com.iver.andami.plugins.Extension;
 import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.cit.gvsig.CADExtension;
+import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.gui.cad.CADTool;
+import com.iver.cit.gvsig.gui.cad.tools.EIELPolylineCADTool;
 import com.iver.cit.gvsig.gui.cad.tools.PointCADTool;
 import com.iver.cit.gvsig.listeners.CADListenerManager;
 import com.iver.cit.gvsig.listeners.EndGeometryListener;
@@ -104,15 +106,18 @@ public class FormPMExtension extends Extension {
 		}
 	    }else if (layer.getName().equalsIgnoreCase("Reversiones")) {
 		FLyrVect l = (FLyrVect) layer;
-		l.setActive(true);
-		es.icarto.gvsig.extgex.forms.FormReversions dialog = new es.icarto.gvsig.extgex.forms.FormReversions((FLyrVect) layer);
+		CADTool cadTool = CADExtension.getCADTool();
+		IGeometry insertedGeom = null;
+		if (cadTool instanceof EIELPolylineCADTool) {
+		    insertedGeom = ((EIELPolylineCADTool) cadTool).getInsertedGeom();
+		}
+		es.icarto.gvsig.extgex.forms.FormReversions dialog = new es.icarto.gvsig.extgex.forms.FormReversions((FLyrVect) layer, insertedGeom);
 		if (dialog.init()) {
 		    PluginServices.getMDIManager().addWindow(dialog);
 		    dialog.last();
 		}
 	    }else if (layer.getName().equalsIgnoreCase("Fincas")) {
 		FLyrVect l = (FLyrVect) layer;
-		l.setActive(true);
 		DBSession.getCurrentSession().setSchema(DBNames.EXPROPIATIONS_SCHEMA);
 		if (AlphanumericTableLoader.loadTables()) {
 		    es.icarto.gvsig.extgex.forms.FormExpropiations dialog = new es.icarto.gvsig.extgex.forms.FormExpropiations((FLyrVect) layer);

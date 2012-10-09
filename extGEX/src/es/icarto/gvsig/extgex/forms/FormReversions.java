@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 import com.hardcode.gdbms.engine.values.Value;
 import com.hardcode.gdbms.engine.values.ValueFactory;
 import com.iver.andami.PluginServices;
+import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.image.ImageComponent;
 import com.jeta.forms.components.panel.FormPanel;
@@ -46,10 +47,12 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 
     private static final String WIDGET_TABLAFINCASAFECTADAS = "tabla_fincas_afectadas";
 
+    private FLyrVect layer = null;
+    private IGeometry insertedGeom;
+
     private static FormPanel form;
     private JTable fincasAfectadas;
     private JTextField numeroReversion;
-    private FLyrVect layer = null;
     private JTextField idReversion;
     private IDReversionHandler idReversionHandler;
     private JComboBox tramo;
@@ -63,9 +66,12 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 
     private ArrayList<String> oldFincasAfectadas;
 
-    public FormReversions(FLyrVect layer) {
+    public FormReversions(FLyrVect layer, IGeometry insertedGeom) {
 	super(layer);
 	this.layer = layer;
+	if (insertedGeom != null) {
+	    this.insertedGeom = insertedGeom;
+	}
 	initWindow();
 	initListeners();
 	addNewButtonsToActionsToolBar();
@@ -177,7 +183,7 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 	    SubFormReversionsAddExpropiations subForm =
-		    new SubFormReversionsAddExpropiations(layer, fincasAfectadas, idReversion.getText());
+		    new SubFormReversionsAddExpropiations(layer, fincasAfectadas, idReversion.getText(), insertedGeom);
 	    PluginServices.getMDIManager().addWindow(subForm);
 	}
 
