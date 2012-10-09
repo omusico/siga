@@ -10,6 +10,7 @@
         <FIELDNAME>tramo</FIELDNAME>
         <DOMAINREADER>
             <DRTYPE>db</DRTYPE>
+            <DRDBSCHEMA>audasa_expropiaciones</DRDBSCHEMA>
         	<DRDBTABLE>tramos</DRDBTABLE>
         	<DRDBCOLUMNVALUE>id_tramo</DRDBCOLUMNVALUE>
         	<DRDBCOLUMNALIAS>nombre_tramo</DRDBCOLUMNALIAS>

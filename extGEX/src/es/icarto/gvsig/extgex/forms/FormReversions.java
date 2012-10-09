@@ -114,9 +114,11 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 	idReversion = (JTextField) widgets.get(DBNames.FIELD_IDREVERSION_REVERSIONES);
 	tramo = (JComboBox) widgets.get(DBNames.FIELD_TRAMO_FINCAS);
 
+
 	numeroReversion = (JTextField) widgets.get(DBNames.FIELD_NUMEROREVERSION_REVERSIONES);
 	idReversionHandler = new IDReversionHandler();
 	numeroReversion.addKeyListener(idReversionHandler);
+	tramo.addActionListener(idReversionHandler);
 
 	addExpropiationsListener = new AddExpropiationsListener();
 	addExpropiationsButton = (JButton) form.getComponentByName(DBNames.REVERSIONS_ADD_EXPROPIATIONS_BUTTON);
@@ -128,7 +130,7 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 
     }
 
-    private class IDReversionHandler implements KeyListener{
+    private class IDReversionHandler implements KeyListener, ActionListener{
 
 	@Override
 	public void keyTyped(KeyEvent e) {}
@@ -138,6 +140,13 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+	    if(!isFillingValues()) {
+		setIDReversion();
+	    }
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
 	    if(!isFillingValues()) {
 		setIDReversion();
 	    }
