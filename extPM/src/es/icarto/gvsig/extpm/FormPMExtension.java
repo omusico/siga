@@ -117,10 +117,14 @@ public class FormPMExtension extends Extension {
 		    dialog.last();
 		}
 	    }else if (layer.getName().equalsIgnoreCase("Fincas")) {
-		FLyrVect l = (FLyrVect) layer;
 		DBSession.getCurrentSession().setSchema(DBNames.EXPROPIATIONS_SCHEMA);
+		IGeometry insertedGeom = null;
+		CADTool cadTool = CADExtension.getCADTool();
+		if (cadTool instanceof EIELPolylineCADTool) {
+		    insertedGeom = ((EIELPolylineCADTool) cadTool).getInsertedGeom();
+		}
 		if (AlphanumericTableLoader.loadTables()) {
-		    es.icarto.gvsig.extgex.forms.FormExpropiations dialog = new es.icarto.gvsig.extgex.forms.FormExpropiations((FLyrVect) layer);
+		    es.icarto.gvsig.extgex.forms.FormExpropiations dialog = new es.icarto.gvsig.extgex.forms.FormExpropiations((FLyrVect) layer, insertedGeom);
 		    if (dialog.init()) {
 			PluginServices.getMDIManager().addWindow(dialog);
 			dialog.last();

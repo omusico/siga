@@ -27,7 +27,7 @@ public class FormExpropiationsExtension extends Extension {
 	DBSession.getCurrentSession().setSchema(DBNames.EXPROPIATIONS_SCHEMA);
 	if (AlphanumericTableLoader.loadTables()) {
 	    layer = getLayer();
-	    dialog = new FormExpropiations(layer);
+	    dialog = new FormExpropiations(layer, null);
 	    if (dialog.init()) {
 		PluginServices.getMDIManager().addWindow(dialog);
 	    }
@@ -59,6 +59,7 @@ public class FormExpropiationsExtension extends Extension {
 	registerIcons();
     }
 
+    @Override
     public void postInitialize() {
 	PluginServices.getMDIManager().closeAllWindows();
 	// launch dbconnection dialog

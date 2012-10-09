@@ -92,7 +92,7 @@ public class FormExpropiationsLauncher implements MouseListener {
 		    table,
 		    layerExpropiations.getRecordset());
 	    if (rowIndex != AbstractNavTable.EMPTY_REGISTER) {
-		formExpropiations = new FormExpropiations(layerExpropiations);
+		formExpropiations = new FormExpropiations(layerExpropiations, null);
 		if (formExpropiations.init()) {
 		    formExpropiations.setPosition(rowIndex);
 		    selectFeaturesInForm();

@@ -15,7 +15,7 @@ import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
 
 public class FormOpener implements ActionListener {
 
-    private IPositionRetriever retriever;
+    private final IPositionRetriever retriever;
 
     public FormOpener(IPositionRetriever retriever) {
 	this.retriever = retriever;
@@ -25,9 +25,9 @@ public class FormOpener implements ActionListener {
     public void actionPerformed(ActionEvent arg0) {
 	TOCLayerManager toc = new TOCLayerManager();
 	FLyrVect layer = toc.getLayerByName(DBNames.LAYER_FINCAS);
-	if(AlphanumericTableLoader.loadTables() && 
+	if(AlphanumericTableLoader.loadTables() &&
 		(layer != null)) {
-	    FormExpropiations form = new FormExpropiations(layer);
+	    FormExpropiations form = new FormExpropiations(layer, null);
 	    if(form.init()) {
 		form.setPosition(retriever.getPosition());
 		PluginServices.getMDIManager().addWindow(form);

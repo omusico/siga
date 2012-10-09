@@ -29,6 +29,7 @@ import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.hardcode.gdbms.engine.values.Value;
 import com.hardcode.gdbms.engine.values.ValueFactory;
 import com.iver.andami.PluginServices;
+import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.image.ImageComponent;
 import com.jeta.forms.components.panel.FormPanel;
@@ -77,13 +78,18 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 
     private AlphanumericNavTableLauncher tableExpropiationsLauncher;
     private FormReversionsLauncher formReversionsLauncher;
+
     private FLyrVect layer = null;
+    private IGeometry insertedGeom;
 
     private ArrayList<String> oldReversions;
 
-    public FormExpropiations(FLyrVect layer) {
+    public FormExpropiations(FLyrVect layer, IGeometry insertedGeom) {
 	super(layer);
 	this.layer = layer;
+	if (insertedGeom != null) {
+	    this.insertedGeom = insertedGeom;
+	}
 	initWindow();
 	addButtonsToActionsToolBar();
     }
@@ -213,7 +219,7 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-	    SubFormExpropiationsAddReversions subForm = new SubFormExpropiationsAddReversions(layer, reversiones, getIDFinca());
+	    SubFormExpropiationsAddReversions subForm = new SubFormExpropiationsAddReversions(layer, reversiones, getIDFinca(), insertedGeom);
 	    PluginServices.getMDIManager().addWindow(subForm);
 	}
 
