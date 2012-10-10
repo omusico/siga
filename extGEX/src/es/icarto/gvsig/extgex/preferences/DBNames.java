@@ -131,4 +131,13 @@ public class DBNames {
     public static final String FINCAS_IMPORTE_PENDIENTE_TERRENOS = "importe_pendiente_terrenos";
     public static final String FINCAS_IMPORTE_PENDIENTE_TOTAL_AUTOCALCULADO = "importe_pendiente_total_autocalculado";
 
+    public static final String FINCAS_MUTUO_ACUERDO = "mutuo_acuerdo_importe";
+    public static final String FINCAS_ANTICIPO = "anticipo_importe";
+    public static final String FINCAS_DEPOSITO_PREVIO_PAGADO = "deposito_previo_pagado_importe";
+    public static final String FINCAS_DEPOSITO_PREVIO_CONSIGNADO = "deposito_previo_consignado_importe";
+    public static final String FINCAS_MUTUO_ACUERDO_PARCIAL = "mutuo_acuerdo_parcial_importe";
+    public static final String FINCAS_PAGOS_VARIOS = "pagos_varios_importe";
+    public static final String FINCAS_DEPOSITO_PREVIO_LEVANTADO = "deposito_previo_levantado_importe";
+    public static final String FINCAS_IMPORTE_PAGADO_TOTAL_AUTOCALCULADO = "importe_pagado_total_autocalculado";
+
 }

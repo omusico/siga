@@ -66,6 +66,14 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
     private JTextField importe_pendiente_mejoras;
     private JTextField importe_pendiente_terrenos;
     private JTextField importe_pendiente_total_autocalculado;
+    private JTextField importe_mutuo_acuerdo;
+    private JTextField importe_anticipo;
+    private JTextField importe_deposito_previo_pagado;
+    private JTextField importe_deposito_previo_consignado;
+    private JTextField importe_mutuo_acuerdo_parcial;
+    private JTextField importe_pagos_varios;
+    private JTextField importe_deposito_previo_levantado;
+    private JTextField importe_pagado_total;
     private JTable expropiaciones;
     private JTable reversiones;
 
@@ -80,6 +88,7 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
     private UpdateNroFincaHandler updateNroFincaHandler;
 
     private UpdateImportePendienteHandler updateImportePendienteHandler;
+    private UpdateImportePagadoHandler updateImportePagadoHandler;
 
     private AlphanumericNavTableLauncher tableExpropiationsLauncher;
     private FormReversionsLauncher formReversionsLauncher;
@@ -167,6 +176,23 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	importe_pendiente_terrenos.addKeyListener(updateImportePendienteHandler);
 	importe_pendiente_total_autocalculado = (JTextField) widgets.get(DBNames.FINCAS_IMPORTE_PENDIENTE_TOTAL_AUTOCALCULADO);
 
+	updateImportePagadoHandler = new UpdateImportePagadoHandler();
+	importe_mutuo_acuerdo = (JTextField) widgets.get(DBNames.FINCAS_MUTUO_ACUERDO);
+	importe_mutuo_acuerdo.addKeyListener(updateImportePagadoHandler);
+	importe_anticipo = (JTextField) widgets.get(DBNames.FINCAS_ANTICIPO);
+	importe_anticipo.addKeyListener(updateImportePagadoHandler);
+	importe_deposito_previo_pagado = (JTextField) widgets.get(DBNames.FINCAS_DEPOSITO_PREVIO_PAGADO);
+	importe_deposito_previo_pagado.addKeyListener(updateImportePagadoHandler);
+	importe_deposito_previo_consignado = (JTextField) widgets.get(DBNames.FINCAS_DEPOSITO_PREVIO_CONSIGNADO);
+	importe_deposito_previo_consignado.addKeyListener(updateImportePagadoHandler);
+	importe_mutuo_acuerdo_parcial = (JTextField) widgets.get(DBNames.FINCAS_MUTUO_ACUERDO_PARCIAL);
+	importe_mutuo_acuerdo_parcial.addKeyListener(updateImportePagadoHandler);
+	importe_pagos_varios = (JTextField) widgets.get(DBNames.FINCAS_PAGOS_VARIOS);
+	importe_pagos_varios.addKeyListener(updateImportePagadoHandler);
+	importe_deposito_previo_levantado = (JTextField) widgets.get(DBNames.FINCAS_DEPOSITO_PREVIO_LEVANTADO);
+	importe_deposito_previo_levantado.addKeyListener(updateImportePagadoHandler);
+	importe_pagado_total = (JTextField) widgets.get(DBNames.FINCAS_IMPORTE_PAGADO_TOTAL_AUTOCALCULADO);
+
 	expropiaciones = (JTable) widgets.get(WIDGET_EXPROPIACIONES);
 	reversiones = (JTable) widgets.get(WIDGET_REVERSIONES);
 
@@ -222,6 +248,14 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 
 	importe_pendiente_mejoras.removeKeyListener(updateImportePendienteHandler);
 	importe_pendiente_terrenos.removeKeyListener(updateImportePendienteHandler);
+
+	importe_mutuo_acuerdo.removeKeyListener(updateImportePagadoHandler);
+	importe_anticipo.removeKeyListener(updateImportePagadoHandler);
+	importe_deposito_previo_pagado.removeKeyListener(updateImportePagadoHandler);
+	importe_deposito_previo_consignado.removeKeyListener(updateImportePagadoHandler);
+	importe_mutuo_acuerdo_parcial.removeKeyListener(updateImportePagadoHandler);
+	importe_pagos_varios.removeKeyListener(updateImportePagadoHandler);
+	importe_deposito_previo_levantado.removeKeyListener(updateImportePagadoHandler);
 
 	expropiaciones.removeMouseListener(tableExpropiationsLauncher);
 	reversiones.removeMouseListener(formReversionsLauncher);
@@ -341,6 +375,25 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	}
     }
 
+    public class UpdateImportePagadoHandler implements KeyListener {
+
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+	    if (!isFillingValues()) {
+		getFormController().setValue(DBNames.FINCAS_IMPORTE_PAGADO_TOTAL_AUTOCALCULADO, setImporteTotalPagado());
+	    }
+
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+	}
+    }
+
     private String setImporteTotalPendiente() {
 	if ((importe_pendiente_mejoras.getText().isEmpty()) && (importe_pendiente_terrenos.getText().isEmpty())) {
 	    importe_pendiente_total_autocalculado.setText("");
@@ -356,6 +409,62 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	}
 	return importe_pendiente_total_autocalculado.getText();
     }
+
+    private String setImporteTotalPagado() {
+	int importe_mutuo_acuerdo_int;
+	int importe_anticipo_int;
+	int importe_deposito_previo_pagado_int;
+	int importe_deposito_previo_consignado_int;
+	int importe_mutuo_acuerdo_parcial_int;
+	int importe_pagos_varios_int;
+	int importe_pagado_total_int;
+
+	if (importe_mutuo_acuerdo.getText().isEmpty() &&
+		importe_anticipo.getText().isEmpty() &&
+		importe_deposito_previo_pagado.getText().isEmpty() &&
+		importe_deposito_previo_consignado.getText().isEmpty() &&
+		importe_mutuo_acuerdo_parcial.getText().isEmpty() &&
+		importe_pagos_varios.getText().isEmpty()) {
+	    importe_pagado_total.setText("");
+	}else {
+	    if (!importe_mutuo_acuerdo.getText().isEmpty()) {
+		importe_mutuo_acuerdo_int = Integer.parseInt(importe_mutuo_acuerdo.getText());
+	    }else {
+		importe_mutuo_acuerdo_int = 0;
+	    }
+	    if (!importe_anticipo.getText().isEmpty()) {
+		importe_anticipo_int = Integer.parseInt(importe_anticipo.getText());
+	    }else {
+		importe_anticipo_int = 0;
+	    }
+	    if (!importe_deposito_previo_pagado.getText().isEmpty()) {
+		importe_deposito_previo_pagado_int = Integer.parseInt(importe_deposito_previo_pagado.getText());
+	    }else {
+		importe_deposito_previo_pagado_int = 0;
+	    }
+	    if (!importe_deposito_previo_consignado.getText().isEmpty()) {
+		importe_deposito_previo_consignado_int = Integer.parseInt(importe_deposito_previo_consignado.getText());
+	    }else {
+		importe_deposito_previo_consignado_int = 0;
+	    }
+	    if (!importe_mutuo_acuerdo_parcial.getText().isEmpty()) {
+		importe_mutuo_acuerdo_parcial_int = Integer.parseInt(importe_mutuo_acuerdo_parcial.getText());
+	    }else {
+		importe_mutuo_acuerdo_parcial_int = 0;
+	    }
+	    if (!importe_pagos_varios.getText().isEmpty()) {
+		importe_pagos_varios_int = Integer.parseInt(importe_pagos_varios.getText());
+	    }else {
+		importe_pagos_varios_int = 0;
+	    }
+	    importe_pagado_total_int = importe_mutuo_acuerdo_int + importe_anticipo_int +
+		    importe_deposito_previo_pagado_int + importe_deposito_previo_consignado_int +
+		    importe_mutuo_acuerdo_parcial_int + importe_pagos_varios_int;
+	    importe_pagado_total.setText(String.valueOf(importe_pagado_total_int));
+	}
+	return importe_pagado_total.getText();
+    }
+
     @Override
     protected void fillSpecificValues() {
 	ucDomainHandler.updateComboBoxValues();
