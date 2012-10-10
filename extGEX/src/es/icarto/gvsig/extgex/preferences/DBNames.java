@@ -127,4 +127,8 @@ public class DBNames {
     public static final String SUBFORMEXPROPIATIONS_SUPERFICIE = "superficie";
     public static final String SUBFORMEXPROPIATIONS_IMPORTE = "importe";
 
+    public static final String FINCAS_IMPORTE_PENDIENTE_MEJORAS = "importe_pendiente_mejoras";
+    public static final String FINCAS_IMPORTE_PENDIENTE_TERRENOS = "importe_pendiente_terrenos";
+    public static final String FINCAS_IMPORTE_PENDIENTE_TOTAL_AUTOCALCULADO = "importe_pendiente_total_autocalculado";
+
 }

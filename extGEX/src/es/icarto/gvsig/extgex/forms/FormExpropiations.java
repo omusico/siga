@@ -63,6 +63,9 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
     private JTextField finca;
     private JTextField numFinca;
     private JTextField seccion;
+    private JTextField importe_pendiente_mejoras;
+    private JTextField importe_pendiente_terrenos;
+    private JTextField importe_pendiente_total_autocalculado;
     private JTable expropiaciones;
     private JTable reversiones;
 
@@ -75,6 +78,8 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
     private DependentComboboxesHandler ayuntamientoDomainHandler;
     private DependentComboboxesHandler subtramoDomainHandler;
     private UpdateNroFincaHandler updateNroFincaHandler;
+
+    private UpdateImportePendienteHandler updateImportePendienteHandler;
 
     private AlphanumericNavTableLauncher tableExpropiationsLauncher;
     private FormReversionsLauncher formReversionsLauncher;
@@ -155,6 +160,13 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	finca = (JTextField) widgets.get(DBNames.FIELD_IDFINCA);
 	//	finca.setEnabled(false);
 
+	updateImportePendienteHandler = new UpdateImportePendienteHandler();
+	importe_pendiente_mejoras = (JTextField) widgets.get(DBNames.FINCAS_IMPORTE_PENDIENTE_MEJORAS);
+	importe_pendiente_mejoras.addKeyListener(updateImportePendienteHandler);
+	importe_pendiente_terrenos = (JTextField) widgets.get(DBNames.FINCAS_IMPORTE_PENDIENTE_TERRENOS);
+	importe_pendiente_terrenos.addKeyListener(updateImportePendienteHandler);
+	importe_pendiente_total_autocalculado = (JTextField) widgets.get(DBNames.FINCAS_IMPORTE_PENDIENTE_TOTAL_AUTOCALCULADO);
+
 	expropiaciones = (JTable) widgets.get(WIDGET_EXPROPIACIONES);
 	reversiones = (JTable) widgets.get(WIDGET_REVERSIONES);
 
@@ -207,6 +219,9 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	subtramo.removeActionListener(updateNroFincaHandler);
 	numFinca.removeKeyListener(updateNroFincaHandler);
 	seccion.removeKeyListener(updateNroFincaHandler);
+
+	importe_pendiente_mejoras.removeKeyListener(updateImportePendienteHandler);
+	importe_pendiente_terrenos.removeKeyListener(updateImportePendienteHandler);
 
 	expropiaciones.removeMouseListener(tableExpropiationsLauncher);
 	reversiones.removeMouseListener(formReversionsLauncher);
@@ -308,6 +323,39 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	}
     }
 
+    public class UpdateImportePendienteHandler implements KeyListener {
+
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+	    if (!isFillingValues()) {
+		getFormController().setValue(DBNames.FINCAS_IMPORTE_PENDIENTE_TOTAL_AUTOCALCULADO, setImporteTotalPendiente());
+	    }
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+	}
+    }
+
+    private String setImporteTotalPendiente() {
+	if ((importe_pendiente_mejoras.getText().isEmpty()) && (importe_pendiente_terrenos.getText().isEmpty())) {
+	    importe_pendiente_total_autocalculado.setText("");
+	}else if (!importe_pendiente_mejoras.getText().isEmpty() && (importe_pendiente_terrenos.getText().isEmpty())) {
+	    importe_pendiente_total_autocalculado.setText(importe_pendiente_mejoras.getText());
+	}else if (importe_pendiente_mejoras.getText().isEmpty() && (!importe_pendiente_terrenos.getText().isEmpty())) {
+	    importe_pendiente_total_autocalculado.setText(importe_pendiente_terrenos.getText());
+	}else {
+	    int importe_mejoras = Integer.parseInt(importe_pendiente_mejoras.getText());
+	    int importe_terrenos = Integer.parseInt(importe_pendiente_terrenos.getText());
+	    int importe_total = importe_mejoras + importe_terrenos;
+	    importe_pendiente_total_autocalculado.setText(String.valueOf(importe_total));
+	}
+	return importe_pendiente_total_autocalculado.getText();
+    }
     @Override
     protected void fillSpecificValues() {
 	ucDomainHandler.updateComboBoxValues();
