@@ -15,6 +15,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -342,6 +343,14 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 		statement.execute();
 	    } catch (SQLException e) {
 		e.printStackTrace();
+		String violateFKMessage = "ERROR: insert or update on table \"fincas_reversiones\" " +
+			"violates foreign key constraint \"fk_fincas\"\n";
+		if (e.getMessage().equals(violateFKMessage)) {
+		    JOptionPane.showMessageDialog(this,
+			    "EL ID de Finca: " + idFinca + " no existe. No se guardará en la tabla",
+			    "Error en los datos",
+			    JOptionPane.ERROR_MESSAGE);
+		}
 		continue;
 	    }
 	}

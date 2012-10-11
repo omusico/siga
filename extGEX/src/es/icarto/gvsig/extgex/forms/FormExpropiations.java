@@ -15,6 +15,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -541,7 +542,7 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
     public boolean saveRecord() {
 	PreparedStatement statement;
 	String query = null;
-	String idReversion;
+	String idReversion = null;
 	String superficie;
 	String importe;
 
@@ -591,6 +592,14 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 		statement.execute();
 	    } catch (SQLException e) {
 		e.printStackTrace();
+		String violateFKMessage = "ERROR: insert or update on table \"fincas_reversiones\" " +
+			"violates foreign key constraint \"fk_reversiones\"\n";
+		if (e.getMessage().equals(violateFKMessage)) {
+		    JOptionPane.showMessageDialog(this,
+			    "EL ID de Reversión: " + idReversion + " no existe. No se guardará en la tabla",
+			    "Error en los datos",
+			    JOptionPane.ERROR_MESSAGE);
+		}
 		continue;
 	    }
 	}
