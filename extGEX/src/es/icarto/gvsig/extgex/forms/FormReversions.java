@@ -88,6 +88,15 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 	}
     }
 
+    @Override
+    protected void enableSaveButton(boolean bool) {
+	if (!isChangedValues()) {
+	    saveB.setEnabled(false);
+	} else {
+	    saveB.setEnabled(bool);
+	}
+    }
+
     private void initWindow() {
 	viewInfo.setHeight(650);
 	viewInfo.setWidth(600);
