@@ -1,8 +1,12 @@
 package es.icarto.gvsig.extgex.navtable.decorators.printreports;
 
+import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
+
+import javax.swing.JOptionPane;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporter;
@@ -75,6 +79,24 @@ public class PrintReportsAction {
 
 	    // Export the PDF file
 	    exporter.exportReport();
+
+	    Object[] reportGeneratedOptions = { "Ver informe", "Cerrar" };
+	    int m = JOptionPane.showOptionDialog(
+		    null,
+		    "Informe generado con éxito en: \n" + "\""
+			    + outputFile + "\"", null,
+			    JOptionPane.YES_NO_CANCEL_OPTION,
+			    JOptionPane.INFORMATION_MESSAGE, null,
+			    reportGeneratedOptions, reportGeneratedOptions[1]);
+
+	    if (m == JOptionPane.OK_OPTION) {
+		Desktop d = Desktop.getDesktop();
+		try {
+		    d.open(new File(outputFile));
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+	    }
 	    System.out.println("File PDF created in " + outputFile + " path.");
 
 	} catch (JRException e) {
