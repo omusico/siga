@@ -4,6 +4,7 @@ public class DBNames {
 
     //schemas
     public static final String EXPROPIATIONS_SCHEMA = "audasa_expropiaciones";
+    public static final String PM_SCHEMA = "audasa_pm";
 
     // IDs along the whole DB. They are the same within several tables
     public static final String FIELD_IDCULTIVO = "id_cultivo";
@@ -60,6 +61,11 @@ public class DBNames {
     public static final String FIELD_IDEXPROPIACION_FINCAS_REVERSIONES = "id_finca";
     public static final String FIELD_SUPERFICIE_FINCAS_REVERSIONES = "superficie";
     public static final String FIELD_IMPORTE_FINCAS_REVERSIONES = "importe";
+
+    // table fincas_pm
+    public static final String TABLE_FINCAS_PM = "fincas_pm";
+    public static final String FIELD_IDFINCA_FINCAS_PM = "id_finca";
+    public static final String FIELD_NUMPM_FINCAS_PM = "numero_pm";
 
     //table expropiaciones
     public static final String FIELD_IDCULTIVO_EXPROPIACIONES = "id_cultivo";
@@ -126,6 +132,8 @@ public class DBNames {
     public static final String SUBFORMSEXPROPIATIONS_IDREVERSIONS = "id_reversion";
     public static final String SUBFORMEXPROPIATIONS_SUPERFICIE = "superficie";
     public static final String SUBFORMEXPROPIATIONS_IMPORTE = "importe";
+
+    public static final String EXPROPIATIONS_AFECTADO_PM = "afectado_por_policia_margenes";
 
     public static final String FINCAS_IMPORTE_PENDIENTE_MEJORAS = "importe_pendiente_mejoras";
     public static final String FINCAS_IMPORTE_PENDIENTE_TERRENOS = "importe_pendiente_terrenos";

@@ -54,6 +54,7 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 
     private static final String WIDGET_REVERSIONES = "tabla_reversiones_afectan";
     private static final String WIDGET_EXPROPIACIONES = "tabla_expropiaciones";
+    private static final String WIDGET_PM = "tabla_pm_afectan";
 
     private FormPanel form;
 
@@ -77,6 +78,9 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
     private JTextField importe_pagado_total;
     private JTable expropiaciones;
     private JTable reversiones;
+    private JTable pm;
+
+    private JComboBox afectado_pm;
 
     private AddReversionsListener addReversionsListener;
     private DeleteReversionsListener deleteReversionsListener;
@@ -205,6 +209,9 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 
 	expropiaciones = (JTable) widgets.get(WIDGET_EXPROPIACIONES);
 	reversiones = (JTable) widgets.get(WIDGET_REVERSIONES);
+	pm = (JTable) widgets.get(WIDGET_PM);
+
+	afectado_pm = (JComboBox) widgets.get(DBNames.EXPROPIATIONS_AFECTADO_PM);
 
 	addReversionsListener = new AddReversionsListener();
 	addReversionsButton = (JButton) form.getComponentByName(DBNames.EXPROPIATIONS_ADD_REVERSIONS_BUTTON);
@@ -498,6 +505,12 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	    e.printStackTrace();
 	}
 
+	updateReversionsTable();
+	updatePMTable();
+
+    }
+
+    private void updateReversionsTable() {
 	ArrayList<String> columnasReversiones = new ArrayList<String>();
 	columnasReversiones.add(DBNames.FIELD_IDREVERSION_FINCAS_REVERSIONES);
 	columnasReversiones.add(DBNames.FIELD_SUPERFICIE_FINCAS_REVERSIONES);
@@ -544,7 +557,39 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
+    }
 
+    public void updatePMTable() {
+	ArrayList<String> columnasPM = new ArrayList<String>();
+	columnasPM.add(DBNames.FIELD_NUMPM_FINCAS_PM);
+
+	try {
+	    DefaultTableModel tableModel;
+	    tableModel = new DefaultTableModel();
+	    for (String columnName : columnasPM) {
+		tableModel.addColumn(columnName);
+	    }
+	    pm.setModel(tableModel);
+	    Value[] pmData = new Value[3];
+	    PreparedStatement statement;
+	    String query = "SELECT " +
+		    DBNames.FIELD_NUMPM_FINCAS_PM + " " +
+		    "FROM " + DBNames.PM_SCHEMA + "." + DBNames.TABLE_FINCAS_PM + " " +
+		    "WHERE " + DBNames.FIELD_IDFINCA_FINCAS_PM + " = '" + getIDFinca() +
+		    "';";
+	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+	    statement.execute();
+	    ResultSet rs = statement.getResultSet();
+	    while (rs.next()) {
+		pmData[0] = ValueFactory.createValue(rs.getString(1));
+		tableModel.addRow(pmData);
+		afectado_pm.setSelectedIndex(1);
+	    }
+	    repaint();
+	    //tableModel.addTableModelListener(this);
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
     }
 
     @Override
