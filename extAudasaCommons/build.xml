@@ -39,6 +39,8 @@
 
 	<target name="copy-data-files">
 	    <copy file="config/config.xml" todir="${dist}" />
+		<copy file="config/about.htm" todir="${dist}" overwrite="yes"/>
+		<copy file="config/ChangeLog" todir="${dist}" overwrite="yes"/>
 
 		<copy todir="${dist}/images">
 			<fileset dir="images" includes="*" />

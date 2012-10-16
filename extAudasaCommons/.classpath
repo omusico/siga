@@ -12,5 +12,6 @@
 	<classpathentry kind="lib" path="lib/groovy-2.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/jasperreports-4.6.0.jar"/>
 	<classpathentry kind="src" path="/extDBConnection"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/appgvSIG"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
