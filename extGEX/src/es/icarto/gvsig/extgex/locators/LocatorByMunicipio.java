@@ -6,14 +6,17 @@ import java.awt.event.ActionListener;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
+import com.jeta.forms.components.image.ImageComponent;
 import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 
+import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.extgex.locators.actions.IPositionRetriever;
 import es.icarto.gvsig.extgex.locators.actions.ZoomToHandler;
 import es.icarto.gvsig.extgex.preferences.DBNames;
@@ -32,22 +35,26 @@ public class LocatorByMunicipio extends gvWindow implements IPositionRetriever, 
     private JButton zoom;
 
     public LocatorByMunicipio() {
-	super(400, 200);
+	super(400, 150);
 	InputStream stream = getClass().getClassLoader().getResourceAsStream("LocatorByMunicipio.xml");
 	FormPanel result = null;
 	try {
-		result = new FormPanel(stream);
+	    result = new FormPanel(stream);
 	} catch (FormException e) {
-		e.printStackTrace();
+	    e.printStackTrace();
 	}
 	formBody = result;
 	formBody.setVisible(true);
 	this.add(formBody, BorderLayout.CENTER);
 	this.setTitle("Localizador por Municipio o Parroquia");
-	initWidgets();
     }
 
     public void initWidgets() {
+
+	ImageComponent image = (ImageComponent) formBody.getComponentByName("image");
+	ImageIcon icon = new ImageIcon (PreferencesPage.AUDASA_ICON);
+	image.setIcon(icon);
+
 	ayuntamiento = (JComboBox) formBody.getComponentByName("ayuntamiento");
 	parroquia = (JComboBox) formBody.getComponentByName("parroquia");
 	fillAyuntamiento();
@@ -62,19 +69,19 @@ public class LocatorByMunicipio extends gvWindow implements IPositionRetriever, 
 	ArrayList<KeyValue> fks = new ArrayList<KeyValue>();
 	KeyValueRetriever kvParroquia;
 	if(ayuntamiento.getSelectedItem() instanceof KeyValue) {
-	    KeyValue concello = new KeyValue(DBNames.COD_CONCELLO, 
+	    KeyValue concello = new KeyValue(DBNames.COD_CONCELLO,
 		    ((KeyValue) ayuntamiento.getSelectedItem()).getKey());
 	    fks.add(concello);
 	    kvParroquia = new KeyValueRetriever(
-		    getParroquiaLayer(), 
-		    DBNames.COD_PARROQUIA, 
-		    DBNames.NOME_PARROQUIA, 
+		    getParroquiaLayer(),
+		    DBNames.COD_PARROQUIA,
+		    DBNames.NOME_PARROQUIA,
 		    fks);
 	    kvParroquia.setOrderBy(DBNames.NOME_PARROQUIA);
 	} else {
 	    kvParroquia = new KeyValueRetriever(
-		    getParroquiaLayer(), 
-		    DBNames.COD_PARROQUIA, 
+		    getParroquiaLayer(),
+		    DBNames.COD_PARROQUIA,
 		    DBNames.NOME_PARROQUIA);
 	    kvParroquia.setOrderBy(DBNames.NOME_PARROQUIA);
 	}
@@ -87,8 +94,8 @@ public class LocatorByMunicipio extends gvWindow implements IPositionRetriever, 
 
     private void fillAyuntamiento() {
 	KeyValueRetriever kvMunicipio = new KeyValueRetriever(
-		getMunicipioLayer(), 
-		DBNames.COD_CONCELLO, 
+		getMunicipioLayer(),
+		DBNames.COD_CONCELLO,
 		DBNames.NOME_AYUNTAMIENTO);
 	kvMunicipio.setOrderBy(DBNames.NOME_AYUNTAMIENTO);
 	for (KeyValue kv : kvMunicipio.getValues()) {
@@ -100,6 +107,7 @@ public class LocatorByMunicipio extends gvWindow implements IPositionRetriever, 
 	TOCLayerManager toc = new TOCLayerManager();
 	if((toc.getLayerByName(DBNames.LAYER_MUNICIPIOS) != null) &&
 		(toc.getLayerByName(DBNames.LAYER_PARROQUIAS) != null)) {
+	    initWidgets();
 	    return true;
 	}
 	return false;
@@ -112,7 +120,7 @@ public class LocatorByMunicipio extends gvWindow implements IPositionRetriever, 
 	int position = AbstractNavTable.EMPTY_REGISTER;
 	FLyrVect layer = getLayer();
 	if(layer == null) {
-	    JOptionPane.showMessageDialog(this, 
+	    JOptionPane.showMessageDialog(this,
 		    "Es necesario seleccionar un municipio o parroquia.");
 	    position = AbstractNavTable.EMPTY_REGISTER;
 
@@ -145,7 +153,7 @@ public class LocatorByMunicipio extends gvWindow implements IPositionRetriever, 
     @Override
     public FLyrVect getLayer() {
 	if(parroquia.getSelectedItem() instanceof KeyValue) {
-	    return getParroquiaLayer(); 
+	    return getParroquiaLayer();
 	} else if (ayuntamiento.getSelectedItem() instanceof KeyValue ){
 	    return getMunicipioLayer();
 	} else {

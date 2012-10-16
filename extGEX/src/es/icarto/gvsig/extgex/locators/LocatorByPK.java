@@ -7,6 +7,7 @@ import java.awt.geom.Rectangle2D;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 
@@ -31,9 +32,11 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.ReadableVectorial;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 import com.iver.cit.gvsig.project.documents.view.gui.BaseView;
+import com.jeta.forms.components.image.ImageComponent;
 import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 
+import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.utils.gvWindow;
 import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
@@ -42,14 +45,14 @@ import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
 
 public class LocatorByPK extends gvWindow implements ActionListener {
 
-	private static final String TRAMO_FIELD = "tramo";
+    private static final String TRAMO_FIELD = "tramo";
     private static final String PK_FIELD = "pks";
-    
+
     private final FormPanel formBody;
 
     public final String ID_TRAMO = "tramo";
     private JComboBox tramoCB;
-    
+
     public final String ID_PKNUMBER = "pk_number";
     private JComboBox pkNumberCB;
 
@@ -57,13 +60,13 @@ public class LocatorByPK extends gvWindow implements ActionListener {
     private JButton goToPKB;
 
     public LocatorByPK() {
-	super(400, 200);
+	super(400, 150);
 	InputStream stream = getClass().getClassLoader().getResourceAsStream("LocatorByPK.xml");
 	FormPanel result = null;
 	try {
-		result = new FormPanel(stream);
+	    result = new FormPanel(stream);
 	} catch (FormException e) {
-		e.printStackTrace();
+	    e.printStackTrace();
 	}
 	formBody = result;
 	formBody.setVisible(true);
@@ -73,51 +76,56 @@ public class LocatorByPK extends gvWindow implements ActionListener {
     }
 
     public void initWidgets() {
-    tramoCB = (JComboBox) formBody.getComponentByName(ID_TRAMO);
-    pkNumberCB = (JComboBox) formBody.getComponentByName(ID_PKNUMBER);
-    tramoCB.addActionListener(this);
-    fillTramo();
+
+	ImageComponent image = (ImageComponent) formBody.getComponentByName("image");
+	ImageIcon icon = new ImageIcon (PreferencesPage.AUDASA_ICON);
+	image.setIcon(icon);
+
+	tramoCB = (JComboBox) formBody.getComponentByName(ID_TRAMO);
+	pkNumberCB = (JComboBox) formBody.getComponentByName(ID_PKNUMBER);
+	tramoCB.addActionListener(this);
+	fillTramo();
 	fillPK();
 	goToPKB = (JButton) formBody.getComponentByName(ID_GOTOPK);
 	goToPKB.addActionListener(this);
     }
 
     public FLyrVect getPKSLayer() {
-    TOCLayerManager toc = new TOCLayerManager();
-    return toc.getLayerByName(DBNames.LAYER_PKS);
+	TOCLayerManager toc = new TOCLayerManager();
+	return toc.getLayerByName(DBNames.LAYER_PKS);
     }
-    
+
     private void fillTramo() {
-    KeyValueRetriever kvPks = new KeyValueRetriever((FLyrVect) getPKSLayer(), 
-        	TRAMO_FIELD, TRAMO_FIELD);
-    kvPks.setOrderBy(TRAMO_FIELD);
-    ArrayList<String> distinctValues = new ArrayList<String>();
-    for (KeyValue kv : kvPks.getValues()) {
-    	if (!distinctValues.contains(kv.getValue())) {
-    		distinctValues.add(kv.getValue());
-    	}
-    }
-    for (String dkv : distinctValues) {
-    	tramoCB.addItem(dkv);
-    }	
-    }
-    
-    private void fillPK2() {
-    KeyValueRetriever kvPks = new KeyValueRetriever((FLyrVect) getPKSLayer(), 
-    		PK_FIELD, PK_FIELD);
-    kvPks.setOrderBy(PK_FIELD);
-    for (KeyValue kv : kvPks.getValues()) {
-    	pkNumberCB.addItem(kv);
-    }	
+	KeyValueRetriever kvPks = new KeyValueRetriever(getPKSLayer(),
+		TRAMO_FIELD, TRAMO_FIELD);
+	kvPks.setOrderBy(TRAMO_FIELD);
+	ArrayList<String> distinctValues = new ArrayList<String>();
+	for (KeyValue kv : kvPks.getValues()) {
+	    if (!distinctValues.contains(kv.getValue())) {
+		distinctValues.add(kv.getValue());
+	    }
 	}
+	for (String dkv : distinctValues) {
+	    tramoCB.addItem(dkv);
+	}
+    }
+
+    private void fillPK2() {
+	KeyValueRetriever kvPks = new KeyValueRetriever(getPKSLayer(),
+		PK_FIELD, PK_FIELD);
+	kvPks.setOrderBy(PK_FIELD);
+	for (KeyValue kv : kvPks.getValues()) {
+	    pkNumberCB.addItem(kv);
+	}
+    }
 
     private void fillPK() {
-    DataSourceFactory dsf;
-    try {
-		dsf = getPKSLayer().getRecordset().getDataSourceFactory();
-		String sqlQuery = "select * from " + getPKSLayer().getRecordset().getName() + 
-	    	" where tramo = " + "'" + tramoCB.getSelectedItem().toString() + "'" +
-	    	" order by pks;";
+	DataSourceFactory dsf;
+	try {
+	    dsf = getPKSLayer().getRecordset().getDataSourceFactory();
+	    String sqlQuery = "select * from " + getPKSLayer().getRecordset().getName() +
+		    " where tramo = " + "'" + tramoCB.getSelectedItem().toString() + "'" +
+		    " order by pks;";
 	    DataSource ds = dsf.executeSQL(sqlQuery, EditionEvent.ALPHANUMERIC);
 	    ds.setDataSourceFactory(dsf);
 	    SelectableDataSource sds = new SelectableDataSource(ds);
@@ -126,30 +134,30 @@ public class LocatorByPK extends gvWindow implements ActionListener {
 	    pkNumberCB.removeAllItems();
 	    int pkIndex = ea.getRecordset().getFieldIndexByName(PK_FIELD);
 	    for (int i=0; i<ea.getRecordset().getRowCount(); i++) {
-	    	pkNumberCB.addItem(ea.getRecordset().getFieldValue(i, pkIndex));
+		pkNumberCB.addItem(ea.getRecordset().getFieldValue(i, pkIndex));
 	    }
 	} catch (ReadDriverException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
 	} catch (DriverLoadException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
 	} catch (ParseException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
 	} catch (SemanticException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
 	} catch (EvaluationException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
 	}
     }
-    
-	@Override
+
+    @Override
     public void actionPerformed(ActionEvent e) {
 	if (e.getSource() == tramoCB) {
-		fillPK();
+	    fillPK();
 	}
 	if (e.getSource() == goToPKB) {
 	    String pkToFind = pkNumberCB.getSelectedItem().toString();
@@ -167,8 +175,8 @@ public class LocatorByPK extends gvWindow implements ActionListener {
 				.getStringValue(ValueWriter.internalValueWriter);
 			Value tramoValue = pkRecordset.getFieldValue(i, tramoIndex);
 
-			if ((pkStringValue.compareToIgnoreCase(pkToFind) == 0) && 
-					(tramoValue.toString().compareToIgnoreCase(tramo) == 0)){
+			if ((pkStringValue.compareToIgnoreCase(pkToFind) == 0) &&
+				(tramoValue.toString().compareToIgnoreCase(tramo) == 0)){
 			    zoom(pkLayer, i);
 			    return;
 			}
