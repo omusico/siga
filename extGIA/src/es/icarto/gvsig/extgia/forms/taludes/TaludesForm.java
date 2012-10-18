@@ -1,10 +1,10 @@
 package es.icarto.gvsig.extgia.forms.taludes;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URL;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 
 import com.iver.andami.Launcher;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
+import com.jeta.forms.components.image.ImageComponent;
 import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 
@@ -51,11 +52,6 @@ public class TaludesForm extends AbstractForm {
     public TaludesForm(FLyrVect layer) {
 	super(layer);
 	initWindow();
-
-	
-
-	
-
 	addNewButtonsToActionsToolBar();
     }
 
@@ -64,32 +60,32 @@ public class TaludesForm extends AbstractForm {
 		.getResource("reports/taludes.jasper");
 	String extensionPath = reportPath.getPath().replace("reports/taludes.jasper", "");
 	JPanel actionsToolBar = this.getActionsToolBar();
-	
-FilesLinkButton filesLinkButton = new FilesLinkButton(this, new FilesLinkData() {
-		
-		@Override
-		public String getRegisterField() {
-			return ORMLite.getDataBaseObject(getXMLPath()).getTable("taludes").getPrimaryKey()[0];
-		}
-		
-		@Override
-		public String getBaseDirectory() {
-			String baseDirectory = null;
-			try {
-			    baseDirectory = PreferencesPage.getBaseDirectory();
-			} catch (Exception e) {
-			}
 
-			if (baseDirectory == null || baseDirectory.isEmpty()) {
-			    baseDirectory = Launcher.getAppHomeDir();
-			}
+	FilesLinkButton filesLinkButton = new FilesLinkButton(this, new FilesLinkData() {
 
-			baseDirectory = baseDirectory + File.separator + "FILES"
-				+ File.separator + "inventario" + File.separator
-				+ "taludes";
-		
-			return baseDirectory;
+	    @Override
+	    public String getRegisterField() {
+		return ORMLite.getDataBaseObject(getXMLPath()).getTable("taludes").getPrimaryKey()[0];
+	    }
+
+	    @Override
+	    public String getBaseDirectory() {
+		String baseDirectory = null;
+		try {
+		    baseDirectory = PreferencesPage.getBaseDirectory();
+		} catch (Exception e) {
 		}
+
+		if (baseDirectory == null || baseDirectory.isEmpty()) {
+		    baseDirectory = Launcher.getAppHomeDir();
+		}
+
+		baseDirectory = baseDirectory + File.separator + "FILES"
+			+ File.separator + "inventario" + File.separator
+			+ "taludes";
+
+		return baseDirectory;
+	    }
 	});
 	actionsToolBar.add(filesLinkButton);
 	NavTableComponentsPrintButton ntPrintButton = new NavTableComponentsPrintButton();
@@ -101,20 +97,20 @@ FilesLinkButton filesLinkButton = new FilesLinkButton(this, new FilesLinkData() 
     }
 
     private void initWindow() {
-	this.viewInfo.setHeight(625);
-	this.viewInfo.setWidth(775);
+	this.viewInfo.setHeight(700);
+	this.viewInfo.setWidth(830);
 	this.viewInfo.setTitle("Taludes");
     }
 
     @Override
     public FormPanel getFormBody() {
 	if (this.form == null) {
-		InputStream stream = getClass().getClassLoader().getResourceAsStream(TaludesForm.ABEILLE_FILENAME);
+	    InputStream stream = getClass().getClassLoader().getResourceAsStream(TaludesForm.ABEILLE_FILENAME);
 	    try {
-			this.form = new FormPanel(stream);
-		} catch (FormException e) {
-			e.printStackTrace();
-		}
+		this.form = new FormPanel(stream);
+	    } catch (FormException e) {
+		e.printStackTrace();
+	    }
 	}
 	return this.form;
     }
@@ -135,19 +131,24 @@ FilesLinkButton filesLinkButton = new FilesLinkButton(this, new FilesLinkData() 
 	cunetaPie.fillSpecificValues();
 	direccionPIDomainHandler.updateComboBoxValues();
 	direccionPFDomainHandler.updateComboBoxValues();
-	
+
     }
 
     @Override
     protected void setListeners() {
 	super.setListeners();
+
+	ImageComponent image = (ImageComponent) form.getComponentByName("image");
+	ImageIcon icon = new ImageIcon (PreferencesPage.AUDASA_ICON);
+	image.setIcon(icon);
+
 	taludid = new CalculateTaludIDValue(this, getWidgetComponents(),
 		DBFieldNames.ID_TALUD, DBFieldNames.TIPO_TALUD,
 		DBFieldNames.NUMERO_TALUD, DBFieldNames.BASE_CONTRATISTA);
 	taludid.setListeners();
 
 	inclinacionMedia = new CalculateInclinacionMediaValue(this,
-			getWidgetComponents(), DBFieldNames.INCLINACION_MEDIA,
+		getWidgetComponents(), DBFieldNames.INCLINACION_MEDIA,
 		DBFieldNames.SECTOR_INCLINACION);
 	inclinacionMedia.setListeners();
 
