@@ -68,6 +68,7 @@ public class DBNames {
     public static final String FIELD_NUMPM_FINCAS_PM = "numero_pm";
 
     //table expropiaciones
+    public static final String FIELD_ID_FINCA_EXPROPIACIONES = "id_finca";
     public static final String FIELD_IDCULTIVO_EXPROPIACIONES = "id_cultivo";
     public static final String FIELD_SUPERFICIE_EXPROPIACIONES = "superficie_expropiada";
 
@@ -87,6 +88,8 @@ public class DBNames {
 
     // tipo cultivos en DB
     public static final String TABLE_CULTIVOS = "tipo_cultivos";
+    public static final String FIELD_ID_CULTIVO_CULTIVOS = "id_cultivo";
+    public static final String FIELD_DESCRIPCION_CULTIVOS = "descripcion";
     public static final int VALUE_CULTIVOS_OTROS = 99;
     public static final int VALUE_CULTIVOS_EDIFICACION = 7;
     public static final int VALUE_CULTIVOS_TERRENO = 6;
@@ -134,6 +137,13 @@ public class DBNames {
     public static final String SUBFORMEXPROPIATIONS_IMPORTE = "importe";
 
     public static final String EXPROPIATIONS_AFECTADO_PM = "afectado_por_policia_margenes";
+
+    public static final String EXPROPIATIONS_ADD_EXPROPIATION_BUTTON = "add_expropiation_button";
+    public static final String EXPROPIATIONS_DELETE_EXPROPIATION_BUTTON = "delete_expropiation_button";
+
+    public static final String SUBFORMEXPROPIATION_ADD_EXPROPIATION_BUTTON = "add_expropiation_subform_button";
+    public static final String SUBFORMEXPROPIATION_SUPERFICIE = "expropiacion_superficie";
+    public static final String SUBFORMEXPROPIATION_CULTIVO = "expropiacion_cultivo";
 
     public static final String FINCAS_IMPORTE_PENDIENTE_MEJORAS = "importe_pendiente_mejoras";
     public static final String FINCAS_IMPORTE_PENDIENTE_TERRENOS = "importe_pendiente_terrenos";
