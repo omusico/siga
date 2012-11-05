@@ -101,7 +101,12 @@ public class SubFormReversionsAddExpropiations extends JPanel implements IWindow
 	    }
 	    Geometry jtsReversionGeometry = reversionGeometry.toJTSGeometry();
 
-	    int idFincaIndex = fincasRecordset.getFieldIndexByName(DBNames.FIELD_IDFINCA_FINCAS);
+	    int tramoIndex = fincasRecordset.getFieldIndexByName(DBNames.FIELD_TRAMO_FINCAS);
+	    int ucIndex = fincasRecordset.getFieldIndexByName(DBNames.FIELD_UC_FINCAS);
+	    int ayuntamientoIndex = fincasRecordset.getFieldIndexByName(DBNames.FIELD_AYUNTAMIENTO_FINCAS);
+	    int parroquiaIndex = fincasRecordset.getFieldIndexByName(DBNames.FIELD_PARROQUIASUBTRAMO_FINCAS);
+	    int numFincaIndex = fincasRecordset.getFieldIndexByName(DBNames.FIELD_NUMEROFINCA_FINCAS);
+	    int seccionIndex = fincasRecordset.getFieldIndexByName(DBNames.FIELD_SECCION_FINCAS);
 	    ReadableVectorial layerSourceFeats = fincasLayer.getSource();
 	    for (int i = 0; i < fincasRecordset.getRowCount(); i++) {
 		IGeometry gvGeom = layerSourceFeats.getShape(i);
@@ -109,7 +114,12 @@ public class SubFormReversionsAddExpropiations extends JPanel implements IWindow
 		    if (!gvGeom.equals(jtsReversionGeometry)) {
 			Geometry auxJTSGeom = gvGeom.toJTSGeometry();
 			if ((jtsReversionGeometry.buffer(INTERSECTION_BUFFER)).intersects(auxJTSGeom)) {
-			    String finca = fincasRecordset.getFieldValue(i, idFincaIndex).toString();
+			    String finca = fincasRecordset.getFieldValue(i, tramoIndex).toString() +
+				    fincasRecordset.getFieldValue(i, ucIndex).toString() +
+				    fincasRecordset.getFieldValue(i, ayuntamientoIndex).toString() +
+				    fincasRecordset.getFieldValue(i, parroquiaIndex).toString() +
+				    "--" + fincasRecordset.getFieldValue(i, numFincaIndex).toString() + "--" +
+				    fincasRecordset.getFieldValue(i, seccionIndex).toString();
 			    fincas.add(finca);
 			}
 		    }
@@ -125,8 +135,9 @@ public class SubFormReversionsAddExpropiations extends JPanel implements IWindow
     @Override
     public void actionPerformed(ActionEvent e) {
 	if (e.getSource() == addExpropiationButton) {
-	    String numReversion = idFinca.getSelectedItem().toString();
-	    Value[] fincaData = getFincaData(numReversion);
+	    String fincaID = idFinca.getSelectedItem().toString();
+	    String idFincaValue = idFinca.getSelectedItem().toString().replaceAll("--", "");
+	    Value[] fincaData = getFincaData(idFincaValue);
 	    DefaultTableModel tableModel = (DefaultTableModel) fincasTable.getModel();
 	    tableModel.addRow(fincaData);
 	}

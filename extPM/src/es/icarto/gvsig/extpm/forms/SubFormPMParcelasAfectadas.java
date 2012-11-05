@@ -148,8 +148,8 @@ public class SubFormPMParcelasAfectadas extends JPanel implements IWindow, Actio
 			    String parcela = fincasRecordset.getFieldValue(i, tramoIndex).toString() +
 				    fincasRecordset.getFieldValue(i, ucIndex).toString() +
 				    fincasRecordset.getFieldValue(i, municipioIndex).toString() +
-				    fincasRecordset.getFieldValue(i, parroquiaIndex).toString() + "-" +
-				    fincasRecordset.getFieldValue(i, numFincaIndex).toString() + "-" +
+				    fincasRecordset.getFieldValue(i, parroquiaIndex).toString() + "--" +
+				    fincasRecordset.getFieldValue(i, numFincaIndex).toString() + "--" +
 				    fincasRecordset.getFieldValue(i, seccionIndex).toString();
 			    parcelas.add(parcela);
 			}
@@ -180,7 +180,7 @@ public class SubFormPMParcelasAfectadas extends JPanel implements IWindow, Actio
     @Override
     public void actionPerformed(ActionEvent e) {
 	if (e.getSource() == addFinca) {
-	    String idFincaValue = idFinca.getSelectedItem().toString().replaceAll("-", "");
+	    String idFincaValue = idFinca.getSelectedItem().toString().replaceAll("--", "");
 	    model.addRow(getFincaValuesFromID(idFincaValue));
 	}
 	if (e.getSource() == removeFinca) {
