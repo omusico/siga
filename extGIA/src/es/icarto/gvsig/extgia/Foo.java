@@ -28,9 +28,9 @@ public class Foo {
 	    // e1.printStackTrace();
 	    // }
 	    try {
-		DBSession.createConnection("localhost", 5434, "audasa_test",
-			"", "postgres", "postgres");
-		createViewIfNeeded();
+		//		DBSession.createConnection("localhost", 5434, "audasa_test",
+		//			"", "postgres", "postgres");
+		//		createViewIfNeeded();
 		FLayer layer = DBSession.getCurrentSession().getLayer(
 			"taludes", "taludes", "audasa_extgia", null,
 			CRSFactory.getCRS("EPSG:23029"));
@@ -38,7 +38,7 @@ public class Foo {
 		View view = (View) PluginServices.getMDIManager()
 			.getActiveWindow();
 		view.getMapControl().getMapContext().getLayers()
-			.addLayer(layer);
+		.addLayer(layer);
 	    } catch (Exception e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();

@@ -13,10 +13,11 @@
 		<menu text="Inventario/Taludes" action-command="taludes" position="36000"/>
 
 
-			<tool-bar name="extGIA">
+		<!--	<tool-bar name="extGIA">
 				<action-tool icon="extgia-openform" tooltip="form_launcher"
 					action-command="form_launcher" />
 			</tool-bar>
+		-->
 
 		</extension>
 	</extensions>
