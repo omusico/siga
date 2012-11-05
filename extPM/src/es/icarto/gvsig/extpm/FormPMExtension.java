@@ -34,7 +34,7 @@ public class FormPMExtension extends Extension {
 	layer = getPMLayer();
 	dialog = new FormPM(layer, false, -1);
 	if (dialog.init()) {
-	    PluginServices.getMDIManager().addWindow(dialog);
+	    PluginServices.getMDIManager().addCentredWindow(dialog);
 	}
     }
 
@@ -100,7 +100,7 @@ public class FormPMExtension extends Extension {
 		    l.setActive(true);
 		    dialog = new FormPM(getPMLayer(), true, insertedRow);
 		    if (dialog.init()) {
-			PluginServices.getMDIManager().addWindow(dialog);
+			PluginServices.getMDIManager().addCentredWindow(dialog);
 			dialog.last();
 		    }
 		}
@@ -113,7 +113,7 @@ public class FormPMExtension extends Extension {
 		}
 		es.icarto.gvsig.extgex.forms.FormReversions dialog = new es.icarto.gvsig.extgex.forms.FormReversions((FLyrVect) layer, insertedGeom);
 		if (dialog.init()) {
-		    PluginServices.getMDIManager().addWindow(dialog);
+		    PluginServices.getMDIManager().addCentredWindow(dialog);
 		    dialog.last();
 		}
 	    }else if (layer.getName().equalsIgnoreCase("Fincas")) {
@@ -126,7 +126,7 @@ public class FormPMExtension extends Extension {
 		if (AlphanumericTableLoader.loadTables()) {
 		    es.icarto.gvsig.extgex.forms.FormExpropiations dialog = new es.icarto.gvsig.extgex.forms.FormExpropiations((FLyrVect) layer, insertedGeom);
 		    if (dialog.init()) {
-			PluginServices.getMDIManager().addWindow(dialog);
+			PluginServices.getMDIManager().addCentredWindow(dialog);
 			dialog.last();
 		    }
 		}
