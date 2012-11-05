@@ -300,11 +300,38 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 
     @Override
     public boolean saveRecord() {
+	saveFincasAfectadasTable();
+	return super.saveRecord();
+    }
+
+    private void saveFincasAfectadasTable() {
 	PreparedStatement statement;
 	String query = null;
 	String idFinca;
 	String superficie;
 	String importe;
+
+	// Check if ID expropiation exists into expropiations table
+	for (int i=0; i<fincasAfectadas.getRowCount(); i++) {
+	    idFinca = fincasAfectadas.getModel().getValueAt(i, 0).toString();
+	    query = "SELECT " + DBNames.FIELD_ID_FINCA_EXPROPIACIONES + " " +
+		    "FROM " + DBNames.SCHEMA_DATA + "." + DBNames.TABLE_EXPROPIACIONES + " " +
+		    "WHERE " + DBNames.FIELD_ID_FINCA_EXPROPIACIONES + " = '" + idFinca + "';";
+	    try {
+		statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+		statement.execute();
+		ResultSet rs = statement.getResultSet();
+		if (!rs.next()) {
+		    JOptionPane.showMessageDialog(this,
+			    "EL ID de Finca: " + idFinca + " no existe. Modifique los datos para poder guardar.",
+			    "Error en los datos",
+			    JOptionPane.ERROR_MESSAGE);
+		    return;
+		}
+	    } catch (SQLException e) {
+		e.getMessage();
+	    }
+	}
 
 	// First, we remove old Fincas on this reversions
 	for (String FincaID : oldFincasAfectadas) {
@@ -352,18 +379,9 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 		statement.execute();
 	    } catch (SQLException e) {
 		e.printStackTrace();
-		String violateFKMessage = "ERROR: insert or update on table \"fincas_reversiones\" " +
-			"violates foreign key constraint \"fk_fincas\"\n";
-		if (e.getMessage().equals(violateFKMessage)) {
-		    JOptionPane.showMessageDialog(this,
-			    "EL ID de Finca: " + idFinca + " no existe. No se guardará en la tabla",
-			    "Error en los datos",
-			    JOptionPane.ERROR_MESSAGE);
-		}
 		continue;
 	    }
 	}
-	return super.saveRecord();
     }
 
     @Override

@@ -680,7 +680,29 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	String superficie;
 	String importe;
 
-	// First, we remove old Reversions on this Finca
+	// Check if ID reversion exists into reversions table
+	for (int i=0; i<reversiones.getRowCount(); i++) {
+	    idReversion = reversiones.getModel().getValueAt(i, 0).toString();
+	    query = "SELECT " + DBNames.FIELD_IDREVERSION_REVERSIONES + " " +
+		    "FROM " + DBNames.SCHEMA_DATA + "." + DBNames.TABLE_REVERSIONES + " " +
+		    "WHERE " + DBNames.FIELD_IDREVERSION_REVERSIONES + " = '" + idReversion + "';";
+	    try {
+		statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+		statement.execute();
+		ResultSet rs = statement.getResultSet();
+		if (!rs.next()) {
+		    JOptionPane.showMessageDialog(this,
+			    "EL ID de Reversión: " + idReversion + " no existe. Modifique los datos para poder guardar.",
+			    "Error en los datos",
+			    JOptionPane.ERROR_MESSAGE);
+		    return;
+		}
+	    } catch (SQLException e) {
+		e.getMessage();
+	    }
+	}
+
+	// we remove old Reversions on this Finca
 	for (String ReversionID : oldReversions) {
 	    try {
 		query = "DELETE FROM " +
@@ -726,14 +748,6 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 		statement.execute();
 	    } catch (SQLException e) {
 		e.printStackTrace();
-		String violateFKMessage = "ERROR: insert or update on table \"fincas_reversiones\" " +
-			"violates foreign key constraint \"fk_reversiones\"\n";
-		if (e.getMessage().equals(violateFKMessage)) {
-		    JOptionPane.showMessageDialog(this,
-			    "EL ID de Reversión: " + idReversion + " no existe. No se guardará en la tabla",
-			    "Error en los datos",
-			    JOptionPane.ERROR_MESSAGE);
-		}
 		continue;
 	    }
 	}
