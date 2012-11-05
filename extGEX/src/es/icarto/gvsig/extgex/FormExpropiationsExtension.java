@@ -27,7 +27,7 @@ public class FormExpropiationsExtension extends Extension {
 	    layer = getLayer();
 	    dialog = new FormExpropiations(layer, null);
 	    if (dialog.init()) {
-		PluginServices.getMDIManager().addWindow(dialog);
+		PluginServices.getMDIManager().addCentredWindow(dialog);
 	    }
 	} else {
 	    JOptionPane.showMessageDialog(null, PluginServices.getText(this,
