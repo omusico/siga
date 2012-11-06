@@ -288,6 +288,25 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
     @Override
     protected void fillSpecificValues() {
 	updateJTableFincasAfectadas();
+
+	// Ayuntamiento
+	try {
+	    PreparedStatement statement;
+	    String ayuntamientoQuery = "SELECT " + DBNames.FIELD_AYUNTAMIENTO_REVERSIONES +
+		    " FROM " + DBNames.EXPROPIATIONS_SCHEMA + "." + DBNames.TABLE_REVERSIONES +
+		    " WHERE " + DBNames.FIELD_IDREVERSION_REVERSIONES + " = '" + idReversion.getText() + "';";
+	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(ayuntamientoQuery);
+	    statement.execute();
+	    ResultSet ayuntamientoRs = statement.getResultSet();
+	    while (ayuntamientoRs.next()) {
+		if (ayuntamientoRs.getString(1) != null) {
+		    ayuntamiento.addItem(ayuntamientoRs.getString(1));
+		    ayuntamiento.setSelectedItem(ayuntamientoRs.getString(1));
+		}
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
     }
 
     private void updateJTableFincasAfectadas() {
