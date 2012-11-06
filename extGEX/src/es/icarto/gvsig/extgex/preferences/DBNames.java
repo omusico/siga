@@ -16,14 +16,18 @@ public class DBNames {
 
     // table tramos
     public static final String TABLE_TRAMOS = "tramos";
+    public static final String FIELD_IDTRAMO_TRAMOS = "id_tramo";
     public static final String FIELD_NOMBRETRAMO_TRAMOS = "nombre_tramo";
 
     // table uc
     public static final String TABLE_UC = "uc";
+    public static final String FIELD_IDUC_UC = "id_uc";
     public static final String FIELD_NOMBREUC_UC = "nombre_uc";
+    public static final String FIELD_IDTRAMO_UC = "id_tramo";
 
     // table ayuntamientos
     public static final String TABLE_AYUNTAMIENTOS = "ayuntamientos";
+    public static final String FIELD_IDUC_AYUNTAMIENTO = "id_uc";
     public static final String FIELD_NOMBREAYUNTAMIENTO_AYUNTAMIENTO = "nombre_ayuntamiento";
 
     // table parroquias_subtramos
@@ -61,6 +65,7 @@ public class DBNames {
     public static final String FIELD_IDEXPROPIACION_FINCAS_REVERSIONES = "id_finca";
     public static final String FIELD_SUPERFICIE_FINCAS_REVERSIONES = "superficie";
     public static final String FIELD_IMPORTE_FINCAS_REVERSIONES = "importe";
+    public static final String FIELD_AYUNTAMIENTO_REVERSIONES = "ayuntamiento_nombre";
 
     // table fincas_pm
     public static final String TABLE_FINCAS_PM = "fincas_pm";

@@ -57,6 +57,10 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
     private JTextField idReversion;
     private IDReversionHandler idReversionHandler;
     private JComboBox tramo;
+    private JComboBox ayuntamiento;
+    private String tramoSelected;
+
+    private TramosListener tramosListener;
 
     private AddExpropiationsListener addExpropiationsListener;
     private DeleteExpropiationsListener deleteExpropiationsListener;
@@ -122,8 +126,10 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 	fincasAfectadas.addMouseListener(expropiationsLauncher);
 
 	idReversion = (JTextField) widgets.get(DBNames.FIELD_IDREVERSION_REVERSIONES);
+	tramosListener = new TramosListener();
 	tramo = (JComboBox) widgets.get(DBNames.FIELD_TRAMO_FINCAS);
-
+	tramo.addActionListener(tramosListener);
+	ayuntamiento = (JComboBox) widgets.get(DBNames.FIELD_AYUNTAMIENTO_REVERSIONES);
 
 	numeroReversion = (JTextField) widgets.get(DBNames.FIELD_NUMEROREVERSION_REVERSIONES);
 	idReversionHandler = new IDReversionHandler();
@@ -137,6 +143,42 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 	deleteExpropiationsListener = new DeleteExpropiationsListener();
 	deleteExpropiationsButton = (JButton) form.getComponentByName(DBNames.REVERSIONS_DELETE_EXPROPIATIONS_BUTTON);
 	deleteExpropiationsButton.addActionListener(deleteExpropiationsListener);
+
+    }
+
+    public class TramosListener implements ActionListener {
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+	    updateAyuntamientoDependingOnTramo();
+	}
+    }
+
+    private void updateAyuntamientoDependingOnTramo() {
+	if (!isFillingValues()) {
+	    ayuntamiento.removeAllItems();
+	    ayuntamiento.addItem(" ");
+	    String query = null;
+	    PreparedStatement statement;
+	    try {
+		query = "SELECT distinct(" + DBNames.FIELD_NOMBREAYUNTAMIENTO_AYUNTAMIENTO + ") " +
+			"FROM " + DBNames.EXPROPIATIONS_SCHEMA + "." + DBNames.TABLE_TRAMOS + " t, " +
+			DBNames.EXPROPIATIONS_SCHEMA + "." + DBNames.TABLE_AYUNTAMIENTOS + " a, " +
+			DBNames.EXPROPIATIONS_SCHEMA + "." + DBNames.TABLE_UC + " u " +
+			"WHERE t." + DBNames.FIELD_IDTRAMO_TRAMOS + "= u." + DBNames.FIELD_IDTRAMO_UC +
+			" AND u." + DBNames.FIELD_IDUC_UC + "= a." +DBNames.FIELD_IDUC_AYUNTAMIENTO +
+			" AND " + DBNames.FIELD_NOMBRETRAMO_TRAMOS + " = '" + tramo.getSelectedItem() + "';";
+		statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+		statement.execute();
+		ResultSet rs = statement.getResultSet();
+		while (rs.next()) {
+		    ayuntamiento.addItem(rs.getString(1));
+		}
+		rs.close();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
+	}
 
     }
 
