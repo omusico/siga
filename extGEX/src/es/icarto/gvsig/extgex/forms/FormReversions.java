@@ -102,8 +102,8 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
     }
 
     private void initWindow() {
-	viewInfo.setHeight(650);
-	viewInfo.setWidth(600);
+	viewInfo.setHeight(695);
+	viewInfo.setWidth(660);
 	viewInfo.setTitle("Expediente de reversiones");
     }
 
