@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -24,10 +25,12 @@ import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.ReadableVectorial;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
+import com.jeta.forms.components.image.ImageComponent;
 import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 import com.vividsolutions.jts.geom.Geometry;
 
+import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
@@ -50,8 +53,8 @@ public class SubFormReversionsAddExpropiations extends JPanel implements IWindow
 
     protected WindowInfo viewInfo = null;
     private final String title = "Añadir Fincas";
-    private final int width = 275;
-    private final int height = 125;
+    private final int width = 300;
+    private final int height = 105;
 
     public SubFormReversionsAddExpropiations(FLyrVect layer, JTable fincasTable, String idReversion, IGeometry insertedGeom) {
 	InputStream stream = getClass().getClassLoader().getResourceAsStream("reversiones_add_expropiaciones.xml");
@@ -72,6 +75,10 @@ public class SubFormReversionsAddExpropiations extends JPanel implements IWindow
 
     private void initWidgets() {
 	updateCurrentRowFromIDReversion(idReversion);
+
+	ImageComponent image = (ImageComponent) form.getComponentByName("image");
+	ImageIcon icon = new ImageIcon (PreferencesPage.AUDASA_ICON);
+	image.setIcon(icon);
 
 	addExpropiationButton = (JButton) form.getComponentByName(DBNames.SUBFORMREVERSIONS_ADD_EXPROPIATIONS_BUTTON);
 	addExpropiationButton.addActionListener(this);
