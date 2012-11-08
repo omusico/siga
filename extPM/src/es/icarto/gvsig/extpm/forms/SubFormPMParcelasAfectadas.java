@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -22,10 +23,12 @@ import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.ReadableVectorial;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
+import com.jeta.forms.components.image.ImageComponent;
 import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 import com.vividsolutions.jts.geom.Geometry;
 
+import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.extpm.preferences.Preferences;
 import es.icarto.gvsig.extpm.utils.managers.TOCLayerManager;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
@@ -46,7 +49,7 @@ public class SubFormPMParcelasAfectadas extends JPanel implements IWindow, Actio
 
     protected WindowInfo viewInfo = null;
     private final String title = "Parcelas Afectadas";
-    private final int width = 450;
+    private final int width = 400;
     private final int height = 200;
 
     public SubFormPMParcelasAfectadas(FLyrVect layer, int insertedRow) {
@@ -65,6 +68,10 @@ public class SubFormPMParcelasAfectadas extends JPanel implements IWindow, Actio
     }
 
     private void initWidgets() {
+	ImageComponent image = (ImageComponent) form.getComponentByName("image");
+	ImageIcon icon = new ImageIcon (PreferencesPage.AUDASA_ICON);
+	image.setIcon(icon);
+
 	idFinca = (JComboBox)form.getComponentByName("id_finca");
 	for (String id_finca : getFincasFromPM()) {
 	    idFinca.addItem(id_finca);
