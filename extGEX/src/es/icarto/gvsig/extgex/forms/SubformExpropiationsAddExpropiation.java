@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -19,9 +20,11 @@ import com.hardcode.gdbms.engine.values.Value;
 import com.hardcode.gdbms.engine.values.ValueFactory;
 import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.andami.ui.mdiManager.WindowInfo;
+import com.jeta.forms.components.image.ImageComponent;
 import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 
+import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -37,8 +40,8 @@ public class SubformExpropiationsAddExpropiation extends JPanel implements IWind
 
     protected WindowInfo viewInfo = null;
     private final String title = "Añadir Expropiación";
-    private final int width = 250;
-    private final int height = 70;
+    private final int width = 300;
+    private final int height = 80;
 
     public SubformExpropiationsAddExpropiation(JTable expropiationsTable) {
 	InputStream stream = getClass().getClassLoader().getResourceAsStream("add_expropiaciones.xml");
@@ -55,6 +58,10 @@ public class SubformExpropiationsAddExpropiation extends JPanel implements IWind
     }
 
     private void initWidgets() {
+
+	ImageComponent image = (ImageComponent) form.getComponentByName("image");
+	ImageIcon icon = new ImageIcon (PreferencesPage.AUDASA_ICON);
+	image.setIcon(icon);
 
 	addExpropiationButton = (JButton) form.getComponentByName(DBNames.SUBFORMEXPROPIATION_ADD_EXPROPIATION_BUTTON);
 	addExpropiationButton.addActionListener(this);
