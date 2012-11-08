@@ -139,8 +139,8 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
     }
 
     private void initWindow() {
-	viewInfo.setHeight(650);
-	viewInfo.setWidth(750);
+	viewInfo.setHeight(695);
+	viewInfo.setWidth(675);
 	viewInfo.setTitle("Expediente de expropiaciones");
     }
 
