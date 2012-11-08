@@ -35,7 +35,7 @@ public class LocatorByMunicipio extends gvWindow implements IPositionRetriever, 
     private JButton zoom;
 
     public LocatorByMunicipio() {
-	super(400, 150);
+	super(400, 145);
 	InputStream stream = getClass().getClassLoader().getResourceAsStream("LocatorByMunicipio.xml");
 	FormPanel result = null;
 	try {

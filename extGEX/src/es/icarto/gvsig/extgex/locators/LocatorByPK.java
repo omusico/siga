@@ -60,7 +60,7 @@ public class LocatorByPK extends gvWindow implements ActionListener {
     private JButton goToPKB;
 
     public LocatorByPK() {
-	super(400, 150);
+	super(400, 145);
 	InputStream stream = getClass().getClassLoader().getResourceAsStream("LocatorByPK.xml");
 	FormPanel result = null;
 	try {
