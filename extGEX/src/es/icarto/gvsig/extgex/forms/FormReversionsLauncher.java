@@ -58,13 +58,13 @@ public class FormReversionsLauncher implements MouseListener {
 	    });
 	    popup.add(menuOpenForm);
 
-	    JMenuItem menuOpenANT = new JMenuItem("Editar reversiones");
-	    menuOpenANT.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent arg0) {
-		    openANT();
-		}
-	    });
-	    popup.add(menuOpenANT);
+	    //	    JMenuItem menuOpenANT = new JMenuItem("Editar reversiones");
+	    //	    menuOpenANT.addActionListener(new ActionListener() {
+	    //		public void actionPerformed(ActionEvent arg0) {
+	    //		    openANT();
+	    //		}
+	    //	    });
+	    //	    popup.add(menuOpenANT);
 
 	    popup.show(e.getComponent(), e.getX(), e.getY());
 	}

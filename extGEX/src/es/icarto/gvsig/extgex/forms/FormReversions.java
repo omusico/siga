@@ -78,7 +78,6 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 	    this.insertedGeom = insertedGeom;
 	}
 	initWindow();
-	initListeners();
 	addNewButtonsToActionsToolBar();
     }
 
@@ -107,11 +106,6 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 	viewInfo.setTitle("Expediente de reversiones");
     }
 
-    private void initListeners() {
-	expropiationsLauncher = new FormExpropiationsLauncher(this);
-
-    }
-
     @Override
     protected void setListeners() {
 	super.setListeners();
@@ -122,6 +116,7 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 	ImageIcon icon = new ImageIcon (PreferencesPage.AUDASA_ICON);
 	image.setIcon(icon);
 
+	expropiationsLauncher = new FormExpropiationsLauncher(this);
 	fincasAfectadas = (JTable) widgets.get(WIDGET_TABLAFINCASAFECTADAS);
 	fincasAfectadas.addMouseListener(expropiationsLauncher);
 
@@ -143,7 +138,6 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 	deleteExpropiationsListener = new DeleteExpropiationsListener();
 	deleteExpropiationsButton = (JButton) form.getComponentByName(DBNames.REVERSIONS_DELETE_EXPROPIATIONS_BUTTON);
 	deleteExpropiationsButton.addActionListener(deleteExpropiationsListener);
-
     }
 
     public class TramosListener implements ActionListener {
@@ -234,6 +228,11 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
     protected void removeListeners() {
 	super.removeListeners();
 	fincasAfectadas.removeMouseListener(expropiationsLauncher);
+
+	tramo.removeActionListener(tramosListener);
+	tramo.removeActionListener(idReversionHandler);
+
+	numeroReversion.removeKeyListener(idReversionHandler);
 
 	addExpropiationsButton.removeActionListener(addExpropiationsListener);
 	deleteExpropiationsButton.removeActionListener(deleteExpropiationsListener);

@@ -1,7 +1,5 @@
 package es.icarto.gvsig.extgex;
 
-import javax.swing.JOptionPane;
-
 import com.iver.andami.PluginServices;
 import com.iver.andami.plugins.Extension;
 import com.iver.andami.ui.mdiManager.IWindow;
@@ -10,7 +8,6 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.icarto.gvsig.extgex.forms.FormReversions;
 import es.icarto.gvsig.extgex.preferences.DBNames;
-import es.icarto.gvsig.extgex.utils.AlphanumericTableLoader;
 import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -21,16 +18,16 @@ public class FormReversionsExtension extends Extension {
 
     public void execute(String actionCommand) {
 	DBSession.getCurrentSession().setSchema(DBNames.EXPROPIATIONS_SCHEMA);
-	if (AlphanumericTableLoader.loadTables()) {
-	    layer = getLayer();
-	    dialog = new FormReversions(layer, null);
-	    if (dialog.init()) {
-		PluginServices.getMDIManager().addCentredWindow(dialog);
-	    }
-	} else {
-	    JOptionPane.showMessageDialog(null, PluginServices.getText(this,
-		    "alphanumeric_table_no_loaded"));
+	//	if (AlphanumericTableLoader.loadTables()) {
+	layer = getLayer();
+	dialog = new FormReversions(layer, null);
+	if (dialog.init()) {
+	    PluginServices.getMDIManager().addCentredWindow(dialog);
 	}
+	//	} else {
+	//	    JOptionPane.showMessageDialog(null, PluginServices.getText(this,
+	//		    "alphanumeric_table_no_loaded"));
+	//	}
     }
 
     private FLyrVect getLayer() {
