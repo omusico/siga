@@ -51,7 +51,7 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
     private FLyrVect layer = null;
     private IGeometry insertedGeom;
 
-    private static FormPanel form;
+    private FormPanel form;
     private JTable fincasAfectadas;
     private JTextField numeroReversion;
     private JTextField idReversion;
