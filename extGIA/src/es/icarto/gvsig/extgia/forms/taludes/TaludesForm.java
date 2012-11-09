@@ -97,8 +97,8 @@ public class TaludesForm extends AbstractForm {
     }
 
     private void initWindow() {
-	this.viewInfo.setHeight(700);
-	this.viewInfo.setWidth(830);
+	this.viewInfo.setHeight(695);
+	this.viewInfo.setWidth(675);
 	this.viewInfo.setTitle("Taludes");
     }
 
