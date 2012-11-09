@@ -12,7 +12,7 @@ public class Preferences {
 
     // -- FORMS --
     public static final String PM_FORM_FILE = "pm.xml";
-    public static final String PM_FORM_TITLE = "Políca de Márgenes";
+    public static final String PM_FORM_TITLE = "Policía de Márgenes";
 
     public static final String PM_FORM_WIDGET_PM_NUMBER = "numero_pm";
     public static final String PM_FORM_WIDGETS_NUM_PARCELA_CATASTRO = "num_parcela_catastro";
