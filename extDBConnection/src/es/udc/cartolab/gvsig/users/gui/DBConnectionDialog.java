@@ -242,15 +242,15 @@ public class DBConnectionDialog extends AbstractGVWindow {
 	    String server = serverTF.getText().trim();
 	    String username = userTF.getText().trim();
 	    String password = passTF.getText();
-	    String schema = schemaTF.getText();
+	    //	    String schema = schemaTF.getText();
 	    String database = dbTF.getText();
 
 	    DBSession.createConnection(server, port, database,
-		    schema, username, password);
+		    null, username, password);
 
 	    closeWindow();
 
-	    saveConfig(server, portS, database, schema, username);
+	    saveConfig(server, portS, database, null, username);
 	    PluginServices.getMainFrame().enableControls();
 	} catch (DBException e1) {
 	    // Login error
