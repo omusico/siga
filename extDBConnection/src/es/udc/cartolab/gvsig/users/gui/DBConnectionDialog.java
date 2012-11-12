@@ -48,7 +48,7 @@ public class DBConnectionDialog extends AbstractGVWindow {
     private static final String USER_PROPERTY_NAME = "user";
     private static final String PORT_PROPERTY_NAME = "port";
     private static final String HOST_PROPERTY_NAME = "host";
-    private final static int INIT_MIN_HEIGHT = 145;
+    private final static int INIT_MIN_HEIGHT = 185;
     private final static int INIT_MAX_HEIGHT = 285;
 
     private int minHeight;
