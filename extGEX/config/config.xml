@@ -77,32 +77,39 @@
 		<!-- WMS EXTENSIONS -->
 		<extension class-name="es.icarto.gvsig.extgex.WMSLoadFincasExtension" description="LOAD_FINCAS_WMS" active="true">
 			<menu text="Expropiaciones" position="30299" is_separator="true"/>			
-			<menu text="Expropiaciones/WMS/Expropiaciones" icon="images/planos_wms.png" position="30300"/>
+			<menu text="Expropiaciones/WMS/Planos Expropiaciones" icon="images/planos_wms.png" position="30300"/>
 			<tool-bar name="Expropiaciones_Tools" position="75">
 				<action-tool icon="images/planos_wms.png" action-command="LoadFincasExtension" tooltip="Cargar Planos Expropiaciones" position="4"/>
 			</tool-bar>
 		</extension>
-		<extension class-name="es.icarto.gvsig.extgex.WMSLoadCatastroExtension" description="LOAD_CATASTRO_WMS" active="true">
-			<menu text="Expropiaciones/WMS/Catastro" action-command="LoadCatastroExtension" position="30320"/>
+		
+		<extension class-name="es.icarto.gvsig.extgex.WMSLoadEstadoDimensionesExtension" description="LOAD_EstadoDimensiones_WMS" active="true">
+			<menu text="Expropiaciones/WMS/Planos Estado de Dimensiones" action-command="LoadEstadoDimensionesExtension" position="30310"/>
 		</extension>
+		
 		<extension class-name="es.icarto.gvsig.extgex.WMSLoadPNOALocalExtension" description="LOAD_PNOA_WMS" active="true">
-			<menu text="Expropiaciones/WMS/Ortofotos PNOA (Local)" action-command="LoadPNOAExtension" position="30310"/>
+			<menu text="Expropiaciones/WMS/Ortofotos PNOA (Local)" icon="images/wms.png" action-command="LoadPNOAExtension" position="30320"/>
 			<tool-bar name="Expropiaciones_Tools" position="75">
 				<action-tool icon="images/wms.png" action-command="LoadPNOAExtension" tooltip="Cargar WMS PNOA (Local)" position="5"/>
 			</tool-bar>
 		</extension>
+		
 		<extension class-name="es.icarto.gvsig.extgex.WMSLoadPNOAExtension" description="LOAD_PNOA_WMS" active="true">
-			<menu text="Expropiaciones/WMS/Ortofotos PNOA (Internet)" action-command="LoadPNOAExtension" position="30315"/>
+			<menu text="Expropiaciones/WMS/Ortofotos PNOA (Internet)" action-command="LoadPNOAExtension" position="30330"/>
 		</extension>
+		
+		<extension class-name="es.icarto.gvsig.extgex.WMSLoadCatastroExtension" description="LOAD_CATASTRO_WMS" active="true">
+			<menu text="Expropiaciones/WMS/Catastro" action-command="LoadCatastroExtension" position="30340"/>
+		</extension>
+		
 		<extension class-name="es.icarto.gvsig.extgex.WMSLoadPUSectoresExtension" description="LOAD_PUSectores_WMS" active="true">
-			<menu text="Expropiaciones/WMS/Planeamiento Urbanístico (Sectores)" action-command="LoadPUSectoresExtension" position="30330"/>
+			<menu text="Expropiaciones/WMS/Planeamiento Urbanístico (Sectores)" action-command="LoadPUSectoresExtension" position="30350"/>
 		</extension>
+		
 		<extension class-name="es.icarto.gvsig.extgex.WMSLoadPUClasesDeSueloExtension" description="LOAD_PUClasesDeSuelo_WMS" active="true">
-			<menu text="Expropiaciones/WMS/Planeamiento Urbanístico (Clases de Suelo)" action-command="LoadPUClasesDeSueloExtension" position="30340"/>
+			<menu text="Expropiaciones/WMS/Planeamiento Urbanístico (Clases de Suelo)" action-command="LoadPUClasesDeSueloExtension" position="30360"/>
 		</extension>
-		<extension class-name="es.icarto.gvsig.extgex.WMSLoadEstadoDimensionesExtension" description="LOAD_EstadoDimensiones_WMS" active="true">
-			<menu text="Expropiaciones/WMS/Planos Estado de Dimensiones" action-command="LoadEstadoDimensionesExtension" position="30350"/>
-		</extension>
+
 
 	</extensions>
 </plugin-config>
