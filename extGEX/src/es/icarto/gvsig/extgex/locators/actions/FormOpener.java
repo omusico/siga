@@ -10,7 +10,6 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgex.forms.FormExpropiations;
 import es.icarto.gvsig.extgex.preferences.DBNames;
-import es.icarto.gvsig.extgex.utils.AlphanumericTableLoader;
 import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
 
 public class FormOpener implements ActionListener {
@@ -25,8 +24,9 @@ public class FormOpener implements ActionListener {
     public void actionPerformed(ActionEvent arg0) {
 	TOCLayerManager toc = new TOCLayerManager();
 	FLyrVect layer = toc.getLayerByName(DBNames.LAYER_FINCAS);
-	if(AlphanumericTableLoader.loadTables() &&
-		(layer != null)) {
+	//	if(AlphanumericTableLoader.loadTables() &&
+	//		(layer != null)) {
+	if (layer != null) {
 	    FormExpropiations form = new FormExpropiations(layer, null);
 	    if(form.init()) {
 		form.setPosition(retriever.getPosition());

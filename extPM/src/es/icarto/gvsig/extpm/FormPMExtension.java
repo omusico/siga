@@ -15,7 +15,6 @@ import com.iver.cit.gvsig.listeners.EndGeometryListener;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.icarto.gvsig.extgex.preferences.DBNames;
-import es.icarto.gvsig.extgex.utils.AlphanumericTableLoader;
 import es.icarto.gvsig.extpm.forms.FormPM;
 import es.icarto.gvsig.extpm.preferences.Preferences;
 import es.icarto.gvsig.extpm.utils.managers.TOCLayerManager;
@@ -123,13 +122,13 @@ public class FormPMExtension extends Extension {
 		if (cadTool instanceof EIELPolylineCADTool) {
 		    insertedGeom = ((EIELPolylineCADTool) cadTool).getInsertedGeom();
 		}
-		if (AlphanumericTableLoader.loadTables()) {
-		    es.icarto.gvsig.extgex.forms.FormExpropiations dialog = new es.icarto.gvsig.extgex.forms.FormExpropiations((FLyrVect) layer, insertedGeom);
-		    if (dialog.init()) {
-			PluginServices.getMDIManager().addCentredWindow(dialog);
-			dialog.last();
-		    }
+		//		if (AlphanumericTableLoader.loadTables()) {
+		es.icarto.gvsig.extgex.forms.FormExpropiations dialog = new es.icarto.gvsig.extgex.forms.FormExpropiations((FLyrVect) layer, insertedGeom);
+		if (dialog.init()) {
+		    PluginServices.getMDIManager().addCentredWindow(dialog);
+		    dialog.last();
 		}
+		//		}
 	    }
 	}
     }
