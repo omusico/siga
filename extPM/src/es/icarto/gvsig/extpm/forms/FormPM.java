@@ -365,7 +365,9 @@ public class FormPM extends AbstractForm {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-	    setNumeroPMValue();
+	    if (!isFillingValues()) {
+		setNumeroPMValue();
+	    }
 	}
 
 	@Override
@@ -374,7 +376,9 @@ public class FormPM extends AbstractForm {
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-	    setNumeroPMValue();
+	    if (!isFillingValues()) {
+		setNumeroPMValue();
+	    }
 	}
 
 	@Override
