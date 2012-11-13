@@ -91,7 +91,7 @@ ActionListener {
     String parroquiaSelected = null;
 
     public QueriesPanel(boolean report) {
-	super(600, 500, true);
+	super(470, 390, true);
 	this.isReport = report;
 	if (isReport) {
 	    this.setTitle("Informes");
