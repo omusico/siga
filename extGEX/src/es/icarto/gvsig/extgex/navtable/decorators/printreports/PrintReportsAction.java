@@ -50,8 +50,8 @@ public class PrintReportsAction {
 	    JasperReport reversionsSubreport = (JasperReport) JRLoader
 		    .loadObjectFromFile(reportPath);
 
-	    PrintReportsDataSubreportReversions reversionsDataSource = new PrintReportsDataSubreportReversions(
-		    data.getIDFinca());
+	    //	    PrintReportsDataSubreportReversions reversionsDataSource = new PrintReportsDataSubreportReversions(
+	    //		    data.getIDFinca());
 
 	    Calendar calendar = Calendar.getInstance();
 	    String today = String.format("%02d/%02d/%d",
@@ -63,7 +63,7 @@ public class PrintReportsAction {
 	    parameters.put("REVERSIONS_SUBREPORT", reversionsSubreport);
 	    parameters.put("FECHA_CONSULTA_EXPEDIENTE", today);
 	    // subreport parameters
-	    parameters.put("REVERSIONS_DATASOURCE", reversionsDataSource);
+	    //parameters.put("REVERSIONS_DATASOURCE", reversionsDataSource);
 
 	    // Fill the report
 	    JasperPrint print = JasperFillManager.fillReport(
