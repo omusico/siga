@@ -1,3 +1,11 @@
+v. 1.0.6 - 15/11/2012
+=====================
+
+Modificada la generación de la ficha de expropiaciones para que
+no use las tablas alfanuméricas.
+
+* extGEX
+
 v. 1.0.5 - 14/11/2012
 =====================
 
