@@ -1,3 +1,15 @@
+v. 1.0.5 - 14/11/2012
+=====================
+
+Corrección de errores
+Cambio de todos los formularios para homogeneizarlos
+Ya no se usan las tablas alfanuméricas cargadas por detrás
+
+* extGEX
+* extPM
+* extGIA
+* extDBConnection
+
 v. 1.0.4 - 16/10/2012
 =====================
 
