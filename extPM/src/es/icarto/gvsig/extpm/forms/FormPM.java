@@ -156,7 +156,7 @@ public class FormPM extends AbstractForm {
 
     private void initWindow() {
 	viewInfo.setHeight(700);
-	viewInfo.setWidth(685);
+	viewInfo.setWidth(690);
 	viewInfo.setTitle(Preferences.PM_FORM_TITLE);
     }
 
