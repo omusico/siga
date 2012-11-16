@@ -13,19 +13,19 @@ public class AudasaPreferences {
     // Templates
     public static final String CONSULTAS =
 	    "Expediente consultas";
-    public static final String A3_CONSULTAS = 
+    public static final String A3_CONSULTAS =
 	    "Expediente consultas (A3)";
-    public static final String A3_CONSULTAS_LOCALIZADOR = 
+    public static final String A3_CONSULTAS_LOCALIZADOR =
 	    "Expediente consultas modificado (A3)";
-    public static final String A4_CONSULTAS = 
+    public static final String A4_CONSULTAS =
 	    "Expediente consultas (A4)";
-    public static final String A4_CONSULTAS_LOCALIZADOR = 
+    public static final String A4_CONSULTAS_LOCALIZADOR =
 	    "Expediente consultas modificado (A4)";
     public static final String DIMENSIONES =
 	    "Estado dimensiones";
-    public static final String A3_DIMENSIONES = 
+    public static final String A3_DIMENSIONES =
 	    "Estado dimensiones (A3)";
-    public static final String A3_DIMENSIONES_LOCALIZADOR = 
+    public static final String A3_DIMENSIONES_LOCALIZADOR =
 	    "Estado dimensiones modificado (A3)";
     public static final String POLICIA_MARGENES =
 	    "Policía de márgenes";
@@ -61,7 +61,7 @@ public class AudasaPreferences {
     public static final double VIEW_Y_POSITION = 1;
     public static final double VIEW_WIDTH_A4 = 27.2;
     public static final double VIEW_HEIGHT_A4 = 17.8;
-    public static final double VIEW_WIDTH_A3 = 39.5;
+    public static final double VIEW_WIDTH_A3 = 37.5;
     public static final double VIEW_HEIGHT_A3 = 26.5;
 
     public static final double OVERVIEW_X = 35.7;
@@ -75,44 +75,44 @@ public class AudasaPreferences {
 		.getResource("plantillas/").toString());
 	if(sourceButton.equals(A4_CONSULTAS_LOCALIZADOR)) {
 	    return new File(PluginServices
-			.getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
-			.getResource("plantillas/Informes_A4_Expedientes_Consultas_Modificado.gvt").getFile());
+		    .getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
+		    .getResource("plantillas/Informes_A4_Expedientes_Consultas_Modificado.gvt").getFile());
 	} else if(sourceButton.equals(A4_CONSULTAS)){
 	    return new File(PluginServices
-			.getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
-			.getResource("plantillas/Informes_A4_Expedientes_Consultas.gvt").getFile());
+		    .getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
+		    .getResource("plantillas/Informes_A4_Expedientes_Consultas.gvt").getFile());
 	} else if(sourceButton.equals(A3_CONSULTAS_LOCALIZADOR)) {
 	    return new File(PluginServices
-			.getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
-			.getResource("plantillas/Informes_A3_Expedientes_Consultas_Modificado.gvt").getFile());
+		    .getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
+		    .getResource("plantillas/Informes_A3_Expedientes_Consultas_Modificado.gvt").getFile());
 	} else if(sourceButton.equals(A3_CONSULTAS)) {
 	    return new File(PluginServices
-			.getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
-			.getResource("plantillas/Informes_A3_Expedientes_Consultas.gvt").getFile());
+		    .getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
+		    .getResource("plantillas/Informes_A3_Expedientes_Consultas.gvt").getFile());
 	} else if(sourceButton.equals(A3_DIMENSIONES_LOCALIZADOR)) {
 	    return new File(PluginServices
-			.getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
-			.getResource("plantillas/Informes_A3_Estado_Dimensiones_Modificado.gvt").getFile());
+		    .getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
+		    .getResource("plantillas/Informes_A3_Estado_Dimensiones_Modificado.gvt").getFile());
 	} else if(sourceButton.endsWith(A3_DIMENSIONES)) {
 	    return new File(PluginServices
-			.getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
-			.getResource("plantillas/Informes_A3_Estado_Dimensiones.gvt").getFile());
+		    .getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
+		    .getResource("plantillas/Informes_A3_Estado_Dimensiones.gvt").getFile());
 	} else if(sourceButton.endsWith(A3_POLICIA_MARGENES)) {
 	    return new File(PluginServices
-			.getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
-			.getResource("plantillas/Informes_A3_Policia_margenes.gvt").getFile());
+		    .getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
+		    .getResource("plantillas/Informes_A3_Policia_margenes.gvt").getFile());
 	} else if(sourceButton.endsWith(A3_POLICIA_MARGENES_LEYENDA)) {
 	    return new File(PluginServices
-			.getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
-			.getResource("plantillas/Informes_A3_Policia_margenes_leyenda.gvt").getFile());
+		    .getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
+		    .getResource("plantillas/Informes_A3_Policia_margenes_leyenda.gvt").getFile());
 	} else if(sourceButton.endsWith(A4_POLICIA_MARGENES)) {
 	    return new File(PluginServices
-			.getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
-			.getResource("plantillas/Informes_A4_Policia_margenes.gvt").getFile());
+		    .getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
+		    .getResource("plantillas/Informes_A4_Policia_margenes.gvt").getFile());
 	} else {
 	    return new File(PluginServices
-			.getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
-			.getResource("plantillas/Informes_A4_Policia_margenes_leyenda.gvt").getFile());
+		    .getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
+		    .getResource("plantillas/Informes_A4_Policia_margenes_leyenda.gvt").getFile());
 	}
     }
 
