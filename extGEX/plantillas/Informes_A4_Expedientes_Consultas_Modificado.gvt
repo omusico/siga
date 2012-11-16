@@ -97,52 +97,6 @@
     <xml-tag>
         <property key="className" value="FFrameGraphics"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="8.735783718104493"/>
-        <property key="y" value="18.840279465370635"/>
-        <property key="w" value="0.5000000000000018"/>
-        <property key="h" value="0.5000000000000071"/>
-        <property key="m_Selected" value="0"/>
-        <property key="tag"/>
-        <property key="m_rotation" value="0.0"/>
-        <property key="level" value="385"/>
-        <property key="num" value="69"/>
-        <property key="m_type" value="24"/>
-        <xml-tag>
-            <property key="className" value="com.iver.cit.gvsig.fmap.core.symbols.SimpleFillSymbol"/>
-            <property key="hasFill" value="true"/>
-            <property key="desc"/>
-            <property key="isShapeVisible" value="true"/>
-            <property key="referenceSystem" value="0"/>
-            <property key="unit" value="-1"/>
-            <property key="hasOutline" value="true"/>
-            <xml-tag>
-                <property key="className" value="com.iver.cit.gvsig.fmap.core.symbols.SimpleLineSymbol"/>
-                <property key="isShapeVisible" value="true"/>
-                <property key="desc"/>
-                <property key="unit" value="-1"/>
-                <property key="referenceSystem" value="0"/>
-                <property key="color" value="128,128,128,255"/>
-                <xml-tag>
-                    <property key="className" value="com.iver.cit.gvsig.fmap.core.styles.SimpleLineStyle"/>
-                    <property key="desc"/>
-                    <property key="lineWidth" value="0.5"/>
-                    <property key="dashPhase" value="0.0"/>
-                    <property key="endCap" value="0"/>
-                    <property key="lineJoin" value="2"/>
-                    <property key="miterLimit" value="10.0"/>
-                    <property key="offset" value="0.0"/>
-                    <property key="unit" value="0"/>
-                </xml-tag>
-            </xml-tag>
-        </xml-tag>
-        <xml-tag>
-            <property key="points" value="8.985783718104495 ,19.090279465370642 ,8.985783718104495 ,19.090279465370642"/>
-            <property key="className" value="com.iver.cit.gvsig.fmap.core.adapter.RectangleAdapter"/>
-        </xml-tag>
-    </xml-tag>
-    <xml-tag>
-        <property key="className" value="FFrameGraphics"/>
-        <property key="m_name" value="FFrame"/>
         <property key="x" value="1.5"/>
         <property key="y" value="18.8"/>
         <property key="w" value="27.2"/>
@@ -183,7 +137,7 @@
             </xml-tag>
         </xml-tag>
         <xml-tag>
-            <property key="points" value="28.699999999999992 ,20.000000000000004 ,1.5 ,18.8"/>
+            <property key="points" value="28.7 ,20.0 ,1.5 ,18.8"/>
             <property key="className" value="com.iver.cit.gvsig.fmap.core.adapter.RectangleAdapter"/>
         </xml-tag>
     </xml-tag>
@@ -277,7 +231,7 @@
             </xml-tag>
         </xml-tag>
         <xml-tag>
-            <property key="points" value="16.400000000000006 ,19.999999999999996 ,12.4 ,18.8"/>
+            <property key="points" value="16.4 ,20.0 ,12.4 ,18.8"/>
             <property key="className" value="com.iver.cit.gvsig.fmap.core.adapter.RectangleAdapter"/>
         </xml-tag>
     </xml-tag>
@@ -324,7 +278,7 @@
             </xml-tag>
         </xml-tag>
         <xml-tag>
-            <property key="points" value="16.4 ,19.999999999999996 ,14.6 ,19.4"/>
+            <property key="points" value="16.4 ,20.0 ,14.6 ,19.4"/>
             <property key="className" value="com.iver.cit.gvsig.fmap.core.adapter.RectangleAdapter"/>
         </xml-tag>
     </xml-tag>
@@ -371,7 +325,7 @@
             </xml-tag>
         </xml-tag>
         <xml-tag>
-            <property key="points" value="21.800000000000008 ,20.0 ,19.0 ,18.8"/>
+            <property key="points" value="21.8 ,20.0 ,19.0 ,18.8"/>
             <property key="className" value="com.iver.cit.gvsig.fmap.core.adapter.RectangleAdapter"/>
         </xml-tag>
     </xml-tag>
@@ -418,7 +372,7 @@
             </xml-tag>
         </xml-tag>
         <xml-tag>
-            <property key="points" value="28.7 ,19.400000000000006 ,27.2 ,18.8"/>
+            <property key="points" value="28.7 ,19.4 ,27.2 ,18.8"/>
             <property key="className" value="com.iver.cit.gvsig.fmap.core.adapter.RectangleAdapter"/>
         </xml-tag>
     </xml-tag>
@@ -829,9 +783,9 @@
             <property key="className" value="FFramePicture"/>
             <property key="m_name" value="./Audasa.JPG"/>
             <property key="x" value="8.9"/>
-            <property key="y" value="18.880000000000003"/>
-            <property key="w" value="0.9400000000000004"/>
-            <property key="h" value="0.9999999999999964"/>
+            <property key="y" value="18.88"/>
+            <property key="w" value="0.94"/>
+            <property key="h" value="1.0"/>
             <property key="m_Selected" value="9"/>
             <property key="tag"/>
             <property key="m_rotation" value="0.0"/>
@@ -1003,7 +957,7 @@
             </xml-tag>
         </xml-tag>
         <xml-tag>
-            <property key="points" value="28.700000000000003 ,18.799999999999997 ,1.5 ,1.0"/>
+            <property key="points" value="28.7 ,18.8 ,1.5 ,1.0"/>
             <property key="className" value="com.iver.cit.gvsig.fmap.core.adapter.RectangleAdapter"/>
         </xml-tag>
     </xml-tag>
@@ -1055,7 +1009,7 @@
             <property key="x" value="12.4"/>
             <property key="y" value="18.8"/>
             <property key="w" value="2.2"/>
-            <property key="h" value="0.6000000000000001"/>
+            <property key="h" value="0.6"/>
             <property key="m_Selected" value="9"/>
             <property key="tag"/>
             <property key="m_rotation" value="0.0"/>
@@ -1092,7 +1046,7 @@
                 </xml-tag>
             </xml-tag>
             <xml-tag>
-                <property key="points" value="14.599999999999998 ,19.4 ,12.4 ,18.8"/>
+                <property key="points" value="14.6 ,19.4 ,12.4 ,18.8"/>
                 <property key="className" value="com.iver.cit.gvsig.fmap.core.adapter.RectangleAdapter"/>
             </xml-tag>
         </xml-tag>
@@ -1140,7 +1094,7 @@
             </xml-tag>
         </xml-tag>
         <xml-tag>
-            <property key="points" value="28.7 ,20.000000000000004 ,27.2 ,19.4"/>
+            <property key="points" value="28.7 ,20.0 ,27.2 ,19.4"/>
             <property key="className" value="com.iver.cit.gvsig.fmap.core.adapter.RectangleAdapter"/>
         </xml-tag>
     </xml-tag>

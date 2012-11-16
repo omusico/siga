@@ -37,101 +37,9 @@
     <xml-tag>
         <property key="className" value="FFrameGraphics"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="40.745382746051035"/>
-        <property key="y" value="28.944775212636696"/>
-        <property key="w" value="0.5"/>
-        <property key="h" value="0.5"/>
-        <property key="m_Selected" value="0"/>
-        <property key="tag"/>
-        <property key="m_rotation" value="0.0"/>
-        <property key="level" value="251"/>
-        <property key="num" value="14"/>
-        <property key="m_type" value="24"/>
-        <xml-tag>
-            <property key="className" value="com.iver.cit.gvsig.fmap.core.symbols.SimpleFillSymbol"/>
-            <property key="hasFill" value="true"/>
-            <property key="desc"/>
-            <property key="isShapeVisible" value="true"/>
-            <property key="referenceSystem" value="0"/>
-            <property key="unit" value="-1"/>
-            <property key="hasOutline" value="true"/>
-            <xml-tag>
-                <property key="className" value="com.iver.cit.gvsig.fmap.core.symbols.SimpleLineSymbol"/>
-                <property key="isShapeVisible" value="true"/>
-                <property key="desc"/>
-                <property key="unit" value="-1"/>
-                <property key="referenceSystem" value="0"/>
-                <property key="color" value="128,128,128,255"/>
-                <xml-tag>
-                    <property key="className" value="com.iver.cit.gvsig.fmap.core.styles.SimpleLineStyle"/>
-                    <property key="desc"/>
-                    <property key="lineWidth" value="0.5"/>
-                    <property key="dashPhase" value="0.0"/>
-                    <property key="endCap" value="0"/>
-                    <property key="lineJoin" value="2"/>
-                    <property key="miterLimit" value="10.0"/>
-                    <property key="offset" value="0.0"/>
-                    <property key="unit" value="0"/>
-                </xml-tag>
-            </xml-tag>
-        </xml-tag>
-        <xml-tag>
-            <property key="points" value="40.995382746051035 ,29.194775212636696 ,40.995382746051035 ,29.194775212636696"/>
-            <property key="className" value="com.iver.cit.gvsig.fmap.core.adapter.RectangleAdapter"/>
-        </xml-tag>
-    </xml-tag>
-    <xml-tag>
-        <property key="className" value="FFrameGraphics"/>
-        <property key="m_name" value="FFrame"/>
-        <property key="x" value="8.735783718104495"/>
-        <property key="y" value="27.501275820170108"/>
-        <property key="w" value="0.5"/>
-        <property key="h" value="0.5"/>
-        <property key="m_Selected" value="0"/>
-        <property key="tag"/>
-        <property key="m_rotation" value="0.0"/>
-        <property key="level" value="252"/>
-        <property key="num" value="15"/>
-        <property key="m_type" value="24"/>
-        <xml-tag>
-            <property key="className" value="com.iver.cit.gvsig.fmap.core.symbols.SimpleFillSymbol"/>
-            <property key="hasFill" value="true"/>
-            <property key="desc"/>
-            <property key="isShapeVisible" value="true"/>
-            <property key="referenceSystem" value="0"/>
-            <property key="unit" value="-1"/>
-            <property key="hasOutline" value="true"/>
-            <xml-tag>
-                <property key="className" value="com.iver.cit.gvsig.fmap.core.symbols.SimpleLineSymbol"/>
-                <property key="isShapeVisible" value="true"/>
-                <property key="desc"/>
-                <property key="unit" value="-1"/>
-                <property key="referenceSystem" value="0"/>
-                <property key="color" value="128,128,128,255"/>
-                <xml-tag>
-                    <property key="className" value="com.iver.cit.gvsig.fmap.core.styles.SimpleLineStyle"/>
-                    <property key="desc"/>
-                    <property key="lineWidth" value="0.5"/>
-                    <property key="dashPhase" value="0.0"/>
-                    <property key="endCap" value="0"/>
-                    <property key="lineJoin" value="2"/>
-                    <property key="miterLimit" value="10.0"/>
-                    <property key="offset" value="0.0"/>
-                    <property key="unit" value="0"/>
-                </xml-tag>
-            </xml-tag>
-        </xml-tag>
-        <xml-tag>
-            <property key="points" value="8.985783718104495 ,27.751275820170108 ,8.985783718104495 ,27.751275820170108"/>
-            <property key="className" value="com.iver.cit.gvsig.fmap.core.adapter.RectangleAdapter"/>
-        </xml-tag>
-    </xml-tag>
-    <xml-tag>
-        <property key="className" value="FFrameGraphics"/>
-        <property key="m_name" value="FFrame"/>
-        <property key="x" value="1.5"/>
+        <property key="x" value="2.5"/>
         <property key="y" value="27.5"/>
-        <property key="w" value="39.5"/>
+        <property key="w" value="37.5"/>
         <property key="h" value="1.2"/>
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
@@ -169,14 +77,14 @@
             </xml-tag>
         </xml-tag>
         <xml-tag>
-            <property key="points" value="40.99999999999999 ,28.700000000000003 ,1.5 ,27.5"/>
+            <property key="points" value="40.0 ,28.7 ,2.5 ,27.5"/>
             <property key="className" value="com.iver.cit.gvsig.fmap.core.adapter.RectangleAdapter"/>
         </xml-tag>
     </xml-tag>
     <xml-tag>
         <property key="className" value="FFrameGraphics"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="7.5"/>
+        <property key="x" value="6.5"/>
         <property key="y" value="27.5"/>
         <property key="w" value="5.0"/>
         <property key="h" value="1.2"/>
@@ -216,14 +124,14 @@
             </xml-tag>
         </xml-tag>
         <xml-tag>
-            <property key="points" value="12.5 ,28.7 ,7.5 ,27.5"/>
+            <property key="points" value="11.5 ,28.7 ,6.5 ,27.5"/>
             <property key="className" value="com.iver.cit.gvsig.fmap.core.adapter.RectangleAdapter"/>
         </xml-tag>
     </xml-tag>
     <xml-tag>
         <property key="className" value="FFrameGraphics"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="15.0"/>
+        <property key="x" value="14.0"/>
         <property key="y" value="27.5"/>
         <property key="w" value="2.5"/>
         <property key="h" value="1.2"/>
@@ -263,14 +171,14 @@
             </xml-tag>
         </xml-tag>
         <xml-tag>
-            <property key="points" value="17.5 ,28.699999999999996 ,15.0 ,27.5"/>
+            <property key="points" value="16.5 ,28.7 ,14.0 ,27.5"/>
             <property key="className" value="com.iver.cit.gvsig.fmap.core.adapter.RectangleAdapter"/>
         </xml-tag>
     </xml-tag>
     <xml-tag>
         <property key="className" value="FFrameGraphics"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="20.0"/>
+        <property key="x" value="19.0"/>
         <property key="y" value="27.5"/>
         <property key="w" value="2.5"/>
         <property key="h" value="1.2"/>
@@ -310,14 +218,14 @@
             </xml-tag>
         </xml-tag>
         <xml-tag>
-            <property key="points" value="22.5 ,28.7 ,20.0 ,27.5"/>
+            <property key="points" value="21.5 ,28.7 ,19.0 ,27.5"/>
             <property key="className" value="com.iver.cit.gvsig.fmap.core.adapter.RectangleAdapter"/>
         </xml-tag>
     </xml-tag>
     <xml-tag>
         <property key="className" value="FFrameGraphics"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="20.0"/>
+        <property key="x" value="19.0"/>
         <property key="y" value="27.5"/>
         <property key="w" value="2.5"/>
         <property key="h" value="0.6"/>
@@ -357,14 +265,14 @@
             </xml-tag>
         </xml-tag>
         <xml-tag>
-            <property key="points" value="22.5 ,28.1 ,20.0 ,27.5"/>
+            <property key="points" value="21.5 ,28.1 ,19.0 ,27.5"/>
             <property key="className" value="com.iver.cit.gvsig.fmap.core.adapter.RectangleAdapter"/>
         </xml-tag>
     </xml-tag>
     <xml-tag>
         <property key="className" value="FFrameGraphics"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="26.0"/>
+        <property key="x" value="25.0"/>
         <property key="y" value="27.5"/>
         <property key="w" value="4.5"/>
         <property key="h" value="1.2"/>
@@ -404,14 +312,14 @@
             </xml-tag>
         </xml-tag>
         <xml-tag>
-            <property key="points" value="30.500000000000007 ,28.7 ,26.0 ,27.5"/>
+            <property key="points" value="29.5 ,28.7 ,25.0 ,27.5"/>
             <property key="className" value="com.iver.cit.gvsig.fmap.core.adapter.RectangleAdapter"/>
         </xml-tag>
     </xml-tag>
     <xml-tag>
         <property key="className" value="FFrameGraphics"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="30.5"/>
+        <property key="x" value="29.5"/>
         <property key="y" value="28.1"/>
         <property key="w" value="4.0"/>
         <property key="h" value="0.6"/>
@@ -451,14 +359,14 @@
             </xml-tag>
         </xml-tag>
         <xml-tag>
-            <property key="points" value="34.499999999999986 ,28.70000000000001 ,30.5 ,28.1"/>
+            <property key="points" value="33.5 ,28.7 ,29.5 ,28.1"/>
             <property key="className" value="com.iver.cit.gvsig.fmap.core.adapter.RectangleAdapter"/>
         </xml-tag>
     </xml-tag>
     <xml-tag>
         <property key="className" value="FFrameGraphics"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="34.5"/>
+        <property key="x" value="33.5"/>
         <property key="y" value="27.5"/>
         <property key="w" value="5.0"/>
         <property key="h" value="1.2"/>
@@ -498,14 +406,14 @@
             </xml-tag>
         </xml-tag>
         <xml-tag>
-            <property key="points" value="39.50000000000001 ,28.7 ,34.5 ,27.5"/>
+            <property key="points" value="38.5 ,28.7 ,33.5 ,27.5"/>
             <property key="className" value="com.iver.cit.gvsig.fmap.core.adapter.RectangleAdapter"/>
         </xml-tag>
     </xml-tag>
     <xml-tag>
         <property key="className" value="FFrameGraphics"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="39.5"/>
+        <property key="x" value="38.5"/>
         <property key="y" value="27.5"/>
         <property key="w" value="1.5"/>
         <property key="h" value="0.6"/>
@@ -545,14 +453,14 @@
             </xml-tag>
         </xml-tag>
         <xml-tag>
-            <property key="points" value="41.0 ,28.10000000000001 ,39.5 ,27.5"/>
+            <property key="points" value="40.0 ,28.1 ,38.5 ,27.5"/>
             <property key="className" value="com.iver.cit.gvsig.fmap.core.adapter.RectangleAdapter"/>
         </xml-tag>
     </xml-tag>
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="7.9"/>
+        <property key="x" value="6.9"/>
         <property key="y" value="28.1"/>
         <property key="w" value="3.2"/>
         <property key="h" value="0.5"/>
@@ -583,10 +491,10 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="12.7"/>
-        <property key="y" value="27.580000000000002"/>
-        <property key="w" value="2.099999999999998"/>
-        <property key="h" value="0.399999999999995"/>
+        <property key="x" value="11.7"/>
+        <property key="y" value="27.58"/>
+        <property key="w" value="2.1"/>
+        <property key="h" value="0.4"/>
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
@@ -613,10 +521,10 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="15.2"/>
-        <property key="y" value="27.580000000000002"/>
-        <property key="w" value="2.1000000000000014"/>
-        <property key="h" value="0.19999999999999574"/>
+        <property key="x" value="14.2"/>
+        <property key="y" value="27.58"/>
+        <property key="w" value="2.1"/>
+        <property key="h" value="0.2"/>
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
@@ -643,10 +551,10 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="20.2"/>
+        <property key="x" value="19.2"/>
         <property key="y" value="27.58"/>
-        <property key="w" value="2.099999999999998"/>
-        <property key="h" value="0.1999999999999993"/>
+        <property key="w" value="2.1"/>
+        <property key="h" value="0.2"/>
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
@@ -673,10 +581,10 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="22.7"/>
+        <property key="x" value="21.7"/>
         <property key="y" value="27.58"/>
-        <property key="w" value="2.100000000000005"/>
-        <property key="h" value="0.19999999999999574"/>
+        <property key="w" value="2.1"/>
+        <property key="h" value="0.2"/>
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
@@ -703,10 +611,10 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="20.2"/>
-        <property key="y" value="28.180000000000003"/>
-        <property key="w" value="2.099999999999998"/>
-        <property key="h" value="0.1999999999999993"/>
+        <property key="x" value="19.2"/>
+        <property key="y" value="28.18"/>
+        <property key="w" value="2.1"/>
+        <property key="h" value="0.2"/>
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
@@ -733,10 +641,10 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="26.2"/>
-        <property key="y" value="27.580000000000002"/>
-        <property key="w" value="2.1000000000000014"/>
-        <property key="h" value="0.19999999999999574"/>
+        <property key="x" value="25.2"/>
+        <property key="y" value="27.58"/>
+        <property key="w" value="2.1"/>
+        <property key="h" value="0.2"/>
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
@@ -763,10 +671,10 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="30.70000000000001"/>
-        <property key="y" value="27.580000000000002"/>
-        <property key="w" value="2.099999999999987"/>
-        <property key="h" value="0.19999999999999574"/>
+        <property key="x" value="29.7"/>
+        <property key="y" value="27.58"/>
+        <property key="w" value="2.1"/>
+        <property key="h" value="0.2"/>
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
@@ -793,10 +701,10 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="30.700000000000006"/>
+        <property key="x" value="29.7"/>
         <property key="y" value="28.18"/>
-        <property key="w" value="2.0999999999999908"/>
-        <property key="h" value="0.20000000000000284"/>
+        <property key="w" value="2.1"/>
+        <property key="h" value="0.2"/>
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
@@ -823,10 +731,10 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="34.7"/>
-        <property key="y" value="27.580000000000002"/>
-        <property key="w" value="2.1000000000000085"/>
-        <property key="h" value="0.19999999999999574"/>
+        <property key="x" value="33.7"/>
+        <property key="y" value="27.58"/>
+        <property key="w" value="2.1"/>
+        <property key="h" value="0.2"/>
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
@@ -853,10 +761,10 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="39.7"/>
+        <property key="x" value="38.7"/>
         <property key="y" value="27.58"/>
-        <property key="w" value="1.2000000000000028"/>
-        <property key="h" value="0.1999999999999993"/>
+        <property key="w" value="1.2"/>
+        <property key="h" value="0.2"/>
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
@@ -883,7 +791,7 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="39.7"/>
+        <property key="x" value="38.7"/>
         <property key="y" value="28.28"/>
         <property key="w" value="0.6"/>
         <property key="h" value="0.2"/>
@@ -913,7 +821,7 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="40.3"/>
+        <property key="x" value="39.3"/>
         <property key="y" value="28.28"/>
         <property key="w" value="0.6"/>
         <property key="h" value="0.2"/>
@@ -943,10 +851,10 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="7.7"/>
+        <property key="x" value="6.7"/>
         <property key="y" value="27.58"/>
-        <property key="w" value="2.1000000000000005"/>
-        <property key="h" value="0.19999999999999574"/>
+        <property key="w" value="2.1"/>
+        <property key="h" value="0.2"/>
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
@@ -973,7 +881,7 @@
     <xml-tag>
         <property key="className" value="FFrameGroup"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="11.4"/>
+        <property key="x" value="10.4"/>
         <property key="y" value="27.58"/>
         <property key="w" value="0.94"/>
         <property key="h" value="1.0"/>
@@ -985,10 +893,10 @@
         <xml-tag>
             <property key="className" value="FFramePicture"/>
             <property key="m_name" value="./Audasa.JPG"/>
-            <property key="x" value="11.4"/>
-            <property key="y" value="27.580000000000002"/>
-            <property key="w" value="0.9400000000000004"/>
-            <property key="h" value="0.9999999999999964"/>
+            <property key="x" value="10.4"/>
+            <property key="y" value="27.58"/>
+            <property key="w" value="0.94"/>
+            <property key="h" value="1.0"/>
             <property key="m_Selected" value="9"/>
             <property key="tag"/>
             <property key="m_rotation" value="0.0"/>
@@ -1002,7 +910,7 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="24.45"/>
+        <property key="x" value="23.45"/>
         <property key="y" value="27.58"/>
         <property key="w" value="1.34"/>
         <property key="h" value="0.2"/>
@@ -1032,7 +940,7 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="34.7"/>
+        <property key="x" value="33.7"/>
         <property key="y" value="28.18"/>
         <property key="w" value="2.1"/>
         <property key="h" value="0.2"/>
@@ -1062,7 +970,7 @@
     <xml-tag>
         <property key="className" value="FFrameScaleBar"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="23.63"/>
+        <property key="x" value="22.63"/>
         <property key="y" value="28.15"/>
         <property key="w" value="2.27"/>
         <property key="h" value="0.41"/>
@@ -1098,7 +1006,7 @@
     <xml-tag>
         <property key="className" value="FFrameScaleBar"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="22.64"/>
+        <property key="x" value="21.64"/>
         <property key="y" value="28.15"/>
         <property key="w" value="0.73"/>
         <property key="h" value="0.41"/>
@@ -1150,10 +1058,10 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="17.7"/>
-        <property key="y" value="27.580000000000002"/>
-        <property key="w" value="2.1000000000000014"/>
-        <property key="h" value="0.19999999999999574"/>
+        <property key="x" value="16.7"/>
+        <property key="y" value="27.58"/>
+        <property key="w" value="2.1"/>
+        <property key="h" value="0.2"/>
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
@@ -1180,7 +1088,7 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="12.9"/>
+        <property key="x" value="11.9"/>
         <property key="y" value="28.1"/>
         <property key="w" value="2.0"/>
         <property key="h" value="0.38"/>
@@ -1210,7 +1118,7 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="15.4"/>
+        <property key="x" value="14.4"/>
         <property key="y" value="28.1"/>
         <property key="w" value="2.0"/>
         <property key="h" value="0.38"/>
@@ -1240,7 +1148,7 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="17.9"/>
+        <property key="x" value="16.9"/>
         <property key="y" value="28.1"/>
         <property key="w" value="2.0"/>
         <property key="h" value="0.38"/>
@@ -1270,7 +1178,7 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="20.4"/>
+        <property key="x" value="19.4"/>
         <property key="y" value="27.7"/>
         <property key="w" value="2.0"/>
         <property key="h" value="0.38"/>
@@ -1300,7 +1208,7 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="20.4"/>
+        <property key="x" value="19.4"/>
         <property key="y" value="28.3"/>
         <property key="w" value="2.0"/>
         <property key="h" value="0.38"/>
@@ -1330,10 +1238,10 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="26.4"/>
+        <property key="x" value="25.4"/>
         <property key="y" value="28.1"/>
-        <property key="w" value="3.8999999999999986"/>
-        <property key="h" value="0.379999999999999"/>
+        <property key="w" value="3.9"/>
+        <property key="h" value="0.38"/>
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
@@ -1360,7 +1268,7 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="30.9"/>
+        <property key="x" value="29.9"/>
         <property key="y" value="27.7"/>
         <property key="w" value="3.4"/>
         <property key="h" value="0.38"/>
@@ -1390,7 +1298,7 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="30.9"/>
+        <property key="x" value="29.9"/>
         <property key="y" value="28.3"/>
         <property key="w" value="3.4"/>
         <property key="h" value="0.38"/>
@@ -1420,7 +1328,7 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="34.9"/>
+        <property key="x" value="33.9"/>
         <property key="y" value="27.7"/>
         <property key="w" value="4.4"/>
         <property key="h" value="0.38"/>
@@ -1450,7 +1358,7 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="34.9"/>
+        <property key="x" value="33.9"/>
         <property key="y" value="28.3"/>
         <property key="w" value="4.4"/>
         <property key="h" value="0.38"/>
@@ -1480,10 +1388,10 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="39.9"/>
-        <property key="y" value="27.700000000000003"/>
-        <property key="w" value="1.000000000000007"/>
-        <property key="h" value="0.37999999999999545"/>
+        <property key="x" value="38.9"/>
+        <property key="y" value="27.7"/>
+        <property key="w" value="1."/>
+        <property key="h" value="0.38"/>
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
@@ -1510,9 +1418,9 @@
     <xml-tag>
         <property key="className" value="FFrameGraphics"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="1.5"/>
+        <property key="x" value="2.5"/>
         <property key="y" value="1.0"/>
-        <property key="w" value="39.5"/>
+        <property key="w" value="37.5"/>
         <property key="h" value="26.5"/>
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
@@ -1550,7 +1458,7 @@
             </xml-tag>
         </xml-tag>
         <xml-tag>
-            <property key="points" value="41.0 ,27.5 ,1.5 ,1.0"/>
+            <property key="points" value="40.0 ,27.5 ,2.5 ,1.0"/>
             <property key="className" value="com.iver.cit.gvsig.fmap.core.adapter.RectangleAdapter"/>
         </xml-tag>
     </xml-tag>
