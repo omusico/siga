@@ -40,7 +40,6 @@ import com.iver.cit.gvsig.fmap.drivers.FieldDescription;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.fmap.layers.FLayers;
 import com.iver.cit.gvsig.project.Project;
-import com.iver.cit.gvsig.project.documents.ProjectDocument;
 import com.iver.cit.gvsig.project.documents.exceptions.OpenException;
 import com.iver.cit.gvsig.project.documents.exceptions.SaveException;
 import com.iver.cit.gvsig.project.documents.layout.Attributes;
@@ -95,7 +94,7 @@ public class MapSheetsLayoutTemplate extends Layout implements IMapSheetsIdentif
 
 	try {
 	    IFFrame txtf =
-		FFrameTextFactory.createFrameFromName(FFrameTextFactory.registerName);
+		    FFrameTextFactory.createFrameFromName(FFrameTextFactory.registerName);
 	    textFrameFactory = txtf.getFrameLayoutFactory();
 	} catch (Throwable ex) {
 	    textFrameFactory = new FFrameTextFactory();
@@ -103,7 +102,7 @@ public class MapSheetsLayoutTemplate extends Layout implements IMapSheetsIdentif
 
 	try {
 	    IFFrame viewf =
-		FFrameTextFactory.createFrameFromName(FFrameViewFactory.registerName);
+		    FFrameTextFactory.createFrameFromName(FFrameViewFactory.registerName);
 	    viewFrameFactory = viewf.getFrameLayoutFactory();
 	} catch (Throwable th) {
 	    viewFrameFactory = new FFrameViewFactory();
@@ -134,7 +133,7 @@ public class MapSheetsLayoutTemplate extends Layout implements IMapSheetsIdentif
 
 	// set attributes
 	Attributes param_atts =
-	    size_dpi_layout.getLayoutContext().getAtributes();
+		size_dpi_layout.getLayoutContext().getAtributes();
 	Attributes atts = getLayoutContext().getAtributes();
 	atts.getAttributes().addAll(param_atts.getAttributes());
 
@@ -457,8 +456,8 @@ public class MapSheetsLayoutTemplate extends Layout implements IMapSheetsIdentif
 		if(audasaTemplate.hasKey(((FFrameText) framesFromTemplate[i]).getTitle())) {
 		    ((FFrameText) framesFromTemplate[i]).addText(
 			    audasaTemplate.getProperty(((FFrameText) framesFromTemplate[i]).getTitle()));
-		} else {
-			((FFrameText) framesFromTemplate[i]).addText("");
+		    //		} else {
+		    //		    ((FFrameText) framesFromTemplate[i]).addText(" ");
 		}
 	    } else if (framesFromTemplate[i] instanceof FFrameScaleBar) {
 		((FFrameScaleBar) framesFromTemplate[i]).setFFrameDependence(viewFrame);
@@ -641,15 +640,15 @@ public class MapSheetsLayoutTemplate extends Layout implements IMapSheetsIdentif
 
 	IFFrame[] frames = getLayoutContext().getAllFFrames();
 	for (IFFrame frame: frames) {
-		if (frame instanceof FFrameScaleBar) {
-			((FFrameScaleBar) frame).initDependence(frames);
-		}
+	    if (frame instanceof FFrameScaleBar) {
+		((FFrameScaleBar) frame).initDependence(frames);
+	    }
 	}
 
 
 	FLayer lyr = viewFrame.getView().getMapContext().getLayers().getLayer(gridName);
 	if (lyr instanceof MapSheetGrid) {
-		setViewGrid(viewFrame.getView(), (MapSheetGrid) lyr);
+	    setViewGrid(viewFrame.getView(), (MapSheetGrid) lyr);
 	}
 	viewFrame.setView(MapSheetsUtils.cloneProjectView(viewFrame.getView()));
 
@@ -740,7 +739,7 @@ public class MapSheetsLayoutTemplate extends Layout implements IMapSheetsIdentif
 	    PrintService[] aux_m_cachePrintServices = null;
 	    // Actualizar attributes
 	    PrintRequestAttributeSet aux_att =
-		getLayoutContext().getAtributes().toPrintAttributes();
+		    getLayoutContext().getAtributes().toPrintAttributes();
 	    PrintService aux_m_cachePrintService = null;
 
 
@@ -757,7 +756,7 @@ public class MapSheetsLayoutTemplate extends Layout implements IMapSheetsIdentif
 	    // So we must use the ServiceUI class to create a print dialog
 	    // returns the default print service.
 	    aux_m_cachePrintServices =
-		PrintServiceLookup.lookupPrintServices(flavor, null);
+		    PrintServiceLookup.lookupPrintServices(flavor, null);
 
 	    PrintService defaultService = null;
 
@@ -800,8 +799,8 @@ public class MapSheetsLayoutTemplate extends Layout implements IMapSheetsIdentif
 		    if (MapSheetsPrintExtension.PRINTER_SETTINGS_PRINTER_NAME == null &&
 			    MapSheetsPrintExtension.PRINTER_SETTINGS_RESTORE_FILE == null) {
 			String fname =
-			    System.getProperty("user.home") + File.separator +
-			    "pri-sett-" + System.currentTimeMillis() + ".txt";
+				System.getProperty("user.home") + File.separator +
+				"pri-sett-" + System.currentTimeMillis() + ".txt";
 
 			boolean saved = MapSheetsUtils.printerSettingsSaveRestore(
 				printer_nam, fname, true);
