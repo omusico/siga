@@ -1,5 +1,8 @@
 package es.icarto.gvsig.extgex.navtable.decorators.printreports;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import net.sf.jasperreports.engine.JRDataSource;
@@ -14,6 +17,7 @@ import com.iver.cit.gvsig.project.documents.table.gui.Table;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
 import es.icarto.gvsig.extgex.utils.managers.TableLayerManager;
+import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class PrintReportsDataSubreportReversions implements JRDataSource {
 
@@ -49,28 +53,42 @@ public class PrintReportsDataSubreportReversions implements JRDataSource {
 	indexOfReversionsAffected = new ArrayList<Integer>();
 	ArrayList<String> reversionsAffected = new ArrayList<String>();
 	try {
-	    SelectableDataSource sds = reversionsTable.getModel().getModelo()
-		    .getRecordset();
+	    //	    SelectableDataSource sds = reversionsTable.getModel().getModelo()
+	    //		    .getRecordset();
+	    //	    SelectableDataSource sdsReversions = reversionsLayer.getRecordset();
+	    //	    int indexOfIDFinca = sds.getFieldIndexByName(DBNames.FIELD_IDFINCA);
+	    //	    int indexOfIDReversion = sds
+	    //		    .getFieldIndexByName(DBNames.FIELD_IDREVERSION_REVERSIONES);
+	    //	    for (int i = 0; i < sds.getRowCount(); i++) {
+	    //		if (sds.getFieldValue(i, indexOfIDFinca).toString()
+	    //			.equalsIgnoreCase(idFinca)) {
+	    //		    reversionsAffected.add(sds.getFieldValue(i,
+	    //			    indexOfIDReversion).toString());
+	    //		}
+	    //	    }
 	    SelectableDataSource sdsReversions = reversionsLayer.getRecordset();
-	    int indexOfIDFinca = sds.getFieldIndexByName(DBNames.FIELD_IDFINCA);
-	    int indexOfIDReversion = sds
-		    .getFieldIndexByName(DBNames.FIELD_IDREVERSION_REVERSIONES);
-	    for (int i = 0; i < sds.getRowCount(); i++) {
-		if (sds.getFieldValue(i, indexOfIDFinca).toString()
-			.equalsIgnoreCase(idFinca)) {
-		    reversionsAffected.add(sds.getFieldValue(i,
-			    indexOfIDReversion).toString());
-		}
+	    PreparedStatement statement;
+	    String query = "SELECT id_reversion FROM audasa_expropiaciones.fincas_reversiones " +
+		    "WHERE id_finca = '" + idFinca + "';";
+	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+	    statement.execute();
+	    ResultSet rs = statement.getResultSet();
+	    while (rs.next()) {
+		reversionsAffected.add(rs.getString(1));
 	    }
-	    int indexOfIDReverion = 1;
+
+	    int indexOfIDReversion = sdsReversions.getFieldIndexByName(DBNames.FIELD_IDREVERSION_REVERSIONES);
 	    for (int i = 0; i < sdsReversions.getRowCount(); i++) {
 		if (reversionsAffected.contains(sdsReversions
-			.getFieldValue(i, indexOfIDReverion).toString())) {
+			.getFieldValue(i, indexOfIDReversion).toString())) {
 		    indexOfReversionsAffected.add(i);
 		}
 	    }
 	    return indexOfReversionsAffected;
 	} catch (ReadDriverException e) {
+	    return new ArrayList<Integer>();
+	} catch (SQLException e) {
+	    e.printStackTrace();
 	    return new ArrayList<Integer>();
 	}
     }
