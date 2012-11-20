@@ -1,3 +1,14 @@
+v. 1.0.7 - 20/11/2012
+=====================
+
+Cambiadas plantillas de mapas
+Solucionado problema con los textos de los mapas
+Solucionado problema al generar ficha de fincas. Ahora además
+incluye las reversiones.
+
+* extMapSheets
+* extGEX
+
 v. 1.0.6 - 15/11/2012
 =====================
 
