@@ -57,6 +57,8 @@ public class AudasaPreferences {
     public static final String SUSTITUIDO_POR = "sustituido_por";
 
     //units (cm) for inserting the view in the map
+    public static final double VIEW_X_POSITION_A4 = 1.5;
+    public static final double VIEW_Y_POSITION_A4 = 1;
     public static final double VIEW_X_POSITION = 2.5;
     public static final double VIEW_Y_POSITION = 1;
     public static final double VIEW_WIDTH_A4 = 27.2;
