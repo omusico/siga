@@ -69,7 +69,6 @@ public class FormPM extends AbstractForm {
 	this.insertedRow = insertedRow;
 	initWindow();
 	initWidgets();
-	addNewButtonsToActionsToolBar();
 	parcelasAfectadas = new ArrayList<String>();
     }
 
@@ -93,7 +92,11 @@ public class FormPM extends AbstractForm {
 	NavTableComponentsPrintButton ntPrintButton = new NavTableComponentsPrintButton();
 	JButton filesLinkB = ntFilesLinkButton.getFilesLinkButton(layer,
 		this);
-	JButton printReportB = ntPrintButton.getPrintButton(this, extensionPath, reportPath.getPath());
+	JButton printReportB = null;
+	if (!layer.isEditing()) {
+	    printReportB = ntPrintButton.getPrintButton(this, extensionPath, reportPath.getPath(),
+		    Preferences.PM_TABLENAME, Preferences.PM_FIELD_NUMEROPM, numeroPM.getText());
+	}
 	if (filesLinkB != null && printReportB != null) {
 	    actionsToolBar.add(filesLinkB);
 	    actionsToolBar.add(printReportB);
@@ -229,6 +232,8 @@ public class FormPM extends AbstractForm {
 	    fecha.setText("dd/mm/aaaa");
 	    fecha.setForeground(Color.GRAY);
 	}
+
+	addNewButtonsToActionsToolBar();
     }
 
     @Override

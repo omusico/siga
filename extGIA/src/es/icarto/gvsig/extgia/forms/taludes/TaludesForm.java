@@ -3,11 +3,13 @@ package es.icarto.gvsig.extgia.forms.taludes;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -52,7 +54,6 @@ public class TaludesForm extends AbstractForm {
     public TaludesForm(FLyrVect layer) {
 	super(layer);
 	initWindow();
-	addNewButtonsToActionsToolBar();
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -89,8 +90,11 @@ public class TaludesForm extends AbstractForm {
 	});
 	actionsToolBar.add(filesLinkButton);
 	NavTableComponentsPrintButton ntPrintButton = new NavTableComponentsPrintButton();
-	JButton printReportB = ntPrintButton.getPrintButton(this, extensionPath,
-		reportPath.getPath());
+	JButton printReportB = null;
+	if (!layer.isEditing()) {
+	    printReportB = ntPrintButton.getPrintButton(this, extensionPath, reportPath.getPath(),
+		    DBFieldNames.TALUDES_TABLENAME, DBFieldNames.ID_TALUD, taludIDWidget.getText());
+	}
 	if (printReportB != null) {
 	    actionsToolBar.add(printReportB);
 	}
@@ -132,11 +136,16 @@ public class TaludesForm extends AbstractForm {
 	direccionPIDomainHandler.updateComboBoxValues();
 	direccionPFDomainHandler.updateComboBoxValues();
 
+	addNewButtonsToActionsToolBar();
     }
 
     @Override
     protected void setListeners() {
 	super.setListeners();
+
+	HashMap<String, JComponent> widgets = getWidgetComponents();
+
+	taludIDWidget = (JTextField) widgets.get(DBFieldNames.ID_TALUD);
 
 	ImageComponent image = (ImageComponent) form.getComponentByName("image");
 	ImageIcon icon = new ImageIcon (PreferencesPage.AUDASA_ICON);

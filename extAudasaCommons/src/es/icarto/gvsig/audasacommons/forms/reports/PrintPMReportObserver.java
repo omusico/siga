@@ -5,25 +5,36 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 
 import javax.swing.JOptionPane;
 
 import es.icarto.gvsig.audasacommons.forms.reports.imagefilechooser.ImageFileChooser;
 import es.udc.cartolab.gvsig.navtable.AbstractNavTable;
+import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class PrintPMReportObserver implements ActionListener {
 
     private final AbstractNavTable dialog;
     private File inputImageFile;
     private File outputFile;
-    private String reportPath;
-    private String extensionPath;
+    private final String reportPath;
+    private final String extensionPath;
+    private final String tableName;
+    private final String idField;
+    private final String idValue;
 
-    public PrintPMReportObserver(AbstractNavTable dialog, String extensionPath, String reportPath) {
+    public PrintPMReportObserver(AbstractNavTable dialog, String extensionPath, String reportPath,
+	    String tableName, String idField, String idValue) {
 	this.extensionPath = extensionPath;
 	this.dialog = dialog;
 	this.reportPath = reportPath;
+	this.tableName = tableName;
+	this.idField = idField;
+	this.idValue = idValue;
     }
 
     @Override
@@ -53,9 +64,9 @@ public class PrintPMReportObserver implements ActionListener {
 		    null,
 		    "Informe generado con éxito en: \n" + "\""
 			    + outputFile.getAbsolutePath() + "\"", null,
-		    JOptionPane.YES_NO_CANCEL_OPTION,
-		    JOptionPane.INFORMATION_MESSAGE, null,
-		    reportGeneratedOptions, reportGeneratedOptions[1]);
+			    JOptionPane.YES_NO_CANCEL_OPTION,
+			    JOptionPane.INFORMATION_MESSAGE, null,
+			    reportGeneratedOptions, reportGeneratedOptions[1]);
 
 	    if (m == JOptionPane.OK_OPTION) {
 		Desktop d = Desktop.getDesktop();
@@ -74,7 +85,7 @@ public class PrintPMReportObserver implements ActionListener {
 
     private HashMap<String, Object> getReportParameters() {
 	HashMap<String, Object> parameters = new HashMap<String, Object>();
-	parameters.put("PM_QUERY_WHERE", Integer.valueOf(getPMFileId() + 1));
+	parameters.put("PM_QUERY_WHERE", getPMFileGID());
 	parameters.put("EXTENSION_PATH", extensionPath);
 	if (inputImageFile != null) {
 	    parameters.put("MAIN_IMAGE_PATH", inputImageFile.getAbsolutePath());
@@ -82,8 +93,25 @@ public class PrintPMReportObserver implements ActionListener {
 	return parameters;
     }
 
-    private int getPMFileId() {
-	long currentPosition = dialog.getPosition();
-	return Long.valueOf(currentPosition).intValue();
+    private int getPMFileGID() {
+	int gid;
+	PreparedStatement statement;
+	String query= "SELECT gid " +
+		"FROM " + tableName +" " +
+		"WHERE " + idField + "= '" + idValue + "';";
+	try {
+	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+	    statement.execute();
+	    ResultSet rs = statement.getResultSet();
+	    rs.next();
+	    gid = rs.getInt(1);
+	    return gid;
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	    return -1;
+	}
+
+	//	long currentPosition = dialog.getPosition();
+	//	return Long.valueOf(currentPosition).intValue();
     }
 }
