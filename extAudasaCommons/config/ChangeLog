@@ -1,3 +1,14 @@
+v. 1.0.8 - 23/11/2012
+=====================
+
+Cambiado el formulario de PM.
+Solucionado problema al crear nuevos expedientes de PM con la capa vacía.
+Cambiada la forma en que se coge el GID de los elementos para imprimir el informe.
+
+* extAudasaCommons
+* extPM
+* extGIA
+
 v. 1.0.7 - 20/11/2012
 =====================
 
