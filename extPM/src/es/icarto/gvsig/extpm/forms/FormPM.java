@@ -347,7 +347,12 @@ public class FormPM extends AbstractForm {
 		}
 	    }
 	    Arrays.sort(pmID.toArray(new Integer[] {0}));
-	    int biggerPmID = pmID.get(pmID.size()-1);
+	    int biggerPmID;
+	    if (pmID.size() == 0) {
+		biggerPmID = 0;
+	    }else {
+		biggerPmID = pmID.get(pmID.size()-1);
+	    }
 	    return String.format("%1$03d", biggerPmID+1);
 	} catch (ReadDriverException e) {
 	    e.printStackTrace();
