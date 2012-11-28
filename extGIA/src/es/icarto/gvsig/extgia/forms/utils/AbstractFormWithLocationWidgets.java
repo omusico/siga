@@ -18,6 +18,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.panel.FormPanel;
 
 import es.icarto.gvsig.navtableforms.AbstractForm;
+import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
@@ -80,15 +81,13 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 	    if (!isFillingValues()) {
-		String getAreaMantenimientoIdQuery =
-			"SELECT id FROM audasa_extgia_dominios.area_mantenimiento" +
-				" WHERE item = '" + areaMantenimientoWidget.getSelectedItem().toString() + "';";
+		String id = ((KeyValue) areaMantenimientoWidget.getSelectedItem()).getKey();
 		String getBaseContratistaQuery =
-			"SELECT item FROM audasa_extgia_dominios.base_contratista" +
-				" WHERE id_am = " + getIdFromSql(getAreaMantenimientoIdQuery) + ";";
+			"SELECT id, item FROM audasa_extgia_dominios.base_contratista" +
+				" WHERE id_am = " + id + ";";
 		baseContratistaWidget.removeAllItems();
 		baseContratistaWidget.addItem("");
-		for (String value: getValuesListFromSql(getBaseContratistaQuery)) {
+		for (KeyValue value: getKeyValueListFromSql(getBaseContratistaQuery)) {
 		    baseContratistaWidget.addItem(value);
 		}
 	    }
@@ -101,15 +100,13 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 	    if (!isFillingValues() && baseContratistaWidget.getItemCount()!=0) {
-		String getBaseContratistaIdQuery =
-			"SELECT id FROM audasa_extgia_dominios.base_contratista" +
-				" WHERE item = '" + baseContratistaWidget.getSelectedItem().toString() + "';";
+		String id = ((KeyValue) baseContratistaWidget.getSelectedItem()).getKey();
 		String getTramoQuery =
-			"SELECT item FROM audasa_extgia_dominios.tramo" +
-				" WHERE id_bc = " + getIdFromSql(getBaseContratistaIdQuery) + ";";
+			"SELECT id, item FROM audasa_extgia_dominios.tramo" +
+				" WHERE id_bc = " + id + ";";
 		tramoWidget.removeAllItems();
 		tramoWidget.addItem("");
-		for (String value: getValuesListFromSql(getTramoQuery)) {
+		for (KeyValue value: getKeyValueListFromSql(getTramoQuery)) {
 		    tramoWidget.addItem(value);
 		}
 	    }
@@ -122,15 +119,13 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 	    if (!isFillingValues() && tramoWidget.getItemCount()!=0) {
-		String getTramoIdQuery =
-			"SELECT id FROM audasa_extgia_dominios.tramo" +
-				" WHERE item = '" + tramoWidget.getSelectedItem().toString() + "';";
+		String id = ((KeyValue) tramoWidget.getSelectedItem()).getKey();
 		String getTipoViaQuery =
-			"SELECT item FROM audasa_extgia_dominios.tipo_via" +
-				" WHERE id_tramo = " + getIdFromSql(getTramoIdQuery) + ";";
+			"SELECT id, item  FROM audasa_extgia_dominios.tipo_via" +
+				" WHERE id_tramo = " + id + ";";
 		tipoViaWidget.removeAllItems();
 		tipoViaWidget.addItem("");
-		for (String value: getValuesListFromSql(getTipoViaQuery)) {
+		for (KeyValue value: getKeyValueListFromSql(getTipoViaQuery)) {
 		    tipoViaWidget.addItem(value);
 		}
 	    }
@@ -143,15 +138,13 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 	    if (!isFillingValues() && tipoViaWidget.getItemCount()!=0) {
-		String getTipoViaIdQuery =
-			"SELECT id FROM audasa_extgia_dominios.tipo_via" +
-				" WHERE item = '" + tipoViaWidget.getSelectedItem().toString() + "';";
+		String id = ((KeyValue) tipoViaWidget.getSelectedItem()).getKey();
 		String getNombreViaQuery =
-			"SELECT item FROM audasa_extgia_dominios.nombre_via" +
-				" WHERE id_tv = " + getIdFromSql(getTipoViaIdQuery) + ";";
+			"SELECT id, item FROM audasa_extgia_dominios.nombre_via" +
+				" WHERE id_tv = " + id + ";";
 		nombreViaWidget.removeAllItems();
 		nombreViaWidget.addItem("");
-		for (String value: getValuesListFromSql(getNombreViaQuery)) {
+		for (KeyValue value: getKeyValueListFromSql(getNombreViaQuery)) {
 		    nombreViaWidget.addItem(value);
 		}
 	    }
@@ -179,24 +172,8 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	return nombreViaWidget;
     }
 
-    private int getIdFromSql(String query) {
-	PreparedStatement statement = null;
-	Connection connection = DBSession.getCurrentSession().getJavaConnection();
-	try {
-	    statement = connection.prepareStatement(query);
-	    statement.execute();
-	    ResultSet rs = statement.getResultSet();
-	    statement = connection.prepareStatement(query);
-	    rs.next();
-	    return rs.getInt(1);
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	    return -1;
-	}
-    }
-
-    private ArrayList<String> getValuesListFromSql(String query) {
-	ArrayList<String> values = new ArrayList<String>();
+    private ArrayList<KeyValue> getKeyValueListFromSql(String query) {
+	ArrayList<KeyValue> values = new ArrayList<KeyValue>();
 	PreparedStatement statement = null;
 	Connection connection = DBSession.getCurrentSession().getJavaConnection();
 	try {
@@ -205,12 +182,12 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	    ResultSet rs = statement.getResultSet();
 	    statement = connection.prepareStatement(query);
 	    while (rs.next()) {
-		values.add(rs.getString(1));
+		values.add(new KeyValue(rs.getString(1), rs.getString(2)));
 	    }
 	    return values;
 	} catch (SQLException e) {
 	    e.printStackTrace();
-	    return new ArrayList<String>();
+	    return new ArrayList<KeyValue>();
 	}
     }
 
