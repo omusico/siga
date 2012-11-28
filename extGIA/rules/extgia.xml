@@ -54,12 +54,48 @@
       </FIELD>
 
       <FIELD>
-        <FIELDNAME>tipo_via_pi</FIELDNAME>
+        <FIELDNAME>tipo_via</FIELDNAME>
         <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
          <DOMAINREADER>
          	<DRTYPE>db</DRTYPE>
          	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
     		<DRDBTABLE>tipo_via</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+      </FIELD>
+      
+       <FIELD>
+        <FIELDNAME>tipo_via_pf</FIELDNAME>
+        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+         <DOMAINREADER>
+         	<DRTYPE>db</DRTYPE>
+         	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>tipo_via</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+      </FIELD>
+      
+      <FIELD>
+        <FIELDNAME>nombre_via</FIELDNAME>
+        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+         <DOMAINREADER>
+         	<DRTYPE>db</DRTYPE>
+         	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>nombre_via</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+      </FIELD>
+      
+      <FIELD>
+        <FIELDNAME>nombre_via_pf</FIELDNAME>
+        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+         <DOMAINREADER>
+         	<DRTYPE>db</DRTYPE>
+         	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>nombre_via</DRDBTABLE>
     		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
     		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
         </DOMAINREADER>
@@ -87,18 +123,6 @@
     		<DRDBFOREIGNKEY>id_intercambiador</DRDBFOREIGNKEY>
         </DOMAINREADER>
 	</FIELD>
-
-      <FIELD>
-        <FIELDNAME>tipo_via_pf</FIELDNAME>
-        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
-         <DOMAINREADER>
-         	<DRTYPE>db</DRTYPE>
-         	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>tipo_via</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-      </FIELD>
 
       <FIELD>
 		<FIELDNAME>ramal_pf</FIELDNAME>

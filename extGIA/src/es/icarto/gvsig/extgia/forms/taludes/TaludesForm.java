@@ -23,24 +23,23 @@ import com.jeta.forms.gui.common.FormException;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.audasacommons.forms.reports.NavTableComponentsPrintButton;
+import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.navtableforms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.navtableforms.utils.EnableComponentBasedOnCheckBox;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.preferences.Preferences;
-import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkButton;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkData;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.validation.listeners.DependentComboboxesHandler;
 
 @SuppressWarnings("serial")
-public class TaludesForm extends AbstractForm {
+public class TaludesForm extends AbstractFormWithLocationWidgets {
 
     public static final String ABEILLE_FILENAME = "forms/taludes.xml";
     private FormPanel form;
     JComboBox tipoTaludWidget;
     JTextField numeroTaludWidget;
-    JComboBox baseContratistaWidget;
     JTextField taludIDWidget;
     CalculateComponentValue taludid;
     private CalculateComponentValue inclinacionMedia;
@@ -174,7 +173,7 @@ public class TaludesForm extends AbstractForm {
 
 	JComboBox direccionPI = (JComboBox) getWidgetComponents().get(
 		"direccion_pi");
-	tipoViaPI = (JComboBox) getWidgetComponents().get("tipo_via_pi");
+	tipoViaPI = (JComboBox) getWidgetComponents().get("tipo_via");
 	direccionPIDomainHandler = new DependentComboboxesHandler(this,
 		tipoViaPI, direccionPI);
 	tipoViaPI.addActionListener(direccionPIDomainHandler);
@@ -198,6 +197,5 @@ public class TaludesForm extends AbstractForm {
 	tipoViaPF.removeActionListener(direccionPFDomainHandler);
 	super.removeListeners();
     }
-
 
 }
