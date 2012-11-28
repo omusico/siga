@@ -23,7 +23,9 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     private static final String BASE_CONTRATISTA = "base_contratista";
     private static final String TRAMO = "tramo";
     private static final String TIPO_VIA = "tipo_via";
+    private static final String TIPO_VIA_PF = "tipo_via_pf";
     private static final String NOMBRE_VIA = "nombre_via";
+    private static final String NOMBRE_VIA_PF = "nombre_via_pf";
 
     private JComboBox areaMantenimientoWidget;
     private JComboBox baseContratistaWidget;
@@ -31,10 +33,15 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     private JComboBox tipoViaWidget;
     private JComboBox nombreViaWidget;
 
+    private JComboBox tipoViaPFWidget;
+    private JComboBox nombreViaPFWidget;
+
     private UpdateBaseContratistaListener updateBaseContratistaListener;
     private UpdateTramoListener updateTramoListener;
     private UpdateTipoViaListener updateTipoViaListener;
     private UpdateNombreViaListener updateNombreViaListener;
+
+    private UpdateNombreViaPFListener updateNombreViaPFListener;
 
     public AbstractFormWithLocationWidgets (FLyrVect layer) {
 	super(layer);
@@ -63,6 +70,13 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	baseContratistaWidget.addActionListener(updateTramoListener);
 	tramoWidget.addActionListener(updateTipoViaListener);
 	tipoViaWidget.addActionListener(updateNombreViaListener);
+
+	if (elementHasIPandFP()) {
+	    tipoViaPFWidget = (JComboBox) widgets.get(TIPO_VIA_PF);
+	    updateNombreViaPFListener = new UpdateNombreViaPFListener();
+	    tipoViaPFWidget.addActionListener(updateNombreViaPFListener);
+	    nombreViaPFWidget = (JComboBox) widgets.get(NOMBRE_VIA_PF);
+	}
     }
 
     public class UpdateBaseContratistaListener implements ActionListener {
@@ -117,6 +131,13 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 		for (KeyValue value: SqlUtils.getKeyValueListFromSql(getTipoViaQuery)) {
 		    tipoViaWidget.addItem(value);
 		}
+		if (elementHasIPandFP()) {
+		    tipoViaPFWidget.removeAllItems();
+		    tipoViaPFWidget.addItem(new KeyValue("", ""));
+		    for (KeyValue value: SqlUtils.getKeyValueListFromSql(getTipoViaQuery)) {
+			tipoViaPFWidget.addItem(value);
+		    }
+		}
 	    }
 	}
 
@@ -141,6 +162,39 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 
     }
 
+    public class UpdateNombreViaPFListener implements ActionListener {
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+	    if (!isFillingValues() && tipoViaPFWidget.getItemCount()!=0) {
+		String id = ((KeyValue) tipoViaPFWidget.getSelectedItem()).getKey();
+		String getNombreViaQuery =
+			"SELECT id, item FROM audasa_extgia_dominios.nombre_via" +
+				" WHERE id_tv = " + id + ";";
+		nombreViaPFWidget.removeAllItems();
+		nombreViaPFWidget.addItem(new KeyValue("", ""));
+		for (KeyValue value: SqlUtils.getKeyValueListFromSql(getNombreViaQuery)) {
+		    nombreViaPFWidget.addItem(value);
+		}
+	    }
+	}
+
+    }
+
+    @Override
+    protected void removeListeners() {
+	areaMantenimientoWidget.removeActionListener(updateBaseContratistaListener);
+	baseContratistaWidget.removeActionListener(updateTramoListener);
+	tramoWidget.removeActionListener(updateTipoViaListener);
+	tipoViaWidget.removeActionListener(updateNombreViaListener);
+
+	if (elementHasIPandFP()) {
+	    tipoViaPFWidget.removeActionListener(updateNombreViaPFListener);
+	}
+
+	super.removeListeners();
+    }
+
     public JComboBox getAreaMantenimientoWidget() {
 	return areaMantenimientoWidget;
     }
@@ -159,6 +213,14 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 
     public JComboBox getNombreViaWidget() {
 	return nombreViaWidget;
+    }
+
+    private boolean elementHasIPandFP() {
+	if (layer.getName().equalsIgnoreCase("taludes")) {
+	    return true;
+	}else {
+	    return false;
+	}
     }
 
     @Override
