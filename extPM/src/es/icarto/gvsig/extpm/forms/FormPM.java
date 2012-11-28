@@ -62,6 +62,9 @@ public class FormPM extends AbstractForm {
     CalculatePMNumberListener calculatePMNumberListener;
     UpdateParroquiaListener updateParroquiaListener;
 
+    NavTableComponentsFilesLinkButton ntFilesLinkButton;
+    NavTableComponentsPrintButton ntPrintButton;
+
     public FormPM(FLyrVect layer, boolean newRegister, int insertedRow) {
 	super(layer);
 	this.layer = layer;
@@ -88,8 +91,8 @@ public class FormPM extends AbstractForm {
 		.getResource("reports/pm_report.jasper");
 	String extensionPath = reportPath.getPath().replace("reports/pm_report.jasper", "");
 	JPanel actionsToolBar = this.getActionsToolBar();
-	NavTableComponentsFilesLinkButton ntFilesLinkButton = new NavTableComponentsFilesLinkButton();
-	NavTableComponentsPrintButton ntPrintButton = new NavTableComponentsPrintButton();
+	ntFilesLinkButton = new NavTableComponentsFilesLinkButton();
+	ntPrintButton = new NavTableComponentsPrintButton();
 	JButton filesLinkB = ntFilesLinkButton.getFilesLinkButton(layer,
 		this);
 	JButton printReportB = null;
@@ -232,8 +235,9 @@ public class FormPM extends AbstractForm {
 	    fecha.setText("dd/mm/aaaa");
 	    fecha.setForeground(Color.GRAY);
 	}
-
-	addNewButtonsToActionsToolBar();
+	if (ntFilesLinkButton == null) {
+	    addNewButtonsToActionsToolBar();
+	}
     }
 
     @Override

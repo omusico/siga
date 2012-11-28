@@ -50,6 +50,9 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     private DependentComboboxesHandler direccionPIDomainHandler;
     private DependentComboboxesHandler direccionPFDomainHandler;
 
+    FilesLinkButton filesLinkButton;
+    NavTableComponentsPrintButton ntPrintButton;
+
     public TaludesForm(FLyrVect layer) {
 	super(layer);
 	initWindow();
@@ -61,7 +64,7 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	String extensionPath = reportPath.getPath().replace("reports/taludes.jasper", "");
 	JPanel actionsToolBar = this.getActionsToolBar();
 
-	FilesLinkButton filesLinkButton = new FilesLinkButton(this, new FilesLinkData() {
+	filesLinkButton = new FilesLinkButton(this, new FilesLinkData() {
 
 	    @Override
 	    public String getRegisterField() {
@@ -88,7 +91,7 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	    }
 	});
 	actionsToolBar.add(filesLinkButton);
-	NavTableComponentsPrintButton ntPrintButton = new NavTableComponentsPrintButton();
+	ntPrintButton = new NavTableComponentsPrintButton();
 	JButton printReportB = null;
 	if (!layer.isEditing()) {
 	    printReportB = ntPrintButton.getPrintButton(this, extensionPath, reportPath.getPath(),
@@ -135,7 +138,9 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	direccionPIDomainHandler.updateComboBoxValues();
 	direccionPFDomainHandler.updateComboBoxValues();
 
-	addNewButtonsToActionsToolBar();
+	if (filesLinkButton == null) {
+	    addNewButtonsToActionsToolBar();
+	}
     }
 
     @Override
