@@ -39,12 +39,16 @@ public class SqlUtils {
     }
 
     public static void createEmbebedTableFromDB (JTable embebedTableWidget, String schema,
-	    String tablename, String idField, String idValue) {
+	    String tablename, String[] fields, int[] columnsSize, String idField, String idValue) {
 	ArrayList<String> columnsName = new ArrayList<String>();
 	DefaultTableModel tableModel = new DefaultTableModel();
 	PreparedStatement statement;
-	String query = "SELECT * FROM " + schema + "." + tablename + " WHERE " + idField + " = '" +
-		idValue + "';";
+	String query = "SELECT ";
+	for (int i=0; i<fields.length-1; i++) {
+	    query = query + fields[i] + ", ";
+	}
+	query = query + fields[fields.length-1]+ " FROM " + schema + "." + tablename +
+		" WHERE " + idField + " = '" + idValue + "';";
 	try {
 	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
 	    statement.execute();
@@ -57,7 +61,13 @@ public class SqlUtils {
 	    for (String columnName : columnsName) {
 		tableModel.addColumn(columnName);
 	    }
+
 	    embebedTableWidget.setModel(tableModel);
+	    if (columnsSize != null) {
+		for (int i=0; i<columnsSize.length; i++) {
+		    embebedTableWidget.getColumnModel().getColumn(i).setPreferredWidth(columnsSize[i]);
+		}
+	    }
 	    // Values
 	    Value[] tableValues = new Value[rsMetaData.getColumnCount()];
 	    while (rs.next()) {
