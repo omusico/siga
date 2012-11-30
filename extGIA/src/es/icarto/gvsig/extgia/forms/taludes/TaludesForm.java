@@ -11,6 +11,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
@@ -28,6 +29,7 @@ import es.icarto.gvsig.extgia.navtableforms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.navtableforms.utils.EnableComponentBasedOnCheckBox;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.preferences.Preferences;
+import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkButton;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkData;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
@@ -42,6 +44,8 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     JTextField numeroTaludWidget;
     JTextField taludIDWidget;
     CalculateComponentValue taludid;
+    JTable reconocimientoEstado;
+    JTable trabajos;
     private CalculateComponentValue inclinacionMedia;
     private EnableComponentBasedOnCheckBox cunetaPie;
     private EnableComponentBasedOnCheckBox cunetaCabeza;
@@ -141,6 +145,24 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	if (filesLinkButton == null) {
 	    addNewButtonsToActionsToolBar();
 	}
+
+	// Embebed Tables
+	String[] reconocimientoEstadoFields = {"n_inspeccion as \"Nº Inspección\"",
+		"nombre_revisor as \"Revisor\"",
+		"fecha_inspeccion as \"Fecha Inspección\"",
+	"indice_estado as \"Indice Estado\""};
+	String[] trabajoFields = {"id_trabajo as \"ID\"",
+		"fecha as \"Fecha\"",
+		"unidad as \"Unidad\"",
+		"contratista as \"Medida Contratista\"",
+	"audasa as \"Medida AUDASA\""};
+	int[] trabajoColumnsSize = {1, 1, 120, 60, 60};
+	SqlUtils.createEmbebedTableFromDB(reconocimientoEstado,
+		"audasa_extgia", "taludes_reconocimiento_estado",
+		reconocimientoEstadoFields, null, "id_talud", taludIDWidget.getText());
+	SqlUtils.createEmbebedTableFromDB(trabajos,
+		"audasa_extgia", "taludes_trabajos",
+		trabajoFields, trabajoColumnsSize, "id_talud", taludIDWidget.getText());
     }
 
     @Override
@@ -190,6 +212,8 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 		tipoViaPF, direccionPF);
 	tipoViaPF.addActionListener(direccionPFDomainHandler);
 
+	reconocimientoEstado = (JTable) widgets.get("taludes_reconocimiento_estado");
+	trabajos = (JTable) widgets.get("taludes_trabajos");
     }
 
     @Override
