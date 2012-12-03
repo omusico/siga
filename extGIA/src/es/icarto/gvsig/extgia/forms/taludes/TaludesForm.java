@@ -293,7 +293,7 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     public class EditReconocimientoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    if (trabajos.getSelectedRowCount() != 0) {
+	    if (reconocimientoEstado.getSelectedRowCount() != 0) {
 		TaludesReconocimientosSubForm subForm =
 			new TaludesReconocimientosSubForm("forms/taludes_reconocimiento_estado.xml",
 				"taludes_reconocimiento_estado", reconocimientoEstado, "n_inspeccion", true);
@@ -310,7 +310,7 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     public class EditTrabajoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    if (reconocimientoEstado.getSelectedRowCount() != 0) {
+	    if (trabajos.getSelectedRowCount() != 0) {
 		TaludesReconocimientosSubForm subForm =
 			new TaludesReconocimientosSubForm("forms/taludes_trabajos.xml",
 				"taludes_trabajos", trabajos, "id_trabajo", true);
