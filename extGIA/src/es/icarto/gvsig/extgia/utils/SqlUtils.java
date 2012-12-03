@@ -149,4 +149,15 @@ public class SqlUtils {
 	}
     }
 
+    public static void delete(String schema, String tablename, String pkField, String pkValue) {
+	PreparedStatement statement;
+	String query = "DELETE FROM " + schema + "." + tablename +
+		" WHERE " + pkField + " = '" + pkValue + "';";
+	try {
+	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+	    statement.execute();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+    }
 }

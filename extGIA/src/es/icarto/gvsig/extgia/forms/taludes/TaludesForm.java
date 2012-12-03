@@ -313,23 +313,25 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     public class DeleteReconocimientoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    deleteElement(reconocimientoEstado);
+	    deleteElement(reconocimientoEstado, "taludes_reconocimiento_estado", "n_inspeccion");
 	}
     }
 
     public class DeleteTrabajoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    deleteElement(trabajos);
+	    deleteElement(trabajos, "taludes_trabajos", "id_trabajo");
 	}
     }
 
-    private void deleteElement(JTable embebedTable) {
+    private void deleteElement(JTable embebedTable, String dbTableName,
+	    String pkField) {
 	int selectedRow = embebedTable.getSelectedRow();
+	String pkValue = embebedTable.getValueAt(selectedRow, 0).toString();
 	if (selectedRow != -1) {
 	    DefaultTableModel model = (DefaultTableModel) embebedTable.getModel();
 	    model.removeRow(selectedRow);
-	    //TODO: Delete record on database
+	    SqlUtils.delete(DBFieldNames.GIA_SCHEMA, dbTableName, pkField, pkValue);
 	    repaint();
 	}else {
 	    JOptionPane.showMessageDialog(null,
