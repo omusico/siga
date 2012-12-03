@@ -1,5 +1,7 @@
 package es.icarto.gvsig.extgia.forms.taludes;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
@@ -10,13 +12,16 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 import org.apache.log4j.Logger;
 
 import com.iver.andami.Launcher;
+import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.image.ImageComponent;
 import com.jeta.forms.components.panel.FormPanel;
@@ -44,8 +49,23 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     JTextField numeroTaludWidget;
     JTextField taludIDWidget;
     CalculateComponentValue taludid;
+
     JTable reconocimientoEstado;
     JTable trabajos;
+    JButton addReconocimientoButton;
+    JButton editReconocimientoButton;
+    JButton deleteReconocimientoButton;
+    JButton addTrabajoButton;
+    JButton editTrabajoButton;
+    JButton deleteTrabajoButton;
+
+    AddReconocimientoListener addReconocimientoListener;
+    EditReconocimientoListener editReconocimientoListener;
+    AddTrabajoListener addTrabajoListener;
+    EditTrabajoListener editTrabajoListener;
+    DeleteReconocimientoListener deleteReconocimientoListener;
+    DeleteTrabajoListener deleteTrabajoListener;
+
     private CalculateComponentValue inclinacionMedia;
     private EnableComponentBasedOnCheckBox cunetaPie;
     private EnableComponentBasedOnCheckBox cunetaCabeza;
@@ -154,8 +174,8 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	String[] trabajoFields = {"id_trabajo as \"ID\"",
 		"fecha as \"Fecha\"",
 		"unidad as \"Unidad\"",
-		"contratista as \"Medida Contratista\"",
-	"audasa as \"Medida AUDASA\""};
+		"medicion_contratista as \"Medida Contratista\"",
+	"medicion_audasa as \"Medida AUDASA\""};
 	int[] trabajoColumnsSize = {1, 1, 120, 60, 60};
 	SqlUtils.createEmbebedTableFromDB(reconocimientoEstado,
 		"audasa_extgia", "taludes_reconocimiento_estado",
@@ -214,6 +234,26 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 
 	reconocimientoEstado = (JTable) widgets.get("taludes_reconocimiento_estado");
 	trabajos = (JTable) widgets.get("taludes_trabajos");
+
+	addReconocimientoButton = (JButton) form.getComponentByName("add_reconocimiento_button");
+	addReconocimientoListener = new AddReconocimientoListener();
+	addReconocimientoButton.addActionListener(addReconocimientoListener);
+	editReconocimientoButton = (JButton) form.getComponentByName("edit_reconocimiento_button");
+	editReconocimientoListener = new EditReconocimientoListener();
+	editReconocimientoButton.addActionListener(editReconocimientoListener);
+	addTrabajoButton = (JButton) form.getComponentByName("add_trabajo_button");
+	addTrabajoListener = new AddTrabajoListener();
+	addTrabajoButton.addActionListener(addTrabajoListener);
+	editTrabajoButton = (JButton) form.getComponentByName("edit_trabajo_button");
+	editTrabajoListener = new EditTrabajoListener();
+	editTrabajoButton.addActionListener(editTrabajoListener);
+	deleteReconocimientoButton = (JButton) form.getComponentByName("delete_reconocimiento_button");
+	deleteReconocimientoListener = new DeleteReconocimientoListener();
+	deleteReconocimientoButton.addActionListener(deleteReconocimientoListener);
+	deleteTrabajoButton = (JButton) form.getComponentByName("delete_trabajo_button");
+	deleteTrabajoListener = new DeleteTrabajoListener();
+	deleteTrabajoButton.addActionListener(deleteTrabajoListener);
+
     }
 
     @Override
@@ -224,7 +264,80 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	cunetaPie.removeListeners();
 	tipoViaPI.removeActionListener(direccionPIDomainHandler);
 	tipoViaPF.removeActionListener(direccionPFDomainHandler);
+	addReconocimientoButton.removeActionListener(addReconocimientoListener);
+	editReconocimientoButton.removeActionListener(editReconocimientoListener);
+	addTrabajoButton.removeActionListener(addTrabajoListener);
+	editTrabajoButton.removeActionListener(editTrabajoListener);
 	super.removeListeners();
+    }
+
+    public class AddReconocimientoListener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    TaludesReconocimientosSubForm subForm =
+		    new TaludesReconocimientosSubForm("forms/taludes_reconocimiento_estado.xml",
+			    "taludes_reconocimiento_estado", reconocimientoEstado, "id_talud", false);
+	    PluginServices.getMDIManager().addWindow(subForm);
+	}
+    }
+
+    public class AddTrabajoListener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    TaludesReconocimientosSubForm subForm =
+		    new TaludesReconocimientosSubForm("forms/taludes_trabajos.xml",
+			    "taludes_trabajos", trabajos, "id_talud", false);
+	    PluginServices.getMDIManager().addWindow(subForm);
+	}
+    }
+
+    public class EditReconocimientoListener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    TaludesReconocimientosSubForm subForm =
+		    new TaludesReconocimientosSubForm("forms/taludes_reconocimiento_estado.xml",
+			    "taludes_reconocimiento_estado", reconocimientoEstado, "n_inspeccion", true);
+	    PluginServices.getMDIManager().addWindow(subForm);
+	}
+    }
+
+    public class EditTrabajoListener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    TaludesReconocimientosSubForm subForm =
+		    new TaludesReconocimientosSubForm("forms/taludes_trabajos.xml",
+			    "taludes_trabajos", trabajos, "id_trabajo", true);
+	    PluginServices.getMDIManager().addWindow(subForm);
+	}
+    }
+
+    public class DeleteReconocimientoListener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    deleteElement(reconocimientoEstado);
+	}
+    }
+
+    public class DeleteTrabajoListener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    deleteElement(trabajos);
+	}
+    }
+
+    private void deleteElement(JTable embebedTable) {
+	int selectedRow = embebedTable.getSelectedRow();
+	if (selectedRow != -1) {
+	    DefaultTableModel model = (DefaultTableModel) embebedTable.getModel();
+	    model.removeRow(selectedRow);
+	    //TODO: Delete record on database
+	    repaint();
+	}else {
+	    JOptionPane.showMessageDialog(null,
+		    "Debe seleccionar una fila para editar los datos.",
+		    "Ninguna fila seleccionada",
+		    JOptionPane.INFORMATION_MESSAGE);
+	}
     }
 
 }

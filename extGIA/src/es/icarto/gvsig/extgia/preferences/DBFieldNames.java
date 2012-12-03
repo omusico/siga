@@ -1,6 +1,8 @@
 package es.icarto.gvsig.extgia.preferences;
 
 public class DBFieldNames {
+    public static final String GIA_SCHEMA = "audasa_extgia";
+
     public static final String TALUDES_TABLENAME = "audasa_extgia.taludes";
     public static final String ISLETAS_TABLENAME = "audasa_extgia.isletas";
 

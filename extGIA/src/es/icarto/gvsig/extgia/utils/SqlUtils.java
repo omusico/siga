@@ -7,6 +7,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -35,6 +36,65 @@ public class SqlUtils {
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	    return new ArrayList<KeyValue>();
+	}
+    }
+
+    public static HashMap<String, Value> getValuesFilteredByPk(String schema,
+	    String tablename, String idField, String idValue) {
+	HashMap<String, Value> values = new HashMap<String, Value>();
+	PreparedStatement statement = null;
+	Connection connection = DBSession.getCurrentSession().getJavaConnection();
+	String query = "SELECT * FROM " + schema + "." + tablename +
+		" WHERE " + idField + " = '" + idValue + "';";
+	try {
+	    statement = connection.prepareStatement(query);
+	    statement.execute();
+	    ResultSet rs = statement.getResultSet();
+	    ResultSetMetaData rsMetaData = rs.getMetaData();
+	    statement = connection.prepareStatement(query);
+	    while (rs.next()) {
+		for (int i=0; i<rsMetaData.getColumnCount(); i++) {
+		    if (rs.getString(i+1) == null) {
+			values.put(rsMetaData.getColumnName(i+1), ValueFactory.createNullValue());
+		    }else {
+			values.put(rsMetaData.getColumnName(i+1),
+				ValueFactory.createValueByType(rs.getString(i+1),
+					rsMetaData.getColumnType(i+1)));
+		    }
+		}
+	    }
+	    rs.close();
+	    return values;
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	    return new HashMap<String, Value>();
+	} catch (ParseException e) {
+	    e.printStackTrace();
+	    return new HashMap<String, Value>();
+	}
+    }
+
+    public static HashMap<String, Integer> getDataTypesFromDbTable(String schema, String tablename) {
+	HashMap<String, Integer> types = new HashMap<String, Integer>();
+	PreparedStatement statement = null;
+	Connection connection = DBSession.getCurrentSession().getJavaConnection();
+	String query = "SELECT * FROM " + schema + "." + tablename + ";";
+	try {
+	    statement = connection.prepareStatement(query);
+	    statement.execute();
+	    ResultSet rs = statement.getResultSet();
+	    ResultSetMetaData rsMetaData = rs.getMetaData();
+	    statement = connection.prepareStatement(query);
+	    while (rs.next()) {
+		for (int i=0; i<rsMetaData.getColumnCount(); i++) {
+		    types.put(rsMetaData.getColumnName(i+1), rsMetaData.getColumnType(i+1));
+		}
+	    }
+	    rs.close();
+	    return types;
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	    return new HashMap<String, Integer>();
 	}
     }
 
@@ -72,9 +132,13 @@ public class SqlUtils {
 	    Value[] tableValues = new Value[rsMetaData.getColumnCount()];
 	    while (rs.next()) {
 		for (int i=0; i<rsMetaData.getColumnCount(); i++) {
-		    tableValues[i] =
-			    ValueFactory.createValueByType(rs.getString(i+1),
-				    rsMetaData.getColumnType(i+1));
+		    if (rs.getString(i+1) == null) {
+			tableValues[i] = ValueFactory.createNullValue();
+		    }else {
+			tableValues[i] =
+				ValueFactory.createValueByType(rs.getString(i+1),
+					rsMetaData.getColumnType(i+1));
+		    }
 		}
 		tableModel.addRow(tableValues);
 	    }
