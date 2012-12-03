@@ -80,6 +80,7 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     public TaludesForm(FLyrVect layer) {
 	super(layer);
 	initWindow();
+	initListeners();
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -185,9 +186,7 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 		trabajoFields, trabajoColumnsSize, "id_talud", taludIDWidget.getText());
     }
 
-    @Override
-    protected void setListeners() {
-	super.setListeners();
+    protected void initListeners() {
 
 	HashMap<String, JComponent> widgets = getWidgetComponents();
 
