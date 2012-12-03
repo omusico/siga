@@ -90,8 +90,10 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 				" WHERE id_am = " + id + ";";
 		baseContratistaWidget.removeAllItems();
 		baseContratistaWidget.addItem(new KeyValue("", ""));
-		for (KeyValue value: SqlUtils.getKeyValueListFromSql(getBaseContratistaQuery)) {
-		    baseContratistaWidget.addItem(value);
+		if (!id.isEmpty()) {
+		    for (KeyValue value: SqlUtils.getKeyValueListFromSql(getBaseContratistaQuery)) {
+			baseContratistaWidget.addItem(value);
+		    }
 		}
 	    }
 	}
@@ -109,8 +111,10 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 				" WHERE id_bc = " + id + ";";
 		tramoWidget.removeAllItems();
 		tramoWidget.addItem(new KeyValue("", ""));
-		for (KeyValue value: SqlUtils.getKeyValueListFromSql(getTramoQuery)) {
-		    tramoWidget.addItem(value);
+		if (!id.isEmpty()) {
+		    for (KeyValue value: SqlUtils.getKeyValueListFromSql(getTramoQuery)) {
+			tramoWidget.addItem(value);
+		    }
 		}
 	    }
 	}
@@ -128,14 +132,16 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 				" WHERE id_tramo = " + id + ";";
 		tipoViaWidget.removeAllItems();
 		tipoViaWidget.addItem(new KeyValue("", ""));
-		for (KeyValue value: SqlUtils.getKeyValueListFromSql(getTipoViaQuery)) {
-		    tipoViaWidget.addItem(value);
-		}
-		if (elementHasIPandFP()) {
-		    tipoViaPFWidget.removeAllItems();
-		    tipoViaPFWidget.addItem(new KeyValue("", ""));
+		if (!id.isEmpty()) {
 		    for (KeyValue value: SqlUtils.getKeyValueListFromSql(getTipoViaQuery)) {
-			tipoViaPFWidget.addItem(value);
+			tipoViaWidget.addItem(value);
+		    }
+		    if (elementHasIPandFP()) {
+			tipoViaPFWidget.removeAllItems();
+			tipoViaPFWidget.addItem(new KeyValue("", ""));
+			for (KeyValue value: SqlUtils.getKeyValueListFromSql(getTipoViaQuery)) {
+			    tipoViaPFWidget.addItem(value);
+			}
 		    }
 		}
 	    }
@@ -154,8 +160,10 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 				" WHERE id_tv = " + id + ";";
 		nombreViaWidget.removeAllItems();
 		nombreViaWidget.addItem(new KeyValue("", ""));
-		for (KeyValue value: SqlUtils.getKeyValueListFromSql(getNombreViaQuery)) {
-		    nombreViaWidget.addItem(value);
+		if (!id.isEmpty()) {
+		    for (KeyValue value: SqlUtils.getKeyValueListFromSql(getNombreViaQuery)) {
+			nombreViaWidget.addItem(value);
+		    }
 		}
 	    }
 	}
