@@ -11,7 +11,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -66,16 +65,9 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
 	this.types = SqlUtils.getDataTypesFromDbTable(DBFieldNames.GIA_SCHEMA, dbTableName);
 	initWidgets();
 	if (edit) {
-	    if (getPKSelectedValue() != null) {
-		this.values = SqlUtils.getValuesFilteredByPk(DBFieldNames.GIA_SCHEMA,
-			dbTableName, idField, getPKSelectedValue());
-		fillValues();
-	    }else {
-		JOptionPane.showMessageDialog(this,
-			"Debe seleccionar una fila para editar los datos.",
-			"Ninguna fila seleccionada",
-			JOptionPane.INFORMATION_MESSAGE);
-	    }
+	    this.values = SqlUtils.getValuesFilteredByPk(DBFieldNames.GIA_SCHEMA,
+		    dbTableName, idField, getPKSelectedValue());
+	    fillValues();
 	}
     }
 
