@@ -39,6 +39,7 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
     private final HashMap<String, Integer> types;
     private HashMap<String, Value> values;
     private final JTable embebedTable;
+    private final boolean edit;
 
     protected WindowInfo viewInfo = null;
     private String title;
@@ -62,6 +63,7 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
 	}
 	this.form = result;
 	this.embebedTable = embebedTable;
+	this.edit = edit;
 	this.types = SqlUtils.getDataTypesFromDbTable(DBFieldNames.GIA_SCHEMA, dbTableName);
 	initWidgets();
 	if (edit) {
@@ -80,6 +82,10 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
 	JButton addButton = (JButton) form.getComponentByName("add_subform_button");
 	AddDataToJTableListener addDataToJTableListener = new AddDataToJTableListener();
 	addButton.addActionListener(addDataToJTableListener);
+
+	if (edit) {
+	    addButton.setText("Actualizar");
+	}
 
 	ImageComponent image = (ImageComponent) form.getComponentByName("image");
 	ImageIcon icon = new ImageIcon (PreferencesPage.AUDASA_ICON);
