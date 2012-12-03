@@ -253,6 +253,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 			}
 		    }
 		    map.setWhereOnAllLayers(where);
+		    map.setWhereOnAllOverviewLayers(where);
 		    ELLEMap.setFiltered(true);
 		}else if (selectedValue != null) {
 		    where = where + getValueOfFieldByConstant(selectedConstant, CONSTANTS_FILTER_FIELD_NAME) + " = " + "'" + selectedValue + "')";
@@ -307,7 +308,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
     private FLayer getEnvelopeConstantLayer() {
 	FLayer layer = null;
 	BaseView view = (BaseView) PluginServices.getMDIManager()
-	.getActiveWindow();
+		.getActiveWindow();
 	MapControl mapControl = view.getMapControl();
 	FLayers flayers = mapControl.getMapContext().getLayers();
 	layer = flayers.getLayer(CONSTANTS_ZOOM_LAYER_NAME);

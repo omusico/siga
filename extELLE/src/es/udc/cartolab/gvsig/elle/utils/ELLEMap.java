@@ -138,6 +138,14 @@ public class ELLEMap {
 	}
     }
 
+    public void setWhereOnAllOverviewLayers(String whereClause) {
+	if (this.overviewLayers != null) {
+	    for (LayerProperties layer : this.overviewLayers) {
+		layer.setWhere(whereClause);
+	    }
+	}
+    }
+
     public LayerProperties getLayer(String layerName) {
 	if (this.layers != null) {
 	    for (LayerProperties layer : this.layers) {
@@ -314,10 +322,20 @@ public class ELLEMap {
     }
 
     @SuppressWarnings("unchecked")
-    private void loadOverviewLayers(IProjection proj) {
+    private void loadOverviewLayers(IProjection proj, String[] layersAffectedByConstant) {
 	Collections.sort(overviewLayers);
 	for (LayerProperties lp : overviewLayers) {
 	    try {
+		//TODO: AUDASA - Making generic
+		boolean coincidence = false;
+		for (int i=0; i<layersAffectedByConstant.length; i++) {
+		    if (lp.getTablename().equalsIgnoreCase(layersAffectedByConstant[i])) {
+			coincidence = true;
+		    }
+		}
+		if (!coincidence) {
+		    lp.setWhere("");
+		}
 		FLayer ovLayer = getMapDAO().getLayer(lp, proj);
 		ovLayer.setVisible(true);
 		view.getMapOverview().getMapContext().beginAtomicEvent();
@@ -348,7 +366,7 @@ public class ELLEMap {
 	    //load view layers
 	    loadViewLayers(proj, layersAffectedByConstant);
 	    //load overview layers
-	    loadOverviewLayers(proj);
+	    loadOverviewLayers(proj, layersAffectedByConstant);
 	    getMapDAO().addLoadedMap(this);
 	    loaded = true;
 	    projection = proj;
