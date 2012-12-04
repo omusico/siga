@@ -16,37 +16,37 @@
 			<tool-bar name="Formularios" position="70">
 				<action-tool icon="extgex-expropiations" tooltip="Expediente de expropiaciones" action-command="ExpropiationsFileExtension" position="1"/>
 			</tool-bar>
-			<menu text="Expropiaciones/Formularios/Expediente Expropiación" key="x" action-command="ExpropiationsFileExtension" icon="extgex-expropiations" position="30000"/>
+			<menu text="SIGA/Expropiaciones/Expediente Expropiación" action-command="ExpropiationsFileExtension" icon="extgex-expropiations" position="30000"/>
 		</extension>
 		<extension class-name="es.icarto.gvsig.extgex.FormReversionsExtension" description="FORMS_PANEL" active="true">
 			<tool-bar name="Formularios" position="70">
 				<action-tool icon="extgex-reversions" tooltip="Expediente de reversiones" action-command="ReversionsFileExtension" position="2"/>
 			</tool-bar>
-			<menu text="Expropiaciones/Formularios/Expediente Reversión" key="x" action-command="ReversionsFileExtension" icon="extgex-reversions" position="30050"/>
+			<menu text="SIGA/Expropiaciones/Expediente Reversión" action-command="ReversionsFileExtension" icon="extgex-reversions" position="30050"/>
 		</extension>
 
 		<!-- MAPAS EXTENSIONS -->
 		<extension class-name="org.gvsig.mapsheets.print.series.MapSheetsCreationExtension" description="Generar rejilla y mapa" active="true">
-			<menu text="Expropiaciones" position="30399" is_separator="true"/>				
-			<menu text="Expropiaciones/Mapas/Generar rejilla y mapa" action-command="MAP_SHEETS_GENERATE_DIALOG" icon="images/grid.png" position="30400"/>
+			<menu text="SIGA" position="30899" is_separator="true"/>				
+			<menu text="SIGA/Mapas/Generar rejilla y mapa" action-command="MAP_SHEETS_GENERATE_DIALOG" icon="images/grid.png" position="30900"/>
 			<tool-bar name="MapSheets" position ="80">
 				<action-tool action-command="MAP_SHEETS_GENERATE_DIALOG" tooltip="Generar rejilla y mapa" icon="images/grid.png" position="1"/>
 			</tool-bar>
 		</extension>
 		<extension class-name="org.gvsig.mapsheets.print.series.MapSheetsManipulationExtension" description="Ajustar rejilla" active="true">
-			<menu text="Expropiaciones/Mapas/Ajustar rejilla" action-command="MAP_SHEETS_ADJUST" icon="images/adjust.png" position="30410"/>
+			<menu text="SIGA/Mapas/Ajustar rejilla" action-command="MAP_SHEETS_ADJUST" icon="images/adjust.png" position="30910"/>
 			<tool-bar name="MapSheets" position ="80">
 				<action-tool action-command="MAP_SHEETS_ADJUST" tooltip="Ajustar rejilla" icon="images/adjust.png" position="2"/>
 			</tool-bar>
 		</extension>
 		<extension class-name="org.gvsig.mapsheets.print.series.MapSheetsPrintExtension" description="Actualizar mapa con rejilla" active="true">
-			<menu text="Expropiaciones/Mapas/Actualizar mapa con rejilla" action-command="MAP_SHEETS_SET_NEW_GRID" icon="images/change.png" position="30420"/>
+			<menu text="SIGA/Mapas/Actualizar mapa con rejilla" action-command="MAP_SHEETS_SET_NEW_GRID" icon="images/change.png" position="30920"/>
 			<tool-bar name="MapSheets" position ="80">
 				<action-tool action-command="MAP_SHEETS_SET_NEW_GRID" tooltip="Actualizar mapa" icon="images/change.png" position="3"/>
 			</tool-bar>
 		</extension>
 		<extension class-name="org.gvsig.mapsheets.print.series.MapSheetsPrintExtension" description="Previsualizar e imprimir mapa" active="true">
-			<menu text="Expropiaciones/Mapas/Previsualizar e imprimir mapa" action-command="MAP_SHEETS_PRINT" icon="images/print.png" position="30430"/>
+			<menu text="SIGA/Mapas/Previsualizar e imprimir mapa" action-command="MAP_SHEETS_PRINT" icon="images/print.png" position="30930"/>
 			<tool-bar name="MapSheets" position ="80">
 				<action-tool action-command="MAP_SHEETS_PRINT" tooltip="Previsualizar e imprimir mapa" icon="images/print.png" position="4"/>
 			</tool-bar>
@@ -54,60 +54,60 @@
 
 		<!-- TOOLS EXTENSIONS -->
 		<extension class-name="es.icarto.gvsig.extgex.QueriesExtension" description="QUERIES_PANEL" active="true">
-			<tool-bar name="Formularios" position="70">
-				<action-tool icon="images/queries.png" tooltip="Consultas" action-command="QueriesExtension" position="3"/>
+			<tool-bar name="SIGA_Tools" position="75">
+				<action-tool icon="images/queries.png" tooltip="Consultas" action-command="QueriesExtension" position="1"/>
 			</tool-bar>
-			<menu text="Expropiaciones" position="30099" is_separator="true"/>			
-			<menu text="Expropiaciones/Consultas e Informes" key="x" action-command="QueriesExtension" icon="images/queries.png" position="30100"/>
+			<menu text="SIGA" position="30599" is_separator="true"/>			
+			<menu text="SIGA/Consultas e Informes" action-command="QueriesExtension" position="30600"/>
 		</extension>
 		<extension class-name="es.icarto.gvsig.extgex.LocatorByPKExtension" description="PK_LOCATOR" active="true">
-			<menu text="Expropiaciones" position="30199" is_separator="true"/>			
-			<menu text="Expropiaciones/Localización/PK" action-command="LocatorByPKExtension" position="30200"/>
-			<tool-bar name="Expropiaciones_Tools" position="75">
-				<action-tool icon="images/pk_locator.png" tooltip="Localizador de PK" action-command="LocatorByPKExtension" position="1"/>
+			<menu text="SIGA" position="30699" is_separator="true"/>			
+			<menu text="SIGA/Localización/PK" action-command="LocatorByPKExtension" icon="images/pk_locator.png" position="30700"/>
+			<tool-bar name="SIGA_Tools" position="75">
+				<action-tool icon="images/pk_locator.png" tooltip="Localizador de PK" action-command="LocatorByPKExtension" position="2"/>
 			</tool-bar>
 		</extension>
 		<extension class-name="es.icarto.gvsig.extgex.LocatorByFincaExtension" description="FINCA_LOCATOR" active="true">
-			<menu text="Expropiaciones/Localización/Finca" action-command="LocatorByFincaExtension" position="30210"/>
+			<menu text="SIGA/Localización/Finca" action-command="LocatorByFincaExtension" position="30720"/>
 		</extension>
 		<extension class-name="es.icarto.gvsig.extgex.LocatorByMunicipioExtension" description="MUNICIPIO_LOCATOR" active="true">
-			<menu text="Expropiaciones/Localización/Municipio o Parroquia" action-command="LocatorByMunicipioExtension" position="30220"/>
+			<menu text="SIGA/Localización/Municipio o Parroquia" action-command="LocatorByMunicipioExtension" position="30710"/>
 		</extension>
 
 		<!-- WMS EXTENSIONS -->
 		<extension class-name="es.icarto.gvsig.extgex.WMSLoadFincasExtension" description="LOAD_FINCAS_WMS" active="true">
-			<menu text="Expropiaciones" position="30299" is_separator="true"/>			
-			<menu text="Expropiaciones/WMS/Planos Expropiaciones" icon="images/planos_wms.png" position="30300"/>
-			<tool-bar name="Expropiaciones_Tools" position="75">
+			<menu text="SIGA" position="30799" is_separator="true"/>			
+			<menu text="SIGA/WMS/Planos Expropiaciones" icon="images/planos_wms.png" position="30800"/>
+			<tool-bar name="SIGA_Tools" position="75">
 				<action-tool icon="images/planos_wms.png" action-command="LoadFincasExtension" tooltip="Cargar Planos Expropiaciones" position="4"/>
 			</tool-bar>
 		</extension>
 		
 		<extension class-name="es.icarto.gvsig.extgex.WMSLoadEstadoDimensionesExtension" description="LOAD_EstadoDimensiones_WMS" active="true">
-			<menu text="Expropiaciones/WMS/Planos Estado de Dimensiones" action-command="LoadEstadoDimensionesExtension" position="30310"/>
+			<menu text="SIGA/WMS/Planos Estado de Dimensiones" action-command="LoadEstadoDimensionesExtension" position="30810"/>
 		</extension>
 		
 		<extension class-name="es.icarto.gvsig.extgex.WMSLoadPNOALocalExtension" description="LOAD_PNOA_WMS" active="true">
-			<menu text="Expropiaciones/WMS/Ortofotos PNOA (Local)" icon="images/wms.png" action-command="LoadPNOAExtension" position="30320"/>
-			<tool-bar name="Expropiaciones_Tools" position="75">
+			<menu text="SIGA/WMS/Ortofotos PNOA (Local)" icon="images/wms.png" action-command="LoadPNOAExtension" position="30820"/>
+			<tool-bar name="SIGA_Tools" position="75">
 				<action-tool icon="images/wms.png" action-command="LoadPNOAExtension" tooltip="Cargar WMS PNOA (Local)" position="5"/>
 			</tool-bar>
 		</extension>
 		
 		<extension class-name="es.icarto.gvsig.extgex.WMSLoadPNOAExtension" description="LOAD_PNOA_WMS" active="true">
-			<menu text="Expropiaciones/WMS/Ortofotos PNOA (Internet)" action-command="LoadPNOAExtension" position="30330"/>
+			<menu text="SIGA/WMS/Ortofotos PNOA (Internet)" action-command="LoadPNOAExtension" position="30830"/>
 		</extension>
 		
 		<extension class-name="es.icarto.gvsig.extgex.WMSLoadCatastroExtension" description="LOAD_CATASTRO_WMS" active="true">
-			<menu text="Expropiaciones/WMS/Catastro" action-command="LoadCatastroExtension" position="30340"/>
+			<menu text="SIGA/WMS/Catastro" action-command="LoadCatastroExtension" position="30840"/>
 		</extension>
 		
 		<extension class-name="es.icarto.gvsig.extgex.WMSLoadPUSectoresExtension" description="LOAD_PUSectores_WMS" active="true">
-			<menu text="Expropiaciones/WMS/Planeamiento Urbanístico (Sectores)" action-command="LoadPUSectoresExtension" position="30350"/>
+			<menu text="SIGA/WMS/Planeamiento Urbanístico (Sectores)" action-command="LoadPUSectoresExtension" position="30850"/>
 		</extension>
 		
 		<extension class-name="es.icarto.gvsig.extgex.WMSLoadPUClasesDeSueloExtension" description="LOAD_PUClasesDeSuelo_WMS" active="true">
-			<menu text="Expropiaciones/WMS/Planeamiento Urbanístico (Clases de Suelo)" action-command="LoadPUClasesDeSueloExtension" position="30360"/>
+			<menu text="SIGA/WMS/Planeamiento Urbanístico (Clases de Suelo)" action-command="LoadPUClasesDeSueloExtension" position="30860"/>
 		</extension>
 
 

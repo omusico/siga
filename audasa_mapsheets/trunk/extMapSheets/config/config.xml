@@ -12,11 +12,11 @@
 			<menu text="Vista/Map_sheets/Import_SHP_as_grid" action-command="MAP_SHEETS_FROM_SHP" icon="images/fromshp.png"/>
 		</extension>
 		<extension class-name="org.gvsig.mapsheets.print.series.MapSheetsLoadExtension" description="Generate series of maps" active="true">
-			<menu text="Vista/Map_sheets/Import_grid" action-command="MAP_SHEETS_FROM_FILE" icon="images/fromfile.png"/>
-		</extension>
+<!--			<menu text="Vista/Map_sheets/Import_grid" action-command="MAP_SHEETS_FROM_FILE" icon="images/fromfile.png"/>
+-->		</extension>
 		<extension class-name="org.gvsig.mapsheets.print.series.MapSheetsSaveExtension" description="Generate series of maps" active="true">
-			<menu text="Vista/Map_sheets/Save_grid" action-command="MAP_SHEETS_TO_FILE" icon="images/tofile.png"/>
-		</extension>
+<!--			<menu text="Vista/Map_sheets/Save_grid" action-command="MAP_SHEETS_TO_FILE" icon="images/tofile.png"/>
+-->		</extension>
 		<extension class-name="org.gvsig.mapsheets.print.series.MapSheetsManipulationExtension" description="Generate series of maps" active="false">
 			<menu text="Vista/Map_sheets/Export_grid_as_SHP" action-command="MAP_SHEETS_TO_SHP" icon="images/toshp.png"/>
 			<menu text="Vista/Map_sheets/Adjust_sheets_in_current_grid" action-command="MAP_SHEETS_ADJUST" icon="images/adjust.png"/>
