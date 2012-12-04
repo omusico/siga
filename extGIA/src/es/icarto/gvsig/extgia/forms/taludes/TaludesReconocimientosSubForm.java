@@ -19,5 +19,4 @@ public class TaludesReconocimientosSubForm extends AbstractSubForm {
 		.getPath();
 
     }
-
 }

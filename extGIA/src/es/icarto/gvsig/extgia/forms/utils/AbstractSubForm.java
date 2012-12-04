@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -15,9 +14,9 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 
 import com.hardcode.gdbms.engine.values.Value;
+import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.jeta.forms.components.image.ImageComponent;
@@ -38,6 +37,7 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
     private final FormPanel form;
     private final HashMap<String, Integer> types;
     private HashMap<String, Value> values;
+    private final String dbTableName;
     private final JTable embebedTable;
     private final String idField;
     private final String idValue;
@@ -65,6 +65,7 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
 	    e.printStackTrace();
 	}
 	this.form = result;
+	this.dbTableName = dbTableName;
 	this.embebedTable = embebedTable;
 	this.idField = idField;
 	this.idValue = idValue;
@@ -104,35 +105,29 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-	    DefaultTableModel tableModel = (DefaultTableModel) embebedTable.getModel();
-	    for (int i=0; i<getFormData().size(); i++) {
-		System.out.println("VALUE: " + getFormData().get(i));
+	    if (!edit) {
+		SqlUtils.insert(DBFieldNames.GIA_SCHEMA, dbTableName, getFormData());
+		closeWindow();
+		repaint();
 	    }
-	    //	    tableModel.addRow(getFormData());
 	}
 
     }
 
-    private Vector<String> getFormData() {
-	Vector<String> formData = new Vector<String>();
+    private HashMap<String, String> getFormData() {
+	HashMap<String, String> formData = new HashMap<String, String>();
 	for (JComponent comp : widgetsVector.values()) {
 	    if (comp instanceof JComboBox) {
 		if (((JComboBox) comp).getSelectedItem() != null) {
-		    formData.add(((JComboBox) comp).getSelectedItem().toString());
-		}else {
-		    formData.add("");
+		    formData.put(comp.getName(), ((JComboBox) comp).getSelectedItem().toString());
 		}
 	    } else if (comp instanceof JTextField) {
 		if (!((JTextField) comp).getText().isEmpty()) {
-		    formData.add(((JTextField) comp).getText());
-		}else {
-		    formData.add("");
+		    formData.put(comp.getName(),((JTextField) comp).getText());
 		}
 	    } else if (comp instanceof JTextArea) {
 		if (!((JTextArea) comp).getText().isEmpty()) {
-		    formData.add(((JTextArea) comp).getText());
-		}else {
-		    formData.add("");
+		    formData.put(comp.getName(), ((JTextArea) comp).getText());
 		}
 	    }
 	}
@@ -217,6 +212,10 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
 	    pkValue = embebedTable.getValueAt(selectedRow, 0).toString();
 	}
 	return pkValue;
+    }
+
+    public void closeWindow() {
+	PluginServices.getMDIManager().closeWindow(this);
     }
 
     @Override

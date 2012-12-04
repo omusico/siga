@@ -18,5 +18,4 @@ public class TaludesTrabajosSubForm extends AbstractSubForm {
 	return this.getClass().getClassLoader().getResource("rules/extgia.xml")
 		.getPath();
     }
-
 }

@@ -163,21 +163,21 @@ public class SqlUtils {
 	}
     }
 
-    public static void insert(String schema, String tablename, HashMap<String, Value> values) {
+    public static void insert(String schema, String tablename, HashMap<String, String> values) {
 	PreparedStatement statement;
 	String query = "INSERT INTO " + schema + "." + tablename + " (";
-	Iterator<Entry<String, Value>> columnsIterator = values.entrySet().iterator();
+	Iterator<Entry<String, String>> columnsIterator = values.entrySet().iterator();
 	while (columnsIterator.hasNext()) {
-	    Entry<String, Value> e = columnsIterator.next();
+	    Entry<String, String> e = columnsIterator.next();
 	    query = query + e.getKey() + ",";
 	}
 	query = query + ")";
 	query = query.replace(",)", ")");
-	query = query + " VALUES ('";
-	Iterator<Entry<String, Value>> valuesIterator = values.entrySet().iterator();
+	query = query + " VALUES (";
+	Iterator<Entry<String, String>> valuesIterator = values.entrySet().iterator();
 	while (valuesIterator.hasNext()) {
-	    Entry<String, Value> e = valuesIterator.next();
-	    query = query + e.getValue() + "',";
+	    Entry<String, String> e = valuesIterator.next();
+	    query = query + "'" + e.getValue() + "',";
 	}
 	query = query + ");";
 	query = query.replace(",);", ");");
