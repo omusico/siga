@@ -3,6 +3,7 @@ package es.icarto.gvsig.extgia.forms.utils;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -16,6 +17,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.hardcode.gdbms.engine.values.Value;
+import com.hardcode.gdbms.engine.values.ValueFactory;
 import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.andami.ui.mdiManager.WindowInfo;
@@ -75,8 +77,8 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
 	if (edit) {
 	    this.values = SqlUtils.getValuesFilteredByPk(DBFieldNames.GIA_SCHEMA,
 		    dbTableName, idField, getPKSelectedValue());
-	    fillValues();
 	}
+	fillValues(edit);
     }
 
     public abstract String getXMLPath();
@@ -114,34 +116,54 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
 
     }
 
-    private HashMap<String, String> getFormData() {
-	HashMap<String, String> formData = new HashMap<String, String>();
+    private HashMap<String, Value> getFormData() {
+	HashMap<String, Value> formData = new HashMap<String, Value>();
 	for (JComponent comp : widgetsVector.values()) {
 	    if (comp instanceof JComboBox) {
 		if (((JComboBox) comp).getSelectedItem() != null) {
-		    formData.put(comp.getName(), ((JComboBox) comp).getSelectedItem().toString());
+		    if (((JComboBox) comp).getSelectedItem() instanceof KeyValue) {
+			try {
+			    formData.put(comp.getName(),
+				    ValueFactory.createValueByType(
+					    ((KeyValue) ((JComboBox) comp).getSelectedItem()).getKey(), 4)
+				    );
+			} catch (ParseException e) {
+			    e.printStackTrace();
+			}
+		    }else {
+			formData.put(comp.getName(),
+				(ValueFactory.createValue(((JComboBox) comp).getSelectedItem().toString())));
+		    }
 		}
 	    } else if (comp instanceof JTextField) {
 		if (!((JTextField) comp).getText().isEmpty()) {
-		    formData.put(comp.getName(),((JTextField) comp).getText());
+		    formData.put(comp.getName(),
+			    (ValueFactory.createValue(((JTextField) comp).getText().toString())));
 		}
 	    } else if (comp instanceof JTextArea) {
 		if (!((JTextArea) comp).getText().isEmpty()) {
-		    formData.put(comp.getName(), ((JTextArea) comp).getText());
+		    formData.put(comp.getName(),
+			    (ValueFactory.createValue(((JComboBox) comp).getSelectedItem().toString())));
 		}
 	    }
 	}
 	return formData;
     }
 
-    protected void fillValues() {
+    protected void fillValues(boolean edit) {
 	for (JComponent comp : widgetsVector.values()) {
-	    if (comp instanceof JTextField) {
-		fillJTextField((JTextField) comp);
-	    } else if (comp instanceof JTextArea) {
-		fillJTextArea((JTextArea) comp);
-	    } else if (comp instanceof JComboBox) {
-		fillJComboBox((JComboBox) comp);
+	    if (!edit) {
+		if (comp instanceof JComboBox) {
+		    fillJComboBox((JComboBox) comp, edit);
+		}
+	    }else {
+		if (comp instanceof JTextField) {
+		    fillJTextField((JTextField) comp);
+		} else if (comp instanceof JTextArea) {
+		    fillJTextArea((JTextArea) comp);
+		} else if (comp instanceof JComboBox) {
+		    fillJComboBox((JComboBox) comp, edit);
+		}
 	    }
 	}
     }
@@ -158,14 +180,16 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
 	textArea.setText(fieldValue.toString());
     }
 
-    protected void fillJComboBox(JComboBox combobox) {
+    protected void fillJComboBox(JComboBox combobox, boolean edit) {
 	String colName = combobox.getName();
-	Value fieldValue = values.get(colName);
 	DomainValues dv = ORMLite.getAplicationDomainObject(getXMLPath())
 		.getDomainValuesForComponent(colName);
 	if (dv != null) {
 	    addDomainValuesToComboBox(combobox, dv.getValues());
-	    setDomainValueSelected(combobox, fieldValue.toString());
+	    if (edit) {
+		Value fieldValue = values.get(colName);
+		setDomainValueSelected(combobox, fieldValue.toString());
+	    }
 	}
     }
 
