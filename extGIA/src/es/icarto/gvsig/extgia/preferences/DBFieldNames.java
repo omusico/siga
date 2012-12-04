@@ -1,6 +1,18 @@
 package es.icarto.gvsig.extgia.preferences;
 
 public class DBFieldNames {
+    public static String[] reconocimientoEstadoFields = {"n_inspeccion as \"Nº Inspección\"",
+	"nombre_revisor as \"Revisor\"",
+	"fecha_inspeccion as \"Fecha Inspección\"",
+    "indice_estado as \"Indice Estado\""};
+
+    public static String[] trabajoFields = {"id_trabajo as \"ID\"",
+	"fecha as \"Fecha\"",
+	"unidad as \"Unidad\"",
+	"medicion_contratista as \"Medida Contratista\"",
+    "medicion_audasa as \"Medida AUDASA\""};
+
+
     public static final String GIA_SCHEMA = "audasa_extgia";
 
     public static final String TALUDES_TABLENAME = "audasa_extgia.taludes";

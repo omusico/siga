@@ -151,6 +151,46 @@ public class SqlUtils {
 	}
     }
 
+    public static void reloadEmbebedTable (JTable embebedTable, String[] fields,
+	    String schema, String tableName, String idField, String idValue) {
+	PreparedStatement statement;
+	DefaultTableModel tableModel = (DefaultTableModel) embebedTable.getModel();
+	for (int i=tableModel.getRowCount()-1; i>=0; i--) {
+	    tableModel.removeRow(i);
+	}
+	String query = "SELECT ";
+	for (String field : fields) {
+	    query = query + field + ",";
+	}
+	query = query +  "FROM " + schema + "." + tableName +
+		" WHERE " + idField + " = '" + idValue + "';";
+	query = query.replace(",FROM", " FROM");
+	try {
+	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+	    statement.execute();
+	    ResultSet rs = statement.getResultSet();
+	    ResultSetMetaData rsMetaData = rs.getMetaData();
+	    Value[] tableValues = new Value[rsMetaData.getColumnCount()];
+	    while (rs.next()) {
+		for (int i=0; i<rsMetaData.getColumnCount(); i++) {
+		    if (rs.getString(i+1) == null) {
+			tableValues[i] = ValueFactory.createNullValue();
+		    }else {
+			tableValues[i] =
+				ValueFactory.createValueByType(rs.getString(i+1),
+					rsMetaData.getColumnType(i+1));
+		    }
+		}
+		tableModel.addRow(tableValues);
+	    }
+	    embebedTable.repaint();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} catch (ParseException e) {
+	    e.printStackTrace();
+	}
+    }
+
     public static void delete(String schema, String tablename, String pkField, String pkValue) {
 	PreparedStatement statement;
 	String query = "DELETE FROM " + schema + "." + tablename +

@@ -110,6 +110,14 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
 	    if (!edit) {
 		SqlUtils.insert(DBFieldNames.GIA_SCHEMA, dbTableName, getFormData());
 		closeWindow();
+		String[] fields = null;
+		if (embebedTable.getName().equalsIgnoreCase("taludes_reconocimiento_estado")) {
+		    fields = DBFieldNames.reconocimientoEstadoFields;
+		}else {
+		    fields = DBFieldNames.trabajoFields;
+		}
+		SqlUtils.reloadEmbebedTable(embebedTable, fields, DBFieldNames.GIA_SCHEMA,
+			dbTableName, idField, idValue);
 		repaint();
 	    }
 	}

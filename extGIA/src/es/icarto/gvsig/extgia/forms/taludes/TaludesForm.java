@@ -168,22 +168,13 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	}
 
 	// Embebed Tables
-	String[] reconocimientoEstadoFields = {"n_inspeccion as \"Nº Inspección\"",
-		"nombre_revisor as \"Revisor\"",
-		"fecha_inspeccion as \"Fecha Inspección\"",
-	"indice_estado as \"Indice Estado\""};
-	String[] trabajoFields = {"id_trabajo as \"ID\"",
-		"fecha as \"Fecha\"",
-		"unidad as \"Unidad\"",
-		"medicion_contratista as \"Medida Contratista\"",
-	"medicion_audasa as \"Medida AUDASA\""};
 	int[] trabajoColumnsSize = {1, 1, 120, 60, 60};
 	SqlUtils.createEmbebedTableFromDB(reconocimientoEstado,
 		"audasa_extgia", "taludes_reconocimiento_estado",
-		reconocimientoEstadoFields, null, "id_talud", taludIDWidget.getText());
+		DBFieldNames.reconocimientoEstadoFields, null, "id_talud", taludIDWidget.getText());
 	SqlUtils.createEmbebedTableFromDB(trabajos,
 		"audasa_extgia", "taludes_trabajos",
-		trabajoFields, trabajoColumnsSize, "id_talud", taludIDWidget.getText());
+		DBFieldNames.trabajoFields, trabajoColumnsSize, "id_talud", taludIDWidget.getText());
     }
 
     protected void initListeners() {
