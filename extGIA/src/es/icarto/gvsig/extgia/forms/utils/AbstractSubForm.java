@@ -39,6 +39,8 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
     private final HashMap<String, Integer> types;
     private HashMap<String, Value> values;
     private final JTable embebedTable;
+    private final String idField;
+    private final String idValue;
     private final boolean edit;
 
     protected WindowInfo viewInfo = null;
@@ -52,6 +54,7 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
 	    String dbTableName,
 	    JTable embebedTable,
 	    String idField,
+	    String idValue,
 	    boolean edit) {
 	InputStream stream = getClass().getClassLoader().getResourceAsStream(formFile);
 	FormPanel result = null;
@@ -63,6 +66,8 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
 	}
 	this.form = result;
 	this.embebedTable = embebedTable;
+	this.idField = idField;
+	this.idValue = idValue;
 	this.edit = edit;
 	this.types = SqlUtils.getDataTypesFromDbTable(DBFieldNames.GIA_SCHEMA, dbTableName);
 	initWidgets();
@@ -78,6 +83,9 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
     protected void initWidgets() {
 	widgetsVector = AbeilleParser.getWidgetsFromContainer(form);
 	widgetsVector.size();
+
+	JTextField idWidget = (JTextField) widgetsVector.get(idField);
+	idWidget.setText(idValue);
 
 	JButton addButton = (JButton) form.getComponentByName("add_subform_button");
 	AddDataToJTableListener addDataToJTableListener = new AddDataToJTableListener();

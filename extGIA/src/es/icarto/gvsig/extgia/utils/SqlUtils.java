@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -159,5 +161,32 @@ public class SqlUtils {
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
+    }
+
+    public static void insert(String schema, String tablename, HashMap<String, Value> values) {
+	PreparedStatement statement;
+	String query = "INSERT INTO " + schema + "." + tablename + " (";
+	Iterator<Entry<String, Value>> columnsIterator = values.entrySet().iterator();
+	while (columnsIterator.hasNext()) {
+	    Entry<String, Value> e = columnsIterator.next();
+	    query = query + e.getKey() + ",";
+	}
+	query = query + ")";
+	query = query.replace(",)", ")");
+	query = query + " VALUES ('";
+	Iterator<Entry<String, Value>> valuesIterator = values.entrySet().iterator();
+	while (valuesIterator.hasNext()) {
+	    Entry<String, Value> e = valuesIterator.next();
+	    query = query + e.getValue() + "',";
+	}
+	query = query + ");";
+	query = query.replace(",);", ");");
+	try {
+	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+	    statement.execute();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+
     }
 }

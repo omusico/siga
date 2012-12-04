@@ -8,8 +8,8 @@ import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
 public class TaludesTrabajosSubForm extends AbstractSubForm {
 
     public TaludesTrabajosSubForm(String formFile, String dbTableName,
-	    JTable embebedTable, String idField, boolean edit) {
-	super(formFile, dbTableName, embebedTable, idField, edit);
+	    JTable embebedTable, String idField, String idValue, boolean edit) {
+	super(formFile, dbTableName, embebedTable, idField, idValue, edit);
 	// TODO Auto-generated constructor stub
     }
 

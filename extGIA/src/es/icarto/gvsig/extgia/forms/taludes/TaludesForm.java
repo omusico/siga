@@ -275,7 +275,8 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    TaludesReconocimientosSubForm subForm =
 		    new TaludesReconocimientosSubForm("forms/taludes_reconocimiento_estado.xml",
-			    "taludes_reconocimiento_estado", reconocimientoEstado, "id_talud", false);
+			    "taludes_reconocimiento_estado", reconocimientoEstado, "id_talud",
+			    taludIDWidget.getText(), false);
 	    PluginServices.getMDIManager().addWindow(subForm);
 	}
     }
@@ -285,7 +286,8 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    TaludesReconocimientosSubForm subForm =
 		    new TaludesReconocimientosSubForm("forms/taludes_trabajos.xml",
-			    "taludes_trabajos", trabajos, "id_talud", false);
+			    "taludes_trabajos", trabajos, "id_talud",
+			    taludIDWidget.getText(), false);
 	    PluginServices.getMDIManager().addWindow(subForm);
 	}
     }
@@ -296,7 +298,8 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	    if (reconocimientoEstado.getSelectedRowCount() != 0) {
 		TaludesReconocimientosSubForm subForm =
 			new TaludesReconocimientosSubForm("forms/taludes_reconocimiento_estado.xml",
-				"taludes_reconocimiento_estado", reconocimientoEstado, "n_inspeccion", true);
+				"taludes_reconocimiento_estado", reconocimientoEstado, "n_inspeccion",
+				taludIDWidget.getText(), true);
 		PluginServices.getMDIManager().addWindow(subForm);
 	    }else {
 		JOptionPane.showMessageDialog(null,
@@ -313,7 +316,8 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	    if (trabajos.getSelectedRowCount() != 0) {
 		TaludesReconocimientosSubForm subForm =
 			new TaludesReconocimientosSubForm("forms/taludes_trabajos.xml",
-				"taludes_trabajos", trabajos, "id_trabajo", true);
+				"taludes_trabajos", trabajos, "id_trabajo",
+				taludIDWidget.getText(), true);
 		PluginServices.getMDIManager().addWindow(subForm);
 	    }else {
 		JOptionPane.showMessageDialog(null,
