@@ -265,9 +265,15 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    TaludesReconocimientosSubForm subForm =
-		    new TaludesReconocimientosSubForm("forms/taludes_reconocimiento_estado.xml",
-			    "taludes_reconocimiento_estado", reconocimientoEstado, "id_talud",
-			    taludIDWidget.getText(), false);
+		    new TaludesReconocimientosSubForm(
+			    "forms/taludes_reconocimiento_estado.xml",
+			    "taludes_reconocimiento_estado",
+			    reconocimientoEstado,
+			    "id_talud",
+			    taludIDWidget.getText(),
+			    null,
+			    null,
+			    false);
 	    PluginServices.getMDIManager().addWindow(subForm);
 	}
     }
@@ -276,9 +282,15 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    TaludesReconocimientosSubForm subForm =
-		    new TaludesReconocimientosSubForm("forms/taludes_trabajos.xml",
-			    "taludes_trabajos", trabajos, "id_talud",
-			    taludIDWidget.getText(), false);
+		    new TaludesReconocimientosSubForm(
+			    "forms/taludes_trabajos.xml",
+			    "taludes_trabajos",
+			    trabajos,
+			    "id_talud",
+			    taludIDWidget.getText(),
+			    null,
+			    null,
+			    false);
 	    PluginServices.getMDIManager().addWindow(subForm);
 	}
     }
@@ -287,10 +299,17 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    if (reconocimientoEstado.getSelectedRowCount() != 0) {
+		int row = reconocimientoEstado.getSelectedRow();
 		TaludesReconocimientosSubForm subForm =
-			new TaludesReconocimientosSubForm("forms/taludes_reconocimiento_estado.xml",
-				"taludes_reconocimiento_estado", reconocimientoEstado, "n_inspeccion",
-				taludIDWidget.getText(), true);
+			new TaludesReconocimientosSubForm(
+				"forms/taludes_reconocimiento_estado.xml",
+				"taludes_reconocimiento_estado",
+				reconocimientoEstado,
+				"id_talud",
+				taludIDWidget.getText(),
+				"n_inspeccion",
+				reconocimientoEstado.getValueAt(row, 0).toString(),
+				true);
 		PluginServices.getMDIManager().addWindow(subForm);
 	    }else {
 		JOptionPane.showMessageDialog(null,
@@ -305,10 +324,17 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    if (trabajos.getSelectedRowCount() != 0) {
+		int row = reconocimientoEstado.getSelectedRow();
 		TaludesReconocimientosSubForm subForm =
-			new TaludesReconocimientosSubForm("forms/taludes_trabajos.xml",
-				"taludes_trabajos", trabajos, "id_trabajo",
-				taludIDWidget.getText(), true);
+			new TaludesReconocimientosSubForm(
+				"forms/taludes_trabajos.xml",
+				"taludes_trabajos",
+				trabajos,
+				"id_talud",
+				taludIDWidget.getText(),
+				"id_trabajo",
+				trabajos.getValueAt(row, 0).toString(),
+				true);
 		PluginServices.getMDIManager().addWindow(subForm);
 	    }else {
 		JOptionPane.showMessageDialog(null,

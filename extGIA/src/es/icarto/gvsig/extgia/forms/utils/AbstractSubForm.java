@@ -41,6 +41,8 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
     private HashMap<String, Value> values;
     private final String dbTableName;
     private final JTable embebedTable;
+    private final String idElementField;
+    private final String idElementValue;
     private final String idField;
     private final String idValue;
     private final boolean edit;
@@ -55,6 +57,8 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
     public AbstractSubForm(String formFile,
 	    String dbTableName,
 	    JTable embebedTable,
+	    String idElementField,
+	    String idElementValue,
 	    String idField,
 	    String idValue,
 	    boolean edit) {
@@ -69,6 +73,8 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
 	this.form = result;
 	this.dbTableName = dbTableName;
 	this.embebedTable = embebedTable;
+	this.idElementField = idElementField;
+	this.idElementValue = idElementValue;
 	this.idField = idField;
 	this.idValue = idValue;
 	this.edit = edit;
@@ -109,17 +115,20 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
 	public void actionPerformed(ActionEvent arg0) {
 	    if (!edit) {
 		SqlUtils.insert(DBFieldNames.GIA_SCHEMA, dbTableName, getFormData());
-		closeWindow();
-		String[] fields = null;
-		if (embebedTable.getName().equalsIgnoreCase("taludes_reconocimiento_estado")) {
-		    fields = DBFieldNames.reconocimientoEstadoFields;
-		}else {
-		    fields = DBFieldNames.trabajoFields;
-		}
-		SqlUtils.reloadEmbebedTable(embebedTable, fields, DBFieldNames.GIA_SCHEMA,
-			dbTableName, idField, idValue);
-		repaint();
+	    }else {
+		SqlUtils.update(DBFieldNames.GIA_SCHEMA, dbTableName, getFormData(),
+			idField, idValue);
 	    }
+	    closeWindow();
+	    String[] fields = null;
+	    if (embebedTable.getName().equalsIgnoreCase("taludes_reconocimiento_estado")) {
+		fields = DBFieldNames.reconocimientoEstadoFields;
+	    }else {
+		fields = DBFieldNames.trabajoFields;
+	    }
+	    SqlUtils.reloadEmbebedTable(embebedTable, fields, DBFieldNames.GIA_SCHEMA,
+		    dbTableName, idElementField, idElementValue);
+	    repaint();
 	}
 
     }

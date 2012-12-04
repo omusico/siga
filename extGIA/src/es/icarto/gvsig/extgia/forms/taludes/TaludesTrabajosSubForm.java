@@ -7,9 +7,17 @@ import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
 @SuppressWarnings("serial")
 public class TaludesTrabajosSubForm extends AbstractSubForm {
 
-    public TaludesTrabajosSubForm(String formFile, String dbTableName,
-	    JTable embebedTable, String idField, String idValue, boolean edit) {
-	super(formFile, dbTableName, embebedTable, idField, idValue, edit);
+    public TaludesTrabajosSubForm(
+	    String formFile,
+	    String dbTableName,
+	    JTable embebedTable,
+	    String idElementField,
+	    String idElementValue,
+	    String idField,
+	    String idValue,
+	    boolean edit) {
+	super(formFile, dbTableName, embebedTable, idElementField, idElementValue,idField, idValue,
+		edit);
 	// TODO Auto-generated constructor stub
     }
 

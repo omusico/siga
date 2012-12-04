@@ -231,6 +231,30 @@ public class SqlUtils {
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
+    }
+
+    public static void update(String schema, String tablename, HashMap<String, Value> values,
+	    String idField, String idValue) {
+	PreparedStatement statement;
+	String query = "UPDATE " + schema + "." + tablename + " SET ";
+	Iterator<Entry<String, Value>> columnsIterator = values.entrySet().iterator();
+	while (columnsIterator.hasNext()) {
+	    Entry<String, Value> e = columnsIterator.next();
+	    if (e.getValue().getSQLType() == 4) {
+		query = query + e.getKey() + " = " + e.getValue() + ",";
+	    }else {
+		query = query + e.getKey() + " = '" + e.getValue() + "',";
+	    }
+	}
+	query = query + "WHERE";
+	query = query.replace(",WHERE", " WHERE ");
+	query = query + idField + " = '" + idValue + "';";
+	try {
+	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+	    statement.execute();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
 
     }
 }
