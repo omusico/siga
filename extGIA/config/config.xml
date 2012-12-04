@@ -9,8 +9,8 @@
 	<resourceBundle name="text"/>
 	<extensions>
 		<extension class-name="es.icarto.gvsig.extgia.FormLauncherExtension" description="form_launcher" active="true">
-		<menu text="SIGA/Inventario/Taludes" action-command="taludes" position="36000"/>
-		<menu text="SIGA/Inventario/Isletas" action-command="isletas" position="36010"/>
+		<menu text="SIGA/Inventario/Taludes" action-command="taludes" position="30399"/>
+		<menu text="SIGA/Inventario/Isletas" action-command="isletas" position="30400"/>
 		</extension>
 	</extensions>
 </plugin-config>
