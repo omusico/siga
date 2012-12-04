@@ -324,7 +324,7 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    if (trabajos.getSelectedRowCount() != 0) {
-		int row = reconocimientoEstado.getSelectedRow();
+		int row = trabajos.getSelectedRow();
 		TaludesReconocimientosSubForm subForm =
 			new TaludesReconocimientosSubForm(
 				"forms/taludes_trabajos.xml",
@@ -361,13 +361,26 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 
     private void deleteElement(JTable embebedTable, String dbTableName,
 	    String pkField) {
-	int selectedRow = embebedTable.getSelectedRow();
-	String pkValue = embebedTable.getValueAt(selectedRow, 0).toString();
-	if (selectedRow != -1) {
-	    DefaultTableModel model = (DefaultTableModel) embebedTable.getModel();
-	    model.removeRow(selectedRow);
-	    SqlUtils.delete(DBFieldNames.GIA_SCHEMA, dbTableName, pkField, pkValue);
-	    repaint();
+
+	if (embebedTable.getSelectedRowCount() != 0) {
+	    Object[] options = {"Eliminar", "Cancelar"};
+	    int response = JOptionPane.showOptionDialog(null,
+		    "Los datos seleccionados se eliminarán de forma permanente.",
+		    "Eliminar",
+		    JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+		    null, // do not use a custom Icon
+		    options, // the titles of buttons
+		    options[0]); // default button title
+	    if (response == JOptionPane.YES_OPTION) {
+		int selectedRow = embebedTable.getSelectedRow();
+		String pkValue = embebedTable.getValueAt(selectedRow, 0).toString();
+		DefaultTableModel model = (DefaultTableModel) embebedTable.getModel();
+		model.removeRow(selectedRow);
+		SqlUtils.delete(DBFieldNames.GIA_SCHEMA, dbTableName, pkField, pkValue);
+		repaint();
+	    } else {
+		// Nothing to do
+	    }
 	}else {
 	    JOptionPane.showMessageDialog(null,
 		    "Debe seleccionar una fila para editar los datos.",

@@ -93,8 +93,8 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
 	widgetsVector = AbeilleParser.getWidgetsFromContainer(form);
 	widgetsVector.size();
 
-	JTextField idWidget = (JTextField) widgetsVector.get(idField);
-	idWidget.setText(idValue);
+	JTextField idWidget = (JTextField) widgetsVector.get(idElementField);
+	idWidget.setText(idElementValue);
 
 	JButton addButton = (JButton) form.getComponentByName("add_subform_button");
 	AddDataToJTableListener addDataToJTableListener = new AddDataToJTableListener();
