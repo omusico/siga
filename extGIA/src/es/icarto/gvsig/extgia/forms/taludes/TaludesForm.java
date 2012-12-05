@@ -15,7 +15,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 
 import org.apache.log4j.Logger;
 
@@ -319,44 +318,35 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     public class DeleteReconocimientoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    deleteElement(reconocimientoEstado, "taludes_reconocimiento_estado", "n_inspeccion");
+	    deleteElement(reconocimientoEstado, getReconocimientosDBTableName(),
+		    getReconocimientosIDField());
 	}
     }
 
     public class DeleteTrabajoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    deleteElement(trabajos, "taludes_trabajos", "id_trabajo");
+	    deleteElement(trabajos, getTrabajosDBTableName(), getTrabajosIDField());
 	}
     }
 
-    private void deleteElement(JTable embebedTable, String dbTableName,
-	    String pkField) {
+    @Override
+    public JTable getReconocimientosJTable() {
+	return reconocimientoEstado;
+    }
 
-	if (embebedTable.getSelectedRowCount() != 0) {
-	    Object[] options = {"Eliminar", "Cancelar"};
-	    int response = JOptionPane.showOptionDialog(null,
-		    "Los datos seleccionados se eliminarán de forma permanente.",
-		    "Eliminar",
-		    JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
-		    null, // do not use a custom Icon
-		    options, // the titles of buttons
-		    options[0]); // default button title
-	    if (response == JOptionPane.YES_OPTION) {
-		int selectedRow = embebedTable.getSelectedRow();
-		String pkValue = embebedTable.getValueAt(selectedRow, 0).toString();
-		DefaultTableModel model = (DefaultTableModel) embebedTable.getModel();
-		model.removeRow(selectedRow);
-		SqlUtils.delete(DBFieldNames.GIA_SCHEMA, dbTableName, pkField, pkValue);
-		repaint();
-	    } else {
-		// Nothing to do
-	    }
-	}else {
-	    JOptionPane.showMessageDialog(null,
-		    "Debe seleccionar una fila para editar los datos.",
-		    "Ninguna fila seleccionada",
-		    JOptionPane.INFORMATION_MESSAGE);
-	}
+    @Override
+    public JTable getTrabajosJTable() {
+	return trabajos;
+    }
+
+    @Override
+    public String getReconocimientosDBTableName() {
+	return "taludes_reconocimiento_estado";
+    }
+
+    @Override
+    public String getTrabajosDBTableName() {
+	return "trabajos";
     }
 }

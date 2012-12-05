@@ -8,7 +8,9 @@ import java.util.HashMap;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 import org.apache.log4j.Logger;
 
@@ -16,6 +18,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 
+import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
@@ -273,6 +276,36 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	return this.form;
     }
 
+    protected void deleteElement(JTable embebedTable, String dbTableName,
+	    String pkField) {
+
+	if (embebedTable.getSelectedRowCount() != 0) {
+	    Object[] options = {"Eliminar", "Cancelar"};
+	    int response = JOptionPane.showOptionDialog(null,
+		    "Los datos seleccionados se eliminarán de forma permanente.",
+		    "Eliminar",
+		    JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+		    null, // do not use a custom Icon
+		    options, // the titles of buttons
+		    options[0]); // default button title
+	    if (response == JOptionPane.YES_OPTION) {
+		int selectedRow = embebedTable.getSelectedRow();
+		String pkValue = embebedTable.getValueAt(selectedRow, 0).toString();
+		DefaultTableModel model = (DefaultTableModel) embebedTable.getModel();
+		model.removeRow(selectedRow);
+		SqlUtils.delete(DBFieldNames.GIA_SCHEMA, dbTableName, pkField, pkValue);
+		repaint();
+	    } else {
+		// Nothing to do
+	    }
+	}else {
+	    JOptionPane.showMessageDialog(null,
+		    "Debe seleccionar una fila para editar los datos.",
+		    "Ninguna fila seleccionada",
+		    JOptionPane.INFORMATION_MESSAGE);
+	}
+    }
+
     @Override
     protected abstract void fillSpecificValues();
 
@@ -283,4 +316,20 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 
     @Override
     public abstract String getXMLPath();
+
+    public abstract JTable getReconocimientosJTable();
+
+    public abstract JTable getTrabajosJTable();
+
+    public abstract String getReconocimientosDBTableName();
+
+    public abstract String getTrabajosDBTableName();
+
+    public String getReconocimientosIDField() {
+	return "n_inspeccion";
+    }
+
+    public String getTrabajosIDField() {
+	return "id_trabajo";
+    }
 }
