@@ -127,9 +127,9 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	}
     }
 
-    private void initWindow() {
-	this.viewInfo.setHeight(700);
-	this.viewInfo.setWidth(690);
+    @Override
+    protected void initWindow() {
+	super.initWindow();
 	this.viewInfo.setTitle("Taludes");
     }
 
