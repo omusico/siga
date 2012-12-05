@@ -3,7 +3,6 @@ package es.icarto.gvsig.extgia.forms.taludes;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 
@@ -24,8 +23,6 @@ import com.iver.andami.Launcher;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.image.ImageComponent;
-import com.jeta.forms.components.panel.FormPanel;
-import com.jeta.forms.gui.common.FormException;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.audasacommons.forms.reports.NavTableComponentsPrintButton;
@@ -43,28 +40,10 @@ import es.icarto.gvsig.navtableforms.validation.listeners.DependentComboboxesHan
 @SuppressWarnings("serial")
 public class TaludesForm extends AbstractFormWithLocationWidgets {
 
-    public static final String ABEILLE_FILENAME = "forms/taludes.xml";
-    private FormPanel form;
     JComboBox tipoTaludWidget;
     JTextField numeroTaludWidget;
     JTextField taludIDWidget;
     CalculateComponentValue taludid;
-
-    JTable reconocimientoEstado;
-    JTable trabajos;
-    JButton addReconocimientoButton;
-    JButton editReconocimientoButton;
-    JButton deleteReconocimientoButton;
-    JButton addTrabajoButton;
-    JButton editTrabajoButton;
-    JButton deleteTrabajoButton;
-
-    AddReconocimientoListener addReconocimientoListener;
-    EditReconocimientoListener editReconocimientoListener;
-    AddTrabajoListener addTrabajoListener;
-    EditTrabajoListener editTrabajoListener;
-    DeleteReconocimientoListener deleteReconocimientoListener;
-    DeleteTrabajoListener deleteTrabajoListener;
 
     private CalculateComponentValue inclinacionMedia;
     private EnableComponentBasedOnCheckBox cunetaPie;
@@ -77,10 +56,22 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     FilesLinkButton filesLinkButton;
     NavTableComponentsPrintButton ntPrintButton;
 
+    AddReconocimientoListener addReconocimientoListener;
+    EditReconocimientoListener editReconocimientoListener;
+    AddTrabajoListener addTrabajoListener;
+    EditTrabajoListener editTrabajoListener;
+    DeleteReconocimientoListener deleteReconocimientoListener;
+    DeleteTrabajoListener deleteTrabajoListener;
+
     public TaludesForm(FLyrVect layer) {
 	super(layer);
 	initWindow();
 	initListeners();
+    }
+
+    @Override
+    public String getFormBodyPath() {
+	return "forms/taludes.xml";
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -134,19 +125,6 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public FormPanel getFormBody() {
-	if (this.form == null) {
-	    InputStream stream = getClass().getClassLoader().getResourceAsStream(TaludesForm.ABEILLE_FILENAME);
-	    try {
-		this.form = new FormPanel(stream);
-	    } catch (FormException e) {
-		e.printStackTrace();
-	    }
-	}
-	return this.form;
-    }
-
-    @Override
     public String getXMLPath() {
 	return Preferences.getPreferences().getXMLFilePath();
     }
@@ -183,7 +161,7 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 
 	taludIDWidget = (JTextField) widgets.get(DBFieldNames.ID_TALUD);
 
-	ImageComponent image = (ImageComponent) form.getComponentByName("image");
+	ImageComponent image = (ImageComponent) super.getFormBody().getComponentByName("image");
 	ImageIcon icon = new ImageIcon (PreferencesPage.AUDASA_ICON);
 	image.setIcon(icon);
 
@@ -222,25 +200,16 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 		tipoViaPF, direccionPF);
 	tipoViaPF.addActionListener(direccionPFDomainHandler);
 
-	reconocimientoEstado = (JTable) widgets.get("taludes_reconocimiento_estado");
-	trabajos = (JTable) widgets.get("taludes_trabajos");
-
-	addReconocimientoButton = (JButton) form.getComponentByName("add_reconocimiento_button");
 	addReconocimientoListener = new AddReconocimientoListener();
 	addReconocimientoButton.addActionListener(addReconocimientoListener);
-	editReconocimientoButton = (JButton) form.getComponentByName("edit_reconocimiento_button");
 	editReconocimientoListener = new EditReconocimientoListener();
 	editReconocimientoButton.addActionListener(editReconocimientoListener);
-	addTrabajoButton = (JButton) form.getComponentByName("add_trabajo_button");
 	addTrabajoListener = new AddTrabajoListener();
 	addTrabajoButton.addActionListener(addTrabajoListener);
-	editTrabajoButton = (JButton) form.getComponentByName("edit_trabajo_button");
 	editTrabajoListener = new EditTrabajoListener();
 	editTrabajoButton.addActionListener(editTrabajoListener);
-	deleteReconocimientoButton = (JButton) form.getComponentByName("delete_reconocimiento_button");
 	deleteReconocimientoListener = new DeleteReconocimientoListener();
 	deleteReconocimientoButton.addActionListener(deleteReconocimientoListener);
-	deleteTrabajoButton = (JButton) form.getComponentByName("delete_trabajo_button");
 	deleteTrabajoListener = new DeleteTrabajoListener();
 	deleteTrabajoButton.addActionListener(deleteTrabajoListener);
 
@@ -258,6 +227,8 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	editReconocimientoButton.removeActionListener(editReconocimientoListener);
 	addTrabajoButton.removeActionListener(addTrabajoListener);
 	editTrabajoButton.removeActionListener(editTrabajoListener);
+	deleteReconocimientoButton.removeActionListener(deleteReconocimientoListener);
+	deleteTrabajoButton.removeActionListener(deleteTrabajoListener);
 	super.removeListeners();
     }
 
@@ -388,5 +359,4 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 		    JOptionPane.INFORMATION_MESSAGE);
 	}
     }
-
 }

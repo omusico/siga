@@ -2,15 +2,19 @@ package es.icarto.gvsig.extgia.forms.utils;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.InputStream;
 import java.util.HashMap;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JTable;
 
 import org.apache.log4j.Logger;
 
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.panel.FormPanel;
+import com.jeta.forms.gui.common.FormException;
 
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.AbstractForm;
@@ -27,6 +31,8 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     private static final String NOMBRE_VIA = "nombre_via";
     private static final String NOMBRE_VIA_PF = "nombre_via_pf";
 
+    private FormPanel form;
+
     private JComboBox areaMantenimientoWidget;
     private JComboBox baseContratistaWidget;
     private JComboBox tramoWidget;
@@ -42,6 +48,15 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     private UpdateNombreViaListener updateNombreViaListener;
 
     private UpdateNombreViaPFListener updateNombreViaPFListener;
+
+    protected JTable reconocimientoEstado;
+    protected JTable trabajos;
+    protected JButton addReconocimientoButton;
+    protected JButton editReconocimientoButton;
+    protected JButton deleteReconocimientoButton;
+    protected JButton addTrabajoButton;
+    protected JButton editTrabajoButton;
+    protected JButton deleteTrabajoButton;
 
     public AbstractFormWithLocationWidgets (FLyrVect layer) {
 	super(layer);
@@ -82,6 +97,15 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	    tipoViaPFWidget.addActionListener(updateNombreViaPFListener);
 	    nombreViaPFWidget = (JComboBox) widgets.get(NOMBRE_VIA_PF);
 	}
+
+	reconocimientoEstado = (JTable) widgets.get("taludes_reconocimiento_estado");
+	trabajos = (JTable) widgets.get("taludes_trabajos");
+	addReconocimientoButton = (JButton) form.getComponentByName("add_reconocimiento_button");
+	editReconocimientoButton = (JButton) form.getComponentByName("edit_reconocimiento_button");
+	addTrabajoButton = (JButton) form.getComponentByName("add_trabajo_button");
+	editTrabajoButton = (JButton) form.getComponentByName("edit_trabajo_button");
+	deleteReconocimientoButton = (JButton) form.getComponentByName("delete_reconocimiento_button");
+	deleteTrabajoButton = (JButton) form.getComponentByName("delete_trabajo_button");
     }
 
     public class UpdateBaseContratistaListener implements ActionListener {
@@ -237,10 +261,22 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     }
 
     @Override
-    protected abstract void fillSpecificValues();
+    public FormPanel getFormBody() {
+	if (this.form == null) {
+	    InputStream stream = getClass().getClassLoader().getResourceAsStream(getFormBodyPath());
+	    try {
+		this.form = new FormPanel(stream);
+	    } catch (FormException e) {
+		e.printStackTrace();
+	    }
+	}
+	return this.form;
+    }
 
     @Override
-    public abstract FormPanel getFormBody();
+    protected abstract void fillSpecificValues();
+
+    public abstract String getFormBodyPath();
 
     @Override
     public abstract Logger getLoggerName();
