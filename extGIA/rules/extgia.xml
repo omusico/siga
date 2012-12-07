@@ -247,6 +247,8 @@
 		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
 	</FIELD>
 	
+<!-- TALUDES RECONOCIMIENTO ESTADO -->
+
 	<FIELD>
 		<FIELDNAME>existencia_deformaciones_o_grietas</FIELDNAME>		
         <DOMAINREADER>
@@ -291,8 +293,23 @@
         </DOMAINREADER>
 	</FIELD>
 
+<!-- TALUDES TRABAJOS -->
+
+	<FIELD>
+		<FIELDNAME>unidad</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>unidad</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+
     </RECORDSET>
   </LAYER>
+
+<!-- ISLETAS -->
 
   <LAYER alias="isletas">
     <TABLENAME>isletas</TABLENAME>
