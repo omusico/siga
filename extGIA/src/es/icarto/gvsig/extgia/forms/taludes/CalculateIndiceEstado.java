@@ -5,13 +5,13 @@ import java.util.HashMap;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 
-import es.icarto.gvsig.extgia.navtableforms.utils.CalculateComponentValue;
-import es.icarto.gvsig.navtableforms.AbstractForm;
+import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.CalculateReconocimientoIndexValue;
 import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
 
-public class CalculateIndiceEstado extends CalculateComponentValue {
+public class CalculateIndiceEstado extends CalculateReconocimientoIndexValue {
 
-    public CalculateIndiceEstado(AbstractForm form,
+    public CalculateIndiceEstado(AbstractSubForm form,
 	    HashMap<String, JComponent> allFormWidgets,
 	    String resultComponentName, String... operatorComponentsNames) {
 	super(form, allFormWidgets, resultComponentName,
@@ -40,6 +40,5 @@ public class CalculateIndiceEstado extends CalculateComponentValue {
 
 	String strValue = Float.toString(value);
 	resultComponent.setText(strValue);
-	form.getFormController().setValue(resultComponentName, strValue);
     }
 }

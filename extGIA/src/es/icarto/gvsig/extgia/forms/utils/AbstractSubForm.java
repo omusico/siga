@@ -46,6 +46,7 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
     private final String idField;
     private final String idValue;
     private final boolean edit;
+    private boolean fillingValues = false;
 
     protected WindowInfo viewInfo = null;
     private String title;
@@ -168,6 +169,7 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
     }
 
     protected void fillValues(boolean edit) {
+	fillingValues = true;
 	for (JComponent comp : widgetsVector.values()) {
 	    if (!edit) {
 		if (comp instanceof JComboBox) {
@@ -183,6 +185,7 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
 		}
 	    }
 	}
+	fillingValues = false;
     }
 
     protected void fillJTextField(JTextField field) {
@@ -253,6 +256,14 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
 	    pkValue = embebedTable.getValueAt(selectedRow, 0).toString();
 	}
 	return pkValue;
+    }
+
+    public boolean isFillingValues() {
+	return fillingValues;
+    }
+
+    public HashMap<String, JComponent> getWidgetsVector() {
+	return widgetsVector;
     }
 
     public void closeWindow() {

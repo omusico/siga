@@ -15,9 +15,11 @@ public class DBFieldNames {
 
     public static final String GIA_SCHEMA = "audasa_extgia";
 
+    // TABLE NAMES
     public static final String TALUDES_TABLENAME = "audasa_extgia.taludes";
     public static final String ISLETAS_TABLENAME = "audasa_extgia.isletas";
 
+    // TALUDES
     public static final String ID_TALUD = "id_talud";
     public static final String NUMERO_TALUD = "numero_talud";
     public static final String TIPO_TALUD = "tipo_talud";
@@ -27,5 +29,12 @@ public class DBFieldNames {
     public static final String BASE_CONTRATISTA = "base_contratista";
     public static final String INCLINACION_MEDIA = "inclinacion_media";
     public static final String SECTOR_INCLINACION = "sector_inclinacion";
+
+    // TALUDES RECONOCIMIENTO
+    public static final String TALUDES_INDEX = "indice_estado";
+    public static final String TALUDES_A = "existencia_deformaciones_o_grietas";
+    public static final String TALUDES_B = "peligro_caida_materiales";
+    public static final String TALUDES_C = "bajante_deteriorada";
+    public static final String TALUDES_D = "elementos_proteccion_talud";
 
 }

@@ -26,8 +26,8 @@ import com.jeta.forms.components.image.ImageComponent;
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.audasacommons.forms.reports.NavTableComponentsPrintButton;
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
-import es.icarto.gvsig.extgia.navtableforms.utils.CalculateComponentValue;
-import es.icarto.gvsig.extgia.navtableforms.utils.EnableComponentBasedOnCheckBox;
+import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
+import es.icarto.gvsig.extgia.forms.utils.EnableComponentBasedOnCheckBox;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.preferences.Preferences;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
@@ -38,6 +38,8 @@ import es.icarto.gvsig.navtableforms.validation.listeners.DependentComboboxesHan
 
 @SuppressWarnings("serial")
 public class TaludesForm extends AbstractFormWithLocationWidgets {
+
+    public static String ABEILLE_FILENAME = "forms/taludes.xml";
 
     JComboBox tipoTaludWidget;
     JTextField numeroTaludWidget;
@@ -70,7 +72,7 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public String getFormBodyPath() {
-	return "forms/taludes.xml";
+	return ABEILLE_FILENAME;
     }
 
     private void addNewButtonsToActionsToolBar() {

@@ -3,6 +3,7 @@ package es.icarto.gvsig.extgia.forms.taludes;
 import javax.swing.JTable;
 
 import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
+import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 
 @SuppressWarnings("serial")
 public class TaludesReconocimientosSubForm extends AbstractSubForm {
@@ -18,7 +19,16 @@ public class TaludesReconocimientosSubForm extends AbstractSubForm {
 	    boolean edit) {
 	super(formFile, dbTableName, embebedTable, idElementField, idElementValue, idField, idValue,
 		edit);
-	// TODO Auto-generated constructor stub
+
+	CalculateIndiceEstado index = new CalculateIndiceEstado(
+		this,
+		this.getWidgetsVector(),
+		DBFieldNames.TALUDES_INDEX,
+		DBFieldNames.TALUDES_A,
+		DBFieldNames.TALUDES_B,
+		DBFieldNames.TALUDES_C,
+		DBFieldNames.TALUDES_D);
+	index.setListeners();
     }
 
     @Override

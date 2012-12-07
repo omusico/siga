@@ -1,10 +1,9 @@
-package es.icarto.gvsig.extgia.navtableforms.utils;
+package es.icarto.gvsig.extgia.forms.utils;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.JCheckBox;
@@ -14,29 +13,15 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import es.icarto.gvsig.navtableforms.AbstractForm;
-import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
-import es.icarto.gvsig.navtableforms.validation.ComponentValidator;
-
-public abstract class CalculateComponentValue {
-
+public abstract class CalculateReconocimientoIndexValue {
     protected JTextField resultComponent;
     protected String resultComponentName;
     protected HashMap<String, JComponent> operatorComponents;
-    protected ArrayList<ComponentValidator> operatorValidators;
     protected OperatorComponentsListener handler;
-    private HashMap<String, JComponent> allFormWidgets;
-	protected AbstractForm form;
+    private final HashMap<String, JComponent> allFormWidgets;
+    protected AbstractSubForm form;
 
-    /**
-     * in the setListeners of the Form we must call the setListeners of this
-     * class in the removeListeners of the Form we must call the remove
-     * Listeners of this class The object must be initialized in setListeners.
-     */
-    // TODO: The ideal behavior should be create this object in
-    // fillSpecificValues and have the listeners registered in the form, so we
-    // don't have to make specific calls
-    public CalculateComponentValue(AbstractForm form,
+    public CalculateReconocimientoIndexValue(AbstractSubForm form,
 	    HashMap<String, JComponent> allFormWidgets,
 	    String resultComponentName, String... operatorComponentsNames) {
 	this.form = form;
@@ -44,48 +29,19 @@ public abstract class CalculateComponentValue {
 	this.allFormWidgets = allFormWidgets;
 
 	setComponents(resultComponentName, operatorComponentsNames);
-	setOperatorValidators(operatorComponentsNames);
 
 	this.handler = new OperatorComponentsListener();
     }
 
+    public abstract void setValue(boolean validate);
+
     private void setComponents(String resultComponentName,
 	    String[] operatorComponentsNames) {
-	// HashMap<String, JComponent> allFormWidgets =
-	// form.getWidgetComponents();
 	resultComponent = (JTextField) allFormWidgets.get(resultComponentName);
 	operatorComponents = new HashMap<String, JComponent>();
 	for (String name : operatorComponentsNames) {
 	    operatorComponents.put(name, allFormWidgets.get(name));
 	}
-    }
-
-    private void setOperatorValidators(String[] operatorComponentsNames) {
-	operatorValidators = new ArrayList<ComponentValidator>();
-	for (String name : operatorComponentsNames) {
-	    ComponentValidator cv = form.getFormValidator()
-		    .getComponentValidator(name);
-	    if (cv != null) {
-		operatorValidators.add(cv);
-	    }
-	}
-    }
-
-    private boolean validate() {
-	for (JComponent widget : operatorComponents.values()) {
-	    if (widget instanceof JComboBox) {
-		if (!(((JComboBox) widget).getSelectedItem() instanceof KeyValue)) {
-		    return false;
-		}
-	    }
-	}
-
-	for (ComponentValidator v : operatorValidators) {
-	    if (!v.validate()) {
-		return false;
-	    }
-	}
-	return true;
     }
 
     public void setListeners() {
@@ -104,8 +60,6 @@ public abstract class CalculateComponentValue {
 	}
     }
 
-    public abstract void setValue(boolean validate);
-
     public void removeListeners() {
 	for (JComponent widget : operatorComponents.values()) {
 	    if (widget instanceof JFormattedTextField) {
@@ -123,7 +77,7 @@ public abstract class CalculateComponentValue {
     }
 
     public class OperatorComponentsListener implements KeyListener,
-	    ActionListener {
+    ActionListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -144,10 +98,9 @@ public abstract class CalculateComponentValue {
 	}
 
 	private void delegate() {
-	    if (!form.isFillingValues()) {
-		boolean validate = validate();
-		setValue(validate);
-	    }
+	    setValue(form.isFillingValues());
 	}
+
     }
+
 }

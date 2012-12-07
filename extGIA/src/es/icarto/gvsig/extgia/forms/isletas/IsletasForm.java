@@ -18,7 +18,7 @@ import com.jeta.forms.gui.common.FormException;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.audasacommons.forms.reports.NavTableComponentsPrintButton;
-import es.icarto.gvsig.extgia.navtableforms.utils.CalculateComponentValue;
+import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.preferences.Preferences;
 import es.icarto.gvsig.navtableforms.AbstractForm;
