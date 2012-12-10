@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.InputStream;
 import java.util.HashMap;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -15,9 +16,11 @@ import javax.swing.table.DefaultTableModel;
 import org.apache.log4j.Logger;
 
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
+import com.jeta.forms.components.image.ImageComponent;
 import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 
+import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.AbstractForm;
@@ -75,6 +78,10 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     @Override
     protected void setListeners() {
 	super.setListeners();
+
+	ImageComponent image = (ImageComponent) form.getComponentByName("image");
+	ImageIcon icon = new ImageIcon (PreferencesPage.AUDASA_ICON);
+	image.setIcon(icon);
 
 	HashMap<String, JComponent> widgets = getWidgetComponents();
 

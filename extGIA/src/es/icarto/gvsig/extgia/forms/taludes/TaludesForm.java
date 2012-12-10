@@ -6,7 +6,6 @@ import java.io.File;
 import java.net.URL;
 import java.util.HashMap;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -21,7 +20,6 @@ import org.apache.log4j.Logger;
 import com.iver.andami.Launcher;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
-import com.jeta.forms.components.image.ImageComponent;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.audasacommons.forms.reports.NavTableComponentsPrintButton;
@@ -163,10 +161,6 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	HashMap<String, JComponent> widgets = getWidgetComponents();
 
 	taludIDWidget = (JTextField) widgets.get(DBFieldNames.ID_TALUD);
-
-	ImageComponent image = (ImageComponent) super.getFormBody().getComponentByName("image");
-	ImageIcon icon = new ImageIcon (PreferencesPage.AUDASA_ICON);
-	image.setIcon(icon);
 
 	taludid = new CalculateTaludIDValue(this, getWidgetComponents(),
 		DBFieldNames.ID_TALUD, DBFieldNames.TIPO_TALUD,
