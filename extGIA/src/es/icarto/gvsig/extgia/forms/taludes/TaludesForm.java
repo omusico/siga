@@ -190,7 +190,7 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	cunetaPie.setListeners();
 
 	JComboBox direccionPI = (JComboBox) getWidgetComponents().get(
-		"direccion");
+		"direccion_pi");
 	tipoViaPI = (JComboBox) getWidgetComponents().get("tipo_via");
 	direccionPIDomainHandler = new DependentComboboxesHandler(this,
 		tipoViaPI, direccionPI);
@@ -351,6 +351,6 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public String getTrabajosDBTableName() {
-	return "trabajos";
+	return "taludes_trabajos";
     }
 }
