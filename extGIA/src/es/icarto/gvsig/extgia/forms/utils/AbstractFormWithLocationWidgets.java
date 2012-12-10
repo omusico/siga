@@ -101,8 +101,8 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	    nombreViaPFWidget = (JComboBox) widgets.get(NOMBRE_VIA_PF);
 	}
 
-	reconocimientoEstado = (JTable) widgets.get("taludes_reconocimiento_estado");
-	trabajos = (JTable) widgets.get("taludes_trabajos");
+	reconocimientoEstado = (JTable) widgets.get("reconocimiento_estado");
+	trabajos = (JTable) widgets.get("trabajos");
 	addReconocimientoButton = (JButton) form.getComponentByName("add_reconocimiento_button");
 	editReconocimientoButton = (JButton) form.getComponentByName("edit_reconocimiento_button");
 	addTrabajoButton = (JButton) form.getComponentByName("add_trabajo_button");

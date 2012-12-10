@@ -40,6 +40,8 @@ import es.icarto.gvsig.navtableforms.validation.listeners.DependentComboboxesHan
 public class TaludesForm extends AbstractFormWithLocationWidgets {
 
     public static String ABEILLE_FILENAME = "forms/taludes.xml";
+    public static final String ABEILLE_RECONOCIMIENTOS_FILENAME = "forms/taludes_reconocimiento_estado.xml";
+    public static final String ABEILLE_TRABAJOS_FILENAME = "forms/taludes_trabajos.xml";
 
     JComboBox tipoTaludWidget;
     JTextField numeroTaludWidget;
@@ -188,7 +190,7 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	cunetaPie.setListeners();
 
 	JComboBox direccionPI = (JComboBox) getWidgetComponents().get(
-		"direccion_pi");
+		"direccion");
 	tipoViaPI = (JComboBox) getWidgetComponents().get("tipo_via");
 	direccionPIDomainHandler = new DependentComboboxesHandler(this,
 		tipoViaPI, direccionPI);
@@ -238,8 +240,8 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    TaludesReconocimientosSubForm subForm =
 		    new TaludesReconocimientosSubForm(
-			    "forms/taludes_reconocimiento_estado.xml",
-			    "taludes_reconocimiento_estado",
+			    ABEILLE_RECONOCIMIENTOS_FILENAME,
+			    getReconocimientosDBTableName(),
 			    reconocimientoEstado,
 			    "id_talud",
 			    taludIDWidget.getText(),
@@ -255,8 +257,8 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    TaludesReconocimientosSubForm subForm =
 		    new TaludesReconocimientosSubForm(
-			    "forms/taludes_trabajos.xml",
-			    "taludes_trabajos",
+			    ABEILLE_TRABAJOS_FILENAME,
+			    getTrabajosDBTableName(),
 			    trabajos,
 			    "id_talud",
 			    taludIDWidget.getText(),
@@ -274,8 +276,8 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 		int row = reconocimientoEstado.getSelectedRow();
 		TaludesReconocimientosSubForm subForm =
 			new TaludesReconocimientosSubForm(
-				"forms/taludes_reconocimiento_estado.xml",
-				"taludes_reconocimiento_estado",
+				ABEILLE_RECONOCIMIENTOS_FILENAME,
+				getReconocimientosDBTableName(),
 				reconocimientoEstado,
 				"id_talud",
 				taludIDWidget.getText(),
@@ -299,8 +301,8 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 		int row = trabajos.getSelectedRow();
 		TaludesReconocimientosSubForm subForm =
 			new TaludesReconocimientosSubForm(
-				"forms/taludes_trabajos.xml",
-				"taludes_trabajos",
+				ABEILLE_TRABAJOS_FILENAME,
+				getTrabajosDBTableName(),
 				trabajos,
 				"id_talud",
 				taludIDWidget.getText(),
