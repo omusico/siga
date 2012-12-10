@@ -158,13 +158,15 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 	    if (!isFillingValues() && tramoWidget.getItemCount()!=0) {
-		String id = ((KeyValue) tramoWidget.getSelectedItem()).getKey();
+		String id_tramo = ((KeyValue) tramoWidget.getSelectedItem()).getKey();
+		String id_bc = ((KeyValue) baseContratistaWidget.getSelectedItem()).getKey();
 		String getTipoViaQuery =
 			"SELECT id, item  FROM audasa_extgia_dominios.tipo_via" +
-				" WHERE id_tramo = " + id + ";";
+				" WHERE id_tramo = " + id_tramo +
+				" AND id_bc = " + id_bc + ";";
 		tipoViaWidget.removeAllItems();
 		tipoViaWidget.addItem(new KeyValue("", ""));
-		if (!id.isEmpty()) {
+		if (!id_tramo.isEmpty() && !id_bc.isEmpty()) {
 		    for (KeyValue value: SqlUtils.getKeyValueListFromSql(getTipoViaQuery)) {
 			tipoViaWidget.addItem(value);
 		    }
@@ -186,13 +188,17 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 	    if (!isFillingValues() && tipoViaWidget.getItemCount()!=0) {
-		String id = ((KeyValue) tipoViaWidget.getSelectedItem()).getKey();
+		String id_tv = ((KeyValue) tipoViaWidget.getSelectedItem()).getKey();
+		String id_tramo = ((KeyValue) tramoWidget.getSelectedItem()).getKey();
+		String id_bc = ((KeyValue) baseContratistaWidget.getSelectedItem()).getKey();
 		String getNombreViaQuery =
 			"SELECT id, item FROM audasa_extgia_dominios.nombre_via" +
-				" WHERE id_tv = " + id + ";";
+				" WHERE id_tv = " + id_tv +
+				" AND id_tramo = " + id_tramo +
+				" AND id_bc = " + id_bc + ";";
 		nombreViaWidget.removeAllItems();
 		nombreViaWidget.addItem(new KeyValue("", ""));
-		if (!id.isEmpty()) {
+		if (!id_tv.isEmpty() && !id_tramo.isEmpty() && !id_bc.isEmpty()) {
 		    for (KeyValue value: SqlUtils.getKeyValueListFromSql(getNombreViaQuery)) {
 			nombreViaWidget.addItem(value);
 		    }
@@ -207,10 +213,14 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 	    if (!isFillingValues() && tipoViaPFWidget.getItemCount()!=0) {
-		String id = ((KeyValue) tipoViaPFWidget.getSelectedItem()).getKey();
+		String id_tv = ((KeyValue) tipoViaPFWidget.getSelectedItem()).getKey();
+		String id_tramo = ((KeyValue) tramoWidget.getSelectedItem()).getKey();
+		String id_bc = ((KeyValue) baseContratistaWidget.getSelectedItem()).getKey();
 		String getNombreViaQuery =
 			"SELECT id, item FROM audasa_extgia_dominios.nombre_via" +
-				" WHERE id_tv = " + id + ";";
+				" WHERE id_tv = " + id_tv +
+				" AND id_tramo = " + id_tramo +
+				" AND id_bc = " + id_bc + ";";
 		nombreViaPFWidget.removeAllItems();
 		nombreViaPFWidget.addItem(new KeyValue("", ""));
 		for (KeyValue value: SqlUtils.getKeyValueListFromSql(getNombreViaQuery)) {
