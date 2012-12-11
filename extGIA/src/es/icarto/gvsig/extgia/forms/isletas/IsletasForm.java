@@ -57,6 +57,7 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
     public IsletasForm(FLyrVect layer) {
 	super(layer);
 	initWindow();
+	initListeners();
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -125,9 +126,7 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 		DBFieldNames.trabajoFields, trabajoColumnsSize, "id_isleta", isletaIDWidget.getText());
     }
 
-    @Override
-    protected void setListeners() {
-	super.setListeners();
+    protected void initListeners() {
 
 	HashMap<String, JComponent> widgets = getWidgetComponents();
 
