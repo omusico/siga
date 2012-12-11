@@ -122,7 +122,7 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
 	    }
 	    closeWindow();
 	    String[] fields = null;
-	    if (embebedTable.getName().equalsIgnoreCase("taludes_reconocimiento_estado")) {
+	    if (embebedTable.getName().equalsIgnoreCase("reconocimiento_estado")) {
 		fields = DBFieldNames.reconocimientoEstadoFields;
 	    }else {
 		fields = DBFieldNames.trabajoFields;
