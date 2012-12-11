@@ -1,6 +1,16 @@
 package es.icarto.gvsig.extgia.preferences;
 
 public class DBFieldNames {
+
+    public static String[] genericReconocimientoEstadoFields = {"n_inspeccion as \"Nº Inspección\"",
+	"nombre_revisor as \"Revisor\"",
+	"fecha_inspeccion as \"Fecha Inspección\"",
+    "indice_estado as \"Indice Estado\""};
+
+    public static String[] enlacesReconocimientoEstadoFields = {"n_inspeccion as \"Nº Inspección\"",
+	"nombre_revisor as \"Revisor\"",
+    "fecha_inspeccion as \"Fecha Inspección\""};
+
     public static String[] reconocimientoEstadoFields = {"n_inspeccion as \"Nº Inspección\"",
 	"nombre_revisor as \"Revisor\"",
 	"fecha_inspeccion as \"Fecha Inspección\"",
@@ -42,5 +52,12 @@ public class DBFieldNames {
     // ISLETAS RECONOCIMIENTO
     public static final String ISLETAS_INDEX = "indice_estado";
     public static final String ISLETAS_A = "estado_siega";
+
+    // ENLACES
+    public static final String ID_ENLACE = "id_enlace";
+
+    public static void setReconocimientoEstadoFields(String[] fields) {
+	reconocimientoEstadoFields = fields;
+    }
 
 }

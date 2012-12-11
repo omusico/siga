@@ -477,5 +477,20 @@
     </RECORDSET>
   </LAYER>
 
+<!-- ENLACES -->
+
+  <LAYER alias="enlaces">
+    <TABLENAME>enlaces</TABLENAME>
+    <PRIMARYKEY>
+    	<PKELEMENT>id_enlace</PKELEMENT>
+    </PRIMARYKEY>
+    <RECORDSET>
+      <FIELD>
+        <FIELDNAME>id_enlace</FIELDNAME>
+        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+      </FIELD>
+	
+    </RECORDSET>
+  </LAYER>
 
 </METADATA>

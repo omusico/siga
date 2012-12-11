@@ -6,6 +6,7 @@ import com.iver.andami.PluginServices;
 import com.iver.andami.plugins.Extension;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
+import es.icarto.gvsig.extgia.forms.enlaces.EnlacesForm;
 import es.icarto.gvsig.extgia.forms.isletas.IsletasForm;
 import es.icarto.gvsig.extgia.forms.taludes.TaludesForm;
 import es.icarto.gvsig.extgia.preferences.Preferences;
@@ -15,7 +16,7 @@ import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 public class FormLauncherExtension extends Extension {
 
     public enum elements {
-	Taludes, Isletas;
+	Taludes, Isletas, Enlaces;
     }
 
     private FLyrVect layer;
@@ -39,6 +40,12 @@ public class FormLauncherExtension extends Extension {
 		final IsletasForm isletasForm = new IsletasForm(this.layer);
 		if (isletasForm.init()) {
 		    PluginServices.getMDIManager().addCentredWindow(isletasForm);
+		}
+		break;
+	    case Enlaces:
+		final EnlacesForm enlacesForm = new EnlacesForm(this.layer);
+		if (enlacesForm.init()) {
+		    PluginServices.getMDIManager().addCentredWindow(enlacesForm);
 		}
 		break;
 	    }
