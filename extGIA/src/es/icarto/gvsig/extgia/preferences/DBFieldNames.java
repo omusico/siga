@@ -39,4 +39,8 @@ public class DBFieldNames {
     public static final String NUMERO_ISLETA = "numero_isleta";
     public static final String TIPO_ISLETA = "tipo_isleta";
 
+    // ISLETAS RECONOCIMIENTO
+    public static final String ISLETAS_INDEX = "indice_estado";
+    public static final String ISLETAS_A = "estado_siega";
+
 }

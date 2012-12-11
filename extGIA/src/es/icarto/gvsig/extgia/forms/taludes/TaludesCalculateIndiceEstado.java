@@ -9,9 +9,9 @@ import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
 import es.icarto.gvsig.extgia.forms.utils.CalculateReconocimientoIndexValue;
 import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
 
-public class CalculateIndiceEstado extends CalculateReconocimientoIndexValue {
+public class TaludesCalculateIndiceEstado extends CalculateReconocimientoIndexValue {
 
-    public CalculateIndiceEstado(AbstractSubForm form,
+    public TaludesCalculateIndiceEstado(AbstractSubForm form,
 	    HashMap<String, JComponent> allFormWidgets,
 	    String resultComponentName, String... operatorComponentsNames) {
 	super(form, allFormWidgets, resultComponentName,

@@ -20,7 +20,7 @@ public class TaludesReconocimientosSubForm extends AbstractSubForm {
 	super(formFile, dbTableName, embebedTable, idElementField, idElementValue, idField, idValue,
 		edit);
 
-	CalculateIndiceEstado index = new CalculateIndiceEstado(
+	TaludesCalculateIndiceEstado index = new TaludesCalculateIndiceEstado(
 		this,
 		this.getWidgetsVector(),
 		DBFieldNames.TALUDES_INDEX,
