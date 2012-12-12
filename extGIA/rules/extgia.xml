@@ -501,10 +501,10 @@
 		<FIELDNAME>municipio</FIELDNAME>		
         <DOMAINREADER>
         	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_cartografia_base</DRDBSCHEMA>
-    		<DRDBTABLE>municipios</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>nome</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>nome</DRDBCOLUMNVALUE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>municipio</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
         </DOMAINREADER>
 	</FIELD>
 
