@@ -2,6 +2,7 @@ package es.icarto.gvsig.extgia.forms.utils;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.InputStream;
 import java.util.HashMap;
 
@@ -10,11 +11,13 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import org.apache.log4j.Logger;
 
+import com.iver.andami.Launcher;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.image.ImageComponent;
 import com.jeta.forms.components.panel.FormPanel;
@@ -24,6 +27,9 @@ import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.AbstractForm;
+import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkButton;
+import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkData;
+import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
 
 @SuppressWarnings("serial")
@@ -38,6 +44,7 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     private static final String NOMBRE_VIA_PF = "nombre_via_pf";
 
     private FormPanel form;
+    protected FilesLinkButton filesLinkButton;
 
     private JComboBox areaMantenimientoWidget;
     private JComboBox baseContratistaWidget;
@@ -116,6 +123,7 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	editTrabajoButton = (JButton) form.getComponentByName("edit_trabajo_button");
 	deleteReconocimientoButton = (JButton) form.getComponentByName("delete_reconocimiento_button");
 	deleteTrabajoButton = (JButton) form.getComponentByName("delete_trabajo_button");
+
     }
 
     public class UpdateBaseContratistaListener implements ActionListener {
@@ -136,7 +144,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 		}
 	    }
 	}
-
     }
 
     public class UpdateTramoListener implements ActionListener {
@@ -157,7 +164,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 		}
 	    }
 	}
-
     }
 
     public class UpdateTipoViaListener implements ActionListener {
@@ -187,7 +193,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 		}
 	    }
 	}
-
     }
 
     public class UpdateNombreViaListener implements ActionListener {
@@ -235,7 +240,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 		}
 	    }
 	}
-
     }
 
     @Override
@@ -321,6 +325,38 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 		    "Ninguna fila seleccionada",
 		    JOptionPane.INFORMATION_MESSAGE);
 	}
+    }
+
+    protected void addNewButtonsToActionsToolBar(final String element) {
+	JPanel actionsToolBar = this.getActionsToolBar();
+
+	filesLinkButton = new FilesLinkButton(this, new FilesLinkData() {
+
+	    @Override
+	    public String getRegisterField() {
+		return ORMLite.getDataBaseObject(getXMLPath()).getTable(element).getPrimaryKey()[0];
+	    }
+
+	    @Override
+	    public String getBaseDirectory() {
+		String baseDirectory = null;
+		try {
+		    baseDirectory = PreferencesPage.getBaseDirectory();
+		} catch (Exception e) {
+		}
+
+		if (baseDirectory == null || baseDirectory.isEmpty()) {
+		    baseDirectory = Launcher.getAppHomeDir();
+		}
+
+		baseDirectory = baseDirectory + File.separator + "FILES"
+			+ File.separator + "inventario" + File.separator
+			+ element;
+
+		return baseDirectory;
+	    }
+	});
+	actionsToolBar.add(filesLinkButton);
     }
 
     @Override

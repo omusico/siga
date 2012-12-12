@@ -2,31 +2,24 @@ package es.icarto.gvsig.extgia.forms.barrera_rigida;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.util.HashMap;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 
-import com.iver.andami.Launcher;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
-import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.extgia.forms.isletas.IsletasReconocimientosSubForm;
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.preferences.Preferences;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
-import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkButton;
-import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkData;
-import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.validation.listeners.DependentComboboxesHandler;
 
 @SuppressWarnings("serial")
@@ -39,8 +32,6 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
     JTextField barreraRigidaIDWidget;
     private JComboBox tipoVia;
     private DependentComboboxesHandler direccionDomainHandler;
-
-    FilesLinkButton filesLinkButton;
 
     AddReconocimientoListener addReconocimientoListener;
     EditReconocimientoListener editReconocimientoListener;
@@ -56,35 +47,7 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
     }
 
     private void addNewButtonsToActionsToolBar() {
-	JPanel actionsToolBar = this.getActionsToolBar();
-
-	filesLinkButton = new FilesLinkButton(this, new FilesLinkData() {
-
-	    @Override
-	    public String getRegisterField() {
-		return ORMLite.getDataBaseObject(getXMLPath()).getTable("barrera_rigida").getPrimaryKey()[0];
-	    }
-
-	    @Override
-	    public String getBaseDirectory() {
-		String baseDirectory = null;
-		try {
-		    baseDirectory = PreferencesPage.getBaseDirectory();
-		} catch (Exception e) {
-		}
-
-		if (baseDirectory == null || baseDirectory.isEmpty()) {
-		    baseDirectory = Launcher.getAppHomeDir();
-		}
-
-		baseDirectory = baseDirectory + File.separator + "FILES"
-			+ File.separator + "inventario" + File.separator
-			+ "barrera_rigida";
-
-		return baseDirectory;
-	    }
-	});
-	actionsToolBar.add(filesLinkButton);
+	super.addNewButtonsToActionsToolBar("barrera_rigida");
     }
 
     @Override
