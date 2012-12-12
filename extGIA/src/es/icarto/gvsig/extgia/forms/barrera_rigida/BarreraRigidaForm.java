@@ -31,6 +31,7 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 
     JTextField barreraRigidaIDWidget;
     CalculateComponentValue barreraRigidaid;
+    CalculateComponentValue barreraRigidaCodigo;
     private JComboBox tipoVia;
     private DependentComboboxesHandler direccionDomainHandler;
 
@@ -87,6 +88,11 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 		DBFieldNames.ID_BARRERA_RIGIDA, DBFieldNames.NUMERO_BARRERA_RIGIDA,
 		DBFieldNames.BASE_CONTRATISTA);
 	barreraRigidaid.setListeners();
+
+	barreraRigidaCodigo = new BarreraRigidaCalculateCodigo(this, getWidgetComponents(),
+		DBFieldNames.CODIGO, DBFieldNames.TIPO, DBFieldNames.METODO_CONSTRUCTIVO,
+		DBFieldNames.PERFIL);
+	barreraRigidaCodigo.setListeners();
 
 	JComboBox direccion = (JComboBox) getWidgetComponents().get(
 		"direccion");
