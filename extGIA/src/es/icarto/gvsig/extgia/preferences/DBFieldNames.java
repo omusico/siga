@@ -58,6 +58,7 @@ public class DBFieldNames {
 
     // BARRERA RIGIDA
     public static final String ID_BARRERA_RIGIDA = "id_barrera_rigida";
+    public static final String NUMERO_BARRERA_RIGIDA = "numero_barrera_rigida";
 
     public static void setReconocimientoEstadoFields(String[] fields) {
 	reconocimientoEstadoFields = fields;

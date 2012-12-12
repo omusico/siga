@@ -17,6 +17,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.isletas.IsletasReconocimientosSubForm;
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
+import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.preferences.Preferences;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
@@ -30,6 +31,7 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
     public static final String ABEILLE_TRABAJOS_FILENAME = "forms/barrera_rigida_trabajos.xml";
 
     JTextField barreraRigidaIDWidget;
+    CalculateComponentValue barreraRigidaid;
     private JComboBox tipoVia;
     private DependentComboboxesHandler direccionDomainHandler;
 
@@ -58,6 +60,8 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 
     @Override
     protected void fillSpecificValues() {
+	direccionDomainHandler.updateComboBoxValues();
+
 	if (filesLinkButton == null) {
 	    addNewButtonsToActionsToolBar();
 	}
@@ -79,6 +83,11 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 	HashMap<String, JComponent> widgets = getWidgetComponents();
 
 	barreraRigidaIDWidget = (JTextField) widgets.get(DBFieldNames.ID_BARRERA_RIGIDA);
+
+	barreraRigidaid = new CalculateBarreraRigidaIDValue(this, getWidgetComponents(),
+		DBFieldNames.ID_BARRERA_RIGIDA, DBFieldNames.NUMERO_BARRERA_RIGIDA,
+		DBFieldNames.BASE_CONTRATISTA);
+	barreraRigidaid.setListeners();
 
 	JComboBox direccion = (JComboBox) getWidgetComponents().get(
 		"direccion");
