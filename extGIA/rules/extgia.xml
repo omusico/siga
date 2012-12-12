@@ -521,5 +521,22 @@
 	
     </RECORDSET>
   </LAYER>
+  
+  <!-- BARRERA RIGIDA -->
+
+  <LAYER alias="barrera_rigida">
+    <TABLENAME>barrera_rigida</TABLENAME>
+    <PRIMARYKEY>
+    	<PKELEMENT>id_barrera_rigida</PKELEMENT>
+    </PRIMARYKEY>
+    <RECORDSET>
+      
+      <FIELD>
+        <FIELDNAME>id_barrera_rigida</FIELDNAME>
+        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+      </FIELD>
+	
+    </RECORDSET>
+  </LAYER>
 
 </METADATA>

@@ -56,6 +56,9 @@ public class DBFieldNames {
     // ENLACES
     public static final String ID_ENLACE = "id_enlace";
 
+    // BARRERA RIGIDA
+    public static final String ID_BARRERA_RIGIDA = "id_barrera_rigida";
+
     public static void setReconocimientoEstadoFields(String[] fields) {
 	reconocimientoEstadoFields = fields;
     }

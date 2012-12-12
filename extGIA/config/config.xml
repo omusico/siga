@@ -12,6 +12,7 @@
 		<menu text="SIGA/Inventario/Taludes" action-command="taludes" position="30399"/>
 		<menu text="SIGA/Inventario/Isletas" action-command="isletas" position="30400"/>
 		<menu text="SIGA/Inventario/Enlaces" action-command="enlaces" position="30401"/>
+		<menu text="SIGA/Inventario/Barrera Rígida" action-command="barrera_rigida" position="30402"/>
 		</extension>
 	</extensions>
 </plugin-config>
