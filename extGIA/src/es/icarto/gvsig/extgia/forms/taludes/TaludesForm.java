@@ -162,12 +162,12 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 
 	taludIDWidget = (JTextField) widgets.get(DBFieldNames.ID_TALUD);
 
-	taludid = new CalculateTaludIDValue(this, getWidgetComponents(),
+	taludid = new TaludesCalculateTaludIDValue(this, getWidgetComponents(),
 		DBFieldNames.ID_TALUD, DBFieldNames.TIPO_TALUD,
 		DBFieldNames.NUMERO_TALUD, DBFieldNames.BASE_CONTRATISTA);
 	taludid.setListeners();
 
-	inclinacionMedia = new CalculateInclinacionMediaValue(this,
+	inclinacionMedia = new TaludesCalculateInclinacionMediaValue(this,
 		getWidgetComponents(), DBFieldNames.INCLINACION_MEDIA,
 		DBFieldNames.SECTOR_INCLINACION);
 	inclinacionMedia.setListeners();

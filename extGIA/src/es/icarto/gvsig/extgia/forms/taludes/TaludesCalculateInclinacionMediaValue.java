@@ -10,9 +10,9 @@ import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
 
-public class CalculateInclinacionMediaValue extends CalculateComponentValue {
+public class TaludesCalculateInclinacionMediaValue extends CalculateComponentValue {
 
-    public CalculateInclinacionMediaValue(AbstractForm form,
+    public TaludesCalculateInclinacionMediaValue(AbstractForm form,
 	    HashMap<String, JComponent> allFormWidgets,
 	    String resultComponentName, String... operatorComponentsNames) {
 	super(form, allFormWidgets, resultComponentName,

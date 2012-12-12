@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgia.forms.isletas;
+package es.icarto.gvsig.extgia.forms.taludes;
 
 import java.util.HashMap;
 
@@ -11,9 +11,9 @@ import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
 
-public class CalculateIsletaIDValue extends CalculateComponentValue {
+public class TaludesCalculateTaludIDValue extends CalculateComponentValue {
 
-    public CalculateIsletaIDValue(AbstractForm form,
+    public TaludesCalculateTaludIDValue(AbstractForm form,
 	    HashMap<String, JComponent> allFormWidgets,
 	    String resultComponentName, String... operatorComponentsNames) {
 	super(form, allFormWidgets, resultComponentName,
@@ -21,8 +21,8 @@ public class CalculateIsletaIDValue extends CalculateComponentValue {
     }
 
     /**
-     * (primera letra "Tipo de Isleta")&-&("Número de Isleta")&(Primera letra de
-     * "Base de contratista") ; EJ: D-584N
+     * (primera letra "Tipo de Talud")&-&("Número de Talud")&(Primera letra de
+     * "Base decontratista") ; EJ: D-584N
      * 
      * @param validate
      *            . True if the operatorComponents validate their checks
@@ -33,28 +33,28 @@ public class CalculateIsletaIDValue extends CalculateComponentValue {
 
 	// TODO: Aplicar el formato adecuado a los valores base
 
-	JComboBox tipoIsletaWidget = (JComboBox) operatorComponents
-		.get(DBFieldNames.TIPO_ISLETA);
-	JTextField numeroIsletaWidget = (JTextField) operatorComponents
-		.get(DBFieldNames.NUMERO_ISLETA);
+	JComboBox tipoTaludWidget = (JComboBox) operatorComponents
+		.get(DBFieldNames.TIPO_TALUD);
+	JTextField numeroTaludWidget = (JTextField) operatorComponents
+		.get(DBFieldNames.NUMERO_TALUD);
 	JComboBox baseContratistaWidget = (JComboBox) operatorComponents
 		.get(DBFieldNames.BASE_CONTRATISTA);
 
-	if (numeroIsletaWidget.getText().isEmpty()) {
+	if (numeroTaludWidget.getText().isEmpty()) {
 	    validate = false;
 	}
 
-	String isletaID = "";
+	String taludID = "";
 	if (validate) {
 
-	    isletaID = String.format("%s-%03d%s", ((KeyValue) tipoIsletaWidget
+	    taludID = String.format("%s-%03d%s", ((KeyValue) tipoTaludWidget
 		    .getSelectedItem()).getValue().substring(0, 1), Integer
-		    .valueOf(numeroIsletaWidget.getText()),
+		    .valueOf(numeroTaludWidget.getText()),
 		    ((KeyValue) baseContratistaWidget.getSelectedItem())
 		    .getValue().substring(0, 1));
 	}
-	resultComponent.setText(isletaID);
-	form.getFormController().setValue(resultComponentName, isletaID);
+	resultComponent.setText(taludID);
+	form.getFormController().setValue(resultComponentName, taludID);
 
     }
 }

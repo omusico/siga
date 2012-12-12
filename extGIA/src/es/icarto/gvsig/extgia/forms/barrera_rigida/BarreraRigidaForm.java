@@ -84,7 +84,7 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 
 	barreraRigidaIDWidget = (JTextField) widgets.get(DBFieldNames.ID_BARRERA_RIGIDA);
 
-	barreraRigidaid = new CalculateBarreraRigidaIDValue(this, getWidgetComponents(),
+	barreraRigidaid = new BarreraRigidaCalculateIDValue(this, getWidgetComponents(),
 		DBFieldNames.ID_BARRERA_RIGIDA, DBFieldNames.NUMERO_BARRERA_RIGIDA,
 		DBFieldNames.BASE_CONTRATISTA);
 	barreraRigidaid.setListeners();

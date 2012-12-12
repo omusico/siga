@@ -94,7 +94,7 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 
 	isletaIDWidget = (JTextField) widgets.get(DBFieldNames.ID_ISLETA);
 
-	isletaid = new CalculateIsletaIDValue(this, getWidgetComponents(),
+	isletaid = new IsletaCalculateIDValue(this, getWidgetComponents(),
 		DBFieldNames.ID_ISLETA, DBFieldNames.TIPO_ISLETA,
 		DBFieldNames.NUMERO_ISLETA, DBFieldNames.BASE_CONTRATISTA);
 	isletaid.setListeners();

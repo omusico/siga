@@ -11,9 +11,9 @@ import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
 
-public class CalculateBarreraRigidaIDValue extends CalculateComponentValue {
+public class BarreraRigidaCalculateIDValue extends CalculateComponentValue {
 
-    public CalculateBarreraRigidaIDValue(AbstractForm form,
+    public BarreraRigidaCalculateIDValue(AbstractForm form,
 	    HashMap<String, JComponent> allFormWidgets,
 	    String resultComponentName, String... operatorComponentsNames) {
 	super(form, allFormWidgets, resultComponentName, operatorComponentsNames);
