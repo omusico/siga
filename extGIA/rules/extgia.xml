@@ -485,10 +485,39 @@
     	<PKELEMENT>id_enlace</PKELEMENT>
     </PRIMARYKEY>
     <RECORDSET>
+      
       <FIELD>
         <FIELDNAME>id_enlace</FIELDNAME>
         <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
       </FIELD>
+
+	<FIELD>
+        <FIELDNAME>pk</FIELDNAME>
+        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+        <VALIDATIONRULE>double_positive</VALIDATIONRULE>
+    </FIELD>      
+      
+      <FIELD>
+		<FIELDNAME>municipio</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_cartografia_base</DRDBSCHEMA>
+    		<DRDBTABLE>municipios</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>nome</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>nome</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+
+    <FIELD>
+		<FIELDNAME>tipo_enlace</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>tipo_enlace</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
 	
     </RECORDSET>
   </LAYER>
