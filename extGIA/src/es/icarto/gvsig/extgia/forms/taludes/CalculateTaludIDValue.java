@@ -21,7 +21,7 @@ public class CalculateTaludIDValue extends CalculateComponentValue {
     }
 
     /**
-     * (primera letra "Tipo de Talud")&-&("NÃºmero de Talud")&(Primera letra de
+     * (primera letra "Tipo de Talud")&-&("Número de Talud")&(Primera letra de
      * "Base decontratista") ; EJ: D-584N
      * 
      * @param validate
@@ -40,6 +40,10 @@ public class CalculateTaludIDValue extends CalculateComponentValue {
 	JComboBox baseContratistaWidget = (JComboBox) operatorComponents
 		.get(DBFieldNames.BASE_CONTRATISTA);
 
+	if (numeroTaludWidget.getText().isEmpty()) {
+	    validate = false;
+	}
+
 	String taludID = "";
 	if (validate) {
 
@@ -47,7 +51,7 @@ public class CalculateTaludIDValue extends CalculateComponentValue {
 		    .getSelectedItem()).getValue().substring(0, 1), Integer
 		    .valueOf(numeroTaludWidget.getText()),
 		    ((KeyValue) baseContratistaWidget.getSelectedItem())
-			    .getValue().substring(0, 1));
+		    .getValue().substring(0, 1));
 	}
 	resultComponent.setText(taludID);
 	form.getFormController().setValue(resultComponentName, taludID);
