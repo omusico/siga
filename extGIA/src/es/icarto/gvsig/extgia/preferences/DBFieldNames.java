@@ -60,6 +60,13 @@ public class DBFieldNames {
     public static final String ID_BARRERA_RIGIDA = "id_barrera_rigida";
     public static final String NUMERO_BARRERA_RIGIDA = "numero_barrera_rigida";
 
+    // BARRERA RIGIDA RECONOCIMIENTO ESTADO
+    public static final String BARRERA_RIGIDA_INDEX = "indice_estado";
+    public static final String BARRERA_RIGIDA_A = "deficiencias_aplicacion_normativa";
+    public static final String BARRERA_RIGIDA_B = "limpieza_elemento_contencion";
+    public static final String BARRERA_RIGIDA_C = "deterioros_superficiales";
+    public static final String BARRERA_RIGIDA_D = "cimiento_soporte_anclaje";
+
     public static void setReconocimientoEstadoFields(String[] fields) {
 	reconocimientoEstadoFields = fields;
     }

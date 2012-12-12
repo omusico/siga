@@ -15,7 +15,6 @@ import org.apache.log4j.Logger;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
-import es.icarto.gvsig.extgia.forms.isletas.IsletasReconocimientosSubForm;
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
@@ -125,8 +124,8 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
     public class AddReconocimientoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    IsletasReconocimientosSubForm subForm =
-		    new IsletasReconocimientosSubForm(
+	    BarreraRigidaReconocimientosSubForm subForm =
+		    new BarreraRigidaReconocimientosSubForm(
 			    ABEILLE_RECONOCIMIENTOS_FILENAME,
 			    getReconocimientosDBTableName(),
 			    reconocimientoEstado,
@@ -142,8 +141,8 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
     public class AddTrabajoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    IsletasReconocimientosSubForm subForm =
-		    new IsletasReconocimientosSubForm(
+	    BarreraRigidaReconocimientosSubForm subForm =
+		    new BarreraRigidaReconocimientosSubForm(
 			    ABEILLE_TRABAJOS_FILENAME,
 			    getTrabajosDBTableName(),
 			    trabajos,
@@ -161,8 +160,8 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    if (reconocimientoEstado.getSelectedRowCount() != 0) {
 		int row = reconocimientoEstado.getSelectedRow();
-		IsletasReconocimientosSubForm subForm =
-			new IsletasReconocimientosSubForm(
+		BarreraRigidaReconocimientosSubForm subForm =
+			new BarreraRigidaReconocimientosSubForm(
 				ABEILLE_RECONOCIMIENTOS_FILENAME,
 				getReconocimientosDBTableName(),
 				reconocimientoEstado,
@@ -186,8 +185,8 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    if (trabajos.getSelectedRowCount() != 0) {
 		int row = trabajos.getSelectedRow();
-		IsletasReconocimientosSubForm subForm =
-			new IsletasReconocimientosSubForm(
+		BarreraRigidaReconocimientosSubForm subForm =
+			new BarreraRigidaReconocimientosSubForm(
 				ABEILLE_TRABAJOS_FILENAME,
 				getTrabajosDBTableName(),
 				trabajos,

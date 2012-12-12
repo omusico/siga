@@ -3,6 +3,7 @@ package es.icarto.gvsig.extgia.forms.barrera_rigida;
 import javax.swing.JTable;
 
 import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
+import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 
 @SuppressWarnings("serial")
 public class BarreraRigidaReconocimientosSubForm extends AbstractSubForm {
@@ -12,7 +13,16 @@ public class BarreraRigidaReconocimientosSubForm extends AbstractSubForm {
 	    String idElementValue, String idField, String idValue, boolean edit) {
 	super(formFile, dbTableName, embebedTable, idElementField, idElementValue,
 		idField, idValue, edit);
-	// TODO Auto-generated constructor stub
+
+	BarreraRigidaCalculateIndiceEstado index = new BarreraRigidaCalculateIndiceEstado(
+		this,
+		this.getWidgetsVector(),
+		DBFieldNames.BARRERA_RIGIDA_INDEX,
+		DBFieldNames.BARRERA_RIGIDA_A,
+		DBFieldNames.BARRERA_RIGIDA_B,
+		DBFieldNames.BARRERA_RIGIDA_C,
+		DBFieldNames.BARRERA_RIGIDA_D);
+	index.setListeners();
     }
 
     @Override
