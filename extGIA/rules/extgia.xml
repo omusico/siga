@@ -535,6 +535,96 @@
         <FIELDNAME>id_barrera_rigida</FIELDNAME>
         <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
       </FIELD>
+      
+      <FIELD>
+		<FIELDNAME>obstaculo_protegido</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>obstaculo_protegido</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+	
+     <FIELD>
+		<FIELDNAME>tipo</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>tipo</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+	
+     <FIELD>
+		<FIELDNAME>metodo_constructivo</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>metodo_constructivo</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+	
+     <FIELD>
+		<FIELDNAME>perfil</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>perfil</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+	
+  <!-- BARRERA RIGIDA RECONOCIMIENTO ESTADO-->
+  
+  	<FIELD>
+		<FIELDNAME>deficiencias_aplicacion_normativa</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>limpieza_elemento_contencion</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>deterioros_superficiales</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>cimiento_soporte_anclaje</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
 	
     </RECORDSET>
   </LAYER>
