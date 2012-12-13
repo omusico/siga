@@ -302,7 +302,7 @@
         	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
     		<DRDBTABLE>unidad</DRDBTABLE>
     		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
         </DOMAINREADER>
 	</FIELD>
 
@@ -518,7 +518,44 @@
     		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
         </DOMAINREADER>
 	</FIELD>
+
+<!-- ENLACES CARRETERAS ENLAZADAS-->
+
+	<FIELD>
+		<FIELDNAME>titular</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>titularidad</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
 	
+	<FIELD>
+		<FIELDNAME>tipo_cruce</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>tipo_cruce</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+	
+	<!-- ENLACES CARRETERAS ENLAZADAS-->
+	
+	<FIELD>
+		<FIELDNAME>direccion_enlaces</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>direccion_enlaces</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+		
     </RECORDSET>
   </LAYER>
   

@@ -126,6 +126,10 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
 		fields = DBFieldNames.reconocimientoEstadoFields;
 	    }else if (embebedTable.getName().equalsIgnoreCase("tabla_carreteras")) {
 		fields = DBFieldNames.carreteras_enlazadas;
+	    }else if (embebedTable.getName().equalsIgnoreCase("tabla_ramales")) {
+		fields = DBFieldNames.ramales;
+	    }else {
+		fields = DBFieldNames.trabajoFields;
 	    }
 	    SqlUtils.reloadEmbebedTable(embebedTable, fields, DBFieldNames.GIA_SCHEMA,
 		    dbTableName, idElementField, idElementValue);
@@ -141,12 +145,16 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
 		if (((JComboBox) comp).getSelectedItem() != null) {
 		    if (((JComboBox) comp).getSelectedItem() instanceof KeyValue) {
 			try {
+			    String value = ((KeyValue) ((JComboBox) comp).getSelectedItem()).getKey();
+			    Integer.parseInt(value);
 			    formData.put(comp.getName(),
-				    ValueFactory.createValueByType(
-					    ((KeyValue) ((JComboBox) comp).getSelectedItem()).getKey(), 4)
+				    ValueFactory.createValueByType(value, 4)
 				    );
 			} catch (ParseException e) {
 			    e.printStackTrace();
+			} catch (NumberFormatException e) {
+			    formData.put(comp.getName(),
+				    (ValueFactory.createValue(((JComboBox) comp).getSelectedItem().toString())));
 			}
 		    }else {
 			formData.put(comp.getName(),

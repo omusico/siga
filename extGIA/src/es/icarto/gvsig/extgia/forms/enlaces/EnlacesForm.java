@@ -27,6 +27,7 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
     public static String ABEILLE_FILENAME = "forms/enlaces.xml";
     public static final String ABEILLE_RECONOCIMIENTOS_FILENAME = "forms/enlaces_reconocimiento_estado.xml";
     public static final String ABEILLE_CARRETERAS_FILENAME = "forms/enlaces_carreteras.xml";
+    public static final String ABEILLE_RAMALES_FILENAME = "forms/enlaces_ramales.xml";
 
     JTextField enlaceIDWidget;
     CalculateComponentValue enlaceid;
@@ -38,6 +39,10 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
     JButton editCarreteraButton;
     JButton deleteCarreteraButton;
 
+    JButton addRamalButton;
+    JButton editRamalButton;
+    JButton deleteRamalButton;
+
     AddReconocimientoListener addReconocimientoListener;
     EditReconocimientoListener editReconocimientoListener;
     DeleteReconocimientoListener deleteReconocimientoListener;
@@ -45,6 +50,10 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
     AddCarreteraListener addCarreteraListener;
     EditCarreteraListener editCarreteraListener;
     DeleteCarreteraListener deleteCarreteraListener;
+
+    AddRamalListener addRamalListener;
+    EditRamalListener editRamalListener;
+    DeleteRamalListener deleteRamalListener;
 
 
     public EnlacesForm(FLyrVect layer) {
@@ -103,18 +112,28 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 	editCarreteraButton = (JButton) super.getFormBody().getComponentByName("edit_carretera_button");
 	deleteCarreteraButton = (JButton) super.getFormBody().getComponentByName("delete_carretera_button");
 
+	addRamalButton = (JButton) super.getFormBody().getComponentByName("add_ramal_button");
+	editRamalButton = (JButton) super.getFormBody().getComponentByName("edit_ramal_button");
+	deleteRamalButton = (JButton) super.getFormBody().getComponentByName("delete_ramal_button");
+
 	addReconocimientoListener = new AddReconocimientoListener();
 	addReconocimientoButton.addActionListener(addReconocimientoListener);
 	addCarreteraListener = new AddCarreteraListener();
 	addCarreteraButton.addActionListener(addCarreteraListener);
+	addRamalListener = new AddRamalListener();
+	addRamalButton.addActionListener(addRamalListener);
 	editReconocimientoListener = new EditReconocimientoListener();
 	editReconocimientoButton.addActionListener(editReconocimientoListener);
 	editCarreteraListener = new EditCarreteraListener();
 	editCarreteraButton.addActionListener(editCarreteraListener);
+	editRamalListener = new EditRamalListener();
+	editRamalButton.addActionListener(editRamalListener);
 	deleteReconocimientoListener = new DeleteReconocimientoListener();
 	deleteReconocimientoButton.addActionListener(deleteReconocimientoListener);
 	deleteCarreteraListener = new DeleteCarreteraListener();
 	deleteCarreteraButton.addActionListener(deleteCarreteraListener);
+	deleteRamalListener = new DeleteRamalListener();
+	deleteRamalButton.addActionListener(deleteRamalListener);
 
     }
 
@@ -153,6 +172,23 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 			    ABEILLE_CARRETERAS_FILENAME,
 			    "enlaces_carreteras_enlazadas",
 			    carreteras,
+			    "id_enlace",
+			    enlaceIDWidget.getText(),
+			    null,
+			    null,
+			    false);
+	    PluginServices.getMDIManager().addWindow(subForm);
+	}
+    }
+
+    public class AddRamalListener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    EnlacesRamalesSubForm subForm =
+		    new EnlacesRamalesSubForm(
+			    ABEILLE_RAMALES_FILENAME,
+			    "enlaces_ramales",
+			    ramales,
 			    "id_enlace",
 			    enlaceIDWidget.getText(),
 			    null,
@@ -212,6 +248,31 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 	}
     }
 
+    public class EditRamalListener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    if (ramales.getSelectedRowCount() != 0) {
+		int row = ramales.getSelectedRow();
+		EnlacesRamalesSubForm subForm =
+			new EnlacesRamalesSubForm(
+				ABEILLE_RAMALES_FILENAME,
+				"enlaces_ramales",
+				ramales,
+				"id_enlace",
+				enlaceIDWidget.getText(),
+				"id_ramal",
+				ramales.getValueAt(row, 0).toString(),
+				true);
+		PluginServices.getMDIManager().addWindow(subForm);
+	    }else {
+		JOptionPane.showMessageDialog(null,
+			"Debe seleccionar una fila para editar los datos.",
+			"Ninguna fila seleccionada",
+			JOptionPane.INFORMATION_MESSAGE);
+	    }
+	}
+    }
+
     public class DeleteReconocimientoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -225,6 +286,14 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    deleteElement(carreteras, "enlace_carreteras_enlazadas",
 		    "id_carretera_enlazada");
+	}
+    }
+
+    public class DeleteRamalListener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    deleteElement(ramales, "enlace_ramales",
+		    "id_ramal");
 	}
     }
 
