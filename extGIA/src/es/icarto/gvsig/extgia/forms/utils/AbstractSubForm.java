@@ -124,8 +124,8 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
 	    String[] fields = null;
 	    if (embebedTable.getName().equalsIgnoreCase("reconocimiento_estado")) {
 		fields = DBFieldNames.reconocimientoEstadoFields;
-	    }else {
-		fields = DBFieldNames.trabajoFields;
+	    }else if (embebedTable.getName().equalsIgnoreCase("tabla_carreteras")) {
+		fields = DBFieldNames.carreteras_enlazadas;
 	    }
 	    SqlUtils.reloadEmbebedTable(embebedTable, fields, DBFieldNames.GIA_SCHEMA,
 		    dbTableName, idElementField, idElementValue);

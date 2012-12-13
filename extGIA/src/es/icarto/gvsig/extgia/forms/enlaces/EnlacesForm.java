@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -25,6 +26,7 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 
     public static String ABEILLE_FILENAME = "forms/enlaces.xml";
     public static final String ABEILLE_RECONOCIMIENTOS_FILENAME = "forms/enlaces_reconocimiento_estado.xml";
+    public static final String ABEILLE_CARRETERAS_FILENAME = "forms/enlaces_carreteras.xml";
 
     JTextField enlaceIDWidget;
     CalculateComponentValue enlaceid;
@@ -32,9 +34,18 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
     JTable carreteras;
     JTable ramales;
 
+    JButton addCarreteraButton;
+    JButton editCarreteraButton;
+    JButton deleteCarreteraButton;
+
     AddReconocimientoListener addReconocimientoListener;
     EditReconocimientoListener editReconocimientoListener;
     DeleteReconocimientoListener deleteReconocimientoListener;
+
+    AddCarreteraListener addCarreteraListener;
+    EditCarreteraListener editCarreteraListener;
+    DeleteCarreteraListener deleteCarreteraListener;
+
 
     public EnlacesForm(FLyrVect layer) {
 	super(layer);
@@ -88,12 +99,22 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 	carreteras = (JTable) super.getFormBody().getComponentByName("tabla_carreteras");
 	ramales = (JTable) super.getFormBody().getComponentByName("tabla_ramales");
 
+	addCarreteraButton = (JButton) super.getFormBody().getComponentByName("add_carretera_button");
+	editCarreteraButton = (JButton) super.getFormBody().getComponentByName("edit_carretera_button");
+	deleteCarreteraButton = (JButton) super.getFormBody().getComponentByName("delete_carretera_button");
+
 	addReconocimientoListener = new AddReconocimientoListener();
 	addReconocimientoButton.addActionListener(addReconocimientoListener);
+	addCarreteraListener = new AddCarreteraListener();
+	addCarreteraButton.addActionListener(addCarreteraListener);
 	editReconocimientoListener = new EditReconocimientoListener();
 	editReconocimientoButton.addActionListener(editReconocimientoListener);
+	editCarreteraListener = new EditCarreteraListener();
+	editCarreteraButton.addActionListener(editCarreteraListener);
 	deleteReconocimientoListener = new DeleteReconocimientoListener();
 	deleteReconocimientoButton.addActionListener(deleteReconocimientoListener);
+	deleteCarreteraListener = new DeleteCarreteraListener();
+	deleteCarreteraButton.addActionListener(deleteCarreteraListener);
 
     }
 
@@ -115,6 +136,23 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 			    ABEILLE_RECONOCIMIENTOS_FILENAME,
 			    getReconocimientosDBTableName(),
 			    reconocimientoEstado,
+			    "id_enlace",
+			    enlaceIDWidget.getText(),
+			    null,
+			    null,
+			    false);
+	    PluginServices.getMDIManager().addWindow(subForm);
+	}
+    }
+
+    public class AddCarreteraListener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    EnlacesCarreterasSubForm subForm =
+		    new EnlacesCarreterasSubForm(
+			    ABEILLE_CARRETERAS_FILENAME,
+			    "enlaces_carreteras_enlazadas",
+			    carreteras,
 			    "id_enlace",
 			    enlaceIDWidget.getText(),
 			    null,
@@ -149,11 +187,44 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 	}
     }
 
+    public class EditCarreteraListener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    if (carreteras.getSelectedRowCount() != 0) {
+		int row = carreteras.getSelectedRow();
+		EnlacesCarreterasSubForm subForm =
+			new EnlacesCarreterasSubForm(
+				ABEILLE_CARRETERAS_FILENAME,
+				"enlaces_carreteras_enlazadas",
+				carreteras,
+				"id_enlace",
+				enlaceIDWidget.getText(),
+				"id_carretera_enlazada",
+				carreteras.getValueAt(row, 0).toString(),
+				true);
+		PluginServices.getMDIManager().addWindow(subForm);
+	    }else {
+		JOptionPane.showMessageDialog(null,
+			"Debe seleccionar una fila para editar los datos.",
+			"Ninguna fila seleccionada",
+			JOptionPane.INFORMATION_MESSAGE);
+	    }
+	}
+    }
+
     public class DeleteReconocimientoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    deleteElement(reconocimientoEstado, getReconocimientosDBTableName(),
 		    getReconocimientosIDField());
+	}
+    }
+
+    public class DeleteCarreteraListener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    deleteElement(carreteras, "enlace_carreteras_enlazadas",
+		    "id_carretera_enlazada");
 	}
     }
 

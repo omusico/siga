@@ -398,7 +398,7 @@
              </object>
             </at>
             <at name="width">96</at>
-            <at name="name">add_ramal_subform_button</at>
+            <at name="name">add_subform_button</at>
             <at name="actionCommand">Guardar</at>
             <at name="border">
              <object classname="com.jeta.forms.store.properties.CompoundBorderProperty">
