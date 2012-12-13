@@ -25,6 +25,12 @@ public class DBFieldNames {
 
     public static final String GIA_SCHEMA = "audasa_extgia";
 
+    // LOCATION
+    public static final String AREA_MANTENIMIENTO = "area_mantenimiento";
+    public static final String BASE_CONTRATISTA = "base_contratista";
+    public static final String TRAMO = "tramo";
+    public static final String TIPO_VIA = "tipo_via";
+
     // TABLE NAMES
     public static final String TALUDES_TABLENAME = "audasa_extgia.taludes";
     public static final String ISLETAS_TABLENAME = "audasa_extgia.isletas";
@@ -33,7 +39,6 @@ public class DBFieldNames {
     public static final String ID_TALUD = "id_talud";
     public static final String NUMERO_TALUD = "numero_talud";
     public static final String TIPO_TALUD = "tipo_talud";
-    public static final String BASE_CONTRATISTA = "base_contratista";
     public static final String INCLINACION_MEDIA = "inclinacion_media";
     public static final String SECTOR_INCLINACION = "sector_inclinacion";
 
@@ -55,6 +60,8 @@ public class DBFieldNames {
 
     // ENLACES
     public static final String ID_ENLACE = "id_enlace";
+    public static final String MUNICIPIO = "municipio";
+    public static final String PK = "pk";
 
     // BARRERA RIGIDA
     public static final String ID_BARRERA_RIGIDA = "id_barrera_rigida";

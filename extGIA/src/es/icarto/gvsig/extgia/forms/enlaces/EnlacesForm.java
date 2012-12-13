@@ -69,6 +69,11 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 
 	enlaceIDWidget = (JTextField) widgets.get(DBFieldNames.ID_ENLACE);
 
+	enlaceid = new EnlacesCalculateIDValue(this, getWidgetComponents(),
+		DBFieldNames.ID_ENLACE, DBFieldNames.AREA_MANTENIMIENTO, DBFieldNames.BASE_CONTRATISTA,
+		DBFieldNames.TRAMO, DBFieldNames.TIPO_VIA, DBFieldNames.MUNICIPIO, DBFieldNames.PK);
+	enlaceid.setListeners();
+
 	addReconocimientoListener = new AddReconocimientoListener();
 	addReconocimientoButton.addActionListener(addReconocimientoListener);
 	editReconocimientoListener = new EditReconocimientoListener();
