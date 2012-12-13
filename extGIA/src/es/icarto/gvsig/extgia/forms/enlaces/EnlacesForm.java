@@ -29,6 +29,9 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
     JTextField enlaceIDWidget;
     CalculateComponentValue enlaceid;
 
+    JTable carreteras;
+    JTable ramales;
+
     AddReconocimientoListener addReconocimientoListener;
     EditReconocimientoListener editReconocimientoListener;
     DeleteReconocimientoListener deleteReconocimientoListener;
@@ -61,6 +64,14 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 		"audasa_extgia", getReconocimientosDBTableName(),
 		DBFieldNames.reconocimientoEstadoFields, null, "id_enlace", enlaceIDWidget.getText());
 
+	SqlUtils.createEmbebedTableFromDB(carreteras, DBFieldNames.GIA_SCHEMA,
+		"enlaces_carreteras_enlazadas", DBFieldNames.carreteras_enlazadas,
+		null, "id_enlace", enlaceIDWidget.getText());
+
+	SqlUtils.createEmbebedTableFromDB(ramales, DBFieldNames.GIA_SCHEMA,
+		"enlaces_ramales", DBFieldNames.ramales,
+		null, "id_enlace", enlaceIDWidget.getText());
+
     }
 
     protected void initListeners() {
@@ -73,6 +84,9 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 		DBFieldNames.ID_ENLACE, DBFieldNames.AREA_MANTENIMIENTO, DBFieldNames.BASE_CONTRATISTA,
 		DBFieldNames.TRAMO, DBFieldNames.TIPO_VIA, DBFieldNames.MUNICIPIO, DBFieldNames.PK);
 	enlaceid.setListeners();
+
+	carreteras = (JTable) super.getFormBody().getComponentByName("tabla_carreteras");
+	ramales = (JTable) super.getFormBody().getComponentByName("tabla_ramales");
 
 	addReconocimientoListener = new AddReconocimientoListener();
 	addReconocimientoButton.addActionListener(addReconocimientoListener);

@@ -22,6 +22,18 @@ public class DBFieldNames {
 	"medicion_contratista as \"Medida Contratista\"",
     "medicion_audasa as \"Medida AUDASA\""};
 
+    public static String[] carreteras_enlazadas = {"id_carretera_enlazada as \"ID Carretera\"",
+	"clave_carretera as \"Clave\"",
+	"pk as \"PK\"",
+	"titular as \"Titular\"",
+    "tipo_cruce as \"Tipo Cruce\""};
+
+    public static String[] ramales = {"id_ramal as \"ID Ramal\"",
+	"nombre_ramal as \"Nombre\"",
+	"sentido as \"Sentido\"",
+	"direccion as \"Dirección\"",
+	"longitud as \"Longitud\""
+    };
 
     public static final String GIA_SCHEMA = "audasa_extgia";
 
