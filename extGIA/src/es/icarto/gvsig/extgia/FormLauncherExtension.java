@@ -6,6 +6,7 @@ import com.iver.andami.PluginServices;
 import com.iver.andami.plugins.Extension;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
+import es.icarto.gvsig.extgia.forms.areas_servicio.AreasServicioForm;
 import es.icarto.gvsig.extgia.forms.barrera_rigida.BarreraRigidaForm;
 import es.icarto.gvsig.extgia.forms.enlaces.EnlacesForm;
 import es.icarto.gvsig.extgia.forms.isletas.IsletasForm;
@@ -17,7 +18,7 @@ import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 public class FormLauncherExtension extends Extension {
 
     public enum elements {
-	Taludes, Isletas, Enlaces, Barrera_Rigida;
+	Taludes, Isletas, Enlaces, Barrera_Rigida, Areas_Servicio;
     }
 
     private FLyrVect layer;
@@ -53,6 +54,12 @@ public class FormLauncherExtension extends Extension {
 		final BarreraRigidaForm barreraRigidaForm = new BarreraRigidaForm(this.layer);
 		if (barreraRigidaForm.init()) {
 		    PluginServices.getMDIManager().addCentredWindow(barreraRigidaForm);
+		}
+		break;
+	    case Areas_Servicio:
+		final AreasServicioForm areasServicioForm = new AreasServicioForm(this.layer);
+		if (areasServicioForm.init()) {
+		    PluginServices.getMDIManager().addCentredWindow(areasServicioForm);
 		}
 		break;
 	    }

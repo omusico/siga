@@ -531,7 +531,7 @@
              </object>
             </at>
             <at name="width">146</at>
-            <at name="name">nombre_ramal</at>
+            <at name="name">ramal</at>
             <at name="border">
              <object classname="com.jeta.forms.store.properties.CompoundBorderProperty">
               <super classname="com.jeta.forms.store.properties.BorderProperty">

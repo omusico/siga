@@ -154,7 +154,7 @@
         	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
     		<DRDBTABLE>sentido</DRDBTABLE>
     		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
         </DOMAINREADER>
 	</FIELD>
 
@@ -418,7 +418,7 @@
         	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
     		<DRDBTABLE>sentido</DRDBTABLE>
     		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
         </DOMAINREADER>
 	</FIELD>
 
@@ -543,7 +543,7 @@
         </DOMAINREADER>
 	</FIELD>
 	
-	<!-- ENLACES CARRETERAS ENLAZADAS-->
+	<!-- ENLACES RAMALES-->
 	
 	<FIELD>
 		<FIELDNAME>direccion_enlaces</FIELDNAME>		
@@ -660,6 +660,104 @@
     		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
     		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
     		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+	
+    </RECORDSET>
+  </LAYER>
+  
+    <!-- AREAS SERVICIO -->
+
+  <LAYER alias="areas_servicio">
+    <TABLENAME>areas_servicio</TABLENAME>
+    <PRIMARYKEY>
+    	<PKELEMENT>id_area_servicio</PKELEMENT>
+    </PRIMARYKEY>
+    <RECORDSET>
+      
+      <FIELD>
+        <FIELDNAME>id_area_servicio</FIELDNAME>
+        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+      </FIELD>
+      
+      <FIELD>
+		<FIELDNAME>riego</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>riego</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+    
+  <!-- AREA SERVICIO RECONOCIMIENTO ESTADO-->
+  
+  	<FIELD>
+		<FIELDNAME>sup_pavimentada</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>aceras</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>bordillos</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>zona_ajardinada</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>servicios</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+	
+		<!-- AREA SERVICIO RAMALES-->
+	
+	<FIELD>
+		<FIELDNAME>direccion_enlaces</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>direccion_enlaces</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
         </DOMAINREADER>
 	</FIELD>
 	

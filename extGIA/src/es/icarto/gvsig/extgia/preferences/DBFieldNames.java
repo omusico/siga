@@ -29,7 +29,7 @@ public class DBFieldNames {
     "tipo_cruce as \"Tipo Cruce\""};
 
     public static String[] ramales = {"id_ramal as \"ID Ramal\"",
-	"nombre_ramal as \"Nombre\"",
+	"ramal as \"Nombre Ramal\"",
 	"sentido as \"Sentido\"",
 	"direccion_enlaces as \"Dirección\"",
 	"longitud as \"Longitud\""
@@ -89,6 +89,18 @@ public class DBFieldNames {
     public static final String BARRERA_RIGIDA_B = "limpieza_elemento_contencion";
     public static final String BARRERA_RIGIDA_C = "deterioros_superficiales";
     public static final String BARRERA_RIGIDA_D = "cimiento_soporte_anclaje";
+
+    // AREAS SERVICIO
+    public static final String ID_AREA_SERVICIO = "id_area_servicio";
+    public static final String SENTIDO = "sentido";
+
+    // AREAS SERVICIO RECONOCIMIENTO ESTADO
+    public static final String AREA_SERVICIO_INDEX = "indice_estado";
+    public static final String AREA_SERVICIO_A = "sup_pavimentada";
+    public static final String AREA_SERVICIO_B = "aceras";
+    public static final String AREA_SERVICIO_C = "bordillos";
+    public static final String AREA_SERVICIO_D = "zona_ajardinada";
+    public static final String AREA_SERVICIO_E = "servicios";
 
     public static void setReconocimientoEstadoFields(String[] fields) {
 	reconocimientoEstadoFields = fields;
