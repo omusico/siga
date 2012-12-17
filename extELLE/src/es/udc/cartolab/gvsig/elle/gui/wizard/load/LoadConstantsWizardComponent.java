@@ -258,6 +258,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 		}else if (selectedValue != null) {
 		    where = where + getValueOfFieldByConstant(selectedConstant, CONSTANTS_FILTER_FIELD_NAME) + " = " + "'" + selectedValue + "')";
 		    map.setWhereOnAllLayers(where);
+		    map.setWhereOnAllOverviewLayers(where);
 		    ELLEMap.setFiltered(true);
 		} else {
 		    ELLEMap.setFiltered(false);
