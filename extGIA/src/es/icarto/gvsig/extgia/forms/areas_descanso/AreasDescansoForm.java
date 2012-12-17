@@ -82,6 +82,7 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 		getTrabajosDBTableName(), DBFieldNames.trabajoFields,
 		null, "id_area_descanso", areaDescansoIDWidget.getText());
 
+	DBFieldNames.setRamalesFields(DBFieldNames.ramales_area_descanso);
 	SqlUtils.createEmbebedTableFromDB(ramales, DBFieldNames.GIA_SCHEMA,
 		"areas_descanso_ramales", DBFieldNames.ramales,
 		null, "id_area_descanso", areaDescansoIDWidget.getText());
@@ -142,6 +143,8 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 	deleteRamalButton.removeActionListener(deleteRamalListener);
 
 	super.removeListeners();
+
+	DBFieldNames.setRamalesFields(DBFieldNames.generic_ramales);
     }
 
     public class AddReconocimientoListener implements ActionListener {
