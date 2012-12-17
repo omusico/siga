@@ -1,4 +1,4 @@
-package es.icarto.gvsig.juntas;
+package es.icarto.gvsig.extgia.forms.juntas;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
