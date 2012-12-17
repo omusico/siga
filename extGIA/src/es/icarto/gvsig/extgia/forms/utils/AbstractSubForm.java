@@ -169,7 +169,7 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
 	    } else if (comp instanceof JTextArea) {
 		if (!((JTextArea) comp).getText().isEmpty()) {
 		    formData.put(comp.getName(),
-			    (ValueFactory.createValue(((JComboBox) comp).getSelectedItem().toString())));
+			    (ValueFactory.createValue(((JTextArea) comp).getText().toString())));
 		}
 	    }
 	}
