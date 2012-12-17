@@ -761,5 +761,68 @@
 	
     </RECORDSET>
   </LAYER>
+  
+      <!-- AREAS DESCANSO -->
+
+  <LAYER alias="areas_descanso">
+    <TABLENAME>areas_descanso</TABLENAME>
+    <PRIMARYKEY>
+    	<PKELEMENT>id_area_descanso</PKELEMENT>
+    </PRIMARYKEY>
+    <RECORDSET>
+      
+      <FIELD>
+        <FIELDNAME>id_area_descanso</FIELDNAME>
+        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+      </FIELD>
+      
+      <FIELD>
+		<FIELDNAME>riego</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>riego</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+    
+  <!-- AREA DESCANSO RECONOCIMIENTO ESTADO-->
+  
+  	<FIELD>
+		<FIELDNAME>sup_pavimentada</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+		
+	<FIELD>
+		<FIELDNAME>bordillos</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>servicios</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+	
+    </RECORDSET>
+  </LAYER>
 
 </METADATA>
