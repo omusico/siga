@@ -30,21 +30,21 @@ public class DBFieldNames {
 
     public static String[] generic_ramales = {"id_ramal as \"ID Ramal\"",
 	"ramal as \"Nombre Ramal\"",
-	"sentido as \"Sentido\"",
+	"sentido_ramal as \"Sentido\"",
 	"direccion_ramal as \"Dirección\"",
 	"longitud as \"Longitud\""
     };
 
     public static String[] ramales = {"id_ramal as \"ID Ramal\"",
 	"ramal as \"Nombre Ramal\"",
-	"sentido as \"Sentido\"",
+	"sentido_ramal as \"Sentido\"",
 	"direccion_ramal as \"Dirección\"",
 	"longitud as \"Longitud\""
     };
 
     public static String[] ramales_area_descanso = {"id_ramal as \"ID Ramal\"",
 	"ramal as \"Nombre Ramal\"",
-	"sentido as \"Sentido\"",
+	"sentido_ramal as \"Sentido\"",
 	"longitud as \"Longitud\""
     };
 
