@@ -544,7 +544,7 @@
 	<!-- ENLACES RAMALES-->
 	
 	<FIELD>
-		<FIELDNAME>direccion_enlaces</FIELDNAME>		
+		<FIELDNAME>direccion_ramal</FIELDNAME>		
         <DOMAINREADER>
         	<DRTYPE>db</DRTYPE>
         	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
@@ -749,11 +749,11 @@
 		<!-- AREA SERVICIO RAMALES-->
 	
 	<FIELD>
-		<FIELDNAME>direccion_enlaces</FIELDNAME>		
+		<FIELDNAME>direccion_ramal</FIELDNAME>		
         <DOMAINREADER>
         	<DRTYPE>db</DRTYPE>
         	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>direccion_enlaces</DRDBTABLE>
+    		<DRDBTABLE>direccion_area_servicio</DRDBTABLE>
     		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
     		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
         </DOMAINREADER>

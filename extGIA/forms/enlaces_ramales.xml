@@ -643,7 +643,7 @@
              </object>
             </at>
             <at name="width">146</at>
-            <at name="name">direccion_enlaces</at>
+            <at name="name">direccion_ramal</at>
             <at name="border">
              <object classname="com.jeta.forms.store.properties.CompoundBorderProperty">
               <super classname="com.jeta.forms.store.properties.BorderProperty">
