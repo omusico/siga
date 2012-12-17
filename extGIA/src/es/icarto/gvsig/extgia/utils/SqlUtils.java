@@ -103,7 +103,13 @@ public class SqlUtils {
     public static void createEmbebedTableFromDB (JTable embebedTableWidget, String schema,
 	    String tablename, String[] fields, int[] columnsSize, String idField, String idValue) {
 	ArrayList<String> columnsName = new ArrayList<String>();
-	DefaultTableModel tableModel = new DefaultTableModel();
+	@SuppressWarnings("serial")
+	DefaultTableModel tableModel = new DefaultTableModel() {
+	    @Override
+	    public boolean isCellEditable(int row, int column) {
+		return false;
+	    }
+	};
 	PreparedStatement statement;
 	String query = "SELECT ";
 	for (int i=0; i<fields.length-1; i++) {
