@@ -15,7 +15,6 @@ import org.apache.log4j.Logger;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
-import es.icarto.gvsig.extgia.forms.enlaces.EnlacesReconocimientosSubForm;
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
@@ -200,8 +199,8 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    if (reconocimientoEstado.getSelectedRowCount() != 0) {
 		int row = reconocimientoEstado.getSelectedRow();
-		EnlacesReconocimientosSubForm subForm =
-			new EnlacesReconocimientosSubForm(
+		AreasServicioReconocimientosSubForm subForm =
+			new AreasServicioReconocimientosSubForm(
 				ABEILLE_RECONOCIMIENTOS_FILENAME,
 				getReconocimientosDBTableName(),
 				reconocimientoEstado,
