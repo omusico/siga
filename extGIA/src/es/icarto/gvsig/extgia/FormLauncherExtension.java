@@ -11,6 +11,7 @@ import es.icarto.gvsig.extgia.forms.areas_servicio.AreasServicioForm;
 import es.icarto.gvsig.extgia.forms.barrera_rigida.BarreraRigidaForm;
 import es.icarto.gvsig.extgia.forms.enlaces.EnlacesForm;
 import es.icarto.gvsig.extgia.forms.isletas.IsletasForm;
+import es.icarto.gvsig.extgia.forms.pasos_mediana.PasosMedianaForm;
 import es.icarto.gvsig.extgia.forms.taludes.TaludesForm;
 import es.icarto.gvsig.extgia.preferences.Preferences;
 import es.icarto.gvsig.juntas.JuntasForm;
@@ -21,7 +22,7 @@ public class FormLauncherExtension extends Extension {
 
     public enum elements {
 	Taludes, Isletas, Enlaces, Barrera_Rigida, Areas_Servicio, Areas_Descanso,
-	Juntas;
+	Juntas, Pasos_Mediana;
     }
 
     private FLyrVect layer;
@@ -77,8 +78,13 @@ public class FormLauncherExtension extends Extension {
 		    PluginServices.getMDIManager().addCentredWindow(juntasForm);
 		}
 		break;
+	    case Pasos_Mediana:
+		final PasosMedianaForm pasosMedianaForm = new PasosMedianaForm(this.layer);
+		if (pasosMedianaForm.init()) {
+		    PluginServices.getMDIManager().addCentredWindow(pasosMedianaForm);
+		}
+		break;
 	    }
-
 	} else {
 	    JOptionPane.showMessageDialog(null, "La capa " + actionCommand
 		    + " no está cargada en el TOC", "Capa no encontrada",

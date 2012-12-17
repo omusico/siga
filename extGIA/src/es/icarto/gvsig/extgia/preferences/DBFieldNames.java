@@ -135,6 +135,16 @@ public class DBFieldNames {
     public static final String JUNTAS_D = "falta_elementos_anclaje";
     public static final String JUNTAS_E = "rotura_deformacion";
 
+    // PASOS MEDIANA
+    public static final String ID_PASO_MEDIANA = "id_paso_mediana";
+
+    // PASOS MEDIANA RECONOCIMIENTO ESTADO
+    public static final String PASO_MEDIANA_INDEX = "indice_estado";
+    public static final String PASO_MEDIANA_A = "aterramientos_vegetacion";
+    public static final String PASO_MEDIANA_B = "baches_zonas_cuarteadas";
+    public static final String PASO_MEDIANA_C = "deficiencias_sistema_drenaje";
+    public static final String PASO_MEDIANA_D = "elementos_contencion_cierre";
+
     public static void setReconocimientoEstadoFields(String[] fields) {
 	reconocimientoEstadoFields = fields;
     }

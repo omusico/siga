@@ -860,7 +860,7 @@
     </RECORDSET>
   </LAYER>
   
-    <!-- JUNTAS -->
+  <!-- JUNTAS -->
 
   <LAYER alias="juntas">
     <TABLENAME>juntas</TABLENAME>
@@ -952,6 +952,79 @@
         </DOMAINREADER>
 	</FIELD>
 	
+    </RECORDSET>
+  </LAYER>
+  
+  <!-- PASOS MEDIANA -->
+
+  <LAYER alias="pasos_mediana">
+    <TABLENAME>pasos_mediana</TABLENAME>
+    <PRIMARYKEY>
+    	<PKELEMENT>id_paso_mediana</PKELEMENT>
+    </PRIMARYKEY>
+    <RECORDSET>
+      
+      <FIELD>
+        <FIELDNAME>id_paso_mediana</FIELDNAME>
+      </FIELD>
+      	
+     <FIELD>
+		<FIELDNAME>cierre</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>cierre</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+	
+  <!-- PASOS MEDIANA RECONOCIMIENTO ESTADO-->
+  
+  	<FIELD>
+		<FIELDNAME>aterramientos_vegetacion</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>baches_zonas_cuarteadas</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>deficiencias_sistema_drenaje</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>elementos_contencion_cierre</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+
     </RECORDSET>
   </LAYER>
 
