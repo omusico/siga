@@ -13,13 +13,15 @@ import es.icarto.gvsig.extgia.forms.enlaces.EnlacesForm;
 import es.icarto.gvsig.extgia.forms.isletas.IsletasForm;
 import es.icarto.gvsig.extgia.forms.taludes.TaludesForm;
 import es.icarto.gvsig.extgia.preferences.Preferences;
+import es.icarto.gvsig.juntas.JuntasForm;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 
 public class FormLauncherExtension extends Extension {
 
     public enum elements {
-	Taludes, Isletas, Enlaces, Barrera_Rigida, Areas_Servicio, Areas_Descanso;
+	Taludes, Isletas, Enlaces, Barrera_Rigida, Areas_Servicio, Areas_Descanso,
+	Juntas;
     }
 
     private FLyrVect layer;
@@ -67,6 +69,12 @@ public class FormLauncherExtension extends Extension {
 		final AreasDescansoForm areasDescansoForm = new AreasDescansoForm(this.layer);
 		if (areasDescansoForm.init()) {
 		    PluginServices.getMDIManager().addCentredWindow(areasDescansoForm);
+		}
+		break;
+	    case Juntas:
+		final JuntasForm juntasForm = new JuntasForm(this.layer);
+		if (juntasForm.init()) {
+		    PluginServices.getMDIManager().addCentredWindow(juntasForm);
 		}
 		break;
 	    }

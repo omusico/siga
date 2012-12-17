@@ -15,6 +15,7 @@
 		<menu text="SIGA/Inventario/Barrera Rígida" action-command="barrera_rigida" position="30402"/>
 		<menu text="SIGA/Inventario/Areas Servicio" action-command="areas_servicio" position="30403"/>
 		<menu text="SIGA/Inventario/Areas Descanso" action-command="areas_descanso" position="30404"/>
+		<menu text="SIGA/Inventario/Juntas" action-command="juntas" position="30404"/>
 		</extension>
 	</extensions>
 </plugin-config>

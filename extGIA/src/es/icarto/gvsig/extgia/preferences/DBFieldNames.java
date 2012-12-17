@@ -124,6 +124,17 @@ public class DBFieldNames {
     public static final String AREA_DESCANSO_B = "bordillos";
     public static final String AREA_DESCANSO_C = "servicios";
 
+    // JUNTAS
+    public static final String ID_JUNTA = "id_junta";
+
+    // AREAS DESCANSO RECONOCIMIENTO ESTADO
+    public static final String JUNTAS_INDEX = "indice_estado";
+    public static final String JUNTAS_A = "envejecimiento_deterioro_corrosion";
+    public static final String JUNTAS_B = "bloqueo_perdida_movilidad";
+    public static final String JUNTAS_C = "fisuras_grietas_deterioros";
+    public static final String JUNTAS_D = "falta_elementos_anclaje";
+    public static final String JUNTAS_E = "rotura_deformacion";
+
     public static void setReconocimientoEstadoFields(String[] fields) {
 	reconocimientoEstadoFields = fields;
     }
