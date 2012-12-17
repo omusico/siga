@@ -142,6 +142,15 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 	addReconocimientoButton.removeActionListener(addReconocimientoListener);
 	editReconocimientoButton.removeActionListener(editReconocimientoListener);
 	deleteReconocimientoButton.removeActionListener(deleteReconocimientoListener);
+
+	addCarreteraButton.removeActionListener(addCarreteraListener);
+	editCarreteraButton.removeActionListener(editCarreteraListener);
+	deleteCarreteraButton.removeActionListener(deleteCarreteraListener);
+
+	addRamalButton.removeActionListener(addRamalListener);
+	editRamalButton.removeActionListener(editRamalListener);
+	deleteRamalButton.removeActionListener(deleteRamalListener);
+
 	super.removeListeners();
 
 	DBFieldNames.setReconocimientoEstadoFields(DBFieldNames.genericReconocimientoEstadoFields);
