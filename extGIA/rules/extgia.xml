@@ -544,6 +544,17 @@
 	<!-- ENLACES RAMALES-->
 	
 	<FIELD>
+		<FIELDNAME>sentido_ramal</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>sentido_ramal</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+	
+	<FIELD>
 		<FIELDNAME>direccion_ramal</FIELDNAME>		
         <DOMAINREADER>
         	<DRTYPE>db</DRTYPE>
@@ -747,6 +758,17 @@
 	</FIELD>
 	
 		<!-- AREA SERVICIO RAMALES-->
+		
+	<FIELD>
+		<FIELDNAME>sentido_ramal</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>sentido_ramal</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>		
 	
 	<FIELD>
 		<FIELDNAME>direccion_ramal</FIELDNAME>		
@@ -819,6 +841,19 @@
     		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
     		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
     		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        </DOMAINREADER>
+	</FIELD>
+	
+	<!-- AREA DESCANSO RAMALES-->
+	
+	<FIELD>
+		<FIELDNAME>sentido_ramal</FIELDNAME>		
+        <DOMAINREADER>
+        	<DRTYPE>db</DRTYPE>
+        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+    		<DRDBTABLE>sentido_ramal</DRDBTABLE>
+    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
         </DOMAINREADER>
 	</FIELD>
 	
