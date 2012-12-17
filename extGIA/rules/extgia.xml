@@ -79,7 +79,6 @@
       
       <FIELD>
         <FIELDNAME>nombre_via</FIELDNAME>
-        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
          <DOMAINREADER>
          	<DRTYPE>db</DRTYPE>
          	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
@@ -91,7 +90,6 @@
       
       <FIELD>
         <FIELDNAME>nombre_via_pf</FIELDNAME>
-        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
          <DOMAINREADER>
          	<DRTYPE>db</DRTYPE>
          	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
