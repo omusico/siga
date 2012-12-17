@@ -60,15 +60,17 @@ public class EnlacesCalculateIDValue extends CalculateComponentValue {
 	String pkValue = pkWidget.getText();
 	String[] pkValues = pkValue.split("\\.");
 	String pkValueFormated = "";
-	if (pkValues[1].length() == 1) {
-	    pkValueFormated = String.format("%03d", Integer.valueOf(pkValues[0])) +
-		    pkValues[1] + "00";
-	}else if (pkValues[1].length() == 2) {
-	    pkValueFormated = String.format("%03d", Integer.valueOf(pkValues[0])) +
-		    pkValues[1] + "0";
-	}else {
-	    pkValueFormated = String.format("%03d", Integer.valueOf(pkValues[0])) +
-		    pkValues[1];
+	if (pkValues.length>1) {
+	    if (pkValues[1].length() == 1) {
+		pkValueFormated = String.format("%03d", Integer.valueOf(pkValues[0])) +
+			pkValues[1] + "00";
+	    }else if (pkValues[1].length() == 2) {
+		pkValueFormated = String.format("%03d", Integer.valueOf(pkValues[0])) +
+			pkValues[1] + "0";
+	    }else {
+		pkValueFormated = String.format("%03d", Integer.valueOf(pkValues[0])) +
+			pkValues[1];
+	    }
 	}
 
 	if (pkWidget.getText().isEmpty()) {
