@@ -1,1031 +1,1771 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <METADATA>
-  <LAYER alias="taludes">
-    <TABLENAME>taludes</TABLENAME>
-    <PRIMARYKEY>
-    	<PKELEMENT>id_talud</PKELEMENT>
-    </PRIMARYKEY>
-    <RECORDSET>
-      <FIELD>
-        <FIELDNAME>id_talud</FIELDNAME>
-        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
-      </FIELD>
 
-      <FIELD>
-        <FIELDNAME>numero_talud</FIELDNAME>
-        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
-        <VALIDATIONRULE>integer_positive</VALIDATIONRULE>
-      </FIELD>
+	<!-- TALUDES -->
 
-      <FIELD>
-        <FIELDNAME>area_mantenimiento</FIELDNAME>
-        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
-         <DOMAINREADER>
-         	<DRTYPE>db</DRTYPE>
-         	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>area_mantenimiento</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-      </FIELD>
+	<LAYER alias="taludes">
+		<TABLENAME>taludes</TABLENAME>
+		<PRIMARYKEY>
+			<PKELEMENT>id_talud</PKELEMENT>
+		</PRIMARYKEY>
+		<RECORDSET>
+			<FIELD>
+				<FIELDNAME>id_talud</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+			</FIELD>
 
-      <FIELD>
-        <FIELDNAME>base_contratista</FIELDNAME>
-        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
-         <DOMAINREADER>
-         	<DRTYPE>db</DRTYPE>
-         	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>base_contratista</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-      </FIELD>
+			<FIELD>
+				<FIELDNAME>fecha_actualizacion</FIELDNAME>
+				<VALIDATIONRULE>DATE</VALIDATIONRULE>
+			</FIELD>
 
-      <FIELD>
-        <FIELDNAME>tramo</FIELDNAME>
-        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
-         <DOMAINREADER>
-         	<DRTYPE>db</DRTYPE>
-         	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>tramo</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-      </FIELD>
+			<FIELD>
+				<FIELDNAME>numero_talud</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+			</FIELD>
 
-      <FIELD>
-        <FIELDNAME>tipo_via</FIELDNAME>
-        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
-         <DOMAINREADER>
-         	<DRTYPE>db</DRTYPE>
-         	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>tipo_via</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-      </FIELD>
-      
-       <FIELD>
-        <FIELDNAME>tipo_via_pf</FIELDNAME>
-        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
-         <DOMAINREADER>
-         	<DRTYPE>db</DRTYPE>
-         	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>tipo_via</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-      </FIELD>
-      
-      <FIELD>
-        <FIELDNAME>nombre_via</FIELDNAME>
-         <DOMAINREADER>
-         	<DRTYPE>db</DRTYPE>
-         	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>nombre_via</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-      </FIELD>
-      
-      <FIELD>
-        <FIELDNAME>nombre_via_pf</FIELDNAME>
-         <DOMAINREADER>
-         	<DRTYPE>db</DRTYPE>
-         	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>nombre_via</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-      </FIELD>
+			<!-- LOCATION WIDGETS START -->
+			<FIELD>
+				<FIELDNAME>area_mantenimiento</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>area_mantenimiento</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
 
-	<FIELD>
-		<FIELDNAME>ramal_pi</FIELDNAME>
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>ramal</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
+			<FIELD>
+				<FIELDNAME>base_contratista</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>base_contratista</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
 
-	<FIELD>
-		<FIELDNAME>direccion_pi</FIELDNAME>
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>direccion</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-    		<DRDBFOREIGNKEY>id_intercambiador</DRDBFOREIGNKEY>
-        </DOMAINREADER>
-	</FIELD>
+			<FIELD>
+				<FIELDNAME>tramo</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>tramo</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
 
-      <FIELD>
-		<FIELDNAME>ramal_pf</FIELDNAME>
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>ramal</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
+			<FIELD>
+				<FIELDNAME>tipo_via</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>tipo_via</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
 
-	<FIELD>
-		<FIELDNAME>direccion_pf</FIELDNAME>
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>direccion</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-    		<DRDBFOREIGNKEY>id_intercambiador</DRDBFOREIGNKEY>
-        </DOMAINREADER>
-	</FIELD>
+			<FIELD>
+				<FIELDNAME>tipo_via_pf</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>tipo_via</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
 
-	<FIELD>
-		<FIELDNAME>sentido</FIELDNAME>
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>sentido</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
+			<FIELD>
+				<FIELDNAME>nombre_via</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>nombre_via</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
 
-	<FIELD>
-		<FIELDNAME>margen</FIELDNAME>
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>margen</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
+			<FIELD>
+				<FIELDNAME>nombre_via_pf</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>nombre_via</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
 
-	<FIELD>
-		<FIELDNAME>tipo_talud</FIELDNAME>
-		<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>tipo_talud</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
+			<FIELD>
+				<FIELDNAME>pk_inicial</FIELDNAME>
+				<VALIDATIONRULE>double_positive</VALIDATIONRULE>
+			</FIELD>
 
-	<FIELD>
-		<FIELDNAME>longitud</FIELDNAME>
-		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
-	</FIELD>
+			<FIELD>
+				<FIELDNAME>pk_final</FIELDNAME>
+				<VALIDATIONRULE>double_positive</VALIDATIONRULE>
+			</FIELD>
 
-	<FIELD>
-		<FIELDNAME>sector_inclinacion</FIELDNAME>
-		<DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>sector_inclinacion</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
+			<FIELD>
+				<FIELDNAME>ramal_pi</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>ramal</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
 
-	<FIELD>
-		<FIELDNAME>altura_max_talud</FIELDNAME>
-		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
-	</FIELD>
+			<FIELD>
+				<FIELDNAME>ramal_pf</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>ramal</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
 
-	<FIELD>
-		<FIELDNAME>sup_total_analitica</FIELDNAME>
-		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
-	</FIELD>
+			<FIELD>
+				<FIELDNAME>direccion_pi</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>direccion</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+					<DRDBFOREIGNKEY>id_intercambiador</DRDBFOREIGNKEY>
+				</DOMAINREADER>
+			</FIELD>
 
-	<FIELD>
-		<FIELDNAME>sup_mecanizada_analitica</FIELDNAME>
-		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
-	</FIELD>
+			<FIELD>
+				<FIELDNAME>direccion_pf</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>direccion</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+					<DRDBFOREIGNKEY>id_intercambiador</DRDBFOREIGNKEY>
+				</DOMAINREADER>
+			</FIELD>
 
-	<FIELD>
-		<FIELDNAME>sup_manual_analitica</FIELDNAME>
-		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
-	</FIELD>
+			<FIELD>
+				<FIELDNAME>sentido</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>sentido</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
 
-	<FIELD>
-		<FIELDNAME>sup_restada_analitica</FIELDNAME>
-		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
-	</FIELD>
+			<FIELD>
+				<FIELDNAME>margen</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>margen</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
 
-	<FIELD>
-		<FIELDNAME>sup_total_campo</FIELDNAME>
-		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
-	</FIELD>
+			<!-- LOCATION WIDGETS END -->
 
-	<FIELD>
-		<FIELDNAME>sup_mecanizada_real</FIELDNAME>
-		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
-	</FIELD>
+			<FIELD>
+				<FIELDNAME>tipo_talud</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>tipo_talud</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
 
-	<FIELD>
-		<FIELDNAME>sup_restada_campo</FIELDNAME>
-		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
-	</FIELD>
+			<FIELD>
+				<FIELDNAME>longitud</FIELDNAME>
+				<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+			</FIELD>
 
-	<FIELD>
-		<FIELDNAME>sup_manual_real</FIELDNAME>
-		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
-	</FIELD>
+			<FIELD>
+				<FIELDNAME>sector_inclinacion</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>sector_inclinacion</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
 
-	<FIELD>
-		<FIELDNAME>sup_complementaria</FIELDNAME>
-		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
-	</FIELD>
-	
-<!-- TALUDES RECONOCIMIENTO ESTADO -->
+			<FIELD>
+				<FIELDNAME>altura_max_talud</FIELDNAME>
+				<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+			</FIELD>
 
-	<FIELD>
-		<FIELDNAME>existencia_deformaciones_o_grietas</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-	<FIELD>
-		<FIELDNAME>peligro_caida_materiales</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-      
-    <FIELD>
-		<FIELDNAME>bajante_deteriorada</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
- 
-    <FIELD>
-		<FIELDNAME>elementos_proteccion_talud</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
+			<FIELD>
+				<FIELDNAME>sup_total_analitica</FIELDNAME>
+				<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+			</FIELD>
 
-<!-- TALUDES TRABAJOS -->
+			<FIELD>
+				<FIELDNAME>sup_mecanizada_analitica</FIELDNAME>
+				<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+			</FIELD>
 
-	<FIELD>
-		<FIELDNAME>unidad</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>unidad</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
+			<FIELD>
+				<FIELDNAME>sup_manual_analitica</FIELDNAME>
+				<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+			</FIELD>
 
-    </RECORDSET>
-  </LAYER>
+			<FIELD>
+				<FIELDNAME>sup_restada_analitica</FIELDNAME>
+				<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+			</FIELD>
 
-<!-- ISLETAS -->
+			<FIELD>
+				<FIELDNAME>sup_total_campo</FIELDNAME>
+				<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+			</FIELD>
 
-  <LAYER alias="isletas">
-    <TABLENAME>isletas</TABLENAME>
-    <PRIMARYKEY>
-    	<PKELEMENT>id_isleta</PKELEMENT>
-    </PRIMARYKEY>
-    <RECORDSET>
-      <FIELD>
-        <FIELDNAME>id_isleta</FIELDNAME>
-        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
-      </FIELD>
+			<FIELD>
+				<FIELDNAME>sup_mecanizada_real</FIELDNAME>
+				<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+			</FIELD>
 
-      <FIELD>
-        <FIELDNAME>numero_isleta</FIELDNAME>
-        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
-        <VALIDATIONRULE>integer_positive</VALIDATIONRULE>
-      </FIELD>
+			<FIELD>
+				<FIELDNAME>sup_restada_campo</FIELDNAME>
+				<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+			</FIELD>
 
-      <FIELD>
-        <FIELDNAME>area_mantenimiento</FIELDNAME>
-        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
-         <DOMAINREADER>
-         	<DRTYPE>db</DRTYPE>
-         	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>area_mantenimiento</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-      </FIELD>
+			<FIELD>
+				<FIELDNAME>sup_manual_real</FIELDNAME>
+				<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+			</FIELD>
 
-      <FIELD>
-        <FIELDNAME>base_contratista</FIELDNAME>
-        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
-         <DOMAINREADER>
-         	<DRTYPE>db</DRTYPE>
-         	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>base_contratista</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-      </FIELD>
+			<FIELD>
+				<FIELDNAME>sup_complementaria</FIELDNAME>
+				<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+			</FIELD>
 
-      <FIELD>
-        <FIELDNAME>tramo</FIELDNAME>
-        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
-         <DOMAINREADER>
-         	<DRTYPE>db</DRTYPE>
-         	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>tramo</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-      </FIELD>
+			<!-- TALUDES RECONOCIMIENTO ESTADO -->
 
-      <FIELD>
-        <FIELDNAME>tipo_via</FIELDNAME>
-        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
-         <DOMAINREADER>
-         	<DRTYPE>db</DRTYPE>
-         	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>tipo_via</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-      </FIELD>
+			<FIELD>
+				<FIELDNAME>existencia_deformaciones_o_grietas</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
 
-      <FIELD>
-        <FIELDNAME>pk_inicial</FIELDNAME>
-        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
-        <VALIDATIONRULE>double_positive</VALIDATIONRULE>
-      </FIELD>
+			<FIELD>
+				<FIELDNAME>peligro_caida_materiales</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
 
-      <FIELD>
-        <FIELDNAME>pk_final</FIELDNAME>
-        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
-        <VALIDATIONRULE>double_positive</VALIDATIONRULE>
-      </FIELD>
+			<FIELD>
+				<FIELDNAME>bajante_deteriorada</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
 
-	<FIELD>
-		<FIELDNAME>ramal</FIELDNAME>
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>ramal</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
+			<FIELD>
+				<FIELDNAME>elementos_proteccion_talud</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
 
-	<FIELD>
-		<FIELDNAME>direccion</FIELDNAME>
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>direccion</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-    		<DRDBFOREIGNKEY>id_intercambiador</DRDBFOREIGNKEY>
-        </DOMAINREADER>
-	</FIELD>
+			<!-- TALUDES TRABAJOS -->
 
-	<FIELD>
-		<FIELDNAME>sentido</FIELDNAME>
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>sentido</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
+			<FIELD>
+				<FIELDNAME>unidad</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>unidad</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
 
-	<FIELD>
-		<FIELDNAME>margen</FIELDNAME>
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>margen</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
+		</RECORDSET>
+	</LAYER>
 
-	<FIELD>
-		<FIELDNAME>tipo_isleta</FIELDNAME>
-		<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>tipo_isleta</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
+	<!-- ISLETAS -->
 
-      <FIELD>
-        <FIELDNAME>superficie_bajo_bionda</FIELDNAME>
-        <VALIDATIONRULE>integer_positive</VALIDATIONRULE>
-      </FIELD>
+	<LAYER alias="isletas">
+		<TABLENAME>isletas</TABLENAME>
+		<PRIMARYKEY>
+			<PKELEMENT>id_isleta</PKELEMENT>
+		</PRIMARYKEY>
+		<RECORDSET>
+			<FIELD>
+				<FIELDNAME>id_isleta</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+			</FIELD>
 
-	<FIELD>
-		<FIELDNAME>posibilidad_empleo_vehiculos</FIELDNAME>
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>posibilidad_empleo_vehiculos</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-<!-- ISLETAS RECONOCIMIENTO ESTADO-->
-	
-	<FIELD>
-		<FIELDNAME>estado_siega</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-    </RECORDSET>
-  </LAYER>
+			<FIELD>
+				<FIELDNAME>fecha_actualizacion</FIELDNAME>
+				<VALIDATIONRULE>DATE</VALIDATIONRULE>
+			</FIELD>
 
-<!-- ENLACES -->
+			<FIELD>
+				<FIELDNAME>numero_isleta</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+			</FIELD>
 
-  <LAYER alias="enlaces">
-    <TABLENAME>enlaces</TABLENAME>
-    <PRIMARYKEY>
-    	<PKELEMENT>id_enlace</PKELEMENT>
-    </PRIMARYKEY>
-    <RECORDSET>
-      
-      <FIELD>
-        <FIELDNAME>id_enlace</FIELDNAME>
-        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
-      </FIELD>
+			<!-- LOCATION WIDGETS START -->
+			<FIELD>
+				<FIELDNAME>area_mantenimiento</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>area_mantenimiento</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
 
-	<FIELD>
-        <FIELDNAME>pk</FIELDNAME>
-        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
-        <VALIDATIONRULE>double_positive</VALIDATIONRULE>
-    </FIELD>      
-      
-      <FIELD>
-		<FIELDNAME>municipio</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>municipio</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
+			<FIELD>
+				<FIELDNAME>base_contratista</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>base_contratista</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
 
-    <FIELD>
-		<FIELDNAME>tipo_enlace</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>tipo_enlace</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
+			<FIELD>
+				<FIELDNAME>tramo</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>tramo</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
 
-<!-- ENLACES CARRETERAS ENLAZADAS-->
+			<FIELD>
+				<FIELDNAME>tipo_via</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>tipo_via</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
 
-	<FIELD>
-		<FIELDNAME>titular</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>titularidad</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-	<FIELD>
-		<FIELDNAME>tipo_cruce</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>tipo_cruce</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-	<!-- ENLACES RAMALES-->
-	
-	<FIELD>
-		<FIELDNAME>sentido_ramal</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>sentido_ramal</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-	<FIELD>
-		<FIELDNAME>direccion_ramal</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>direccion_enlaces</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-		
-    </RECORDSET>
-  </LAYER>
-  
-  <!-- BARRERA RIGIDA -->
+			<FIELD>
+				<FIELDNAME>nombre_via</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>nombre_via</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
 
-  <LAYER alias="barrera_rigida">
-    <TABLENAME>barrera_rigida</TABLENAME>
-    <PRIMARYKEY>
-    	<PKELEMENT>id_barrera_rigida</PKELEMENT>
-    </PRIMARYKEY>
-    <RECORDSET>
-      
-      <FIELD>
-        <FIELDNAME>id_barrera_rigida</FIELDNAME>
-        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
-      </FIELD>
-      
-      <FIELD>
-		<FIELDNAME>obstaculo_protegido</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>obstaculo_protegido</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-     <FIELD>
-		<FIELDNAME>tipo</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>tipo</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-     <FIELD>
-		<FIELDNAME>metodo_constructivo</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>metodo_constructivo</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-     <FIELD>
-		<FIELDNAME>perfil</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>perfil</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-  <!-- BARRERA RIGIDA RECONOCIMIENTO ESTADO-->
-  
-  	<FIELD>
-		<FIELDNAME>deficiencias_aplicacion_normativa</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-	<FIELD>
-		<FIELDNAME>limpieza_elemento_contencion</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-	<FIELD>
-		<FIELDNAME>deterioros_superficiales</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-	<FIELD>
-		<FIELDNAME>cimiento_soporte_anclaje</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-    </RECORDSET>
-  </LAYER>
-  
-    <!-- AREAS SERVICIO -->
+			<FIELD>
+				<FIELDNAME>pk_inicial</FIELDNAME>
+				<VALIDATIONRULE>double_positive</VALIDATIONRULE>
+			</FIELD>
 
-  <LAYER alias="areas_servicio">
-    <TABLENAME>areas_servicio</TABLENAME>
-    <PRIMARYKEY>
-    	<PKELEMENT>id_area_servicio</PKELEMENT>
-    </PRIMARYKEY>
-    <RECORDSET>
-      
-      <FIELD>
-        <FIELDNAME>id_area_servicio</FIELDNAME>
-        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
-      </FIELD>
-      
-      <FIELD>
-		<FIELDNAME>riego</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>riego</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-    
-  <!-- AREA SERVICIO RECONOCIMIENTO ESTADO-->
-  
-  	<FIELD>
-		<FIELDNAME>sup_pavimentada</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-	<FIELD>
-		<FIELDNAME>aceras</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-	<FIELD>
-		<FIELDNAME>bordillos</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-	<FIELD>
-		<FIELDNAME>zona_ajardinada</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-	<FIELD>
-		<FIELDNAME>servicios</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-		<!-- AREA SERVICIO RAMALES-->
-		
-	<FIELD>
-		<FIELDNAME>sentido_ramal</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>sentido_ramal</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>		
-	
-	<FIELD>
-		<FIELDNAME>direccion_ramal</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>direccion_area_servicio</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-    </RECORDSET>
-  </LAYER>
-  
-      <!-- AREAS DESCANSO -->
+			<FIELD>
+				<FIELDNAME>pk_final</FIELDNAME>
+				<VALIDATIONRULE>double_positive</VALIDATIONRULE>
+			</FIELD>
 
-  <LAYER alias="areas_descanso">
-    <TABLENAME>areas_descanso</TABLENAME>
-    <PRIMARYKEY>
-    	<PKELEMENT>id_area_descanso</PKELEMENT>
-    </PRIMARYKEY>
-    <RECORDSET>
-      
-      <FIELD>
-        <FIELDNAME>id_area_descanso</FIELDNAME>
-        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
-      </FIELD>
-      
-      <FIELD>
-		<FIELDNAME>riego</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>riego</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-    
-  <!-- AREA DESCANSO RECONOCIMIENTO ESTADO-->
-  
-  	<FIELD>
-		<FIELDNAME>sup_pavimentada</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-		
-	<FIELD>
-		<FIELDNAME>bordillos</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-	<FIELD>
-		<FIELDNAME>servicios</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-	<!-- AREA DESCANSO RAMALES-->
-	
-	<FIELD>
-		<FIELDNAME>sentido_ramal</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>sentido_ramal</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-    </RECORDSET>
-  </LAYER>
-  
-  <!-- JUNTAS -->
+			<FIELD>
+				<FIELDNAME>ramal</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>ramal</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
 
-  <LAYER alias="juntas">
-    <TABLENAME>juntas</TABLENAME>
-    <PRIMARYKEY>
-    	<PKELEMENT>id_junta</PKELEMENT>
-    </PRIMARYKEY>
-    <RECORDSET>
-      
-      <FIELD>
-        <FIELDNAME>id_junta</FIELDNAME>
-      </FIELD>
-      
-      <FIELD>
-		<FIELDNAME>numero_junta</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>numero_junta</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-     <FIELD>
-		<FIELDNAME>modulo</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>modulo</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-  <!-- JUNTAS RECONOCIMIENTO ESTADO-->
-  
-  	<FIELD>
-		<FIELDNAME>envejecimiento_deterioro_corrosion</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-	<FIELD>
-		<FIELDNAME>bloqueo_perdida_movilidad</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-	<FIELD>
-		<FIELDNAME>fisuras_grietas_deterioros</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-	<FIELD>
-		<FIELDNAME>falta_elementos_anclaje</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
+			<FIELD>
+				<FIELDNAME>direccion</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>direccion</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+					<DRDBFOREIGNKEY>id_intercambiador</DRDBFOREIGNKEY>
+				</DOMAINREADER>
+			</FIELD>
 
-	<FIELD>
-		<FIELDNAME>rotura_deformacion</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-    </RECORDSET>
-  </LAYER>
-  
-  <!-- PASOS MEDIANA -->
+			<FIELD>
+				<FIELDNAME>sentido</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>sentido</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
 
-  <LAYER alias="pasos_mediana">
-    <TABLENAME>pasos_mediana</TABLENAME>
-    <PRIMARYKEY>
-    	<PKELEMENT>id_paso_mediana</PKELEMENT>
-    </PRIMARYKEY>
-    <RECORDSET>
-      
-      <FIELD>
-        <FIELDNAME>id_paso_mediana</FIELDNAME>
-      </FIELD>
-      	
-     <FIELD>
-		<FIELDNAME>cierre</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>cierre</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-  <!-- PASOS MEDIANA RECONOCIMIENTO ESTADO-->
-  
-  	<FIELD>
-		<FIELDNAME>aterramientos_vegetacion</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-	<FIELD>
-		<FIELDNAME>baches_zonas_cuarteadas</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-	<FIELD>
-		<FIELDNAME>deficiencias_sistema_drenaje</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
-	
-	<FIELD>
-		<FIELDNAME>elementos_contencion_cierre</FIELDNAME>		
-        <DOMAINREADER>
-        	<DRTYPE>db</DRTYPE>
-        	<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-    		<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-    		<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-    		<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-        </DOMAINREADER>
-	</FIELD>
+			<FIELD>
+				<FIELDNAME>margen</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>margen</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
 
-    </RECORDSET>
-  </LAYER>
+			<!-- LOCATION WIDGETS END -->
+
+			<FIELD>
+				<FIELDNAME>tipo_isleta</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>tipo_isleta</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>superficie_bajo_bionda</FIELDNAME>
+				<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>posibilidad_empleo_vehiculos</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>posibilidad_empleo_vehiculos</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<!-- ISLETAS RECONOCIMIENTO ESTADO -->
+
+			<FIELD>
+				<FIELDNAME>estado_siega</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+		</RECORDSET>
+	</LAYER>
+
+	<!-- ENLACES -->
+
+	<LAYER alias="enlaces">
+		<TABLENAME>enlaces</TABLENAME>
+		<PRIMARYKEY>
+			<PKELEMENT>id_enlace</PKELEMENT>
+		</PRIMARYKEY>
+		<RECORDSET>
+
+			<FIELD>
+				<FIELDNAME>id_enlace</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>fecha_actualizacion</FIELDNAME>
+				<VALIDATIONRULE>DATE</VALIDATIONRULE>
+			</FIELD>
+
+			<!-- LOCATION WIDGETS START -->
+			<FIELD>
+				<FIELDNAME>area_mantenimiento</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>area_mantenimiento</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>base_contratista</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>base_contratista</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>tramo</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>tramo</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>tipo_via</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>tipo_via</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>nombre_via</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>nombre_via</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>pk</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<VALIDATIONRULE>double_positive</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>municipio</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>municipio</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<!-- LOCATION WIDGETS END -->
+
+			<FIELD>
+				<FIELDNAME>n_salida</FIELDNAME>
+				<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>tipo_enlace</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>tipo_enlace</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>numero_ramales</FIELDNAME>
+				<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+			</FIELD>
+
+			<!-- ENLACES CARRETERAS ENLAZADAS -->
+
+			<FIELD>
+				<FIELDNAME>titular</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>titularidad</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>tipo_cruce</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>tipo_cruce</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<!-- ENLACES RAMALES -->
+
+			<FIELD>
+				<FIELDNAME>sentido_ramal</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>sentido_ramal</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>direccion_ramal</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>direccion_enlaces</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+		</RECORDSET>
+	</LAYER>
+
+	<!-- BARRERA RIGIDA -->
+
+	<LAYER alias="barrera_rigida">
+		<TABLENAME>barrera_rigida</TABLENAME>
+		<PRIMARYKEY>
+			<PKELEMENT>id_barrera_rigida</PKELEMENT>
+		</PRIMARYKEY>
+		<RECORDSET>
+
+			<FIELD>
+				<FIELDNAME>id_barrera_rigida</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>fecha_actualizacion</FIELDNAME>
+				<VALIDATIONRULE>DATE</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>numero_barrera_rigida</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+			</FIELD>
+
+			<!-- LOCATION WIDGETS START -->
+			<FIELD>
+				<FIELDNAME>area_mantenimiento</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>area_mantenimiento</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>base_contratista</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>base_contratista</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>tramo</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>tramo</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>tipo_via</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>tipo_via</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>nombre_via</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>nombre_via</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>pk_inicial</FIELDNAME>
+				<VALIDATIONRULE>double_positive</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>pk_final</FIELDNAME>
+				<VALIDATIONRULE>double_positive</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>ramal</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>ramal</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>direccion</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>direccion</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+					<DRDBFOREIGNKEY>id_intercambiador</DRDBFOREIGNKEY>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>sentido</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>sentido</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>margen</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>margen</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<!-- LOCATION WIDGETS END -->
+
+			<FIELD>
+				<FIELDNAME>obstaculo_protegido</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>obstaculo_protegido</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>tipo</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>tipo</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>metodo_constructivo</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>metodo_constructivo</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>perfil</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>perfil</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>longitud</FIELDNAME>
+				<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+			</FIELD>
+
+			<!-- BARRERA RIGIDA RECONOCIMIENTO ESTADO -->
+
+			<FIELD>
+				<FIELDNAME>deficiencias_aplicacion_normativa</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>limpieza_elemento_contencion</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>deterioros_superficiales</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>cimiento_soporte_anclaje</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+		</RECORDSET>
+	</LAYER>
+
+	<!-- AREAS SERVICIO -->
+
+	<LAYER alias="areas_servicio">
+		<TABLENAME>areas_servicio</TABLENAME>
+		<PRIMARYKEY>
+			<PKELEMENT>id_area_servicio</PKELEMENT>
+		</PRIMARYKEY>
+		<RECORDSET>
+
+			<FIELD>
+				<FIELDNAME>id_area_servicio</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>fecha_actualizacion</FIELDNAME>
+				<VALIDATIONRULE>DATE</VALIDATIONRULE>
+			</FIELD>
+
+			<!-- LOCATION WIDGETS START -->
+			<FIELD>
+				<FIELDNAME>area_mantenimiento</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>area_mantenimiento</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>base_contratista</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>base_contratista</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>tramo</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>tramo</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>tipo_via</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>tipo_via</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>nombre_via</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>nombre_via</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>pk</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<VALIDATIONRULE>double_positive</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>sentido</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>sentido</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>municipio</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>municipio</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<!-- LOCATION WIDGETS END -->
+
+			<FIELD>
+				<FIELDNAME>fecha_puesta_servicio</FIELDNAME>
+				<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>sup_total</FIELDNAME>
+				<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>sup_pavimentada</FIELDNAME>
+				<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>aceras</FIELDNAME>
+				<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>bordillos</FIELDNAME>
+				<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>zona_siega</FIELDNAME>
+				<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>zona_ajardinada</FIELDNAME>
+				<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>riego</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>riego</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>aparcamiento_camion_bus</FIELDNAME>
+				<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>fuentes_potables</FIELDNAME>
+				<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>numero_ramales</FIELDNAME>
+				<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+			</FIELD>
+
+			<!-- AREA SERVICIO RECONOCIMIENTO ESTADO -->
+
+			<FIELD>
+				<FIELDNAME>sup_pavimentada</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>aceras</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>bordillos</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>zona_ajardinada</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>servicios</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<!-- AREA SERVICIO RAMALES -->
+
+			<FIELD>
+				<FIELDNAME>sentido_ramal</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>sentido_ramal</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>direccion_ramal</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>direccion_area_servicio</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+		</RECORDSET>
+	</LAYER>
+
+	<!-- AREAS DESCANSO -->
+
+	<LAYER alias="areas_descanso">
+		<TABLENAME>areas_descanso</TABLENAME>
+		<PRIMARYKEY>
+			<PKELEMENT>id_area_descanso</PKELEMENT>
+		</PRIMARYKEY>
+		<RECORDSET>
+
+			<FIELD>
+				<FIELDNAME>id_area_descanso</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>fecha_actualizacion</FIELDNAME>
+				<VALIDATIONRULE>DATE</VALIDATIONRULE>
+			</FIELD>
+
+			<!-- LOCATION WIDGETS START -->
+			<FIELD>
+				<FIELDNAME>area_mantenimiento</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>area_mantenimiento</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>base_contratista</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>base_contratista</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>tramo</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>tramo</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>tipo_via</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>tipo_via</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>nombre_via</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>nombre_via</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>pk</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<VALIDATIONRULE>double_positive</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>sentido</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>sentido</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>municipio</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>municipio</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<!-- LOCATION WIDGETS END -->
+
+			<FIELD>
+				<FIELDNAME>fecha_puesta_servicio</FIELDNAME>
+				<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>sup_total</FIELDNAME>
+				<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>sup_pavimentada</FIELDNAME>
+				<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>aceras</FIELDNAME>
+				<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>bordillos</FIELDNAME>
+				<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>zona_siega</FIELDNAME>
+				<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>zona_ajardinada</FIELDNAME>
+				<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>riego</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>riego</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>aparcamiento_camion_bus</FIELDNAME>
+				<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>fuentes_potables</FIELDNAME>
+				<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>numero_ramales</FIELDNAME>
+				<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+			</FIELD>
+
+			<!-- AREA DESCANSO RECONOCIMIENTO ESTADO -->
+
+			<FIELD>
+				<FIELDNAME>sup_pavimentada</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>bordillos</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>servicios</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<!-- AREA DESCANSO RAMALES -->
+
+			<FIELD>
+				<FIELDNAME>sentido_ramal</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>sentido_ramal</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+		</RECORDSET>
+	</LAYER>
+
+	<!-- JUNTAS -->
+
+	<LAYER alias="juntas">
+		<TABLENAME>juntas</TABLENAME>
+		<PRIMARYKEY>
+			<PKELEMENT>id_junta</PKELEMENT>
+		</PRIMARYKEY>
+		<RECORDSET>
+
+			<FIELD>
+				<FIELDNAME>id_junta</FIELDNAME>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>fecha_actualizacion</FIELDNAME>
+				<VALIDATIONRULE>DATE</VALIDATIONRULE>
+			</FIELD>
+
+			<!-- LOCATION WIDGETS START -->
+			<FIELD>
+				<FIELDNAME>area_mantenimiento</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>area_mantenimiento</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>base_contratista</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>base_contratista</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>tramo</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>tramo</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>tipo_via</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>tipo_via</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>nombre_via</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>nombre_via</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>pk</FIELDNAME>
+				<VALIDATIONRULE>double_positive</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>ramal</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>ramal</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>direccion</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>direccion</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+					<DRDBFOREIGNKEY>id_intercambiador</DRDBFOREIGNKEY>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>sentido</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>sentido</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<!-- LOCATION WIDGETS END -->
+
+			<FIELD>
+				<FIELDNAME>numero_junta</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>numero_junta</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>ancho</FIELDNAME>
+				<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>modulo</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>modulo</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<!-- JUNTAS RECONOCIMIENTO ESTADO -->
+
+			<FIELD>
+				<FIELDNAME>envejecimiento_deterioro_corrosion</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>bloqueo_perdida_movilidad</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>fisuras_grietas_deterioros</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>falta_elementos_anclaje</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>rotura_deformacion</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+		</RECORDSET>
+	</LAYER>
+
+	<!-- PASOS MEDIANA -->
+
+	<LAYER alias="pasos_mediana">
+		<TABLENAME>pasos_mediana</TABLENAME>
+		<PRIMARYKEY>
+			<PKELEMENT>id_paso_mediana</PKELEMENT>
+		</PRIMARYKEY>
+		<RECORDSET>
+
+			<FIELD>
+				<FIELDNAME>id_paso_mediana</FIELDNAME>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>fecha_actualizacion</FIELDNAME>
+				<VALIDATIONRULE>DATE</VALIDATIONRULE>
+			</FIELD>
+
+			<!-- LOCATION WIDGETS START -->
+			<FIELD>
+				<FIELDNAME>area_mantenimiento</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>area_mantenimiento</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>base_contratista</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>base_contratista</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>tramo</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>tramo</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>tipo_via</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>tipo_via</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>nombre_via</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>nombre_via</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>pk</FIELDNAME>
+				<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
+				<VALIDATIONRULE>double_positive</VALIDATIONRULE>
+			</FIELD>
+
+			<!-- LOCATION WIDGETS END -->
+
+			<FIELD>
+				<FIELDNAME>longitud</FIELDNAME>
+				<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>cierre</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>cierre</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>longitud_cierre</FIELDNAME>
+				<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>numero_postes</FIELDNAME>
+				<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+			</FIELD>
+
+			<!-- PASOS MEDIANA RECONOCIMIENTO ESTADO -->
+
+			<FIELD>
+				<FIELDNAME>aterramientos_vegetacion</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>baches_zonas_cuarteadas</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>deficiencias_sistema_drenaje</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+			<FIELD>
+				<FIELDNAME>elementos_contencion_cierre</FIELDNAME>
+				<DOMAINREADER>
+					<DRTYPE>db</DRTYPE>
+					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+				</DOMAINREADER>
+			</FIELD>
+
+		</RECORDSET>
+	</LAYER>
 
 </METADATA>
