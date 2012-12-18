@@ -39,7 +39,7 @@ public class JuntasCalculateIndiceEstado extends CalculateReconocimientoIndexVal
 	value += Integer.parseInt(strB) * 0.2;
 	value += Integer.parseInt(strC) * 0.2;
 	value += Integer.parseInt(strD) * 0.2;
-	value += Integer.parseInt(strD) * 0.2;
+	value += Integer.parseInt(strE) * 0.2;
 
 	String strValue = Float.toString(value);
 	resultComponent.setText(strValue);
