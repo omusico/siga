@@ -74,6 +74,8 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 
     @Override
     protected void fillSpecificValues() {
+	super.fillSpecificValues();
+
 	if (filesLinkButton == null) {
 	    addNewButtonsToActionsToolBar();
 	}

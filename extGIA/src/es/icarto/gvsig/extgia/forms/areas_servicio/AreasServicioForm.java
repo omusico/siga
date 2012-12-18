@@ -68,6 +68,8 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 
     @Override
     protected void fillSpecificValues() {
+	super.fillSpecificValues();
+
 	if (filesLinkButton == null) {
 	    addNewButtonsToActionsToolBar();
 	}

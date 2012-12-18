@@ -126,22 +126,159 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 
     }
 
+    private void updateBaseContratistaCombo() {
+	String id = ((KeyValue)areaMantenimientoWidget.getSelectedItem()).getKey();
+	String getBaseContratistaQuery =
+		"SELECT id, item FROM audasa_extgia_dominios.base_contratista" +
+			" WHERE id_am = " + id + ";";
+	baseContratistaWidget.removeAllItems();
+	baseContratistaWidget.addItem(new KeyValue("", ""));
+	if (!id.isEmpty()) {
+	    for (KeyValue value: SqlUtils.getKeyValueListFromSql(getBaseContratistaQuery)) {
+		baseContratistaWidget.addItem(value);
+	    }
+	}
+    }
+
+    private void updateTramoCombo() {
+	String id = ((KeyValue) baseContratistaWidget.getSelectedItem())
+		.getKey();
+	String getTramoQuery = "SELECT id, item FROM audasa_extgia_dominios.tramo"
+		+ " WHERE id_bc = " + id + ";";
+	tramoWidget.removeAllItems();
+	tramoWidget.addItem(new KeyValue("", ""));
+	if (!id.isEmpty()) {
+	    for (KeyValue value : SqlUtils
+		    .getKeyValueListFromSql(getTramoQuery)) {
+		tramoWidget.addItem(value);
+	    }
+	}
+    }
+
+    private void selectTramoOption() {
+	String tramo = this.getFormController().getValue(TRAMO);
+	for (int i = 0; i < tramoWidget.getItemCount(); i++) {
+	    if (tramo.equalsIgnoreCase(((KeyValue) tramoWidget.getItemAt(i))
+		    .getKey())) {
+		tramoWidget.setSelectedIndex(i);
+	    }
+	}
+    }
+
+    private void updateTipoViaCombo() {
+	String id_tramo = ((KeyValue) tramoWidget.getSelectedItem()).getKey();
+	String id_bc = ((KeyValue) baseContratistaWidget.getSelectedItem())
+		.getKey();
+	String getTipoViaQuery = "SELECT id, item  FROM audasa_extgia_dominios.tipo_via"
+		+ " WHERE id_tramo = "
+		+ id_tramo
+		+ " AND id_bc = "
+		+ id_bc
+		+ ";";
+	tipoViaWidget.removeAllItems();
+	tipoViaWidget.addItem(new KeyValue("", ""));
+	if (!id_tramo.isEmpty() && !id_bc.isEmpty()) {
+	    for (KeyValue value : SqlUtils
+		    .getKeyValueListFromSql(getTipoViaQuery)) {
+		tipoViaWidget.addItem(value);
+	    }
+	    if (elementHasIPandFP()) {
+		tipoViaPFWidget.removeAllItems();
+		tipoViaPFWidget.addItem(new KeyValue("", ""));
+		for (KeyValue value : SqlUtils
+			.getKeyValueListFromSql(getTipoViaQuery)) {
+		    tipoViaPFWidget.addItem(value);
+		}
+	    }
+	}
+    }
+
+    private void selectTipoViaOption() {
+	String tipoVia = this.getFormController().getValue(TIPO_VIA);
+	for (int i = 0; i < tipoViaWidget.getItemCount(); i++) {
+	    if (tipoVia
+		    .equalsIgnoreCase(((KeyValue) tipoViaWidget.getItemAt(i))
+			    .getKey())) {
+		tipoViaWidget.setSelectedIndex(i);
+	    }
+	}
+	if (elementHasIPandFP()) {
+	    String tipoViaPF = this.getFormController().getValue(TIPO_VIA_PF);
+	    for (int i = 0; i < tipoViaPFWidget.getItemCount(); i++) {
+		if (tipoViaPF.equalsIgnoreCase(((KeyValue) tipoViaPFWidget
+			.getItemAt(i)).getKey())) {
+		    tipoViaPFWidget.setSelectedIndex(i);
+		}
+	    }
+	}
+    }
+
+    private void updateNombreViaCombo() {
+	String id_tv = ((KeyValue) tipoViaWidget.getSelectedItem()).getKey();
+	String id_tramo = ((KeyValue) tramoWidget.getSelectedItem()).getKey();
+	String id_bc = ((KeyValue) baseContratistaWidget.getSelectedItem())
+		.getKey();
+	String getNombreViaQuery = "SELECT id, item FROM audasa_extgia_dominios.nombre_via"
+		+ " WHERE id_tv = "
+		+ id_tv
+		+ " AND id_tramo = "
+		+ id_tramo
+		+ " AND id_bc = " + id_bc + ";";
+	nombreViaWidget.removeAllItems();
+	nombreViaWidget.addItem(new KeyValue("", ""));
+	if (!id_tv.isEmpty() && !id_tramo.isEmpty() && !id_bc.isEmpty()) {
+	    for (KeyValue value : SqlUtils
+		    .getKeyValueListFromSql(getNombreViaQuery)) {
+		nombreViaWidget.addItem(value);
+	    }
+	}
+    }
+
+    private void selectNombreViaOption() {
+	String nombreVia = this.getFormController().getValue(NOMBRE_VIA);
+	for (int i = 0; i < nombreViaWidget.getItemCount(); i++) {
+	    if (nombreVia.equalsIgnoreCase(((KeyValue) nombreViaWidget
+		    .getItemAt(i)).getKey())) {
+		nombreViaWidget.setSelectedIndex(i);
+	    }
+	}
+    }
+
+    private void updateNombreViaPFCombo() {
+	String id_tv = ((KeyValue) tipoViaPFWidget.getSelectedItem()).getKey();
+	String id_tramo = ((KeyValue) tramoWidget.getSelectedItem()).getKey();
+	String id_bc = ((KeyValue) baseContratistaWidget.getSelectedItem())
+		.getKey();
+	String getNombreViaQuery = "SELECT id, item FROM audasa_extgia_dominios.nombre_via"
+		+ " WHERE id_tv = "
+		+ id_tv
+		+ " AND id_tramo = "
+		+ id_tramo
+		+ " AND id_bc = " + id_bc + ";";
+	nombreViaPFWidget.removeAllItems();
+	nombreViaPFWidget.addItem(new KeyValue("", ""));
+	for (KeyValue value : SqlUtils
+		.getKeyValueListFromSql(getNombreViaQuery)) {
+	    nombreViaPFWidget.addItem(value);
+	}
+    }
+
+    private void selectNombreViaPFOption() {
+	String nombreViaPF = this.getFormController().getValue(NOMBRE_VIA_PF);
+	for (int i = 0; i < nombreViaPFWidget.getItemCount(); i++) {
+	    if (nombreViaPF.equalsIgnoreCase(((KeyValue) nombreViaPFWidget
+		    .getItemAt(i)).getKey())) {
+		nombreViaPFWidget.setSelectedIndex(i);
+	    }
+	}
+    }
+
     public class UpdateBaseContratistaListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 	    if (!isFillingValues()) {
-		String id = ((KeyValue)areaMantenimientoWidget.getSelectedItem()).getKey();
-		String getBaseContratistaQuery =
-			"SELECT id, item FROM audasa_extgia_dominios.base_contratista" +
-				" WHERE id_am = " + id + ";";
-		baseContratistaWidget.removeAllItems();
-		baseContratistaWidget.addItem(new KeyValue("", ""));
-		if (!id.isEmpty()) {
-		    for (KeyValue value: SqlUtils.getKeyValueListFromSql(getBaseContratistaQuery)) {
-			baseContratistaWidget.addItem(value);
-		    }
-		}
+		updateBaseContratistaCombo();
 	    }
 	}
     }
@@ -150,18 +287,8 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-	    if (!isFillingValues() && baseContratistaWidget.getItemCount()!=0) {
-		String id = ((KeyValue) baseContratistaWidget.getSelectedItem()).getKey();
-		String getTramoQuery =
-			"SELECT id, item FROM audasa_extgia_dominios.tramo" +
-				" WHERE id_bc = " + id + ";";
-		tramoWidget.removeAllItems();
-		tramoWidget.addItem(new KeyValue("", ""));
-		if (!id.isEmpty()) {
-		    for (KeyValue value: SqlUtils.getKeyValueListFromSql(getTramoQuery)) {
-			tramoWidget.addItem(value);
-		    }
-		}
+	    if (!isFillingValues() && baseContratistaWidget.getItemCount() != 0) {
+		updateTramoCombo();
 	    }
 	}
     }
@@ -171,26 +298,7 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 	    if (!isFillingValues() && tramoWidget.getItemCount()!=0) {
-		String id_tramo = ((KeyValue) tramoWidget.getSelectedItem()).getKey();
-		String id_bc = ((KeyValue) baseContratistaWidget.getSelectedItem()).getKey();
-		String getTipoViaQuery =
-			"SELECT id, item  FROM audasa_extgia_dominios.tipo_via" +
-				" WHERE id_tramo = " + id_tramo +
-				" AND id_bc = " + id_bc + ";";
-		tipoViaWidget.removeAllItems();
-		tipoViaWidget.addItem(new KeyValue("", ""));
-		if (!id_tramo.isEmpty() && !id_bc.isEmpty()) {
-		    for (KeyValue value: SqlUtils.getKeyValueListFromSql(getTipoViaQuery)) {
-			tipoViaWidget.addItem(value);
-		    }
-		    if (elementHasIPandFP()) {
-			tipoViaPFWidget.removeAllItems();
-			tipoViaPFWidget.addItem(new KeyValue("", ""));
-			for (KeyValue value: SqlUtils.getKeyValueListFromSql(getTipoViaQuery)) {
-			    tipoViaPFWidget.addItem(value);
-			}
-		    }
-		}
+		updateTipoViaCombo();
 	    }
 	}
     }
@@ -200,24 +308,9 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 	    if (!isFillingValues() && tipoViaWidget.getItemCount()!=0) {
-		String id_tv = ((KeyValue) tipoViaWidget.getSelectedItem()).getKey();
-		String id_tramo = ((KeyValue) tramoWidget.getSelectedItem()).getKey();
-		String id_bc = ((KeyValue) baseContratistaWidget.getSelectedItem()).getKey();
-		String getNombreViaQuery =
-			"SELECT id, item FROM audasa_extgia_dominios.nombre_via" +
-				" WHERE id_tv = " + id_tv +
-				" AND id_tramo = " + id_tramo +
-				" AND id_bc = " + id_bc + ";";
-		nombreViaWidget.removeAllItems();
-		nombreViaWidget.addItem(new KeyValue("", ""));
-		if (!id_tv.isEmpty() && !id_tramo.isEmpty() && !id_bc.isEmpty()) {
-		    for (KeyValue value: SqlUtils.getKeyValueListFromSql(getNombreViaQuery)) {
-			nombreViaWidget.addItem(value);
-		    }
-		}
+		updateNombreViaCombo();
 	    }
 	}
-
     }
 
     public class UpdateNombreViaPFListener implements ActionListener {
@@ -225,19 +318,7 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 	    if (!isFillingValues() && tipoViaPFWidget.getItemCount()!=0) {
-		String id_tv = ((KeyValue) tipoViaPFWidget.getSelectedItem()).getKey();
-		String id_tramo = ((KeyValue) tramoWidget.getSelectedItem()).getKey();
-		String id_bc = ((KeyValue) baseContratistaWidget.getSelectedItem()).getKey();
-		String getNombreViaQuery =
-			"SELECT id, item FROM audasa_extgia_dominios.nombre_via" +
-				" WHERE id_tv = " + id_tv +
-				" AND id_tramo = " + id_tramo +
-				" AND id_bc = " + id_bc + ";";
-		nombreViaPFWidget.removeAllItems();
-		nombreViaPFWidget.addItem(new KeyValue("", ""));
-		for (KeyValue value: SqlUtils.getKeyValueListFromSql(getNombreViaQuery)) {
-		    nombreViaPFWidget.addItem(value);
-		}
+		updateNombreViaPFCombo();
 	    }
 	}
     }
@@ -360,7 +441,18 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     }
 
     @Override
-    protected abstract void fillSpecificValues();
+    protected void fillSpecificValues() {
+	updateTramoCombo();
+	selectTramoOption();
+	updateTipoViaCombo();
+	selectTipoViaOption();
+	updateNombreViaCombo();
+	selectNombreViaOption();
+	if (elementHasIPandFP()) {
+	    updateNombreViaPFCombo();
+	    selectNombreViaPFOption();
+	}
+    }
 
     public abstract String getFormBodyPath();
 

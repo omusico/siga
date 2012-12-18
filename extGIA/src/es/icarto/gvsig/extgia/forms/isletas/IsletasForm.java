@@ -72,6 +72,8 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 
     @Override
     protected void fillSpecificValues() {
+	super.fillSpecificValues();
+
 	direccionDomainHandler.updateComboBoxValues();
 
 	if (filesLinkButton == null) {

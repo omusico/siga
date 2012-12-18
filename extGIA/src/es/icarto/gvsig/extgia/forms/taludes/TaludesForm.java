@@ -137,6 +137,8 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 
     @Override
     protected void fillSpecificValues() {
+	super.fillSpecificValues();
+
 	cunetaCabeza.fillSpecificValues();
 	cunetaPie.fillSpecificValues();
 	direccionPIDomainHandler.updateComboBoxValues();
