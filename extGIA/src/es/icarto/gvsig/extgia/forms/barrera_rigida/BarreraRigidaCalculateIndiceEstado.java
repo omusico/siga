@@ -8,7 +8,7 @@ import javax.swing.JComponent;
 import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
 import es.icarto.gvsig.extgia.forms.utils.CalculateReconocimientoIndexValue;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 
 public class BarreraRigidaCalculateIndiceEstado extends CalculateReconocimientoIndexValue {
 

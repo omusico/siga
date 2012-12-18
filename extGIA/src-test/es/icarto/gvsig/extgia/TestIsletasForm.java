@@ -19,12 +19,12 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.isletas.IsletasForm;
 import es.icarto.gvsig.extgia.navtableforms.CommonMethodsForTestDBForms;
-import es.icarto.gvsig.navtableforms.utils.LayerController;
+import es.icarto.gvsig.navtableforms.dataacces.LayerController;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class TestIsletasForm extends CommonMethodsForTestDBForms {
 
-	@Override
+    @Override
     protected String getAbeilleForm() {
 	return IsletasForm.ABEILLE_FILENAME;
     }
@@ -38,12 +38,12 @@ public class TestIsletasForm extends CommonMethodsForTestDBForms {
     protected String getTable() {
 	return "isletas";
     }
-    
+
     @Override
-	protected String getXmlFile() {
-		return "rules/isletas.xml";
-	}
-    
+    protected String getXmlFile() {
+	return "rules/isletas.xml";
+    }
+
     @Ignore
     @Test
     public void test_writeValues() throws Exception {
@@ -124,5 +124,5 @@ public class TestIsletasForm extends CommonMethodsForTestDBForms {
 	return validValues;
     }
 
-    
+
 }

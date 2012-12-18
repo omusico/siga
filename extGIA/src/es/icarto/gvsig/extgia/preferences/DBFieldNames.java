@@ -1,5 +1,7 @@
 package es.icarto.gvsig.extgia.preferences;
 
+import es.icarto.gvsig.extgia.forms.utils.LaunchGIAForms.Elements;
+
 public class DBFieldNames {
 
     public static String[] genericReconocimientoEstadoFields = {"n_inspeccion as \"Nº Inspección\"",
@@ -178,6 +180,39 @@ public class DBFieldNames {
 
     public static void setRamalesFields(String[] fields) {
 	ramales = fields;
+    }
+
+    public static String getPrimaryKey(Elements element) {
+	String pk = "";
+	switch (element) {
+	case Taludes:
+	    pk = "id_talud";
+	    break;
+	case Isletas:
+	    pk = "id_isleta";
+	    break;
+	case Enlaces:
+	    pk = "id_enlace";
+	    break;
+	case Barrera_Rigida:
+	    pk = "id_barrera_rigida";
+	    break;
+	case Areas_Servicio:
+	    pk = "id_area_servicio";
+	    break;
+	case Areas_Descanso:
+	    pk = "id_area_descanso";
+	    break;
+	case Juntas:
+	    pk = "id_junta";
+	    break;
+	case Pasos_Mediana:
+	    pk = "id_paso_mediana";
+	    break;
+	case Senhalizacion_Vertical:
+	    pk = "id_senhal_vertical";
+	}
+	return pk;
     }
 
 }

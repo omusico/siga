@@ -16,7 +16,7 @@ import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 
 public class LaunchGIAForms {
 
-    public enum elements {
+    public enum Elements {
 	Taludes, Isletas, Enlaces, Barrera_Rigida, Areas_Servicio, Areas_Descanso,
 	Juntas, Pasos_Mediana, Senhalizacion_Vertical;
     }
@@ -25,7 +25,7 @@ public class LaunchGIAForms {
 	final TOCLayerManager toc = new TOCLayerManager();
 	FLyrVect layer = toc.getLayerByName(layerName);
 
-	switch (elements.valueOf(layerName)) {
+	switch (Elements.valueOf(layerName)) {
 	case Taludes:
 	    final TaludesForm taludesForm = new TaludesForm(layer);
 	    if (taludesForm.init()) {

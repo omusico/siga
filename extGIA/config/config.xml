@@ -9,15 +9,15 @@
 	<resourceBundle name="text"/>
 	<extensions>
 		<extension class-name="es.icarto.gvsig.extgia.FormLauncherExtension" description="form_launcher" active="true">
-		<menu text="SIGA/Inventario/Taludes" action-command="taludes" position="30399"/>
-		<menu text="SIGA/Inventario/Isletas" action-command="isletas" position="30400"/>
-		<menu text="SIGA/Inventario/Enlaces" action-command="enlaces" position="30401"/>
-		<menu text="SIGA/Inventario/Barrera Rígida" action-command="barrera_rigida" position="30402"/>
-		<menu text="SIGA/Inventario/Pasos Mediana" action-command="pasos_mediana" position="30403"/>
-		<menu text="SIGA/Inventario/Areas Servicio" action-command="areas_servicio" position="30404"/>
-		<menu text="SIGA/Inventario/Areas Descanso" action-command="areas_descanso" position="30405"/>
-		<menu text="SIGA/Inventario/Juntas" action-command="juntas" position="30406"/>
-		<menu text="SIGA/Inventario/Señalización Vertical" action-command="senhalizacion_vertical" position="30407"/>
+		<menu text="SIGA/Inventario/Taludes" action-command="Taludes" position="30399"/>
+		<menu text="SIGA/Inventario/Isletas" action-command="Isletas" position="30400"/>
+		<menu text="SIGA/Inventario/Enlaces" action-command="Enlaces" position="30401"/>
+		<menu text="SIGA/Inventario/Barrera Rígida" action-command="Barrera_Rigida" position="30402"/>
+		<menu text="SIGA/Inventario/Pasos Mediana" action-command="Pasos_Mediana" position="30403"/>
+		<menu text="SIGA/Inventario/Areas Servicio" action-command="Areas_Servicio" position="30404"/>
+		<menu text="SIGA/Inventario/Areas Descanso" action-command="Areas_Descanso" position="30405"/>
+		<menu text="SIGA/Inventario/Juntas" action-command="Juntas" position="30404"/>
+		<menu text="SIGA/Inventario/Señalización Vertical" action-command="Senhalizacion_Vertical" position="30407"/>
 		</extension>
 	</extensions>
 </plugin-config>

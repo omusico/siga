@@ -19,12 +19,12 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.taludes.TaludesForm;
 import es.icarto.gvsig.extgia.navtableforms.CommonMethodsForTestDBForms;
-import es.icarto.gvsig.navtableforms.utils.LayerController;
+import es.icarto.gvsig.navtableforms.dataacces.LayerController;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class TestTaludesForm extends CommonMethodsForTestDBForms {
 
-	@Override
+    @Override
     protected String getAbeilleForm() {
 	return TaludesForm.ABEILLE_FILENAME;
     }
@@ -38,12 +38,12 @@ public class TestTaludesForm extends CommonMethodsForTestDBForms {
     protected String getTable() {
 	return "taludes";
     }
-    
+
     @Override
-	protected String getXmlFile() {
-		return "rules/taludes.xml";
-	}
-    
+    protected String getXmlFile() {
+	return "rules/taludes.xml";
+    }
+
     @Ignore
     @Test
     public void test_writeValues() throws Exception {
@@ -152,7 +152,7 @@ public class TestTaludesForm extends CommonMethodsForTestDBForms {
 	return validValues;
     }
 
-	
 
-    
+
+
 }

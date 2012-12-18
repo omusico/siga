@@ -7,8 +7,6 @@ import com.iver.andami.plugins.Extension;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.utils.LaunchGIAForms;
-import es.icarto.gvsig.extgia.preferences.Preferences;
-import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 
 public class FormLauncherExtension extends Extension {
@@ -19,8 +17,7 @@ public class FormLauncherExtension extends Extension {
     public void execute(String actionCommand) {
 	this.layer = getLayerFromTOC(actionCommand);
 	if (this.layer != null) {
-	    String layerName = layer.getName();
-	    LaunchGIAForms.callFormDependingOfLayer(layerName, false);
+	    LaunchGIAForms.callFormDependingOfLayer(actionCommand, false);
 	} else {
 	    JOptionPane.showMessageDialog(null, "La capa " + actionCommand
 		    + " no está cargada en el TOC", "Capa no encontrada",
@@ -29,12 +26,8 @@ public class FormLauncherExtension extends Extension {
     }
 
     private FLyrVect getLayerFromTOC(String actionCommand) {
-	final String layerName = ORMLite
-		.getDataBaseObject(
-			Preferences.getPreferences().getXMLFilePath())
-			.getTable(actionCommand).getTableName();
 	final TOCLayerManager toc = new TOCLayerManager();
-	return toc.getLayerByName(layerName);
+	return toc.getLayerByName(actionCommand);
     }
 
     protected void registerIcons() {

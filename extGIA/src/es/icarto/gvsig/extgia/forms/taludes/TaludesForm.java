@@ -26,13 +26,13 @@ import es.icarto.gvsig.audasacommons.forms.reports.NavTableComponentsPrintButton
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.utils.EnableComponentBasedOnCheckBox;
+import es.icarto.gvsig.extgia.forms.utils.LaunchGIAForms.Elements;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.preferences.Preferences;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkButton;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkData;
-import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
-import es.icarto.gvsig.navtableforms.validation.listeners.DependentComboboxesHandler;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxesHandler;
 
 @SuppressWarnings("serial")
 public class TaludesForm extends AbstractFormWithLocationWidgets {
@@ -85,7 +85,7 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 
 	    @Override
 	    public String getRegisterField() {
-		return ORMLite.getDataBaseObject(getXMLPath()).getTable("taludes").getPrimaryKey()[0];
+		return DBFieldNames.getPrimaryKey(Elements.Taludes);
 	    }
 
 	    @Override
@@ -102,7 +102,7 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 
 		baseDirectory = baseDirectory + File.separator + "FILES"
 			+ File.separator + "inventario" + File.separator
-			+ "taludes";
+			+ Elements.Taludes;
 
 		return baseDirectory;
 	    }

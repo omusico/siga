@@ -26,16 +26,16 @@ import com.iver.cit.gvsig.fmap.layers.LayerFactory;
 import com.jeta.forms.components.panel.FormPanel;
 
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
-import es.icarto.gvsig.navtableforms.ormlite.ORMLiteAplicationDomain;
+import es.icarto.gvsig.navtableforms.ormlite.ORMLiteAppDomain;
 import es.icarto.gvsig.navtableforms.ormlite.XMLSAXParser;
-import es.icarto.gvsig.navtableforms.ormlite.domain.DomainValues;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.rules.ValidationRule;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalues.DomainValues;
 import es.icarto.gvsig.navtableforms.utils.AbeilleParser;
-import es.icarto.gvsig.navtableforms.validation.rules.ValidationRule;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public abstract class CommonMethodsForTestDBForms {
 
-    private ORMLiteAplicationDomain ado;
+    private ORMLiteAppDomain ado;
     private FormPanel form;
     private HashMap<String, JComponent> widgets;
 
@@ -45,7 +45,7 @@ public abstract class CommonMethodsForTestDBForms {
 	    initializegvSIGDrivers();
 	    DBSession.createConnection("localhost", 5434, "audasa_test", null,
 		    "postgres", "postgres");
-	   
+
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
@@ -53,7 +53,8 @@ public abstract class CommonMethodsForTestDBForms {
 
     @Before
     public void doSetup() {
-    ado = ORMLite.getAplicationDomainObject(getXmlFile());
+	ORMLite ormLite = new ORMLite(getXmlFile());
+	ado = ormLite.getAppDomain();
 	form = new FormPanel(getAbeilleForm());
 	widgets = AbeilleParser.getWidgetsFromContainer(form);
     }
@@ -75,7 +76,7 @@ public abstract class CommonMethodsForTestDBForms {
 
     protected abstract String getXmlFile();
 
-	private static void initializegvSIGDrivers() throws Exception {
+    private static void initializegvSIGDrivers() throws Exception {
 	final String fwAndamiDriverPath = "../_fwAndami/gvSIG/extensiones/com.iver.cit.gvsig/drivers";
 	final File baseDriversPath = new File(fwAndamiDriverPath);
 	if (!baseDriversPath.exists()) {
@@ -138,9 +139,11 @@ public abstract class CommonMethodsForTestDBForms {
     @Test
     public void test_validationRulesMatchWidgetNames() throws Exception {
 
-	final HashMap<String, Set<ValidationRule>> validationRules = ado
-		.getValidationRules();
-
+	final HashMap<String, Set<ValidationRule>> validationRules = new HashMap<String, Set<ValidationRule>>();
+	for (String key : ado.getDomainValidators().keySet()) {
+	    validationRules.put(key, ado.getDomainValidators().get(key)
+		    .getRules());
+	}
 	for (final String validationRule : validationRules.keySet()) {
 	    assertNotNull(validationRule, this.widgets.get(validationRule));
 	}

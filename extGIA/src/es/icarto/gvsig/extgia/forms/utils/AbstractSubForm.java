@@ -29,8 +29,8 @@ import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
-import es.icarto.gvsig.navtableforms.ormlite.domain.DomainValues;
-import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalues.DomainValues;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 import es.icarto.gvsig.navtableforms.utils.AbeilleParser;
 
 @SuppressWarnings("serial")
@@ -54,6 +54,8 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
     private final int height = 440;
 
     private HashMap<String, JComponent> widgetsVector;
+
+    private ORMLite ormLite;
 
     public AbstractSubForm(String formFile,
 	    String dbTableName,
@@ -79,6 +81,7 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
 	this.idField = idField;
 	this.idValue = idValue;
 	this.edit = edit;
+	ormLite = new ORMLite(getXMLPath());
 	this.types = SqlUtils.getDataTypesFromDbTable(DBFieldNames.GIA_SCHEMA, dbTableName);
 	initWidgets();
 	if (edit) {
@@ -210,8 +213,8 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
 
     protected void fillJComboBox(JComboBox combobox, boolean edit) {
 	String colName = combobox.getName();
-	DomainValues dv = ORMLite.getAplicationDomainObject(getXMLPath())
-		.getDomainValuesForComponent(colName);
+	DomainValues dv = ormLite.getAppDomain().getDomainValuesForComponent(
+		colName);
 	if (dv != null) {
 	    addDomainValuesToComboBox(combobox, dv.getValues());
 	    if (edit) {

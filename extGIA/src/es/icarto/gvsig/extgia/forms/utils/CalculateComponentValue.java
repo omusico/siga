@@ -18,15 +18,15 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import es.icarto.gvsig.navtableforms.AbstractForm;
-import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
-import es.icarto.gvsig.navtableforms.validation.ComponentValidator;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.ValidatorComponent;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 
 public abstract class CalculateComponentValue {
 
     protected JTextField resultComponent;
     protected String resultComponentName;
     protected HashMap<String, JComponent> operatorComponents;
-    protected ArrayList<ComponentValidator> operatorValidators;
+    protected ArrayList<ValidatorComponent> operatorValidators;
     protected OperatorComponentsListener handler;
     private final HashMap<String, JComponent> allFormWidgets;
     protected AbstractForm form;
@@ -64,9 +64,9 @@ public abstract class CalculateComponentValue {
     }
 
     private void setOperatorValidators(String[] operatorComponentsNames) {
-	operatorValidators = new ArrayList<ComponentValidator>();
+	operatorValidators = new ArrayList<ValidatorComponent>();
 	for (String name : operatorComponentsNames) {
-	    ComponentValidator cv = form.getFormValidator()
+	    ValidatorComponent cv = form.getFormValidator()
 		    .getComponentValidator(name);
 	    if (cv != null) {
 		operatorValidators.add(cv);
@@ -83,7 +83,7 @@ public abstract class CalculateComponentValue {
 	    }
 	}
 
-	for (ComponentValidator v : operatorValidators) {
+	for (ValidatorComponent v : operatorValidators) {
 	    if (!v.validate()) {
 		return false;
 	    }

@@ -17,10 +17,11 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
+import es.icarto.gvsig.extgia.forms.utils.LaunchGIAForms.Elements;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.preferences.Preferences;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
-import es.icarto.gvsig.navtableforms.validation.listeners.DependentComboboxesHandler;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxesHandler;
 
 @SuppressWarnings("serial")
 public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
@@ -48,7 +49,7 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
     }
 
     private void addNewButtonsToActionsToolBar() {
-	super.addNewButtonsToActionsToolBar("senhalizacion_vertical");
+	super.addNewButtonsToActionsToolBar(Elements.Senhalizacion_Vertical);
     }
 
     @Override

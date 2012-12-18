@@ -24,13 +24,13 @@ import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
+import es.icarto.gvsig.extgia.forms.utils.LaunchGIAForms.Elements;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkButton;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkData;
-import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
-import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 
 @SuppressWarnings("serial")
 public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
@@ -421,14 +421,14 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	}
     }
 
-    protected void addNewButtonsToActionsToolBar(final String element) {
+    protected void addNewButtonsToActionsToolBar(final Elements element) {
 	JPanel actionsToolBar = this.getActionsToolBar();
 
 	filesLinkButton = new FilesLinkButton(this, new FilesLinkData() {
 
 	    @Override
 	    public String getRegisterField() {
-		return ORMLite.getDataBaseObject(getXMLPath()).getTable(element).getPrimaryKey()[0];
+		return DBFieldNames.getPrimaryKey(element);
 	    }
 
 	    @Override
