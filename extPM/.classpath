@@ -25,5 +25,6 @@
 	<classpathentry kind="lib" path="/extAudasaCommons/lib/commons-digester-1.7.jar"/>
 	<classpathentry kind="lib" path="/extAudasaCommons/lib/groovy-2.0.0.jar"/>
 	<classpathentry kind="lib" path="/extAudasaCommons/lib/jasperreports-4.6.0.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/extGIA"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
