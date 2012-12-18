@@ -16,6 +16,7 @@ import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
+import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.preferences.Preferences;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
@@ -29,6 +30,7 @@ public class JuntasForm extends AbstractFormWithLocationWidgets {
     public static final String ABEILLE_TRABAJOS_FILENAME = "forms/juntas_trabajos.xml";
 
     JTextField juntaIDWidget;
+    CalculateComponentValue juntaid;
     private JComboBox tipoVia;
     private DependentComboboxesHandler direccionDomainHandler;
 
@@ -61,6 +63,12 @@ public class JuntasForm extends AbstractFormWithLocationWidgets {
 	super.fillSpecificValues();
 
 	direccionDomainHandler.updateComboBoxValues();
+
+	if (juntaIDWidget.getText().isEmpty()) {
+	    juntaid = new JuntasCalculateIDValue(this, getWidgetComponents(),
+		    DBFieldNames.ID_JUNTA, DBFieldNames.ID_JUNTA);
+	    juntaid.setValue(true);
+	}
 
 	if (filesLinkButton == null) {
 	    addNewButtonsToActionsToolBar();

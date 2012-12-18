@@ -263,4 +263,20 @@ public class SqlUtils {
 	}
 
     }
+
+    public static int getNextIdOfSequence(String sequence) {
+	int newID = -1;
+	PreparedStatement statement;
+	String query = "SELECT nextval(" + "'" + sequence + "');";
+	try {
+	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+	    statement.execute();
+	    ResultSet rs = statement.getResultSet();
+	    rs.next();
+	    newID = rs.getInt(1);
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return newID;
+    }
 }
