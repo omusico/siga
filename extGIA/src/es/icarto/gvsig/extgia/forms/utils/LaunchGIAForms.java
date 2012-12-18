@@ -10,6 +10,7 @@ import es.icarto.gvsig.extgia.forms.enlaces.EnlacesForm;
 import es.icarto.gvsig.extgia.forms.isletas.IsletasForm;
 import es.icarto.gvsig.extgia.forms.juntas.JuntasForm;
 import es.icarto.gvsig.extgia.forms.pasos_mediana.PasosMedianaForm;
+import es.icarto.gvsig.extgia.forms.senhalizacion_vertical.SenhalizacionVerticalForm;
 import es.icarto.gvsig.extgia.forms.taludes.TaludesForm;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 
@@ -17,7 +18,7 @@ public class LaunchGIAForms {
 
     public enum elements {
 	Taludes, Isletas, Enlaces, Barrera_Rigida, Areas_Servicio, Areas_Descanso,
-	Juntas, Pasos_Mediana;
+	Juntas, Pasos_Mediana, Senhalizacion_Vertical;
     }
 
     public static void callFormDependingOfLayer(String layerName, boolean editing) {
@@ -95,6 +96,15 @@ public class LaunchGIAForms {
 	    }
 	    if (editing) {
 		pasosMedianaForm.last();
+	    }
+	    break;
+	case Senhalizacion_Vertical:
+	    final SenhalizacionVerticalForm senhalizacionVerticalForm = new SenhalizacionVerticalForm(layer);
+	    if (senhalizacionVerticalForm.init()) {
+		PluginServices.getMDIManager().addCentredWindow(senhalizacionVerticalForm);
+	    }
+	    if (editing) {
+		senhalizacionVerticalForm.last();
 	    }
 	    break;
 	}

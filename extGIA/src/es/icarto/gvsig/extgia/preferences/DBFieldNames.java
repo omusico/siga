@@ -16,6 +16,18 @@ public class DBFieldNames {
 	"fecha_inspeccion as \"Fecha Inspección\"",
     "indice_estado as \"Indice Estado\""};
 
+    public static String[] genericTrabajoFields = {"id_trabajo as \"ID\"",
+	"fecha as \"Fecha\"",
+	"unidad as \"Unidad\"",
+	"medicion_contratista as \"Medida Contratista\"",
+    "medicion_audasa as \"Medida AUDASA\""};
+
+    public static String[] senhalizacionVerticalTrabajoFields = {"id_trabajo as \"ID\"",
+	"fecha as \"Fecha\"",
+	"unidad_senhalizacion_vertical as \"Unidad\"",
+	"medicion_contratista as \"Medida Contratista\"",
+    "medicion_audasa as \"Medida AUDASA\""};
+
     public static String[] trabajoFields = {"id_trabajo as \"ID\"",
 	"fecha as \"Fecha\"",
 	"unidad as \"Unidad\"",
@@ -145,8 +157,23 @@ public class DBFieldNames {
     public static final String PASO_MEDIANA_C = "deficiencias_sistema_drenaje";
     public static final String PASO_MEDIANA_D = "elementos_contencion_cierre";
 
+    // SENHALIZACION VERTICAL
+    public static final String ID_SENHAL_VERTICAL = "id_senhal_vertical";
+
+    // SENHALIZACION VERTICAL RECONOCIMIENTO ESTADO
+    public static final String SENHALIZACION_VERTICAL_INDEX = "indice_estado";
+    public static final String SENHALIZACION_VERTICAL_A = "visibilidad_senhal";
+    public static final String SENHALIZACION_VERTICAL_B = "estado_limpieza";
+    public static final String SENHALIZACION_VERTICAL_C = "deterioros_placa_cartel";
+    public static final String SENHALIZACION_VERTICAL_D = "estado_cimientos_soporte_anclaje";
+    public static final String SENHALIZACION_VERTICAL_E = "visibilidad_nocturna";
+
     public static void setReconocimientoEstadoFields(String[] fields) {
 	reconocimientoEstadoFields = fields;
+    }
+
+    public static void setTrabajosFields(String[] fields) {
+	trabajoFields = fields;
     }
 
     public static void setRamalesFields(String[] fields) {
