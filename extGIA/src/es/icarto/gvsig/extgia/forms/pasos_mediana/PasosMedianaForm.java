@@ -129,16 +129,15 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
     public class AddTrabajoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    PasosMedianaReconocimientosSubForm subForm =
-		    new PasosMedianaReconocimientosSubForm(
-			    ABEILLE_TRABAJOS_FILENAME,
-			    getTrabajosDBTableName(),
-			    trabajos,
-			    "id_paso_mediana",
-			    pasoMedianaIDWidget.getText(),
-			    null,
-			    null,
-			    false);
+	    PasosMedianaTrabajosSubForm subForm = new PasosMedianaTrabajosSubForm(
+		    ABEILLE_TRABAJOS_FILENAME,
+		    getTrabajosDBTableName(),
+		    trabajos,
+		    "id_paso_mediana",
+		    pasoMedianaIDWidget.getText(),
+		    null,
+		    null,
+		    false);
 	    PluginServices.getMDIManager().addWindow(subForm);
 	}
     }
@@ -173,8 +172,7 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    if (trabajos.getSelectedRowCount() != 0) {
 		int row = trabajos.getSelectedRow();
-		PasosMedianaReconocimientosSubForm subForm =
-			new PasosMedianaReconocimientosSubForm(
+		PasosMedianaTrabajosSubForm subForm = new PasosMedianaTrabajosSubForm(
 				ABEILLE_TRABAJOS_FILENAME,
 				getTrabajosDBTableName(),
 				trabajos,
