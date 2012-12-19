@@ -247,7 +247,7 @@
 			</FIELD>
 
 			<FIELD>
-				<FIELDNAME>sup_mecanizada_real</FIELDNAME>
+				<FIELDNAME>sup_mecanizada_campo</FIELDNAME>
 				<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
 			</FIELD>
 
@@ -257,7 +257,7 @@
 			</FIELD>
 
 			<FIELD>
-				<FIELDNAME>sup_manual_real</FIELDNAME>
+				<FIELDNAME>sup_manual_campo</FIELDNAME>
 				<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
 			</FIELD>
 
