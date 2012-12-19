@@ -146,8 +146,7 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	for (int i = 0; i < baseContratistaWidget.getItemCount(); i++) {
 	    if (baseContratista
 		    .equalsIgnoreCase(((KeyValue) baseContratistaWidget
-		    .getItemAt(i))
-		    .getKey())) {
+			    .getItemAt(i)).getKey())) {
 		baseContratistaWidget.setSelectedIndex(i);
 	    }
 	}
@@ -270,9 +269,11 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 		+ " AND id_bc = " + id_bc + ";";
 	nombreViaPFWidget.removeAllItems();
 	nombreViaPFWidget.addItem(new KeyValue("", ""));
-	for (KeyValue value : SqlUtils
-		.getKeyValueListFromSql(getNombreViaQuery)) {
-	    nombreViaPFWidget.addItem(value);
+	if (!id_tv.isEmpty() && !id_tramo.isEmpty() && !id_bc.isEmpty()) {
+	    for (KeyValue value : SqlUtils
+		    .getKeyValueListFromSql(getNombreViaQuery)) {
+		nombreViaPFWidget.addItem(value);
+	    }
 	}
     }
 
