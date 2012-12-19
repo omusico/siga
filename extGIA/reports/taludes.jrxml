@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="policia_margenes" language="groovy" pageWidth="595" pageHeight="842" columnWidth="511" leftMargin="56" rightMargin="28" topMargin="28" bottomMargin="28" uuid="deae6293-c4c5-422f-b68a-e394415360ad">
 	<property name="ireport.zoom" value="1.7715610000000104"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="68"/>
+	<property name="ireport.y" value="903"/>
 	<style name="Heading" fontSize="14"/>
 	<style name="Heading 1" fontSize="16" isBold="true"/>
 	<subDataset name="Taludes" uuid="5df98ac6-df06-453d-bf1c-75d4f3bd1214">
@@ -71,13 +71,13 @@
 	<field name="area_mantenimiento" class="java.lang.Integer"/>
 	<field name="base_contratista" class="java.lang.Integer"/>
 	<field name="tramo" class="java.lang.Integer"/>
-	<field name="tipo_via_pi" class="java.lang.Integer"/>
-	<field name="nombre_pi" class="java.lang.String"/>
+	<field name="tipo_via" class="java.lang.Integer"/>
+	<field name="nombre_via" class="java.lang.String"/>
 	<field name="pk_inicial" class="java.math.BigDecimal"/>
 	<field name="ramal_pi" class="java.lang.String"/>
 	<field name="direccion_pi" class="java.lang.String"/>
 	<field name="tipo_via_pf" class="java.lang.Integer"/>
-	<field name="nombre_pf" class="java.lang.String"/>
+	<field name="nombre_via_pf" class="java.lang.String"/>
 	<field name="pk_final" class="java.math.BigDecimal"/>
 	<field name="ramal_pf" class="java.lang.String"/>
 	<field name="direccion_pf" class="java.lang.String"/>
@@ -107,9 +107,9 @@
 	<field name="sup_manual_analitica" class="java.lang.Float"/>
 	<field name="sup_restada_analitica" class="java.lang.Float"/>
 	<field name="sup_total_campo" class="java.lang.Float"/>
-	<field name="sup_mecanizada_real" class="java.lang.Float"/>
+	<field name="sup_mecanizada_campo" class="java.lang.Float"/>
 	<field name="sup_restada_campo" class="java.lang.Float"/>
-	<field name="sup_manual_real" class="java.lang.Float"/>
+	<field name="sup_manual_campo" class="java.lang.Float"/>
 	<field name="sup_complementaria" class="java.lang.Float"/>
 	<field name="concepto" class="java.lang.String"/>
 	<field name="the_geom" class="java.lang.Object"/>
@@ -315,7 +315,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{tipo_via_pi}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tipo_via}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement uuid="d73302a5-7eb3-4215-b8e6-20bda3a5faa7" x="397" y="123" width="103" height="12"/>
@@ -329,14 +329,14 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{nombre_pi}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nombre_via}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement uuid="dc6c1bee-b4d8-42fb-bc6e-426f043daf30" x="397" y="141" width="103" height="12"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{nombre_pf}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nombre_via_pf}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement uuid="8b1e84e0-e04f-41a9-b640-07538dd10255" x="397" y="177" width="32" height="12" forecolor="#666666"/>
@@ -890,14 +890,14 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{sup_mecanizada_real}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{sup_mecanizada_campo}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement uuid="29977314-ad24-42ac-8680-bea46bd47b4c" x="430" y="146" width="70" height="12"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{sup_manual_real}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{sup_manual_campo}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement uuid="c3beadf0-d97d-4b65-bded-bafb8e7c8a81" x="430" y="163" width="70" height="12"/>
