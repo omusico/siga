@@ -146,16 +146,15 @@ public class JuntasForm extends AbstractFormWithLocationWidgets {
     public class AddTrabajoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    JuntasReconocimientosSubForm subForm =
-		    new JuntasReconocimientosSubForm(
-			    ABEILLE_TRABAJOS_FILENAME,
-			    getTrabajosDBTableName(),
-			    trabajos,
-			    "id_junta",
-			    juntaIDWidget.getText(),
-			    null,
-			    null,
-			    false);
+	    JuntasTrabajosSubForm subForm = new JuntasTrabajosSubForm(
+		    ABEILLE_TRABAJOS_FILENAME,
+		    getTrabajosDBTableName(),
+		    trabajos,
+		    "id_junta",
+		    juntaIDWidget.getText(),
+		    null,
+		    null,
+		    false);
 	    PluginServices.getMDIManager().addWindow(subForm);
 	}
     }
@@ -190,8 +189,7 @@ public class JuntasForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    if (trabajos.getSelectedRowCount() != 0) {
 		int row = trabajos.getSelectedRow();
-		JuntasReconocimientosSubForm subForm =
-			new JuntasReconocimientosSubForm(
+		JuntasTrabajosSubForm subForm = new JuntasTrabajosSubForm(
 				ABEILLE_TRABAJOS_FILENAME,
 				getTrabajosDBTableName(),
 				trabajos,

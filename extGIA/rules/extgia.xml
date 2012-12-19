@@ -1252,63 +1252,6 @@
 				</DOMAINREADER>
 			</FIELD>
 
-			<!-- JUNTAS RECONOCIMIENTO ESTADO -->
-
-			<FIELD>
-				<FIELDNAME>envejecimiento_deterioro_corrosion</FIELDNAME>
-				<DOMAINREADER>
-					<DRTYPE>db</DRTYPE>
-					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-				</DOMAINREADER>
-			</FIELD>
-
-			<FIELD>
-				<FIELDNAME>bloqueo_perdida_movilidad</FIELDNAME>
-				<DOMAINREADER>
-					<DRTYPE>db</DRTYPE>
-					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-				</DOMAINREADER>
-			</FIELD>
-
-			<FIELD>
-				<FIELDNAME>fisuras_grietas_deterioros</FIELDNAME>
-				<DOMAINREADER>
-					<DRTYPE>db</DRTYPE>
-					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-				</DOMAINREADER>
-			</FIELD>
-
-			<FIELD>
-				<FIELDNAME>falta_elementos_anclaje</FIELDNAME>
-				<DOMAINREADER>
-					<DRTYPE>db</DRTYPE>
-					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-				</DOMAINREADER>
-			</FIELD>
-
-			<FIELD>
-				<FIELDNAME>rotura_deformacion</FIELDNAME>
-				<DOMAINREADER>
-					<DRTYPE>db</DRTYPE>
-					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-				</DOMAINREADER>
-			</FIELD>
-
 		</RECORDSET>
 	</LAYER>
 
