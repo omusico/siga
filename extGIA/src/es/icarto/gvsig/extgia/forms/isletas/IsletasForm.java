@@ -2,6 +2,10 @@ package es.icarto.gvsig.extgia.forms.isletas;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 
 import javax.swing.JComboBox;
@@ -22,6 +26,7 @@ import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.preferences.Preferences;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxesHandler;
+import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
 public class IsletasForm extends AbstractFormWithLocationWidgets {
@@ -135,6 +140,31 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 	deleteReconocimientoButton.removeActionListener(deleteReconocimientoListener);
 	deleteTrabajoButton.removeActionListener(deleteTrabajoListener);
 	super.removeListeners();
+    }
+
+    @Override
+    protected boolean validationHasErrors() {
+	if (isletaIDWidget.getText() != "") {
+	    String query = "SELECT id_isleta FROM audasa_extgia.isletas "
+		    + " WHERE id_isleta = '" + isletaIDWidget.getText() + "';";
+	    PreparedStatement statement = null;
+	    Connection connection = DBSession.getCurrentSession()
+		    .getJavaConnection();
+	    try {
+		statement = connection.prepareStatement(query);
+		statement.execute();
+		ResultSet rs = statement.getResultSet();
+		if (rs.next()) {
+		    JOptionPane.showMessageDialog(null,
+			    "El ID está en uso, por favor, escoja otro.",
+			    "ID en uso", JOptionPane.WARNING_MESSAGE);
+		    return true;
+		}
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
+	}
+	return super.validationHasErrors();
     }
 
     public class AddReconocimientoListener implements ActionListener {

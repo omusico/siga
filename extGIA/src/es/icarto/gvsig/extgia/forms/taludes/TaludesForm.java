@@ -4,6 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 
 import javax.swing.JButton;
@@ -33,6 +37,7 @@ import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkButton;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkData;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxesHandler;
+import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
 public class TaludesForm extends AbstractFormWithLocationWidgets {
@@ -231,6 +236,31 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	super.removeListeners();
     }
 
+    @Override
+    protected boolean validationHasErrors() {
+	if (taludIDWidget.getText() != "") {
+	    String query = "SELECT id_talud FROM audasa_extgia.taludes "
+		    + " WHERE id_talud = '" + taludIDWidget.getText() + "';";
+	    PreparedStatement statement = null;
+	    Connection connection = DBSession.getCurrentSession()
+		    .getJavaConnection();
+	    try {
+		statement = connection.prepareStatement(query);
+		statement.execute();
+		ResultSet rs = statement.getResultSet();
+		if (rs.next()) {
+		    JOptionPane.showMessageDialog(null,
+			    "El ID está en uso, por favor, escoja otro.",
+			    "ID en uso", JOptionPane.WARNING_MESSAGE);
+		    return true;
+		}
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
+	}
+	return super.validationHasErrors();
+    }
+
     public class AddReconocimientoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -295,14 +325,14 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	    if (trabajos.getSelectedRowCount() != 0) {
 		int row = trabajos.getSelectedRow();
 		TaludesTrabajosSubForm subForm = new TaludesTrabajosSubForm(
-				ABEILLE_TRABAJOS_FILENAME,
-				getTrabajosDBTableName(),
-				trabajos,
-				"id_talud",
-				taludIDWidget.getText(),
-				"id_trabajo",
-				trabajos.getValueAt(row, 0).toString(),
-				true);
+			ABEILLE_TRABAJOS_FILENAME,
+			getTrabajosDBTableName(),
+			trabajos,
+			"id_talud",
+			taludIDWidget.getText(),
+			"id_trabajo",
+			trabajos.getValueAt(row, 0).toString(),
+			true);
 		PluginServices.getMDIManager().addWindow(subForm);
 	    }else {
 		JOptionPane.showMessageDialog(null,

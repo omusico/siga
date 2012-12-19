@@ -2,6 +2,10 @@ package es.icarto.gvsig.extgia.forms.barrera_rigida;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 
 import javax.swing.JComboBox;
@@ -22,6 +26,7 @@ import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.preferences.Preferences;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxesHandler;
+import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
 public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
@@ -130,6 +135,32 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 	super.removeListeners();
     }
 
+    @Override
+    protected boolean validationHasErrors() {
+	if (barreraRigidaIDWidget.getText() != "") {
+	    String query = "SELECT id_barrera_rigida FROM audasa_extgia.barrera_rigida "
+		    + " WHERE id_barrera_rigida = '"
+		    + barreraRigidaIDWidget.getText() + "';";
+	    PreparedStatement statement = null;
+	    Connection connection = DBSession.getCurrentSession()
+		    .getJavaConnection();
+	    try {
+		statement = connection.prepareStatement(query);
+		statement.execute();
+		ResultSet rs = statement.getResultSet();
+		if (rs.next()) {
+		    JOptionPane.showMessageDialog(null,
+			    "El ID está en uso, por favor, escoja otro.",
+			    "ID en uso", JOptionPane.WARNING_MESSAGE);
+		    return true;
+		}
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
+	}
+	return super.validationHasErrors();
+    }
+
     public class AddReconocimientoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -194,14 +225,14 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 	    if (trabajos.getSelectedRowCount() != 0) {
 		int row = trabajos.getSelectedRow();
 		BarreraRigidaTrabajosSubForm subForm = new BarreraRigidaTrabajosSubForm(
-				ABEILLE_TRABAJOS_FILENAME,
-				getTrabajosDBTableName(),
-				trabajos,
-				"id_barrera_rigida",
-				barreraRigidaIDWidget.getText(),
-				"id_trabajo",
-				trabajos.getValueAt(row, 0).toString(),
-				true);
+			ABEILLE_TRABAJOS_FILENAME,
+			getTrabajosDBTableName(),
+			trabajos,
+			"id_barrera_rigida",
+			barreraRigidaIDWidget.getText(),
+			"id_trabajo",
+			trabajos.getValueAt(row, 0).toString(),
+			true);
 		PluginServices.getMDIManager().addWindow(subForm);
 	    }else {
 		JOptionPane.showMessageDialog(null,
