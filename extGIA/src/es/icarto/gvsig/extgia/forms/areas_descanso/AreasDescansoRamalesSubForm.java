@@ -17,7 +17,8 @@ public class AreasDescansoRamalesSubForm extends AbstractSubForm {
 
     @Override
     public String getXMLPath() {
-	return this.getClass().getClassLoader().getResource("rules/extgia.xml")
+	return this.getClass().getClassLoader()
+		.getResource("rules/areas_descanso_ramales_metadata.xml")
 		.getPath();
     }
 
