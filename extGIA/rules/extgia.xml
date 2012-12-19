@@ -438,19 +438,6 @@
 				</DOMAINREADER>
 			</FIELD>
 
-			<!-- ISLETAS RECONOCIMIENTO ESTADO -->
-
-			<FIELD>
-				<FIELDNAME>estado_siega</FIELDNAME>
-				<DOMAINREADER>
-					<DRTYPE>db</DRTYPE>
-					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-				</DOMAINREADER>
-			</FIELD>
-
 		</RECORDSET>
 	</LAYER>
 

@@ -26,7 +26,8 @@ public class IsletasReconocimientosSubForm extends AbstractSubForm {
 
     @Override
     public String getXMLPath() {
-	return this.getClass().getClassLoader().getResource("rules/extgia.xml")
+	return this.getClass().getClassLoader()
+		.getResource("rules/isletas_reconocimientos_metadata.xml")
 		.getPath();
     }
 

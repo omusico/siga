@@ -157,16 +157,15 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
     public class AddTrabajoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    IsletasReconocimientosSubForm subForm =
-		    new IsletasReconocimientosSubForm(
-			    ABEILLE_TRABAJOS_FILENAME,
-			    getTrabajosDBTableName(),
-			    trabajos,
-			    "id_isleta",
-			    isletaIDWidget.getText(),
-			    null,
-			    null,
-			    false);
+	    IsletasTrabajosSubForm subForm = new IsletasTrabajosSubForm(
+		    ABEILLE_TRABAJOS_FILENAME,
+		    getTrabajosDBTableName(),
+		    trabajos,
+		    "id_isleta",
+		    isletaIDWidget.getText(),
+		    null,
+		    null,
+		    false);
 	    PluginServices.getMDIManager().addWindow(subForm);
 	}
     }
@@ -201,16 +200,15 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    if (trabajos.getSelectedRowCount() != 0) {
 		int row = trabajos.getSelectedRow();
-		IsletasReconocimientosSubForm subForm =
-			new IsletasReconocimientosSubForm(
-				ABEILLE_TRABAJOS_FILENAME,
-				getTrabajosDBTableName(),
-				trabajos,
-				"id_isleta",
-				isletaIDWidget.getText(),
-				"id_trabajo",
-				trabajos.getValueAt(row, 0).toString(),
-				true);
+		IsletasTrabajosSubForm subForm = new IsletasTrabajosSubForm(
+			ABEILLE_TRABAJOS_FILENAME,
+			getTrabajosDBTableName(),
+			trabajos,
+			"id_isleta",
+			isletaIDWidget.getText(),
+			"id_trabajo",
+			trabajos.getValueAt(row, 0).toString(),
+			true);
 		PluginServices.getMDIManager().addWindow(subForm);
 	    }else {
 		JOptionPane.showMessageDialog(null,
