@@ -161,9 +161,11 @@ public abstract class CalculateComponentValue {
 
 	String pkValue = pkWidget.getText();
 	String[] pkValues = null;
-	if (String.valueOf(decimalSeparator).equals(".")) {
-	    pkValues = pkValue.split("\\" + String.valueOf(decimalSeparator));
-	}
+	//	if (String.valueOf(decimalSeparator).equals(".")) {
+	//	    pkValues = pkValue.split("\\" + String.valueOf(decimalSeparator));
+	//	}
+
+	pkValues = pkValue.split(",");
 	String pkValueFormated = "";
 
 	if (pkValues != null && pkValues.length>1) {
