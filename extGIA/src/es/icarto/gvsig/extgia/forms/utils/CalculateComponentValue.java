@@ -4,6 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -25,8 +28,8 @@ public abstract class CalculateComponentValue {
     protected HashMap<String, JComponent> operatorComponents;
     protected ArrayList<ComponentValidator> operatorValidators;
     protected OperatorComponentsListener handler;
-    private HashMap<String, JComponent> allFormWidgets;
-	protected AbstractForm form;
+    private final HashMap<String, JComponent> allFormWidgets;
+    protected AbstractForm form;
 
     /**
      * in the setListeners of the Form we must call the setListeners of this
@@ -123,7 +126,7 @@ public abstract class CalculateComponentValue {
     }
 
     public class OperatorComponentsListener implements KeyListener,
-	    ActionListener {
+    ActionListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -149,5 +152,32 @@ public abstract class CalculateComponentValue {
 		setValue(validate);
 	    }
 	}
+    }
+
+    protected String getPkFormatted(JTextField pkWidget) {
+	NumberFormat format=DecimalFormat.getInstance();
+	DecimalFormatSymbols symbols=((DecimalFormat) format).getDecimalFormatSymbols();
+	char decimalSeparator=symbols.getDecimalSeparator();
+
+	String pkValue = pkWidget.getText();
+	String[] pkValues = null;
+	if (String.valueOf(decimalSeparator).equals(".")) {
+	    pkValues = pkValue.split("\\" + String.valueOf(decimalSeparator));
+	}
+	String pkValueFormated = "";
+
+	if (pkValues != null && pkValues.length>1) {
+	    if (pkValues[1].length() == 1) {
+		pkValueFormated = String.format("%03d", Integer.valueOf(pkValues[0])) +
+			pkValues[1] + "00";
+	    }else if (pkValues[1].length() == 2) {
+		pkValueFormated = String.format("%03d", Integer.valueOf(pkValues[0])) +
+			pkValues[1] + "0";
+	    }else {
+		pkValueFormated = String.format("%03d", Integer.valueOf(pkValues[0])) +
+			pkValues[1];
+	    }
+	}
+	return pkValueFormated;
     }
 }

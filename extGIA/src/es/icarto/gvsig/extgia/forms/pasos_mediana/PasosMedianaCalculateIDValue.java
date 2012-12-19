@@ -33,21 +33,8 @@ public class PasosMedianaCalculateIDValue extends CalculateComponentValue {
 
 	JTextField pkWidget = (JTextField) operatorComponents
 		.get(DBFieldNames.PK);
-	String pkValue = pkWidget.getText();
-	String[] pkValues = pkValue.split("\\.");
-	String pkValueFormated = "";
-	if (pkValues.length>1) {
-	    if (pkValues[1].length() == 1) {
-		pkValueFormated = String.format("%03d", Integer.valueOf(pkValues[0])) +
-			pkValues[1] + "00";
-	    }else if (pkValues[1].length() == 2) {
-		pkValueFormated = String.format("%03d", Integer.valueOf(pkValues[0])) +
-			pkValues[1] + "0";
-	    }else {
-		pkValueFormated = String.format("%03d", Integer.valueOf(pkValues[0])) +
-			pkValues[1];
-	    }
-	}
+
+	String pkValueFormatted = getPkFormatted(pkWidget);
 
 	if (pkWidget.getText().isEmpty()) {
 	    validate = false;
@@ -56,7 +43,7 @@ public class PasosMedianaCalculateIDValue extends CalculateComponentValue {
 	String pasoMedianaID = "";
 	if (validate) {
 
-	    pasoMedianaID = tramoValue + pkValueFormated;
+	    pasoMedianaID = tramoValue + pkValueFormatted;
 	}
 	resultComponent.setText(pasoMedianaID);
 	form.getFormController().setValue(resultComponentName, pasoMedianaID);
