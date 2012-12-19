@@ -140,6 +140,19 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	}
     }
 
+    private void selectBaseContratistaOption() {
+	String baseContratista = this.getFormController().getValue(
+		BASE_CONTRATISTA);
+	for (int i = 0; i < baseContratistaWidget.getItemCount(); i++) {
+	    if (baseContratista
+		    .equalsIgnoreCase(((KeyValue) baseContratistaWidget
+		    .getItemAt(i))
+		    .getKey())) {
+		baseContratistaWidget.setSelectedIndex(i);
+	    }
+	}
+    }
+
     private void updateTramoCombo() {
 	String id = ((KeyValue) baseContratistaWidget.getSelectedItem())
 		.getKey();
@@ -442,6 +455,8 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 
     @Override
     protected void fillSpecificValues() {
+	updateBaseContratistaCombo();
+	selectBaseContratistaOption();
 	updateTramoCombo();
 	selectTramoOption();
 	updateTipoViaCombo();
