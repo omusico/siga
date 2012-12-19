@@ -768,52 +768,6 @@
 				<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
 			</FIELD>
 
-			<!-- BARRERA RIGIDA RECONOCIMIENTO ESTADO -->
-
-			<FIELD>
-				<FIELDNAME>deficiencias_aplicacion_normativa</FIELDNAME>
-				<DOMAINREADER>
-					<DRTYPE>db</DRTYPE>
-					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-				</DOMAINREADER>
-			</FIELD>
-
-			<FIELD>
-				<FIELDNAME>limpieza_elemento_contencion</FIELDNAME>
-				<DOMAINREADER>
-					<DRTYPE>db</DRTYPE>
-					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-				</DOMAINREADER>
-			</FIELD>
-
-			<FIELD>
-				<FIELDNAME>deterioros_superficiales</FIELDNAME>
-				<DOMAINREADER>
-					<DRTYPE>db</DRTYPE>
-					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-				</DOMAINREADER>
-			</FIELD>
-
-			<FIELD>
-				<FIELDNAME>cimiento_soporte_anclaje</FIELDNAME>
-				<DOMAINREADER>
-					<DRTYPE>db</DRTYPE>
-					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-				</DOMAINREADER>
-			</FIELD>
-
 		</RECORDSET>
 	</LAYER>
 

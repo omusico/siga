@@ -27,7 +27,11 @@ public class BarreraRigidaReconocimientosSubForm extends AbstractSubForm {
 
     @Override
     public String getXMLPath() {
-	return this.getClass().getClassLoader().getResource("rules/extgia.xml")
+	return this
+		.getClass()
+		.getClassLoader()
+		.getResource(
+			"rules/barrera_rigida_reconocimientos_metadata.xml")
 		.getPath();
     }
 

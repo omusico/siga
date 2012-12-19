@@ -150,16 +150,15 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
     public class AddTrabajoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    BarreraRigidaReconocimientosSubForm subForm =
-		    new BarreraRigidaReconocimientosSubForm(
-			    ABEILLE_TRABAJOS_FILENAME,
-			    getTrabajosDBTableName(),
-			    trabajos,
-			    "id_barrera_rigida",
-			    barreraRigidaIDWidget.getText(),
-			    null,
-			    null,
-			    false);
+	    BarreraRigidaTrabajosSubForm subForm = new BarreraRigidaTrabajosSubForm(
+		    ABEILLE_TRABAJOS_FILENAME,
+		    getTrabajosDBTableName(),
+		    trabajos,
+		    "id_barrera_rigida",
+		    barreraRigidaIDWidget.getText(),
+		    null,
+		    null,
+		    false);
 	    PluginServices.getMDIManager().addWindow(subForm);
 	}
     }
@@ -194,8 +193,7 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    if (trabajos.getSelectedRowCount() != 0) {
 		int row = trabajos.getSelectedRow();
-		BarreraRigidaReconocimientosSubForm subForm =
-			new BarreraRigidaReconocimientosSubForm(
+		BarreraRigidaTrabajosSubForm subForm = new BarreraRigidaTrabajosSubForm(
 				ABEILLE_TRABAJOS_FILENAME,
 				getTrabajosDBTableName(),
 				trabajos,
