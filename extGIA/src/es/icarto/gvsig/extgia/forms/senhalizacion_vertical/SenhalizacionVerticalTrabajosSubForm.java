@@ -17,7 +17,11 @@ public class SenhalizacionVerticalTrabajosSubForm extends AbstractSubForm {
 
     @Override
     public String getXMLPath() {
-	return this.getClass().getClassLoader().getResource("rules/extgia.xml")
+	return this
+		.getClass()
+		.getClassLoader()
+		.getResource(
+			"rules/senhalizacion_vertical_trabajos_metadata.xml")
 		.getPath();
     }
 
