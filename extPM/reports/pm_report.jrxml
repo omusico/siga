@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="policia_margenes" language="groovy" pageWidth="595" pageHeight="842" columnWidth="511" leftMargin="56" rightMargin="28" topMargin="28" bottomMargin="28" uuid="deae6293-c4c5-422f-b68a-e394415360ad">
 	<property name="ireport.zoom" value="1.6105100000000068"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="887"/>
+	<property name="ireport.y" value="0"/>
 	<style name="Heading" fontSize="14"/>
 	<style name="Heading 1" fontSize="16" isBold="true"/>
 	<parameter name="PM_QUERY_WHERE" class="java.lang.Integer">
@@ -43,18 +43,10 @@
 	<field name="the_geom" class="java.lang.Object"/>
 	<field name="nombre_via" class="java.lang.String"/>
 	<field name="pk_final" class="java.lang.Double"/>
-	<field name="num_exp_audasa" class="java.lang.String"/>
-	<field name="referencia_exp_audasa" class="java.lang.String"/>
-	<field name="num_exp_pm" class="java.lang.String"/>
-	<field name="referencia_exp_pm" class="java.lang.String"/>
-	<field name="num_exp_reversion" class="java.lang.String"/>
-	<field name="referencia_exp_reversion" class="java.lang.String"/>
 	<field name="parroquia" class="java.lang.String"/>
 	<field name="ramal" class="java.lang.String"/>
 	<field name="nombre_responsable" class="java.lang.String"/>
 	<field name="nombre_propietario" class="java.lang.String"/>
-	<field name="fecha_salida_contestacion" class="java.sql.Date"/>
-	<field name="fecha_salida_alta" class="java.sql.Date"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -247,14 +239,14 @@
 				<textElement>
 					<font fontName="Arial"/>
 				</textElement>
-				<text><![CDATA[PK final:]]></text>
+				<text><![CDATA[PK inicial:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="348ed33c-6ade-42d6-b789-ffcab8a744bc" x="387" y="134" width="46" height="13" forecolor="#666666"/>
 				<textElement>
 					<font fontName="Arial"/>
 				</textElement>
-				<text><![CDATA[PK inicial:]]></text>
+				<text><![CDATA[PK final:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement uuid="f7d754ff-9f68-4e71-8afe-16fe52b932bc" x="359" y="238" width="140" height="13"/>
