@@ -17,7 +17,8 @@ public class AreasServicioTrabajosSubForm extends AbstractSubForm {
 
     @Override
     public String getXMLPath() {
-	return this.getClass().getClassLoader().getResource("rules/extgia.xml")
+	return this.getClass().getClassLoader()
+		.getResource("rules/areas_servicio_trabajos_metadata.xml")
 		.getPath();
     }
 
