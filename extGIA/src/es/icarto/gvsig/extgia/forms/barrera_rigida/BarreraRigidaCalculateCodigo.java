@@ -33,13 +33,13 @@ public class BarreraRigidaCalculateCodigo extends CalculateComponentValue {
 	    JComboBox perfil = (JComboBox) operatorComponents.get(DBFieldNames.PERFIL);
 	    String perfilValue = ((KeyValue) perfil.getSelectedItem()).getValue();
 
-	    if (tipoValue.equals("Barrera de hormigón simple")) {
+	    if (tipoValue.equals("Barrera Hormigón Simple")) {
 		tipoCode = "BHS";
-	    } else if (tipoValue.equals("Barrera de hormigón doble")) {
+	    } else if (tipoValue.equals("Barrera Hormigón Doble")) {
 		tipoCode = "BHD";
 	    }
 
-	    if (metodoValue.equals("Hormigonada in situ")) {
+	    if (metodoValue.equals("Hormigonada \"in situ\"")) {
 		metodoCode = "E";
 	    } else if (metodoValue.equals("Prefabricada")) {
 		metodoCode = "P";
@@ -49,9 +49,9 @@ public class BarreraRigidaCalculateCodigo extends CalculateComponentValue {
 
 	    if (perfilValue.equals("New Jersey")) {
 		perfilCode = "J";
-	    } else if (perfilValue.equals("Perfil F")) {
+	    } else if (perfilValue.equals("Perfil \"F\"")) {
 		perfilCode = "F";
-	    } else if (perfilValue.equals("Perfil Tric-Bloc")) {
+	    } else if (perfilValue.equals("Perfil \"Tric-Bloc\"")) {
 		perfilCode = "T";
 	    }
 
