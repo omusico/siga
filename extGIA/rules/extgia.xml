@@ -266,65 +266,6 @@
 				<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
 			</FIELD>
 
-			<!-- TALUDES RECONOCIMIENTO ESTADO -->
-
-			<FIELD>
-				<FIELDNAME>existencia_deformaciones_o_grietas</FIELDNAME>
-				<DOMAINREADER>
-					<DRTYPE>db</DRTYPE>
-					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-				</DOMAINREADER>
-			</FIELD>
-
-			<FIELD>
-				<FIELDNAME>peligro_caida_materiales</FIELDNAME>
-				<DOMAINREADER>
-					<DRTYPE>db</DRTYPE>
-					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-				</DOMAINREADER>
-			</FIELD>
-
-			<FIELD>
-				<FIELDNAME>bajante_deteriorada</FIELDNAME>
-				<DOMAINREADER>
-					<DRTYPE>db</DRTYPE>
-					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-				</DOMAINREADER>
-			</FIELD>
-
-			<FIELD>
-				<FIELDNAME>elementos_proteccion_talud</FIELDNAME>
-				<DOMAINREADER>
-					<DRTYPE>db</DRTYPE>
-					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-					<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
-					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-					<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
-				</DOMAINREADER>
-			</FIELD>
-
-			<!-- TALUDES TRABAJOS -->
-
-			<FIELD>
-				<FIELDNAME>unidad</FIELDNAME>
-				<DOMAINREADER>
-					<DRTYPE>db</DRTYPE>
-					<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-					<DRDBTABLE>unidad</DRDBTABLE>
-					<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-					<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-				</DOMAINREADER>
-			</FIELD>
-
 		</RECORDSET>
 	</LAYER>
 

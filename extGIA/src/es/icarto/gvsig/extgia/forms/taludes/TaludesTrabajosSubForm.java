@@ -23,7 +23,8 @@ public class TaludesTrabajosSubForm extends AbstractSubForm {
 
     @Override
     public String getXMLPath() {
-	return this.getClass().getClassLoader().getResource("rules/extgia.xml")
+	return this.getClass().getClassLoader()
+		.getResource("rules/taludes_trabajos_metadata.xml")
 		.getPath();
     }
 }

@@ -2,6 +2,8 @@ package es.icarto.gvsig.extgia.forms.utils;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ import com.hardcode.gdbms.engine.values.Value;
 import com.hardcode.gdbms.engine.values.ValueFactory;
 import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.IWindow;
+import com.iver.andami.ui.mdiManager.IWindowListener;
 import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.jeta.forms.components.image.ImageComponent;
 import com.jeta.forms.components.panel.FormPanel;
@@ -29,12 +32,15 @@ import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.ValidatorComponent;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.ValidatorForm;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.DomainValues;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 import es.icarto.gvsig.navtableforms.utils.AbeilleParser;
 
 @SuppressWarnings("serial")
-public abstract class AbstractSubForm extends JPanel implements IWindow {
+public abstract class AbstractSubForm extends JPanel implements IWindow,
+IWindowListener {
 
     private final FormPanel form;
     private final HashMap<String, Integer> types;
@@ -56,6 +62,10 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
     private HashMap<String, JComponent> widgetsVector;
 
     private ORMLite ormLite;
+    private ValidatorForm formValidator;
+    private TextFieldsValidationNotifier textFieldsNotifier;
+    private ComboBoxValidationNotifier comboBoxNotifier;
+    private JButton addButton;
 
     public AbstractSubForm(String formFile,
 	    String dbTableName,
@@ -82,13 +92,46 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
 	this.idValue = idValue;
 	this.edit = edit;
 	ormLite = new ORMLite(getXMLPath());
+	formValidator = new ValidatorForm();
+	textFieldsNotifier = new TextFieldsValidationNotifier();
+	comboBoxNotifier = new ComboBoxValidationNotifier();
 	this.types = SqlUtils.getDataTypesFromDbTable(DBFieldNames.GIA_SCHEMA, dbTableName);
 	initWidgets();
+	setValidation();
 	if (edit) {
 	    this.values = SqlUtils.getValuesFilteredByPk(DBFieldNames.GIA_SCHEMA,
 		    dbTableName, idField, getPKSelectedValue());
 	}
 	fillValues(edit);
+    }
+
+    private void setValidation() {
+	for (JComponent c : widgetsVector.values()) {
+	    setValidationListener(c);
+	    ValidatorComponent cv = ValidatorComponentFactory.createValidator(
+		    c, ormLite);
+	    if (cv != null) {
+		formValidator.addComponentValidator(cv);
+	    }
+	}
+    }
+
+    private void setValidationListener(JComponent c) {
+	if(c instanceof JTextField) {
+	    ((JTextField) c).addKeyListener(textFieldsNotifier);
+	} else if (c instanceof JComboBox) {
+	    ((JComboBox) c).addActionListener(comboBoxNotifier);
+	}
+    }
+
+    private void removeValidationListeners() {
+	for (JComponent c : widgetsVector.values()) {
+	    if (c instanceof JTextField) {
+		((JTextField) c).removeKeyListener(textFieldsNotifier);
+	    } else if (c instanceof JComboBox) {
+		((JComboBox) c).removeActionListener(comboBoxNotifier);
+	    }
+	}
     }
 
     public abstract String getXMLPath();
@@ -100,7 +143,7 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
 	JTextField idWidget = (JTextField) widgetsVector.get(idElementField);
 	idWidget.setText(idElementValue);
 
-	JButton addButton = (JButton) form.getComponentByName("add_subform_button");
+	addButton = (JButton) form.getComponentByName("add_subform_button");
 	AddDataToJTableListener addDataToJTableListener = new AddDataToJTableListener();
 	addButton.addActionListener(addDataToJTableListener);
 
@@ -111,6 +154,32 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
 	ImageComponent image = (ImageComponent) form.getComponentByName("image");
 	ImageIcon icon = new ImageIcon (PreferencesPage.AUDASA_ICON);
 	image.setIcon(icon);
+    }
+
+    private final class ComboBoxValidationNotifier implements ActionListener {
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+	    formValidator.validate();
+	    addButton.setEnabled(!formValidator.hasValidationErrors());
+	}
+
+    }
+
+    private final class TextFieldsValidationNotifier implements KeyListener {
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+	    formValidator.validate();
+	    addButton.setEnabled(!formValidator.hasValidationErrors());
+	}
+
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+	}
     }
 
     public class AddDataToJTableListener implements ActionListener {
@@ -292,8 +361,14 @@ public abstract class AbstractSubForm extends JPanel implements IWindow {
 
     @Override
     public Object getWindowProfile() {
-	// TODO Auto-generated method stub
 	return null;
     }
 
+    public void windowClosed() {
+	removeValidationListeners();
+    }
+
+    public void windowActivated() {
+	// Nothing to do
+    }
 }

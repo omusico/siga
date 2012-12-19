@@ -251,16 +251,15 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     public class AddTrabajoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    TaludesReconocimientosSubForm subForm =
-		    new TaludesReconocimientosSubForm(
-			    ABEILLE_TRABAJOS_FILENAME,
-			    getTrabajosDBTableName(),
-			    trabajos,
-			    "id_talud",
-			    taludIDWidget.getText(),
-			    null,
-			    null,
-			    false);
+	    TaludesTrabajosSubForm subForm = new TaludesTrabajosSubForm(
+		    ABEILLE_TRABAJOS_FILENAME,
+		    getTrabajosDBTableName(),
+		    trabajos,
+		    "id_talud",
+		    taludIDWidget.getText(),
+		    null,
+		    null,
+		    false);
 	    PluginServices.getMDIManager().addWindow(subForm);
 	}
     }
@@ -295,8 +294,7 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    if (trabajos.getSelectedRowCount() != 0) {
 		int row = trabajos.getSelectedRow();
-		TaludesReconocimientosSubForm subForm =
-			new TaludesReconocimientosSubForm(
+		TaludesTrabajosSubForm subForm = new TaludesTrabajosSubForm(
 				ABEILLE_TRABAJOS_FILENAME,
 				getTrabajosDBTableName(),
 				trabajos,

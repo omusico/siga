@@ -33,7 +33,8 @@ public class TaludesReconocimientosSubForm extends AbstractSubForm {
 
     @Override
     public String getXMLPath() {
-	return this.getClass().getClassLoader().getResource("rules/extgia.xml")
+	return this.getClass().getClassLoader()
+		.getResource("rules/taludes_reconocimientos_metadata.xml")
 		.getPath();
 
     }
