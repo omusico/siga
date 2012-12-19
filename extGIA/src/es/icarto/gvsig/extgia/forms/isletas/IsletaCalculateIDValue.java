@@ -22,7 +22,7 @@ public class IsletaCalculateIDValue extends CalculateComponentValue {
 
     /**
      * (primera letra "Tipo de Isleta")&-&("Número de Isleta")&(Primera letra de
-     * "Base de contratista") ; EJ: D-584N
+     * "Base de contratista") ; EJ: I-584N
      * 
      * @param validate
      *            . True if the operatorComponents validate their checks
@@ -33,8 +33,6 @@ public class IsletaCalculateIDValue extends CalculateComponentValue {
 
 	// TODO: Aplicar el formato adecuado a los valores base
 
-	JComboBox tipoIsletaWidget = (JComboBox) operatorComponents
-		.get(DBFieldNames.TIPO_ISLETA);
 	JTextField numeroIsletaWidget = (JTextField) operatorComponents
 		.get(DBFieldNames.NUMERO_ISLETA);
 	JComboBox baseContratistaWidget = (JComboBox) operatorComponents
@@ -47,8 +45,7 @@ public class IsletaCalculateIDValue extends CalculateComponentValue {
 	String isletaID = "";
 	if (validate) {
 
-	    isletaID = String.format("%s-%03d%s", ((KeyValue) tipoIsletaWidget
-		    .getSelectedItem()).getValue().substring(0, 1), Integer
+	    isletaID = String.format("%s-%03d%s", "I", Integer
 		    .valueOf(numeroIsletaWidget.getText()),
 		    ((KeyValue) baseContratistaWidget.getSelectedItem())
 		    .getValue().substring(0, 1));

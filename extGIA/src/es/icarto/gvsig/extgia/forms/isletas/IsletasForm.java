@@ -103,8 +103,8 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 	isletaIDWidget = (JTextField) widgets.get(DBFieldNames.ID_ISLETA);
 
 	isletaid = new IsletaCalculateIDValue(this, getWidgetComponents(),
-		DBFieldNames.ID_ISLETA, DBFieldNames.TIPO_ISLETA,
-		DBFieldNames.NUMERO_ISLETA, DBFieldNames.BASE_CONTRATISTA);
+		DBFieldNames.ID_ISLETA, DBFieldNames.NUMERO_ISLETA,
+		DBFieldNames.BASE_CONTRATISTA);
 	isletaid.setListeners();
 
 	JComboBox direccion = (JComboBox) getWidgetComponents().get(
