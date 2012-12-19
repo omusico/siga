@@ -52,6 +52,7 @@ public class FormPM extends AbstractForm {
     private JTextField numParcelaCatastro;
     private JTextField poligonoCatastro;
     private JButton editParcelasButton;
+    private JComboBox empresa;
     private JComboBox area;
     private JTextField fecha;
     private JTextField numeroPM;
@@ -132,6 +133,9 @@ public class FormPM extends AbstractForm {
 
 	editParcelasButton = (JButton) form.getComponentByName(Preferences.PM_FORM_WIDGET_PARCELAS_BUTTON);
 	editParcelasButton.addActionListener(editParcelasAfectadasListener);
+
+	empresa = (JComboBox) widgets.get(Preferences.PM_FORM_WIDGET_EMPRESA);
+	empresa.addActionListener(calculatePMNumberListener);
 
 	area = (JComboBox) widgets.get(Preferences.PM_FORM_WIDGET_AREA);
 	area.addActionListener(calculatePMNumberListener);
@@ -307,6 +311,7 @@ public class FormPM extends AbstractForm {
      * @return PM Number
      */
     private String calculatePMNumber() {
+	String empresa;
 	String area;
 	String year = "";
 	String currentPmNumber;
@@ -318,6 +323,15 @@ public class FormPM extends AbstractForm {
 	    if (dateArray.length == 3) {
 		year = dateArray[2];
 	    }
+	}
+
+	String empresaSelectedValue = this.empresa.getSelectedItem().toString();
+	if (empresaSelectedValue.equalsIgnoreCase("AUTOESTRADAS")) {
+	    empresa = "AU";
+	} else if (empresaSelectedValue.equalsIgnoreCase("AUDASA")) {
+	    empresa = "AP";
+	} else {
+	    empresa = "";
 	}
 
 	String areaSelectedValue = this.area.getSelectedItem().toString();
@@ -333,15 +347,15 @@ public class FormPM extends AbstractForm {
 	currentPmNumber = numeroPM.getText();
 	if (!newRegister && currentPmNumber.contains(".")) {
 	    String[] pmNumberArray = currentPmNumber.split("\\.");
-	    if (pmNumberArray.length ==4 && !year.equals("") &&
+	    if (pmNumberArray.length ==5 && !year.equals("") &&
 		    !area.equals("")) {
-		id = pmNumberArray[3];
-		return "PM" + "." + year +"." + area + "." + id;
+		id = pmNumberArray[4];
+		return empresa + "." + "PM" + "." + year +"." + area + "." + id;
 	    }
 	    return currentPmNumber;
 	}
 
-	return "PM" + "." + year +"." + area + "." + getID();
+	return empresa + "." + "PM" + "." + year +"." + area + "." + getID();
     }
 
     private String getID() {

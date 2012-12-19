@@ -18,6 +18,7 @@ public class Preferences {
     public static final String PM_FORM_WIDGETS_NUM_PARCELA_CATASTRO = "num_parcela_catastro";
     public static final String PM_FORM_WIDGETS_POLIGONO_CATASTRO = "poligono_catastro";
     public static final String PM_FORM_WIDGET_PARCELAS_BUTTON = "num_parcela_audasa_button";
+    public static final String PM_FORM_WIDGET_EMPRESA = "empresa";
     public static final String PM_FORM_WIDGET_AREA = "area";
     public static final String PM_FORM_WIDGET_FECHA = "fecha";
     public static final String PM_FORM_WIDGET_MUNICIPIO = "municipio";
