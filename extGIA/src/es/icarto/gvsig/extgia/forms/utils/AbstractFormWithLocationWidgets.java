@@ -83,6 +83,16 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     }
 
     @Override
+    protected void enableSaveButton(boolean bool) {
+	// overwrite method to enable save button on layers being in edition
+	if (!isChangedValues()) {
+	    saveB.setEnabled(false);
+	} else {
+	    saveB.setEnabled(bool);
+	}
+    }
+
+    @Override
     protected void setListeners() {
 	super.setListeners();
 
