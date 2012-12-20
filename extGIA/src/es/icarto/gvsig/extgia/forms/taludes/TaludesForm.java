@@ -238,24 +238,27 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 
     @Override
     protected boolean validationHasErrors() {
-	if (taludIDWidget.getText() != "") {
-	    String query = "SELECT id_talud FROM audasa_extgia.taludes "
-		    + " WHERE id_talud = '" + taludIDWidget.getText() + "';";
-	    PreparedStatement statement = null;
-	    Connection connection = DBSession.getCurrentSession()
-		    .getJavaConnection();
-	    try {
-		statement = connection.prepareStatement(query);
-		statement.execute();
-		ResultSet rs = statement.getResultSet();
-		if (rs.next()) {
-		    JOptionPane.showMessageDialog(null,
-			    "El ID está en uso, por favor, escoja otro.",
-			    "ID en uso", JOptionPane.WARNING_MESSAGE);
-		    return true;
+	if (this.getFormController().getValuesChanged().containsKey("id_talud")) {
+	    if (taludIDWidget.getText() != "") {
+		String query = "SELECT id_talud FROM audasa_extgia.taludes "
+			+ " WHERE id_talud = '" + taludIDWidget.getText()
+			+ "';";
+		PreparedStatement statement = null;
+		Connection connection = DBSession.getCurrentSession()
+			.getJavaConnection();
+		try {
+		    statement = connection.prepareStatement(query);
+		    statement.execute();
+		    ResultSet rs = statement.getResultSet();
+		    if (rs.next()) {
+			JOptionPane.showMessageDialog(null,
+				"El ID está en uso, por favor, escoja otro.",
+				"ID en uso", JOptionPane.WARNING_MESSAGE);
+			return true;
+		    }
+		} catch (SQLException e) {
+		    e.printStackTrace();
 		}
-	    } catch (SQLException e) {
-		e.printStackTrace();
 	    }
 	}
 	return super.validationHasErrors();

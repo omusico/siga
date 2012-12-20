@@ -137,25 +137,28 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 
     @Override
     protected boolean validationHasErrors() {
-	if (barreraRigidaIDWidget.getText() != "") {
-	    String query = "SELECT id_barrera_rigida FROM audasa_extgia.barrera_rigida "
-		    + " WHERE id_barrera_rigida = '"
-		    + barreraRigidaIDWidget.getText() + "';";
-	    PreparedStatement statement = null;
-	    Connection connection = DBSession.getCurrentSession()
-		    .getJavaConnection();
-	    try {
-		statement = connection.prepareStatement(query);
-		statement.execute();
-		ResultSet rs = statement.getResultSet();
-		if (rs.next()) {
-		    JOptionPane.showMessageDialog(null,
-			    "El ID está en uso, por favor, escoja otro.",
-			    "ID en uso", JOptionPane.WARNING_MESSAGE);
-		    return true;
+	if (this.getFormController().getValuesChanged()
+		.containsKey("id_barrera_rigida")) {
+	    if (barreraRigidaIDWidget.getText() != "") {
+		String query = "SELECT id_barrera_rigida FROM audasa_extgia.barrera_rigida "
+			+ " WHERE id_barrera_rigida = '"
+			+ barreraRigidaIDWidget.getText() + "';";
+		PreparedStatement statement = null;
+		Connection connection = DBSession.getCurrentSession()
+			.getJavaConnection();
+		try {
+		    statement = connection.prepareStatement(query);
+		    statement.execute();
+		    ResultSet rs = statement.getResultSet();
+		    if (rs.next()) {
+			JOptionPane.showMessageDialog(null,
+				"El ID está en uso, por favor, escoja otro.",
+				"ID en uso", JOptionPane.WARNING_MESSAGE);
+			return true;
+		    }
+		} catch (SQLException e) {
+		    e.printStackTrace();
 		}
-	    } catch (SQLException e) {
-		e.printStackTrace();
 	    }
 	}
 	return super.validationHasErrors();

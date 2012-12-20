@@ -144,24 +144,27 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 
     @Override
     protected boolean validationHasErrors() {
-	if (isletaIDWidget.getText() != "") {
-	    String query = "SELECT id_isleta FROM audasa_extgia.isletas "
-		    + " WHERE id_isleta = '" + isletaIDWidget.getText() + "';";
-	    PreparedStatement statement = null;
-	    Connection connection = DBSession.getCurrentSession()
-		    .getJavaConnection();
-	    try {
-		statement = connection.prepareStatement(query);
-		statement.execute();
-		ResultSet rs = statement.getResultSet();
-		if (rs.next()) {
-		    JOptionPane.showMessageDialog(null,
-			    "El ID está en uso, por favor, escoja otro.",
-			    "ID en uso", JOptionPane.WARNING_MESSAGE);
-		    return true;
+	if (this.getFormController().getValuesChanged()
+		.containsKey("id_isleta")) {
+	    if (isletaIDWidget.getText() != "") {
+		String query = "SELECT id_isleta FROM audasa_extgia.isletas "
+			+ " WHERE id_isleta = '" + isletaIDWidget.getText() + "';";
+		PreparedStatement statement = null;
+		Connection connection = DBSession.getCurrentSession()
+			.getJavaConnection();
+		try {
+		    statement = connection.prepareStatement(query);
+		    statement.execute();
+		    ResultSet rs = statement.getResultSet();
+		    if (rs.next()) {
+			JOptionPane.showMessageDialog(null,
+				"El ID está en uso, por favor, escoja otro.",
+				"ID en uso", JOptionPane.WARNING_MESSAGE);
+			return true;
+		    }
+		} catch (SQLException e) {
+		    e.printStackTrace();
 		}
-	    } catch (SQLException e) {
-		e.printStackTrace();
 	    }
 	}
 	return super.validationHasErrors();
