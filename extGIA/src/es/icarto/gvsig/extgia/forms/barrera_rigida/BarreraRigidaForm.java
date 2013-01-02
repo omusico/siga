@@ -23,7 +23,6 @@ import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.utils.LaunchGIAForms.Elements;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.extgia.preferences.Preferences;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxesHandler;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
@@ -273,7 +272,9 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public String getXMLPath() {
-	return Preferences.getPreferences().getXMLFilePath();
+	return this.getClass().getClassLoader()
+		.getResource("rules/barrera_rigida_metadata.xml")
+		.getPath();
     }
 
     @Override
