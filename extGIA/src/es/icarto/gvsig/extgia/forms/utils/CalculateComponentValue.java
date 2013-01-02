@@ -155,31 +155,43 @@ public abstract class CalculateComponentValue {
     }
 
     protected String getPkFormatted(JTextField pkWidget) {
+	String pkValueFormatted = "";
+
 	NumberFormat format=DecimalFormat.getInstance();
 	DecimalFormatSymbols symbols=((DecimalFormat) format).getDecimalFormatSymbols();
 	char decimalSeparator=symbols.getDecimalSeparator();
 
 	String pkValue = pkWidget.getText();
+
+	// pkValue has only natural part
+	if (!pkValue.isEmpty() && !pkValue.contains(String.valueOf(decimalSeparator))) {
+	    pkValueFormatted =  String.format("%03d", Integer.valueOf(pkValue)) + "000";
+	}
+
 	String[] pkValues = null;
-	//	if (String.valueOf(decimalSeparator).equals(".")) {
-	//	    pkValues = pkValue.split("\\" + String.valueOf(decimalSeparator));
-	//	}
 
-	pkValues = pkValue.split(",");
-	String pkValueFormated = "";
+	if (!pkValue.isEmpty()) {
+	    pkValues = pkValue.split("\\" + String.valueOf(decimalSeparator));
+	}
 
+	// Cheking that pkValue is natural + decimal separator + decimal
 	if (pkValues != null && pkValues.length>1) {
-	    if (pkValues[1].length() == 1) {
-		pkValueFormated = String.format("%03d", Integer.valueOf(pkValues[0])) +
-			pkValues[1] + "00";
-	    }else if (pkValues[1].length() == 2) {
-		pkValueFormated = String.format("%03d", Integer.valueOf(pkValues[0])) +
-			pkValues[1] + "0";
-	    }else {
-		pkValueFormated = String.format("%03d", Integer.valueOf(pkValues[0])) +
-			pkValues[1];
+	    if (!pkValues[0].isEmpty() && !pkValues[1].isEmpty()) {
+		// pkValue has one decimal
+		if (pkValues[1].length() == 1) {
+		    pkValueFormatted = String.format("%03d", Integer.valueOf(pkValues[0])) +
+			    pkValues[1] + "00";
+		    // pkValue has two decimals
+		}else if (pkValues[1].length() == 2) {
+		    pkValueFormatted = String.format("%03d", Integer.valueOf(pkValues[0])) +
+			    pkValues[1] + "0";
+		    // pkValue has three decimals
+		}else {
+		    pkValueFormatted = String.format("%03d", Integer.valueOf(pkValues[0])) +
+			    pkValues[1];
+		}
 	    }
 	}
-	return pkValueFormated;
+	return pkValueFormatted;
     }
 }

@@ -36,7 +36,7 @@ public class PasosMedianaCalculateIDValue extends CalculateComponentValue {
 
 	String pkValueFormatted = getPkFormatted(pkWidget);
 
-	if (pkWidget.getText().isEmpty()) {
+	if (pkWidget.getText().isEmpty() || pkValueFormatted.isEmpty()) {
 	    validate = false;
 	}
 
