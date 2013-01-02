@@ -19,7 +19,6 @@ import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.utils.LaunchGIAForms.Elements;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.extgia.preferences.Preferences;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxesHandler;
 
@@ -190,14 +189,14 @@ public class JuntasForm extends AbstractFormWithLocationWidgets {
 	    if (trabajos.getSelectedRowCount() != 0) {
 		int row = trabajos.getSelectedRow();
 		JuntasTrabajosSubForm subForm = new JuntasTrabajosSubForm(
-				ABEILLE_TRABAJOS_FILENAME,
-				getTrabajosDBTableName(),
-				trabajos,
-				"id_junta",
-				juntaIDWidget.getText(),
-				"id_trabajo",
-				trabajos.getValueAt(row, 0).toString(),
-				true);
+			ABEILLE_TRABAJOS_FILENAME,
+			getTrabajosDBTableName(),
+			trabajos,
+			"id_junta",
+			juntaIDWidget.getText(),
+			"id_trabajo",
+			trabajos.getValueAt(row, 0).toString(),
+			true);
 		PluginServices.getMDIManager().addWindow(subForm);
 	    }else {
 		JOptionPane.showMessageDialog(null,
@@ -235,7 +234,9 @@ public class JuntasForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public String getXMLPath() {
-	return Preferences.getPreferences().getXMLFilePath();
+	return this.getClass().getClassLoader()
+		.getResource("rules/juntas_metadata.xml")
+		.getPath();
     }
 
     @Override
