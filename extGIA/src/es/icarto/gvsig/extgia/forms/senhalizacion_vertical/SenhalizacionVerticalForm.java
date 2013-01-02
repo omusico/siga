@@ -19,7 +19,6 @@ import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.utils.LaunchGIAForms.Elements;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.extgia.preferences.Preferences;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxesHandler;
 
@@ -192,14 +191,14 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 	    if (trabajos.getSelectedRowCount() != 0) {
 		int row = trabajos.getSelectedRow();
 		SenhalizacionVerticalTrabajosSubForm subForm = new SenhalizacionVerticalTrabajosSubForm(
-				ABEILLE_TRABAJOS_FILENAME,
-				getTrabajosDBTableName(),
-				trabajos,
-				"id_senhal_vertical",
-				senhalVerticalIDWidget.getText(),
-				"id_trabajo",
-				trabajos.getValueAt(row, 0).toString(),
-				true);
+			ABEILLE_TRABAJOS_FILENAME,
+			getTrabajosDBTableName(),
+			trabajos,
+			"id_senhal_vertical",
+			senhalVerticalIDWidget.getText(),
+			"id_trabajo",
+			trabajos.getValueAt(row, 0).toString(),
+			true);
 		PluginServices.getMDIManager().addWindow(subForm);
 	    }else {
 		JOptionPane.showMessageDialog(null,
@@ -237,7 +236,9 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public String getXMLPath() {
-	return Preferences.getPreferences().getXMLFilePath();
+	return this.getClass().getClassLoader()
+		.getResource("rules/senhalizacion_vertical_metadata.xml")
+		.getPath();
     }
 
     @Override
