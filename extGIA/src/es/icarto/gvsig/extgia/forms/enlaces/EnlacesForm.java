@@ -19,7 +19,6 @@ import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.utils.LaunchGIAForms.Elements;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.extgia.preferences.Preferences;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 
 @SuppressWarnings("serial")
@@ -321,7 +320,9 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public String getXMLPath() {
-	return Preferences.getPreferences().getXMLFilePath();
+	return this.getClass().getClassLoader()
+		.getResource("rules/enlaces_metadata.xml")
+		.getPath();
     }
 
     @Override
