@@ -15,10 +15,12 @@
 	<classpathentry kind="lib" path="/libFMap/lib/org.cresques.cts.jar" sourcepath="/libProjection/src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/libGDBMS"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/libExceptions"/>
-	<classpathentry kind="lib" path="lib/jcalendar-1.4.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/appgvSIG"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/libIverUtiles"/>
-	<classpathentry kind="lib" path="/extAudasaCommons/lib/formsrt.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/extAudasaCommons"/>
+	<classpathentry kind="lib" path="lib/iText-2.1.5.jar"/>
+	<classpathentry kind="lib" path="lib/iText-rtf-2.1.5.jar"/>
+	<classpathentry kind="lib" path="lib/formsrt.jar"/>
+	<classpathentry kind="lib" path="lib/jcalendar-1.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

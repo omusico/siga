@@ -20,5 +20,10 @@
 		<menu text="SIGA/Inventario/Señalización Vertical" action-command="Senhalizacion_Vertical" position="30406"/>
 		<menu text="SIGA/Inventario/Taludes" action-command="Taludes" position="30407"/>
 		</extension>
+
+		<extension class-name="es.icarto.gvsig.extgia.ConsultasExtension" description="consultas" active="true">
+		<menu text="SIGA" position="30408" is_separator="true"/>
+		<menu text="SIGA/Inventario/Consultas" action-command="Consultas" position="30409"/>
+		</extension>
 	</extensions>
 </plugin-config>
