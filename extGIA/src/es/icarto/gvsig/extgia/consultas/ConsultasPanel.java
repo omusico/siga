@@ -167,6 +167,12 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	    String query = getReportQuery(tipo, fechaInicial, fechaFinal, element,
 		    elementId, fields);
 
+	    if (!isCheckingOK()) {
+		JOptionPane.showMessageDialog(null,
+			"Debe seleccionar al menos Elemento y Tipo");
+		return;
+	    }
+
 	    createPdfReport(tipo, filters, query);
 	}
     }
@@ -209,6 +215,15 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	} catch (SQLException e1) {
 	    // TODO Auto-generated catch block
 	    e1.printStackTrace();
+	}
+    }
+
+    private boolean isCheckingOK() {
+	if (!elemento.getSelectedItem().toString().equals(" ") &&
+		!tipoConsulta.getSelectedItem().toString().equals(" ")) {
+	    return true;
+	}else {
+	    return false;
 	}
     }
 
