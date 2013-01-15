@@ -320,7 +320,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	}
 	if (!tramo.getSelectedItem().toString().equals(" ")) {
 	    query = query + " AND tramo = '" +
-		    ((KeyValue) tramo.getSelectedItem()).getKey() + "')";
+		    ((KeyValue) tramo.getSelectedItem()).getKey() + "'";
 	}
 	return query;
     }
@@ -328,7 +328,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
     private String getWhereClauseByDates(String fechaField, Date fechaInicial, Date fechaFinal) {
 	String query = "";
 	if (!getWhereClauseByLocationWidgets().isEmpty()) {
-	    query = " AND " + fechaField + " BETWEEN '" + fechaInicial + "' AND '" + fechaFinal + "'";
+	    query = " ) AND " + fechaField + " BETWEEN '" + fechaInicial + "' AND '" + fechaFinal + "'";
 	}else {
 	    query = " WHERE " + fechaField + " BETWEEN '" + fechaInicial + "' AND '" + fechaFinal + "'";
 	}
@@ -344,7 +344,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		    "SELECT id, item FROM audasa_extgia_dominios.base_contratista" +
 			    " WHERE id_am = " + id + ";";
 	    baseContratista.removeAllItems();
-	    baseContratista.addItem(new KeyValue("", ""));
+	    baseContratista.addItem(new KeyValue(" ", " "));
 	    if (!id.isEmpty()) {
 		for (KeyValue value: SqlUtils.getKeyValueListFromSql(getBaseContratistaQuery)) {
 		    baseContratista.addItem(value);
@@ -357,13 +357,14 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-	    if (baseContratista.getSelectedItem()!=null) {
+	    if (baseContratista.getSelectedItem()!=null &&
+		    !baseContratista.getSelectedItem().toString().equals(" ")) {
 		String id = ((KeyValue) baseContratista.getSelectedItem())
 			.getKey();
 		String getTramoQuery = "SELECT id, item FROM audasa_extgia_dominios.tramo"
 			+ " WHERE id_bc = " + id + ";";
 		tramo.removeAllItems();
-		tramo.addItem(new KeyValue("", ""));
+		tramo.addItem(new KeyValue(" ", " "));
 		if (!id.isEmpty()) {
 		    for (KeyValue value : SqlUtils
 			    .getKeyValueListFromSql(getTramoQuery)) {
