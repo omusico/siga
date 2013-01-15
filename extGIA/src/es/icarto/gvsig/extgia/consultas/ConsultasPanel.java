@@ -48,7 +48,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
     private final Locale loc = new Locale("es");
 
     private static final int TRABAJOS = 0;
-    private static final int RECONOCIMIENTOS = 0;
+    private static final int RECONOCIMIENTOS = 1;
 
     private final FormPanel form;
     private final ORMLite ormLite;
@@ -192,7 +192,9 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 			((KeyValue) elemento.getSelectedItem()).getValue(),
 			outputFile.getAbsolutePath(), rs, filters);
 	    }else {
-
+		ReconocimientosReport report = new ReconocimientosReport(
+			((KeyValue) elemento.getSelectedItem()).getValue(),
+			outputFile.getAbsolutePath(), rs, filters);
 	    }
 
 	    Object[] reportGeneratedOptions = { "Ver listado", "Cerrar" };

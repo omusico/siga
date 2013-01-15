@@ -2,29 +2,26 @@ package es.icarto.gvsig.extgia.consultas;
 
 import java.sql.ResultSet;
 
+public class ReconocimientosReport extends Report {
 
-public class TrabajosReport extends Report {
-
-    public TrabajosReport(String element, String fileName, ResultSet resultMap,
-	    String[] filters) {
+    public ReconocimientosReport(String element, String fileName,
+	    ResultSet resultMap, String[] filters) {
 	super(element, fileName, resultMap, filters);
     }
 
     @Override
     protected String getTitle() {
-	return "Listado de Trabajos";
+	return "Listado de Reconocimientos de Estado";
     }
 
     @Override
     protected String[] getColumnNames() {
 	String[] columnNames = {
 		"ID Elemento",
-		"Fecha",
-		"Unidad",
-		"Medida Contratista",
-		"Medición AUDASA",
-		"Observaciones",
-		"Fecha Certificado"
+		"Nombre Revisor",
+		"Fecha Inspección",
+		"Indice Estado",
+		"Observaciones"
 	};
 	return columnNames;
     }
@@ -33,16 +30,12 @@ public class TrabajosReport extends Report {
     protected float[] getColumnsWidth(int columnCount) {
 	float[] columnsWidth = new float[columnCount];
 
-	columnsWidth[0] = 60f;
-	columnsWidth[1] = 60f;
-	columnsWidth[2] = 100f;
-	columnsWidth[3] = 63f;
-	columnsWidth[4] = 60f;
-	columnsWidth[5] = 155f;
-	columnsWidth[6] = 70f;
+	columnsWidth[0] = 70f;
+	columnsWidth[1] = 170f;
+	columnsWidth[2] = 70f;
+	columnsWidth[3] = 70f;
+	columnsWidth[4] = 215f;
 
 	return columnsWidth;
     }
-
-
 }
