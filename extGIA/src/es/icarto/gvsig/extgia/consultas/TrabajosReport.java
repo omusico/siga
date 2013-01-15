@@ -81,10 +81,10 @@ public class TrabajosReport {
 	    Paragraph tramoP = new Paragraph("Tramo: "
 		    + filters[2], bodyBoldStyle);
 	    document.add(tramoP);
-	    Paragraph mesP = new Paragraph("Mes Certificado: "
+	    Paragraph mesP = new Paragraph("Desde: "
 		    + filters[3], bodyBoldStyle);
 	    document.add(mesP);
-	    Paragraph anhoP = new Paragraph("Año Certificado: "
+	    Paragraph anhoP = new Paragraph("Hasta: "
 		    + filters[4], bodyBoldStyle);
 	    document.add(anhoP);
 	    document.add(Chunk.NEWLINE);

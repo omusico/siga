@@ -10,8 +10,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -40,6 +43,12 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
     public static String ABEILLE_FILENAME = "forms/consultas_inventario.jfrm";
+
+    private final Connection connection = DBSession.getCurrentSession().getJavaConnection();
+    private final Locale loc = new Locale("es");
+
+    private static final int TRABAJOS = 0;
+    private static final int RECONOCIMIENTOS = 0;
 
     private final FormPanel form;
     private final ORMLite ormLite;
@@ -71,11 +80,14 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	}
 	this.add(result);
 
+	Calendar calendar = Calendar.getInstance();
 	// Setting name of JTextFieldDateEditors since NTForms gets an error if it is null
 	fechaInicio = (JDateChooser) result.getComponentByName("fecha_inicio");
 	fechaInicio.getDateEditor().getUiComponent().setName("fecha_inicio_TF");
 	fechaFin = (JDateChooser) result.getComponentByName("fecha_fin");
 	fechaFin.getDateEditor().getUiComponent().setName("fecha_fin_TF");
+	fechaInicio.setDate(calendar.getTime());
+	fechaFin.setDate(calendar.getTime());
 
 	this.form = result;
 	ormLite = new ORMLite(getClass().getClassLoader()
@@ -133,65 +145,166 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 	if (e.getSource() == launchButton) {
-	    SaveFileDialog sfd = new SaveFileDialog("PDF files", "pdf");
-	    File outputFile = sfd.showDialog();
-
-	    // 0.AM - 1.BC - 2.Tramo - 3.Mes certificado - 4.Anho certificado
-	    String[] filters = new String[5];
-	    filters[0] = "-";
-	    filters[1] = "-";
-	    filters[2] = "-";
-	    filters[3] = "-";
-	    filters[4] = "-";
-
-	    String fields = "id_area_servicio, fecha, unidad, medicion_contratista, medicion_audasa, " +
-		    "observaciones, fecha_certificado";
-
-	    String query = "SELECT " + fields + " FROM " +
-		    DBFieldNames.GIA_SCHEMA + "." +
-		    ((KeyValue) elemento.getSelectedItem()).getKey() + "_" +
-		    ((KeyValue) tipoConsulta.getSelectedItem()).getKey();
+	    int tipo = -1;
 
 	    Date fechaInicial = fechaInicio.getDate();
 	    Date fechaFinal = fechaFin.getDate();
 
-	    query = query + " WHERE fecha_certificado BETWEEN '" + fechaInicial + "' AND '" + fechaFinal + "'";
+	    String[] filters = getFilters(fechaInicial, fechaFinal);
 
-	    PreparedStatement statement;
-	    Connection connection = DBSession.getCurrentSession().getJavaConnection();
-	    try {
-		statement = connection.prepareStatement(query);
-		statement.execute();
-		ResultSet rs = statement.getResultSet();
+	    String element = ((KeyValue) elemento.getSelectedItem()).getKey();
+	    String elementId = getElementId(element);
 
+	    String fields = "";
+	    if (tipoConsulta.getSelectedItem().toString().equals("Trabajos")) {
+		fields = getTrabajosFieldNames(elementId);
+		tipo = TRABAJOS;
+	    }else if(tipoConsulta.getSelectedItem().toString().equals("Inspecciones")) {
+		fields = getReconocimientosFieldNames(elementId);
+		tipo = RECONOCIMIENTOS;
+	    }
+
+	    String query = getReportQuery(tipo, fechaInicial, fechaFinal, element,
+		    elementId, fields);
+
+	    createPdfReport(tipo, filters, query);
+	}
+    }
+
+    private void createPdfReport(int tipo, String[] filters, String query) {
+	SaveFileDialog sfd = new SaveFileDialog("PDF files", "pdf");
+	File outputFile = sfd.showDialog();
+
+	PreparedStatement statement;
+	try {
+	    statement = connection.prepareStatement(query);
+	    statement.execute();
+	    ResultSet rs = statement.getResultSet();
+
+	    if (tipo == TRABAJOS) {
 		TrabajosReport report = new TrabajosReport(
 			((KeyValue) elemento.getSelectedItem()).getValue(),
 			outputFile.getAbsolutePath(), rs, filters);
+	    }else {
 
-		Object[] reportGeneratedOptions = { "Ver informe", "Cerrar" };
-		int m = JOptionPane.showOptionDialog(
-			null,
-			"Informe generado con éxito en: \n" + "\""
-				+ outputFile.getAbsolutePath() + "\"", null,
-				JOptionPane.YES_NO_CANCEL_OPTION,
-				JOptionPane.INFORMATION_MESSAGE, null,
-				reportGeneratedOptions, reportGeneratedOptions[1]);
-
-		if (m == JOptionPane.OK_OPTION) {
-		    Desktop d = Desktop.getDesktop();
-		    try {
-			d.open(outputFile);
-		    } catch (IOException e1) {
-			e1.printStackTrace();
-		    }
-		}
-	    } catch (SQLException e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
 	    }
 
-	}
+	    Object[] reportGeneratedOptions = { "Ver listado", "Cerrar" };
+	    int m = JOptionPane.showOptionDialog(
+		    null,
+		    "Listado generado con éxito en: \n" + "\""
+			    + outputFile.getAbsolutePath() + "\"", null,
+			    JOptionPane.YES_NO_CANCEL_OPTION,
+			    JOptionPane.INFORMATION_MESSAGE, null,
+			    reportGeneratedOptions, reportGeneratedOptions[1]);
 
+	    if (m == JOptionPane.OK_OPTION) {
+		Desktop d = Desktop.getDesktop();
+		try {
+		    d.open(outputFile);
+		} catch (IOException e1) {
+		    e1.printStackTrace();
+		}
+	    }
+	} catch (SQLException e1) {
+	    // TODO Auto-generated catch block
+	    e1.printStackTrace();
+	}
     }
 
+    private String getReportQuery(int tipo, Date fechaInicial, Date fechaFinal,
+	    String element, String elementId, String fields) {
+	String query = "SELECT " + fields + " FROM " +
+		DBFieldNames.GIA_SCHEMA + "." +
+		element + "_" + ((KeyValue) tipoConsulta.getSelectedItem()).getKey();
+
+	if (!getWhereClauseByLocationWidgets().isEmpty()) {
+	    query = query + " WHERE " + elementId + " IN (SELECT " + elementId +
+		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element +
+		    getWhereClauseByLocationWidgets();
+	}
+
+	if (tipo == TRABAJOS) {
+	    query = query + getWhereClauseByDates("fecha_certificado", fechaInicial, fechaFinal);
+	}else {
+	    query = query + getWhereClauseByDates("fecha_inspeccion", fechaInicial, fechaFinal);
+	}
+	return query;
+    }
+
+    private String[] getFilters(Date fechaInicial, Date fechaFinal) {
+	// 0.AM - 1.BC - 2.Tramo - 3.FechaInicio - 4.FechaFin
+	String[] filters = new String[5];
+	if (!areaMantenimiento.getSelectedItem().toString().equals(" ")) {
+	    filters[0] = areaMantenimiento.getSelectedItem().toString();
+	}else {
+	    filters[0] = "-";
+	}
+	if (!baseContratista.getSelectedItem().toString().equals(" ")) {
+	    filters[1] = baseContratista.getSelectedItem().toString();
+	}else {
+	    filters[1] = "-";
+	}
+	if (!tramo.getSelectedItem().toString().equals(" ")) {
+	    filters[2] = tramo.getSelectedItem().toString();
+	}else {
+	    filters[2] = "-";
+	}
+	DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, loc);
+	filters[3] = dateFormat.format(fechaInicial);
+	filters[4] = dateFormat.format(fechaFinal);
+	return filters;
+    }
+
+    private String getElementId(String element) {
+	PreparedStatement statement;
+	String query = "SELECT id_fieldname FROM audasa_extgia_dominios.elemento " +
+		"WHERE id = '" + element + "';";
+	try {
+	    statement = connection.prepareStatement(query);
+	    statement.execute();
+	    ResultSet rs = statement.getResultSet();
+	    rs.next();
+	    return rs.getString(1);
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return null;
+    }
+
+    private String getTrabajosFieldNames(String elementId) {
+	return elementId + ", fecha, unidad, medicion_contratista, medicion_audasa, " +
+		"observaciones, fecha_certificado";
+    }
+
+    private String getReconocimientosFieldNames(String elementId) {
+	return elementId + ", nombre_revisor, fecha_inspeccion, indice_estado, observaciones";
+    }
+
+    private String getWhereClauseByLocationWidgets() {
+	String query = "";
+	if (!areaMantenimiento.getSelectedItem().toString().equals(" ")) {
+	    query = " WHERE area_mantenimiento =  '" +
+		    ((KeyValue) areaMantenimiento.getSelectedItem()).getKey() + "'";
+	}
+	if (!baseContratista.getSelectedItem().toString().equals(" ")) {
+	    query = query + " AND base_contratista = '" +
+		    ((KeyValue) baseContratista.getSelectedItem()).getKey() + "'";
+	}
+	if (!tramo.getSelectedItem().toString().equals(" ")) {
+	    query = query + " AND tramo = '" +
+		    ((KeyValue) tramo.getSelectedItem()).getKey() + "')";
+	}
+	return query;
+    }
+
+    private String getWhereClauseByDates(String fechaField, Date fechaInicial, Date fechaFinal) {
+	String query = "";
+	if (!getWhereClauseByLocationWidgets().isEmpty()) {
+	    query = " AND " + fechaField + " BETWEEN '" + fechaInicial + "' AND '" + fechaFinal + "'";
+	}else {
+	    query = " WHERE " + fechaField + " BETWEEN '" + fechaInicial + "' AND '" + fechaFinal + "'";
+	}
+	return query;
+    }
 }
