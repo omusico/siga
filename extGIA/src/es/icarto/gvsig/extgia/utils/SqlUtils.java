@@ -58,6 +58,12 @@ public class SqlUtils {
 		for (int i=0; i<rsMetaData.getColumnCount(); i++) {
 		    if (rs.getString(i+1) == null) {
 			values.put(rsMetaData.getColumnName(i+1), ValueFactory.createNullValue());
+			//If type is date (91) then we use varchar(12) in order to
+			//create the Value since date Value causes problems
+		    }else if (rsMetaData.getColumnType(i+1) == 91){
+			values.put(rsMetaData.getColumnName(i+1),
+				ValueFactory.createValueByType(rs.getString(i+1),
+					12));
 		    }else {
 			values.put(rsMetaData.getColumnName(i+1),
 				ValueFactory.createValueByType(rs.getString(i+1),
@@ -89,7 +95,13 @@ public class SqlUtils {
 	    statement = connection.prepareStatement(query);
 	    while (rs.next()) {
 		for (int i=0; i<rsMetaData.getColumnCount(); i++) {
-		    types.put(rsMetaData.getColumnName(i+1), rsMetaData.getColumnType(i+1));
+		    //If type is date (91) then we use varchar(12) in order to
+		    //create the Value since date Value causes problems
+		    if (rsMetaData.getColumnType(i+1) == 91) {
+			types.put(rsMetaData.getColumnName(i+1), 12);
+		    }else {
+			types.put(rsMetaData.getColumnName(i+1), rsMetaData.getColumnType(i+1));
+		    }
 		}
 	    }
 	    rs.close();
@@ -142,6 +154,12 @@ public class SqlUtils {
 		for (int i=0; i<rsMetaData.getColumnCount(); i++) {
 		    if (rs.getString(i+1) == null) {
 			tableValues[i] = ValueFactory.createNullValue();
+			//If type is date (91) then we use varchar(12) in order to
+			//create the Value since date Value causes problems
+		    }else if (rsMetaData.getColumnType(i+1) == 91){
+			tableValues[i] =
+				ValueFactory.createValueByType(rs.getString(i+1),
+					12);
 		    }else {
 			tableValues[i] =
 				ValueFactory.createValueByType(rs.getString(i+1),
@@ -181,6 +199,12 @@ public class SqlUtils {
 		for (int i=0; i<rsMetaData.getColumnCount(); i++) {
 		    if (rs.getString(i+1) == null) {
 			tableValues[i] = ValueFactory.createNullValue();
+			//If type is date (91) then we use varchar(12) in order to
+			//create the Value since date Value causes problems
+		    }else if (rsMetaData.getColumnType(i+1) == 91){
+			tableValues[i] =
+				ValueFactory.createValueByType(rs.getString(i+1),
+					12);
 		    }else {
 			tableValues[i] =
 				ValueFactory.createValueByType(rs.getString(i+1),
