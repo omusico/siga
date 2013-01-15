@@ -1520,7 +1520,6 @@
           <at name="classname">javax.swing.JTextField</at>
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
-            <at name="horizontalAlignment">4</at>
             <at name="height">16</at>
             <at name="font">
              <object classname="com.jeta.forms.store.properties.FontProperty">
