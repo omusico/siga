@@ -33,6 +33,7 @@ import com.toedter.calendar.JDateChooser;
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.audasacommons.forms.reports.SaveFileDialog;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.DomainValues;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
@@ -66,6 +67,9 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
     private final JDateChooser fechaInicio;
     private final JDateChooser fechaFin;
     private JButton launchButton;
+
+    private UpdateBaseContratistaListener updateBaseContratistaListener;
+    private UpdateTramoListener updateTramoListener;
 
     public ConsultasPanel() {
 	InputStream stream = getClass().getClassLoader().
@@ -113,6 +117,12 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	setComboBoxValues(baseContratista);
 	tramo = (JComboBox) widgetsVector.get("tramo");
 	setComboBoxValues(tramo);
+
+	updateBaseContratistaListener = new UpdateBaseContratistaListener();
+	updateTramoListener = new UpdateTramoListener();
+
+	areaMantenimiento.addActionListener(updateBaseContratistaListener);
+	baseContratista.addActionListener(updateTramoListener);
 
 	launchButton = (JButton) form.getComponentByName("launch_button");
 	launchButton.addActionListener(this);
@@ -323,5 +333,44 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	    query = " WHERE " + fechaField + " BETWEEN '" + fechaInicial + "' AND '" + fechaFinal + "'";
 	}
 	return query;
+    }
+
+    public class UpdateBaseContratistaListener implements ActionListener {
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+	    String id = ((KeyValue)areaMantenimiento.getSelectedItem()).getKey();
+	    String getBaseContratistaQuery =
+		    "SELECT id, item FROM audasa_extgia_dominios.base_contratista" +
+			    " WHERE id_am = " + id + ";";
+	    baseContratista.removeAllItems();
+	    baseContratista.addItem(new KeyValue("", ""));
+	    if (!id.isEmpty()) {
+		for (KeyValue value: SqlUtils.getKeyValueListFromSql(getBaseContratistaQuery)) {
+		    baseContratista.addItem(value);
+		}
+	    }
+	}
+    }
+
+    public class UpdateTramoListener implements ActionListener {
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+	    if (baseContratista.getSelectedItem()!=null) {
+		String id = ((KeyValue) baseContratista.getSelectedItem())
+			.getKey();
+		String getTramoQuery = "SELECT id, item FROM audasa_extgia_dominios.tramo"
+			+ " WHERE id_bc = " + id + ";";
+		tramo.removeAllItems();
+		tramo.addItem(new KeyValue("", ""));
+		if (!id.isEmpty()) {
+		    for (KeyValue value : SqlUtils
+			    .getKeyValueListFromSql(getTramoQuery)) {
+			tramo.addItem(value);
+		    }
+		}
+	    }
+	}
     }
 }
