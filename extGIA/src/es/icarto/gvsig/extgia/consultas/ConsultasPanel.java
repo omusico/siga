@@ -16,12 +16,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 
 import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.andami.ui.mdiManager.WindowInfo;
@@ -66,6 +68,8 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
     private JComboBox tramo;
     private final JDateChooser fechaInicio;
     private final JDateChooser fechaFin;
+    private JRadioButton pdfRadioButton;
+    private JRadioButton csvRadioButton;
     private JButton launchButton;
 
     private UpdateBaseContratistaListener updateBaseContratistaListener;
@@ -123,6 +127,15 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
 	areaMantenimiento.addActionListener(updateBaseContratistaListener);
 	baseContratista.addActionListener(updateTramoListener);
+
+	pdfRadioButton = (JRadioButton) form.getComponentByName("pdf");
+	pdfRadioButton.setSelected(true);
+
+	csvRadioButton = (JRadioButton) form.getComponentByName("csv");
+
+	ButtonGroup group = new ButtonGroup();
+	group.add(pdfRadioButton);
+	group.add(csvRadioButton);
 
 	launchButton = (JButton) form.getComponentByName("launch_button");
 	launchButton.addActionListener(this);
@@ -183,7 +196,11 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		return;
 	    }
 
-	    createPdfReport(tipo, filters, query);
+	    if (pdfRadioButton.isSelected()) {
+		createPdfReport(tipo, filters, query);
+	    }else {
+		//TODO: createCsvReport
+	    }
 	}
     }
 
