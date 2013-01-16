@@ -4,11 +4,13 @@ import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -44,6 +46,8 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
 public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
+
+    private static final String CSV_SEPARATOR = ",";
 
     public static String ABEILLE_FILENAME = "forms/consultas_inventario.jfrm";
 
@@ -199,7 +203,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	    if (pdfRadioButton.isSelected()) {
 		createPdfReport(tipo, filters, query);
 	    }else {
-		//TODO: createCsvReport
+		createCsvReport(query);
 	    }
 	}
     }
@@ -208,42 +212,88 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	SaveFileDialog sfd = new SaveFileDialog("PDF files", "pdf");
 	File outputFile = sfd.showDialog();
 
-	PreparedStatement statement;
-	try {
-	    statement = connection.prepareStatement(query);
-	    statement.execute();
-	    ResultSet rs = statement.getResultSet();
+	if (outputFile != null) {
 
-	    if (tipo == TRABAJOS) {
-		TrabajosReport report = new TrabajosReport(
-			((KeyValue) elemento.getSelectedItem()).getValue(),
-			outputFile.getAbsolutePath(), rs, filters);
-	    }else {
-		ReconocimientosReport report = new ReconocimientosReport(
-			((KeyValue) elemento.getSelectedItem()).getValue(),
-			outputFile.getAbsolutePath(), rs, filters);
-	    }
+	    PreparedStatement statement;
+	    try {
+		statement = connection.prepareStatement(query);
+		statement.execute();
+		ResultSet rs = statement.getResultSet();
 
-	    Object[] reportGeneratedOptions = { "Ver listado", "Cerrar" };
-	    int m = JOptionPane.showOptionDialog(
-		    null,
-		    "Listado generado con éxito en: \n" + "\""
-			    + outputFile.getAbsolutePath() + "\"", null,
-			    JOptionPane.YES_NO_CANCEL_OPTION,
-			    JOptionPane.INFORMATION_MESSAGE, null,
-			    reportGeneratedOptions, reportGeneratedOptions[1]);
-
-	    if (m == JOptionPane.OK_OPTION) {
-		Desktop d = Desktop.getDesktop();
-		try {
-		    d.open(outputFile);
-		} catch (IOException e1) {
-		    e1.printStackTrace();
+		if (tipo == TRABAJOS) {
+		    new TrabajosReport(
+			    ((KeyValue) elemento.getSelectedItem()).getValue(),
+			    outputFile.getAbsolutePath(), rs, filters);
+		}else {
+		    new ReconocimientosReport(
+			    ((KeyValue) elemento.getSelectedItem()).getValue(),
+			    outputFile.getAbsolutePath(), rs, filters);
 		}
+
+		Object[] reportGeneratedOptions = { "Ver listado", "Cerrar" };
+		int m = JOptionPane.showOptionDialog(
+			null,
+			"Listado generado con éxito en: \n" + "\""
+				+ outputFile.getAbsolutePath() + "\"", null,
+				JOptionPane.YES_NO_CANCEL_OPTION,
+				JOptionPane.INFORMATION_MESSAGE, null,
+				reportGeneratedOptions, reportGeneratedOptions[1]);
+
+		if (m == JOptionPane.OK_OPTION) {
+		    Desktop d = Desktop.getDesktop();
+		    try {
+			d.open(outputFile);
+		    } catch (IOException e1) {
+			e1.printStackTrace();
+		    }
+		}
+	    } catch (SQLException e1) {
+		e1.printStackTrace();
 	    }
-	} catch (SQLException e1) {
-	    // TODO Auto-generated catch block
-	    e1.printStackTrace();
+	}
+    }
+
+    private void createCsvReport(String query) {
+	SaveFileDialog sfd = new SaveFileDialog("CSV files", "csv");
+	File outputFile = sfd.showDialog();
+
+	PreparedStatement statement;
+
+	if (outputFile != null) {
+	    try {
+		statement = connection.prepareStatement(query);
+		statement.execute();
+		ResultSet rs = statement.getResultSet();
+		ResultSetMetaData rsMetaData = rs.getMetaData();
+
+		FileWriter writer = new FileWriter(outputFile.getAbsolutePath());
+
+		for (int i=0; i<rsMetaData.getColumnCount(); i++) {
+		    writer.append(rsMetaData.getColumnName(i+1));
+		    writer.append(CSV_SEPARATOR);
+		}
+		writer.append("\n");
+
+		while (rs.next()) {
+		    for (int i=0; i<rsMetaData.getColumnCount(); i++) {
+			writer.append(rs.getString(i+1));
+			writer.append(CSV_SEPARATOR);
+		    }
+		    writer.append("\n");
+		}
+
+		writer.flush();
+		writer.close();
+
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
+
+	    JOptionPane.showMessageDialog(null,
+		    "Archivo generado con éxito en: \n" +
+			    outputFile.getAbsolutePath());
 	}
     }
 
