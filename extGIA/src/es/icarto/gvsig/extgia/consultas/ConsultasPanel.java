@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -78,6 +80,8 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
     private UpdateBaseContratistaListener updateBaseContratistaListener;
     private UpdateTramoListener updateTramoListener;
+
+    private boolean isReportOfSeveralElements = false;
 
     public ConsultasPanel() {
 	InputStream stream = getClass().getClassLoader().
@@ -172,27 +176,11 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 	if (e.getSource() == launchButton) {
-	    int tipo = -1;
 
 	    Date fechaInicial = fechaInicio.getDate();
 	    Date fechaFinal = fechaFin.getDate();
 
 	    String[] filters = getFilters(fechaInicial, fechaFinal);
-
-	    String element = ((KeyValue) elemento.getSelectedItem()).getKey();
-	    String elementId = getElementId(element);
-
-	    String fields = "";
-	    if (tipoConsulta.getSelectedItem().toString().equals("Trabajos")) {
-		fields = getTrabajosFieldNames(elementId);
-		tipo = TRABAJOS;
-	    }else if(tipoConsulta.getSelectedItem().toString().equals("Inspecciones")) {
-		fields = getReconocimientosFieldNames(elementId);
-		tipo = RECONOCIMIENTOS;
-	    }
-
-	    String query = getReportQuery(tipo, fechaInicial, fechaFinal, element,
-		    elementId, fields);
 
 	    if (!isCheckingOK()) {
 		JOptionPane.showMessageDialog(null,
@@ -200,18 +188,72 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		return;
 	    }
 
-	    if (pdfRadioButton.isSelected()) {
-		createPdfReport(tipo, filters, query);
+	    if (elemento.getSelectedItem().toString().equals("-TODOS-")) {
+		isReportOfSeveralElements = true;
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		fileChooser.showSaveDialog(this);
+		File outputPath = fileChooser.getSelectedFile();
+		if (pdfRadioButton.isSelected()) {
+		    for (String[] element: getElements(tipoConsulta.getSelectedItem().toString())) {
+			generateReportFile(element,
+				outputPath + File.separator + element[0] + ".pdf",
+				fechaInicial, fechaFinal, filters);
+		    }
+		}else {
+		    for (String[] element: getElements(tipoConsulta.getSelectedItem().toString())) {
+			generateReportFile(element,
+				outputPath + File.separator + element[0] + ".csv",
+				fechaInicial, fechaFinal, filters);
+		    }
+		}
+		JOptionPane.showMessageDialog(null,
+			"Ficheros generados con éxito en: \n" +
+				outputPath.getAbsolutePath());
 	    }else {
-		createCsvReport(query);
+		String[] element = new String[2];
+		element[0] = ((KeyValue) elemento.getSelectedItem()).getKey();
+		element[1] =	((KeyValue) elemento.getSelectedItem()).getValue();
+		SaveFileDialog sfd;
+		if (pdfRadioButton.isSelected()) {
+		    sfd = new SaveFileDialog("PDF Files", "pdf");
+		}else {
+		    sfd = new SaveFileDialog("CSV Files", "csv");
+		}
+		File outputFile = sfd.showDialog();
+		generateReportFile(element,
+			outputFile.getAbsolutePath(),
+			fechaInicial, fechaFinal, filters);
 	    }
 	}
     }
 
-    private void createPdfReport(int tipo, String[] filters, String query) {
-	SaveFileDialog sfd = new SaveFileDialog("PDF files", "pdf");
-	File outputFile = sfd.showDialog();
+    private void generateReportFile(String[] element, String outputFile, Date fechaInicial,
+	    Date fechaFinal, String[] filters) {
 
+	int tipo = -1;
+	String elementId = getElementId(element[0]);
+	String fields = "";
+
+	if (tipoConsulta.getSelectedItem().toString().equals("Trabajos")) {
+	    fields = getTrabajosFieldNames(elementId);
+	    tipo = TRABAJOS;
+	}else if(tipoConsulta.getSelectedItem().toString().equals("Inspecciones")) {
+	    fields = getReconocimientosFieldNames(elementId);
+	    tipo = RECONOCIMIENTOS;
+	}
+
+	String query = getReportQuery(tipo, fechaInicial, fechaFinal, element[0],
+		elementId, fields);
+
+	if (pdfRadioButton.isSelected()) {
+	    createPdfReport(tipo, outputFile, element, filters, query);
+	}else {
+	    createCsvReport(outputFile, query);
+	}
+    }
+
+    private void createPdfReport(int tipo, String outputFile, String[] element, String[] filters, String query) {
 	if (outputFile != null) {
 
 	    PreparedStatement statement;
@@ -222,41 +264,41 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
 		if (tipo == TRABAJOS) {
 		    new TrabajosReport(
-			    ((KeyValue) elemento.getSelectedItem()).getValue(),
-			    outputFile.getAbsolutePath(), rs, filters);
+			    element[1],
+			    outputFile, rs, filters);
 		}else {
 		    new ReconocimientosReport(
-			    ((KeyValue) elemento.getSelectedItem()).getValue(),
-			    outputFile.getAbsolutePath(), rs, filters);
+			    element[1],
+			    outputFile, rs, filters);
 		}
 
-		Object[] reportGeneratedOptions = { "Ver listado", "Cerrar" };
-		int m = JOptionPane.showOptionDialog(
-			null,
-			"Listado generado con éxito en: \n" + "\""
-				+ outputFile.getAbsolutePath() + "\"", null,
-				JOptionPane.YES_NO_CANCEL_OPTION,
-				JOptionPane.INFORMATION_MESSAGE, null,
-				reportGeneratedOptions, reportGeneratedOptions[1]);
+		if (!isReportOfSeveralElements) {
+		    Object[] reportGeneratedOptions = { "Ver listado", "Cerrar" };
+		    int m = JOptionPane.showOptionDialog(
+			    null,
+			    "Listado generado con éxito en: \n" + "\""
+				    + outputFile + "\"", null,
+				    JOptionPane.YES_NO_CANCEL_OPTION,
+				    JOptionPane.INFORMATION_MESSAGE, null,
+				    reportGeneratedOptions, reportGeneratedOptions[1]);
 
-		if (m == JOptionPane.OK_OPTION) {
-		    Desktop d = Desktop.getDesktop();
-		    try {
-			d.open(outputFile);
-		    } catch (IOException e1) {
-			e1.printStackTrace();
+		    if (m == JOptionPane.OK_OPTION) {
+			Desktop d = Desktop.getDesktop();
+			try {
+			    d.open(new File(outputFile));
+			} catch (IOException e1) {
+			    e1.printStackTrace();
+			}
 		    }
 		}
 	    } catch (SQLException e1) {
 		e1.printStackTrace();
+		return;
 	    }
 	}
     }
 
-    private void createCsvReport(String query) {
-	SaveFileDialog sfd = new SaveFileDialog("CSV files", "csv");
-	File outputFile = sfd.showDialog();
-
+    private void createCsvReport(String outputFile, String query) {
 	PreparedStatement statement;
 
 	if (outputFile != null) {
@@ -266,7 +308,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		ResultSet rs = statement.getResultSet();
 		ResultSetMetaData rsMetaData = rs.getMetaData();
 
-		FileWriter writer = new FileWriter(outputFile.getAbsolutePath());
+		FileWriter writer = new FileWriter(outputFile);
 
 		for (int i=0; i<rsMetaData.getColumnCount(); i++) {
 		    writer.append(rsMetaData.getColumnName(i+1));
@@ -291,9 +333,11 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		e.printStackTrace();
 	    }
 
-	    JOptionPane.showMessageDialog(null,
-		    "Archivo generado con éxito en: \n" +
-			    outputFile.getAbsolutePath());
+	    if (!isReportOfSeveralElements) {
+		JOptionPane.showMessageDialog(null,
+			"Archivo generado con éxito en: \n" +
+				outputFile);
+	    }
 	}
     }
 
@@ -304,6 +348,27 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	}else {
 	    return false;
 	}
+    }
+
+    private ArrayList<String[]> getElements(String tipoConsulta) {
+	ArrayList<String[]> elements = new ArrayList<String[]>();
+	PreparedStatement statement;
+	String query = "SELECT id, item FROM audasa_extgia_dominios.elemento " +
+		"WHERE id <> 'todos' AND id <> ' ' AND " + tipoConsulta + " = " + "true;";
+	try {
+	    statement = connection.prepareStatement(query);
+	    statement.execute();
+	    ResultSet rs = statement.getResultSet();
+	    while (rs.next()) {
+		String[] element = new String[2];
+		element[0] = rs.getString(1);
+		element[1] = rs.getString(2);
+		elements.add(element);
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return elements;
     }
 
     private String getReportQuery(int tipo, Date fechaInicial, Date fechaFinal,
