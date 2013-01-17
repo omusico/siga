@@ -194,22 +194,24 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		fileChooser.showSaveDialog(this);
 		File outputPath = fileChooser.getSelectedFile();
-		if (pdfRadioButton.isSelected()) {
-		    for (String[] element: getElements(tipoConsulta.getSelectedItem().toString())) {
-			generateReportFile(element,
-				outputPath + File.separator + element[0] + ".pdf",
-				fechaInicial, fechaFinal, filters);
+		if (outputPath != null) {
+		    if (pdfRadioButton.isSelected()) {
+			for (String[] element: getElements(tipoConsulta.getSelectedItem().toString())) {
+			    generateReportFile(element,
+				    outputPath + File.separator + element[0] + ".pdf",
+				    fechaInicial, fechaFinal, filters);
+			}
+		    }else {
+			for (String[] element: getElements(tipoConsulta.getSelectedItem().toString())) {
+			    generateReportFile(element,
+				    outputPath + File.separator + element[0] + ".csv",
+				    fechaInicial, fechaFinal, filters);
+			}
 		    }
-		}else {
-		    for (String[] element: getElements(tipoConsulta.getSelectedItem().toString())) {
-			generateReportFile(element,
-				outputPath + File.separator + element[0] + ".csv",
-				fechaInicial, fechaFinal, filters);
-		    }
+		    JOptionPane.showMessageDialog(null,
+			    "Ficheros generados con éxito en: \n" +
+				    outputPath.getAbsolutePath());
 		}
-		JOptionPane.showMessageDialog(null,
-			"Ficheros generados con éxito en: \n" +
-				outputPath.getAbsolutePath());
 	    }else {
 		String[] element = new String[2];
 		element[0] = ((KeyValue) elemento.getSelectedItem()).getKey();
@@ -221,9 +223,11 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		    sfd = new SaveFileDialog("CSV Files", "csv");
 		}
 		File outputFile = sfd.showDialog();
-		generateReportFile(element,
-			outputFile.getAbsolutePath(),
-			fechaInicial, fechaFinal, filters);
+		if (outputFile != null) {
+		    generateReportFile(element,
+			    outputFile.getAbsolutePath(),
+			    fechaInicial, fechaFinal, filters);
+		}
 	    }
 	}
     }
