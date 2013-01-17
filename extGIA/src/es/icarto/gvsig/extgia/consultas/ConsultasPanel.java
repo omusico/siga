@@ -208,9 +208,23 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 				    fechaInicial, fechaFinal, filters);
 			}
 		    }
-		    JOptionPane.showMessageDialog(null,
-			    "Ficheros generados con éxito en: \n" +
-				    outputPath.getAbsolutePath());
+		    Object[] reportGeneratedOptions = { "Abrir directorio", "Cerrar" };
+		    int m = JOptionPane.showOptionDialog(
+			    null,
+			    "Ficheros generados con éxito en: \n" + "\""
+				    + outputPath.getAbsolutePath() + "\"", null,
+				    JOptionPane.YES_NO_CANCEL_OPTION,
+				    JOptionPane.INFORMATION_MESSAGE, null,
+				    reportGeneratedOptions, reportGeneratedOptions[1]);
+
+		    if (m == JOptionPane.OK_OPTION) {
+			Desktop d = Desktop.getDesktop();
+			try {
+			    d.open(outputPath);
+			} catch (IOException e1) {
+			    e1.printStackTrace();
+			}
+		    }
 		}
 	    }else {
 		String[] element = new String[2];
