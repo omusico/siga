@@ -280,6 +280,10 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		statement.execute();
 		ResultSet rs = statement.getResultSet();
 
+		if (!queryHasResults(rs)) {
+		    return;
+		}
+
 		if (tipo == TRABAJOS) {
 		    new TrabajosReport(
 			    element[1],
@@ -326,6 +330,10 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		ResultSet rs = statement.getResultSet();
 		ResultSetMetaData rsMetaData = rs.getMetaData();
 
+		if (!queryHasResults(rs)) {
+		    return;
+		}
+
 		FileWriter writer = new FileWriter(outputFile);
 
 		for (int i=0; i<rsMetaData.getColumnCount(); i++) {
@@ -357,6 +365,19 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 				outputFile);
 	    }
 	}
+    }
+
+    private boolean queryHasResults(ResultSet rs) throws SQLException {
+	if (!rs.next()) {
+	    if (!isReportOfSeveralElements) {
+		JOptionPane.showMessageDialog(null,
+			"La consulta produjo 0 resultados");
+		return false;
+	    }else {
+		return false;
+	    }
+	}
+	return true;
     }
 
     private boolean isCheckingOK() {
