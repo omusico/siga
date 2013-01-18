@@ -231,16 +231,21 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		element[0] = ((KeyValue) elemento.getSelectedItem()).getKey();
 		element[1] =	((KeyValue) elemento.getSelectedItem()).getValue();
 		SaveFileDialog sfd;
-		if (pdfRadioButton.isSelected()) {
-		    sfd = new SaveFileDialog("PDF Files", "pdf");
+		if (elementHasType(element[0], tipoConsulta.getSelectedItem().toString())) {
+		    if (pdfRadioButton.isSelected()) {
+			sfd = new SaveFileDialog("PDF Files", "pdf");
+		    }else {
+			sfd = new SaveFileDialog("CSV Files", "csv");
+		    }
+		    File outputFile = sfd.showDialog();
+		    if (outputFile != null) {
+			generateReportFile(element,
+				outputFile.getAbsolutePath(),
+				fechaInicial, fechaFinal, filters);
+		    }
 		}else {
-		    sfd = new SaveFileDialog("CSV Files", "csv");
-		}
-		File outputFile = sfd.showDialog();
-		if (outputFile != null) {
-		    generateReportFile(element,
-			    outputFile.getAbsolutePath(),
-			    fechaInicial, fechaFinal, filters);
+		    JOptionPane.showMessageDialog(null,
+			    "No se puede realizar esta consulta para el elemento seleccionado");
 		}
 	    }
 	}
@@ -387,6 +392,24 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	}else {
 	    return false;
 	}
+    }
+
+    private boolean elementHasType(String element, String tipoConsulta) {
+	boolean type = false;
+	PreparedStatement statement;
+	String query = "SELECT " + tipoConsulta + " FROM audasa_extgia_dominios.elemento " +
+		"WHERE id = '" + element + "';";
+	try {
+	    statement = connection.prepareStatement(query);
+	    statement.execute();
+	    ResultSet rs = statement.getResultSet();
+	    while (rs.next()) {
+		type = rs.getBoolean(1);
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return type;
     }
 
     private ArrayList<String[]> getElements(String tipoConsulta) {
