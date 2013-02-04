@@ -7,7 +7,7 @@
 	</FIELD>
 
 	<FIELD>
-		<FIELDNAME>unidad_senhalizacion_vertical</FIELDNAME>
+		<FIELDNAME>unidad</FIELDNAME>
 		<DOMAINREADER>
 			<DRTYPE>db</DRTYPE>
 			<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>

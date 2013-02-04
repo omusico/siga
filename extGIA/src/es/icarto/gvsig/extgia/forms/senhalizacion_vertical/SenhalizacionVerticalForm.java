@@ -65,7 +65,7 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 
 	if (senhalVerticalIDWidget.getText().isEmpty()) {
 	    senhalVerticalid = new SenhalizacionVerticalCalculateIDValue(this, getWidgetComponents(),
-		    DBFieldNames.ID_SENHAL_VERTICAL, DBFieldNames.ID_SENHAL_VERTICAL);
+		    DBFieldNames.ID_ELEMENTO_SENHALIZACION, DBFieldNames.ID_ELEMENTO_SENHALIZACION);
 	    senhalVerticalid.setValue(true);
 	}
 
@@ -90,7 +90,7 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 
 	HashMap<String, JComponent> widgets = getWidgetComponents();
 
-	senhalVerticalIDWidget = (JTextField) widgets.get(DBFieldNames.ID_SENHAL_VERTICAL);
+	senhalVerticalIDWidget = (JTextField) widgets.get(DBFieldNames.ID_ELEMENTO_SENHALIZACION);
 
 	JComboBox direccion = (JComboBox) getWidgetComponents().get(
 		"direccion");
@@ -135,7 +135,7 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 			    ABEILLE_RECONOCIMIENTOS_FILENAME,
 			    getReconocimientosDBTableName(),
 			    reconocimientoEstado,
-			    "id_senhal_vertical",
+			    "id_elemento_senhalizacion",
 			    senhalVerticalIDWidget.getText(),
 			    null,
 			    null,
@@ -151,7 +151,7 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 		    ABEILLE_TRABAJOS_FILENAME,
 		    getTrabajosDBTableName(),
 		    trabajos,
-		    "id_senhal_vertical",
+		    "id_elemento_senhalizacion",
 		    senhalVerticalIDWidget.getText(),
 		    null,
 		    null,
@@ -170,7 +170,7 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 				ABEILLE_RECONOCIMIENTOS_FILENAME,
 				getReconocimientosDBTableName(),
 				reconocimientoEstado,
-				"id_senhal_vertical",
+				"id_elemento_senhalizacion",
 				senhalVerticalIDWidget.getText(),
 				"n_inspeccion",
 				reconocimientoEstado.getValueAt(row, 0).toString(),
@@ -194,7 +194,7 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 			ABEILLE_TRABAJOS_FILENAME,
 			getTrabajosDBTableName(),
 			trabajos,
-			"id_senhal_vertical",
+			"id_elemento_senhalizacion",
 			senhalVerticalIDWidget.getText(),
 			"id_trabajo",
 			trabajos.getValueAt(row, 0).toString(),

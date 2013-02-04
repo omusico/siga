@@ -26,7 +26,7 @@ public class DBFieldNames {
 
     public static String[] senhalizacionVerticalTrabajoFields = {"id_trabajo as \"ID\"",
 	"fecha as \"Fecha\"",
-	"unidad_senhalizacion_vertical as \"Unidad\"",
+	"unidad as \"Unidad\"",
 	"medicion_contratista as \"Medida Contratista\"",
     "medicion_audasa as \"Medida AUDASA\""};
 
@@ -160,7 +160,7 @@ public class DBFieldNames {
     public static final String PASO_MEDIANA_D = "elementos_contencion_cierre";
 
     // SENHALIZACION VERTICAL
-    public static final String ID_SENHAL_VERTICAL = "id_senhal_vertical";
+    public static final String ID_ELEMENTO_SENHALIZACION = "id_elemento_senhalizacion";
 
     // SENHALIZACION VERTICAL RECONOCIMIENTO ESTADO
     public static final String SENHALIZACION_VERTICAL_INDEX = "indice_estado";

@@ -24,9 +24,9 @@
     </at>
     <at name="componentclass">com.jeta.forms.gui.form.FormComponent</at>
    </super>
-   <at name="id">/home/psanxiao/workspace/audasa3/extGIA/forms/senhalizacion_vertical_trabajos.xml</at>
+   <at name="id">C:\APLICACIONES\gvSIG_AUDASA_INV\bin\gvSIG\extensiones\es.icarto.gvsig.extgia\forms\senhalizacion_vertical_trabajos.xml</at>
    <at name="rowspecs">CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE</at>
-   <at name="colspecs">FILL:5PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE</at>
+   <at name="colspecs">FILL:5PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE</at>
    <at name="components">
     <object classname="java.util.LinkedList">
      <item >
@@ -37,7 +37,7 @@
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
            <at name="column">11</at>
            <at name="row">7</at>
-           <at name="colspan">7</at>
+           <at name="colspan">8</at>
            <at name="rowspan">1</at>
            <at name="halign">default</at>
            <at name="valign">default</at>
@@ -54,7 +54,7 @@
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="text">ID trabajo:</at>
-            <at name="height">13</at>
+            <at name="height">14</at>
             <at name="font">
              <object classname="com.jeta.forms.store.properties.FontProperty">
               <at name="family">Arial</at>
@@ -63,7 +63,7 @@
              </object>
             </at>
             <at name="name"/>
-            <at name="width">101</at>
+            <at name="width">116</at>
             <at name="fill">
              <object classname="com.jeta.forms.store.properties.effects.PaintProperty">
               <at name="name">fill</at>
@@ -104,7 +104,7 @@
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
            <at name="column">11</at>
            <at name="row">9</at>
-           <at name="colspan">7</at>
+           <at name="colspan">8</at>
            <at name="rowspan">1</at>
            <at name="halign">default</at>
            <at name="valign">default</at>
@@ -121,7 +121,7 @@
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="text">Fecha:</at>
-            <at name="height">13</at>
+            <at name="height">14</at>
             <at name="font">
              <object classname="com.jeta.forms.store.properties.FontProperty">
               <at name="family">Arial</at>
@@ -130,7 +130,7 @@
              </object>
             </at>
             <at name="name"/>
-            <at name="width">101</at>
+            <at name="width">116</at>
             <at name="fill">
              <object classname="com.jeta.forms.store.properties.effects.PaintProperty">
               <at name="name">fill</at>
@@ -504,9 +504,9 @@
         <super classname="com.jeta.forms.store.memento.ComponentMemento">
          <at name="cellconstraints">
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
-           <at name="column">19</at>
+           <at name="column">20</at>
            <at name="row">7</at>
-           <at name="colspan">13</at>
+           <at name="colspan">12</at>
            <at name="rowspan">1</at>
            <at name="halign">default</at>
            <at name="valign">default</at>
@@ -530,7 +530,7 @@
               <at name="size">11</at>
              </object>
             </at>
-            <at name="width">191</at>
+            <at name="width">176</at>
             <at name="name">id_trabajo</at>
             <at name="background" object="color">240,240,240</at>
             <at name="border">
@@ -567,9 +567,9 @@
         <super classname="com.jeta.forms.store.memento.ComponentMemento">
          <at name="cellconstraints">
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
-           <at name="column">19</at>
+           <at name="column">20</at>
            <at name="row">9</at>
-           <at name="colspan">13</at>
+           <at name="colspan">12</at>
            <at name="rowspan">1</at>
            <at name="halign">default</at>
            <at name="valign">default</at>
@@ -593,7 +593,7 @@
               <at name="size">11</at>
              </object>
             </at>
-            <at name="width">191</at>
+            <at name="width">176</at>
             <at name="name">fecha</at>
             <at name="border">
              <object classname="com.jeta.forms.store.properties.CompoundBorderProperty">
@@ -646,9 +646,10 @@
           <at name="classname">com.jeta.forms.components.border.TitledBorderLabel</at>
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
+            <at name="text"></at>
             <at name="height">6</at>
-            <at name="name"/>
             <at name="width">311</at>
+            <at name="name"></at>
             <at name="border">
              <object classname="com.jeta.forms.store.properties.CompoundBorderProperty">
               <super classname="com.jeta.forms.store.properties.BorderProperty">
@@ -793,7 +794,7 @@
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
            <at name="column">5</at>
            <at name="row">15</at>
-           <at name="colspan">13</at>
+           <at name="colspan">14</at>
            <at name="rowspan">1</at>
            <at name="halign">default</at>
            <at name="valign">default</at>
@@ -810,7 +811,7 @@
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="text">Unidad:</at>
-            <at name="height">13</at>
+            <at name="height">14</at>
             <at name="font">
              <object classname="com.jeta.forms.store.properties.FontProperty">
               <at name="family">Arial</at>
@@ -819,7 +820,7 @@
              </object>
             </at>
             <at name="name"/>
-            <at name="width">161</at>
+            <at name="width">176</at>
             <at name="fill">
              <object classname="com.jeta.forms.store.properties.effects.PaintProperty">
               <at name="name">fill</at>
@@ -860,7 +861,7 @@
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
            <at name="column">5</at>
            <at name="row">17</at>
-           <at name="colspan">13</at>
+           <at name="colspan">14</at>
            <at name="rowspan">1</at>
            <at name="halign">default</at>
            <at name="valign">default</at>
@@ -877,7 +878,7 @@
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="text">Medición Contratista:</at>
-            <at name="height">13</at>
+            <at name="height">14</at>
             <at name="font">
              <object classname="com.jeta.forms.store.properties.FontProperty">
               <at name="family">Arial</at>
@@ -886,7 +887,7 @@
              </object>
             </at>
             <at name="name"/>
-            <at name="width">161</at>
+            <at name="width">176</at>
             <at name="fill">
              <object classname="com.jeta.forms.store.properties.effects.PaintProperty">
               <at name="name">fill</at>
@@ -927,7 +928,7 @@
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
            <at name="column">5</at>
            <at name="row">19</at>
-           <at name="colspan">13</at>
+           <at name="colspan">14</at>
            <at name="rowspan">1</at>
            <at name="halign">default</at>
            <at name="valign">default</at>
@@ -944,7 +945,7 @@
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="text">Medición Audasa:</at>
-            <at name="height">13</at>
+            <at name="height">14</at>
             <at name="font">
              <object classname="com.jeta.forms.store.properties.FontProperty">
               <at name="family">Arial</at>
@@ -953,7 +954,7 @@
              </object>
             </at>
             <at name="name"/>
-            <at name="width">161</at>
+            <at name="width">176</at>
             <at name="fill">
              <object classname="com.jeta.forms.store.properties.effects.PaintProperty">
               <at name="name">fill</at>
@@ -994,7 +995,7 @@
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
            <at name="column">5</at>
            <at name="row">21</at>
-           <at name="colspan">13</at>
+           <at name="colspan">14</at>
            <at name="rowspan">1</at>
            <at name="halign">default</at>
            <at name="valign">default</at>
@@ -1011,7 +1012,7 @@
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="text">Fecha certificado:</at>
-            <at name="height">13</at>
+            <at name="height">14</at>
             <at name="font">
              <object classname="com.jeta.forms.store.properties.FontProperty">
               <at name="family">Arial</at>
@@ -1020,7 +1021,7 @@
              </object>
             </at>
             <at name="name"/>
-            <at name="width">161</at>
+            <at name="width">176</at>
             <at name="fill">
              <object classname="com.jeta.forms.store.properties.effects.PaintProperty">
               <at name="name">fill</at>
@@ -1059,9 +1060,9 @@
         <super classname="com.jeta.forms.store.memento.ComponentMemento">
          <at name="cellconstraints">
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
-           <at name="column">19</at>
+           <at name="column">20</at>
            <at name="row">15</at>
-           <at name="colspan">13</at>
+           <at name="colspan">12</at>
            <at name="rowspan">1</at>
            <at name="halign">default</at>
            <at name="valign">fill</at>
@@ -1090,7 +1091,7 @@
               <at name="size">11</at>
              </object>
             </at>
-            <at name="width">191</at>
+            <at name="width">176</at>
             <at name="name">unidad</at>
             <at name="border">
              <object classname="com.jeta.forms.store.properties.CompoundBorderProperty">
@@ -1362,7 +1363,7 @@
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="lineWrap">true</at>
             <at name="scrollableTracksViewportWidth">true</at>
-            <at name="height">93</at>
+            <at name="height">89</at>
             <at name="font">
              <object classname="com.jeta.forms.store.properties.FontProperty">
               <at name="family">Arial</at>
@@ -1370,7 +1371,7 @@
               <at name="size">11</at>
              </object>
             </at>
-            <at name="width">344</at>
+            <at name="width">359</at>
             <at name="name">observaciones</at>
             <at name="scollBars">
              <object classname="com.jeta.forms.store.properties.ScrollBarsProperty">
@@ -1420,6 +1421,7 @@
              </object>
             </at>
             <at name="wrapStyleWord">true</at>
+            <at name="scrollableTracksViewportHeight">true</at>
            </object>
           </at>
          </object>
@@ -1496,9 +1498,9 @@
         <super classname="com.jeta.forms.store.memento.ComponentMemento">
          <at name="cellconstraints">
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
-           <at name="column">19</at>
+           <at name="column">20</at>
            <at name="row">17</at>
-           <at name="colspan">13</at>
+           <at name="colspan">12</at>
            <at name="rowspan">1</at>
            <at name="halign">default</at>
            <at name="valign">default</at>
@@ -1523,7 +1525,7 @@
               <at name="size">11</at>
              </object>
             </at>
-            <at name="width">191</at>
+            <at name="width">176</at>
             <at name="name">medicion_contratista</at>
             <at name="border">
              <object classname="com.jeta.forms.store.properties.CompoundBorderProperty">
@@ -1558,9 +1560,9 @@
         <super classname="com.jeta.forms.store.memento.ComponentMemento">
          <at name="cellconstraints">
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
-           <at name="column">19</at>
+           <at name="column">20</at>
            <at name="row">19</at>
-           <at name="colspan">13</at>
+           <at name="colspan">12</at>
            <at name="rowspan">1</at>
            <at name="halign">default</at>
            <at name="valign">default</at>
@@ -1585,7 +1587,7 @@
               <at name="size">11</at>
              </object>
             </at>
-            <at name="width">191</at>
+            <at name="width">176</at>
             <at name="name">medicion_audasa</at>
             <at name="border">
              <object classname="com.jeta.forms.store.properties.CompoundBorderProperty">
@@ -1620,9 +1622,9 @@
         <super classname="com.jeta.forms.store.memento.ComponentMemento">
          <at name="cellconstraints">
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
-           <at name="column">19</at>
+           <at name="column">20</at>
            <at name="row">21</at>
-           <at name="colspan">13</at>
+           <at name="colspan">12</at>
            <at name="rowspan">1</at>
            <at name="halign">default</at>
            <at name="valign">default</at>
@@ -1646,7 +1648,7 @@
               <at name="size">11</at>
              </object>
             </at>
-            <at name="width">191</at>
+            <at name="width">176</at>
             <at name="name">fecha_certificado</at>
             <at name="border">
              <object classname="com.jeta.forms.store.properties.CompoundBorderProperty">
@@ -1683,7 +1685,7 @@
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
            <at name="column">11</at>
            <at name="row">5</at>
-           <at name="colspan">7</at>
+           <at name="colspan">9</at>
            <at name="rowspan">1</at>
            <at name="halign">default</at>
            <at name="valign">default</at>
@@ -1699,8 +1701,8 @@
           <at name="classname">com.jeta.forms.components.label.JETALabel</at>
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
-            <at name="text">ID Señal vertical:</at>
-            <at name="height">13</at>
+            <at name="text">ID Elem. señalización:</at>
+            <at name="height">14</at>
             <at name="font">
              <object classname="com.jeta.forms.store.properties.FontProperty">
               <at name="family">Arial</at>
@@ -1709,7 +1711,7 @@
              </object>
             </at>
             <at name="name"/>
-            <at name="width">101</at>
+            <at name="width">121</at>
             <at name="fill">
              <object classname="com.jeta.forms.store.properties.effects.PaintProperty">
               <at name="name">fill</at>
@@ -1749,9 +1751,9 @@
         <super classname="com.jeta.forms.store.memento.ComponentMemento">
          <at name="cellconstraints">
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
-           <at name="column">19</at>
+           <at name="column">20</at>
            <at name="row">5</at>
-           <at name="colspan">13</at>
+           <at name="colspan">12</at>
            <at name="rowspan">1</at>
            <at name="halign">default</at>
            <at name="valign">default</at>
@@ -1776,8 +1778,8 @@
               <at name="size">11</at>
              </object>
             </at>
-            <at name="width">191</at>
-            <at name="name">id_senhal_vertical</at>
+            <at name="width">176</at>
+            <at name="name">id_elemento_senhalizacion</at>
             <at name="background" object="color">236,233,216</at>
             <at name="border">
              <object classname="com.jeta.forms.store.properties.CompoundBorderProperty">

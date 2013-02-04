@@ -2,11 +2,11 @@
 <LAYER alias="senhalizacion_vertical">
 	<TABLENAME>senhalizacion_vertical</TABLENAME>
 	<PRIMARYKEY>
-		<PKELEMENT>id_senhal_vertical</PKELEMENT>
+		<PKELEMENT>id_elemento_senhalizacion</PKELEMENT>
 	</PRIMARYKEY>
 	<RECORDSET>
 		<FIELD>
-			<FIELDNAME>id_senhal_vertical</FIELDNAME>
+			<FIELDNAME>id_elemento_senhalizacion</FIELDNAME>
 			<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
 		</FIELD>
 
@@ -115,61 +115,17 @@
 		</FIELD>
 
 		<FIELD>
-			<FIELDNAME>margen</FIELDNAME>
+			<FIELDNAME>margen_senhal</FIELDNAME>
 			<DOMAINREADER>
 				<DRTYPE>db</DRTYPE>
 				<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-				<DRDBTABLE>margen</DRDBTABLE>
+				<DRDBTABLE>margen_senhal</DRDBTABLE>
 				<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
 				<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
 			</DOMAINREADER>
 		</FIELD>
 
 		<!-- LOCATION WIDGETS END -->
-
-		<FIELD>
-			<FIELDNAME>tipo_superficie</FIELDNAME>
-			<DOMAINREADER>
-				<DRTYPE>db</DRTYPE>
-				<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-				<DRDBTABLE>tipo_superficie</DRDBTABLE>
-				<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-				<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-			</DOMAINREADER>
-		</FIELD>
-
-		<FIELD>
-			<FIELDNAME>material_superficie</FIELDNAME>
-			<DOMAINREADER>
-				<DRTYPE>db</DRTYPE>
-				<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-				<DRDBTABLE>material_superficie</DRDBTABLE>
-				<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-				<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-			</DOMAINREADER>
-		</FIELD>
-
-		<FIELD>
-			<FIELDNAME>material_retrorreflectante</FIELDNAME>
-			<DOMAINREADER>
-				<DRTYPE>db</DRTYPE>
-				<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-				<DRDBTABLE>material_retrorreflectante</DRDBTABLE>
-				<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-				<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-			</DOMAINREADER>
-		</FIELD>
-
-		<FIELD>
-			<FIELDNAME>nivel_reflectancia</FIELDNAME>
-			<DOMAINREADER>
-				<DRTYPE>db</DRTYPE>
-				<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
-				<DRDBTABLE>nivel_reflectancia</DRDBTABLE>
-				<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
-				<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
-			</DOMAINREADER>
-		</FIELD>
 
 		<FIELD>
 			<FIELDNAME>tipo_sustentacion</FIELDNAME>
@@ -202,46 +158,6 @@
 				<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
 				<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
 			</DOMAINREADER>
-		</FIELD>
-
-		<FIELD>
-			<FIELDNAME>dimensiones</FIELDNAME>
-			<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
-		</FIELD>
-
-		<FIELD>
-			<FIELDNAME>ancho</FIELDNAME>
-			<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
-		</FIELD>
-
-		<FIELD>
-			<FIELDNAME>alto</FIELDNAME>
-			<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
-		</FIELD>
-
-		<FIELD>
-			<FIELDNAME>superficie</FIELDNAME>
-			<VALIDATIONRULE>double_positive</VALIDATIONRULE>
-		</FIELD>
-
-		<FIELD>
-			<FIELDNAME>altura</FIELDNAME>
-			<VALIDATIONRULE>double_positive</VALIDATIONRULE>
-		</FIELD>
-
-		<FIELD>
-			<FIELDNAME>fecha_fabricacion</FIELDNAME>
-			<VALIDATIONRULE>DATE</VALIDATIONRULE>
-		</FIELD>
-
-		<FIELD>
-			<FIELDNAME>fecha_instalacion</FIELDNAME>
-			<VALIDATIONRULE>DATE</VALIDATIONRULE>
-		</FIELD>
-
-		<FIELD>
-			<FIELDNAME>fecha_reposicion</FIELDNAME>
-			<VALIDATIONRULE>DATE</VALIDATIONRULE>
 		</FIELD>
 
 		<FIELD>
