@@ -61,10 +61,10 @@ IWindowListener {
 
     private HashMap<String, JComponent> widgetsVector;
 
-    private ORMLite ormLite;
-    private ValidatorForm formValidator;
-    private TextFieldsValidationNotifier textFieldsNotifier;
-    private ComboBoxValidationNotifier comboBoxNotifier;
+    private final ORMLite ormLite;
+    private final ValidatorForm formValidator;
+    private final TextFieldsValidationNotifier textFieldsNotifier;
+    private final ComboBoxValidationNotifier comboBoxNotifier;
     private JButton addButton;
 
     public AbstractSubForm(String formFile,
@@ -198,6 +198,8 @@ IWindowListener {
 		fields = DBFieldNames.reconocimientoEstadoFields;
 	    }else if (embebedTable.getName().equalsIgnoreCase("tabla_carreteras")) {
 		fields = DBFieldNames.carreteras_enlazadas;
+	    }else if (embebedTable.getName().equalsIgnoreCase("tabla_senhales")) {
+		fields = DBFieldNames.senhales;
 	    }else if (embebedTable.getName().equalsIgnoreCase("tabla_ramales")) {
 		fields = DBFieldNames.ramales;
 	    }else {

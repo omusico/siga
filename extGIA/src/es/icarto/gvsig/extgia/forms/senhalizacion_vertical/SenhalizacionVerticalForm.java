@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -28,18 +29,30 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
     public static final String ABEILLE_FILENAME = "forms/senhalizacion_vertical.xml";
     public static final String ABEILLE_RECONOCIMIENTOS_FILENAME = "forms/senhalizacion_vertical_reconocimiento_estado.xml";
     public static final String ABEILLE_TRABAJOS_FILENAME = "forms/senhalizacion_vertical_trabajos.xml";
+    public static final String ABEILLE_SENHALES_FILENAME = "forms/senhalizacion_vertical_senhales.xml";
 
-    JTextField senhalVerticalIDWidget;
-    CalculateComponentValue senhalVerticalid;
+    JTextField elementoSenhalizacionIDWidget;
+    CalculateComponentValue elementoSenhalizacionid;
     private JComboBox tipoVia;
     private DependentComboboxesHandler direccionDomainHandler;
 
+    JTable senhales;
+
+    JButton addSenhalButton;
+    JButton editSenhalButton;
+    JButton deleteSenhalButton;
+
     AddReconocimientoListener addReconocimientoListener;
     EditReconocimientoListener editReconocimientoListener;
+    DeleteReconocimientoListener deleteReconocimientoListener;
+
     AddTrabajoListener addTrabajoListener;
     EditTrabajoListener editTrabajoListener;
-    DeleteReconocimientoListener deleteReconocimientoListener;
     DeleteTrabajoListener deleteTrabajoListener;
+
+    AddSenhalListener addSenhalListener;
+    EditSenhalListener editSenhalListener;
+    DeleteSenhalListener deleteSenhalListener;
 
     public SenhalizacionVerticalForm(FLyrVect layer) {
 	super(layer);
@@ -63,10 +76,10 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 
 	direccionDomainHandler.updateComboBoxValues();
 
-	if (senhalVerticalIDWidget.getText().isEmpty()) {
-	    senhalVerticalid = new SenhalizacionVerticalCalculateIDValue(this, getWidgetComponents(),
+	if (elementoSenhalizacionIDWidget.getText().isEmpty()) {
+	    elementoSenhalizacionid = new SenhalizacionVerticalCalculateIDValue(this, getWidgetComponents(),
 		    DBFieldNames.ID_ELEMENTO_SENHALIZACION, DBFieldNames.ID_ELEMENTO_SENHALIZACION);
-	    senhalVerticalid.setValue(true);
+	    elementoSenhalizacionid.setValue(true);
 	}
 
 	if (filesLinkButton == null) {
@@ -78,18 +91,23 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 	SqlUtils.createEmbebedTableFromDB(reconocimientoEstado,
 		"audasa_extgia", getReconocimientosDBTableName(),
 		DBFieldNames.reconocimientoEstadoFields, null, "id_elemento_senhalizacion",
-		senhalVerticalIDWidget.getText());
+		elementoSenhalizacionIDWidget.getText());
 	SqlUtils.createEmbebedTableFromDB(trabajos,
 		"audasa_extgia", getTrabajosDBTableName(),
 		DBFieldNames.trabajoFields, trabajoColumnsSize, "id_elemento_senhalizacion",
-		senhalVerticalIDWidget.getText());
+		elementoSenhalizacionIDWidget.getText());
+	int[] senhalesColumnsSize = {20, 45, 45, 180, 40, 40};
+	SqlUtils.createEmbebedTableFromDB(senhales,
+		"audasa_extgia", "senhalizacion_vertical_senhales", DBFieldNames.senhales,
+		senhalesColumnsSize, "id_elemento_senhalizacion",
+		elementoSenhalizacionIDWidget.getText());
     }
 
     protected void initListeners() {
 
 	HashMap<String, JComponent> widgets = getWidgetComponents();
 
-	senhalVerticalIDWidget = (JTextField) widgets.get(DBFieldNames.ID_ELEMENTO_SENHALIZACION);
+	elementoSenhalizacionIDWidget = (JTextField) widgets.get(DBFieldNames.ID_ELEMENTO_SENHALIZACION);
 
 	JComboBox direccion = (JComboBox) getWidgetComponents().get(
 		"direccion");
@@ -98,29 +116,51 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 		tipoVia, direccion);
 	tipoVia.addActionListener(direccionDomainHandler);
 
+	senhales = (JTable) super.getFormBody().getComponentByName("tabla_senhales");
+
+	addSenhalButton = (JButton) super.getFormBody().getComponentByName("add_senhal_button");
+	editSenhalButton = (JButton) super.getFormBody().getComponentByName("edit_senhal_button");
+	deleteSenhalButton = (JButton) super.getFormBody().getComponentByName("delete_senhal_button");
+
 	addReconocimientoListener = new AddReconocimientoListener();
 	addReconocimientoButton.addActionListener(addReconocimientoListener);
 	editReconocimientoListener = new EditReconocimientoListener();
 	editReconocimientoButton.addActionListener(editReconocimientoListener);
+	deleteReconocimientoListener = new DeleteReconocimientoListener();
+	deleteReconocimientoButton.addActionListener(deleteReconocimientoListener);
+
 	addTrabajoListener = new AddTrabajoListener();
 	addTrabajoButton.addActionListener(addTrabajoListener);
 	editTrabajoListener = new EditTrabajoListener();
 	editTrabajoButton.addActionListener(editTrabajoListener);
-	deleteReconocimientoListener = new DeleteReconocimientoListener();
-	deleteReconocimientoButton.addActionListener(deleteReconocimientoListener);
 	deleteTrabajoListener = new DeleteTrabajoListener();
 	deleteTrabajoButton.addActionListener(deleteTrabajoListener);
+
+	addSenhalListener = new AddSenhalListener();
+	addSenhalButton.addActionListener(addSenhalListener);
+	editSenhalListener = new EditSenhalListener();
+	editSenhalButton.addActionListener(editSenhalListener);
+	deleteSenhalListener = new DeleteSenhalListener();
+	deleteSenhalButton.addActionListener(deleteSenhalListener);
+
     }
 
     @Override
     protected void removeListeners() {
 	tipoVia.removeActionListener(direccionDomainHandler);
+
 	addReconocimientoButton.removeActionListener(addReconocimientoListener);
 	editReconocimientoButton.removeActionListener(editReconocimientoListener);
+	deleteReconocimientoButton.removeActionListener(deleteReconocimientoListener);
+
 	addTrabajoButton.removeActionListener(addTrabajoListener);
 	editTrabajoButton.removeActionListener(editTrabajoListener);
-	deleteReconocimientoButton.removeActionListener(deleteReconocimientoListener);
 	deleteTrabajoButton.removeActionListener(deleteTrabajoListener);
+
+	addSenhalButton.removeActionListener(addSenhalListener);
+	editSenhalButton.removeActionListener(editSenhalListener);
+	deleteSenhalButton.removeActionListener(deleteSenhalListener);
+
 	super.removeListeners();
 
 	DBFieldNames.setTrabajosFields(DBFieldNames.genericTrabajoFields);
@@ -135,7 +175,7 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 			    getReconocimientosDBTableName(),
 			    reconocimientoEstado,
 			    "id_elemento_senhalizacion",
-			    senhalVerticalIDWidget.getText(),
+			    elementoSenhalizacionIDWidget.getText(),
 			    null,
 			    null,
 			    false);
@@ -151,7 +191,23 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 		    getTrabajosDBTableName(),
 		    trabajos,
 		    "id_elemento_senhalizacion",
-		    senhalVerticalIDWidget.getText(),
+		    elementoSenhalizacionIDWidget.getText(),
+		    null,
+		    null,
+		    false);
+	    PluginServices.getMDIManager().addWindow(subForm);
+	}
+    }
+
+    public class AddSenhalListener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    SenhalizacionVerticalSenhalesSubForm subForm = new SenhalizacionVerticalSenhalesSubForm(
+		    ABEILLE_SENHALES_FILENAME,
+		    "senhalizacion_vertical_senhales",
+		    senhales,
+		    "id_elemento_senhalizacion",
+		    elementoSenhalizacionIDWidget.getText(),
 		    null,
 		    null,
 		    false);
@@ -170,7 +226,7 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 				getReconocimientosDBTableName(),
 				reconocimientoEstado,
 				"id_elemento_senhalizacion",
-				senhalVerticalIDWidget.getText(),
+				elementoSenhalizacionIDWidget.getText(),
 				"n_inspeccion",
 				reconocimientoEstado.getValueAt(row, 0).toString(),
 				true);
@@ -194,9 +250,33 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 			getTrabajosDBTableName(),
 			trabajos,
 			"id_elemento_senhalizacion",
-			senhalVerticalIDWidget.getText(),
+			elementoSenhalizacionIDWidget.getText(),
 			"id_trabajo",
 			trabajos.getValueAt(row, 0).toString(),
+			true);
+		PluginServices.getMDIManager().addWindow(subForm);
+	    }else {
+		JOptionPane.showMessageDialog(null,
+			"Debe seleccionar una fila para editar los datos.",
+			"Ninguna fila seleccionada",
+			JOptionPane.INFORMATION_MESSAGE);
+	    }
+	}
+    }
+
+    public class EditSenhalListener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    if (senhales.getSelectedRowCount() != 0) {
+		int row = senhales.getSelectedRow();
+		SenhalizacionVerticalSenhalesSubForm subForm = new SenhalizacionVerticalSenhalesSubForm(
+			ABEILLE_SENHALES_FILENAME,
+			"senhalizacion_vertical_senhales",
+			senhales,
+			"id_elemento_senhalizacion",
+			elementoSenhalizacionIDWidget.getText(),
+			"id_senhal_vertical",
+			senhales.getValueAt(row, 0).toString(),
 			true);
 		PluginServices.getMDIManager().addWindow(subForm);
 	    }else {
@@ -220,6 +300,13 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    deleteElement(trabajos, getTrabajosDBTableName(), getTrabajosIDField());
+	}
+    }
+
+    public class DeleteSenhalListener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    deleteElement(senhales, "senhalizacion_vertical_senhales", "id_senhal_vertical");
 	}
     }
 

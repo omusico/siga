@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LAYER alias="senhalizacion_vertical">
 	<FIELD>
+		<FIELDNAME>tipo_senhal</FIELDNAME>
+		<DOMAINREADER>
+			<DRTYPE>db</DRTYPE>
+			<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+			<DRDBTABLE>tipo_senhal</DRDBTABLE>
+			<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+			<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+		</DOMAINREADER>
+	</FIELD>
+	
+	<FIELD>
 		<FIELDNAME>tipo_superficie</FIELDNAME>
 		<DOMAINREADER>
 			<DRTYPE>db</DRTYPE>

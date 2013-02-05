@@ -62,6 +62,14 @@ public class DBFieldNames {
 	"longitud as \"Longitud\""
     };
 
+    public static String[] senhales = {"id_senhal_vertical as \"ID Señal\"",
+	"tipo_senhal as \"Tipo Señal\"",
+	"codigo_senhal as \"Código Señal\"",
+	"leyenda as \"Leyenda\"",
+	"fecha_fabricacion as \"Fabricación\"",
+	"fecha_reposicion as \"Reposición\""
+    };
+
     public static final String GIA_SCHEMA = "audasa_extgia";
 
     // LOCATION

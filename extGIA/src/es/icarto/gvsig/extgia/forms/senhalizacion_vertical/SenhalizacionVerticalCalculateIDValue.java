@@ -19,9 +19,10 @@ public class SenhalizacionVerticalCalculateIDValue extends CalculateComponentVal
 
     @Override
     public void setValue(boolean validate) {
-	String senhalVerticalID = String.valueOf(SqlUtils.getNextIdOfSequence("audasa_extgia.senhalizacion_vertical_id_senhal_vertical_seq"));
-	resultComponent.setText(senhalVerticalID);
-	form.getFormController().setValue(resultComponentName, senhalVerticalID);
+	String elementoSenhalizacionID = String.valueOf(SqlUtils.getNextIdOfSequence(
+		"audasa_extgia.senhalizacion_vertical_id_elemento_senhalizacion_seq"));
+	resultComponent.setText(elementoSenhalizacionID);
+	form.getFormController().setValue(resultComponentName, elementoSenhalizacionID);
     }
 
 }
