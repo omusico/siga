@@ -180,6 +180,10 @@ public class DBFieldNames {
 
     // VALLA CIERRE
     public static final String ID_VALLA_CIERRE = "id_valla";
+    public static final String VALLA_CIERRE_INDEX = "indice_estado";
+    public static final String VALLA_CIERRE_A = "deterioro_superficial_oxido";
+    public static final String VALLA_CIERRE_B = "cimiento_soporte_anclaje";
+    public static final String VALLA_CIERRE_C = "vegetacion_nociva_suciedad";
 
     public static void setReconocimientoEstadoFields(String[] fields) {
 	reconocimientoEstadoFields = fields;
