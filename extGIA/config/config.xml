@@ -19,6 +19,7 @@
 		<menu text="SIGA/Inventario/Elementos/Pasos Mediana" action-command="Pasos_Mediana" position="30405"/>
 		<menu text="SIGA/Inventario/Elementos/Señalización Vertical" action-command="Senhalizacion_Vertical" position="30406"/>
 		<menu text="SIGA/Inventario/Elementos/Taludes" action-command="Taludes" position="30407"/>
+		<menu text="SIGA/Inventario/Elementos/Valla Cierre" action-command="Valla_Cierre" position="30408"/>
 		</extension>
 
 		<extension class-name="es.icarto.gvsig.extgia.ConsultasExtension" description="consultas" active="true">

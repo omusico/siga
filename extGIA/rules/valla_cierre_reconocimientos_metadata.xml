@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LAYER alias="valla_cierre">
+
+	<FIELD>
+		<FIELDNAME>fecha_inspeccion</FIELDNAME>
+		<VALIDATIONRULE>DATE</VALIDATIONRULE>
+	</FIELD>
+
+	<FIELD>
+		<FIELDNAME>deterioro_superficial_oxido</FIELDNAME>
+		<DOMAINREADER>
+			<DRTYPE>db</DRTYPE>
+			<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+			<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+			<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+			<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+		</DOMAINREADER>
+	</FIELD>
+
+	<FIELD>
+		<FIELDNAME>cimiento_soporte_anclaje</FIELDNAME>
+		<DOMAINREADER>
+			<DRTYPE>db</DRTYPE>
+			<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+			<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+			<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+			<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+		</DOMAINREADER>
+	</FIELD>
+
+	<FIELD>
+		<FIELDNAME>vegetacion_nociva_suciedad</FIELDNAME>
+		<DOMAINREADER>
+			<DRTYPE>db</DRTYPE>
+			<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+			<DRDBTABLE>reconocimiento_estado</DRDBTABLE>
+			<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+			<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+		</DOMAINREADER>
+	</FIELD>
+	
+</LAYER>

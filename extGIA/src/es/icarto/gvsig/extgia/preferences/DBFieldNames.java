@@ -178,6 +178,9 @@ public class DBFieldNames {
     public static final String SENHALIZACION_VERTICAL_D = "estado_cimientos_soporte_anclaje";
     public static final String SENHALIZACION_VERTICAL_E = "visibilidad_nocturna";
 
+    // VALLA CIERRE
+    public static final String ID_VALLA_CIERRE = "id_valla";
+
     public static void setReconocimientoEstadoFields(String[] fields) {
 	reconocimientoEstadoFields = fields;
     }

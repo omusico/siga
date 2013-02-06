@@ -12,13 +12,14 @@ import es.icarto.gvsig.extgia.forms.juntas.JuntasForm;
 import es.icarto.gvsig.extgia.forms.pasos_mediana.PasosMedianaForm;
 import es.icarto.gvsig.extgia.forms.senhalizacion_vertical.SenhalizacionVerticalForm;
 import es.icarto.gvsig.extgia.forms.taludes.TaludesForm;
+import es.icarto.gvsig.extgia.forms.valla_cierre.VallaCierreForm;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 
 public class LaunchGIAForms {
 
     public enum Elements {
 	Taludes, Isletas, Enlaces, Barrera_Rigida, Areas_Servicio, Areas_Descanso,
-	Juntas, Pasos_Mediana, Senhalizacion_Vertical;
+	Juntas, Pasos_Mediana, Senhalizacion_Vertical, Valla_Cierre;
     }
 
     public static void callFormDependingOfLayer(String layerName, boolean editing) {
@@ -105,6 +106,15 @@ public class LaunchGIAForms {
 	    }
 	    if (editing) {
 		senhalizacionVerticalForm.last();
+	    }
+	    break;
+	case Valla_Cierre:
+	    final VallaCierreForm vallaCierreForm = new VallaCierreForm(layer);
+	    if (vallaCierreForm.init()) {
+		PluginServices.getMDIManager().addCentredWindow(vallaCierreForm);
+	    }
+	    if (editing) {
+		vallaCierreForm.last();
 	    }
 	    break;
 	}
