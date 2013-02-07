@@ -196,6 +196,10 @@ IWindowListener {
 	    String[] fields = null;
 	    if (embebedTable.getName().equalsIgnoreCase("reconocimiento_estado")) {
 		fields = DBFieldNames.reconocimientoEstadoFields;
+	    }else if (embebedTable.getName().equalsIgnoreCase("reconocimiento_estado_firme")) {
+		fields = DBFieldNames.firmeReconocimientoEstadoFields;
+	    }else if (embebedTable.getName().equalsIgnoreCase("trabajos_firme")) {
+		fields = DBFieldNames.firmeTrabajoFields;
 	    }else if (embebedTable.getName().equalsIgnoreCase("tabla_carreteras")) {
 		fields = DBFieldNames.carreteras_enlazadas;
 	    }else if (embebedTable.getName().equalsIgnoreCase("tabla_senhales")) {

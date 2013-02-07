@@ -106,8 +106,8 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 	areaMantenimientoWidget.addActionListener(updateBaseContratistaListener);
 	baseContratistaWidget.addActionListener(updateTramoListener);
 
-	reconocimientoEstado = (JTable) widgets.get("reconocimiento_estado");
-	trabajos = (JTable) widgets.get("trabajos");
+	reconocimientoEstado = (JTable) widgets.get("reconocimiento_estado_firme");
+	trabajos = (JTable) widgets.get("trabajos_firme");
 	addReconocimientoButton = (JButton) form.getComponentByName("add_reconocimiento_button");
 	editReconocimientoButton = (JButton) form.getComponentByName("edit_reconocimiento_button");
 	addTrabajoButton = (JButton) form.getComponentByName("add_trabajo_button");
