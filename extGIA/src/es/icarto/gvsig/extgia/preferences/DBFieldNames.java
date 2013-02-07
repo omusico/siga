@@ -70,6 +70,19 @@ public class DBFieldNames {
 	"fecha_reposicion as \"Reposición\""
     };
 
+    public static String[] firmeReconocimientoEstadoFields = {"n_inspeccion as \"Nº Inspección\"",
+	"tipo_inspeccion as \"Tipo\"",
+	"nombre_revisor as \"Revisor\"",
+	"aparato_medicion as \"Aparato\"",
+    "fecha_inspeccion as \"Fecha Inspección\""};
+
+    public static String[] firmeTrabajoFields = {"id_trabajo as \"ID\"",
+	"fecha as \"Fecha\"",
+	"pk_inicial as \"PK inicio\"",
+	"pk_final as \"PK fin\"",
+	"sentido as \"Sentido\"",
+    "descripcion as \"Descripción\""};
+
     public static final String GIA_SCHEMA = "audasa_extgia";
 
     // LOCATION
@@ -184,6 +197,9 @@ public class DBFieldNames {
     public static final String VALLA_CIERRE_A = "deterioro_superficial_oxido";
     public static final String VALLA_CIERRE_B = "cimiento_soporte_anclaje";
     public static final String VALLA_CIERRE_C = "vegetacion_nociva_suciedad";
+
+    // FIRME
+    public static final String ID_FIRME = "id_firme";
 
     public static void setReconocimientoEstadoFields(String[] fields) {
 	reconocimientoEstadoFields = fields;

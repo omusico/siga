@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgia.forms.juntas;
+package es.icarto.gvsig.extgia.forms.firme;
 
 import java.util.HashMap;
 
@@ -8,9 +8,9 @@ import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 
-public class JuntasCalculateIDValue extends CalculateComponentValue {
+public class FirmeCalculateIDValue extends CalculateComponentValue {
 
-    public JuntasCalculateIDValue(AbstractForm form,
+    public FirmeCalculateIDValue(AbstractForm form,
 	    HashMap<String, JComponent> allFormWidgets,
 	    String resultComponentName, String... operatorComponentsNames) {
 	super(form, allFormWidgets, resultComponentName, operatorComponentsNames);
@@ -19,9 +19,10 @@ public class JuntasCalculateIDValue extends CalculateComponentValue {
 
     @Override
     public void setValue(boolean validate) {
-	String juntaID = String.valueOf(SqlUtils.getNextIdOfSequence("audasa_extgia.juntas_id_junta_seq"));
-	resultComponent.setText(juntaID);
-	form.getFormController().setValue(resultComponentName, juntaID);
+	String firmeID = String.valueOf(SqlUtils.getNextIdOfSequence(
+		"audasa_extgia.firme_id_firme_seq"));
+	resultComponent.setText(firmeID);
+	form.getFormController().setValue(resultComponentName, firmeID);
     }
 
 }

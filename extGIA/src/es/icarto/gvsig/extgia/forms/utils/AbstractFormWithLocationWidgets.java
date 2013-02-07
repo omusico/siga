@@ -35,28 +35,28 @@ import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 @SuppressWarnings("serial")
 public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 
-    private static final String AREA_MANTENIMIENTO = "area_mantenimiento";
-    private static final String BASE_CONTRATISTA = "base_contratista";
-    private static final String TRAMO = "tramo";
+    protected static final String AREA_MANTENIMIENTO = "area_mantenimiento";
+    protected static final String BASE_CONTRATISTA = "base_contratista";
+    protected static final String TRAMO = "tramo";
     private static final String TIPO_VIA = "tipo_via";
     private static final String TIPO_VIA_PF = "tipo_via_pf";
     private static final String NOMBRE_VIA = "nombre_via";
     private static final String NOMBRE_VIA_PF = "nombre_via_pf";
 
-    private FormPanel form;
+    protected FormPanel form;
     protected FilesLinkButton filesLinkButton;
 
-    private JComboBox areaMantenimientoWidget;
-    private JComboBox baseContratistaWidget;
-    private JComboBox tramoWidget;
+    protected JComboBox areaMantenimientoWidget;
+    protected JComboBox baseContratistaWidget;
+    protected JComboBox tramoWidget;
     private JComboBox tipoViaWidget;
     private JComboBox nombreViaWidget;
 
     private JComboBox tipoViaPFWidget;
     private JComboBox nombreViaPFWidget;
 
-    private UpdateBaseContratistaListener updateBaseContratistaListener;
-    private UpdateTramoListener updateTramoListener;
+    protected UpdateBaseContratistaListener updateBaseContratistaListener;
+    protected UpdateTramoListener updateTramoListener;
     private UpdateTipoViaListener updateTipoViaListener;
     private UpdateNombreViaListener updateNombreViaListener;
 
@@ -136,7 +136,7 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 
     }
 
-    private void updateBaseContratistaCombo() {
+    protected void updateBaseContratistaCombo() {
 	String id = ((KeyValue)areaMantenimientoWidget.getSelectedItem()).getKey();
 	String getBaseContratistaQuery =
 		"SELECT id, item FROM audasa_extgia_dominios.base_contratista" +
@@ -150,7 +150,7 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	}
     }
 
-    private void selectBaseContratistaOption() {
+    protected void selectBaseContratistaOption() {
 	String baseContratista = this.getFormController().getValue(
 		BASE_CONTRATISTA);
 	for (int i = 0; i < baseContratistaWidget.getItemCount(); i++) {
@@ -162,7 +162,7 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	}
     }
 
-    private void updateTramoCombo() {
+    protected void updateTramoCombo() {
 	String id = ((KeyValue) baseContratistaWidget.getSelectedItem())
 		.getKey();
 	String getTramoQuery = "SELECT id, item FROM audasa_extgia_dominios.tramo"
@@ -177,7 +177,7 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	}
     }
 
-    private void selectTramoOption() {
+    protected void selectTramoOption() {
 	String tramo = this.getFormController().getValue(TRAMO);
 	for (int i = 0; i < tramoWidget.getItemCount(); i++) {
 	    if (tramo.equalsIgnoreCase(((KeyValue) tramoWidget.getItemAt(i))

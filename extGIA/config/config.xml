@@ -20,11 +20,12 @@
 		<menu text="SIGA/Inventario/Elementos/Señalización Vertical" action-command="Senhalizacion_Vertical" position="30406"/>
 		<menu text="SIGA/Inventario/Elementos/Taludes" action-command="Taludes" position="30407"/>
 		<menu text="SIGA/Inventario/Elementos/Valla Cierre" action-command="Valla_Cierre" position="30408"/>
+		<menu text="SIGA/Inventario/Elementos/Firme" action-command="Firme" position="30409"/>
 		</extension>
 
 		<extension class-name="es.icarto.gvsig.extgia.ConsultasExtension" description="consultas" active="true">
-		<menu text="SIGA" position="30408" is_separator="true"/>
-		<menu text="SIGA/Inventario/Consultas" action-command="Consultas" position="30409"/>
+		<menu text="SIGA" position="30410" is_separator="true"/>
+		<menu text="SIGA/Inventario/Consultas" action-command="Consultas" position="30411"/>
 		</extension>
 	</extensions>
 </plugin-config>

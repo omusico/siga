@@ -7,6 +7,7 @@ import es.icarto.gvsig.extgia.forms.areas_descanso.AreasDescansoForm;
 import es.icarto.gvsig.extgia.forms.areas_servicio.AreasServicioForm;
 import es.icarto.gvsig.extgia.forms.barrera_rigida.BarreraRigidaForm;
 import es.icarto.gvsig.extgia.forms.enlaces.EnlacesForm;
+import es.icarto.gvsig.extgia.forms.firme.FirmeForm;
 import es.icarto.gvsig.extgia.forms.isletas.IsletasForm;
 import es.icarto.gvsig.extgia.forms.juntas.JuntasForm;
 import es.icarto.gvsig.extgia.forms.pasos_mediana.PasosMedianaForm;
@@ -19,7 +20,7 @@ public class LaunchGIAForms {
 
     public enum Elements {
 	Taludes, Isletas, Enlaces, Barrera_Rigida, Areas_Servicio, Areas_Descanso,
-	Juntas, Pasos_Mediana, Senhalizacion_Vertical, Valla_Cierre;
+	Juntas, Pasos_Mediana, Senhalizacion_Vertical, Valla_Cierre, Firme;
     }
 
     public static void callFormDependingOfLayer(String layerName, boolean editing) {
@@ -115,6 +116,15 @@ public class LaunchGIAForms {
 	    }
 	    if (editing) {
 		vallaCierreForm.last();
+	    }
+	    break;
+	case Firme:
+	    final FirmeForm firmeForm = new FirmeForm(layer);
+	    if (firmeForm.init()) {
+		PluginServices.getMDIManager().addCentredWindow(firmeForm);
+	    }
+	    if (editing) {
+		firmeForm.last();
 	    }
 	    break;
 	}
