@@ -2,6 +2,8 @@ package es.icarto.gvsig.extgia.forms.firme;
 
 import javax.swing.JTable;
 
+import com.iver.andami.ui.mdiManager.WindowInfo;
+
 import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
 
 @SuppressWarnings("serial")
@@ -20,6 +22,14 @@ public class FirmeTrabajosSubForm extends AbstractSubForm {
 	return this.getClass().getClassLoader()
 		.getResource("rules/firme_trabajos_metadata.xml")
 		.getPath();
+    }
+
+    @Override
+    public WindowInfo getWindowInfo() {
+	viewInfo = new WindowInfo(WindowInfo.MODALDIALOG);
+	viewInfo.setWidth(700);
+	viewInfo.setHeight(800);
+	return viewInfo;
     }
 
 }
