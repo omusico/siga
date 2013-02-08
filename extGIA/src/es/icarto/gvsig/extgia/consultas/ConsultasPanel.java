@@ -59,6 +59,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
     private static final int TRABAJOS = 0;
     private static final int RECONOCIMIENTOS = 1;
     private static final int TRABAJOS_FIRME = 2;
+    private static final int RECONOCIMIENTOS_FIRME = 3;
 
     private final FormPanel form;
     private final ORMLite ormLite;
@@ -268,8 +269,13 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		tipo = TRABAJOS;
 	    }
 	}else if(tipoConsulta.getSelectedItem().toString().equals("Inspecciones")) {
-	    fields = getReconocimientosFieldNames(elementId);
-	    tipo = RECONOCIMIENTOS;
+	    if (elemento.getSelectedItem().toString().equals("Firme")) {
+		fields = getFirmeReconocimientosFieldNames(elementId);
+		tipo = RECONOCIMIENTOS_FIRME;
+	    }else {
+		fields = getReconocimientosFieldNames(elementId);
+		tipo = RECONOCIMIENTOS;
+	    }
 	}
 
 	String query = getReportQuery(tipo, fechaInicial, fechaFinal, element[0],
@@ -301,6 +307,10 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 			    outputFile, rs, filters);
 		}else if (tipo == TRABAJOS_FIRME) {
 		    new FirmeTrabajosReport(
+			    element[1],
+			    outputFile, rs, filters);
+		}else if (tipo == RECONOCIMIENTOS_FIRME) {
+		    new FirmeReconocimientosReport(
 			    element[1],
 			    outputFile, rs, filters);
 		}else {
@@ -515,6 +525,11 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
     private String getReconocimientosFieldNames(String elementId) {
 	return elementId + ", nombre_revisor, fecha_inspeccion, indice_estado, observaciones";
+    }
+
+    private String getFirmeReconocimientosFieldNames(String elementId) {
+	return elementId + ", tipo_inspeccion, nombre_revisor, aparato_medicion," +
+		"fecha_inspeccion, observaciones";
     }
 
     private String getWhereClauseByLocationWidgets() {

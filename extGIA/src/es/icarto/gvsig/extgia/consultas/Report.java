@@ -133,11 +133,11 @@ public abstract class Report {
 	}
     }
 
-    private void writeNumberOfTrabajos(Document document, int numTrabajos) {
-	Paragraph numFincasP = new Paragraph("Número de trabajos: " + numTrabajos,
+    private void writeNumberOfRows(Document document, int numRows) {
+	Paragraph numRowsP = new Paragraph("Número de registros: " + numRows,
 		bodyBoldStyle);
 	try {
-	    document.add(numFincasP);
+	    document.add(numRowsP);
 	} catch (DocumentException e) {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
@@ -180,6 +180,7 @@ public abstract class Report {
 	    // Values
 	    Paragraph value;
 	    int numberOfRows = 0;
+	    resultMap.beforeFirst();
 	    while (resultMap.next()) {
 		for (int column = 1; column <= getColumnNames().length; column++) {
 		    if (resultMap.getString(column) != null) {
@@ -197,7 +198,7 @@ public abstract class Report {
 	    }
 	    document.add(table);
 	    document.add(Chunk.NEWLINE);
-	    writeNumberOfTrabajos(document, numberOfRows);
+	    writeNumberOfRows(document, numberOfRows);
 
 	    // Close file
 	    document.close();
