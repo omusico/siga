@@ -58,6 +58,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
     private static final int TRABAJOS = 0;
     private static final int RECONOCIMIENTOS = 1;
+    private static final int TRABAJOS_FIRME = 2;
 
     private final FormPanel form;
     private final ORMLite ormLite;
@@ -259,8 +260,13 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	String fields = "";
 
 	if (tipoConsulta.getSelectedItem().toString().equals("Trabajos")) {
-	    fields = getTrabajosFieldNames(elementId);
-	    tipo = TRABAJOS;
+	    if (elemento.getSelectedItem().toString().equals("Firme")) {
+		fields = getFirmeTrabajosFieldNames(elementId);
+		tipo = TRABAJOS_FIRME;
+	    }else {
+		fields = getTrabajosFieldNames(elementId);
+		tipo = TRABAJOS;
+	    }
 	}else if(tipoConsulta.getSelectedItem().toString().equals("Inspecciones")) {
 	    fields = getReconocimientosFieldNames(elementId);
 	    tipo = RECONOCIMIENTOS;
@@ -291,6 +297,10 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
 		if (tipo == TRABAJOS) {
 		    new TrabajosReport(
+			    element[1],
+			    outputFile, rs, filters);
+		}else if (tipo == TRABAJOS_FIRME) {
+		    new FirmeTrabajosReport(
 			    element[1],
 			    outputFile, rs, filters);
 		}else {
@@ -445,7 +455,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		    getWhereClauseByLocationWidgets();
 	}
 
-	if (tipo == TRABAJOS) {
+	if (tipo == TRABAJOS || tipo == TRABAJOS_FIRME) {
 	    query = query + getWhereClauseByDates("fecha_certificado", fechaInicial, fechaFinal);
 	}else {
 	    query = query + getWhereClauseByDates("fecha_inspeccion", fechaInicial, fechaFinal);
@@ -496,6 +506,11 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
     private String getTrabajosFieldNames(String elementId) {
 	return elementId + ", fecha, unidad, medicion_contratista, medicion_audasa, " +
 		"observaciones, fecha_certificado";
+    }
+
+    private String getFirmeTrabajosFieldNames(String elementId) {
+	return elementId + ", fecha, pk_inicial, pk_final, sentido, " +
+		"descripcion, fecha_certificado";
     }
 
     private String getReconocimientosFieldNames(String elementId) {
