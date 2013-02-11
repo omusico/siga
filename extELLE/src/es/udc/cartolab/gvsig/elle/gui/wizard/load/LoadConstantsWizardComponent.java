@@ -59,7 +59,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
     public final static String CONSTANTS_QUERY_FIELD_NAME = "campo_query";
 
     //ZoomToConstant
-    public final static String CONSTANTS_ZOOM_LAYER_FIELD = "municipio_nombre";
+    public final static String CONSTANTS_ZOOM_LAYER_FIELD = "municipio_codigo";
     public final static String CONSTANTS_ZOOM_LAYER_NAME = "Constante";
 
     public LoadConstantsWizardComponent(Map<String, Object> properties) {
@@ -76,35 +76,36 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	    FormPanel form = new FormPanel("forms/loadConstants.jfrm");
 	    listPanel.add(form);
 
-	    constantsList = form.getList("constantsList");
+	    //	    constantsList = form.getList("constantsList");
 	    JLabel constantsLabel = form.getLabel("constantsLabel");
 	    constantsLabel.setText(PluginServices.getText(this, "constants_load"));
-
-	    String[] constants = getConstants();
-	    constantsList.setListData(constants);
-	    constantsList.setSelectedIndex(0);
-	    selectedConstant = (String) constantsList.getSelectedValues()[0];
+	    //
+	    //	    String[] constants = getConstants();
+	    //	    constantsList.setListData(constants);
+	    //	    constantsList.setSelectedIndex(0);
+	    selectedConstant = "Municipio";
 
 	    valuesList = form.getList("valuesList");
-	    JLabel valuesLabel = form.getLabel("valuesLabel");
-	    valuesLabel.setText(PluginServices.getText(this, "values_load"));
+	    //	    JLabel valuesLabel = form.getLabel("valuesLabel");
+	    //	    valuesLabel.setText(PluginServices.getText(this, "values_load"));
 	    valuesList.setListData(getValuesFromConstantByQuery(selectedConstant));
 
-	    constantsList.addListSelectionListener(new ListSelectionListener() {
-
-		public void valueChanged(ListSelectionEvent arg0) {
-		    int[] selected = constantsList.getSelectedIndices();
-		    callStateChanged();
-
-		    if (selected.length == 1) {
-			selectedConstant = (String) constantsList.getSelectedValues()[0];
-			String[] values = getValuesFromConstantByQuery(selectedConstant);
-			valuesList.setListData(values);
-		    } else {
-			//TODO: several constants selected at the same time
-		    }
-		}
-	    });
+	    //	    constantsList.addListSelectionListener(new ListSelectionListener() {
+	    //
+	    //		public void valueChanged(ListSelectionEvent arg0) {
+	    //		    int[] selected = constantsList.getSelectedIndices();
+	    //		    callStateChanged();
+	    //
+	    //		    if (selected.length == 1) {
+	    //			selectedConstant = (String) constantsList.getSelectedValues()[0];
+	    //			String[] values = getValuesFromConstantByQuery(selectedConstant);
+	    //			valuesList.setListData(values);
+	    //			valuesList.remove(0);
+	    //		    } else {
+	    //			//TODO: several constants selected at the same time
+	    //		    }
+	    //		}
+	    //	    });
 
 	    valuesList.addListSelectionListener(new ListSelectionListener() {
 
@@ -114,7 +115,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 		    String[] valuesSelected = null;
 
 		    if (selected.length == 1) {
-			selectedValue = (String) valuesList.getSelectedValue();
+			selectedValue = getIdByConstantTag((String) valuesList.getSelectedValue());
 			valuesSelected = new String[1];
 			valuesSelected[0] = selectedValue;
 			ELLEMap.setConstantValuesSelected(valuesSelected);
@@ -123,7 +124,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 			selectedValuesList = valuesList.getSelectedValues();
 			String[] values = new String[selectedValuesList.length];
 			for (int i=0; i<selectedValuesList.length;i++) {
-			    values[i] = selectedValuesList[i].toString();
+			    values[i] = getIdByConstantTag(selectedValuesList[i].toString());
 			}
 			ELLEMap.setConstantValuesSelected(values);
 		    }
@@ -364,4 +365,18 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 
     }
 
+    private String getIdByConstantTag(String constantTag) {
+	String query = "SELECT id FROM " + "audasa_extgia_dominios.municipio_constantes" + " WHERE tag ="  + "'" + constantTag + "'" + ";";
+	PreparedStatement statement;
+	try {
+	    statement = dbs.getJavaConnection().prepareStatement(query);
+	    statement.execute();
+	    ResultSet rs = statement.getResultSet();
+	    rs.first();
+	    return rs.getString(1);
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return null;
+    }
 }
