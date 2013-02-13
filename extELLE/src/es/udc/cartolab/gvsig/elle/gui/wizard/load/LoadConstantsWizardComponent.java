@@ -58,6 +58,8 @@ public class LoadConstantsWizardComponent extends WizardComponent {
     public final static String CONSTANTS_FILTER_FIELD_NAME = "campo_filtro";
     public final static String CONSTANTS_QUERY_FIELD_NAME = "campo_query";
 
+    private static final String MUNICIPIO_CONSTANTS_TABLENAME = "audasa_extgia_dominios.municipio_constantes";
+
     //ZoomToConstant
     public final static String CONSTANTS_ZOOM_LAYER_FIELD = "municipio_codigo";
     public final static String CONSTANTS_ZOOM_LAYER_NAME = "Constante";
@@ -366,7 +368,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
     }
 
     private String getIdByConstantTag(String constantTag) {
-	String query = "SELECT id FROM " + "audasa_extgia_dominios.municipio_constantes" + " WHERE tag ="  + "'" + constantTag + "'" + ";";
+	String query = "SELECT id FROM " + MUNICIPIO_CONSTANTS_TABLENAME + " WHERE tag ="  + "'" + constantTag + "'" + ";";
 	PreparedStatement statement;
 	try {
 	    statement = dbs.getJavaConnection().prepareStatement(query);
