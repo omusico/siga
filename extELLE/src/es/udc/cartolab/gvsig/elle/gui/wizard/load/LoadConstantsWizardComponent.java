@@ -39,10 +39,10 @@ import es.udc.cartolab.gvsig.elle.utils.ELLEMap;
 import es.udc.cartolab.gvsig.elle.utils.MapDAO;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
+@SuppressWarnings("serial")
 public class LoadConstantsWizardComponent extends WizardComponent {
 
     private JPanel listPanel;
-    private JList constantsList;
     private JList valuesList;
     private DBSession dbs;
 
@@ -78,37 +78,13 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	    FormPanel form = new FormPanel("forms/loadConstants.jfrm");
 	    listPanel.add(form);
 
-	    //	    constantsList = form.getList("constantsList");
 	    JLabel constantsLabel = form.getLabel("constantsLabel");
 	    constantsLabel.setText(PluginServices.getText(this, "constants_load"));
-	    //
-	    //	    String[] constants = getConstants();
-	    //	    constantsList.setListData(constants);
-	    //	    constantsList.setSelectedIndex(0);
+
 	    selectedConstant = "Municipio";
 
 	    valuesList = form.getList("valuesList");
-	    //	    JLabel valuesLabel = form.getLabel("valuesLabel");
-	    //	    valuesLabel.setText(PluginServices.getText(this, "values_load"));
 	    valuesList.setListData(getValuesFromConstantByQuery(selectedConstant));
-
-	    //	    constantsList.addListSelectionListener(new ListSelectionListener() {
-	    //
-	    //		public void valueChanged(ListSelectionEvent arg0) {
-	    //		    int[] selected = constantsList.getSelectedIndices();
-	    //		    callStateChanged();
-	    //
-	    //		    if (selected.length == 1) {
-	    //			selectedConstant = (String) constantsList.getSelectedValues()[0];
-	    //			String[] values = getValuesFromConstantByQuery(selectedConstant);
-	    //			valuesList.setListData(values);
-	    //			valuesList.remove(0);
-	    //		    } else {
-	    //			//TODO: several constants selected at the same time
-	    //		    }
-	    //		}
-	    //	    });
-
 	    valuesList.addListSelectionListener(new ListSelectionListener() {
 
 		public void valueChanged(ListSelectionEvent arg0) {
@@ -134,27 +110,6 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	    });
 	}
 	return listPanel;
-    }
-
-    private String[] getConstants() {
-	try {
-	    String[] constants = dbs.getDistinctValues(CONSTANTS_TABLE_NAME, DBStructure.getSchema(), CONSTANTS_CONSTANT_FIELD_NAME);
-	    return constants;
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
-	return null;
-    }
-
-    private String[] getValuesFromConstant(String constant) {
-	try {
-	    String[] tables = getTablesAffectedByConstant(constant);
-	    String[] values = dbs.getDistinctValues(tables[0], DBStructure.getSchema(), getValueOfFieldByConstant(constant, CONSTANTS_FILTER_FIELD_NAME), true, false);
-	    return values;
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
-	return null;
     }
 
     private String[] getValuesFromConstantByQuery(String constant) {
@@ -250,9 +205,9 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 		if (selectedValuesList != null && selectedValuesList.length > 1) {
 		    for (int i=0; i<selectedValuesList.length; i++) {
 			if (i != selectedValuesList.length-1) {
-			    where = where + getValueOfFieldByConstant(selectedConstant, CONSTANTS_FILTER_FIELD_NAME) + " = " + "'" + selectedValuesList[i].toString() + "'" + " OR ";
+			    where = where + getValueOfFieldByConstant(selectedConstant, CONSTANTS_FILTER_FIELD_NAME) + " = " + "'" + getIdByConstantTag(selectedValuesList[i].toString()) + "'" + " OR ";
 			}else {
-			    where = where + getValueOfFieldByConstant(selectedConstant, CONSTANTS_FILTER_FIELD_NAME) + " = " + "'" + selectedValuesList[i].toString() + "')";
+			    where = where + getValueOfFieldByConstant(selectedConstant, CONSTANTS_FILTER_FIELD_NAME) + " = " + "'" + getIdByConstantTag(selectedValuesList[i].toString()) + "')";
 			}
 		    }
 		    map.setWhereOnAllLayers(where);
@@ -271,10 +226,12 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 		    ((ProjectView) view.getModel()).setName(mapName);
 		}
 		if (selectedValue == null) {
-		    selectedValue = "TODOS";
+		    PluginServices.getMainFrame().getStatusBar().setMessage("constants",
+			    selectedConstant + ": " + "TODOS");
+		}else {
+		    PluginServices.getMainFrame().getStatusBar().setMessage("constants",
+			    selectedConstant + ": " + getNombreMunicipioById(selectedValue));
 		}
-		PluginServices.getMainFrame().getStatusBar().setMessage("constants",
-			selectedConstant + ": " + selectedValue);
 		zoomToConstant();
 	    } catch (Exception e) {
 		throw new WizardException(e);
@@ -369,6 +326,21 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 
     private String getIdByConstantTag(String constantTag) {
 	String query = "SELECT id FROM " + MUNICIPIO_CONSTANTS_TABLENAME + " WHERE tag ="  + "'" + constantTag + "'" + ";";
+	PreparedStatement statement;
+	try {
+	    statement = dbs.getJavaConnection().prepareStatement(query);
+	    statement.execute();
+	    ResultSet rs = statement.getResultSet();
+	    rs.first();
+	    return rs.getString(1);
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return null;
+    }
+
+    private String getNombreMunicipioById(String id) {
+	String query = "SELECT item FROM " + MUNICIPIO_CONSTANTS_TABLENAME + " WHERE id ="  + "'" + id + "'" + ";";
 	PreparedStatement statement;
 	try {
 	    statement = dbs.getJavaConnection().prepareStatement(query);
