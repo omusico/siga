@@ -113,7 +113,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
     }
 
     private String[] getValuesFromConstantByQuery(String constant) {
-	String query = getValueOfFieldByConstant(constant, CONSTANTS_QUERY_FIELD_NAME);
+	String query = "SELECT tag FROM " + MUNICIPIO_CONSTANTS_TABLENAME +  " ORDER BY orden;";
 	PreparedStatement statement;
 	try {
 	    statement = dbs.getJavaConnection().prepareStatement(query);
