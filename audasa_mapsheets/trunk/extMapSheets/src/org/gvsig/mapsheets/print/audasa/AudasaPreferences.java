@@ -71,6 +71,10 @@ public class AudasaPreferences {
     public static final double OVERVIEW_WIDTH = 5;
     public static final double OVERVIEW_HEIGHT = 5;
 
+    public static final String GRIDS_PATH = PluginServices
+	    .getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
+	    .getResource("rejillas/").getPath();
+
     public static File getSelectedFile(String sourceButton) {
 	PathGenerator.getInstance().setBasePath(PluginServices
 		.getPluginServices("es.icarto.gvsig.extgex").getClassLoader()

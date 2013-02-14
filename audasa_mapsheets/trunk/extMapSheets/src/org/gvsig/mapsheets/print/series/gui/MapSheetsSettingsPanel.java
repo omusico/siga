@@ -210,7 +210,7 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 	    areaPanel.add(getGridFileTF(), null);
 	    areaPanel.add(getGridFileB(), null);
 
-	    gridFileChooser = new JFileChooser(OPEN_TEMPLATE_FILE_CHOOSER_ID, System.getProperty("user.home"));
+	    gridFileChooser = new JFileChooser(OPEN_TEMPLATE_FILE_CHOOSER_ID, System.getProperty("user.dir"));
 	    gridFileChooser.setAcceptAllFileFilterUsed(false);
 	    gridFileChooser.setFileFilter(new SimpleFileFilter("grid",
 		    PluginServices.getText(MapSheetsUtils.class, "grid_files")));
@@ -824,6 +824,7 @@ public class MapSheetsSettingsPanel extends JPanel implements IWindow, ActionLis
 	}
 
 	if (src == gridFileButton) {
+	    gridFileChooser.setCurrentDirectory(new File(AudasaPreferences.GRIDS_PATH));
 	    int returnVal = gridFileChooser.showOpenDialog(this);
 
 	    if (returnVal == JFileChooser.APPROVE_OPTION) {
