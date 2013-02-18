@@ -473,7 +473,7 @@
         <property key="m_rotation" value="0.0"/>
         <property key="level" value="564"/>
         <property key="num" value="59"/>
-        <property key="s" value="ORIGINAL DIN-A3"/>
+        <property key="s" value="ORIGINAL DIN-A4"/>
         <property key="m_isFixed" value="false"/>
         <property key="m_pos" value="0"/>
         <property key="fontName" value="Arial Negrita"/>
@@ -750,15 +750,45 @@
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
         <property key="x" value="22.7"/>
+        <property key="y" value="18.88"/>
+        <property key="w" value="1.2"/>
+        <property key="h" value="0.2"/>
+        <property key="m_Selected" value="0"/>
+        <property key="tag"/>
+        <property key="m_rotation" value="0.0"/>
+        <property key="level" value="638"/>
+        <property key="num" value="20"/>
+        <property key="s" value="HOJA  DE  "/>
+        <property key="m_isFixed" value="false"/>
+        <property key="m_pos" value="0"/>
+        <property key="fontName" value="Arial Negrita"/>
+        <property key="fontStyle" value="1"/>
+        <property key="textColor" value="51,51,51,255"/>
+        <property key="transicionPixelsMilimetros" value="true"/>
+        <property key="cellPadding" value="0.0"/>
+        <property key="fontSize" value="7"/>
+        <property key="fixedFontSize" value="true"/>
+        <property key="surrounded" value="false"/>
+        <property key="hasTitle" value="false"/>
+        <property key="title" value="EL INGENIERO DE C.C Y P. DIRECTOR DEL PROYECTO"/>
+        <property key="titleSize" value="8"/>
+        <property key="frameBorderSize" value="0.01"/>
+        <property key="frameColor" value="0,0,0,255"/>
+        <property key="titleColor" value="51,51,51,255"/>
+    </xml-tag>
+    <xml-tag>
+        <property key="className" value="FFrameText"/>
+        <property key="m_name" value="FFrame"/>
+        <property key="x" value="22.7"/>
         <property key="y" value="19.2"/>
         <property key="w" value="1.8"/>
         <property key="h" value="0.4"/>
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
-        <property key="level" value="572"/>
-        <property key="num" value="62"/>
-        <property key="s" value="HOJA  DE  "/>
+        <property key="level" value="641"/>
+        <property key="num" value="4"/>
+        <property key="s" value="HOJA"/>
         <property key="m_isFixed" value="false"/>
         <property key="m_pos" value="0"/>
         <property key="fontName" value="Arial Negrita"/>
@@ -772,6 +802,36 @@
         <property key="hasTitle" value="false"/>
         <property key="title" value="CONCESIONARIA"/>
         <property key="titleSize" value="7"/>
+        <property key="frameBorderSize" value="0.01"/>
+        <property key="frameColor" value="0,0,0,255"/>
+        <property key="titleColor" value="51,51,51,255"/>
+    </xml-tag>
+    <xml-tag>
+        <property key="className" value="FFrameText"/>
+        <property key="m_name" value="FFrame"/>
+        <property key="x" value="23.37"/>
+        <property key="y" value="19.16"/>
+        <property key="w" value="0.6"/>
+        <property key="h" value="0.4"/>
+        <property key="m_Selected" value="0"/>
+        <property key="tag"/>
+        <property key="m_rotation" value="0.0"/>
+        <property key="level" value="282"/>
+        <property key="num" value="14"/>
+        <property key="s" value=""/>
+        <property key="m_isFixed" value="false"/>
+        <property key="m_pos" value="0"/>
+        <property key="fontName" value="Arial Negrita"/>
+        <property key="fontStyle" value="1"/>
+        <property key="textColor" value="0,0,0,255"/>
+        <property key="transicionPixelsMilimetros" value="true"/>
+        <property key="cellPadding" value="0.0"/>
+        <property key="fontSize" value="10"/>
+        <property key="fixedFontSize" value="true"/>
+        <property key="surrounded" value="false"/>
+        <property key="hasTitle" value="false"/>
+        <property key="title" value="numero_hoja"/>
+        <property key="titleSize" value="8"/>
         <property key="frameBorderSize" value="0.01"/>
         <property key="frameColor" value="0,0,0,255"/>
         <property key="titleColor" value="51,51,51,255"/>

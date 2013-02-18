@@ -710,8 +710,8 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="28"/>
-        <property key="y" value="19.58"/>
+        <property key="x" value="27.88"/>
+        <property key="y" value="19.56"/>
         <property key="w" value="0.6"/>
         <property key="h" value="0.2"/>
         <property key="m_Selected" value="0"/>
@@ -808,7 +808,7 @@
         <property key="m_rotation" value="0.0"/>
         <property key="level" value="405"/>
         <property key="num" value="180"/>
-        <property key="s" value="ORIGINAL DIN-A3"/>
+        <property key="s" value="ORIGINAL DIN-A4"/>
         <property key="m_isFixed" value="false"/>
         <property key="m_pos" value="0"/>
         <property key="fontName" value="Arial Negrita"/>
