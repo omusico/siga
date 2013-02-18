@@ -176,6 +176,12 @@ public abstract class CalculateComponentValue {
 
 	// Cheking that pkValue is natural + decimal separator + decimal
 	if (pkValues != null && pkValues.length>1) {
+	    if (pkValues[0].length()>3) {
+		pkValues[0]=pkValues[0].substring(pkValues[0].length()-3);
+	    }
+	    if (pkValues[1].length()>3) {
+		pkValues[1]=pkValues[1].substring(0,3);
+	    }
 	    if (!pkValues[0].isEmpty() && !pkValues[1].isEmpty()) {
 		// pkValue has one decimal
 		if (pkValues[1].length() == 1) {
