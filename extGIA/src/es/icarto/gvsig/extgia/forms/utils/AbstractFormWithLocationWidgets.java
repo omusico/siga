@@ -382,7 +382,7 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     }
 
     private boolean elementHasIPandFP() {
-	if (layer.getName().equalsIgnoreCase("taludes")) {
+	if (layer.getName().equalsIgnoreCase("taludes") || (layer.getName().equalsIgnoreCase("valla_cierre"))) {
 	    return true;
 	}else {
 	    return false;
