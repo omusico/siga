@@ -49,7 +49,7 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 @SuppressWarnings("serial")
 public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
-    private static final String CSV_SEPARATOR = ",";
+    private static final String CSV_SEPARATOR = "\t";
 
     public static String ABEILLE_FILENAME = "forms/consultas_inventario.jfrm";
 
