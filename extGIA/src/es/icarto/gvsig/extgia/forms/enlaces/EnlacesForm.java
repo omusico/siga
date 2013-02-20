@@ -348,5 +348,11 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 	return null;
     }
 
+    @Override
+    public boolean isSpecialCase() {
+	// TODO Auto-generated method stub
+	return false;
+    }
+
 
 }

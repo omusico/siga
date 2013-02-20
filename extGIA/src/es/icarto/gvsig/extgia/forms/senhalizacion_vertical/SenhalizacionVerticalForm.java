@@ -349,4 +349,10 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 	return "senhalizacion_vertical_trabajos";
     }
 
+    @Override
+    public boolean isSpecialCase() {
+	// TODO Auto-generated method stub
+	return false;
+    }
+
 }

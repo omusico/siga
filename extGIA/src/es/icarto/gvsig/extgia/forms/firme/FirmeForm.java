@@ -89,6 +89,7 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 
     @Override
     protected void setListeners() {
+	super.setListeners();
 
 	ImageComponent image = (ImageComponent) form.getComponentByName("image");
 	ImageIcon icon = new ImageIcon (PreferencesPage.AUDASA_ICON);
@@ -283,6 +284,11 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
     @Override
     public String getTrabajosDBTableName() {
 	return "firme_trabajos";
+    }
+
+    @Override
+    public boolean isSpecialCase() {
+	return true;
     }
 
 }

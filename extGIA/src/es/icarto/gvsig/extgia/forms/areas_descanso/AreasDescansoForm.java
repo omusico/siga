@@ -339,4 +339,10 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 
     }
 
+    @Override
+    public boolean isSpecialCase() {
+	// TODO Auto-generated method stub
+	return false;
+    }
+
 }

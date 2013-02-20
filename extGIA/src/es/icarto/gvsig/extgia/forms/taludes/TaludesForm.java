@@ -381,4 +381,10 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     public String getTrabajosDBTableName() {
 	return "taludes_trabajos";
     }
+
+    @Override
+    public boolean isSpecialCase() {
+	// TODO Auto-generated method stub
+	return false;
+    }
 }

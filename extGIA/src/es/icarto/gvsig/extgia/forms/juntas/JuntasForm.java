@@ -261,4 +261,10 @@ public class JuntasForm extends AbstractFormWithLocationWidgets {
 	return "juntas_trabajos";
     }
 
+    @Override
+    public boolean isSpecialCase() {
+	// TODO Auto-generated method stub
+	return false;
+    }
+
 }

@@ -296,5 +296,11 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 	return "isletas_trabajos";
     }
 
+    @Override
+    public boolean isSpecialCase() {
+	// TODO Auto-generated method stub
+	return false;
+    }
+
 
 }

@@ -239,4 +239,10 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
 	return "pasos_mediana_trabajos";
     }
 
+    @Override
+    public boolean isSpecialCase() {
+	// TODO Auto-generated method stub
+	return false;
+    }
+
 }

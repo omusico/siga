@@ -96,44 +96,45 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     protected void setListeners() {
 	super.setListeners();
 
-	ImageComponent image = (ImageComponent) form.getComponentByName("image");
-	ImageIcon icon = new ImageIcon (PreferencesPage.AUDASA_ICON);
-	image.setIcon(icon);
+	if (!isSpecialCase()) {
+	    ImageComponent image = (ImageComponent) form.getComponentByName("image");
+	    ImageIcon icon = new ImageIcon (PreferencesPage.AUDASA_ICON);
+	    image.setIcon(icon);
 
-	HashMap<String, JComponent> widgets = getWidgetComponents();
+	    HashMap<String, JComponent> widgets = getWidgetComponents();
 
-	areaMantenimientoWidget = (JComboBox) widgets.get(AREA_MANTENIMIENTO);
-	baseContratistaWidget = (JComboBox) widgets.get(BASE_CONTRATISTA);
-	tramoWidget = (JComboBox) widgets.get(TRAMO);
-	tipoViaWidget = (JComboBox) widgets.get(TIPO_VIA);
-	nombreViaWidget = (JComboBox) widgets.get(NOMBRE_VIA);
+	    areaMantenimientoWidget = (JComboBox) widgets.get(AREA_MANTENIMIENTO);
+	    baseContratistaWidget = (JComboBox) widgets.get(BASE_CONTRATISTA);
+	    tramoWidget = (JComboBox) widgets.get(TRAMO);
+	    tipoViaWidget = (JComboBox) widgets.get(TIPO_VIA);
+	    nombreViaWidget = (JComboBox) widgets.get(NOMBRE_VIA);
 
-	updateBaseContratistaListener = new UpdateBaseContratistaListener();
-	updateTramoListener = new UpdateTramoListener();
-	updateTipoViaListener = new UpdateTipoViaListener();
-	updateNombreViaListener = new UpdateNombreViaListener();
+	    updateBaseContratistaListener = new UpdateBaseContratistaListener();
+	    updateTramoListener = new UpdateTramoListener();
+	    updateTipoViaListener = new UpdateTipoViaListener();
+	    updateNombreViaListener = new UpdateNombreViaListener();
 
-	areaMantenimientoWidget.addActionListener(updateBaseContratistaListener);
-	baseContratistaWidget.addActionListener(updateTramoListener);
-	tramoWidget.addActionListener(updateTipoViaListener);
-	tipoViaWidget.addActionListener(updateNombreViaListener);
+	    areaMantenimientoWidget.addActionListener(updateBaseContratistaListener);
+	    baseContratistaWidget.addActionListener(updateTramoListener);
+	    tramoWidget.addActionListener(updateTipoViaListener);
+	    tipoViaWidget.addActionListener(updateNombreViaListener);
 
-	if (elementHasIPandFP()) {
-	    tipoViaPFWidget = (JComboBox) widgets.get(TIPO_VIA_PF);
-	    updateNombreViaPFListener = new UpdateNombreViaPFListener();
-	    tipoViaPFWidget.addActionListener(updateNombreViaPFListener);
-	    nombreViaPFWidget = (JComboBox) widgets.get(NOMBRE_VIA_PF);
+	    if (elementHasIPandFP()) {
+		tipoViaPFWidget = (JComboBox) widgets.get(TIPO_VIA_PF);
+		updateNombreViaPFListener = new UpdateNombreViaPFListener();
+		tipoViaPFWidget.addActionListener(updateNombreViaPFListener);
+		nombreViaPFWidget = (JComboBox) widgets.get(NOMBRE_VIA_PF);
+	    }
+
+	    reconocimientoEstado = (JTable) widgets.get("reconocimiento_estado");
+	    trabajos = (JTable) widgets.get("trabajos");
+	    addReconocimientoButton = (JButton) form.getComponentByName("add_reconocimiento_button");
+	    editReconocimientoButton = (JButton) form.getComponentByName("edit_reconocimiento_button");
+	    addTrabajoButton = (JButton) form.getComponentByName("add_trabajo_button");
+	    editTrabajoButton = (JButton) form.getComponentByName("edit_trabajo_button");
+	    deleteReconocimientoButton = (JButton) form.getComponentByName("delete_reconocimiento_button");
+	    deleteTrabajoButton = (JButton) form.getComponentByName("delete_trabajo_button");
 	}
-
-	reconocimientoEstado = (JTable) widgets.get("reconocimiento_estado");
-	trabajos = (JTable) widgets.get("trabajos");
-	addReconocimientoButton = (JButton) form.getComponentByName("add_reconocimiento_button");
-	editReconocimientoButton = (JButton) form.getComponentByName("edit_reconocimiento_button");
-	addTrabajoButton = (JButton) form.getComponentByName("add_trabajo_button");
-	editTrabajoButton = (JButton) form.getComponentByName("edit_trabajo_button");
-	deleteReconocimientoButton = (JButton) form.getComponentByName("delete_reconocimiento_button");
-	deleteTrabajoButton = (JButton) form.getComponentByName("delete_trabajo_button");
-
     }
 
     protected void updateBaseContratistaCombo() {
@@ -503,4 +504,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     public String getTrabajosIDField() {
 	return "id_trabajo";
     }
+
+    public abstract boolean isSpecialCase();
 }

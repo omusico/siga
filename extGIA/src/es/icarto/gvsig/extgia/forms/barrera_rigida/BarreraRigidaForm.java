@@ -299,4 +299,10 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 	return "barrera_rigida_trabajos";
     }
 
+    @Override
+    public boolean isSpecialCase() {
+	// TODO Auto-generated method stub
+	return false;
+    }
+
 }
