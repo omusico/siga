@@ -186,36 +186,36 @@ public class FormPM extends AbstractForm {
 		parcelasAfectadas.add(parcelasRs.getString(1));
 	    }
 
-	    // Municipio
-	    String municipioQuery;
-	    try {
-		// Filling municipio ComboBox with all municipios of AP9 way
-		municipioQuery = "SELECT " + Preferences.MUNICIPIOS_AUX_FIELD_NOMBRE +
-			" FROM " + Preferences.MUNICIPIOS_AUX_TABLENAME +
-			" ORDER BY " + Preferences.MUNICIPIOS_AUX_FIELD_ORDEN + ";";
-		statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(municipioQuery);
-		statement.execute();
-		ResultSet municipioRs = statement.getResultSet();
-		municipio.addItem("");
-		while (municipioRs.next()) {
-		    if (municipioRs.getString(1) != null) {
-			municipio.addItem(municipioRs.getString(1));
-		    }
-		}
-
-		// Check if there is a specific municipio value saved and if so, set as selected
-		municipioQuery = "SELECT " + Preferences.PM_FIELD_MUNICIPIO +
-			" FROM " + Preferences.PM_TABLENAME +
-			" WHERE " + Preferences.PM_FIELD_NUMEROPM + " = '" + numeroPM.getText() + "';";
-		statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(municipioQuery);
-		statement.execute();
-		municipioRs = statement.getResultSet();
-		if (municipioRs.next()) {
-		    municipio.setSelectedItem(municipioRs.getString(1));
-		}
-	    }catch (SQLException e) {
-		e.printStackTrace();
-	    }
+	    //	    // Municipio
+	    //	    String municipioQuery;
+	    //	    try {
+	    //		// Filling municipio ComboBox with all municipios of AP9 way
+	    //		municipioQuery = "SELECT " + Preferences.MUNICIPIOS_AUX_FIELD_NOMBRE +
+	    //			" FROM " + Preferences.MUNICIPIOS_AUX_TABLENAME +
+	    //			" ORDER BY " + Preferences.MUNICIPIOS_AUX_FIELD_ORDEN + ";";
+	    //		statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(municipioQuery);
+	    //		statement.execute();
+	    //		ResultSet municipioRs = statement.getResultSet();
+	    //		municipio.addItem("");
+	    //		while (municipioRs.next()) {
+	    //		    if (municipioRs.getString(1) != null) {
+	    //			municipio.addItem(municipioRs.getString(1));
+	    //		    }
+	    //		}
+	    //
+	    //		// Check if there is a specific municipio value saved and if so, set as selected
+	    //		municipioQuery = "SELECT " + Preferences.PM_FIELD_MUNICIPIO +
+	    //			" FROM " + Preferences.PM_TABLENAME +
+	    //			" WHERE " + Preferences.PM_FIELD_NUMEROPM + " = '" + numeroPM.getText() + "';";
+	    //		statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(municipioQuery);
+	    //		statement.execute();
+	    //		municipioRs = statement.getResultSet();
+	    //		if (municipioRs.next()) {
+	    //		    municipio.setSelectedItem(municipioRs.getString(1));
+	    //		}
+	    //	    }catch (SQLException e) {
+	    //		e.printStackTrace();
+	    //	    }
 
 	    // Parroquia
 	    String parroquiaQuery = "SELECT " + Preferences.PM_FIELD_PARROQUIA +
@@ -442,7 +442,7 @@ public class FormPM extends AbstractForm {
 		    query = "SELECT " + Preferences.PARROQUIAS_FIELD_NAME +
 			    " FROM " + Preferences.PARROQUIAS_TABLENAME +
 			    " WHERE " + Preferences.PARROQUIAS_FIELD_CODIGO +
-			    " = " + "(SELECT " + Preferences.MUNICIPIOS_FIELD_CODIGO +
+			    " = " + "(SELECT " + "CAST (" + Preferences.MUNICIPIOS_FIELD_CODIGO + " AS INT)" +
 			    " FROM " + Preferences.MUNICIPIOS_TABLENAME +
 			    " WHERE " + Preferences.MUNICIPIOS_FIELD_NAME +
 			    " = " + "'" + municipio.getSelectedItem() + "')" +

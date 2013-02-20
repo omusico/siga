@@ -37,9 +37,9 @@ public class Preferences {
     public static final String PARROQUIAS_FIELD_CODIGO = "cdconc";
 
     // Municipios
-    public static final String MUNICIPIOS_TABLENAME = "audasa_cartografia_base.municipios";
-    public static final String MUNICIPIOS_FIELD_CODIGO = "cdconc";
-    public static final String MUNICIPIOS_FIELD_NAME = "nome";
+    public static final String MUNICIPIOS_TABLENAME = "audasa_extgia_dominios.municipio";
+    public static final String MUNICIPIOS_FIELD_CODIGO = "id";
+    public static final String MUNICIPIOS_FIELD_NAME = "item";
 
     // Fincas
     public static final String FINCAS_TABLENAME = "audasa_expropiaciones.exp_finca";
