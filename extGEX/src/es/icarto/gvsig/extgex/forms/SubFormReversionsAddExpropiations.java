@@ -104,7 +104,15 @@ public class SubFormReversionsAddExpropiations extends JPanel implements IWindow
 	    if (insertedGeom != null) {
 		reversionGeometry = insertedGeom;
 	    }else {
-		reversionGeometry = layer.getSource().getFeature(currentRow).getGeometry();
+		int rowIndex = -1;
+		for (int i=0; i<layer.getRecordset().getRowCount(); i++) {
+		    int value = Integer.parseInt(layer.getRecordset().getFieldValue(i, 0).toString());
+		    if (value == currentRow) {
+			rowIndex = i;
+			break;
+		    }
+		}
+		reversionGeometry = layer.getSource().getFeature(rowIndex).getGeometry();
 	    }
 	    Geometry jtsReversionGeometry = reversionGeometry.toJTSGeometry();
 

@@ -104,7 +104,15 @@ public class SubFormExpropiationsAddReversions extends JPanel implements IWindow
 	    if (insertedGeom != null) {
 		fincaGeometry = insertedGeom;
 	    }else {
-		fincaGeometry = layer.getSource().getFeature(currentRow).getGeometry();
+		int rowIndex = -1;
+		for (int i=0; i<layer.getRecordset().getRowCount(); i++) {
+		    int value = Integer.parseInt(layer.getRecordset().getFieldValue(i, 0).toString());
+		    if (value == currentRow) {
+			rowIndex = i;
+			break;
+		    }
+		}
+		fincaGeometry = layer.getSource().getFeature(rowIndex).getGeometry();
 	    }
 	    Geometry jtsFincaGeometry = fincaGeometry.toJTSGeometry();
 
