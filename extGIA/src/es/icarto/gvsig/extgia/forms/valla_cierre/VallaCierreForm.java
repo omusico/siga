@@ -64,6 +64,9 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
     protected void fillSpecificValues() {
 	super.fillSpecificValues();
 
+	direccionPIDomainHandler.updateComboBoxValues();
+	direccionPFDomainHandler.updateComboBoxValues();
+
 	if (vallaCierreIDWidget.getText().isEmpty()) {
 	    vallaCierreid = new VallaCierreCalculateIDValue(this, getWidgetComponents(),
 		    DBFieldNames.ID_VALLA_CIERRE, DBFieldNames.ID_VALLA_CIERRE);
