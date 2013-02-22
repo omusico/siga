@@ -9,7 +9,7 @@
   <property name="install"  location="install"/>
   <property name="manzip"  location="manzip"/>
   <property name="lib"  location="lib"/>
-  <property name="andami" location="../_fwAndami"/>
+  <property name="andami" location="../../../_fwAndami"/>
   <property name="mainplugin" value="com.iver.cit.gvsig"/>
   <property name="plugin" value="org.gvsig.mapsheets.print.series"/>
 
