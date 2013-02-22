@@ -67,6 +67,9 @@
 		<copy todir="${dist}/plantillas">
 			<fileset dir="plantillas" includes="*" />
 		</copy>
+		<copy todir="${dist}/rejillas">
+			<fileset dir="rejillas" includes="*" />
+		</copy>
 		<copy todir="${dist}/reports">
 			<fileset dir="reports" includes="*" />
 		</copy>
