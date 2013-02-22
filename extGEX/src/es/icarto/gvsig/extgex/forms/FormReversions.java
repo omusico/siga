@@ -371,11 +371,11 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 	String superficie;
 	String importe;
 
-	// Check if ID expropiation exists into expropiations table
+	// Check if ID finca exists into exp_finca table
 	for (int i=0; i<fincasAfectadas.getRowCount(); i++) {
 	    idFinca = fincasAfectadas.getModel().getValueAt(i, 0).toString();
 	    query = "SELECT " + DBNames.FIELD_ID_FINCA_EXPROPIACIONES + " " +
-		    "FROM " + DBNames.SCHEMA_DATA + "." + DBNames.TABLE_EXPROPIACIONES + " " +
+		    "FROM " + DBNames.SCHEMA_DATA + "." + DBNames.TABLE_FINCAS + " " +
 		    "WHERE " + DBNames.FIELD_ID_FINCA_EXPROPIACIONES + " = '" + idFinca + "';";
 	    try {
 		statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
