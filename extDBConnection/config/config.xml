@@ -15,8 +15,13 @@
             </tool-bar>
         </extension>
         <extension
-            class-name="es.udc.cartolab.gvsig.users.CloseSessionExtension"
+            class-name="es.udc.cartolab.gvsig.users.ChangePassExtension"
             active="true" description="Change password">
+            <menu action-command="CHPWD" text="data_base_menu/change_password" position="20899"/>
+        </extension>
+        <extension
+            class-name="es.udc.cartolab.gvsig.users.CloseSessionExtension"
+            active="true" description="Close session">
             <menu action-command="CLOSE" icon="DBClose"
                 text="data_base_menu/close_session" position="20900"/>
             <tool-bar name="dbconnection" position="20">
