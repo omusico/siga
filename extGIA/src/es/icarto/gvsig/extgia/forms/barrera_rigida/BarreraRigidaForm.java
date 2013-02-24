@@ -83,6 +83,7 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 		"audasa_extgia", getTrabajosDBTableName(),
 		DBFieldNames.trabajoFields, trabajoColumnsSize, "id_barrera_rigida",
 		barreraRigidaIDWidget.getText());
+	repaint();
     }
 
     protected void initListeners() {

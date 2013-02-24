@@ -95,6 +95,7 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 	SqlUtils.createEmbebedTableFromDB(trabajos,
 		"audasa_extgia", getTrabajosDBTableName(),
 		DBFieldNames.trabajoFields, trabajoColumnsSize, "id_isleta", isletaIDWidget.getText());
+	repaint();
     }
 
     protected void initListeners() {

@@ -101,6 +101,7 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 		"audasa_extgia", "senhalizacion_vertical_senhales", DBFieldNames.senhales,
 		senhalesColumnsSize, "id_elemento_senhalizacion",
 		elementoSenhalizacionIDWidget.getText());
+	repaint();
     }
 
     protected void initListeners() {

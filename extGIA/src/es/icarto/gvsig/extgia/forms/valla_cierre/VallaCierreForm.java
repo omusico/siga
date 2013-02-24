@@ -87,6 +87,7 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
 		"audasa_extgia", getTrabajosDBTableName(),
 		DBFieldNames.trabajoFields, trabajoColumnsSize, "id_valla",
 		vallaCierreIDWidget.getText());
+	repaint();
     }
 
     protected void initListeners() {

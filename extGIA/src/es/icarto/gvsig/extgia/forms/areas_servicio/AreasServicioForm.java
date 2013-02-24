@@ -86,6 +86,7 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 	SqlUtils.createEmbebedTableFromDB(ramales, DBFieldNames.GIA_SCHEMA,
 		"areas_servicio_ramales", DBFieldNames.ramales,
 		null, "id_area_servicio", areaServicioIDWidget.getText());
+	repaint();
     }
 
     protected void initListeners() {

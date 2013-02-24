@@ -84,6 +84,7 @@ public class JuntasForm extends AbstractFormWithLocationWidgets {
 		"audasa_extgia", getTrabajosDBTableName(),
 		DBFieldNames.trabajoFields, trabajoColumnsSize, "id_junta",
 		juntaIDWidget.getText());
+	repaint();
     }
 
     protected void initListeners() {

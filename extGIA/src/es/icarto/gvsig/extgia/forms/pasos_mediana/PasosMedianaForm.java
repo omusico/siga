@@ -71,6 +71,7 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
 		"audasa_extgia", getTrabajosDBTableName(),
 		DBFieldNames.trabajoFields, trabajoColumnsSize, "id_paso_mediana",
 		pasoMedianaIDWidget.getText());
+	repaint();
     }
 
     protected void initListeners() {

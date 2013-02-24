@@ -85,6 +85,7 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 		"audasa_extgia", getTrabajosDBTableName(),
 		DBFieldNames.firmeTrabajoFields, trabajoColumnsSize, "id_firme",
 		firmeIDWidget.getText());
+	repaint();
     }
 
     @Override

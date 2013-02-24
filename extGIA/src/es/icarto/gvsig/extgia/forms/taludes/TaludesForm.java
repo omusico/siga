@@ -162,6 +162,7 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	SqlUtils.createEmbebedTableFromDB(trabajos,
 		"audasa_extgia", "taludes_trabajos",
 		DBFieldNames.trabajoFields, trabajoColumnsSize, "id_talud", taludIDWidget.getText());
+	repaint();
     }
 
     protected void initListeners() {
