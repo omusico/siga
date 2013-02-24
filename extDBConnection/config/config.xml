@@ -17,7 +17,8 @@
         <extension
             class-name="es.udc.cartolab.gvsig.users.ChangePassExtension"
             active="true" description="Change password">
-            <menu action-command="CHPWD" text="data_base_menu/change_password" position="20899"/>
+            <menu action-command="CHPWD" icon="images/sessionchpwd.png" 
+            	text="data_base_menu/change_password" position="20899"/>
         </extension>
         <extension
             class-name="es.udc.cartolab.gvsig.users.CloseSessionExtension"
