@@ -295,7 +295,7 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
     public class DeleteCarreteraListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    deleteElement(carreteras, "enlace_carreteras_enlazadas",
+	    deleteElement(carreteras, "enlaces_carreteras_enlazadas",
 		    "id_carretera_enlazada");
 	}
     }
@@ -303,7 +303,7 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
     public class DeleteRamalListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    deleteElement(ramales, "enlace_ramales",
+	    deleteElement(ramales, "enlaces_ramales",
 		    "id_ramal");
 	}
     }
