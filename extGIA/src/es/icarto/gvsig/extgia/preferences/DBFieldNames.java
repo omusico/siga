@@ -242,6 +242,12 @@ public class DBFieldNames {
 	    break;
 	case Senhalizacion_Vertical:
 	    pk = "id_senhal_vertical";
+	    break;
+	case Firme:
+	    pk = "id_firme";
+	    break;
+	case Valla_Cierre:
+	    pk = "id_valla";
 	}
 	return pk;
     }
