@@ -64,8 +64,11 @@ public class SqlUtils {
 			//If type is date (91) then we use varchar(12) in order to
 			//create the Value since date Value causes problems
 		    }else if (rsMetaData.getColumnType(i+1) == 91){
+			SimpleDateFormat dateFormat = DateFormatNT.getDateFormat();
+			Date date = rs.getDate(i+1);
+			String dateAsString = dateFormat.format(date);
 			values.put(rsMetaData.getColumnName(i+1),
-				ValueFactory.createValueByType(rs.getString(i+1),
+				ValueFactory.createValueByType((dateAsString),
 					12));
 		    }else {
 			values.put(rsMetaData.getColumnName(i+1),
