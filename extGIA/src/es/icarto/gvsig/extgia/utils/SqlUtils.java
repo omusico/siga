@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -18,6 +20,7 @@ import com.hardcode.gdbms.engine.values.Value;
 import com.hardcode.gdbms.engine.values.ValueFactory;
 
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
+import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class SqlUtils {
@@ -157,8 +160,11 @@ public class SqlUtils {
 			//If type is date (91) then we use varchar(12) in order to
 			//create the Value since date Value causes problems
 		    }else if (rsMetaData.getColumnType(i+1) == 91){
+			SimpleDateFormat dateFormat = DateFormatNT.getDateFormat();
+			Date date = rs.getDate(i+1);
+			String dateAsString = dateFormat.format(date);
 			tableValues[i] =
-				ValueFactory.createValueByType(rs.getString(i+1),
+				ValueFactory.createValueByType(dateAsString,
 					12);
 		    }else {
 			tableValues[i] =
@@ -202,8 +208,11 @@ public class SqlUtils {
 			//If type is date (91) then we use varchar(12) in order to
 			//create the Value since date Value causes problems
 		    }else if (rsMetaData.getColumnType(i+1) == 91){
+			SimpleDateFormat dateFormat = DateFormatNT.getDateFormat();
+			Date date = rs.getDate(i+1);
+			String dateAsString = dateFormat.format(date);
 			tableValues[i] =
-				ValueFactory.createValueByType(rs.getString(i+1),
+				ValueFactory.createValueByType(dateAsString,
 					12);
 		    }else {
 			tableValues[i] =
