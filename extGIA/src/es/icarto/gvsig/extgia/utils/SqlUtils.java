@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import com.hardcode.gdbms.engine.values.ValueFactory;
 
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
+import es.udc.cartolab.gvsig.navtable.format.DoubleFormatNT;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class SqlUtils {
@@ -70,6 +72,12 @@ public class SqlUtils {
 			values.put(rsMetaData.getColumnName(i+1),
 				ValueFactory.createValueByType((dateAsString),
 					12));
+		    }else if (rsMetaData.getColumnType(i+1) == 2){
+			NumberFormat doubleFormat = DoubleFormatNT.getDisplayingFormat();
+			Double doubleValue = rs.getDouble(i+1);
+			String doubleAsString = doubleFormat.format(doubleValue);
+			values.put(rsMetaData.getColumnName(i+1),
+				ValueFactory.createValueByType((doubleAsString), 12));
 		    }else {
 			values.put(rsMetaData.getColumnName(i+1),
 				ValueFactory.createValueByType(rs.getString(i+1),
@@ -169,6 +177,13 @@ public class SqlUtils {
 			tableValues[i] =
 				ValueFactory.createValueByType(dateAsString,
 					12);
+		    }else if (rsMetaData.getColumnType(i+1) == 2){
+			NumberFormat doubleFormat = DoubleFormatNT.getDisplayingFormat();
+			Double doubleValue = rs.getDouble(i+1);
+			String doubleAsString = doubleFormat.format(doubleValue);
+			tableValues[i] =
+				ValueFactory.createValueByType(doubleAsString,
+					12);
 		    }else {
 			tableValues[i] =
 				ValueFactory.createValueByType(rs.getString(i+1),
@@ -216,6 +231,13 @@ public class SqlUtils {
 			String dateAsString = dateFormat.format(date);
 			tableValues[i] =
 				ValueFactory.createValueByType(dateAsString,
+					12);
+		    }else if (rsMetaData.getColumnType(i+1) == 2){
+			NumberFormat doubleFormat = DoubleFormatNT.getDisplayingFormat();
+			Double doubleValue = rs.getDouble(i+1);
+			String doubleAsString = doubleFormat.format(doubleValue);
+			tableValues[i] =
+				ValueFactory.createValueByType(doubleAsString,
 					12);
 		    }else {
 			tableValues[i] =

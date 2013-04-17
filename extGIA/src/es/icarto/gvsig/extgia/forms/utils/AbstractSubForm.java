@@ -241,8 +241,12 @@ IWindowListener {
 		}
 	    } else if (comp instanceof JTextField) {
 		if (!((JTextField) comp).getText().isEmpty()) {
+		    String text = ((JTextField) comp).getText();
+		    if (text.contains(",")) {
+			text = text.replace(',', '.');
+		    }
 		    formData.put(comp.getName(),
-			    (ValueFactory.createValue(((JTextField) comp).getText().toString())));
+			    ValueFactory.createValue((text)));
 		}
 	    } else if (comp instanceof JTextArea) {
 		if (!((JTextArea) comp).getText().isEmpty()) {
