@@ -449,7 +449,7 @@ public class MapSheetsLayoutTemplate extends Layout implements IMapSheetsIdentif
 	}
 	// ==============================================
 	// load frames from template
-	audasaTemplate.setProperty("numero_hoja", (String) grid.getTheMemoryDriver().getCodes().get(0));
+	//audasaTemplate.setProperty("numero_hoja", (String) grid.getTheMemoryDriver().getCodes().get(0));
 	for (int i=0; i<framesFromTemplate.length; i++) {
 	    getLayoutContext().addFFrame(framesFromTemplate[i], true, true);
 	    if(framesFromTemplate[i] instanceof FFrameText) {
@@ -894,6 +894,17 @@ public class MapSheetsLayoutTemplate extends Layout implements IMapSheetsIdentif
 
     public void setPrintSelectedOnly(boolean o) {
 	printSelectedOnly = o;
+    }
+
+    public void updateAudasaSheetCode(String audasaSheetCode) {
+	for (int i=0; i<framesFromTemplate.length; i++) {
+	    if (framesFromTemplate[i] instanceof FFrameText) {
+		if (((FFrameText) framesFromTemplate[i]).getTitle().equalsIgnoreCase("numero_hoja")) {
+		    ((FFrameText) framesFromTemplate[i]).clearText();
+		    ((FFrameText) framesFromTemplate[i]).addText(audasaSheetCode);
+		}
+	    }
+	}
     }
 
 
