@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -42,6 +43,7 @@ import es.icarto.gvsig.extgex.preferences.GEXPreferences;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.launcher.ILauncherForm;
 import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
+import es.udc.cartolab.gvsig.navtable.format.DoubleFormatNT;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class FormReversions extends AbstractForm implements ILauncherForm, TableModelListener {
@@ -337,7 +339,10 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 	    while (rs.next()) {
 		reversionData[0] = ValueFactory.createValue(rs.getString(1));
 		if (rs.getObject(2) != null) {
-		    reversionData[1] = ValueFactory.createValue(rs.getDouble(2));
+		    NumberFormat doubleFormat = DoubleFormatNT.getDisplayingFormat();
+		    Double doubleValue = rs.getDouble(2);
+		    String doubleAsString = doubleFormat.format(doubleValue);
+		    reversionData[1] = ValueFactory.createValue(doubleAsString);
 		}else {
 		    reversionData[1] = null;
 		}
@@ -414,6 +419,9 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 	    idFinca = fincasAfectadas.getModel().getValueAt(i, 0).toString();
 	    if (fincasAfectadas.getModel().getValueAt(i, 1) != null) {
 		superficie = fincasAfectadas.getModel().getValueAt(i, 1).toString();
+		if (superficie.contains(",")) {
+		    superficie = superficie.replace(",", ".");
+		}
 	    }else {
 		superficie = null;
 	    }

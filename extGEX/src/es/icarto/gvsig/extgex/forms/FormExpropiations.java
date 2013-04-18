@@ -617,7 +617,10 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	    while (rs.next()) {
 		reversionData[0] = ValueFactory.createValue(rs.getString(1));
 		if (rs.getObject(2) != null) {
-		    reversionData[1] = ValueFactory.createValue(rs.getDouble(2));
+		    NumberFormat doubleFormat = DoubleFormatNT.getDisplayingFormat();
+		    Double doubleValue = rs.getDouble(2);
+		    String doubleAsString = doubleFormat.format(doubleValue);
+		    reversionData[1] = ValueFactory.createValue(doubleAsString);
 		}else {
 		    reversionData[1] = null;
 		}
@@ -729,6 +732,9 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 		idReversion = reversiones.getModel().getValueAt(i, 0).toString();
 		if (reversiones.getModel().getValueAt(i, 1) != null) {
 		    superficie = reversiones.getModel().getValueAt(i, 1).toString();
+		    if (superficie.contains(",")) {
+			superficie = superficie.replace(",", ".");
+		    }
 		}else {
 		    superficie = null;
 		}
