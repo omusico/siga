@@ -118,7 +118,7 @@ public class SubformExpropiationsAddExpropiation extends JPanel implements IWind
     private Value[] getExpropiationData() {
 	Value[] expropiationData = new Value[2];
 	if (!superficie.getText().isEmpty()) {
-	    expropiationData[0] = ValueFactory.createValue(Double.parseDouble(superficie.getText()));
+	    expropiationData[0] = ValueFactory.createValue(superficie.getText());
 	}
 	if (!cultivo.getSelectedItem().toString().isEmpty()) {
 	    expropiationData[1] = ValueFactory.createValue((cultivo.getSelectedItem().toString()));

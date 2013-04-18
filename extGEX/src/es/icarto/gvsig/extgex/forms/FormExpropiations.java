@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -46,6 +47,7 @@ import es.icarto.gvsig.navtableforms.launcher.ILauncherForm;
 import es.icarto.gvsig.navtableforms.launcher.LauncherParams;
 import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
 import es.icarto.gvsig.navtableforms.validation.listeners.DependentComboboxesHandler;
+import es.udc.cartolab.gvsig.navtable.format.DoubleFormatNT;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class FormExpropiations extends AbstractForm implements ILauncherForm, TableModelListener {
@@ -563,7 +565,10 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	    ResultSet rs = statement.getResultSet();
 	    while (rs.next()) {
 		if (rs.getObject(1) != null) {
-		    expropiationData[0] = ValueFactory.createValue(rs.getDouble(1));
+		    NumberFormat doubleFormat = DoubleFormatNT.getDisplayingFormat();
+		    Double doubleValue = rs.getDouble(1);
+		    String doubleAsString = doubleFormat.format(doubleValue);
+		    expropiationData[0] = ValueFactory.createValue(doubleAsString);
 		}else {
 		    expropiationData[0] = null;
 		}
@@ -776,6 +781,9 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	    try {
 		if (expropiaciones.getModel().getValueAt(i, 0) != null) {
 		    superficie = expropiaciones.getModel().getValueAt(i, 0).toString();
+		    if (superficie.contains(",")) {
+			superficie = superficie.replace(",", ".");
+		    }
 		}else {
 		    superficie = null;
 		}
