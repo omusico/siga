@@ -759,6 +759,8 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 	    if ((src == this.getSheetList()) && (this.getSheetList().getSelectedValues().length == 1)) {
 		SheetComboItem sci = (SheetComboItem) getSheetList().getSelectedValue();
 		layout_template.updateWithSheet(sci.getObject());
+		String code = getSheetList().getSelectedValue().toString();
+		layout_template.updateAudasaSheetCode(code);
 	    }
 	} catch (Exception ex) {
 	    NotificationManager.addError("Getting sheet list. ", ex);

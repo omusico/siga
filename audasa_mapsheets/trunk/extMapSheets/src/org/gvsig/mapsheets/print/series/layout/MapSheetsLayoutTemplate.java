@@ -478,6 +478,8 @@ public class MapSheetsLayoutTemplate extends Layout implements IMapSheetsIdentif
 
 	MapSheetGridGraphic gri = grid.getGraphic(i);
 	updateWithSheet(gri);
+	String code = (String) grid.getCodes().get(i);
+	updateAudasaSheetCode(code);
     }
 
     public void updateWithSheet(MapSheetGridGraphic gri) {
