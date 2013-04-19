@@ -198,7 +198,7 @@ public class SubFormReversionsAddExpropiations extends JPanel implements IWindow
 	    reversionData[1] = ValueFactory.createValue(superficie.getText());
 	}
 	if (!importe.getText().isEmpty()) {
-	    reversionData[2] = ValueFactory.createValue(Integer.parseInt(importe.getText()));
+	    reversionData[2] = ValueFactory.createValue(importe.getText());
 	}
 	return reversionData;
     }

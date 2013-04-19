@@ -347,7 +347,10 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 		    reversionData[1] = null;
 		}
 		if (rs.getObject(3) != null) {
-		    reversionData[2] = ValueFactory.createValue(rs.getInt(3));
+		    NumberFormat doubleFormat = DoubleFormatNT.getDisplayingFormat();
+		    Double doubleValue = rs.getDouble(3);
+		    String doubleAsString = doubleFormat.format(doubleValue);
+		    reversionData[2] = ValueFactory.createValue(doubleAsString);
 		}else {
 		    reversionData[2] = null;
 		}
@@ -427,6 +430,9 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 	    }
 	    if (fincasAfectadas.getModel().getValueAt(i, 2) != null) {
 		importe = fincasAfectadas.getModel().getValueAt(i, 2).toString();
+		if (importe.contains(",")) {
+		    importe = importe.replace(",", ".");
+		}
 	    }else {
 		importe = null;
 	    }
