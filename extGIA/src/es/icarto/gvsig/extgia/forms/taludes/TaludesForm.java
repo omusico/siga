@@ -145,7 +145,11 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     protected void fillSpecificValues() {
 	super.fillSpecificValues();
 
+	//	if (!((JCheckBox) getWidgetComponents().get("cuneta_cabeza")).isSelected()) {
+	//	    cunetaCabeza.setRemoveDependentValues(true);
+	//	}
 	cunetaCabeza.fillSpecificValues();
+
 	cunetaPie.fillSpecificValues();
 	direccionPIDomainHandler.updateComboBoxValues();
 	direccionPFDomainHandler.updateComboBoxValues();
@@ -184,12 +188,13 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	cunetaCabeza = new EnableComponentBasedOnCheckBox(
 		(JCheckBox) getWidgetComponents().get("cuneta_cabeza"),
 		getWidgetComponents().get("cuneta_cabeza_revestida"));
-	cunetaCabeza.setRemoveDependentValues(true);
+	//cunetaCabeza.setRemoveDependentValues(true);
+
 	cunetaCabeza.setListeners();
 	cunetaPie = new EnableComponentBasedOnCheckBox(
 		(JCheckBox) getWidgetComponents().get("cuneta_pie"),
 		getWidgetComponents().get("cuneta_pie_revestida"));
-	cunetaPie.setRemoveDependentValues(true);
+	//cunetaPie.setRemoveDependentValues(true);
 	cunetaPie.setListeners();
 
 	JComboBox direccionPI = (JComboBox) getWidgetComponents().get(

@@ -12,8 +12,8 @@ import javax.swing.JTextField;
 
 public class EnableComponentBasedOnCheckBox implements ActionListener {
 
-    private JComponent[] components;
-    private JCheckBox checkbox;
+    private final JComponent[] components;
+    private final JCheckBox checkbox;
     private boolean removeDependentValues;
 
     public EnableComponentBasedOnCheckBox(JCheckBox checkbox,
@@ -41,7 +41,7 @@ public class EnableComponentBasedOnCheckBox implements ActionListener {
 	boolean enabled = checkbox.isSelected();
 	for (JComponent c : components) {
 	    c.setEnabled(enabled);
-	    if (removeDependentValues) {
+	    if (!enabled) {
 		removeValue(c);
 	    }
 	}
