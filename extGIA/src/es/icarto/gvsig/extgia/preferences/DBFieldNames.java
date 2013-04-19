@@ -19,22 +19,22 @@ public class DBFieldNames {
     "indice_estado as \"Indice Estado\""};
 
     public static String[] genericTrabajoFields = {"id_trabajo as \"ID\"",
-	"fecha as \"Fecha\"",
+	"fecha_certificado as \"Fecha cert\"",
 	"unidad as \"Unidad\"",
-	"medicion_contratista as \"Medida Contratista\"",
-    "medicion_audasa as \"Medida AUDASA\""};
+	"medicion_contratista as \"Medición Contratista\"",
+    "medicion_audasa as \"Medición AUDASA\""};
 
     public static String[] senhalizacionVerticalTrabajoFields = {"id_trabajo as \"ID\"",
-	"fecha as \"Fecha\"",
+	"fecha_certificado as \"Fecha cert\"",
 	"unidad as \"Unidad\"",
-	"medicion_contratista as \"Medida Contratista\"",
-    "medicion_audasa as \"Medida AUDASA\""};
+	"medicion_contratista as \"Medición Contratista\"",
+    "medicion_audasa as \"Medición AUDASA\""};
 
     public static String[] trabajoFields = {"id_trabajo as \"ID\"",
-	"fecha as \"Fecha\"",
+	"fecha_certificado as \"Fecha cert\"",
 	"unidad as \"Unidad\"",
-	"medicion_contratista as \"Medida Contratista\"",
-    "medicion_audasa as \"Medida AUDASA\""};
+	"medicion_contratista as \"Medición Contratista\"",
+    "medicion_audasa as \"Medición AUDASA\""};
 
     public static String[] carreteras_enlazadas = {"id_carretera_enlazada as \"ID Carretera\"",
 	"clave_carretera as \"Clave\"",
@@ -77,7 +77,7 @@ public class DBFieldNames {
     "fecha_inspeccion as \"Fecha Inspección\""};
 
     public static String[] firmeTrabajoFields = {"id_trabajo as \"ID\"",
-	"fecha as \"Fecha\"",
+	"fecha_certificado as \"Fecha cert\"",
 	"pk_inicial as \"PK inicio\"",
 	"pk_final as \"PK fin\"",
 	"sentido as \"Sentido\"",

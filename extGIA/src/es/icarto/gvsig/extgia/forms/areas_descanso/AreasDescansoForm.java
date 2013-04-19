@@ -80,9 +80,10 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 		DBFieldNames.reconocimientoEstadoFields, null, "id_area_descanso",
 		areaDescansoIDWidget.getText());
 
+	int[] trabajoColumnsSize = {1, 1, 110, 70, 60};
 	SqlUtils.createEmbebedTableFromDB(trabajos, DBFieldNames.GIA_SCHEMA,
 		getTrabajosDBTableName(), DBFieldNames.trabajoFields,
-		null, "id_area_descanso", areaDescansoIDWidget.getText());
+		trabajoColumnsSize, "id_area_descanso", areaDescansoIDWidget.getText());
 
 	DBFieldNames.setRamalesFields(DBFieldNames.ramales_area_descanso);
 	SqlUtils.createEmbebedTableFromDB(ramales, DBFieldNames.GIA_SCHEMA,

@@ -87,7 +87,7 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 	}
 
 	// Embebed Tables
-	int[] trabajoColumnsSize = {1, 1, 150, 60, 40 };
+	int[] trabajoColumnsSize = {1, 1, 130, 70, 50 };
 	SqlUtils.createEmbebedTableFromDB(reconocimientoEstado,
 		"audasa_extgia", getReconocimientosDBTableName(),
 		DBFieldNames.reconocimientoEstadoFields, null, "id_elemento_senhalizacion",
