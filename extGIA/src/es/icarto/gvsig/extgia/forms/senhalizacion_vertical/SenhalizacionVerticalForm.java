@@ -91,16 +91,19 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 	SqlUtils.createEmbebedTableFromDB(reconocimientoEstado,
 		"audasa_extgia", getReconocimientosDBTableName(),
 		DBFieldNames.reconocimientoEstadoFields, null, "id_elemento_senhalizacion",
-		elementoSenhalizacionIDWidget.getText());
+		elementoSenhalizacionIDWidget.getText(),
+		"n_inspeccion");
 	SqlUtils.createEmbebedTableFromDB(trabajos,
 		"audasa_extgia", getTrabajosDBTableName(),
 		DBFieldNames.trabajoFields, trabajoColumnsSize, "id_elemento_senhalizacion",
-		elementoSenhalizacionIDWidget.getText());
+		elementoSenhalizacionIDWidget.getText(),
+		"id_trabajo");
 	int[] senhalesColumnsSize = {20, 45, 45, 180, 40, 40};
 	SqlUtils.createEmbebedTableFromDB(senhales,
 		"audasa_extgia", "senhalizacion_vertical_senhales", DBFieldNames.senhales,
 		senhalesColumnsSize, "id_elemento_senhalizacion",
-		elementoSenhalizacionIDWidget.getText());
+		elementoSenhalizacionIDWidget.getText(),
+		"id_senhal");
 	repaint();
     }
 

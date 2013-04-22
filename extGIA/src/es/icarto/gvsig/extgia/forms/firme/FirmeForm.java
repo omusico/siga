@@ -80,11 +80,11 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 	SqlUtils.createEmbebedTableFromDB(reconocimientoEstado,
 		"audasa_extgia", getReconocimientosDBTableName(),
 		DBFieldNames.firmeReconocimientoEstadoFields, null, "id_firme",
-		firmeIDWidget.getText());
+		firmeIDWidget.getText(), "n_inspeccion");
 	SqlUtils.createEmbebedTableFromDB(trabajos,
 		"audasa_extgia", getTrabajosDBTableName(),
 		DBFieldNames.firmeTrabajoFields, trabajoColumnsSize, "id_firme",
-		firmeIDWidget.getText());
+		firmeIDWidget.getText(), "id_trabajo");
 	repaint();
     }
 

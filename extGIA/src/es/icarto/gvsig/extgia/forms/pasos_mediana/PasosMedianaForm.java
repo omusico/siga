@@ -66,11 +66,13 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
 	SqlUtils.createEmbebedTableFromDB(reconocimientoEstado,
 		"audasa_extgia", getReconocimientosDBTableName(),
 		DBFieldNames.reconocimientoEstadoFields, null, "id_paso_mediana",
-		pasoMedianaIDWidget.getText());
+		pasoMedianaIDWidget.getText(),
+		"n_inspeccion");
 	SqlUtils.createEmbebedTableFromDB(trabajos,
 		"audasa_extgia", getTrabajosDBTableName(),
 		DBFieldNames.trabajoFields, trabajoColumnsSize, "id_paso_mediana",
-		pasoMedianaIDWidget.getText());
+		pasoMedianaIDWidget.getText(),
+		"id_trabajo");
 	repaint();
     }
 

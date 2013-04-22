@@ -78,11 +78,11 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 	SqlUtils.createEmbebedTableFromDB(reconocimientoEstado,
 		"audasa_extgia", getReconocimientosDBTableName(),
 		DBFieldNames.reconocimientoEstadoFields, null, "id_barrera_rigida",
-		barreraRigidaIDWidget.getText());
+		barreraRigidaIDWidget.getText(), "n_inspeccion");
 	SqlUtils.createEmbebedTableFromDB(trabajos,
 		"audasa_extgia", getTrabajosDBTableName(),
 		DBFieldNames.trabajoFields, trabajoColumnsSize, "id_barrera_rigida",
-		barreraRigidaIDWidget.getText());
+		barreraRigidaIDWidget.getText(), "id_trabajo");
 	repaint();
     }
 

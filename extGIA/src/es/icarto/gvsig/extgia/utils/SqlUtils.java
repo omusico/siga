@@ -127,7 +127,7 @@ public class SqlUtils {
     }
 
     public static void createEmbebedTableFromDB (JTable embebedTableWidget, String schema,
-	    String tablename, String[] fields, int[] columnsSize, String idField, String idValue) {
+	    String tablename, String[] fields, int[] columnsSize, String idField, String idValue, String orderBy) {
 	ArrayList<String> columnsName = new ArrayList<String>();
 	@SuppressWarnings("serial")
 	DefaultTableModel tableModel = new DefaultTableModel() {
@@ -142,7 +142,11 @@ public class SqlUtils {
 	    query = query + fields[i] + ", ";
 	}
 	query = query + fields[fields.length-1]+ " FROM " + schema + "." + tablename +
-		" WHERE " + idField + " = '" + idValue + "';";
+		" WHERE " + idField + " = '" + idValue + "'";
+	if (orderBy != null) {
+	    query = query + " ORDER BY " + orderBy + ";";
+	}
+	query = query + ";";
 	try {
 	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
 	    statement.execute();
@@ -200,7 +204,7 @@ public class SqlUtils {
     }
 
     public static void reloadEmbebedTable (JTable embebedTable, String[] fields,
-	    String schema, String tableName, String idField, String idValue) {
+	    String schema, String tableName, String idField, String idValue, String orderBy) {
 	PreparedStatement statement;
 	DefaultTableModel tableModel = (DefaultTableModel) embebedTable.getModel();
 	for (int i=tableModel.getRowCount()-1; i>=0; i--) {
@@ -211,8 +215,12 @@ public class SqlUtils {
 	    query = query + field + ",";
 	}
 	query = query +  "FROM " + schema + "." + tableName +
-		" WHERE " + idField + " = '" + idValue + "';";
+		" WHERE " + idField + " = '" + idValue + "'";
 	query = query.replace(",FROM", " FROM");
+	if  (orderBy != null) {
+	    query = query + " ORDER BY " + orderBy + ";";
+	}
+	query = query + ";";
 	try {
 	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
 	    statement.execute();

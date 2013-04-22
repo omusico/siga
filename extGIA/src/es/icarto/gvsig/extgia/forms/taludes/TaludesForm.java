@@ -162,10 +162,10 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	int[] trabajoColumnsSize = {1, 1, 110, 70, 60};
 	SqlUtils.createEmbebedTableFromDB(reconocimientoEstado,
 		"audasa_extgia", "taludes_reconocimiento_estado",
-		DBFieldNames.reconocimientoEstadoFields, null, "id_talud", taludIDWidget.getText());
+		DBFieldNames.reconocimientoEstadoFields, null, "id_talud", taludIDWidget.getText(), "n_inspeccion");
 	SqlUtils.createEmbebedTableFromDB(trabajos,
 		"audasa_extgia", "taludes_trabajos",
-		DBFieldNames.trabajoFields, trabajoColumnsSize, "id_talud", taludIDWidget.getText());
+		DBFieldNames.trabajoFields, trabajoColumnsSize, "id_talud", taludIDWidget.getText(), "id_trabajo");
 	repaint();
     }
 

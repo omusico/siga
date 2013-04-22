@@ -82,11 +82,11 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
 	SqlUtils.createEmbebedTableFromDB(reconocimientoEstado,
 		"audasa_extgia", getReconocimientosDBTableName(),
 		DBFieldNames.reconocimientoEstadoFields, null, "id_valla",
-		vallaCierreIDWidget.getText());
+		vallaCierreIDWidget.getText(), "n_inspeccion");
 	SqlUtils.createEmbebedTableFromDB(trabajos,
 		"audasa_extgia", getTrabajosDBTableName(),
 		DBFieldNames.trabajoFields, trabajoColumnsSize, "id_valla",
-		vallaCierreIDWidget.getText());
+		vallaCierreIDWidget.getText(), "id_trabajo");
 	repaint();
     }
 

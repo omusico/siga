@@ -84,15 +84,15 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 	DBFieldNames.setReconocimientoEstadoFields(DBFieldNames.enlacesReconocimientoEstadoFields);
 	SqlUtils.createEmbebedTableFromDB(reconocimientoEstado,
 		"audasa_extgia", getReconocimientosDBTableName(),
-		DBFieldNames.reconocimientoEstadoFields, null, "id_enlace", enlaceIDWidget.getText());
+		DBFieldNames.reconocimientoEstadoFields, null, "id_enlace", enlaceIDWidget.getText(), "n_inspeccion");
 
 	SqlUtils.createEmbebedTableFromDB(carreteras, DBFieldNames.GIA_SCHEMA,
 		"enlaces_carreteras_enlazadas", DBFieldNames.carreteras_enlazadas,
-		null, "id_enlace", enlaceIDWidget.getText());
+		null, "id_enlace", enlaceIDWidget.getText(), "id_carretera");
 
 	SqlUtils.createEmbebedTableFromDB(ramales, DBFieldNames.GIA_SCHEMA,
 		"enlaces_ramales", DBFieldNames.ramales,
-		null, "id_enlace", enlaceIDWidget.getText());
+		null, "id_enlace", enlaceIDWidget.getText(), "id_ramal");
 	repaint();
     }
 
