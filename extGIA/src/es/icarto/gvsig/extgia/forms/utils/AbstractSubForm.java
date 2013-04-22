@@ -213,7 +213,7 @@ IWindowListener {
 	    }else if (embebedTable.getName().equalsIgnoreCase("tabla_senhales")) {
 		fields = DBFieldNames.senhales;
 		SqlUtils.reloadEmbebedTable(embebedTable, fields, DBFieldNames.GIA_SCHEMA,
-			dbTableName, idElementField, idElementValue, "id_senhal");
+			dbTableName, idElementField, idElementValue, "id_senhal_vertical");
 	    }else if (embebedTable.getName().equalsIgnoreCase("tabla_ramales")) {
 		fields = DBFieldNames.ramales;
 		SqlUtils.reloadEmbebedTable(embebedTable, fields, DBFieldNames.GIA_SCHEMA,
