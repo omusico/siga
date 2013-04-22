@@ -711,7 +711,7 @@
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
         <property key="x" value="27.88"/>
-        <property key="y" value="19.56"/>
+        <property key="y" value="19.58"/>
         <property key="w" value="0.6"/>
         <property key="h" value="0.2"/>
         <property key="m_Selected" value="0"/>

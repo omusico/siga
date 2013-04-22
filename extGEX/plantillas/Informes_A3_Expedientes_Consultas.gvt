@@ -822,7 +822,7 @@
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
         <property key="x" value="39.18"/>
-        <property key="y" value="28.26"/>
+        <property key="y" value="28.28"/>
         <property key="w" value="0.6"/>
         <property key="h" value="0.2"/>
         <property key="m_Selected" value="0"/>

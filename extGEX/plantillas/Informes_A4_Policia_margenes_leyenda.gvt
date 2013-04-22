@@ -857,7 +857,7 @@
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
         <property key="x" value="23.37"/>
-        <property key="y" value="19.16"/>
+        <property key="y" value="19.2"/>
         <property key="w" value="0.6"/>
         <property key="h" value="0.4"/>
         <property key="m_Selected" value="0"/>
