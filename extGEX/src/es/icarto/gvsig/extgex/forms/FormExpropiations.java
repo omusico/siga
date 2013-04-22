@@ -467,13 +467,13 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
     }
 
     private String setImporteTotalPagado() {
-	int importe_mutuo_acuerdo_int;
-	int importe_anticipo_int;
-	int importe_deposito_previo_pagado_int;
-	int importe_deposito_previo_consignado_int;
-	int importe_mutuo_acuerdo_parcial_int;
-	int importe_pagos_varios_int;
-	int importe_pagado_total_int;
+	double importe_mutuo_acuerdo_double;
+	double importe_anticipo_double;
+	double importe_deposito_previo_pagado_double;
+	double importe_deposito_previo_consignado_double;
+	double importe_mutuo_acuerdo_parcial_double;
+	double importe_pagos_varios_double;
+	double importe_pagado_total_double;
 
 	if (importe_mutuo_acuerdo.getText().isEmpty() &&
 		importe_anticipo.getText().isEmpty() &&
@@ -484,39 +484,63 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	    importe_pagado_total.setText("");
 	}else {
 	    if (!importe_mutuo_acuerdo.getText().isEmpty()) {
-		importe_mutuo_acuerdo_int = Integer.parseInt(importe_mutuo_acuerdo.getText());
+		String importe = importe_mutuo_acuerdo.getText();
+		if (importe.contains(",")) {
+		    importe = importe.replace(",", ".");
+		}
+		importe_mutuo_acuerdo_double = Double.parseDouble(importe);
 	    }else {
-		importe_mutuo_acuerdo_int = 0;
+		importe_mutuo_acuerdo_double = 0.0;
 	    }
 	    if (!importe_anticipo.getText().isEmpty()) {
-		importe_anticipo_int = Integer.parseInt(importe_anticipo.getText());
+		String importe = importe_anticipo.getText();
+		if (importe.contains(",")) {
+		    importe = importe.replace(",", ".");
+		}
+		importe_anticipo_double = Double.parseDouble(importe);
 	    }else {
-		importe_anticipo_int = 0;
+		importe_anticipo_double = 0.0;
 	    }
 	    if (!importe_deposito_previo_pagado.getText().isEmpty()) {
-		importe_deposito_previo_pagado_int = Integer.parseInt(importe_deposito_previo_pagado.getText());
+		String importe = importe_deposito_previo_pagado.getText();
+		if (importe.contains(",")) {
+		    importe = importe.replace(",", ".");
+		}
+		importe_deposito_previo_pagado_double = Double.parseDouble(importe);
 	    }else {
-		importe_deposito_previo_pagado_int = 0;
+		importe_deposito_previo_pagado_double = 0.0;
 	    }
 	    if (!importe_deposito_previo_consignado.getText().isEmpty()) {
-		importe_deposito_previo_consignado_int = Integer.parseInt(importe_deposito_previo_consignado.getText());
+		String importe = importe_deposito_previo_consignado.getText();
+		if (importe.contains(",")) {
+		    importe = importe.replace(",", ".");
+		}
+		importe_deposito_previo_consignado_double = Double.parseDouble(importe);
 	    }else {
-		importe_deposito_previo_consignado_int = 0;
+		importe_deposito_previo_consignado_double = 0.0;
 	    }
 	    if (!importe_mutuo_acuerdo_parcial.getText().isEmpty()) {
-		importe_mutuo_acuerdo_parcial_int = Integer.parseInt(importe_mutuo_acuerdo_parcial.getText());
+		String importe = importe_mutuo_acuerdo_parcial.getText();
+		if (importe.contains(",")) {
+		    importe = importe.replace(",", ".");
+		}
+		importe_mutuo_acuerdo_parcial_double = Double.parseDouble(importe);
 	    }else {
-		importe_mutuo_acuerdo_parcial_int = 0;
+		importe_mutuo_acuerdo_parcial_double = 0.0;
 	    }
 	    if (!importe_pagos_varios.getText().isEmpty()) {
-		importe_pagos_varios_int = Integer.parseInt(importe_pagos_varios.getText());
+		String importe = importe_pagos_varios.getText();
+		if (importe.contains(",")) {
+		    importe = importe.replace(",", ".");
+		}
+		importe_pagos_varios_double = Double.parseDouble(importe);
 	    }else {
-		importe_pagos_varios_int = 0;
+		importe_pagos_varios_double = 0.0;
 	    }
-	    importe_pagado_total_int = importe_mutuo_acuerdo_int + importe_anticipo_int +
-		    importe_deposito_previo_pagado_int + importe_deposito_previo_consignado_int +
-		    importe_mutuo_acuerdo_parcial_int + importe_pagos_varios_int;
-	    importe_pagado_total.setText(String.valueOf(importe_pagado_total_int));
+	    importe_pagado_total_double = importe_mutuo_acuerdo_double + importe_anticipo_double +
+		    importe_deposito_previo_pagado_double + importe_deposito_previo_consignado_double +
+		    importe_mutuo_acuerdo_parcial_double + importe_pagos_varios_double;
+	    importe_pagado_total.setText(String.valueOf(importe_pagado_total_double));
 	}
 	return importe_pagado_total.getText();
     }
