@@ -21,7 +21,7 @@ public class TrabajosReport extends Report {
 		"ID Elemento",
 		"Fecha",
 		"Unidad",
-		"Medida Contratista",
+		"Medición Contratista",
 		"Medición AUDASA",
 		"Observaciones",
 		"Fecha Certificado"
