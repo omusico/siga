@@ -72,7 +72,7 @@ public abstract class Report {
 
     private void writeFilters(Document document, String[] filters) {
 	try {
-	    Paragraph amP = new Paragraph("Area Mantenimiento: " + filters[0],
+	    Paragraph amP = new Paragraph("Área Mantenimiento: " + filters[0],
 		    bodyBoldStyle);
 	    document.add(amP);
 	    Paragraph bcP = new Paragraph("Base Contratista: " + filters[1], bodyBoldStyle);
