@@ -1,3 +1,4 @@
 binaries
 **/bin
 **/bin-test
+*.jar
