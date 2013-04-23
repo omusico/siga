@@ -88,7 +88,7 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 
 	SqlUtils.createEmbebedTableFromDB(carreteras, DBFieldNames.GIA_SCHEMA,
 		"enlaces_carreteras_enlazadas", DBFieldNames.carreteras_enlazadas,
-		null, "id_enlace", enlaceIDWidget.getText(), "id_carretera");
+		null, "id_enlace", enlaceIDWidget.getText(), "id_carretera_enlazada");
 
 	SqlUtils.createEmbebedTableFromDB(ramales, DBFieldNames.GIA_SCHEMA,
 		"enlaces_ramales", DBFieldNames.ramales,

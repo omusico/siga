@@ -209,7 +209,7 @@ IWindowListener {
 	    }else if (embebedTable.getName().equalsIgnoreCase("tabla_carreteras")) {
 		fields = DBFieldNames.carreteras_enlazadas;
 		SqlUtils.reloadEmbebedTable(embebedTable, fields, DBFieldNames.GIA_SCHEMA,
-			dbTableName, idElementField, idElementValue, "id_carretera");
+			dbTableName, idElementField, idElementValue, "id_carretera_enlazada");
 	    }else if (embebedTable.getName().equalsIgnoreCase("tabla_senhales")) {
 		fields = DBFieldNames.senhales;
 		SqlUtils.reloadEmbebedTable(embebedTable, fields, DBFieldNames.GIA_SCHEMA,
