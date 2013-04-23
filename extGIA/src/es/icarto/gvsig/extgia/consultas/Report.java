@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -25,6 +26,8 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfPageEventHelper;
 import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.rtf.style.RtfParagraphStyle;
+
+import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 
 public abstract class Report {
 
@@ -184,9 +187,16 @@ public abstract class Report {
 	    while (resultMap.next()) {
 		for (int column = 1; column <= getColumnNames().length; column++) {
 		    if (resultMap.getString(column) != null) {
-			value = new Paragraph(resultMap
-				.getString(column).toString(),
-				cellBoldStyle);
+			if (getColumnNames()[column-1].contains("Fecha")) {
+			    SimpleDateFormat dateFormat = DateFormatNT.getDateFormat();
+			    Date date = resultMap.getDate(column);
+			    String dateAsString = dateFormat.format(date);
+			    value = new Paragraph(dateAsString, cellBoldStyle);
+			}else {
+			    value = new Paragraph(resultMap
+				    .getString(column).toString(),
+				    cellBoldStyle);
+			}
 		    } else {
 			value = new Paragraph("");
 		    }
