@@ -458,9 +458,18 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	}else if (importe_pendiente_mejoras.getText().isEmpty() && (!importe_pendiente_terrenos.getText().isEmpty())) {
 	    importe_pendiente_total_autocalculado.setText(importe_pendiente_terrenos.getText());
 	}else {
-	    int importe_mejoras = Integer.parseInt(importe_pendiente_mejoras.getText());
-	    int importe_terrenos = Integer.parseInt(importe_pendiente_terrenos.getText());
-	    int importe_total = importe_mejoras + importe_terrenos;
+	    String importeMejorasText = importe_pendiente_mejoras.getText();
+	    if (importeMejorasText.contains(",")) {
+		importeMejorasText = importeMejorasText.replace(",", ".");
+	    }
+	    double importe_mejoras = Double.parseDouble(importeMejorasText);
+	    String importeTerrenosText = importe_pendiente_terrenos.getText();
+	    if (importeTerrenosText.contains(",")) {
+		importeTerrenosText = importeTerrenosText.replace(",", ".");
+	    }
+	    double importe_terrenos = Double.parseDouble(importeTerrenosText);
+
+	    double importe_total = importe_mejoras + importe_terrenos;
 	    importe_pendiente_total_autocalculado.setText(String.valueOf(importe_total));
 	}
 	return importe_pendiente_total_autocalculado.getText();
