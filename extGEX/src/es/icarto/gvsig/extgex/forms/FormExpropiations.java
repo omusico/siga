@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -470,7 +471,9 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	    double importe_terrenos = Double.parseDouble(importeTerrenosText);
 
 	    double importe_total = importe_mejoras + importe_terrenos;
-	    importe_pendiente_total_autocalculado.setText(String.valueOf(importe_total));
+
+	    BigDecimal importeTotalAsBigDecimal = BigDecimal.valueOf(importe_total);
+	    importe_pendiente_total_autocalculado.setText(String.valueOf(importeTotalAsBigDecimal));
 	}
 	return importe_pendiente_total_autocalculado.getText();
     }
@@ -549,7 +552,8 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	    importe_pagado_total_double = importe_mutuo_acuerdo_double + importe_anticipo_double +
 		    importe_deposito_previo_pagado_double + importe_deposito_previo_consignado_double +
 		    importe_mutuo_acuerdo_parcial_double + importe_pagos_varios_double;
-	    importe_pagado_total.setText(String.valueOf(importe_pagado_total_double));
+	    BigDecimal importeTotalAsBigDecimal = BigDecimal.valueOf(importe_pagado_total_double);
+	    importe_pagado_total.setText(String.valueOf(importeTotalAsBigDecimal));
 	}
 	return importe_pagado_total.getText();
     }
