@@ -20,7 +20,7 @@ public class ReconocimientosReport extends Report {
 		"ID Elemento",
 		"Nombre Revisor",
 		"Fecha Inspección",
-		"Indice Estado",
+		"Índice Estado",
 		"Observaciones"
 	};
 	return columnNames;

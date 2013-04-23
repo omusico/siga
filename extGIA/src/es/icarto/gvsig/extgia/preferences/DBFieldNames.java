@@ -7,7 +7,7 @@ public class DBFieldNames {
     public static String[] genericReconocimientoEstadoFields = {"n_inspeccion as \"Nº Inspección\"",
 	"nombre_revisor as \"Revisor\"",
 	"fecha_inspeccion as \"Fecha Inspección\"",
-    "indice_estado as \"Indice Estado\""};
+    "indice_estado as \"Índice Estado\""};
 
     public static String[] enlacesReconocimientoEstadoFields = {"n_inspeccion as \"Nº Inspección\"",
 	"nombre_revisor as \"Revisor\"",
@@ -16,7 +16,7 @@ public class DBFieldNames {
     public static String[] reconocimientoEstadoFields = {"n_inspeccion as \"Nº Inspección\"",
 	"nombre_revisor as \"Revisor\"",
 	"fecha_inspeccion as \"Fecha Inspección\"",
-    "indice_estado as \"Indice Estado\""};
+    "indice_estado as \"Índice Estado\""};
 
     public static String[] genericTrabajoFields = {"id_trabajo as \"ID\"",
 	"fecha_certificado as \"Fecha cert\"",
