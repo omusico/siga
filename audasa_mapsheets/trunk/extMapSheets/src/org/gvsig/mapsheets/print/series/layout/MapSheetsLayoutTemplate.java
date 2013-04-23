@@ -901,9 +901,11 @@ public class MapSheetsLayoutTemplate extends Layout implements IMapSheetsIdentif
     public void updateAudasaSheetCode(String audasaSheetCode) {
 	for (int i=0; i<framesFromTemplate.length; i++) {
 	    if (framesFromTemplate[i] instanceof FFrameText) {
-		if (((FFrameText) framesFromTemplate[i]).getTitle().equalsIgnoreCase("numero_hoja")) {
-		    ((FFrameText) framesFromTemplate[i]).clearText();
-		    ((FFrameText) framesFromTemplate[i]).addText(audasaSheetCode);
+		if (((FFrameText) framesFromTemplate[i]).getTitle() != null) {
+		    if (((FFrameText) framesFromTemplate[i]).getTitle().equalsIgnoreCase("numero_hoja")) {
+			((FFrameText) framesFromTemplate[i]).clearText();
+			((FFrameText) framesFromTemplate[i]).addText(audasaSheetCode);
+		    }
 		}
 	    }
 	}
