@@ -261,7 +261,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	String fields = "";
 
 	if (tipoConsulta.getSelectedItem().toString().equals("Trabajos")) {
-	    if (elemento.getSelectedItem().toString().equals("Firme")) {
+	    if (elemento.getSelectedItem().toString().equals("Firme") || element[1].equals("Firme")) {
 		fields = getFirmeTrabajosFieldNames(elementId);
 		tipo = TRABAJOS_FIRME;
 	    }else {
@@ -269,7 +269,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		tipo = TRABAJOS;
 	    }
 	}else if(tipoConsulta.getSelectedItem().toString().equals("Inspecciones")) {
-	    if (elemento.getSelectedItem().toString().equals("Firme")) {
+	    if (elemento.getSelectedItem().toString().equals("Firme") || element[1].equals("Firme")) {
 		fields = getFirmeReconocimientosFieldNames(elementId);
 		tipo = RECONOCIMIENTOS_FIRME;
 	    }else {
