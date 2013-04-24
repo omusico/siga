@@ -241,7 +241,7 @@ public class DBFieldNames {
 	    pk = "id_paso_mediana";
 	    break;
 	case Senhalizacion_Vertical:
-	    pk = "id_senhal_vertical";
+	    pk = "id_elemento_senhalizacion";
 	    break;
 	case Firme:
 	    pk = "id_firme";
