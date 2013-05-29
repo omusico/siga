@@ -1090,14 +1090,10 @@ ActionListener, SelectionListener, IWindowListener {
 		deleteRecord();
 	    }
 	} else if (e.getSource() == undoB) {
-	    undoAction();
+	    fillValues();
+	    setChangedValues(false);
+	    refreshGUI();
 	}
-    }
-
-    protected void undoAction() {
-	fillValues();
-	setChangedValues(false);
-	refreshGUI();
     }
 
     public void deleteRecord() {

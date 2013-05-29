@@ -24,6 +24,7 @@
  */
 package es.udc.cartolab.gvsig.navtable;
 
+import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.HeadlessException;
@@ -112,6 +113,9 @@ public class NavTable extends AbstractNavTable implements PositionListener {
     protected JTable table = null;
     private AttribTableCellRenderer cellRenderer = null;
 
+    private JPanel CenterPanel;
+    private JPanel SouthPanel;
+    private JPanel NorthPanel;
     private MyTableModelListener myTableModelListener;
     private MyKeyListener myKeyListener;
     private MyMouseListener myMouseListener;
@@ -134,15 +138,38 @@ public class NavTable extends AbstractNavTable implements PositionListener {
     public void setFillingValues(boolean isFillingValues) {
 	this.isFillingValues = isFillingValues;
     }
-    
-    private void initGUI() {
-	MigLayout thisLayout = new MigLayout("inset 0, align center", "[grow]","[][grow][]");
-	this.setLayout(thisLayout);
-	this.add(getNorthPanel(), "shrink, wrap, align center");
-	this.add(getCenterPanel(), "shrink, growx, growy, wrap");
-	this.add(getSouthPanel(), "shrink, align center");
+
+    private JPanel getThisNorthPanel() {
+	if (NorthPanel == null) {
+	    NorthPanel = new JPanel();
+	}
+	return NorthPanel;
     }
 
+    private JPanel getThisSouthPanel() {
+	if (SouthPanel == null) {
+	    SouthPanel = new JPanel();
+	}
+	return SouthPanel;
+    }
+
+    private JPanel getThisCenterPanel() {
+	if (CenterPanel == null) {
+	    CenterPanel = new JPanel();
+	    BorderLayout CenterPanelLayout = new BorderLayout();
+	    CenterPanel.setLayout(CenterPanelLayout);
+	}
+	return CenterPanel;
+    }
+
+    private void initGUI() {
+	MigLayout thisLayout = new MigLayout("inset 0, align center", "[grow]",
+		"[][grow][]");
+	this.setLayout(thisLayout);
+	this.add(getThisNorthPanel(), "shrink, wrap, align center");
+	this.add(getThisCenterPanel(), "shrink, growx, growy, wrap");
+	this.add(getThisSouthPanel(), "shrink, align center");
+    }
 
     /**
      * It creates a panel with a table that shows the data linked to a feature
@@ -373,7 +400,15 @@ public class NavTable extends AbstractNavTable implements PositionListener {
 
 	initGUI();
 
-	this.addPositionListener(this);
+	// Getting NavTable parent panels and add them on the tableLayoutPanels
+	JPanel northPanel = getNorthPanel();
+	getThisNorthPanel().add(northPanel);
+
+	JPanel centerPanel = getCenterPanel();
+	getThisCenterPanel().add(centerPanel);
+
+	JPanel southPanel = getSouthPanel();
+	getThisSouthPanel().add(southPanel);
 
 	fillAttributes();
 	setPosition(0);

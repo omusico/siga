@@ -28,11 +28,9 @@ import java.io.IOException;
 import java.text.ParseException;
 
 import org.apache.log4j.Logger;
-import org.gvsig.mapsheets.print.series.fmap.SheetMemoryDriver;
 
 import com.hardcode.gdbms.driver.exceptions.InitializeWriterException;
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
-import com.hardcode.gdbms.driver.exceptions.WriteDriverException;
 import com.hardcode.gdbms.engine.data.driver.DriverException;
 import com.hardcode.gdbms.engine.values.Value;
 import com.iver.andami.PluginServices;
@@ -159,9 +157,7 @@ public class ToggleEditing {
 		if (cancel) {
 		    cancelEdition(layer);
 		} else {
-		    if (!(((FLyrVect) layer).getSource().getDriver() instanceof SheetMemoryDriver)) {
-			saveLayer((FLyrVect) layer);
-		    }
+		    saveLayer((FLyrVect) layer);
 		}
 		layer.setEditing(false);
 		layer.setActive(true);
@@ -361,51 +357,25 @@ public class ToggleEditing {
 	    int[] attIndexes,
 	    String[] attValues) {
 
-		try {
+	try {
+	    IEditableSource source = (IEditableSource) layer.getSource();
 
-		    if (layer.getSource().getDriver() instanceof SheetMemoryDriver) {
+	    IGeometry geometry = getTheGeom(source, rowPosition);
+	    Value[] values = getNewAttributes(source, rowPosition, attIndexes, attValues);
 
-			SheetMemoryDriver smd = (SheetMemoryDriver) layer.getSource().getDriver();
-			FieldDescription[] fieldDesc = smd.getFieldsDescription();
-			Value[] attributes = smd.getRow(rowPosition);
-			Value val;
-			int type;
-			for (int i = 0; i < attIndexes.length; i++) {
-			    if (attValues[i].length() == 0 || attValues[i] == null) {
-				val = ValueFactoryNT.createNullValue();
-			    } else {
-				type = fieldDesc[attIndexes[i]].getFieldType();
-				val = ValueFactoryNT.createValueByType(
-				    attValues[i], type);
-			    }
-			    attributes[attIndexes[i]] = val;
-			}
-
-			smd.setValues(rowPosition, attributes);
-		    } else {
-			IEditableSource source = (IEditableSource) layer.getSource();
-
-			IGeometry geometry = getTheGeom(source, rowPosition);
-			Value[] values = getNewAttributes(source, rowPosition, attIndexes, attValues);
-
-			IRowEdited row = source.getRow(rowPosition);
-			IRow newRow = new DefaultFeature(geometry, values, row.getID());
-			source.modifyRow(rowPosition, newRow, "NAVTABLE MODIFY",
-					EditionEvent.ALPHANUMERIC);
-		    }
-		} catch (ExpansionFileWriteException e) {
-		    logger.error(e.getMessage(), e);
-		} catch (ExpansionFileReadException e) {
-		    logger.error(e.getMessage(), e);
-		} catch (ValidateRowException e) {
-		    logger.error(e.getMessage(), e);
-		} catch (ReadDriverException e) {
-		    logger.error(e.getMessage(), e);
-		} catch (ParseException e) {
-		    logger.error(e.getMessage(), e);
-		} catch (WriteDriverException e) {
-		    logger.error(e.getMessage(), e);
-		}
+	    IRowEdited row = source.getRow(rowPosition);
+	    IRow newRow = new DefaultFeature(geometry, values, row.getID());
+	    source.modifyRow(rowPosition, newRow, "NAVTABLE MODIFY",
+		    EditionEvent.ALPHANUMERIC);
+	} catch (ExpansionFileWriteException e) {
+	    logger.error(e.getMessage(), e);
+	} catch (ExpansionFileReadException e) {
+	    logger.error(e.getMessage(), e);
+	} catch (ValidateRowException e) {
+	    logger.error(e.getMessage(), e);
+	} catch (ReadDriverException e) {
+	    logger.error(e.getMessage(), e);
+	}
     }
 
     public void modifyValues(IEditableSource source, int rowPosition,
