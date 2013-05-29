@@ -22,7 +22,7 @@ import es.udc.cartolab.gvsig.navtable.format.FormatAdapter;
 /**
  * @author Nacho Varela
  * @author Francisco Puga <fpuga@cartolab.es>
- * 
+ *
  */
 public class FiltersAddon implements INavTableContextMenu {
 
@@ -66,34 +66,51 @@ public class FiltersAddon implements INavTableContextMenu {
 	final FiltroExtension filterExt = new FiltroExtension();
 	filterExt.setDatasource(sds, "");
 
-	FBitSet fbitset = sds.getSelection();
-	boolean isFilterSet = (fbitset.cardinality() > 0);
-
 	final String st_expr = "select * from '" + sds.getName() + "' where "
 		+ attrName;
 
 	ArrayList<JMenuItem> menus = new ArrayList<JMenuItem>();
-	if (attrType == java.sql.Types.VARCHAR) {
-	    getMenuItemsForString(menus, attrValue, filterExt, st_expr);
 
-	} else if (attrType == java.sql.Types.DOUBLE
-		|| attrType == java.sql.Types.INTEGER) {
+	switch (attrType) {
+	case Types.VARCHAR:
+	case Types.CHAR:
+	case Types.LONGVARCHAR:
+	    menus = getMenuItemsForString(filterExt, st_expr, attrValue);
+	    break;
+
+	case Types.INTEGER:
+	case Types.BIGINT:
+	case Types.SMALLINT:
+	case Types.DOUBLE:
+	case Types.DECIMAL:
+	case Types.NUMERIC:
+	case Types.FLOAT:
+	case Types.REAL:
 	    String attrValueWithgvSIGFormat = FormatAdapter.toGvSIGString(
 		    attrType, attrValue);
-	    getMenuItemsForNumeric(menus, attrValueWithgvSIGFormat, attrValue,
-		    filterExt,
-		    st_expr);
+	    menus = getMenuItemsForNumeric(filterExt, st_expr,
+		    attrValueWithgvSIGFormat, attrValue);
+	    break;
 
-	} else if (attrType == java.sql.Types.BOOLEAN
-		|| attrType == java.sql.Types.BIT) {
-	    getMenuItemsForBoolean(menus, filterExt, st_expr);
+	case Types.BOOLEAN:
+	case Types.BIT:
+	    menus = getMenuItemsForBoolean(filterExt, st_expr);
+	    break;
 
-	} else {
-	    // TODO OTHER TYPES (like DATE)
-	    // the filter menu will not be shown on these types
-	    menus = null;
+	default:
+	    // Undefined types (like Date, etc) will be shown only "setFilter"
+	    // and "unSetFilter" options
 	}
 
+	menus.add(getMenuItemForSetFilter(filterExt));
+	if(isFilterSet()) {
+	    menus.add(getMenuItemForUnsetFilter());
+	}
+
+	return menus;
+    }
+
+    private JMenuItem getMenuItemForSetFilter(final FiltroExtension filterExt) {
 	JMenuItem tmpMenuItem = new JMenuItem(PluginServices.getText(this,
 		"filter_filter"), navtable.getIcon("/filter.png"));
 	tmpMenuItem.addActionListener(new ActionListener() {
@@ -103,23 +120,15 @@ public class FiltersAddon implements INavTableContextMenu {
 		filterExt.execute("FILTER_DATASOURCE");
 	    }
 	});
-	menus.add(tmpMenuItem);
-
-	if (isFilterSet) {
-	    tmpMenuItem = new JMenuItem(PluginServices.getText(this,
-		    "filter_remove_filter"), navtable.getIcon("/nofilter.png"));
-	    tmpMenuItem.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent evt) {
-		    navtable.clearSelection();
-		}
-	    });
-	    menus.add(tmpMenuItem);
-	}
-	return menus;
+	return tmpMenuItem;
     }
 
-    private void getMenuItemsForBoolean(ArrayList<JMenuItem> menus,
+
+
+    private ArrayList<JMenuItem> getMenuItemsForBoolean(
 	    final FiltroExtension filterExt, final String st_expr) {
+
+	ArrayList<JMenuItem> booleanMenu = new ArrayList<JMenuItem>();
 
 	JMenuItem tmpMenuItem = new JMenuItem(PluginServices.getText(this,
 		"filter_equals") + " = TRUE");
@@ -129,7 +138,7 @@ public class FiltersAddon implements INavTableContextMenu {
 		executeFilter(filterExt,expr);
 	    }
 	});
-	menus.add(tmpMenuItem);
+	booleanMenu.add(tmpMenuItem);
 
 	tmpMenuItem = new JMenuItem(PluginServices.getText(this,
 		"filter_equals") + " = FALSE");
@@ -139,13 +148,16 @@ public class FiltersAddon implements INavTableContextMenu {
 		executeFilter(filterExt,expr);
 	    }
 	});
-	menus.add(tmpMenuItem);
+	booleanMenu.add(tmpMenuItem);
+
+	return booleanMenu;
     }
 
-    private void getMenuItemsForNumeric(ArrayList<JMenuItem> menus,
-	    final String attrValue, String attrValueAsNTFormat,
-	    final FiltroExtension filterExt,
-	    final String st_expr) {
+    private ArrayList<JMenuItem> getMenuItemsForNumeric(
+	    final FiltroExtension filterExt, final String st_expr,
+	    final String attrValue, String attrValueAsNTFormat) {
+
+	ArrayList<JMenuItem> numericMenu = new ArrayList<JMenuItem>();
 
 	JMenuItem tmpMenuItem = new JMenuItem(PluginServices.getText(this,
 		"filter_numeric_equals") + " \t'" + attrValueAsNTFormat + "'");
@@ -155,7 +167,7 @@ public class FiltersAddon implements INavTableContextMenu {
 		executeFilter(filterExt,expr);
 	    }
 	});
-	menus.add(tmpMenuItem);
+	numericMenu.add(tmpMenuItem);
 
 	tmpMenuItem = new JMenuItem(PluginServices.getText(this,
 		"filter_numeric_different")
@@ -168,7 +180,7 @@ public class FiltersAddon implements INavTableContextMenu {
 		executeFilter(filterExt,expr);
 	    }
 	});
-	menus.add(tmpMenuItem);
+	numericMenu.add(tmpMenuItem);
 
 	tmpMenuItem = new JMenuItem(PluginServices.getText(this,
 		"filter_numeric_less") + " \t'" + attrValueAsNTFormat + "'");
@@ -180,7 +192,7 @@ public class FiltersAddon implements INavTableContextMenu {
 		executeFilter(filterExt,expr);
 	    }
 	});
-	menus.add(tmpMenuItem);
+	numericMenu.add(tmpMenuItem);
 
 	tmpMenuItem = new JMenuItem(PluginServices.getText(this,
 		"filter_numeric_greater") + " \t'" + attrValueAsNTFormat + "'");
@@ -192,12 +204,16 @@ public class FiltersAddon implements INavTableContextMenu {
 		executeFilter(filterExt,expr);
 	    }
 	});
-	menus.add(tmpMenuItem);
+	numericMenu.add(tmpMenuItem);
+
+	return numericMenu;
     }
 
-    private void getMenuItemsForString(ArrayList<JMenuItem> menus,
-	    final String attrValue, final FiltroExtension filterExt,
-	    final String st_expr) {
+    private ArrayList<JMenuItem> getMenuItemsForString(
+	    final FiltroExtension filterExt, final String st_expr,
+	    final String attrValue) {
+
+	ArrayList<JMenuItem> stringMenu = new ArrayList<JMenuItem>();
 
 	JMenuItem tmpMenuItem = new JMenuItem(PluginServices.getText(this,
 		"filter_equals") + " '" + attrValue + "'");
@@ -207,7 +223,7 @@ public class FiltersAddon implements INavTableContextMenu {
 		executeFilter(filterExt, exp);
 	    }
 	});
-	menus.add(tmpMenuItem);
+	stringMenu.add(tmpMenuItem);
 
 	tmpMenuItem = new JMenuItem(PluginServices.getText(this,
 		"filter_different") + " '" + attrValue + "'");
@@ -217,7 +233,7 @@ public class FiltersAddon implements INavTableContextMenu {
 		executeFilter(filterExt, exp);
 	    }
 	});
-	menus.add(tmpMenuItem);
+	stringMenu.add(tmpMenuItem);
 
 	tmpMenuItem = new JMenuItem(PluginServices.getText(this,
 		"filter_contains"));
@@ -225,7 +241,25 @@ public class FiltersAddon implements INavTableContextMenu {
 		attrValue,
 		st_expr,
 		filterExt));
-	menus.add(tmpMenuItem);
+	stringMenu.add(tmpMenuItem);
+
+	return stringMenu;
+    }
+
+    private JMenuItem getMenuItemForUnsetFilter() {
+	JMenuItem tmpMenuItem = new JMenuItem(PluginServices.getText(this,
+		"filter_remove_filter"), navtable.getIcon("/nofilter.png"));
+	tmpMenuItem.addActionListener(new ActionListener() {
+	    public void actionPerformed(ActionEvent evt) {
+		navtable.clearSelection();
+	    }
+	});
+	return tmpMenuItem;
+    }
+
+    private boolean isFilterSet() {
+	FBitSet fbitset = sds.getSelection();
+	return (fbitset.cardinality() > 0);
     }
 
     private int getAttrTypeForValueSelected(int fieldIndex) {
@@ -238,17 +272,8 @@ public class FiltersAddon implements INavTableContextMenu {
 	return attrType;
     }
 
-    private boolean isDateField() {
-	int rowSelected = table.getSelectedRow();
-	int attrType = getAttrTypeForValueSelected(rowSelected);
-	if(attrType == Types.DATE) {
-	    return true;
-	}
-	return false;
-    }
-
     public boolean isVisible() {
-	return (!isDateField() && userVisibility && table.getSelectedRowCount() == 1 && !isSelectedRowAreaOrLength());
+	return (userVisibility && table.getSelectedRowCount() == 1 && !isSelectedRowAreaOrLength());
     }
 
     private boolean isSelectedRowAreaOrLength() {
