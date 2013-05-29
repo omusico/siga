@@ -4,32 +4,37 @@ import com.iver.andami.PluginServices;
 import com.iver.andami.plugins.Extension;
 import com.iver.andami.plugins.IExtension;
 import com.iver.andami.ui.mdiManager.IWindow;
+import com.iver.cit.gvsig.CADExtension;
+import com.iver.cit.gvsig.fmap.core.IGeometry;
+import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
+import com.iver.cit.gvsig.gui.cad.CADTool;
+import com.iver.cit.gvsig.gui.cad.tools.EIELPolylineCADTool;
+import com.iver.cit.gvsig.listeners.CADListenerManager;
+import com.iver.cit.gvsig.listeners.EndGeometryListener;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.icarto.gvsig.extgex.forms.FormExpropiations;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
+import es.icarto.gvsig.extgia.forms.utils.LaunchGIAForms;
 import es.udc.cartolab.gvsig.users.DBConnectionExtension;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class FormExpropiationsExtension extends Extension {
+
+    public static final String KEY_NAME = "es.udc.cartolab.gvsig.navtable";
 
     private FLyrVect layer;
     private FormExpropiations dialog;
 
     public void execute(String actionCommand) {
 	DBSession.getCurrentSession().setSchema(DBNames.EXPROPIATIONS_SCHEMA);
-	//	if (AlphanumericTableLoader.loadTables()) {
 	layer = getLayer();
 	dialog = new FormExpropiations(layer, null);
 	if (dialog.init()) {
 	    PluginServices.getMDIManager().addCentredWindow(dialog);
 	}
-	//	} else {
-	//	    JOptionPane.showMessageDialog(null, PluginServices.getText(this,
-	//		    "alphanumeric_table_no_loaded"));
-	//	}
     }
 
     private FLyrVect getLayer() {
@@ -46,6 +51,8 @@ public class FormExpropiationsExtension extends Extension {
     }
 
     public void initialize() {
+	NTEndGeometryListener listener = new NTEndGeometryListener();
+	CADListenerManager.addEndGeometryListener(KEY_NAME, listener);
 	registerIcons();
     }
 
@@ -90,4 +97,36 @@ public class FormExpropiationsExtension extends Extension {
 	return false;
     }
 
+    private class NTEndGeometryListener implements EndGeometryListener {
+
+	public void endGeometry(FLayer layer) {
+	    if (layer.getName().equalsIgnoreCase("Reversiones")) {
+		FLyrVect l = (FLyrVect) layer;
+		CADTool cadTool = CADExtension.getCADTool();
+		IGeometry insertedGeom = null;
+		if (cadTool instanceof EIELPolylineCADTool) {
+		    insertedGeom = ((EIELPolylineCADTool) cadTool).getInsertedGeom();
+		}
+		es.icarto.gvsig.extgex.forms.FormReversions dialog = new es.icarto.gvsig.extgex.forms.FormReversions((FLyrVect) layer, insertedGeom);
+		if (dialog.init()) {
+		    PluginServices.getMDIManager().addCentredWindow(dialog);
+		    dialog.last();
+		}
+	    }else if (layer.getName().equalsIgnoreCase("Fincas")) {
+		DBSession.getCurrentSession().setSchema(DBNames.EXPROPIATIONS_SCHEMA);
+		IGeometry insertedGeom = null;
+		CADTool cadTool = CADExtension.getCADTool();
+		if (cadTool instanceof EIELPolylineCADTool) {
+		    insertedGeom = ((EIELPolylineCADTool) cadTool).getInsertedGeom();
+		}
+		es.icarto.gvsig.extgex.forms.FormExpropiations dialog = new es.icarto.gvsig.extgex.forms.FormExpropiations((FLyrVect) layer, insertedGeom);
+		if (dialog.init()) {
+		    PluginServices.getMDIManager().addCentredWindow(dialog);
+		    dialog.last();
+		}
+	    }else {
+		LaunchGIAForms.callFormDependingOfLayer(layer.getName(), true);
+	    }
+	}
+    }
 }
