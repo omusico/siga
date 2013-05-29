@@ -36,7 +36,7 @@ public class ORMLiteAppDomainTests {
 
     @Test
     public void isFileParsed() throws ParserConfigurationException,
-    SAXException, IOException {
+	    SAXException, IOException {
 	XMLSAXParser p = new XMLSAXParser(xmlFile);
 	assertTrue(p.getAD() != null);
     }
@@ -70,6 +70,27 @@ public class ORMLiteAppDomainTests {
     }
 
     @Test
+    public void fieldMyWidgetHasDependency() {
+	assertTrue(ormlite.getAppDomain().getDependencyValuesForComponent(
+		"my_widget") != null);
+    }
+
+    @Test
+    public void checkDependencyValuesOfMyWidget() {
+	assertTrue(ormlite.getAppDomain()
+		.getDependencyValuesForComponent("my_widget").getComponent()
+		.equalsIgnoreCase("other_widget"));
+	assertTrue(ormlite.getAppDomain()
+		.getDependencyValuesForComponent("my_widget").getValue()
+		.equalsIgnoreCase("true"));
+    }
+
+    @Test
+    public void fieldMyCodeisNonEditable() {
+	assertTrue(ormlite.getAppDomain().isNonEditableComponent("my_code"));
+    }
+
+    @Test
     public void fieldMyCodeHasRules() {
 	assertTrue(ormlite.getAppDomain()
 		.getDomainValidatorForComponent("my_code").getRules() != null);
@@ -86,7 +107,7 @@ public class ORMLiteAppDomainTests {
 	Set<ValidationRule> rules = ormlite.getAppDomain()
 		.getDomainValidatorForComponent("my_code").getRules();
 	boolean hasRule = false;
-	for(ValidationRule rule : rules) {
+	for (ValidationRule rule : rules) {
 	    if (rule instanceof MandatoryRule) {
 		hasRule = true;
 		break;
@@ -177,8 +198,7 @@ public class ORMLiteAppDomainTests {
     @Test
     public void fieldMyDateMandatoryHasDoubleAndMandatoryRules() {
 	Set<ValidationRule> rules = ormlite.getAppDomain()
-		.getDomainValidatorForComponent("my_date_mandatory")
-		.getRules();
+		.getDomainValidatorForComponent("my_date_mandatory").getRules();
 
 	boolean hasRuleMandatory = false;
 	for (ValidationRule rule : rules) {
