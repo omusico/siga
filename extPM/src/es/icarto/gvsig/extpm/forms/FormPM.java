@@ -83,6 +83,8 @@ public class FormPM extends AbstractForm {
 	    actionsToolBar.add(filesLinkB);
 	    actionsToolBar.add(printReportB);
 	}
+
+	this.getActionsToolBar().remove(saveB);
     }
 
     @Override
