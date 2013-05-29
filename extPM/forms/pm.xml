@@ -53,6 +53,7 @@
           <at name="classname">javax.swing.JCheckBox</at>
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
+            <at name="enabled">false</at>
             <at name="text">Dominio Público</at>
             <at name="height">15</at>
             <at name="font">
@@ -1236,6 +1237,7 @@
           <at name="classname">javax.swing.JCheckBox</at>
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
+            <at name="enabled">false</at>
             <at name="text">Servidumbre</at>
             <at name="height">15</at>
             <at name="font">
@@ -1299,6 +1301,7 @@
           <at name="classname">javax.swing.JCheckBox</at>
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
+            <at name="enabled">false</at>
             <at name="text">Afección</at>
             <at name="height">15</at>
             <at name="font">
@@ -1362,6 +1365,7 @@
           <at name="classname">javax.swing.JCheckBox</at>
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
+            <at name="enabled">false</at>
             <at name="text">Edificación</at>
             <at name="height">15</at>
             <at name="font">
@@ -1425,6 +1429,7 @@
           <at name="classname">javax.swing.JCheckBox</at>
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
+            <at name="enabled">false</at>
             <at name="text">Expropiación</at>
             <at name="height">15</at>
             <at name="font">
