@@ -28,7 +28,6 @@ import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.audasacommons.forms.reports.NavTableComponentsPrintButton;
 import es.icarto.gvsig.extpm.forms.filesLink.NavTableComponentsFilesLinkButton;
 import es.icarto.gvsig.extpm.preferences.Preferences;
-import es.icarto.gvsig.extpm.utils.managers.ToggleEditingManager;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -37,8 +36,6 @@ public class FormPM extends AbstractForm {
 
     private FormPanel form;
     private final FLyrVect layer;
-
-    private static ArrayList<String> parcelasAfectadas;
 
     // WIDGETS
     private JTextField numParcelaCatastro;
@@ -54,18 +51,6 @@ public class FormPM extends AbstractForm {
 	this.layer = layer;
 	initWindow();
 	initWidgets();
-	parcelasAfectadas = new ArrayList<String>();
-    }
-
-    public static ArrayList<String> getParcelasAfectadas() {
-	return parcelasAfectadas;
-    }
-
-    public static void setParcelasAfectadas (ArrayList<String> parcelasAfectadasByPM) {
-	if (parcelasAfectadas == null) {
-	    parcelasAfectadas = new ArrayList<String>();
-	}
-	parcelasAfectadas = parcelasAfectadasByPM;
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -202,33 +187,6 @@ public class FormPM extends AbstractForm {
     }
 
     @Override
-    public boolean saveRecord() {
-	PreparedStatement statement;
-	String query = null;
-	try {
-	    for (String idParcela : parcelasAfectadas) {
-		query = "INSERT INTO audasa_pm.fincas_pm "
-			+ "VALUES (" + "'" + idParcela + "', '" + numeroPM.getText() + "')";
-
-		statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
-		statement.execute();
-	    }
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
-	return super.saveRecord();
-    }
-
-    @Override
-    protected void enableSaveButton(boolean bool) {
-	if (!isChangedValues()) {
-	    saveB.setEnabled(false);
-	} else {
-	    saveB.setEnabled(bool);
-	}
-    }
-
-    @Override
     public FormPanel getFormBody() {
 	if (form == null) {
 	    InputStream stream = getClass().getClassLoader().getResourceAsStream(Preferences.PM_FORM_FILE);
@@ -249,12 +207,4 @@ public class FormPM extends AbstractForm {
 	return null;
     }
 
-    @Override
-    public void windowClosed() {
-	super.windowClosed();
-	ToggleEditingManager tem = new ToggleEditingManager();
-	if (layer.isEditing()) {
-	    tem.stopEditing(layer, false);
-	}
-    }
 }
