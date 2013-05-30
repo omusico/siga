@@ -12,7 +12,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 import org.apache.log4j.Logger;
 
@@ -42,6 +44,7 @@ public class FormPM extends AbstractForm {
     private JTextField numParcelaCatastro;
     private JTextField poligonoCatastro;
     private JTextField numeroPM;
+    private JTable fincasAfectadasTable;
 
     NavTableComponentsFilesLinkButton ntFilesLinkButton;
     NavTableComponentsPrintButton ntPrintButton;
@@ -103,6 +106,8 @@ public class FormPM extends AbstractForm {
 	numParcelaCatastro.setToolTipText("Si hay varias parcelas separar con guión (-)");
 	poligonoCatastro = (JTextField) widgets.get(Preferences.PM_FORM_WIDGETS_POLIGONO_CATASTRO);
 	poligonoCatastro.setToolTipText("Si hay varios polígonos separar con guión (-)");
+
+	fincasAfectadasTable = (JTable)form.getComponentByName("parcelas_afectadas_table");
     }
 
     @Override
@@ -125,25 +130,74 @@ public class FormPM extends AbstractForm {
 
     @Override
     protected void fillSpecificValues() {
-	parcelasAfectadas.clear();
-	PreparedStatement statement;
-	try {
-	    // Parcelas afected by this PM File
-	    String parcelasQuery = "SELECT " + Preferences.FINCAS_PM_FIELD_IDFINCA +
-		    " FROM " + Preferences.FINCAS_PM_TABLENAME +
-		    " WHERE " + Preferences.FINCAS_PM_FIELD_NUMEROPM + " = '" + numeroPM.getText() + "'";
-	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(parcelasQuery);
-	    statement.execute();
-	    ResultSet parcelasRs = statement.getResultSet();
-	    while (parcelasRs.next()) {
-		parcelasAfectadas.add(parcelasRs.getString(1));
-	    }
-	} catch (SQLException e) {
-	    e.printStackTrace();
+	createFincasAfectadasTable();
+
+	for (String finca : getFincasAfectadas()) {
+	    String[] fincaValues = getFincaValuesFromID(finca);
+	    ((DefaultTableModel) fincasAfectadasTable.getModel()).addRow(fincaValues);
 	}
 
 	if (ntFilesLinkButton == null) {
 	    addNewButtonsToActionsToolBar();
+	}
+
+	repaint();
+    }
+
+    private String[] getFincaValuesFromID(String idFinca) {
+	PreparedStatement statement;
+	String[] fincaValues = new String[2];
+	try {
+	    String query = "SELECT " + Preferences.TRAMOS_FIELD_NOMBRE + ", "
+		    + Preferences.FINCAS_FIELD_IDFINCA +
+		    " FROM " + Preferences.FINCAS_TABLENAME + " a, " +
+		    Preferences.TRAMOS_TABLENAME + " b " +
+		    " WHERE " + Preferences.FINCAS_FIELD_TRAMO + " = " + Preferences.TRAMOS_FIELD_ID +
+		    " AND " + Preferences.FINCAS_FIELD_IDFINCA + "=" + "'" + idFinca + "';";
+	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+	    statement.execute();
+	    ResultSet rs = statement.getResultSet();
+
+	    while (rs.next()) {
+		fincaValues[0] = rs.getString(1);
+		fincaValues[1] = rs.getString(2);
+	    }
+	    rs.close();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return fincaValues;
+    }
+
+    private void createFincasAfectadasTable() {
+	ArrayList<String> columnNames = new ArrayList<String>();
+	columnNames.add("Tramo");
+	columnNames.add("ID Finca");
+	DefaultTableModel model = new DefaultTableModel();
+	for (String columnName : columnNames) {
+	    model.addColumn(columnName);
+	}
+	fincasAfectadasTable.setModel(model);
+	fincasAfectadasTable.setEnabled(false);
+    }
+
+    private ArrayList<String> getFincasAfectadas() {
+	ArrayList<String> fincasAfectadas = new ArrayList<String>();
+	PreparedStatement statement;
+	try {
+	    String fincasQuery = "SELECT " + Preferences.FINCAS_PM_FIELD_IDFINCA +
+		    " FROM " + Preferences.FINCAS_PM_TABLENAME +
+		    " WHERE " + Preferences.FINCAS_PM_FIELD_NUMEROPM + " = '" + numeroPM.getText() + "'";
+	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(fincasQuery);
+	    statement.execute();
+	    ResultSet fincasRs = statement.getResultSet();
+	    while (fincasRs.next()) {
+		fincasAfectadas.add(fincasRs.getString(1));
+	    }
+	    return fincasAfectadas;
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	    return new ArrayList<String>();
 	}
     }
 
