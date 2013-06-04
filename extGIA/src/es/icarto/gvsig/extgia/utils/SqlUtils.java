@@ -314,6 +314,8 @@ public class SqlUtils {
 	    Entry<String, Value> e = columnsIterator.next();
 	    if (e.getValue().getSQLType() == 4) {
 		query = query + e.getKey() + " = " + e.getValue() + ",";
+	    }else if (e.getValue().getSQLType() == 0) {
+		query = query + e.getKey() + " = null" + ",";
 	    }else {
 		query = query + e.getKey() + " = '" + e.getValue() + "',";
 	    }

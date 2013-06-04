@@ -259,11 +259,17 @@ IWindowListener {
 		    }
 		    formData.put(comp.getName(),
 			    ValueFactory.createValue((text)));
+		}else {
+		    formData.put(comp.getName(),
+			    ValueFactory.createNullValue());
 		}
 	    } else if (comp instanceof JTextArea) {
 		if (!((JTextArea) comp).getText().isEmpty()) {
 		    formData.put(comp.getName(),
 			    (ValueFactory.createValue(((JTextArea) comp).getText().toString())));
+		}else {
+		    formData.put(comp.getName(),
+			    ValueFactory.createNullValue());
 		}
 	    }
 	}
