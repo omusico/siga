@@ -73,6 +73,10 @@ public class FormPM extends AbstractForm {
 	}
 
 	this.getActionsToolBar().remove(saveB);
+	this.getActionsToolBar().remove(removeB);
+	this.getActionsToolBar().remove(undoB);
+	this.getActionsToolBar().remove(copyPreviousB);
+	this.getActionsToolBar().remove(copySelectedB);
     }
 
     @Override
