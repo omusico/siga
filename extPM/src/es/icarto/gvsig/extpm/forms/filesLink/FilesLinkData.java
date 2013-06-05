@@ -32,7 +32,7 @@ public class FilesLinkData {
     }
 
     public String getDirectoryFieldName() {
-	return "PM";
+	return "exp_id";
 
     }
 }
