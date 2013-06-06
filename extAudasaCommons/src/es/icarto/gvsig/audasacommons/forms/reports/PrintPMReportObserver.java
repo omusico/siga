@@ -85,7 +85,7 @@ public class PrintPMReportObserver implements ActionListener {
 
     private HashMap<String, Object> getReportParameters() {
 	HashMap<String, Object> parameters = new HashMap<String, Object>();
-	parameters.put("PM_QUERY_WHERE", getPMFileGID());
+	parameters.put("PM_QUERY_WHERE", getPMFileID());
 	parameters.put("EXTENSION_PATH", extensionPath);
 	if (inputImageFile != null) {
 	    parameters.put("MAIN_IMAGE_PATH", inputImageFile.getAbsolutePath());
@@ -93,10 +93,10 @@ public class PrintPMReportObserver implements ActionListener {
 	return parameters;
     }
 
-    private int getPMFileGID() {
+    private int getPMFileID() {
 	int gid;
 	PreparedStatement statement;
-	String query= "SELECT gid " +
+	String query= "SELECT id " +
 		"FROM " + tableName +" " +
 		"WHERE " + idField + "= '" + idValue + "';";
 	try {
