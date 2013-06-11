@@ -135,10 +135,9 @@ public class FormPM extends AbstractForm {
 
     private String[] getFincaValuesFromID(String idFinca) {
 	PreparedStatement statement;
-	String[] fincaValues = new String[2];
+	String[] fincaValues = new String[1];
 	try {
-	    String query = "SELECT " + Preferences.TRAMOS_FIELD_NOMBRE + ", "
-		    + Preferences.FINCAS_FIELD_IDFINCA +
+	    String query = "SELECT " + Preferences.FINCAS_FIELD_IDFINCA +
 		    " FROM " + Preferences.FINCAS_TABLENAME + " a, " +
 		    Preferences.TRAMOS_TABLENAME + " b " +
 		    " WHERE " + Preferences.FINCAS_FIELD_TRAMO + " = " + Preferences.TRAMOS_FIELD_ID +
@@ -149,7 +148,6 @@ public class FormPM extends AbstractForm {
 
 	    while (rs.next()) {
 		fincaValues[0] = rs.getString(1);
-		fincaValues[1] = rs.getString(2);
 	    }
 	    rs.close();
 	} catch (SQLException e) {
@@ -159,13 +157,10 @@ public class FormPM extends AbstractForm {
     }
 
     private void createFincasAfectadasTable() {
-	ArrayList<String> columnNames = new ArrayList<String>();
-	columnNames.add("Tramo");
-	columnNames.add("ID Finca");
 	DefaultTableModel model = new DefaultTableModel();
-	for (String columnName : columnNames) {
-	    model.addColumn(columnName);
-	}
+	model.addColumn("ID Finca");
+
+	fincasAfectadasTable.setTableHeader(null);
 	fincasAfectadasTable.setModel(model);
 	fincasAfectadasTable.setEnabled(false);
     }
