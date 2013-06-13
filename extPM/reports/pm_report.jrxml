@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="policia_margenes" language="groovy" pageWidth="595" pageHeight="842" columnWidth="511" leftMargin="56" rightMargin="28" topMargin="28" bottomMargin="28" uuid="deae6293-c4c5-422f-b68a-e394415360ad">
 	<property name="ireport.zoom" value="1.6105100000000068"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="715"/>
+	<property name="ireport.y" value="0"/>
 	<style name="Heading" fontSize="14"/>
 	<style name="Heading 1" fontSize="16" isBold="true"/>
 	<parameter name="PM_QUERY_WHERE" class="java.lang.Integer">
@@ -74,7 +74,7 @@
 				<text><![CDATA[Autopistas del Atlántico, C.E.S.A]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="2fb14a99-029e-451b-8367-8b5f38b8fc78" x="439" y="0" width="72" height="13"/>
+				<reportElement uuid="2fb14a99-029e-451b-8367-8b5f38b8fc78" x="393" y="0" width="118" height="13"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" isUnderline="false"/>
 				</textElement>

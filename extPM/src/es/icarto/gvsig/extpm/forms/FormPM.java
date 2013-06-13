@@ -42,6 +42,10 @@ public class FormPM extends AbstractForm {
     private JTextField poligonoCatastro;
     private JTextField numeroPM;
     private JTable fincasAfectadasTable;
+    private JButton printReportB;
+    String extensionPath;
+    URL reportPath;
+    boolean firstOpen = true;
 
     NavTableComponentsFilesLinkButton ntFilesLinkButton;
     NavTableComponentsPrintButton ntPrintButton;
@@ -54,22 +58,34 @@ public class FormPM extends AbstractForm {
     }
 
     private void addNewButtonsToActionsToolBar() {
-	URL reportPath = this.getClass().getClassLoader()
+	reportPath = this.getClass().getClassLoader()
 		.getResource("reports/pm_report.jasper");
-	String extensionPath = reportPath.getPath().replace("reports/pm_report.jasper", "");
+	extensionPath = reportPath.getPath().replace("reports/pm_report.jasper", "");
 	JPanel actionsToolBar = this.getActionsToolBar();
 	ntFilesLinkButton = new NavTableComponentsFilesLinkButton();
 	ntPrintButton = new NavTableComponentsPrintButton();
 	JButton filesLinkB = ntFilesLinkButton.getFilesLinkButton(layer,
 		this);
-	JButton printReportB = null;
-	if (!layer.isEditing()) {
-	    printReportB = ntPrintButton.getPrintButton(this, extensionPath, reportPath.getPath(),
-		    Preferences.PM_TABLENAME, Preferences.PM_FIELD_NUMEROPM, numeroPM.getText());
-	}
-	if (filesLinkB != null && printReportB != null) {
-	    actionsToolBar.add(filesLinkB);
+
+	printReportB = ntPrintButton.getPrintButton(this, extensionPath, reportPath.getPath(),
+		Preferences.PM_TABLENAME, Preferences.PM_FIELD_NUMEROPM, numeroPM.getText());
+	printReportB.setName("printButton");
+
+	if (printReportB != null) {
+	    for (int i=0; i<this.getActionsToolBar().getComponents().length; i++) {
+		if (getActionsToolBar().getComponents()[i].getName() != null) {
+		    if (getActionsToolBar().getComponents()[i].getName().equalsIgnoreCase("printButton")) {
+			this.getActionsToolBar().remove(getActionsToolBar().getComponents()[i]);
+			actionsToolBar.add(printReportB);
+			break;
+		    }
+		}
+	    }
 	    actionsToolBar.add(printReportB);
+	}
+
+	if (filesLinkB != null && ntFilesLinkButton == null) {
+	    actionsToolBar.add(filesLinkB);
 	}
 
 	this.getActionsToolBar().remove(saveB);
@@ -126,10 +142,8 @@ public class FormPM extends AbstractForm {
 	    ((DefaultTableModel) fincasAfectadasTable.getModel()).addRow(fincaValues);
 	}
 
-	if (ntFilesLinkButton == null) {
-	    addNewButtonsToActionsToolBar();
-	}
-
+	addNewButtonsToActionsToolBar();
+	revalidate();
 	repaint();
     }
 
@@ -205,5 +219,4 @@ public class FormPM extends AbstractForm {
 	// TODO Auto-generated method stub
 	return null;
     }
-
 }

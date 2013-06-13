@@ -23,6 +23,7 @@ public class NavTableComponentsPrintButton {
 	    ActionListener listener) {
 	JButton but = new JButton(icon);
 	but.setToolTipText(toolTipText);
+	but.removeActionListener(listener);
 	but.addActionListener(listener);
 	return but;
     }
