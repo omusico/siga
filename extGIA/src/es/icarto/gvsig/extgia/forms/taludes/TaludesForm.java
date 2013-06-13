@@ -68,6 +68,8 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     DeleteReconocimientoListener deleteReconocimientoListener;
     DeleteTrabajoListener deleteTrabajoListener;
 
+    boolean hasJustOpened = true;
+
     public TaludesForm(FLyrVect layer) {
 	super(layer);
 	initWindow();
@@ -111,13 +113,33 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 		return baseDirectory;
 	    }
 	});
-	actionsToolBar.add(filesLinkButton);
+
+	if (hasJustOpened) {
+	    actionsToolBar.add(filesLinkButton);
+	    hasJustOpened = false;
+	}
+
 	ntPrintButton = new NavTableComponentsPrintButton();
 	JButton printReportB = null;
 	if (!layer.isEditing()) {
 	    printReportB = ntPrintButton.getPrintButton(this, extensionPath, reportPath.getPath(),
 		    DBFieldNames.TALUDES_TABLENAME, DBFieldNames.ID_TALUD, taludIDWidget.getText());
+	    printReportB.setName("printButton");
 	}
+
+	if (printReportB != null) {
+	    for (int i=0; i<this.getActionsToolBar().getComponents().length; i++) {
+		if (getActionsToolBar().getComponents()[i].getName() != null) {
+		    if (getActionsToolBar().getComponents()[i].getName().equalsIgnoreCase("printButton")) {
+			this.getActionsToolBar().remove(getActionsToolBar().getComponents()[i]);
+			actionsToolBar.add(printReportB);
+			break;
+		    }
+		}
+	    }
+	    actionsToolBar.add(printReportB);
+	}
+
 	if (printReportB != null) {
 	    actionsToolBar.add(printReportB);
 	}
@@ -154,9 +176,7 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	direccionPIDomainHandler.updateComboBoxValues();
 	direccionPFDomainHandler.updateComboBoxValues();
 
-	if (filesLinkButton == null) {
-	    addNewButtonsToActionsToolBar();
-	}
+	addNewButtonsToActionsToolBar();
 
 	// Embebed Tables
 	int[] trabajoColumnsSize = {1, 1, 110, 70, 60};
@@ -166,6 +186,8 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	SqlUtils.createEmbebedTableFromDB(trabajos,
 		"audasa_extgia", "taludes_trabajos",
 		DBFieldNames.trabajoFields, trabajoColumnsSize, "id_talud", taludIDWidget.getText(), "id_trabajo");
+
+	revalidate();
 	repaint();
     }
 

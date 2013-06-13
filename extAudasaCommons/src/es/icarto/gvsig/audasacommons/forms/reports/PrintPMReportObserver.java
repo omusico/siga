@@ -94,18 +94,24 @@ public class PrintPMReportObserver implements ActionListener {
     }
 
     private int getPMFileID() {
-	int gid;
+	int id;
+	String postgresIdField;
+	if (tableName.contains("audasa_pm")) {
+	    postgresIdField = "id";
+	}else {
+	    postgresIdField = "gid";
+	}
 	PreparedStatement statement;
-	String query= "SELECT id " +
-		"FROM " + tableName +" " +
-		"WHERE " + idField + "= '" + idValue + "';";
+	String query= "SELECT "+ postgresIdField +
+		" FROM " + tableName +
+		" WHERE " + idField + "= '" + idValue + "';";
 	try {
 	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
 	    statement.execute();
 	    ResultSet rs = statement.getResultSet();
 	    rs.next();
-	    gid = rs.getInt(1);
-	    return gid;
+	    id = rs.getInt(1);
+	    return id;
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	    return -1;
