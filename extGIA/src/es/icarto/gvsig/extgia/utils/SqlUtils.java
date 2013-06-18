@@ -27,6 +27,8 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class SqlUtils {
 
+    private static final String[] serialFields = {"id_trabajo", "id_ramal", "id_carretera_enlazada", "id_senhal_vertical", "n_inspeccion"};
+
     public static ArrayList<KeyValue> getKeyValueListFromSql(String query) {
 	ArrayList<KeyValue> values = new ArrayList<KeyValue>();
 	PreparedStatement statement = null;
@@ -281,7 +283,9 @@ public class SqlUtils {
 	Iterator<Entry<String, Value>> columnsIterator = values.entrySet().iterator();
 	while (columnsIterator.hasNext()) {
 	    Entry<String, Value> e = columnsIterator.next();
-	    query = query + e.getKey() + ",";
+	    if (!isSerialField(e.getKey().toString())) {
+		query = query + e.getKey() + ",";
+	    }
 	}
 	query = query + ")";
 	query = query.replace(",)", ")");
@@ -289,10 +293,14 @@ public class SqlUtils {
 	Iterator<Entry<String, Value>> valuesIterator = values.entrySet().iterator();
 	while (valuesIterator.hasNext()) {
 	    Entry<String, Value> e = valuesIterator.next();
-	    if (e.getValue().getSQLType() == 4) {
-		query = query + e.getValue() + ",";
-	    }else {
-		query = query + "'" + e.getValue() + "',";
+	    if (!isSerialField(e.getKey().toString())) {
+		if (e.getValue().getSQLType() == 12 || e.getValue().getSQLType() == -1) {
+		    query = query + "'" + e.getValue() + "',";
+		}else if (e.getValue().getSQLType() == 0) {
+		    query = query + "null" + ",";
+		}else {
+		    query = query + e.getValue() + ",";
+		}
 	    }
 	}
 	query = query + ");";
@@ -346,5 +354,16 @@ public class SqlUtils {
 	    e.printStackTrace();
 	}
 	return newID;
+    }
+
+    private static boolean isSerialField(String fieldName) {
+	boolean isSerialField = false;
+	for (int i=0; i<serialFields.length; i++) {
+	    if (fieldName.equalsIgnoreCase(serialFields[i])) {
+		isSerialField = true;
+		break;
+	    }
+	}
+	return isSerialField;
     }
 }
