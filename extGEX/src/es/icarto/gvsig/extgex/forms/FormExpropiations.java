@@ -692,6 +692,7 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 		tableModel.addColumn(columnName);
 	    }
 	    pm.setModel(tableModel);
+	    pm.setEnabled(false);
 	    Value[] pmData = new Value[3];
 	    PreparedStatement statement;
 	    String query = "SELECT " +
@@ -708,7 +709,6 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 		afectado_pm.setSelectedIndex(1);
 	    }
 	    repaint();
-	    //tableModel.addTableModelListener(this);
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
