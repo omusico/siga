@@ -1,14 +1,12 @@
 package es.icarto.gvsig.navtableforms.gui.tables;
 
-import java.text.ParseException;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
 import com.hardcode.gdbms.driver.exceptions.InitializeWriterException;
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
-import com.iver.cit.gvsig.exceptions.expansionfile.ExpansionFileWriteException;
+import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.exceptions.visitors.StartWriterVisitorException;
 import com.iver.cit.gvsig.exceptions.visitors.StopWriterVisitorException;
 import com.iver.cit.gvsig.fmap.edition.IEditableSource;
@@ -46,7 +44,12 @@ public class TableModelAlphanumeric extends AbstractTableModel {
     private void initMetadata() {
 	rowIndexes = getRowIndexes();
 	rowCount = rowIndexes.size();
-	colCount = colNames.length;
+	if (colNames != null) {
+	    colCount = colNames.length;
+	} else {
+	    colCount = 0;
+	}
+	currentRow = NO_ROW;
     }
 
     private HashMap<Integer, Integer> getRowIndexes() {
@@ -99,7 +102,26 @@ public class TableModelAlphanumeric extends AbstractTableModel {
 		currentRow = row;
 		tableController.read(rowIndexes.get(row));
 	    }
-	    return tableController.getValue(colNames[col]);
+	    String value = tableController.getValue(getColumnNameInSource(col));
+	    int type = tableController.getType(getColumnNameInSource(col));
+	    if ((type == java.sql.Types.BOOLEAN)
+		    || (type == java.sql.Types.BIT)) {
+		String translation;
+		if (value.length() == 0) {
+		    translation = PluginServices.getText(this,
+			    "table_null_value");
+		    // If there is no translation, we show the value itself.
+		    value = (!translation.equals("table_null_value")) ? translation
+			    : value;
+		} else {
+		    translation = PluginServices.getText(this, "table_" + value
+			    + "_value");
+		    // If there is no translation, we show the value itself.
+		    value = (!translation.equals("table_" + value + "_value")) ? translation
+			    : value;
+		}
+	    }
+	    return value;
 	} catch (ReadDriverException e) {
 	    e.printStackTrace();
 	    return null;
@@ -147,6 +169,15 @@ public class TableModelAlphanumeric extends AbstractTableModel {
     
     public TableController getController() {
 	return tableController;
+    }
+
+    public int convertRowIndexToModel(int row) {
+	return rowIndexes.get(row);
+    }
+
+    public void dataChanged() {
+	this.fireTableDataChanged();
+	initMetadata();
     }
 
 }

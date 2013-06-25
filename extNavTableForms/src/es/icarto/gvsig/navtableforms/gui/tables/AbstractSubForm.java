@@ -10,8 +10,10 @@ import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
@@ -55,8 +57,7 @@ public abstract class AbstractSubForm extends JPanel implements IForm,
 
     private WindowInfo windowInfo;
     private final static int windowInfoCode = WindowInfo.MODELESSDIALOG
-	    | WindowInfo.PALETTE;
-    private final String windowTitle = "";
+	    | WindowInfo.PALETTE | WindowInfo.RESIZABLE;
     private long position;
     private ActionListener action;
     private TableModelAlphanumeric model;
@@ -68,17 +69,17 @@ public abstract class AbstractSubForm extends JPanel implements IForm,
 	ormlite = new ORMLite(getMetadataPath());
 	validationHandler = new ValidationHandler(ormlite, this);
 	dependencyHandler = new DependencyHandler(ormlite, widgets, this);
-	setListeners();
     }
 
     private void initGUI() {
 	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	FormPanel formPanel = getFormPanel("ui/" + getBasicName() + ".xml");
+	JScrollPane scrollPane = new JScrollPane(formPanel);
 	widgets = AbeilleParser.getWidgetsFromContainer(formPanel);
 	// AbeilleUtils au = new AbeilleUtils();
 	// au.formatLabels(formPanel);
 	// au.formatTextArea(formPanel);
-	add(formPanel);
+	add(scrollPane);
 	add(getSouthPanel());
 	setFocusCycleRoot(true);
     }
@@ -115,7 +116,21 @@ public abstract class AbstractSubForm extends JPanel implements IForm,
 	fillHandler.fillEmptyWidgetsAndController();
 	for (String f : foreingKey.keySet()) {
 	    String value = foreingKey.get(f);
-	    ((JTextField) widgets.get(f)).setText(value);
+	    JComponent widget = widgets.get(f);
+	    if (widget != null) {
+		if (widget instanceof JTextField) {
+		    ((JTextField) widgets.get(f)).setText(value);
+		} else {
+		    if (widget instanceof JComboBox) {
+			JComboBox combo = (JComboBox) widgets.get(f);
+			for (int i = combo.getItemCount() - 1; i >= 0; i--) {
+			    if (combo.getItemAt(i).equals(value)) {
+				combo.setSelectedIndex(i);
+			    }
+			}
+		    }
+		}
+	    }
 	    iController.setValue(f, value);
 	}
 	fillSpecificValues();
@@ -224,10 +239,13 @@ public abstract class AbstractSubForm extends JPanel implements IForm,
     public WindowInfo getWindowInfo() {
 	if (windowInfo == null) {
 	    windowInfo = new WindowInfo(windowInfoCode);
-	    windowInfo.setTitle(windowTitle);
+	    windowInfo.setTitle(PluginServices.getText(this, getBasicName()));
 	    Dimension dim = getPreferredSize();
+	    //To calculate the maximum size of a form we take the size of the 
+	    // main frame minus a "magic number" for the menus, toolbar, state bar
+	    // Take into account that in edition mode there is less available space
 	    MDIFrame a = (MDIFrame) PluginServices.getMainFrame();
-	    int maxHeight = a.getHeight() - 175;
+	    int maxHeight = a.getHeight() - 205;
 	    int maxWidth = a.getWidth() - 15;
 
 	    int width, heigth = 0;
@@ -241,7 +259,11 @@ public abstract class AbstractSubForm extends JPanel implements IForm,
 	    } else {
 		width = new Double(dim.getWidth()).intValue();
 	    }
-	    windowInfo.setWidth(width + 15);
+	    
+	    // getPreferredSize doesn't take into account the borders and other stuff
+	    // introduced by Andami, neither scroll bars so we must increase the "preferred"
+	    // dimensions
+	    windowInfo.setWidth(width + 25);
 	    windowInfo.setHeight(heigth + 15);
 	}
 	return windowInfo;
@@ -267,8 +289,9 @@ public abstract class AbstractSubForm extends JPanel implements IForm,
 	saveButton.removeActionListener(action);
 	action = new CreateAction(this);
 	saveButton.addActionListener(action);
+	setListeners();
 	fillEmptyValues();
-	PluginServices.getMDIManager().addWindow(this);
+	PluginServices.getMDIManager().addCentredWindow(this);
     }
 
     @Override
@@ -277,14 +300,16 @@ public abstract class AbstractSubForm extends JPanel implements IForm,
 	saveButton.removeActionListener(action);
 	action = new SaveAction(this);
 	saveButton.addActionListener(action);
+	setListeners();
 	fillValues();
-	PluginServices.getMDIManager().addWindow(this);
+	PluginServices.getMDIManager().addCentredWindow(this);
     }
 
     @Override
     public void actionDeleteRecord(long position) {
 	try {
-	    model.delete((int) position);
+	    iController.delete((int) position);
+	    model.dataChanged();
 	} catch (Exception e) {
 	    NotificationManager.addError(e);
 	}
@@ -298,7 +323,7 @@ public abstract class AbstractSubForm extends JPanel implements IForm,
     @Override
     public void setModel(TableModelAlphanumeric model) {
 	this.model = model;
-	iController = model.getController();
+	iController = model.getController().clone();
 	fillHandler = new FillHandler(widgets, iController,
 		ormlite.getAppDomain());
     }
@@ -315,7 +340,8 @@ public abstract class AbstractSubForm extends JPanel implements IForm,
 	public void actionPerformed(ActionEvent arg0) {
 	    HashMap<String, String> values = iController.getValues();
 	    try {
-		model.create(values);
+		iController.create(values);
+		model.dataChanged();
 	    } catch (Exception e) {
 		iController.clearAll();
 		position = -1;
@@ -336,7 +362,8 @@ public abstract class AbstractSubForm extends JPanel implements IForm,
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 	    try {
-		model.update((int) position);
+		iController.update((int) position);
+		model.dataChanged();
 	    } catch (ReadDriverException e) {
 		iController.clearAll();
 		position = -1;
