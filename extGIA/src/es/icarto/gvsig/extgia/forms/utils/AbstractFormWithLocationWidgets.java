@@ -78,8 +78,8 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     }
 
     protected void initWindow() {
-	this.viewInfo.setHeight(700);
-	this.viewInfo.setWidth(690);
+	this.windowInfo.setHeight(700);
+	this.windowInfo.setWidth(690);
     }
 
     @Override

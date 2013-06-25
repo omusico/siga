@@ -63,7 +63,7 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
     @Override
     protected void initWindow() {
 	super.initWindow();
-	this.viewInfo.setTitle("Areas Descanso");
+	this.windowInfo.setTitle("Areas Descanso");
     }
 
     @Override

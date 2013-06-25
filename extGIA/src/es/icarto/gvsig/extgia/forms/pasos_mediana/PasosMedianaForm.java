@@ -50,7 +50,7 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
     @Override
     protected void initWindow() {
 	super.initWindow();
-	this.viewInfo.setTitle("Pasos Mediana");
+	this.windowInfo.setTitle("Pasos Mediana");
     }
 
     @Override

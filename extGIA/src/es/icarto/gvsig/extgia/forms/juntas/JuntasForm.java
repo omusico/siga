@@ -55,7 +55,7 @@ public class JuntasForm extends AbstractFormWithLocationWidgets {
     @Override
     protected void initWindow() {
 	super.initWindow();
-	this.viewInfo.setTitle("Juntas");
+	this.windowInfo.setTitle("Juntas");
     }
 
     @Override

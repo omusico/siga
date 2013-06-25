@@ -55,7 +55,7 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
     @Override
     protected void initWindow() {
 	super.initWindow();
-	this.viewInfo.setTitle("Firme");
+	this.windowInfo.setTitle("Firme");
     }
 
     @Override

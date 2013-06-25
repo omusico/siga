@@ -69,7 +69,7 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
     @Override
     protected void initWindow() {
 	super.initWindow();
-	this.viewInfo.setTitle("Enlaces");
+	this.windowInfo.setTitle("Enlaces");
     }
 
     @Override

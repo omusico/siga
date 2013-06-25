@@ -60,7 +60,7 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
     @Override
     protected void initWindow() {
 	super.initWindow();
-	this.viewInfo.setTitle("Barrera Rígida");
+	this.windowInfo.setTitle("Barrera Rígida");
     }
 
     @Override
