@@ -10,7 +10,7 @@
 				<action-tool icon="images/table_refresh.png" tooltip="NavTable"
 					action-command="NavTable" position="1"/>
 			</tool-bar>
-			<!--  --><menu text="Capa/NavTable"
+			<!-- <menu text="Capa/NavTable"
 				action-command="NavTable"
 				icon="images/table_refresh.png" position="1501"/> -->
 		</extension> 
