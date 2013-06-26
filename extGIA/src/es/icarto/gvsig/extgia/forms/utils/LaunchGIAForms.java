@@ -31,7 +31,7 @@ public class LaunchGIAForms {
 	case Taludes:
 	    final TaludesForm taludesForm = new TaludesForm(layer);
 	    if (taludesForm.init()) {
-		PluginServices.getMDIManager().addCentredWindow(taludesForm);
+		PluginServices.getMDIManager().addWindow(taludesForm);
 	    }
 	    if (editing) {
 		taludesForm.last();
@@ -40,7 +40,7 @@ public class LaunchGIAForms {
 	case Isletas:
 	    final IsletasForm isletasForm = new IsletasForm(layer);
 	    if (isletasForm.init()) {
-		PluginServices.getMDIManager().addCentredWindow(isletasForm);
+		PluginServices.getMDIManager().addWindow(isletasForm);
 	    }
 	    if (editing) {
 		isletasForm.last();
@@ -49,7 +49,7 @@ public class LaunchGIAForms {
 	case Enlaces:
 	    final EnlacesForm enlacesForm = new EnlacesForm(layer);
 	    if (enlacesForm.init()) {
-		PluginServices.getMDIManager().addCentredWindow(enlacesForm);
+		PluginServices.getMDIManager().addWindow(enlacesForm);
 	    }
 	    if (editing) {
 		enlacesForm.last();
@@ -58,7 +58,7 @@ public class LaunchGIAForms {
 	case Barrera_Rigida:
 	    final BarreraRigidaForm barreraRigidaForm = new BarreraRigidaForm(layer);
 	    if (barreraRigidaForm.init()) {
-		PluginServices.getMDIManager().addCentredWindow(barreraRigidaForm);
+		PluginServices.getMDIManager().addWindow(barreraRigidaForm);
 	    }
 	    if (editing) {
 		barreraRigidaForm.last();
@@ -67,7 +67,7 @@ public class LaunchGIAForms {
 	case Areas_Servicio:
 	    final AreasServicioForm areasServicioForm = new AreasServicioForm(layer);
 	    if (areasServicioForm.init()) {
-		PluginServices.getMDIManager().addCentredWindow(areasServicioForm);
+		PluginServices.getMDIManager().addWindow(areasServicioForm);
 	    }
 	    if (editing) {
 		areasServicioForm.last();
@@ -76,7 +76,7 @@ public class LaunchGIAForms {
 	case Areas_Descanso:
 	    final AreasDescansoForm areasDescansoForm = new AreasDescansoForm(layer);
 	    if (areasDescansoForm.init()) {
-		PluginServices.getMDIManager().addCentredWindow(areasDescansoForm);
+		PluginServices.getMDIManager().addWindow(areasDescansoForm);
 	    }
 	    if (editing) {
 		areasDescansoForm.last();
@@ -85,7 +85,7 @@ public class LaunchGIAForms {
 	case Juntas:
 	    final JuntasForm juntasForm = new JuntasForm(layer);
 	    if (juntasForm.init()) {
-		PluginServices.getMDIManager().addCentredWindow(juntasForm);
+		PluginServices.getMDIManager().addWindow(juntasForm);
 	    }
 	    if (editing) {
 		juntasForm.last();
@@ -94,7 +94,7 @@ public class LaunchGIAForms {
 	case Pasos_Mediana:
 	    final PasosMedianaForm pasosMedianaForm = new PasosMedianaForm(layer);
 	    if (pasosMedianaForm.init()) {
-		PluginServices.getMDIManager().addCentredWindow(pasosMedianaForm);
+		PluginServices.getMDIManager().addWindow(pasosMedianaForm);
 	    }
 	    if (editing) {
 		pasosMedianaForm.last();
@@ -103,7 +103,7 @@ public class LaunchGIAForms {
 	case Senhalizacion_Vertical:
 	    final SenhalizacionVerticalForm senhalizacionVerticalForm = new SenhalizacionVerticalForm(layer);
 	    if (senhalizacionVerticalForm.init()) {
-		PluginServices.getMDIManager().addCentredWindow(senhalizacionVerticalForm);
+		PluginServices.getMDIManager().addWindow(senhalizacionVerticalForm);
 	    }
 	    if (editing) {
 		senhalizacionVerticalForm.last();
@@ -112,7 +112,7 @@ public class LaunchGIAForms {
 	case Valla_Cierre:
 	    final VallaCierreForm vallaCierreForm = new VallaCierreForm(layer);
 	    if (vallaCierreForm.init()) {
-		PluginServices.getMDIManager().addCentredWindow(vallaCierreForm);
+		PluginServices.getMDIManager().addWindow(vallaCierreForm);
 	    }
 	    if (editing) {
 		vallaCierreForm.last();
@@ -121,7 +121,7 @@ public class LaunchGIAForms {
 	case Firme:
 	    final FirmeForm firmeForm = new FirmeForm(layer);
 	    if (firmeForm.init()) {
-		PluginServices.getMDIManager().addCentredWindow(firmeForm);
+		PluginServices.getMDIManager().addWindow(firmeForm);
 	    }
 	    if (editing) {
 		firmeForm.last();

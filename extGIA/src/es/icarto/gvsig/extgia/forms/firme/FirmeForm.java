@@ -44,18 +44,11 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 
     public FirmeForm(FLyrVect layer) {
 	super(layer);
-	initWindow();
 	initListeners();
     }
 
     private void addNewButtonsToActionsToolBar() {
 	super.addNewButtonsToActionsToolBar(Elements.Firme);
-    }
-
-    @Override
-    protected void initWindow() {
-	super.initWindow();
-	this.windowInfo.setTitle("Firme");
     }
 
     @Override
@@ -290,6 +283,11 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
     @Override
     public boolean isSpecialCase() {
 	return true;
+    }
+
+    @Override
+    protected String getBasicName() {
+	return "Firme";
     }
 
 }

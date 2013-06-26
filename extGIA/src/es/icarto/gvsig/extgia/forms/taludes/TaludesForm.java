@@ -35,7 +35,7 @@ import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkButton;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkData;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxesHandler;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
@@ -55,8 +55,8 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     private EnableComponentBasedOnCheckBox cunetaCabeza;
     private JComboBox tipoViaPI;
     private JComboBox tipoViaPF;
-    private DependentComboboxesHandler direccionPIDomainHandler;
-    private DependentComboboxesHandler direccionPFDomainHandler;
+    private DependentComboboxHandler direccionPIDomainHandler;
+    private DependentComboboxHandler direccionPFDomainHandler;
 
     FilesLinkButton filesLinkButton;
     NavTableComponentsPrintButton ntPrintButton;
@@ -72,7 +72,6 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 
     public TaludesForm(FLyrVect layer) {
 	super(layer);
-	initWindow();
 	initListeners();
     }
 
@@ -146,12 +145,6 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    protected void initWindow() {
-	super.initWindow();
-	this.windowInfo.setTitle("Taludes");
-    }
-
-    @Override
     public String getXMLPath() {
 	return this.getClass().getClassLoader()
 		.getResource("rules/taludes_metadata.xml")
@@ -222,14 +215,14 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	JComboBox direccionPI = (JComboBox) getWidgetComponents().get(
 		"direccion_pi");
 	tipoViaPI = (JComboBox) getWidgetComponents().get("tipo_via");
-	direccionPIDomainHandler = new DependentComboboxesHandler(this,
+	direccionPIDomainHandler = new DependentComboboxHandler(this,
 		tipoViaPI, direccionPI);
 	tipoViaPI.addActionListener(direccionPIDomainHandler);
 
 	JComboBox direccionPF = (JComboBox) getWidgetComponents().get(
 		"direccion_pf");
 	tipoViaPF = (JComboBox) getWidgetComponents().get("tipo_via_pf");
-	direccionPFDomainHandler = new DependentComboboxesHandler(this,
+	direccionPFDomainHandler = new DependentComboboxHandler(this,
 		tipoViaPF, direccionPF);
 	tipoViaPF.addActionListener(direccionPFDomainHandler);
 
@@ -414,5 +407,10 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     public boolean isSpecialCase() {
 	// TODO Auto-generated method stub
 	return false;
+    }
+
+    @Override
+    protected String getBasicName() {
+	return "Taludes";
     }
 }

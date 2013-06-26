@@ -52,18 +52,11 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 
     public AreasDescansoForm(FLyrVect layer) {
 	super(layer);
-	initWindow();
 	initListeners();
     }
 
     private void addNewButtonsToActionsToolBar() {
 	super.addNewButtonsToActionsToolBar(Elements.Areas_Descanso);
-    }
-
-    @Override
-    protected void initWindow() {
-	super.initWindow();
-	this.windowInfo.setTitle("Areas Descanso");
     }
 
     @Override
@@ -345,6 +338,11 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
     public boolean isSpecialCase() {
 	// TODO Auto-generated method stub
 	return false;
+    }
+
+    @Override
+    protected String getBasicName() {
+	return "Áreas Descanso";
     }
 
 }

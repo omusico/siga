@@ -39,18 +39,11 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
 
     public PasosMedianaForm(FLyrVect layer) {
 	super(layer);
-	initWindow();
 	initListeners();
     }
 
     private void addNewButtonsToActionsToolBar() {
 	super.addNewButtonsToActionsToolBar(Elements.Pasos_Mediana);
-    }
-
-    @Override
-    protected void initWindow() {
-	super.initWindow();
-	this.windowInfo.setTitle("Pasos Mediana");
     }
 
     @Override
@@ -246,6 +239,11 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
     public boolean isSpecialCase() {
 	// TODO Auto-generated method stub
 	return false;
+    }
+
+    @Override
+    protected String getBasicName() {
+	return "Pasos Mediana";
     }
 
 }

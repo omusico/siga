@@ -18,6 +18,7 @@ import javax.swing.table.DefaultTableModel;
 import org.apache.log4j.Logger;
 
 import com.iver.andami.Launcher;
+import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.image.ImageComponent;
 import com.jeta.forms.components.panel.FormPanel;
@@ -77,9 +78,13 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	setListeners();
     }
 
-    protected void initWindow() {
-	this.windowInfo.setHeight(700);
-	this.windowInfo.setWidth(690);
+    @Override
+    public WindowInfo getWindowInfo() {
+	if (windowInfo == null) {
+	    super.getWindowInfo();
+	    windowInfo.setTitle(getBasicName());
+	}
+	return windowInfo;
     }
 
     @Override
@@ -506,4 +511,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     }
 
     public abstract boolean isSpecialCase();
+
+    protected abstract String getBasicName();
 }

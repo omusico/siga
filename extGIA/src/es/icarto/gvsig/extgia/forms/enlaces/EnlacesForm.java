@@ -58,18 +58,11 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 
     public EnlacesForm(FLyrVect layer) {
 	super(layer);
-	initWindow();
 	initListeners();
     }
 
     private void addNewButtonsToActionsToolBar() {
 	super.addNewButtonsToActionsToolBar(Elements.Enlaces);
-    }
-
-    @Override
-    protected void initWindow() {
-	super.initWindow();
-	this.windowInfo.setTitle("Enlaces");
     }
 
     @Override
@@ -354,5 +347,9 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 	return false;
     }
 
+    @Override
+    protected String getBasicName() {
+	return "Enlaces";
+    }
 
 }

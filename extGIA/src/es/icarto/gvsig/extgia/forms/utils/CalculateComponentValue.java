@@ -66,7 +66,7 @@ public abstract class CalculateComponentValue {
     private void setOperatorValidators(String[] operatorComponentsNames) {
 	operatorValidators = new ArrayList<ValidatorComponent>();
 	for (String name : operatorComponentsNames) {
-	    ValidatorComponent cv = form.getFormValidator()
+	    ValidatorComponent cv = form.getValidatorForm()
 		    .getComponentValidator(name);
 	    if (cv != null) {
 		operatorValidators.add(cv);

@@ -21,7 +21,7 @@ import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.utils.LaunchGIAForms.Elements;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxesHandler;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 
 @SuppressWarnings("serial")
 public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
@@ -34,7 +34,7 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
     JTextField elementoSenhalizacionIDWidget;
     CalculateComponentValue elementoSenhalizacionid;
     private JComboBox tipoVia;
-    private DependentComboboxesHandler direccionDomainHandler;
+    private DependentComboboxHandler direccionDomainHandler;
 
     JTable senhales;
 
@@ -56,18 +56,11 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 
     public SenhalizacionVerticalForm(FLyrVect layer) {
 	super(layer);
-	initWindow();
 	initListeners();
     }
 
     private void addNewButtonsToActionsToolBar() {
 	super.addNewButtonsToActionsToolBar(Elements.Senhalizacion_Vertical);
-    }
-
-    @Override
-    protected void initWindow() {
-	super.initWindow();
-	this.windowInfo.setTitle("Señalización Vertical");
     }
 
     @Override
@@ -116,7 +109,7 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 	JComboBox direccion = (JComboBox) getWidgetComponents().get(
 		"direccion");
 	tipoVia = (JComboBox) getWidgetComponents().get("tipo_via");
-	direccionDomainHandler = new DependentComboboxesHandler(this,
+	direccionDomainHandler = new DependentComboboxHandler(this,
 		tipoVia, direccion);
 	tipoVia.addActionListener(direccionDomainHandler);
 
@@ -357,6 +350,11 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
     public boolean isSpecialCase() {
 	// TODO Auto-generated method stub
 	return false;
+    }
+
+    @Override
+    protected String getBasicName() {
+	return "Señalización Vertical";
     }
 
 }

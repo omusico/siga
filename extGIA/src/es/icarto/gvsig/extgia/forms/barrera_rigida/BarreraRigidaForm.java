@@ -24,7 +24,7 @@ import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.utils.LaunchGIAForms.Elements;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxesHandler;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
@@ -38,7 +38,7 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
     CalculateComponentValue barreraRigidaid;
     CalculateComponentValue barreraRigidaCodigo;
     private JComboBox tipoVia;
-    private DependentComboboxesHandler direccionDomainHandler;
+    private DependentComboboxHandler direccionDomainHandler;
 
     AddReconocimientoListener addReconocimientoListener;
     EditReconocimientoListener editReconocimientoListener;
@@ -49,18 +49,11 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 
     public BarreraRigidaForm(FLyrVect layer) {
 	super(layer);
-	initWindow();
 	initListeners();
     }
 
     private void addNewButtonsToActionsToolBar() {
 	super.addNewButtonsToActionsToolBar(Elements.Barrera_Rigida);
-    }
-
-    @Override
-    protected void initWindow() {
-	super.initWindow();
-	this.windowInfo.setTitle("Barrera Rígida");
     }
 
     @Override
@@ -105,7 +98,7 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 	JComboBox direccion = (JComboBox) getWidgetComponents().get(
 		"direccion");
 	tipoVia = (JComboBox) getWidgetComponents().get("tipo_via");
-	direccionDomainHandler = new DependentComboboxesHandler(this,
+	direccionDomainHandler = new DependentComboboxHandler(this,
 		tipoVia, direccion);
 	tipoVia.addActionListener(direccionDomainHandler);
 
@@ -306,4 +299,8 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 	return false;
     }
 
+    @Override
+    protected String getBasicName() {
+	return "Barrera Rígida";
+    }
 }

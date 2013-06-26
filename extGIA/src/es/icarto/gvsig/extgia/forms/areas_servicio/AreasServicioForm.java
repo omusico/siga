@@ -52,18 +52,11 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 
     public AreasServicioForm(FLyrVect layer) {
 	super(layer);
-	initWindow();
 	initListeners();
     }
 
     private void addNewButtonsToActionsToolBar() {
 	super.addNewButtonsToActionsToolBar(Elements.Areas_Servicio);
-    }
-
-    @Override
-    protected void initWindow() {
-	super.initWindow();
-	this.windowInfo.setTitle("Areas Servicio");
     }
 
     @Override
@@ -343,4 +336,8 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 	return false;
     }
 
+    @Override
+    protected String getBasicName() {
+	return "Áreas Servicio";
+    }
 }

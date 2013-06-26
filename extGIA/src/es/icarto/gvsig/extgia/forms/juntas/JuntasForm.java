@@ -20,7 +20,7 @@ import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.utils.LaunchGIAForms.Elements;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxesHandler;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 
 @SuppressWarnings("serial")
 public class JuntasForm extends AbstractFormWithLocationWidgets {
@@ -32,7 +32,7 @@ public class JuntasForm extends AbstractFormWithLocationWidgets {
     JTextField juntaIDWidget;
     CalculateComponentValue juntaid;
     private JComboBox tipoVia;
-    private DependentComboboxesHandler direccionDomainHandler;
+    private DependentComboboxHandler direccionDomainHandler;
 
     AddReconocimientoListener addReconocimientoListener;
     EditReconocimientoListener editReconocimientoListener;
@@ -44,18 +44,11 @@ public class JuntasForm extends AbstractFormWithLocationWidgets {
 
     public JuntasForm(FLyrVect layer) {
 	super(layer);
-	initWindow();
 	initListeners();
     }
 
     private void addNewButtonsToActionsToolBar() {
 	super.addNewButtonsToActionsToolBar(Elements.Juntas);
-    }
-
-    @Override
-    protected void initWindow() {
-	super.initWindow();
-	this.windowInfo.setTitle("Juntas");
     }
 
     @Override
@@ -98,7 +91,7 @@ public class JuntasForm extends AbstractFormWithLocationWidgets {
 	JComboBox direccion = (JComboBox) getWidgetComponents().get(
 		"direccion");
 	tipoVia = (JComboBox) getWidgetComponents().get("tipo_via");
-	direccionDomainHandler = new DependentComboboxesHandler(this,
+	direccionDomainHandler = new DependentComboboxHandler(this,
 		tipoVia, direccion);
 	tipoVia.addActionListener(direccionDomainHandler);
 
@@ -270,4 +263,8 @@ public class JuntasForm extends AbstractFormWithLocationWidgets {
 	return false;
     }
 
+    @Override
+    protected String getBasicName() {
+	return "Juntas";
+    }
 }

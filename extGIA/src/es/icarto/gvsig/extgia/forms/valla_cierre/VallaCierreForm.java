@@ -20,7 +20,7 @@ import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.utils.LaunchGIAForms.Elements;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxesHandler;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 
 @SuppressWarnings("serial")
 public class VallaCierreForm extends AbstractFormWithLocationWidgets {
@@ -34,8 +34,8 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
 
     private JComboBox tipoViaPI;
     private JComboBox tipoViaPF;
-    private DependentComboboxesHandler direccionPIDomainHandler;
-    private DependentComboboxesHandler direccionPFDomainHandler;
+    private DependentComboboxHandler direccionPIDomainHandler;
+    private DependentComboboxHandler direccionPFDomainHandler;
 
     AddReconocimientoListener addReconocimientoListener;
     EditReconocimientoListener editReconocimientoListener;
@@ -46,18 +46,11 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
 
     public VallaCierreForm(FLyrVect layer) {
 	super(layer);
-	initWindow();
 	initListeners();
     }
 
     private void addNewButtonsToActionsToolBar() {
 	super.addNewButtonsToActionsToolBar(Elements.Valla_Cierre);
-    }
-
-    @Override
-    protected void initWindow() {
-	super.initWindow();
-	this.windowInfo.setTitle("Valla Cierre");
     }
 
     @Override
@@ -99,14 +92,14 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
 	JComboBox direccionPI = (JComboBox) getWidgetComponents().get(
 		"direccion_pi");
 	tipoViaPI = (JComboBox) getWidgetComponents().get("tipo_via");
-	direccionPIDomainHandler = new DependentComboboxesHandler(this,
+	direccionPIDomainHandler = new DependentComboboxHandler(this,
 		tipoViaPI, direccionPI);
 	tipoViaPI.addActionListener(direccionPIDomainHandler);
 
 	JComboBox direccionPF = (JComboBox) getWidgetComponents().get(
 		"direccion_pf");
 	tipoViaPF = (JComboBox) getWidgetComponents().get("tipo_via_pf");
-	direccionPFDomainHandler = new DependentComboboxesHandler(this,
+	direccionPFDomainHandler = new DependentComboboxHandler(this,
 		tipoViaPF, direccionPF);
 	tipoViaPF.addActionListener(direccionPFDomainHandler);
 
@@ -279,4 +272,8 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
 	return false;
     }
 
+    @Override
+    protected String getBasicName() {
+	return "Valla Cierre";
+    }
 }
