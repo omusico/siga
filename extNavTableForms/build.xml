@@ -59,36 +59,6 @@
 			<fileset dir="${dist}" includes="**/**" />
 		</move>
 	</target>
-	
-	<property name="gvSIG-audasa_projects" value="
-		extGEX,
-		extGIA,
-		extPM
-	"/>
-	
-	<!-- UPDATE NTFORMS JAR IN AUDASA PROJECTS -->
-	
-	<target name="move-to-audasa-projects">
-		<copy file="${extensionsDir}/es.icarto.gvsig.navtableforms/lib/${plugin}.jar" todir="../extGIA/lib/" overwrite="true"/>
-		<!--<copy file="${extensionsDir}/es.icarto.gvsig.navtableforms/lib/${plugin}.jar" todir="../extGEX/lib/" overwrite="true"/>-->
-		<copy file="${extensionsDir}/es.icarto.gvsig.navtableforms/lib/${plugin}.jar" todir="../extPM/lib/" overwrite="true"/>
-		<foreach list="${gvSIG-audasa_projects}" trim="true" delimiter="," target="default-ant-target" param="da-target.name"/>
-	</target>
-	
-	<target name="default-ant-target">
-			<property name="da-target.dir" location="../${da-target.name}"/>
-			<if>
-				<available file="${da-target.dir}" type="dir"/>
-				<then>
-					<ant dir="${da-target.dir}" inheritAll="false" />
-				</then>
-				<else>
-					<echo>
-						Skip ${da-target.name} project from Batch build
-					</echo>
-				</else>
-			</if>
-	</target>
 
 	<target name="clean" description="clean up">
 		<!-- Delete the ${build} and ${dist} directory trees -->
