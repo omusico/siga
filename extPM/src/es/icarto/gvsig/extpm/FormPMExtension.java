@@ -24,7 +24,7 @@ public class FormPMExtension extends Extension {
 	layer = getPMLayer();
 	dialog = new FormPM(layer, false, -1);
 	if (dialog.init()) {
-	    PluginServices.getMDIManager().addCentredWindow(dialog);
+	    PluginServices.getMDIManager().addWindow(dialog);
 	}
     }
 
