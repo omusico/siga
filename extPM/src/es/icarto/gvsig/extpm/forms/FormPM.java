@@ -19,6 +19,7 @@ import javax.swing.table.DefaultTableModel;
 import org.apache.log4j.Logger;
 
 import com.iver.andami.PluginServices;
+import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.image.ImageComponent;
 import com.jeta.forms.components.panel.FormPanel;
@@ -53,8 +54,16 @@ public class FormPM extends AbstractForm {
     public FormPM(FLyrVect layer, boolean newRegister, int insertedRow) {
 	super(layer);
 	this.layer = layer;
-	initWindow();
 	initWidgets();
+    }
+
+    @Override
+    public WindowInfo getWindowInfo() {
+	if (windowInfo == null) {
+	    super.getWindowInfo();
+	    windowInfo.setTitle("Policía de Márgenes");
+	}
+	return windowInfo;
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -125,12 +134,6 @@ public class FormPM extends AbstractForm {
 	return PluginServices.getPluginServices("es.icarto.gvsig.extpm")
 		.getClassLoader()
 		.getResource(Preferences.XML_ORMLITE_RELATIVE_PATH).getPath();
-    }
-
-    private void initWindow() {
-	windowInfo.setHeight(700);
-	windowInfo.setWidth(690);
-	windowInfo.setTitle(Preferences.PM_FORM_TITLE);
     }
 
     @Override
