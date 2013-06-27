@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgia;
+package es.icarto.gvsig.extgia.forms;
 
 import es.icarto.gvsig.extgia.forms.areas_descanso.AreasDescansoForm;
 import es.icarto.gvsig.extgia.navtableforms.CommonMethodsForTestDBForms;

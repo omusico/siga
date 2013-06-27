@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgia;
+package es.icarto.gvsig.extgia.forms;
 
 import es.icarto.gvsig.extgia.forms.pasos_mediana.PasosMedianaForm;
 import es.icarto.gvsig.extgia.navtableforms.CommonMethodsForTestDBForms;

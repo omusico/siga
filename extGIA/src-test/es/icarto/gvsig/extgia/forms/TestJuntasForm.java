@@ -1,23 +1,23 @@
-package es.icarto.gvsig.extgia;
+package es.icarto.gvsig.extgia.forms;
 
-import es.icarto.gvsig.extgia.forms.enlaces.EnlacesForm;
+import es.icarto.gvsig.extgia.forms.juntas.JuntasForm;
 import es.icarto.gvsig.extgia.navtableforms.CommonMethodsForTestDBForms;
 
-public class TestEnlacesForm extends CommonMethodsForTestDBForms {
+public class TestJuntasForm extends CommonMethodsForTestDBForms {
 
     @Override
     protected String getAbeilleForm() {
-	return EnlacesForm.ABEILLE_FILENAME;
+	return JuntasForm.ABEILLE_FILENAME;
     }
 
     @Override
     protected String getXmlFile() {
-	return "rules/enlaces_metadata.xml";
+	return "rules/juntas_metadata.xml";
     }
 
     @Override
     protected String getTable() {
-	return "enlaces";
+	return "juntas";
     }
 
 }

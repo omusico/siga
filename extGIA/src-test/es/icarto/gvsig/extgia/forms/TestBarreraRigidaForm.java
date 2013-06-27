@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgia;
+package es.icarto.gvsig.extgia.forms;
 
 import es.icarto.gvsig.extgia.forms.barrera_rigida.BarreraRigidaForm;
 import es.icarto.gvsig.extgia.navtableforms.CommonMethodsForTestDBForms;
