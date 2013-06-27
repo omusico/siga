@@ -43,7 +43,7 @@ public abstract class CommonMethodsForTestDBForms {
     public static void doSetupBeforeClass() {
 	try {
 	    initializegvSIGDrivers();
-	    DBSession.createConnection("localhost", 5434, "audasa_test", null,
+	    DBSession.createConnection("localhost", 5432, "audasa_test", null,
 		    "postgres", "postgres");
 
 	} catch (Exception e) {
@@ -171,7 +171,9 @@ public abstract class CommonMethodsForTestDBForms {
 	return columnsSet;
     }
 
-    protected abstract String getSchema();
+    protected String getSchema() {
+	return "audasa_extgia";
+    }
 
     protected abstract String getTable();
 
