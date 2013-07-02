@@ -352,4 +352,20 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 	return "Enlaces";
     }
 
+    @Override
+    public String getElement() {
+	return Elements.Enlaces.name();
+    }
+
+    @Override
+    public String getReconocimientosFormFileName() {
+	return ABEILLE_RECONOCIMIENTOS_FILENAME;
+    }
+
+    @Override
+    public String getTrabajosFormFileName() {
+	// TODO Auto-generated method stub
+	return null;
+    }
+
 }

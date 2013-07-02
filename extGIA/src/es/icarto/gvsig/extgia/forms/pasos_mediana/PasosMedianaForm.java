@@ -246,4 +246,19 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
 	return "Pasos Mediana";
     }
 
+    @Override
+    public String getElement() {
+	return Elements.Pasos_Mediana.name();
+    }
+
+    @Override
+    public String getReconocimientosFormFileName() {
+	return ABEILLE_RECONOCIMIENTOS_FILENAME;
+    }
+
+    @Override
+    public String getTrabajosFormFileName() {
+	return ABEILLE_TRABAJOS_FILENAME;
+    }
+
 }

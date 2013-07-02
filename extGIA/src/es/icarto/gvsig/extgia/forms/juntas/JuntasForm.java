@@ -267,4 +267,19 @@ public class JuntasForm extends AbstractFormWithLocationWidgets {
     protected String getBasicName() {
 	return "Juntas";
     }
+
+    @Override
+    public String getElement() {
+	return Elements.Juntas.name();
+    }
+
+    @Override
+    public String getReconocimientosFormFileName() {
+	return ABEILLE_RECONOCIMIENTOS_FILENAME;
+    }
+
+    @Override
+    public String getTrabajosFormFileName() {
+	return ABEILLE_TRABAJOS_FILENAME;
+    }
 }

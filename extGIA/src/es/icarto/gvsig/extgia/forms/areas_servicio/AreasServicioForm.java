@@ -340,4 +340,20 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
     protected String getBasicName() {
 	return "Áreas Servicio";
     }
+
+    @Override
+    public String getElement() {
+	return Elements.Areas_Servicio.name();
+    }
+
+    @Override
+    public String getReconocimientosFormFileName() {
+	return ABEILLE_RECONOCIMIENTOS_FILENAME;
+    }
+
+    @Override
+    public String getTrabajosFormFileName() {
+	return ABEILLE_TRABAJOS_FILENAME;
+    }
+
 }

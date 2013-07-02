@@ -96,6 +96,7 @@ public class DBFieldNames {
     public static final String ISLETAS_TABLENAME = "audasa_extgia.isletas";
 
     // TALUDES
+    public static final String TALUDES_LAYERNAME = "Taludes";
     public static final String ID_TALUD = "id_talud";
     public static final String NUMERO_TALUD = "numero_talud";
     public static final String TIPO_TALUD = "tipo_talud";
@@ -110,6 +111,7 @@ public class DBFieldNames {
     public static final String TALUDES_D = "elementos_proteccion_talud";
 
     // ISLETAS
+    public static final String ISLETAS_LAYERNAME = "Isletas";
     public static final String ID_ISLETA = "id_isleta";
     public static final String NUMERO_ISLETA = "numero_isleta";
     public static final String TIPO_ISLETA = "tipo_isleta";
@@ -119,11 +121,13 @@ public class DBFieldNames {
     public static final String ISLETAS_A = "estado_siega";
 
     // ENLACES
+    public static final String ENLACES_LAYERNAME = "Enlaces";
     public static final String ID_ENLACE = "id_enlace";
     public static final String MUNICIPIO = "municipio";
     public static final String PK = "pk";
 
     // BARRERA RIGIDA
+    public static final String BARRERA_RIGIDA_LAYERNAME = "Barrera_Rigida";
     public static final String ID_BARRERA_RIGIDA = "id_barrera_rigida";
     public static final String NUMERO_BARRERA_RIGIDA = "numero_barrera_rigida";
     public static final String CODIGO = "codigo";
@@ -139,6 +143,7 @@ public class DBFieldNames {
     public static final String BARRERA_RIGIDA_D = "cimiento_soporte_anclaje";
 
     // AREAS SERVICIO
+    public static final String AREAS_SERVICIO_LAYERNAME = "Areas_Servicio";
     public static final String ID_AREA_SERVICIO = "id_area_servicio";
     public static final String SENTIDO = "sentido";
 
@@ -151,6 +156,7 @@ public class DBFieldNames {
     public static final String AREA_SERVICIO_E = "servicios";
 
     // AREAS DESCANSO
+    public static final String AREAS_DESCANSO_LAYERNAME = "Areas_Descanso";
     public static final String ID_AREA_DESCANSO = "id_area_descanso";
 
     // AREAS DESCANSO RECONOCIMIENTO ESTADO
@@ -160,6 +166,7 @@ public class DBFieldNames {
     public static final String AREA_DESCANSO_C = "servicios";
 
     // JUNTAS
+    public static final String JUNTAS_LAYERNAME = "Juntas";
     public static final String ID_JUNTA = "id_junta";
 
     // AREAS DESCANSO RECONOCIMIENTO ESTADO
@@ -171,6 +178,7 @@ public class DBFieldNames {
     public static final String JUNTAS_E = "rotura_deformacion";
 
     // PASOS MEDIANA
+    public static final String PASOS_MEDIANA_LAYERNAME = "Pasos_Mediana";
     public static final String ID_PASO_MEDIANA = "id_paso_mediana";
 
     // PASOS MEDIANA RECONOCIMIENTO ESTADO
@@ -181,6 +189,7 @@ public class DBFieldNames {
     public static final String PASO_MEDIANA_D = "elementos_contencion_cierre";
 
     // SENHALIZACION VERTICAL
+    public static final String SENHALIZACION_VERTICAL_LAYERNAME = "Senhalizacion_Vertical";
     public static final String ID_ELEMENTO_SENHALIZACION = "id_elemento_senhalizacion";
 
     // SENHALIZACION VERTICAL RECONOCIMIENTO ESTADO
@@ -192,6 +201,7 @@ public class DBFieldNames {
     public static final String SENHALIZACION_VERTICAL_E = "visibilidad_nocturna";
 
     // VALLA CIERRE
+    public static final String VALLA_CIERRE_LAYERNAME = "Valla_Cierre";
     public static final String ID_VALLA_CIERRE = "id_valla";
     public static final String VALLA_CIERRE_INDEX = "indice_estado";
     public static final String VALLA_CIERRE_A = "deterioro_superficial_oxido";
@@ -199,6 +209,7 @@ public class DBFieldNames {
     public static final String VALLA_CIERRE_C = "vegetacion_nociva_suciedad";
 
     // FIRME
+    public static final String FIRME_LAYERNAME = "Firme";
     public static final String ID_FIRME = "id_firme";
 
     public static void setReconocimientoEstadoFields(String[] fields) {

@@ -366,4 +366,23 @@ public class SqlUtils {
 	}
 	return isSerialField;
     }
+
+    public static boolean elementHasType(String element, String tipoConsulta) {
+	boolean type = false;
+	PreparedStatement statement;
+	String query = "SELECT " + tipoConsulta + " FROM audasa_extgia_dominios.elemento " +
+		"WHERE LOWER(id) = LOWER('" + element + "');";
+	try {
+	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+	    statement.execute();
+	    ResultSet rs = statement.getResultSet();
+	    while (rs.next()) {
+		type = rs.getBoolean(1);
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return type;
+    }
+
 }

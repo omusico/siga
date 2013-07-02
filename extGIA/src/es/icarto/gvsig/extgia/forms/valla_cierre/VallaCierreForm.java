@@ -276,4 +276,19 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
     protected String getBasicName() {
 	return "Valla Cierre";
     }
+
+    @Override
+    public String getElement() {
+	return Elements.Valla_Cierre.name();
+    }
+
+    @Override
+    public String getReconocimientosFormFileName() {
+	return ABEILLE_RECONOCIMIENTOS_FILENAME;
+    }
+
+    @Override
+    public String getTrabajosFormFileName() {
+	return ABEILLE_TRABAJOS_FILENAME;
+    }
 }

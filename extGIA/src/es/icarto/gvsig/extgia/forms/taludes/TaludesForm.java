@@ -413,4 +413,19 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     protected String getBasicName() {
 	return "Taludes";
     }
+
+    @Override
+    public String getElement() {
+	return Elements.Taludes.name();
+    }
+
+    @Override
+    public String getReconocimientosFormFileName() {
+	return ABEILLE_RECONOCIMIENTOS_FILENAME;
+    }
+
+    @Override
+    public String getTrabajosFormFileName() {
+	return ABEILLE_TRABAJOS_FILENAME;
+    }
 }

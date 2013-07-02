@@ -290,4 +290,19 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 	return "Firme";
     }
 
+    @Override
+    public String getElement() {
+	return Elements.Firme.name();
+    }
+
+    @Override
+    public String getReconocimientosFormFileName() {
+	return ABEILLE_RECONOCIMIENTOS_FILENAME;
+    }
+
+    @Override
+    public String getTrabajosFormFileName() {
+	return ABEILLE_TRABAJOS_FILENAME;
+    }
+
 }

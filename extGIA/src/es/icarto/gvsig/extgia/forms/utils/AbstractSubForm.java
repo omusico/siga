@@ -42,10 +42,10 @@ import es.icarto.gvsig.navtableforms.utils.AbeilleParser;
 public abstract class AbstractSubForm extends JPanel implements IWindow,
 IWindowListener {
 
-    private final FormPanel form;
+    protected final FormPanel form;
     private final HashMap<String, Integer> types;
     private HashMap<String, Value> values;
-    private final String dbTableName;
+    protected final String dbTableName;
     private final JTable embebedTable;
     private final String idElementField;
     private final String idElementValue;
@@ -59,13 +59,13 @@ IWindowListener {
     private final int width = 430;
     private final int height = 440;
 
-    private HashMap<String, JComponent> widgetsVector;
+    protected HashMap<String, JComponent> widgetsVector;
 
     private final ORMLite ormLite;
     private final ValidatorForm formValidator;
     private final TextFieldsValidationNotifier textFieldsNotifier;
     private final ComboBoxValidationNotifier comboBoxNotifier;
-    private JButton addButton;
+    protected JButton addButton;
 
     public AbstractSubForm(String formFile,
 	    String dbTableName,
@@ -228,7 +228,7 @@ IWindowListener {
 
     }
 
-    private HashMap<String, Value> getFormData() {
+    protected HashMap<String, Value> getFormData() {
 	HashMap<String, Value> formData = new HashMap<String, Value>();
 	for (JComponent comp : widgetsVector.values()) {
 	    if (comp instanceof JComboBox) {
@@ -399,4 +399,10 @@ IWindowListener {
     public void windowActivated() {
 	// Nothing to do
     }
+
+    public FormPanel getForm() {
+	return form;
+    }
+
+
 }

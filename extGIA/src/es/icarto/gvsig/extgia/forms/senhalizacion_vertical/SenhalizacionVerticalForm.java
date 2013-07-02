@@ -357,4 +357,19 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 	return "Señalización Vertical";
     }
 
+    @Override
+    public String getElement() {
+	return Elements.Senhalizacion_Vertical.name();
+    }
+
+    @Override
+    public String getReconocimientosFormFileName() {
+	return ABEILLE_RECONOCIMIENTOS_FILENAME;
+    }
+
+    @Override
+    public String getTrabajosFormFileName() {
+	return ABEILLE_TRABAJOS_FILENAME;
+    }
+
 }

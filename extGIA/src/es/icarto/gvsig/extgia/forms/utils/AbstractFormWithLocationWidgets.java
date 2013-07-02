@@ -25,6 +25,8 @@ import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
+import es.icarto.gvsig.extgia.batch.AddReconocimientosBatchListener;
+import es.icarto.gvsig.extgia.batch.AddTrabajosBatchListener;
 import es.icarto.gvsig.extgia.forms.utils.LaunchGIAForms.Elements;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
@@ -35,6 +37,7 @@ import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 
 @SuppressWarnings("serial")
 public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
+    protected String layerName;
 
     protected static final String AREA_MANTENIMIENTO = "area_mantenimiento";
     protected static final String BASE_CONTRATISTA = "base_contratista";
@@ -72,8 +75,15 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     protected JButton editTrabajoButton;
     protected JButton deleteTrabajoButton;
 
+    protected JButton addTrabajosBatchButton;
+    protected JButton addReconocimientosBatchButton;
+
+    AddTrabajosBatchListener addTrabajosBatchListener;
+    AddReconocimientosBatchListener addReconocimientosBatchListener;
+
     public AbstractFormWithLocationWidgets (FLyrVect layer) {
 	super(layer);
+	layerName = layer.getName();
 	initWidgets();
 	setListeners();
     }
@@ -139,6 +149,33 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	    editTrabajoButton = (JButton) form.getComponentByName("edit_trabajo_button");
 	    deleteReconocimientoButton = (JButton) form.getComponentByName("delete_reconocimiento_button");
 	    deleteTrabajoButton = (JButton) form.getComponentByName("delete_trabajo_button");
+	}
+
+	if (SqlUtils.elementHasType(layerName, "trabajos")) {
+	    if (addTrabajosBatchButton == null) {
+		addTrabajosBatchButton = new JButton();
+		addTrabajosBatchButton.setText("T");
+		getActionsToolBar().add(addTrabajosBatchButton);
+	    }
+	}
+	if (SqlUtils.elementHasType(layerName, "inspecciones")) {
+	    if (addReconocimientosBatchButton == null) {
+		addReconocimientosBatchButton = new JButton();
+		addReconocimientosBatchButton.setText("R");
+		getActionsToolBar().add(addReconocimientosBatchButton);
+	    }
+	}
+
+	if (addTrabajosBatchListener == null && addTrabajosBatchButton != null) {
+	    addTrabajosBatchListener = new AddTrabajosBatchListener(getElement(),
+		    getTrabajosFormFileName(), getTrabajosDBTableName());
+	    addTrabajosBatchButton.addActionListener(addTrabajosBatchListener);
+	}
+
+	if (addReconocimientosBatchListener == null && addReconocimientosBatchButton != null) {
+	    addReconocimientosBatchListener = new AddReconocimientosBatchListener(getElement(),
+		    getReconocimientosFormFileName(), getReconocimientosDBTableName());
+	    addReconocimientosBatchButton.addActionListener(addReconocimientosBatchListener);
 	}
     }
 
@@ -364,6 +401,13 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	    tipoViaPFWidget.removeActionListener(updateNombreViaPFListener);
 	}
 
+	if (addTrabajosBatchButton != null) {
+	    addTrabajosBatchButton.removeActionListener(addTrabajosBatchListener);
+	}
+	if (addReconocimientosBatchButton != null) {
+	    addReconocimientosBatchButton.removeActionListener(addReconocimientosBatchListener);
+	}
+
 	super.removeListeners();
     }
 
@@ -486,6 +530,8 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	}
     }
 
+    public abstract String getElement();
+
     public abstract String getFormBodyPath();
 
     @Override
@@ -501,6 +547,10 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     public abstract String getReconocimientosDBTableName();
 
     public abstract String getTrabajosDBTableName();
+
+    public abstract String getReconocimientosFormFileName();
+
+    public abstract String getTrabajosFormFileName();
 
     public String getReconocimientosIDField() {
 	return "n_inspeccion";

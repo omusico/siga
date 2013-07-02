@@ -303,4 +303,20 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
     protected String getBasicName() {
 	return "Barrera Rígida";
     }
+
+    @Override
+    public String getElement() {
+	return Elements.Barrera_Rigida.name();
+    }
+
+    @Override
+    public String getReconocimientosFormFileName() {
+	return ABEILLE_RECONOCIMIENTOS_FILENAME;
+    }
+
+    @Override
+    public String getTrabajosFormFileName() {
+	return ABEILLE_TRABAJOS_FILENAME;
+    }
+
 }

@@ -122,7 +122,6 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 	deleteTrabajoButton.addActionListener(deleteTrabajoListener);
 	deleteRamalListener = new DeleteRamalListener();
 	deleteRamalButton.addActionListener(deleteRamalListener);
-
     }
 
     @Override
@@ -343,6 +342,21 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
     @Override
     protected String getBasicName() {
 	return "Áreas Descanso";
+    }
+
+    @Override
+    public String getElement() {
+	return Elements.Areas_Descanso.name();
+    }
+
+    @Override
+    public String getReconocimientosFormFileName() {
+	return ABEILLE_RECONOCIMIENTOS_FILENAME;
+    }
+
+    @Override
+    public String getTrabajosFormFileName() {
+	return ABEILLE_TRABAJOS_FILENAME;
     }
 
 }
