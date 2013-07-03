@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.hardcode.gdbms.engine.values.Value;
+import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 import com.jeta.forms.components.image.ImageComponent;
@@ -58,18 +59,19 @@ public abstract class BatchAbstractSubForm extends AbstractSubForm implements Ac
 	    int idFieldIndex = recordset.getFieldIndexByName(getIdFieldName());
 	    if (recordset.getSelection().isEmpty()) {
 		JOptionPane.showMessageDialog(null,
-			"No hay elementos seleccionados a los que añadir la información",
-			"Aviso",
+			PluginServices.getText(this, "unselectedElements_msg"),
+			"warning",
 			JOptionPane.WARNING_MESSAGE);
 		return;
 	    }
 	    selectedElements = recordset.getSelection().cardinality();
 
-	    Object[] options = { "Sí", "No" };
+	    Object[] options = {PluginServices.getText(this, "optionPane_yes"),
+		    PluginServices.getText(this, "optionPane_no")};
 	    int m = JOptionPane.showOptionDialog(
 		    null,
-		    "Se va a añadir la información a los " + selectedElements +
-		    " elementos seleccionados.\n¿Desea continuar?" ,
+		    PluginServices.getText(this, "addInfo_msg_I" ) + selectedElements +
+		    PluginServices.getText(this, "addInfo_msg_II") ,
 		    null,
 		    JOptionPane.YES_NO_CANCEL_OPTION,
 		    JOptionPane.INFORMATION_MESSAGE, null,
@@ -82,9 +84,9 @@ public abstract class BatchAbstractSubForm extends AbstractSubForm implements Ac
 		    }
 		}
 		JOptionPane.showMessageDialog(null,
-			"La información fue añadida correctamente a los "
-				+ selectedElements
-				+ " elementos seleccionados");
+			PluginServices.getText(this, "addedInfo_msg_I")
+			+ selectedElements
+			+ PluginServices.getText(this, "addedInfo_msg_II"));
 		this.closeWindow();
 	    }
 	} catch (ReadDriverException e) {

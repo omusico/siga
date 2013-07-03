@@ -29,6 +29,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.jeta.forms.components.image.ImageComponent;
@@ -186,7 +187,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
 	    if (!isCheckingOK()) {
 		JOptionPane.showMessageDialog(null,
-			"Debe seleccionar al menos Elemento y Tipo");
+			PluginServices.getText(this, "elementAndTypeUnselected_msg"));
 		return;
 	    }
 
@@ -210,10 +211,11 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 				    fechaInicial, fechaFinal, filters);
 			}
 		    }
-		    Object[] reportGeneratedOptions = { "Abrir directorio", "Cerrar" };
+		    Object[] reportGeneratedOptions = {PluginServices.getText(this, "reportGeneratedOptions_open"),
+			    PluginServices.getText(this, "reportGeneratedOptions_close")};
 		    int m = JOptionPane.showOptionDialog(
 			    null,
-			    "Ficheros generados con éxito en: \n" + "\""
+			    PluginServices.getText(this, "filesGenerated_msg") + "\""
 				    + outputPath.getAbsolutePath() + "\"", null,
 				    JOptionPane.YES_NO_CANCEL_OPTION,
 				    JOptionPane.INFORMATION_MESSAGE, null,
@@ -235,9 +237,9 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		SaveFileDialog sfd;
 		if (SqlUtils.elementHasType(element[0], tipoConsulta.getSelectedItem().toString())) {
 		    if (pdfRadioButton.isSelected()) {
-			sfd = new SaveFileDialog("PDF Files", "pdf");
+			sfd = new SaveFileDialog(PluginServices.getText(this, "pdfFiles"), "pdf");
 		    }else {
-			sfd = new SaveFileDialog("CSV Files", "csv");
+			sfd = new SaveFileDialog(PluginServices.getText(this, "csvFiles"), "csv");
 		    }
 		    File outputFile = sfd.showDialog();
 		    if (outputFile != null) {
@@ -247,7 +249,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		    }
 		}else {
 		    JOptionPane.showMessageDialog(null,
-			    "No se puede realizar esta consulta para el elemento seleccionado");
+			    PluginServices.getText(this, "unavailableQuery_msg"));
 		}
 	    }
 	}
@@ -320,10 +322,12 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		}
 
 		if (!isReportOfSeveralElements) {
-		    Object[] reportGeneratedOptions = { "Ver listado", "Cerrar" };
+		    Object[] reportGeneratedOptions = {PluginServices.getText(this,
+			    "singleReportGeneratedOptions_open"), PluginServices.getText(this,
+				    "singleReportGeneratedOptions_close")};
 		    int m = JOptionPane.showOptionDialog(
 			    null,
-			    "Listado generado con éxito en: \n" + "\""
+			    PluginServices.getText(this, "reportGenerated_msg") + "\""
 				    + outputFile + "\"", null,
 				    JOptionPane.YES_NO_CANCEL_OPTION,
 				    JOptionPane.INFORMATION_MESSAGE, null,
@@ -386,8 +390,8 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
 	    if (!isReportOfSeveralElements) {
 		JOptionPane.showMessageDialog(null,
-			"Archivo generado con éxito en: \n" +
-				outputFile);
+			PluginServices.getText(this, "csvReportGenerated_msg") +
+			outputFile);
 	    }
 	}
     }
@@ -396,7 +400,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	if (!rs.next()) {
 	    if (!isReportOfSeveralElements) {
 		JOptionPane.showMessageDialog(null,
-			"La consulta produjo 0 resultados");
+			PluginServices.getText(this, "queryWithoutResults_msg"));
 		return false;
 	    }else {
 		return false;
