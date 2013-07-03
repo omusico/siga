@@ -28,7 +28,6 @@ import com.jeta.forms.gui.common.FormException;
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.extgia.batch.AddReconocimientosBatchListener;
 import es.icarto.gvsig.extgia.batch.AddTrabajosBatchListener;
-import es.icarto.gvsig.extgia.forms.utils.LaunchGIAForms.Elements;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.AbstractForm;
@@ -489,7 +488,7 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	}
     }
 
-    protected void addNewButtonsToActionsToolBar(final Elements element) {
+    protected void addNewButtonsToActionsToolBar(final DBFieldNames.Elements element) {
 	JPanel actionsToolBar = this.getActionsToolBar();
 
 	filesLinkButton = new FilesLinkButton(this, new FilesLinkData() {

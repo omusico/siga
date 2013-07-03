@@ -1,8 +1,12 @@
 package es.icarto.gvsig.extgia.preferences;
 
-import es.icarto.gvsig.extgia.forms.utils.LaunchGIAForms.Elements;
 
 public class DBFieldNames {
+
+    public enum Elements {
+	Taludes, Isletas, Enlaces, Barrera_Rigida, Areas_Servicio, Areas_Descanso,
+	Juntas, Pasos_Mediana, Senhalizacion_Vertical, Valla_Cierre, Firme;
+    }
 
     public static String[] genericReconocimientoEstadoFields = {"n_inspeccion as \"Nº Inspección\"",
 	"nombre_revisor as \"Revisor\"",

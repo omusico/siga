@@ -17,7 +17,6 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
-import es.icarto.gvsig.extgia.forms.utils.LaunchGIAForms.Elements;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 
@@ -56,7 +55,7 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
     }
 
     private void addNewButtonsToActionsToolBar() {
-	super.addNewButtonsToActionsToolBar(Elements.Areas_Servicio);
+	super.addNewButtonsToActionsToolBar(DBFieldNames.Elements.Areas_Servicio);
     }
 
     @Override
@@ -343,7 +342,7 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public String getElement() {
-	return Elements.Areas_Servicio.name();
+	return DBFieldNames.Elements.Areas_Servicio.name();
     }
 
     @Override

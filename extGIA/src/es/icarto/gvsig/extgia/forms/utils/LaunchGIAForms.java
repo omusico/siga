@@ -35,20 +35,18 @@ import es.icarto.gvsig.extgia.forms.pasos_mediana.PasosMedianaForm;
 import es.icarto.gvsig.extgia.forms.senhalizacion_vertical.SenhalizacionVerticalForm;
 import es.icarto.gvsig.extgia.forms.taludes.TaludesForm;
 import es.icarto.gvsig.extgia.forms.valla_cierre.VallaCierreForm;
+import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 
 public class LaunchGIAForms {
 
-    public enum Elements {
-	Taludes, Isletas, Enlaces, Barrera_Rigida, Areas_Servicio, Areas_Descanso,
-	Juntas, Pasos_Mediana, Senhalizacion_Vertical, Valla_Cierre, Firme;
-    }
+
 
     public static void callFormDependingOfLayer(String layerName, boolean editing) {
 	final TOCLayerManager toc = new TOCLayerManager();
 	FLyrVect layer = toc.getLayerByName(layerName);
 
-	switch (Elements.valueOf(layerName)) {
+	switch (DBFieldNames.Elements.valueOf(layerName)) {
 	case Taludes:
 	    final TaludesForm taludesForm = new TaludesForm(layer);
 	    if (taludesForm.init()) {
@@ -153,7 +151,7 @@ public class LaunchGIAForms {
 
     public static void callBatchTrabajosSubFormDependingOfElement(String element,
 	    String formFileName, String dbTableName) {
-	switch (Elements.valueOf(element)) {
+	switch (DBFieldNames.Elements.valueOf(element)) {
 	case Taludes:
 	    final BatchTaludesTrabajos taludesSubForm = new BatchTaludesTrabajos(formFileName,
 		    dbTableName);
@@ -209,7 +207,7 @@ public class LaunchGIAForms {
 
     public static void callBatchReconocimientosSubFormDependingOfElement(String element,
 	    String formFileName, String dbTableName) {
-	switch (Elements.valueOf(element)) {
+	switch (DBFieldNames.Elements.valueOf(element)) {
 	case Taludes:
 	    final BatchTaludesReconocimientos taludesSubForm = new BatchTaludesReconocimientos(formFileName,
 		    dbTableName);

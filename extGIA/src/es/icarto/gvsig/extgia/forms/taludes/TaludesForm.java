@@ -30,7 +30,6 @@ import es.icarto.gvsig.audasacommons.forms.reports.NavTableComponentsPrintButton
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.utils.EnableComponentBasedOnCheckBox;
-import es.icarto.gvsig.extgia.forms.utils.LaunchGIAForms.Elements;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkButton;
@@ -90,7 +89,7 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 
 	    @Override
 	    public String getRegisterField() {
-		return DBFieldNames.getPrimaryKey(Elements.Taludes);
+		return DBFieldNames.getPrimaryKey(DBFieldNames.Elements.Taludes);
 	    }
 
 	    @Override
@@ -107,7 +106,7 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 
 		baseDirectory = baseDirectory + File.separator + "FILES"
 			+ File.separator + "inventario" + File.separator
-			+ Elements.Taludes;
+			+ DBFieldNames.Elements.Taludes;
 
 		return baseDirectory;
 	    }
@@ -416,7 +415,7 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public String getElement() {
-	return Elements.Taludes.name();
+	return DBFieldNames.Elements.Taludes.name();
     }
 
     @Override

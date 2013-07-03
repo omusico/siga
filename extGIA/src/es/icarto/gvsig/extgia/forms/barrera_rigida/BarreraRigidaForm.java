@@ -21,7 +21,6 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
-import es.icarto.gvsig.extgia.forms.utils.LaunchGIAForms.Elements;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
@@ -53,7 +52,7 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
     }
 
     private void addNewButtonsToActionsToolBar() {
-	super.addNewButtonsToActionsToolBar(Elements.Barrera_Rigida);
+	super.addNewButtonsToActionsToolBar(DBFieldNames.Elements.Barrera_Rigida);
     }
 
     @Override
@@ -306,7 +305,7 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public String getElement() {
-	return Elements.Barrera_Rigida.name();
+	return DBFieldNames.Elements.Barrera_Rigida.name();
     }
 
     @Override

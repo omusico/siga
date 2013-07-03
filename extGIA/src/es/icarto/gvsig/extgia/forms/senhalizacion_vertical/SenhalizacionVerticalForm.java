@@ -18,7 +18,6 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
-import es.icarto.gvsig.extgia.forms.utils.LaunchGIAForms.Elements;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
@@ -60,7 +59,7 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
     }
 
     private void addNewButtonsToActionsToolBar() {
-	super.addNewButtonsToActionsToolBar(Elements.Senhalizacion_Vertical);
+	super.addNewButtonsToActionsToolBar(DBFieldNames.Elements.Senhalizacion_Vertical);
     }
 
     @Override
@@ -359,7 +358,7 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public String getElement() {
-	return Elements.Senhalizacion_Vertical.name();
+	return DBFieldNames.Elements.Senhalizacion_Vertical.name();
     }
 
     @Override

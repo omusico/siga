@@ -17,7 +17,6 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
-import es.icarto.gvsig.extgia.forms.utils.LaunchGIAForms.Elements;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
@@ -50,7 +49,7 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
     }
 
     private void addNewButtonsToActionsToolBar() {
-	super.addNewButtonsToActionsToolBar(Elements.Valla_Cierre);
+	super.addNewButtonsToActionsToolBar(DBFieldNames.Elements.Valla_Cierre);
     }
 
     @Override
@@ -279,7 +278,7 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public String getElement() {
-	return Elements.Valla_Cierre.name();
+	return DBFieldNames.Elements.Valla_Cierre.name();
     }
 
     @Override

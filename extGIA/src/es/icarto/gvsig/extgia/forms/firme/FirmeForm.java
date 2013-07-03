@@ -21,7 +21,6 @@ import com.jeta.forms.components.image.ImageComponent;
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
-import es.icarto.gvsig.extgia.forms.utils.LaunchGIAForms.Elements;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 
@@ -48,7 +47,7 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
     }
 
     private void addNewButtonsToActionsToolBar() {
-	super.addNewButtonsToActionsToolBar(Elements.Firme);
+	super.addNewButtonsToActionsToolBar(DBFieldNames.Elements.Firme);
     }
 
     @Override
@@ -292,7 +291,7 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public String getElement() {
-	return Elements.Firme.name();
+	return DBFieldNames.Elements.Firme.name();
     }
 
     @Override
