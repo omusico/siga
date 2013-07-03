@@ -60,7 +60,7 @@ public abstract class BatchAbstractSubForm extends AbstractSubForm implements Ac
 	    if (recordset.getSelection().isEmpty()) {
 		JOptionPane.showMessageDialog(null,
 			PluginServices.getText(this, "unselectedElements_msg"),
-			"warning",
+			PluginServices.getText(this, "warning"),
 			JOptionPane.WARNING_MESSAGE);
 		return;
 	    }
@@ -70,12 +70,12 @@ public abstract class BatchAbstractSubForm extends AbstractSubForm implements Ac
 		    PluginServices.getText(this, "optionPane_no")};
 	    int m = JOptionPane.showOptionDialog(
 		    null,
-		    PluginServices.getText(this, "addInfo_msg_I" ) + selectedElements +
-		    PluginServices.getText(this, "addInfo_msg_II") ,
-		    null,
-		    JOptionPane.YES_NO_CANCEL_OPTION,
-		    JOptionPane.INFORMATION_MESSAGE, null,
-		    options, options[1]);
+		    PluginServices.getText(this, "addInfo_msg_I" ) + selectedElements + " " +
+			    PluginServices.getText(this, "addInfo_msg_II") ,
+			    null,
+			    JOptionPane.YES_NO_CANCEL_OPTION,
+			    JOptionPane.INFORMATION_MESSAGE, null,
+			    options, options[1]);
 	    if (m == JOptionPane.OK_OPTION) {
 		for (int i=0; i<recordset.getRowCount();i++) {
 		    if (recordset.isSelected(i)) {
@@ -85,7 +85,7 @@ public abstract class BatchAbstractSubForm extends AbstractSubForm implements Ac
 		}
 		JOptionPane.showMessageDialog(null,
 			PluginServices.getText(this, "addedInfo_msg_I")
-			+ selectedElements
+			+ selectedElements + " "
 			+ PluginServices.getText(this, "addedInfo_msg_II"));
 		this.closeWindow();
 	    }
