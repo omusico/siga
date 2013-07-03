@@ -18,6 +18,7 @@ import javax.swing.table.DefaultTableModel;
 import org.apache.log4j.Logger;
 
 import com.iver.andami.Launcher;
+import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.image.ImageComponent;
@@ -154,14 +155,20 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	if (SqlUtils.elementHasType(layerName, "trabajos")) {
 	    if (addTrabajosBatchButton == null) {
 		addTrabajosBatchButton = new JButton();
-		addTrabajosBatchButton.setText("T");
+		java.net.URL imgURL = getClass().getResource("/batch_trabajo.png");
+		ImageIcon icon = new ImageIcon (imgURL);
+		addTrabajosBatchButton.setIcon(icon);
+		addTrabajosBatchButton.setToolTipText(PluginServices.getText(this, "addBatchTrabajos_tooltip"));
 		getActionsToolBar().add(addTrabajosBatchButton);
 	    }
 	}
 	if (SqlUtils.elementHasType(layerName, "inspecciones")) {
 	    if (addReconocimientosBatchButton == null) {
 		addReconocimientosBatchButton = new JButton();
-		addReconocimientosBatchButton.setText("R");
+		java.net.URL imgURL = getClass().getResource("/batch_reconocimiento.png");
+		ImageIcon icon = new ImageIcon (imgURL);
+		addReconocimientosBatchButton.setIcon(icon);
+		addReconocimientosBatchButton.setToolTipText(PluginServices.getText(this, "addBatchReconocimientos_tooltip"));
 		getActionsToolBar().add(addReconocimientosBatchButton);
 	    }
 	}
