@@ -1,5 +1,7 @@
 package es.icarto.gvsig.extgia.batch.elements;
 
+import com.iver.andami.ui.mdiManager.WindowInfo;
+
 import es.icarto.gvsig.extgia.batch.BatchAbstractSubForm;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 
@@ -28,4 +30,11 @@ public class BatchFirmeTrabajos extends BatchAbstractSubForm {
 		.getPath();
     }
 
+    @Override
+    public WindowInfo getWindowInfo() {
+	viewInfo = new WindowInfo(WindowInfo.MODALDIALOG);
+	viewInfo.setWidth(700);
+	viewInfo.setHeight(800);
+	return viewInfo;
+    }
 }
