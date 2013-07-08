@@ -61,6 +61,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
     private static final int RECONOCIMIENTOS = 1;
     private static final int TRABAJOS_FIRME = 2;
     private static final int RECONOCIMIENTOS_FIRME = 3;
+    private static final int CARACTERISTICAS = 4;
 
     private final FormPanel form;
     private final ORMLite ormLite;
@@ -81,6 +82,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
     private JRadioButton csvRadioButton;
     private JButton launchButton;
 
+    private TipoConsultaListener tipoConsultaListener;
     private UpdateBaseContratistaListener updateBaseContratistaListener;
     private UpdateTramoListener updateTramoListener;
 
@@ -133,9 +135,11 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	tramo = (JComboBox) widgetsVector.get("tramo");
 	setComboBoxValues(tramo);
 
+	tipoConsultaListener = new TipoConsultaListener();
 	updateBaseContratistaListener = new UpdateBaseContratistaListener();
 	updateTramoListener = new UpdateTramoListener();
 
+	tipoConsulta.addActionListener(tipoConsultaListener);
 	areaMantenimiento.addActionListener(updateBaseContratistaListener);
 	baseContratista.addActionListener(updateTramoListener);
 
@@ -278,6 +282,9 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		fields = getReconocimientosFieldNames(elementId);
 		tipo = RECONOCIMIENTOS;
 	    }
+	}else if (tipoConsulta.getSelectedItem().toString().equals("Características")) {
+	    fields = getCaracteristicasFieldNames(element[0]);
+	    tipo = CARACTERISTICAS;
 	}
 
 	String query = getReportQuery(tipo, fechaInicial, fechaFinal, element[0],
@@ -315,6 +322,8 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		    new FirmeReconocimientosReport(
 			    element[1],
 			    outputFile, rs, filters);
+		}else if (tipo == CARACTERISTICAS) {
+		    createCaracteristicasReport(element, outputFile, rs, filters);
 		}else {
 		    new ReconocimientosReport(
 			    element[1],
@@ -441,9 +450,16 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
     private String getReportQuery(int tipo, Date fechaInicial, Date fechaFinal,
 	    String element, String elementId, String fields) {
-	String query = "SELECT " + fields + " FROM " +
-		DBFieldNames.GIA_SCHEMA + "." +
-		element + "_" + ((KeyValue) tipoConsulta.getSelectedItem()).getKey();
+	String query;
+	if (tipo == CARACTERISTICAS) {
+	    query = "SELECT " + fields + " FROM " +
+		    DBFieldNames.GIA_SCHEMA + "." +
+		    element;
+	}else {
+	    query = "SELECT " + fields + " FROM " +
+		    DBFieldNames.GIA_SCHEMA + "." +
+		    element + "_" + ((KeyValue) tipoConsulta.getSelectedItem()).getKey();
+	}
 
 	if (!getWhereClauseByLocationWidgets().isEmpty()) {
 	    query = query + " WHERE " + elementId + " IN (SELECT " + elementId +
@@ -451,7 +467,9 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		    getWhereClauseByLocationWidgets();
 	}
 
-	if (tipo == TRABAJOS || tipo == TRABAJOS_FIRME) {
+	if (tipo == CARACTERISTICAS) {
+	    return query;
+	}else if (tipo == TRABAJOS || tipo == TRABAJOS_FIRME) {
 	    query = query + getWhereClauseByDates("fecha_certificado", fechaInicial, fechaFinal);
 	}else {
 	    query = query + getWhereClauseByDates("fecha_inspeccion", fechaInicial, fechaFinal);
@@ -518,6 +536,60 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		"fecha_inspeccion, observaciones";
     }
 
+    private String getCaracteristicasFieldNames(String element) {
+	switch (DBFieldNames.Elements.valueOf(element)) {
+	case Taludes:
+	    break;
+	case Isletas:
+	    break;
+	case Barrera_Rigida:
+	    break;
+	case Areas_Servicio:
+	    break;
+	case Areas_Descanso:
+	    return getElementId(element) + ", nombre, fecha_actualizacion, sup_total," +
+	    "area_picnic, observaciones";
+	case Juntas:
+	    break;
+	case Pasos_Mediana:
+	    break;
+	case Senhalizacion_Vertical:
+	    break;
+	case Valla_Cierre:
+	    break;
+	case Firme:
+	    break;
+	}
+	return null;
+    }
+
+    private void createCaracteristicasReport(String[] element, String outputFile,
+	    ResultSet rs, String[] filters) {
+	switch (DBFieldNames.Elements.valueOf(element[0])) {
+	case Taludes:
+	    break;
+	case Isletas:
+	    break;
+	case Barrera_Rigida:
+	    break;
+	case Areas_Servicio:
+	    break;
+	case Areas_Descanso:
+	    new AreasDescansoCaracteristicasReport(element[1], outputFile, rs, filters);
+	    break;
+	case Juntas:
+	    break;
+	case Pasos_Mediana:
+	    break;
+	case Senhalizacion_Vertical:
+	    break;
+	case Valla_Cierre:
+	    break;
+	case Firme:
+	    break;
+	}
+    }
+
     private String getWhereClauseByLocationWidgets() {
 	String query = "";
 	if (!areaMantenimiento.getSelectedItem().toString().equals(" ")) {
@@ -543,6 +615,20 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	    query = " WHERE " + fechaField + " BETWEEN '" + fechaInicial + "' AND '" + fechaFinal + "'";
 	}
 	return query;
+    }
+
+    public class TipoConsultaListener implements ActionListener {
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    if (tipoConsulta.getSelectedItem().toString().equals("Características")) {
+		fechaInicio.setEnabled(false);
+		fechaFin.setEnabled(false);
+	    }else {
+		fechaInicio.setEnabled(true);
+		fechaFin.setEnabled(true);
+	    }
+	}
     }
 
     public class UpdateBaseContratistaListener implements ActionListener {

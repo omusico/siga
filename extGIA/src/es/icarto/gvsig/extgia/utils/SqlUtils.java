@@ -368,6 +368,9 @@ public class SqlUtils {
     }
 
     public static boolean elementHasType(String element, String tipoConsulta) {
+	if (tipoConsulta.equalsIgnoreCase("Características")) {
+	    return true;
+	}
 	boolean type = false;
 	PreparedStatement statement;
 	String query = "SELECT " + tipoConsulta + " FROM audasa_extgia_dominios.elemento " +
