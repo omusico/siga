@@ -21,6 +21,7 @@ import com.lowagie.text.Element;
 import com.lowagie.text.FontFactory;
 import com.lowagie.text.Image;
 import com.lowagie.text.Paragraph;
+import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfPageEventHelper;
@@ -38,12 +39,16 @@ public abstract class Report {
 
     boolean isFirstPage = true;
 
+    protected Document document;
+
     public Report(String element, String fileName,
 	    ResultSet resultMap, String[] filters) {
 	writePdfReport(element, fileName, resultMap, filters);
     }
 
     protected abstract String getTitle();
+
+    protected abstract Rectangle setPageSize();
 
     protected abstract String[] getColumnNames();
 
@@ -234,7 +239,7 @@ public abstract class Report {
 
     public void writePdfReport(String element, String fileName,
 	    ResultSet resultMap, String[] filters) {
-	Document document = new Document();
+	document = new Document(setPageSize());
 	try {
 	    PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(fileName));
 	    writer.setPageEvent(new MyPageEvent(writer, document, resultMap));

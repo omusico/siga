@@ -2,6 +2,9 @@ package es.icarto.gvsig.extgia.consultas;
 
 import java.sql.ResultSet;
 
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Rectangle;
+
 public class FirmeReconocimientosReport extends Report {
 
     public FirmeReconocimientosReport(String element, String fileName,
@@ -40,6 +43,11 @@ public class FirmeReconocimientosReport extends Report {
 	columnsWidth[5] = 258f;
 
 	return columnsWidth;
+    }
+
+    @Override
+    protected Rectangle setPageSize() {
+	return PageSize.A4;
     }
 
 }

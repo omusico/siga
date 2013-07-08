@@ -2,6 +2,9 @@ package es.icarto.gvsig.extgia.consultas;
 
 import java.sql.ResultSet;
 
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Rectangle;
+
 public class FirmeTrabajosReport extends Report {
 
     public FirmeTrabajosReport(String element, String fileName,
@@ -42,6 +45,11 @@ public class FirmeTrabajosReport extends Report {
 	columnsWidth[6] = 70f;
 
 	return columnsWidth;
+    }
+
+    @Override
+    protected Rectangle setPageSize() {
+	return PageSize.A4;
     }
 
 }
