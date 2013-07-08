@@ -193,9 +193,18 @@ public abstract class Report {
 			    String dateAsString = dateFormat.format(date);
 			    value = new Paragraph(dateAsString, cellBoldStyle);
 			}else {
-			    value = new Paragraph(resultMap
-				    .getString(column).toString(),
-				    cellBoldStyle);
+			    // Boolean field
+			    if (resultMap.getString(column).toString().equals("f")) {
+				value = new Paragraph("No",
+					cellBoldStyle);
+			    }else if (resultMap.getString(column).toString().equals("t")) {
+				value = new Paragraph("Sí",
+					cellBoldStyle);
+			    }else {
+				value = new Paragraph(resultMap
+					.getString(column).toString(),
+					cellBoldStyle);
+			    }
 			}
 		    } else {
 			value = new Paragraph("");
