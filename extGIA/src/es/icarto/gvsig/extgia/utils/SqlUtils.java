@@ -368,7 +368,8 @@ public class SqlUtils {
     }
 
     public static boolean elementHasType(String element, String tipoConsulta) {
-	if (tipoConsulta.equalsIgnoreCase("Características")) {
+	if (tipoConsulta.equalsIgnoreCase("Características") ||
+		((tipoConsulta.equalsIgnoreCase("Trabajos (Agregados)")))) {
 	    return true;
 	}
 	boolean type = false;

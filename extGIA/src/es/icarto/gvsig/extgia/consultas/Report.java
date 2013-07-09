@@ -32,8 +32,8 @@ import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 
 public abstract class Report {
 
-    private final com.lowagie.text.Font cellBoldStyle = FontFactory.getFont("arial", 6, Font.BOLD);
-    private final com.lowagie.text.Font bodyBoldStyle = FontFactory.getFont("arial", 8, Font.BOLD);
+    protected final com.lowagie.text.Font cellBoldStyle = FontFactory.getFont("arial", 6, Font.BOLD);
+    protected final com.lowagie.text.Font bodyBoldStyle = FontFactory.getFont("arial", 8, Font.BOLD);
 
     private final Locale loc = new Locale("es");
 
@@ -170,59 +170,12 @@ public abstract class Report {
 	    writeFilters(document, filters);
 
 	    // Column names
-	    PdfPTable table = new PdfPTable(getColumnNames().length);
-	    table.setTotalWidth(document.getPageSize().getWidth() -
-		    document.leftMargin() - document.rightMargin());
-	    table.setWidths(getColumnsWidth(getColumnNames().length));
-	    table.setWidthPercentage(100);
-	    for (int i = 0; i < getColumnNames().length; i++) {
-		Paragraph column = new Paragraph(getColumnNames()[i],
-			bodyBoldStyle);
-		PdfPCell columnCell = new PdfPCell(column);
-		columnCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		table.addCell(columnCell);
-	    }
+	    PdfPTable table = writeColumnNames(document);
 
 	    isFirstPage = false;
 
 	    // Values
-	    Paragraph value;
-	    int numberOfRows = 0;
-	    resultMap.beforeFirst();
-	    while (resultMap.next()) {
-		for (int column = 1; column <= getColumnNames().length; column++) {
-		    if (resultMap.getString(column) != null) {
-			if (getColumnNames()[column-1].contains("Fecha")) {
-			    SimpleDateFormat dateFormat = DateFormatNT.getDateFormat();
-			    Date date = resultMap.getDate(column);
-			    String dateAsString = dateFormat.format(date);
-			    value = new Paragraph(dateAsString, cellBoldStyle);
-			}else {
-			    // Boolean field
-			    if (resultMap.getString(column).toString().equals("f")) {
-				value = new Paragraph("No",
-					cellBoldStyle);
-			    }else if (resultMap.getString(column).toString().equals("t")) {
-				value = new Paragraph("Sí",
-					cellBoldStyle);
-			    }else {
-				value = new Paragraph(resultMap
-					.getString(column).toString(),
-					cellBoldStyle);
-			    }
-			}
-		    } else {
-			value = new Paragraph("");
-		    }
-		    PdfPCell valueCell = new PdfPCell(value);
-		    valueCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		    table.addCell(valueCell);
-		}
-		numberOfRows = numberOfRows +1;
-	    }
-	    document.add(table);
-	    document.add(Chunk.NEWLINE);
-	    writeNumberOfRows(document, numberOfRows);
+	    writeValues(document, resultMap, table);
 
 	    // Close file
 	    document.close();
@@ -235,6 +188,64 @@ public abstract class Report {
 	    e.printStackTrace();
 	}
 
+    }
+
+    protected void writeValues(Document document, ResultSet resultMap,
+	    PdfPTable table) throws SQLException, DocumentException {
+	Paragraph value;
+	int numberOfRows = 0;
+	resultMap.beforeFirst();
+	while (resultMap.next()) {
+	    for (int column = 1; column <= getColumnNames().length; column++) {
+		if (resultMap.getString(column) != null) {
+		    if (getColumnNames()[column-1].contains("Fecha")) {
+			SimpleDateFormat dateFormat = DateFormatNT.getDateFormat();
+			Date date = resultMap.getDate(column);
+			String dateAsString = dateFormat.format(date);
+			value = new Paragraph(dateAsString, cellBoldStyle);
+		    }else {
+			// Boolean field
+			if (resultMap.getString(column).toString().equals("f")) {
+			    value = new Paragraph("No",
+				    cellBoldStyle);
+			}else if (resultMap.getString(column).toString().equals("t")) {
+			    value = new Paragraph("Sí",
+				    cellBoldStyle);
+			}else {
+			    value = new Paragraph(resultMap
+				    .getString(column).toString(),
+				    cellBoldStyle);
+			}
+		    }
+		} else {
+		    value = new Paragraph("");
+		}
+		PdfPCell valueCell = new PdfPCell(value);
+		valueCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		table.addCell(valueCell);
+	    }
+	    numberOfRows = numberOfRows +1;
+	}
+	document.add(table);
+	document.add(Chunk.NEWLINE);
+	writeNumberOfRows(document, numberOfRows);
+    }
+
+    protected PdfPTable writeColumnNames(Document document)
+	    throws DocumentException {
+	PdfPTable table = new PdfPTable(getColumnNames().length);
+	table.setTotalWidth(document.getPageSize().getWidth() -
+		document.leftMargin() - document.rightMargin());
+	table.setWidths(getColumnsWidth(getColumnNames().length));
+	table.setWidthPercentage(100);
+	for (int i = 0; i < getColumnNames().length; i++) {
+	    Paragraph column = new Paragraph(getColumnNames()[i],
+		    bodyBoldStyle);
+	    PdfPCell columnCell = new PdfPCell(column);
+	    columnCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+	    table.addCell(columnCell);
+	}
+	return table;
     }
 
     public void writePdfReport(String element, String fileName,
@@ -271,7 +282,7 @@ public abstract class Report {
 	}
 	@Override
 	public void onStartPage(PdfWriter pdfWriter, Document document) {
-	    if (!isFirstPage) {
+	    if (!isFirstPage && getColumnNames() != null) {
 		try {
 		    document.add(Chunk.NEWLINE);
 		    float width = document.getPageSize().getWidth();

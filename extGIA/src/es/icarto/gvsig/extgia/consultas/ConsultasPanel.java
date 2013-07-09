@@ -62,6 +62,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
     private static final int TRABAJOS_FIRME = 2;
     private static final int RECONOCIMIENTOS_FIRME = 3;
     private static final int CARACTERISTICAS = 4;
+    private static final int TRABAJOS_AGREGADOS = 5;
 
     private final FormPanel form;
     private final ORMLite ormLite;
@@ -285,15 +286,33 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	}else if (tipoConsulta.getSelectedItem().toString().equals("Características")) {
 	    fields = getCaracteristicasFieldNames(element[0]);
 	    tipo = CARACTERISTICAS;
+	}else if (tipoConsulta.getSelectedItem().toString().equals("Trabajos (Agregados)")) {
+	    tipo = TRABAJOS_AGREGADOS;
 	}
 
 	String query = getReportQuery(tipo, fechaInicial, fechaFinal, element[0],
 		elementId, fields);
 
 	if (pdfRadioButton.isSelected()) {
-	    createPdfReport(tipo, outputFile, element, filters, query);
+	    if (tipo == TRABAJOS_AGREGADOS) {
+		createPdfReportAgregados(outputFile, element, filters);
+	    }else {
+		createPdfReport(tipo, outputFile, element, filters, query);
+	    }
 	}else {
-	    createCsvReport(outputFile, query);
+	    if (tipo == TRABAJOS_AGREGADOS) {
+	    }else {
+		createCsvReport(outputFile, query);
+	    }
+	}
+    }
+
+    private void createPdfReportAgregados(String outputFile, String[] element,
+	    String[] filters) {
+	if (element[0].equals("Taludes")) {
+	    new TrabajosAgregadosTaludesReport(element, outputFile, null, filters);
+	}else {
+	    // TODO: Isletas
 	}
     }
 
@@ -451,6 +470,11 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
     private String getReportQuery(int tipo, Date fechaInicial, Date fechaFinal,
 	    String element, String elementId, String fields) {
 	String query;
+
+	if (tipo == TRABAJOS_AGREGADOS) {
+	    query = "SELECT 1=1";
+	    return query;
+	}
 	if (tipo == CARACTERISTICAS) {
 	    query = "SELECT " + fields + " FROM " +
 		    DBFieldNames.GIA_SCHEMA + "." +
