@@ -3,6 +3,7 @@ package es.icarto.gvsig.extgia.consultas;
 import java.sql.ResultSet;
 
 import es.icarto.gvsig.extgia.consultas.caracteristicas.AreasDescansoCaracteristicasReport;
+import es.icarto.gvsig.extgia.consultas.caracteristicas.BarreraRigidaCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.IsletasCaracteristicasReport;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 
@@ -35,7 +36,8 @@ public class ConsultasFieldNames {
 	    return "id_isleta, tipo_via, nombre_via, pk_inicial, pk_final, tipo_isleta," +
 	    "superficie_bajo_bionda, posibilidad_empleo_vehiculos, observaciones";
 	case Barrera_Rigida:
-	    break;
+	    return "id_barrera_rigida, tipo_via, nombre_via, pk_inicial, pk_final, obstaculo_protegido" +
+	    ", longitud, codigo, tipo, metodo_constructivo, perfil, observaciones";
 	case Areas_Servicio:
 	    break;
 	case Areas_Descanso:
@@ -65,6 +67,7 @@ public class ConsultasFieldNames {
 	    new IsletasCaracteristicasReport(element[1], outputFile, rs, filters);
 	    break;
 	case Barrera_Rigida:
+	    new BarreraRigidaCaracteristicasReport(element[1], outputFile, rs, filters);
 	    break;
 	case Areas_Servicio:
 	    break;
