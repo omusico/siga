@@ -85,17 +85,22 @@ public abstract class Report {
 	    Paragraph tramoP = new Paragraph("Tramo: "
 		    + filters[2], bodyBoldStyle);
 	    document.add(tramoP);
-	    Paragraph mesP = new Paragraph("Desde: "
-		    + filters[3], bodyBoldStyle);
-	    document.add(mesP);
-	    Paragraph anhoP = new Paragraph("Hasta: "
-		    + filters[4], bodyBoldStyle);
-	    document.add(anhoP);
+	    writeDatesRange(document, filters);
 	    document.add(Chunk.NEWLINE);
 	} catch (DocumentException e) {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
+    }
+
+    protected void writeDatesRange(Document document, String[] filters)
+	    throws DocumentException {
+	Paragraph mesP = new Paragraph("Desde: "
+		+ filters[3], bodyBoldStyle);
+	document.add(mesP);
+	Paragraph anhoP = new Paragraph("Hasta: "
+		+ filters[4], bodyBoldStyle);
+	document.add(anhoP);
     }
 
     private void writeTitleAndSubtitle(Document document, String title,
