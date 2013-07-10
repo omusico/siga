@@ -267,7 +267,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	    Date fechaFinal, String[] filters) {
 
 	int tipo = -1;
-	String elementId = getElementId(element[0]);
+	String elementId = ConsultasFieldNames.getElementId(element[0]);
 	String fields = "";
 
 	if (tipoConsulta.getSelectedItem().toString().equals("Trabajos")) {
@@ -488,15 +488,21 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		    element + "_" + ((KeyValue) tipoConsulta.getSelectedItem()).getKey();
 	}
 
-	if (!getWhereClauseByLocationWidgets().isEmpty()) {
+	if (!ConsultasFieldNames.getWhereClauseByLocationWidgets(getFilterAreaValue(),
+		getFilterBaseContratistaValue(),
+		getFilterTramoValue()).isEmpty()) {
 	    if (tipo == CARACTERISTICAS) {
 		query = query + " WHERE " + elementId + " IN (SELECT " + elementId +
 			" FROM " + DBFieldNames.GIA_SCHEMA + "." + element +
-			getWhereClauseByLocationWidgets() + ");";
+			ConsultasFieldNames.getWhereClauseByLocationWidgets(getFilterAreaValue(),
+				getFilterBaseContratistaValue(),
+				getFilterTramoValue()) + ");";
 	    }else {
 		query = query + " WHERE " + elementId + " IN (SELECT " + elementId +
 			" FROM " + DBFieldNames.GIA_SCHEMA + "." + element +
-			getWhereClauseByLocationWidgets();
+			ConsultasFieldNames.getWhereClauseByLocationWidgets(getFilterAreaValue(),
+				getFilterBaseContratistaValue(),
+				getFilterTramoValue());
 	    }
 	}
 
@@ -534,42 +540,35 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	return filters;
     }
 
-    private String getElementId(String element) {
-	PreparedStatement statement;
-	String query = "SELECT id_fieldname FROM audasa_extgia_dominios.elemento " +
-		"WHERE id = '" + element + "';";
-	try {
-	    statement = connection.prepareStatement(query);
-	    statement.execute();
-	    ResultSet rs = statement.getResultSet();
-	    rs.next();
-	    return rs.getString(1);
-	} catch (SQLException e) {
-	    e.printStackTrace();
+    private String getFilterAreaValue() {
+	String area = null;
+	if (!areaMantenimiento.getSelectedItem().toString().equals(" ")) {
+	    area = ((KeyValue) areaMantenimiento.getSelectedItem()).getKey();
 	}
-	return null;
+	return area;
     }
 
-    private String getWhereClauseByLocationWidgets() {
-	String query = "";
-	if (!areaMantenimiento.getSelectedItem().toString().equals(" ")) {
-	    query = " WHERE area_mantenimiento =  '" +
-		    ((KeyValue) areaMantenimiento.getSelectedItem()).getKey() + "'";
-	}
+    private String getFilterBaseContratistaValue() {
+	String area = null;
 	if (!baseContratista.getSelectedItem().toString().equals(" ")) {
-	    query = query + " AND base_contratista = '" +
-		    ((KeyValue) baseContratista.getSelectedItem()).getKey() + "'";
+	    area = ((KeyValue) baseContratista.getSelectedItem()).getKey();
 	}
+	return area;
+    }
+
+    private String getFilterTramoValue() {
+	String area = null;
 	if (!tramo.getSelectedItem().toString().equals(" ")) {
-	    query = query + " AND tramo = '" +
-		    ((KeyValue) tramo.getSelectedItem()).getKey() + "'";
+	    area = ((KeyValue) tramo.getSelectedItem()).getKey();
 	}
-	return query;
+	return area;
     }
 
     private String getWhereClauseByDates(String fechaField, Date fechaInicial, Date fechaFinal) {
 	String query = "";
-	if (!getWhereClauseByLocationWidgets().isEmpty()) {
+	if (!ConsultasFieldNames.getWhereClauseByLocationWidgets(getFilterAreaValue(),
+		getFilterBaseContratistaValue(),
+		getFilterTramoValue()).isEmpty()) {
 	    query = " ) AND " + fechaField + " BETWEEN '" + fechaInicial + "' AND '" + fechaFinal + "'";
 	}else {
 	    query = " WHERE " + fechaField + " BETWEEN '" + fechaInicial + "' AND '" + fechaFinal + "'";

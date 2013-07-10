@@ -1,11 +1,14 @@
 package es.icarto.gvsig.extgia.consultas;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import es.icarto.gvsig.extgia.consultas.caracteristicas.AreasDescansoCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.BarreraRigidaCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.IsletasCaracteristicasReport;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class ConsultasFieldNames {
 
@@ -85,6 +88,36 @@ public class ConsultasFieldNames {
 	case Firme:
 	    break;
 	}
+    }
+
+    public static String getElementId(String element) {
+	PreparedStatement statement;
+	String query = "SELECT id_fieldname FROM audasa_extgia_dominios.elemento " +
+		"WHERE id = '" + element + "';";
+	try {
+	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+	    statement.execute();
+	    ResultSet rs = statement.getResultSet();
+	    rs.next();
+	    return rs.getString(1);
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return null;
+    }
+
+    public static String getWhereClauseByLocationWidgets(String area, String baseContratista, String tramo) {
+	String query = "";
+	if (area != null) {
+	    query = " WHERE area_mantenimiento =  '" + area + "'";
+	}
+	if (baseContratista != null) {
+	    query = " WHERE base_contratista =  '" + baseContratista + "'";
+	}
+	if (tramo != null) {
+	    query = " WHERE tramo =  '" + tramo + "'";
+	}
+	return query;
     }
 
 }
