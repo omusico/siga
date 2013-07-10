@@ -565,14 +565,16 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	case Taludes:
 	    break;
 	case Isletas:
-	    break;
+	    return "id_isleta, tipo_via, nombre_via, pk_inicial, pk_final, tipo_isleta," +
+	    "superficie_bajo_bionda, posibilidad_empleo_vehiculos, observaciones";
 	case Barrera_Rigida:
 	    break;
 	case Areas_Servicio:
 	    break;
 	case Areas_Descanso:
-	    return getElementId(element) + ", nombre, fecha_actualizacion, sup_total," +
-	    "area_picnic, observaciones";
+	    return "nombre, tipo_via, nombre_via, municipio, pk, fecha_puesta_servicio, sup_total," +
+	    "sup_pavimentada, aceras, bordillos, zona_siega, zona_ajardinada, riego," +
+	    "aparcamiento_camion_bus, area_picnic, fuentes_potables, observaciones";
 	case Juntas:
 	    break;
 	case Pasos_Mediana:
@@ -593,6 +595,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	case Taludes:
 	    break;
 	case Isletas:
+	    new IsletasCaracteristicasReport(element[1], outputFile, rs, filters);
 	    break;
 	case Barrera_Rigida:
 	    break;
