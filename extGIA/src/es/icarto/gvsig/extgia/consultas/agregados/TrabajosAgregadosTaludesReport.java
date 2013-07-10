@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgia.consultas;
+package es.icarto.gvsig.extgia.consultas.agregados;
 
 import java.sql.ResultSet;
 

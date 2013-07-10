@@ -39,6 +39,9 @@ import com.toedter.calendar.JDateChooser;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.audasacommons.forms.reports.SaveFileDialog;
+import es.icarto.gvsig.extgia.consultas.agregados.TrabajosAgregadosTaludesReport;
+import es.icarto.gvsig.extgia.consultas.firme.FirmeReconocimientosReport;
+import es.icarto.gvsig.extgia.consultas.firme.FirmeTrabajosReport;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
@@ -269,22 +272,22 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
 	if (tipoConsulta.getSelectedItem().toString().equals("Trabajos")) {
 	    if (elemento.getSelectedItem().toString().equals("Firme") || element[1].equals("Firme")) {
-		fields = getFirmeTrabajosFieldNames(elementId);
+		fields = ConsultasFieldNames.getFirmeTrabajosFieldNames(elementId);
 		tipo = TRABAJOS_FIRME;
 	    }else {
-		fields = getTrabajosFieldNames(elementId);
+		fields = ConsultasFieldNames.getTrabajosFieldNames(elementId);
 		tipo = TRABAJOS;
 	    }
 	}else if(tipoConsulta.getSelectedItem().toString().equals("Inspecciones")) {
 	    if (elemento.getSelectedItem().toString().equals("Firme") || element[1].equals("Firme")) {
-		fields = getFirmeReconocimientosFieldNames(elementId);
+		fields = ConsultasFieldNames.getFirmeReconocimientosFieldNames(elementId);
 		tipo = RECONOCIMIENTOS_FIRME;
 	    }else {
-		fields = getReconocimientosFieldNames(elementId);
+		fields = ConsultasFieldNames.getReconocimientosFieldNames(elementId);
 		tipo = RECONOCIMIENTOS;
 	    }
 	}else if (tipoConsulta.getSelectedItem().toString().equals("Características")) {
-	    fields = getCaracteristicasFieldNames(element[0]);
+	    fields = ConsultasFieldNames.getCaracteristicasFieldNames(element[0]);
 	    tipo = CARACTERISTICAS;
 	}else if (tipoConsulta.getSelectedItem().toString().equals("Trabajos (Agregados)")) {
 	    tipo = TRABAJOS_AGREGADOS;
@@ -342,7 +345,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 			    element[1],
 			    outputFile, rs, filters);
 		}else if (tipo == CARACTERISTICAS) {
-		    createCaracteristicasReport(element, outputFile, rs, filters);
+		    ConsultasFieldNames.createCaracteristicasReport(element, outputFile, rs, filters);
 		}else {
 		    new ReconocimientosReport(
 			    element[1],
@@ -539,82 +542,6 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	    e.printStackTrace();
 	}
 	return null;
-    }
-
-    private String getTrabajosFieldNames(String elementId) {
-	return elementId + ", fecha, unidad, medicion_contratista, medicion_audasa, " +
-		"observaciones, fecha_certificado";
-    }
-
-    private String getFirmeTrabajosFieldNames(String elementId) {
-	return elementId + ", fecha, pk_inicial, pk_final, sentido, " +
-		"descripcion, fecha_certificado";
-    }
-
-    private String getReconocimientosFieldNames(String elementId) {
-	return elementId + ", nombre_revisor, fecha_inspeccion, indice_estado, observaciones";
-    }
-
-    private String getFirmeReconocimientosFieldNames(String elementId) {
-	return elementId + ", tipo_inspeccion, nombre_revisor, aparato_medicion," +
-		"fecha_inspeccion, observaciones";
-    }
-
-    private String getCaracteristicasFieldNames(String element) {
-	switch (DBFieldNames.Elements.valueOf(element)) {
-	case Taludes:
-	    break;
-	case Isletas:
-	    return "id_isleta, tipo_via, nombre_via, pk_inicial, pk_final, tipo_isleta," +
-	    "superficie_bajo_bionda, posibilidad_empleo_vehiculos, observaciones";
-	case Barrera_Rigida:
-	    break;
-	case Areas_Servicio:
-	    break;
-	case Areas_Descanso:
-	    return "nombre, tipo_via, nombre_via, municipio, pk, fecha_puesta_servicio, sup_total," +
-	    "sup_pavimentada, aceras, bordillos, zona_siega, zona_ajardinada, riego," +
-	    "aparcamiento_camion_bus, area_picnic, fuentes_potables, observaciones";
-	case Juntas:
-	    break;
-	case Pasos_Mediana:
-	    break;
-	case Senhalizacion_Vertical:
-	    break;
-	case Valla_Cierre:
-	    break;
-	case Firme:
-	    break;
-	}
-	return null;
-    }
-
-    private void createCaracteristicasReport(String[] element, String outputFile,
-	    ResultSet rs, String[] filters) {
-	switch (DBFieldNames.Elements.valueOf(element[0])) {
-	case Taludes:
-	    break;
-	case Isletas:
-	    new IsletasCaracteristicasReport(element[1], outputFile, rs, filters);
-	    break;
-	case Barrera_Rigida:
-	    break;
-	case Areas_Servicio:
-	    break;
-	case Areas_Descanso:
-	    new AreasDescansoCaracteristicasReport(element[1], outputFile, rs, filters);
-	    break;
-	case Juntas:
-	    break;
-	case Pasos_Mediana:
-	    break;
-	case Senhalizacion_Vertical:
-	    break;
-	case Valla_Cierre:
-	    break;
-	case Firme:
-	    break;
-	}
     }
 
     private String getWhereClauseByLocationWidgets() {

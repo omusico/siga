@@ -1,10 +1,12 @@
-package es.icarto.gvsig.extgia.consultas;
+package es.icarto.gvsig.extgia.consultas.caracteristicas;
 
 import java.sql.ResultSet;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
+
+import es.icarto.gvsig.extgia.consultas.Report;
 
 public class AreasDescansoCaracteristicasReport extends Report {
 

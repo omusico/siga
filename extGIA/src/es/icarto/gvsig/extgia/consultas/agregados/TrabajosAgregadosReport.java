@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgia.consultas;
+package es.icarto.gvsig.extgia.consultas.agregados;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,6 +14,7 @@ import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 
+import es.icarto.gvsig.extgia.consultas.Report;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public abstract class TrabajosAgregadosReport extends Report {
