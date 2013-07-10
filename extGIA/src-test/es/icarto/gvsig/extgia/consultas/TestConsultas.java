@@ -18,9 +18,9 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class TestConsultas {
 
-    private final String filtersAreaMock = "Norte";
-    private final String filtersBaseMock = "Norte";
-    private final String filtersTramoMock = "AP-9";
+    private final String filtersAreaMock = "1";
+    private final String filtersBaseMock = "1";
+    private final String filtersTramoMock = "1";
 
     @BeforeClass
     public static void doSetupBeforeClass() {
@@ -69,6 +69,22 @@ public class TestConsultas {
     }
 
     @Test
+    public void testCaracteristicasReportsQueriesWithLocationFilters() throws SQLException {
+
+	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
+	    if (ConsultasFieldNames.getCaracteristicasFieldNames(DBFieldNames.Elements.values()[i].toString())!=null) {
+		Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
+		String query = "SELECT " +
+			ConsultasFieldNames.getCaracteristicasFieldNames(DBFieldNames.Elements.values()[i].toString()) +
+			" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
+			ConsultasFieldNames.getWhereClauseByLocationWidgets(filtersAreaMock, filtersBaseMock, filtersTramoMock) + ";";
+		ResultSet rs = st.executeQuery(query);
+		assertTrue(rs!=null);
+	    }
+	}
+    }
+
+    @Test
     public void testTrabajosReportsQueries() throws SQLException {
 	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
 	    if (SqlUtils.elementHasType(DBFieldNames.Elements.values()[i].toString(), "Trabajos") &&
@@ -79,6 +95,29 @@ public class TestConsultas {
 				ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString())) +
 				" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
 				"_trabajos;";
+		ResultSet rs = st.executeQuery(query);
+		assertTrue(rs!=null);
+	    }
+	}
+    }
+
+    @Test
+    public void testTrabajosReportsQueriesWithLocationFilters() throws SQLException {
+	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
+	    if (SqlUtils.elementHasType(DBFieldNames.Elements.values()[i].toString(), "Trabajos") &&
+		    !DBFieldNames.Elements.values()[i].toString().equals("Firme")) {
+		Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
+		String query = "SELECT " +
+			ConsultasFieldNames.getTrabajosFieldNames(
+				ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString())) +
+				" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
+				"_trabajos" +
+				" WHERE " + ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()) +
+				" IN (SELECT " +
+				ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()) +
+				" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
+				ConsultasFieldNames.getWhereClauseByLocationWidgets(
+					filtersAreaMock, filtersBaseMock, filtersTramoMock) + ");";
 		ResultSet rs = st.executeQuery(query);
 		assertTrue(rs!=null);
 	    }
@@ -103,12 +142,51 @@ public class TestConsultas {
     }
 
     @Test
+    public void testReconocimientosReportsQueriesWithLocationFilters() throws SQLException {
+	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
+	    if (SqlUtils.elementHasType(DBFieldNames.Elements.values()[i].toString(), "Inspecciones") &&
+		    !DBFieldNames.Elements.values()[i].toString().equals("Firme")) {
+		Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
+		String query = "SELECT " +
+			ConsultasFieldNames.getReconocimientosFieldNames(
+				ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString())) +
+				" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
+				"_reconocimiento_estado" +
+				" WHERE " + ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()) +
+				" IN (SELECT " +
+				ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()) +
+				" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
+				ConsultasFieldNames.getWhereClauseByLocationWidgets(
+					filtersAreaMock, filtersBaseMock, filtersTramoMock) + ");";
+		ResultSet rs = st.executeQuery(query);
+		assertTrue(rs!=null);
+	    }
+	}
+    }
+
+    @Test
     public void testFirmeTrabajosReportQuerie() throws SQLException {
 	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
 	    Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
 	    String query = "SELECT " +
 		    ConsultasFieldNames.getFirmeTrabajosFieldNames("id_firme") +
 		    " FROM " + getSchema() + "." + "firme_trabajos;";
+	    ResultSet rs = st.executeQuery(query);
+	    assertTrue(rs!=null);
+	}
+    }
+
+    @Test
+    public void testFirmeTrabajosReportQuerieWithFilters() throws SQLException {
+	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
+	    Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
+	    String query = "SELECT " +
+		    ConsultasFieldNames.getFirmeTrabajosFieldNames("id_firme") +
+		    " FROM " + getSchema() + "." + "firme_trabajos" +
+		    " WHERE id_firme IN (SELECT id_firme FROM " + getSchema() +
+		    ".firme" + ConsultasFieldNames.getWhereClauseByLocationWidgets(
+			    filtersAreaMock, filtersBaseMock, filtersTramoMock) +
+			    ");";
 	    ResultSet rs = st.executeQuery(query);
 	    assertTrue(rs!=null);
 	}
@@ -126,4 +204,19 @@ public class TestConsultas {
 	}
     }
 
+    @Test
+    public void testFirmeReconocimientosReportQuerieWithFilters() throws SQLException {
+	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
+	    Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
+	    String query = "SELECT " +
+		    ConsultasFieldNames.getFirmeReconocimientosFieldNames("id_firme") +
+		    " FROM " + getSchema() + "." + "firme_reconocimiento_estado" +
+		    " WHERE id_firme IN (SELECT id_firme FROM " + getSchema() +
+		    ".firme" + ConsultasFieldNames.getWhereClauseByLocationWidgets(
+			    filtersAreaMock, filtersBaseMock, filtersTramoMock) +
+			    ");";
+	    ResultSet rs = st.executeQuery(query);
+	    assertTrue(rs!=null);
+	}
+    }
 }
