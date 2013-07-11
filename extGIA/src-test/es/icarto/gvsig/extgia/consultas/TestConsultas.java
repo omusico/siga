@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -217,6 +218,103 @@ public class TestConsultas {
 			    ");";
 	    ResultSet rs = st.executeQuery(query);
 	    assertTrue(rs!=null);
+	}
+    }
+
+    @Test
+    public void testCSVCaracteristicas() throws SQLException {
+	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
+	    if (ConsultasFieldNames.getCaracteristicasFieldNames(DBFieldNames.Elements.values()[i].toString())!=null) {
+		Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
+		String query = "SELECT " +
+			ConsultasFieldNames.getCaracteristicasFieldNames(DBFieldNames.Elements.values()[i].toString()) +
+			" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() + ";";
+		ResultSet rs = st.executeQuery(query);
+		ResultSetMetaData rsMetaData = rs.getMetaData();
+		String mockFileDir = "/tmp/test_" + DBFieldNames.Elements.values()[i].toString() + ".csv";
+		new CSVReport(mockFileDir, rsMetaData, rs);
+		File mockFile = new File(mockFileDir);
+		assertTrue(mockFile.exists());
+		mockFile.delete();
+	    }
+	}
+    }
+
+    @Test
+    public void testCSVTrabajos() throws SQLException {
+	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
+	    if (SqlUtils.elementHasType(DBFieldNames.Elements.values()[i].toString(), "Trabajos") &&
+		    !DBFieldNames.Elements.values()[i].toString().equals("Firme")) {
+		Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
+		String query = "SELECT " +
+			ConsultasFieldNames.getTrabajosFieldNames(
+				ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString())) +
+				" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
+				"_trabajos;";
+		ResultSet rs = st.executeQuery(query);
+		ResultSetMetaData rsMetaData = rs.getMetaData();
+		String mockFileDir = "/tmp/test_" + DBFieldNames.Elements.values()[i].toString() + ".csv";
+		new CSVReport(mockFileDir, rsMetaData, rs);
+		File mockFile = new File(mockFileDir);
+		assertTrue(mockFile.exists());
+		mockFile.delete();
+	    }
+	}
+    }
+
+    @Test
+    public void testCSVReconocimientos() throws SQLException {
+	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
+	    if (SqlUtils.elementHasType(DBFieldNames.Elements.values()[i].toString(), "Inspecciones") &&
+		    !DBFieldNames.Elements.values()[i].toString().equals("Firme")) {
+		Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
+		String query = "SELECT " +
+			ConsultasFieldNames.getReconocimientosFieldNames(
+				ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString())) +
+				" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
+				"_reconocimiento_estado;";
+		ResultSet rs = st.executeQuery(query);
+		ResultSetMetaData rsMetaData = rs.getMetaData();
+		String mockFileDir = "/tmp/test_" + DBFieldNames.Elements.values()[i].toString() + ".csv";
+		new CSVReport(mockFileDir, rsMetaData, rs);
+		File mockFile = new File(mockFileDir);
+		assertTrue(mockFile.exists());
+		mockFile.delete();
+	    }
+	}
+    }
+
+    @Test
+    public void testCSVTrabajosFirme() throws SQLException {
+	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
+	    Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
+	    String query = "SELECT " +
+		    ConsultasFieldNames.getFirmeTrabajosFieldNames("id_firme") +
+		    " FROM " + getSchema() + "." + "firme_trabajos;";
+	    ResultSet rs = st.executeQuery(query);
+	    ResultSetMetaData rsMetaData = rs.getMetaData();
+	    String mockFileDir = "/tmp/test_" + DBFieldNames.Elements.values()[i].toString() + ".csv";
+	    new CSVReport(mockFileDir, rsMetaData, rs);
+	    File mockFile = new File(mockFileDir);
+	    assertTrue(mockFile.exists());
+	    mockFile.delete();
+	}
+    }
+
+    @Test
+    public void testCSVReconocimientosFirme() throws SQLException {
+	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
+	    Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
+	    String query = "SELECT " +
+		    ConsultasFieldNames.getFirmeReconocimientosFieldNames("id_firme") +
+		    " FROM " + getSchema() + "." + "firme_reconocimiento_estado;";
+	    ResultSet rs = st.executeQuery(query);
+	    ResultSetMetaData rsMetaData = rs.getMetaData();
+	    String mockFileDir = "/tmp/test_" + DBFieldNames.Elements.values()[i].toString() + ".csv";
+	    new CSVReport(mockFileDir, rsMetaData, rs);
+	    File mockFile = new File(mockFileDir);
+	    assertTrue(mockFile.exists());
+	    mockFile.delete();
 	}
     }
 }
