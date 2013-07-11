@@ -46,6 +46,10 @@ public class LaunchGIAForms {
 	final TOCLayerManager toc = new TOCLayerManager();
 	FLyrVect layer = toc.getLayerByName(layerName);
 
+	if (!isGIALayerName(layerName)) {
+	    return;
+	}
+
 	switch (DBFieldNames.Elements.valueOf(layerName)) {
 	case Taludes:
 	    final TaludesForm taludesForm = new TaludesForm(layer);
@@ -147,6 +151,16 @@ public class LaunchGIAForms {
 	    }
 	    break;
 	}
+    }
+
+    private static boolean isGIALayerName(String layerName) {
+	boolean isGIALayerName = false;
+	for (int i=0;i<DBFieldNames.Elements.values().length;i++) {
+	    if (DBFieldNames.Elements.values()[i].toString().equals(layerName)) {
+		isGIALayerName = true;
+	    }
+	}
+	return isGIALayerName;
     }
 
     public static void callBatchTrabajosSubFormDependingOfElement(String element,
