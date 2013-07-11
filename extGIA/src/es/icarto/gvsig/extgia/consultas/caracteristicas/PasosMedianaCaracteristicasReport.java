@@ -6,9 +6,9 @@ import com.lowagie.text.Document;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 
-import es.icarto.gvsig.extgia.consultas.Report;
+import es.icarto.gvsig.extgia.consultas.PDFReport;
 
-public class PasosMedianaCaracteristicasReport extends Report {
+public class PasosMedianaCaracteristicasReport extends PDFReport {
 
     public PasosMedianaCaracteristicasReport(String element, String fileName,
 	    ResultSet resultMap, String[] filters) {

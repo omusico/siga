@@ -6,9 +6,9 @@ import com.lowagie.text.Document;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 
-import es.icarto.gvsig.extgia.consultas.Report;
+import es.icarto.gvsig.extgia.consultas.PDFReport;
 
-public class EnlacesCaracteristicasReport extends Report {
+public class EnlacesCaracteristicasReport extends PDFReport {
 
     public EnlacesCaracteristicasReport(String element, String fileName,
 	    ResultSet resultMap, String[] filters) {

@@ -30,7 +30,7 @@ import com.lowagie.text.rtf.style.RtfParagraphStyle;
 
 import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 
-public abstract class Report {
+public abstract class PDFReport {
 
     protected final com.lowagie.text.Font cellBoldStyle = FontFactory.getFont("arial", 6, Font.BOLD);
     protected final com.lowagie.text.Font bodyBoldStyle = FontFactory.getFont("arial", 8, Font.BOLD);
@@ -41,7 +41,7 @@ public abstract class Report {
 
     protected Document document;
 
-    public Report(String element, String fileName,
+    public PDFReport(String element, String fileName,
 	    ResultSet resultMap, String[] filters) {
 	writePdfReport(element, fileName, resultMap, filters);
     }

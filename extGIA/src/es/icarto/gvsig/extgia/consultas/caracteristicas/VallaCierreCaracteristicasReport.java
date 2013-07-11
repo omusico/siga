@@ -6,9 +6,9 @@ import com.lowagie.text.Document;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 
-import es.icarto.gvsig.extgia.consultas.Report;
+import es.icarto.gvsig.extgia.consultas.PDFReport;
 
-public class VallaCierreCaracteristicasReport extends Report {
+public class VallaCierreCaracteristicasReport extends PDFReport {
 
     public VallaCierreCaracteristicasReport(String element, String fileName,
 	    ResultSet resultMap, String[] filters) {

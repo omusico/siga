@@ -14,10 +14,10 @@ import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 
-import es.icarto.gvsig.extgia.consultas.Report;
+import es.icarto.gvsig.extgia.consultas.PDFReport;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
-public abstract class TrabajosAgregadosReport extends Report {
+public abstract class TrabajosAgregadosReport extends PDFReport {
 
     String[] units = {"Desbroce con retroaraña",
 	    "Desbroce mecánico",

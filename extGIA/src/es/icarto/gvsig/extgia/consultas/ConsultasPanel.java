@@ -4,7 +4,6 @@ import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -394,27 +393,8 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		    return;
 		}
 
-		FileWriter writer = new FileWriter(outputFile);
+		new CSVReport(outputFile, rsMetaData, rs);
 
-		for (int i=0; i<rsMetaData.getColumnCount(); i++) {
-		    writer.append(rsMetaData.getColumnName(i+1));
-		    writer.append(CSV_SEPARATOR);
-		}
-		writer.append("\n");
-
-		while (rs.next()) {
-		    for (int i=0; i<rsMetaData.getColumnCount(); i++) {
-			writer.append(rs.getString(i+1));
-			writer.append(CSV_SEPARATOR);
-		    }
-		    writer.append("\n");
-		}
-
-		writer.flush();
-		writer.close();
-
-	    } catch (IOException e) {
-		e.printStackTrace();
 	    } catch (SQLException e) {
 		e.printStackTrace();
 	    }
@@ -479,9 +459,15 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	    return query;
 	}
 	if (tipo == CARACTERISTICAS) {
-	    query = "SELECT " + fields + " FROM " +
-		    DBFieldNames.GIA_SCHEMA + "." +
-		    element;
+	    if (csvRadioButton.isSelected()) {
+		query = "SELECT *" + " FROM " +
+			DBFieldNames.GIA_SCHEMA + "." +
+			element;
+	    }else {
+		query = "SELECT " + fields + " FROM " +
+			DBFieldNames.GIA_SCHEMA + "." +
+			element;
+	    }
 	}else {
 	    query = "SELECT " + fields + " FROM " +
 		    DBFieldNames.GIA_SCHEMA + "." +

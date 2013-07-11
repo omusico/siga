@@ -5,9 +5,9 @@ import java.sql.ResultSet;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 
-import es.icarto.gvsig.extgia.consultas.Report;
+import es.icarto.gvsig.extgia.consultas.PDFReport;
 
-public class FirmeTrabajosReport extends Report {
+public class FirmeTrabajosReport extends PDFReport {
 
     public FirmeTrabajosReport(String element, String fileName,
 	    ResultSet resultMap, String[] filters) {

@@ -6,7 +6,7 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 
 
-public class TrabajosReport extends Report {
+public class TrabajosReport extends PDFReport {
 
     public TrabajosReport(String element, String fileName, ResultSet resultMap,
 	    String[] filters) {

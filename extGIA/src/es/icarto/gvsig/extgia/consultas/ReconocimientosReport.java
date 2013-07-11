@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 
-public class ReconocimientosReport extends Report {
+public class ReconocimientosReport extends PDFReport {
 
     public ReconocimientosReport(String element, String fileName,
 	    ResultSet resultMap, String[] filters) {
