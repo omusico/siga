@@ -38,6 +38,7 @@ import com.toedter.calendar.JDateChooser;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.audasacommons.forms.reports.SaveFileDialog;
+import es.icarto.gvsig.extgia.consultas.agregados.CSVTrabajosAgregadosTaludesReport;
 import es.icarto.gvsig.extgia.consultas.agregados.TrabajosAgregadosTaludesReport;
 import es.icarto.gvsig.extgia.consultas.firme.FirmeReconocimientosReport;
 import es.icarto.gvsig.extgia.consultas.firme.FirmeTrabajosReport;
@@ -303,6 +304,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	    }
 	}else {
 	    if (tipo == TRABAJOS_AGREGADOS) {
+		createCsvReportAgregados(outputFile, element, filters);
 	    }else {
 		createCsvReport(outputFile, query);
 	    }
@@ -313,6 +315,14 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	    String[] filters) {
 	if (element[0].equals("Taludes")) {
 	    new TrabajosAgregadosTaludesReport(element, outputFile, null, filters);
+	}else {
+	    // TODO: Isletas
+	}
+    }
+
+    private void createCsvReportAgregados(String outputFile, String[] element, String[] filters) {
+	if (element[0].equals("Taludes")) {
+	    new CSVTrabajosAgregadosTaludesReport(outputFile);
 	}else {
 	    // TODO: Isletas
 	}

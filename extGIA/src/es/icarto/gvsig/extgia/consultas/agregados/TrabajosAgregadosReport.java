@@ -19,17 +19,12 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public abstract class TrabajosAgregadosReport extends PDFReport {
 
-    String[] units = {"Desbroce con retroaraña",
-	    "Desbroce mecánico",
-	    "Tala y desbroce manual",
-	    "Herbicida",
-	    "Siega mecánica isletas",
-	    "Siega mecánica medianas",
-    "Vegeración mediana de hormigón"};
+    private final TrabajosAgregadosReportQueries agregadosReportQueries;
 
     public TrabajosAgregadosReport(String[] element, String fileName,
 	    ResultSet resultMap, String[] filters) {
 	super(element[1], fileName, null, filters);
+	agregadosReportQueries = new TrabajosAgregadosReportQueries(getElement());
     }
 
     protected abstract String getElement();
@@ -80,26 +75,36 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
     @Override
     protected void writeValues (Document document, ResultSet resultMap, PdfPTable table) {
 	writeTable("Desbroce con retroaraña\n\n",
-		getDesbroceRetroaranhaQuery(), getDesbroceRetroaranhaSumQuery());
+		agregadosReportQueries.getDesbroceRetroaranhaQuery(),
+		agregadosReportQueries.getDesbroceRetroaranhaSumQuery());
 	writeTable("\nDesbroce mecánico\n\n",
-		getDesbroceMecanicoQuery(), getDesbroceMecanicoSumQuery());
+		agregadosReportQueries.getDesbroceMecanicoQuery(),
+		agregadosReportQueries.getDesbroceMecanicoSumQuery());
 	writeTable("\nTala y desbroce manual\n\n",
-		getDesbroceManualQuery(), getDesbroceManualSumQuery());
+		agregadosReportQueries.getDesbroceManualQuery(),
+		agregadosReportQueries.getDesbroceManualSumQuery());
 
-	writeTotal(document, "TOTAL DESBROCES", getDesbroceTotalSumQuery());
+	writeTotal(document, "TOTAL DESBROCES",
+		agregadosReportQueries.getDesbroceTotalSumQuery());
 
 	writeTable("\nSiega mecánica isletas\n\n",
-		getSiegaMecanicaIsletasQuery(), getSiegaMecanicaIsletasSumQuery());
+		agregadosReportQueries.getSiegaMecanicaIsletasQuery(),
+		agregadosReportQueries.getSiegaMecanicaIsletasSumQuery());
 
 	writeTable("\nSiega mecánica medianas\n\n",
-		getSiegaMecanicaMedianaQuery(), getSiegaMecanicaMedianaSumQuery());
+		agregadosReportQueries.getSiegaMecanicaMedianaQuery(),
+		agregadosReportQueries.getSiegaMecanicaMedianaSumQuery());
 
-	writeTotal(document, "TOTAL SEGADO DE HIERBAS", getSiegaTotalSumQuery());
+	writeTotal(document, "TOTAL SEGADO DE HIERBAS",
+		agregadosReportQueries.getSiegaTotalSumQuery());
 
-	writeTable("\nHerbicida\n\n", getHerbicidadQuery(), getHerbicidaSumQuery());
+	writeTable("\nHerbicida\n\n",
+		agregadosReportQueries.getHerbicidadQuery(),
+		agregadosReportQueries.getHerbicidaSumQuery());
 
 	writeTable("\nVegeración mediana de hormigón\n\n",
-		getVegeracionQuery(), getVegeracionSumQuery());
+		agregadosReportQueries.getVegeracionQuery(),
+		agregadosReportQueries.getVegeracionSumQuery());
     }
 
     private void writeTotal(Document document, String title, String query) {
@@ -219,83 +224,4 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
 	}
     }
 
-    private String getBaseQuery() {
-	return "SELECT a.id_talud, pk_inicial, pk_final, c.item, medicion_contratista, medicion_audasa " +
-		"FROM audasa_extgia." + getElement() + "_trabajos a, audasa_extgia." + getElement() +
-		" b, " + "audasa_extgia_dominios.sentido c " +
-		"WHERE a.id_talud = b.id_talud AND b.sentido = c.id " +
-		"AND unidad = '";
-    }
-
-    private String getBaseSumQuery() {
-	return "SELECT sum(medicion_contratista), sum(medicion_audasa) " +
-		"FROM audasa_extgia." + getElement() + "_trabajos " +
-		"WHERE unidad = '";
-    }
-
-    private String getDesbroceRetroaranhaQuery() {
-	return getBaseQuery() + "Desbroce con retroaraña'";
-    }
-
-    private String getDesbroceRetroaranhaSumQuery() {
-	return getBaseSumQuery() + "Desbroce con retroaraña'";
-    }
-
-    private String getDesbroceMecanicoQuery() {
-	return getBaseQuery() + "Desbroce mecánico'";
-    }
-
-    private String getDesbroceMecanicoSumQuery() {
-	return getBaseSumQuery() + "Desbroce mecánico'";
-    }
-
-    private String getDesbroceManualQuery() {
-	return getBaseQuery() + "Tala y desbroce manual'";
-    }
-
-    private String getDesbroceManualSumQuery() {
-	return getBaseSumQuery() + "Tala y desbroce manual'";
-    }
-
-    private String getDesbroceTotalSumQuery() {
-	return getBaseSumQuery() + "Desbroce con retroaraña'" +
-		" OR unidad = 'Desbroce mecánico' OR unidad = 'Tala y desbroce manual'";
-    }
-
-    private String getSiegaMecanicaIsletasQuery() {
-	return getBaseQuery() + "Siega mecánica isletas'";
-    }
-
-    private String getSiegaMecanicaMedianaQuery() {
-	return getBaseQuery() + "Siega mecánica mediana'";
-    }
-
-    private String getSiegaMecanicaIsletasSumQuery() {
-	return getBaseSumQuery() + "Siega mecánica isletas'";
-    }
-
-    private String getSiegaMecanicaMedianaSumQuery() {
-	return getBaseSumQuery() + "Siega mecánica mediana'";
-    }
-
-    private String getSiegaTotalSumQuery() {
-	return getBaseSumQuery() + "Siega mecánica isletas'" +
-		" OR unidad = 'Siega mecánica mediana'";
-    }
-
-    private String getHerbicidadQuery() {
-	return getBaseQuery() + "Herbicida'";
-    }
-
-    private String getHerbicidaSumQuery() {
-	return getBaseSumQuery() + "Herbicida'";
-    }
-
-    private String getVegeracionQuery() {
-	return getBaseQuery() + "Vegeración mediana de hormigón'";
-    }
-
-    private String getVegeracionSumQuery() {
-	return getBaseSumQuery() + "Vegeración mediana de hormigón'";
-    }
 }
