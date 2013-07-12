@@ -25,7 +25,6 @@ public abstract class CSVTrabajosAgregadosReport {
 		"PK Inicial",
 		"PK Final",
 		"Sentido",
-		"Medición Contratista",
 		"Medición AUDASA"
 	};
 	return columnNames;
@@ -40,17 +39,14 @@ public abstract class CSVTrabajosAgregadosReport {
 			"Desbroce con retroaraña\n\n",
 			agregadosReportQueries.getDesbroceRetroaranhaQuery(),
 			agregadosReportQueries.getDesbroceRetroaranhaSumQuery());
-		//		writer.append("\n");
 		writeTable(writer,
 			"\nDesbroce mecánico\n\n",
 			agregadosReportQueries.getDesbroceMecanicoQuery(),
 			agregadosReportQueries.getDesbroceMecanicoSumQuery());
-		//		writer.append("\n");
 		writeTable(writer,
 			"\nTala y desbroce manual\n\n",
 			agregadosReportQueries.getDesbroceManualQuery(),
 			agregadosReportQueries.getDesbroceManualSumQuery());
-		//		writer.append("\n");
 		writeTotal(writer,
 			"TOTAL DESBROCES",
 			agregadosReportQueries.getDesbroceTotalSumQuery());
@@ -58,21 +54,17 @@ public abstract class CSVTrabajosAgregadosReport {
 			"\nSiega mecánica isletas\n\n",
 			agregadosReportQueries.getSiegaMecanicaIsletasQuery(),
 			agregadosReportQueries.getSiegaMecanicaIsletasSumQuery());
-		//		writer.append("\n");
 		writeTable(writer,
 			"\nSiega mecánica medianas\n\n",
 			agregadosReportQueries.getSiegaMecanicaMedianaQuery(),
 			agregadosReportQueries.getSiegaMecanicaMedianaSumQuery());
-		//		writer.append("\n");
 		writeTotal(writer,
 			"TOTAL SEGADO DE HIERBAS",
 			agregadosReportQueries.getSiegaTotalSumQuery());
-		//		writer.append("\n");
 		writeTable(writer,
 			"\nHerbicida\n\n",
 			agregadosReportQueries.getHerbicidadQuery(),
 			agregadosReportQueries.getHerbicidaSumQuery());
-		//		writer.append("\n");
 		writeTable(writer,
 			"\nVegeración mediana de hormigón\n\n",
 			agregadosReportQueries.getVegeracionQuery(),

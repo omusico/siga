@@ -19,12 +19,11 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public abstract class TrabajosAgregadosReport extends PDFReport {
 
-    private final TrabajosAgregadosReportQueries agregadosReportQueries;
+    private TrabajosAgregadosReportQueries agregadosReportQueries = null;
 
     public TrabajosAgregadosReport(String[] element, String fileName,
 	    ResultSet resultMap, String[] filters) {
 	super(element[1], fileName, null, filters);
-	agregadosReportQueries = new TrabajosAgregadosReportQueries(getElement());
     }
 
     protected abstract String getElement();
@@ -46,7 +45,6 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
 		"PK Inicial",
 		"PK Final",
 		"Sentido",
-		"Medición Contratista",
 		"Medición AUDASA"
 	};
 	return columnNames;
@@ -61,7 +59,6 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
 	columnsWidth[2] = 60f;
 	columnsWidth[3] = 60f;
 	columnsWidth[4] = 60f;
-	columnsWidth[5] = 60f;
 
 	return columnsWidth;
     }
@@ -69,11 +66,11 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
     @Override
     protected PdfPTable writeColumnNames(Document document) {
 	return null;
-
     }
 
     @Override
     protected void writeValues (Document document, ResultSet resultMap, PdfPTable table) {
+	agregadosReportQueries = new TrabajosAgregadosReportQueries(getElement());
 	writeTable("Desbroce con retroaraña\n\n",
 		agregadosReportQueries.getDesbroceRetroaranhaQuery(),
 		agregadosReportQueries.getDesbroceRetroaranhaSumQuery());
@@ -133,12 +130,8 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
 
 		rs.beforeFirst();
 		while (rs.next()) {
-		    PdfPCell medicionContratistaCell =
-			    new PdfPCell(new Paragraph(rs.getString(1), cellBoldStyle));
-		    medicionContratistaCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		    totalTable.addCell(medicionContratistaCell);
 		    PdfPCell medicionAudasaCell =
-			    new PdfPCell(new Paragraph(rs.getString(2), cellBoldStyle));
+			    new PdfPCell(new Paragraph(rs.getString(1), cellBoldStyle));
 		    medicionAudasaCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		    totalTable.addCell(medicionAudasaCell);
 		}
@@ -172,12 +165,8 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
 		    }
 
 		    while (resultMap.next()) {
-			PdfPCell medicionContratistaCell =
-				new PdfPCell(new Paragraph(resultMap.getString(1), cellBoldStyle));
-			medicionContratistaCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-			table.addCell(medicionContratistaCell);
 			PdfPCell medicionAudasaCell =
-				new PdfPCell(new Paragraph(resultMap.getString(2), cellBoldStyle));
+				new PdfPCell(new Paragraph(resultMap.getString(1), cellBoldStyle));
 			medicionAudasaCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			table.addCell(medicionAudasaCell);
 		    }

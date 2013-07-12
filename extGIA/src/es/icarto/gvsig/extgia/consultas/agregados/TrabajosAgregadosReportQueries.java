@@ -6,10 +6,10 @@ public class TrabajosAgregadosReportQueries {
 
     public TrabajosAgregadosReportQueries(String element) {
 	this.element = element;
-	
+
     }
     public String getBaseQuery() {
-	return "SELECT a.id_talud, pk_inicial, pk_final, c.item, medicion_contratista, medicion_audasa " +
+	return "SELECT a.id_talud, pk_inicial, pk_final, c.item, medicion_audasa " +
 		"FROM audasa_extgia." + element + "_trabajos a, audasa_extgia." + element +
 		" b, " + "audasa_extgia_dominios.sentido c " +
 		"WHERE a.id_talud = b.id_talud AND b.sentido = c.id " +
@@ -17,7 +17,7 @@ public class TrabajosAgregadosReportQueries {
     }
 
     public String getBaseSumQuery() {
-	return "SELECT sum(medicion_contratista), sum(medicion_audasa) " +
+	return "SELECT sum(medicion_audasa) " +
 		"FROM audasa_extgia." + element + "_trabajos " +
 		"WHERE unidad = '";
     }
