@@ -309,7 +309,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	    if (tipo == TRABAJOS_AGREGADOS) {
 		createCsvReportAgregados(outputFile, element, filters);
 	    }else {
-		createCsvReport(outputFile, query);
+		createCsvReport(outputFile, query, consultasFilters);
 	    }
 	}
     }
@@ -393,7 +393,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	}
     }
 
-    private void createCsvReport(String outputFile, String query) {
+    private void createCsvReport(String outputFile, String query, ConsultasFilters filters) {
 	PreparedStatement statement;
 
 	if (outputFile != null) {
@@ -407,7 +407,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		    return;
 		}
 
-		new CSVReport(outputFile, rsMetaData, rs);
+		new CSVReport(outputFile, rsMetaData, rs, filters);
 
 	    } catch (SQLException e) {
 		e.printStackTrace();
@@ -510,28 +510,28 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	return query;
     }
 
-    private String getFilterAreaValue() {
-	String area = null;
+    private KeyValue getFilterAreaValue() {
+	KeyValue areaValue = null;
 	if (!areaMantenimiento.getSelectedItem().toString().equals(" ")) {
-	    area = ((KeyValue) areaMantenimiento.getSelectedItem()).getKey();
+	    areaValue = ((KeyValue) areaMantenimiento.getSelectedItem());
 	}
-	return area;
+	return areaValue;
     }
 
-    private String getFilterBaseContratistaValue() {
-	String area = null;
+    private KeyValue getFilterBaseContratistaValue() {
+	KeyValue baseValue = null;
 	if (!baseContratista.getSelectedItem().toString().equals(" ")) {
-	    area = ((KeyValue) baseContratista.getSelectedItem()).getKey();
+	    baseValue = ((KeyValue) baseContratista.getSelectedItem());
 	}
-	return area;
+	return baseValue;
     }
 
-    private String getFilterTramoValue() {
-	String area = null;
+    private KeyValue getFilterTramoValue() {
+	KeyValue tramoValue = null;
 	if (!tramo.getSelectedItem().toString().equals(" ")) {
-	    area = ((KeyValue) tramo.getSelectedItem()).getKey();
+	    tramoValue = ((KeyValue) tramo.getSelectedItem());
 	}
-	return area;
+	return tramoValue;
     }
 
     public class TipoConsultaListener implements ActionListener {

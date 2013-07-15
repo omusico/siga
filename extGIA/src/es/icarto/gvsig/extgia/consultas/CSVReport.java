@@ -9,10 +9,13 @@ import java.sql.SQLException;
 public class CSVReport {
     private static final String CSV_SEPARATOR = "\t";
 
-    public CSVReport(String outputFile, ResultSetMetaData rsMetaData, ResultSet rs) {
+    public CSVReport(String outputFile, ResultSetMetaData rsMetaData, ResultSet rs,
+	    ConsultasFilters filters) {
 	if (outputFile != null) {
 	    try {
 		FileWriter writer = new FileWriter(outputFile);
+
+		writeFilters(writer, filters);
 
 		writeColumnNames(rsMetaData, writer);
 		writer.append("\n");
@@ -29,6 +32,25 @@ public class CSVReport {
 	    }
 	}
 
+    }
+
+    private void writeFilters(FileWriter writer, ConsultasFilters filters) throws IOException {
+	writer.append("Area Mantenimiento");
+	writer.append(CSV_SEPARATOR);
+	writer.append(filters.getArea().getValue());
+	writer.append("\n");
+
+	writer.append("Base Contratista");
+	writer.append(CSV_SEPARATOR);
+	writer.append(filters.getBaseContratista().getValue());
+	writer.append("\n");
+
+	writer.append("Tramo");
+	writer.append(CSV_SEPARATOR);
+	writer.append(filters.getTramo().getValue());
+	writer.append("\n");
+
+	writer.append("\n");
     }
 
     private void writeRows(ResultSet rs, ResultSetMetaData rsMetaData,

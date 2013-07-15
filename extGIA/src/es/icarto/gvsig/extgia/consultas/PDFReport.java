@@ -77,7 +77,8 @@ public abstract class PDFReport {
 	    if (filters.getArea() == null) {
 		amP = new Paragraph("Área Mantenimiento: -", bodyBoldStyle);
 	    }else {
-		amP = new Paragraph("Área Mantenimiento: " + filters.getArea(), bodyBoldStyle);
+		amP = new Paragraph("Área Mantenimiento: " + filters.getArea().getValue(),
+			bodyBoldStyle);
 	    }
 	    document.add(amP);
 
@@ -85,7 +86,7 @@ public abstract class PDFReport {
 	    if (filters.getBaseContratista() == null) {
 		bcP = new Paragraph("Base Contratista: -", bodyBoldStyle);
 	    }else {
-		bcP = new Paragraph("Base Contratista: " + filters.getBaseContratista(),
+		bcP = new Paragraph("Base Contratista: " + filters.getBaseContratista().getValue(),
 			bodyBoldStyle);
 	    }
 	    document.add(bcP);
@@ -95,7 +96,7 @@ public abstract class PDFReport {
 		tramoP = new Paragraph("Tramo: -", bodyBoldStyle);
 	    }else {
 		tramoP = new Paragraph("Tramo: "
-			+ filters.getTramo(), bodyBoldStyle);
+			+ filters.getTramo().getValue(), bodyBoldStyle);
 	    }
 	    document.add(tramoP);
 	    writeDatesRange(document, filters);

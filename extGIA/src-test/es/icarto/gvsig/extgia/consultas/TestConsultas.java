@@ -15,19 +15,22 @@ import com.iver.cit.gvsig.fmap.layers.LayerFactory;
 
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class TestConsultas {
-
-    private final String filtersAreaMock = "1";
-    private final String filtersBaseMock = "1";
-    private final String filtersTramoMock = "1";
 
     private static ConsultasFilters mockFilters;
 
     @BeforeClass
     public static void doSetupBeforeClass() {
-	mockFilters = new ConsultasFilters("1", "1", "1", null, null);
+
+	mockFilters = new ConsultasFilters(
+		new KeyValue("1", "Norte"),
+		new KeyValue("1", "Norte"),
+		new KeyValue("1", "AP-9"),
+		null,
+		null);
 	try {
 	    initializegvSIGDrivers();
 	    DBSession.createConnection("localhost", 5432, "audasa_test", null,
@@ -231,7 +234,7 @@ public class TestConsultas {
 		ResultSet rs = st.executeQuery(query);
 		ResultSetMetaData rsMetaData = rs.getMetaData();
 		String mockFileDir = "/tmp/test_" + DBFieldNames.Elements.values()[i].toString() + ".csv";
-		new CSVReport(mockFileDir, rsMetaData, rs);
+		new CSVReport(mockFileDir, rsMetaData, rs, mockFilters);
 		File mockFile = new File(mockFileDir);
 		assertTrue(mockFile.exists());
 		mockFile.delete();
@@ -253,7 +256,7 @@ public class TestConsultas {
 		ResultSet rs = st.executeQuery(query);
 		ResultSetMetaData rsMetaData = rs.getMetaData();
 		String mockFileDir = "/tmp/test_" + DBFieldNames.Elements.values()[i].toString() + ".csv";
-		new CSVReport(mockFileDir, rsMetaData, rs);
+		new CSVReport(mockFileDir, rsMetaData, rs, mockFilters);
 		File mockFile = new File(mockFileDir);
 		assertTrue(mockFile.exists());
 		mockFile.delete();
@@ -275,7 +278,7 @@ public class TestConsultas {
 		ResultSet rs = st.executeQuery(query);
 		ResultSetMetaData rsMetaData = rs.getMetaData();
 		String mockFileDir = "/tmp/test_" + DBFieldNames.Elements.values()[i].toString() + ".csv";
-		new CSVReport(mockFileDir, rsMetaData, rs);
+		new CSVReport(mockFileDir, rsMetaData, rs, mockFilters);
 		File mockFile = new File(mockFileDir);
 		assertTrue(mockFile.exists());
 		mockFile.delete();
@@ -293,7 +296,7 @@ public class TestConsultas {
 	    ResultSet rs = st.executeQuery(query);
 	    ResultSetMetaData rsMetaData = rs.getMetaData();
 	    String mockFileDir = "/tmp/test_" + DBFieldNames.Elements.values()[i].toString() + ".csv";
-	    new CSVReport(mockFileDir, rsMetaData, rs);
+	    new CSVReport(mockFileDir, rsMetaData, rs, mockFilters);
 	    File mockFile = new File(mockFileDir);
 	    assertTrue(mockFile.exists());
 	    mockFile.delete();
@@ -310,7 +313,7 @@ public class TestConsultas {
 	    ResultSet rs = st.executeQuery(query);
 	    ResultSetMetaData rsMetaData = rs.getMetaData();
 	    String mockFileDir = "/tmp/test_" + DBFieldNames.Elements.values()[i].toString() + ".csv";
-	    new CSVReport(mockFileDir, rsMetaData, rs);
+	    new CSVReport(mockFileDir, rsMetaData, rs, mockFilters);
 	    File mockFile = new File(mockFileDir);
 	    assertTrue(mockFile.exists());
 	    mockFile.delete();

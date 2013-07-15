@@ -4,18 +4,20 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
+
 public class ConsultasFilters {
 
-    private String area;
-    private String baseContratista;
-    private String tramo;
+    private KeyValue area;
+    private KeyValue baseContratista;
+    private KeyValue tramo;
     private Date fechaInicio;
     private Date fechaFin;
 
     private final Locale loc = new Locale("es");
     private final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, loc);
 
-    public ConsultasFilters(String area, String baseContratista, String tramo,
+    public ConsultasFilters(KeyValue area, KeyValue baseContratista, KeyValue tramo,
 	    Date fechaInicio, Date fechaFin) {
 	this.area = area;
 	this.baseContratista = baseContratista;
@@ -24,27 +26,27 @@ public class ConsultasFilters {
 	this.fechaFin = fechaFin;
     }
 
-    public String getArea() {
+    public KeyValue getArea() {
 	return area;
     }
 
-    public void setArea(String area) {
+    public void setArea(KeyValue area) {
 	this.area = area;
     }
 
-    public String getBaseContratista() {
+    public KeyValue getBaseContratista() {
 	return baseContratista;
     }
 
-    public void setBaseContratista(String baseContratista) {
+    public void setBaseContratista(KeyValue baseContratista) {
 	this.baseContratista = baseContratista;
     }
 
-    public String getTramo() {
+    public KeyValue getTramo() {
 	return tramo;
     }
 
-    public void setTramo(String tramo) {
+    public void setTramo(KeyValue tramo) {
 	this.tramo = tramo;
     }
 
@@ -67,20 +69,20 @@ public class ConsultasFilters {
     public String getWhereClauseByLocationWidgets() {
 	String query = "";
 	if (area != null) {
-	    query = " WHERE area_mantenimiento =  '" + area + "'";
+	    query = " WHERE area_mantenimiento =  '" + area.getKey() + "'";
 	}
 	if (baseContratista != null) {
 	    if (!query.isEmpty()) {
-		query = query + " AND base_contratista =  '" + baseContratista + "'";
+		query = query + " AND base_contratista =  '" + baseContratista.getKey() + "'";
 	    }else {
-		query = " WHERE base_contratista =  '" + baseContratista + "'";
+		query = " WHERE base_contratista =  '" + baseContratista.getKey() + "'";
 	    }
 	}
 	if (tramo != null) {
 	    if (!query.isEmpty()) {
-		query = query + " AND tramo =  '" + tramo + "'";
+		query = query + " AND tramo =  '" + tramo.getKey() + "'";
 	    }else {
-		query = " WHERE tramo =  '" + tramo + "'";
+		query = " WHERE tramo =  '" + tramo.getKey() + "'";
 	    }
 	}
 	return query;
