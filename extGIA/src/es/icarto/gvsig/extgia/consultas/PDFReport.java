@@ -60,16 +60,12 @@ public abstract class PDFReport {
 	    image = Image
 		    .getInstance("gvSIG/extensiones/es.icarto.gvsig.extgex/images/logo_audasa.gif");
 	    image.scalePercent((float) 15.00);
-	    //	    image.setAbsolutePosition(0, 0);
 	    image.setAlignment(Chunk.ALIGN_RIGHT);
 	} catch (BadElementException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	} catch (MalformedURLException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	} catch (IOException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
 	return image;
@@ -77,19 +73,34 @@ public abstract class PDFReport {
 
     private void writeFilters(Document document, ConsultasFilters filters) {
 	try {
-	    Paragraph amP = new Paragraph("Área Mantenimiento: " + filters.getArea(),
-		    bodyBoldStyle);
+	    Paragraph amP = null;
+	    if (filters.getArea() == null) {
+		amP = new Paragraph("Área Mantenimiento: -", bodyBoldStyle);
+	    }else {
+		amP = new Paragraph("Área Mantenimiento: " + filters.getArea(), bodyBoldStyle);
+	    }
 	    document.add(amP);
-	    Paragraph bcP = new Paragraph("Base Contratista: " + filters.getBaseContratista(),
-		    bodyBoldStyle);
+
+	    Paragraph bcP = null;
+	    if (filters.getBaseContratista() == null) {
+		bcP = new Paragraph("Base Contratista: -", bodyBoldStyle);
+	    }else {
+		bcP = new Paragraph("Base Contratista: " + filters.getBaseContratista(),
+			bodyBoldStyle);
+	    }
 	    document.add(bcP);
-	    Paragraph tramoP = new Paragraph("Tramo: "
-		    + filters.getTramo(), bodyBoldStyle);
+
+	    Paragraph tramoP = null;
+	    if (filters.getTramo() == null) {
+		tramoP = new Paragraph("Tramo: -", bodyBoldStyle);
+	    }else {
+		tramoP = new Paragraph("Tramo: "
+			+ filters.getTramo(), bodyBoldStyle);
+	    }
 	    document.add(tramoP);
 	    writeDatesRange(document, filters);
 	    document.add(Chunk.NEWLINE);
 	} catch (DocumentException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
     }
@@ -113,7 +124,6 @@ public abstract class PDFReport {
 	try {
 	    document.add(titleP);
 	} catch (DocumentException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
 
@@ -123,7 +133,6 @@ public abstract class PDFReport {
 	try {
 	    document.add(subtitleP);
 	} catch (DocumentException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
     }
@@ -142,7 +151,6 @@ public abstract class PDFReport {
 	try {
 	    document.add(dateP);
 	} catch (DocumentException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
     }
@@ -153,7 +161,6 @@ public abstract class PDFReport {
 	try {
 	    document.add(numRowsP);
 	} catch (DocumentException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
     }
@@ -187,10 +194,8 @@ public abstract class PDFReport {
 	    document.close();
 
 	} catch (DocumentException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	} catch (SQLException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
 
@@ -268,10 +273,8 @@ public abstract class PDFReport {
 	    document.close();
 
 	} catch (FileNotFoundException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	} catch (DocumentException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
     }
@@ -304,7 +307,6 @@ public abstract class PDFReport {
 		    }
 		    document.add(table);
 		}catch (DocumentException e1) {
-		    // TODO Auto-generated catch block
 		    e1.printStackTrace();
 		}
 	    }
