@@ -42,7 +42,7 @@ public abstract class PDFReport {
     protected Document document;
 
     public PDFReport(String element, String fileName,
-	    ResultSet resultMap, String[] filters) {
+	    ResultSet resultMap, ConsultasFilters filters) {
 	writePdfReport(element, fileName, resultMap, filters);
     }
 
@@ -75,15 +75,16 @@ public abstract class PDFReport {
 	return image;
     }
 
-    private void writeFilters(Document document, String[] filters) {
+    private void writeFilters(Document document, ConsultasFilters filters) {
 	try {
-	    Paragraph amP = new Paragraph("Área Mantenimiento: " + filters[0],
+	    Paragraph amP = new Paragraph("Área Mantenimiento: " + filters.getArea(),
 		    bodyBoldStyle);
 	    document.add(amP);
-	    Paragraph bcP = new Paragraph("Base Contratista: " + filters[1], bodyBoldStyle);
+	    Paragraph bcP = new Paragraph("Base Contratista: " + filters.getBaseContratista(),
+		    bodyBoldStyle);
 	    document.add(bcP);
 	    Paragraph tramoP = new Paragraph("Tramo: "
-		    + filters[2], bodyBoldStyle);
+		    + filters.getTramo(), bodyBoldStyle);
 	    document.add(tramoP);
 	    writeDatesRange(document, filters);
 	    document.add(Chunk.NEWLINE);
@@ -93,13 +94,13 @@ public abstract class PDFReport {
 	}
     }
 
-    protected void writeDatesRange(Document document, String[] filters)
+    protected void writeDatesRange(Document document, ConsultasFilters filters)
 	    throws DocumentException {
 	Paragraph mesP = new Paragraph("Desde: "
-		+ filters[3], bodyBoldStyle);
+		+ filters.getFechaInicioFormatted(), bodyBoldStyle);
 	document.add(mesP);
 	Paragraph anhoP = new Paragraph("Hasta: "
-		+ filters[4], bodyBoldStyle);
+		+ filters.getFechaFinFormatted(), bodyBoldStyle);
 	document.add(anhoP);
     }
 
@@ -158,7 +159,7 @@ public abstract class PDFReport {
     }
 
     private void writePdfReportContent(Document document, String element,
-	    ResultSet resultMap, String[] filters) {
+	    ResultSet resultMap, ConsultasFilters filters) {
 	try {
 	    // Header
 	    Image image = getHeaderImage();
@@ -254,7 +255,7 @@ public abstract class PDFReport {
     }
 
     public void writePdfReport(String element, String fileName,
-	    ResultSet resultMap, String[] filters) {
+	    ResultSet resultMap, ConsultasFilters filters) {
 	document = new Document(setPageSize());
 	try {
 	    PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(fileName));

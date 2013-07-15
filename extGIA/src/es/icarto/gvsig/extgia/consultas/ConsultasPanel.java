@@ -11,12 +11,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -53,12 +51,9 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 @SuppressWarnings("serial")
 public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
-    private static final String CSV_SEPARATOR = "\t";
-
     public static String ABEILLE_FILENAME = "forms/consultas_inventario.jfrm";
 
     private final Connection connection = DBSession.getCurrentSession().getJavaConnection();
-    private final Locale loc = new Locale("es");
 
     private static final int TRABAJOS = 0;
     private static final int RECONOCIMIENTOS = 1;
@@ -91,6 +86,8 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
     private UpdateTramoListener updateTramoListener;
 
     private boolean isReportOfSeveralElements = false;
+
+    private ConsultasFilters consultasFilters;
 
     public ConsultasPanel() {
 	InputStream stream = getClass().getClassLoader().
@@ -188,10 +185,12 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
     public void actionPerformed(ActionEvent e) {
 	if (e.getSource() == launchButton) {
 
-	    Date fechaInicial = fechaInicio.getDate();
-	    Date fechaFinal = fechaFin.getDate();
-
-	    String[] filters = getFilters(fechaInicial, fechaFinal);
+	    consultasFilters = new ConsultasFilters(
+		    getFilterAreaValue(),
+		    getFilterBaseContratistaValue(),
+		    getFilterTramoValue(),
+		    fechaInicio.getDate(),
+		    fechaFin.getDate());
 
 	    if (!isCheckingOK()) {
 		JOptionPane.showMessageDialog(null,
@@ -210,13 +209,15 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 			for (String[] element: getElements(tipoConsulta.getSelectedItem().toString())) {
 			    generateReportFile(element,
 				    outputPath + File.separator + element[0] + ".pdf",
-				    fechaInicial, fechaFinal, filters);
+				    consultasFilters.getFechaInicio(), consultasFilters.getFechaFin(),
+				    consultasFilters);
 			}
 		    }else {
 			for (String[] element: getElements(tipoConsulta.getSelectedItem().toString())) {
 			    generateReportFile(element,
 				    outputPath + File.separator + element[0] + ".csv",
-				    fechaInicial, fechaFinal, filters);
+				    consultasFilters.getFechaInicio(), consultasFilters.getFechaFin(),
+				    consultasFilters);
 			}
 		    }
 		    Object[] reportGeneratedOptions = {PluginServices.getText(this, "reportGeneratedOptions_open"),
@@ -253,7 +254,9 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		    if (outputFile != null) {
 			generateReportFile(element,
 				outputFile.getAbsolutePath(),
-				fechaInicial, fechaFinal, filters);
+				consultasFilters.getFechaInicio(),
+				consultasFilters.getFechaFin(),
+				consultasFilters);
 		    }
 		}else {
 		    JOptionPane.showMessageDialog(null,
@@ -264,7 +267,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
     }
 
     private void generateReportFile(String[] element, String outputFile, Date fechaInicial,
-	    Date fechaFinal, String[] filters) {
+	    Date fechaFinal, ConsultasFilters filters) {
 
 	int tipo = -1;
 	String elementId = ConsultasFieldNames.getElementId(element[0]);
@@ -312,7 +315,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
     }
 
     private void createPdfReportAgregados(String outputFile, String[] element,
-	    String[] filters) {
+	    ConsultasFilters filters) {
 	if (element[0].equals("Taludes")) {
 	    new TrabajosAgregadosTaludesReport(element, outputFile, null, filters);
 	}else {
@@ -320,7 +323,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	}
     }
 
-    private void createCsvReportAgregados(String outputFile, String[] element, String[] filters) {
+    private void createCsvReportAgregados(String outputFile, String[] element, ConsultasFilters filters) {
 	if (element[0].equals("Taludes")) {
 	    new CSVTrabajosAgregadosTaludesReport(outputFile);
 	}else {
@@ -328,7 +331,8 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	}
     }
 
-    private void createPdfReport(int tipo, String outputFile, String[] element, String[] filters, String query) {
+    private void createPdfReport(int tipo, String outputFile, String[] element,
+	    ConsultasFilters filters, String query) {
 	if (outputFile != null) {
 
 	    PreparedStatement statement;
@@ -484,56 +488,26 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		    element + "_" + ((KeyValue) tipoConsulta.getSelectedItem()).getKey();
 	}
 
-	if (!ConsultasFieldNames.getWhereClauseByLocationWidgets(getFilterAreaValue(),
-		getFilterBaseContratistaValue(),
-		getFilterTramoValue()).isEmpty()) {
+	if (!consultasFilters.getWhereClauseByLocationWidgets().isEmpty()) {
 	    if (tipo == CARACTERISTICAS) {
 		query = query + " WHERE " + elementId + " IN (SELECT " + elementId +
 			" FROM " + DBFieldNames.GIA_SCHEMA + "." + element +
-			ConsultasFieldNames.getWhereClauseByLocationWidgets(getFilterAreaValue(),
-				getFilterBaseContratistaValue(),
-				getFilterTramoValue()) + ");";
+			consultasFilters.getWhereClauseByLocationWidgets() + ");";
 	    }else {
 		query = query + " WHERE " + elementId + " IN (SELECT " + elementId +
 			" FROM " + DBFieldNames.GIA_SCHEMA + "." + element +
-			ConsultasFieldNames.getWhereClauseByLocationWidgets(getFilterAreaValue(),
-				getFilterBaseContratistaValue(),
-				getFilterTramoValue());
+			consultasFilters.getWhereClauseByLocationWidgets();
 	    }
 	}
 
 	if (tipo == CARACTERISTICAS) {
 	    return query;
 	}else if (tipo == TRABAJOS || tipo == TRABAJOS_FIRME) {
-	    query = query + getWhereClauseByDates("fecha_certificado", fechaInicial, fechaFinal);
+	    query = query + consultasFilters.getWhereClauseByDates("fecha_certificado");
 	}else {
-	    query = query + getWhereClauseByDates("fecha_inspeccion", fechaInicial, fechaFinal);
+	    query = query + consultasFilters.getWhereClauseByDates("fecha_inspeccion");
 	}
 	return query;
-    }
-
-    private String[] getFilters(Date fechaInicial, Date fechaFinal) {
-	// 0.AM - 1.BC - 2.Tramo - 3.FechaInicio - 4.FechaFin
-	String[] filters = new String[5];
-	if (!areaMantenimiento.getSelectedItem().toString().equals(" ")) {
-	    filters[0] = areaMantenimiento.getSelectedItem().toString();
-	}else {
-	    filters[0] = "-";
-	}
-	if (!baseContratista.getSelectedItem().toString().equals(" ")) {
-	    filters[1] = baseContratista.getSelectedItem().toString();
-	}else {
-	    filters[1] = "-";
-	}
-	if (!tramo.getSelectedItem().toString().equals(" ")) {
-	    filters[2] = tramo.getSelectedItem().toString();
-	}else {
-	    filters[2] = "-";
-	}
-	DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, loc);
-	filters[3] = dateFormat.format(fechaInicial);
-	filters[4] = dateFormat.format(fechaFinal);
-	return filters;
     }
 
     private String getFilterAreaValue() {
@@ -558,18 +532,6 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	    area = ((KeyValue) tramo.getSelectedItem()).getKey();
 	}
 	return area;
-    }
-
-    private String getWhereClauseByDates(String fechaField, Date fechaInicial, Date fechaFinal) {
-	String query = "";
-	if (!ConsultasFieldNames.getWhereClauseByLocationWidgets(getFilterAreaValue(),
-		getFilterBaseContratistaValue(),
-		getFilterTramoValue()).isEmpty()) {
-	    query = " ) AND " + fechaField + " BETWEEN '" + fechaInicial + "' AND '" + fechaFinal + "'";
-	}else {
-	    query = " WHERE " + fechaField + " BETWEEN '" + fechaInicial + "' AND '" + fechaFinal + "'";
-	}
-	return query;
     }
 
     public class TipoConsultaListener implements ActionListener {

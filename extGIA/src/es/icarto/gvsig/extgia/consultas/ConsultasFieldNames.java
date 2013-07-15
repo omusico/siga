@@ -75,7 +75,7 @@ public class ConsultasFieldNames {
     }
 
     public static void createCaracteristicasReport(String[] element, String outputFile,
-	    ResultSet rs, String[] filters) {
+	    ResultSet rs, ConsultasFilters filters) {
 	switch (DBFieldNames.Elements.valueOf(element[0])) {
 	case Taludes:
 	    break;
@@ -124,20 +124,6 @@ public class ConsultasFieldNames {
 	    e.printStackTrace();
 	}
 	return null;
-    }
-
-    public static String getWhereClauseByLocationWidgets(String area, String baseContratista, String tramo) {
-	String query = "";
-	if (area != null) {
-	    query = " WHERE area_mantenimiento =  '" + area + "'";
-	}
-	if (baseContratista != null) {
-	    query = " WHERE base_contratista =  '" + baseContratista + "'";
-	}
-	if (tramo != null) {
-	    query = " WHERE tramo =  '" + tramo + "'";
-	}
-	return query;
     }
 
 }

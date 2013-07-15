@@ -5,12 +5,13 @@ import java.sql.ResultSet;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 
+import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.icarto.gvsig.extgia.consultas.PDFReport;
 
 public class FirmeReconocimientosReport extends PDFReport {
 
     public FirmeReconocimientosReport(String element, String fileName,
-	    ResultSet resultMap, String[] filters) {
+	    ResultSet resultMap, ConsultasFilters filters) {
 	super(element, fileName, resultMap, filters);
 	// TODO Auto-generated constructor stub
     }

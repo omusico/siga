@@ -23,8 +23,11 @@ public class TestConsultas {
     private final String filtersBaseMock = "1";
     private final String filtersTramoMock = "1";
 
+    private static ConsultasFilters mockFilters;
+
     @BeforeClass
     public static void doSetupBeforeClass() {
+	mockFilters = new ConsultasFilters("1", "1", "1", null, null);
 	try {
 	    initializegvSIGDrivers();
 	    DBSession.createConnection("localhost", 5432, "audasa_test", null,
@@ -78,7 +81,7 @@ public class TestConsultas {
 		String query = "SELECT " +
 			ConsultasFieldNames.getCaracteristicasFieldNames(DBFieldNames.Elements.values()[i].toString()) +
 			" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
-			ConsultasFieldNames.getWhereClauseByLocationWidgets(filtersAreaMock, filtersBaseMock, filtersTramoMock) + ";";
+			mockFilters.getWhereClauseByLocationWidgets() + ";";
 		ResultSet rs = st.executeQuery(query);
 		assertTrue(rs!=null);
 	    }
@@ -117,8 +120,7 @@ public class TestConsultas {
 				" IN (SELECT " +
 				ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()) +
 				" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
-				ConsultasFieldNames.getWhereClauseByLocationWidgets(
-					filtersAreaMock, filtersBaseMock, filtersTramoMock) + ");";
+				mockFilters.getWhereClauseByLocationWidgets() + ");";
 		ResultSet rs = st.executeQuery(query);
 		assertTrue(rs!=null);
 	    }
@@ -157,8 +159,7 @@ public class TestConsultas {
 				" IN (SELECT " +
 				ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()) +
 				" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
-				ConsultasFieldNames.getWhereClauseByLocationWidgets(
-					filtersAreaMock, filtersBaseMock, filtersTramoMock) + ");";
+				mockFilters.getWhereClauseByLocationWidgets() + ");";
 		ResultSet rs = st.executeQuery(query);
 		assertTrue(rs!=null);
 	    }
@@ -185,9 +186,8 @@ public class TestConsultas {
 		    ConsultasFieldNames.getFirmeTrabajosFieldNames("id_firme") +
 		    " FROM " + getSchema() + "." + "firme_trabajos" +
 		    " WHERE id_firme IN (SELECT id_firme FROM " + getSchema() +
-		    ".firme" + ConsultasFieldNames.getWhereClauseByLocationWidgets(
-			    filtersAreaMock, filtersBaseMock, filtersTramoMock) +
-			    ");";
+		    ".firme" + mockFilters.getWhereClauseByLocationWidgets() +
+		    ");";
 	    ResultSet rs = st.executeQuery(query);
 	    assertTrue(rs!=null);
 	}
@@ -213,9 +213,8 @@ public class TestConsultas {
 		    ConsultasFieldNames.getFirmeReconocimientosFieldNames("id_firme") +
 		    " FROM " + getSchema() + "." + "firme_reconocimiento_estado" +
 		    " WHERE id_firme IN (SELECT id_firme FROM " + getSchema() +
-		    ".firme" + ConsultasFieldNames.getWhereClauseByLocationWidgets(
-			    filtersAreaMock, filtersBaseMock, filtersTramoMock) +
-			    ");";
+		    ".firme" + mockFilters.getWhereClauseByLocationWidgets() +
+		    ");";
 	    ResultSet rs = st.executeQuery(query);
 	    assertTrue(rs!=null);
 	}

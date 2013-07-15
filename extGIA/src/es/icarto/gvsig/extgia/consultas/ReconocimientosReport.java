@@ -8,7 +8,7 @@ import com.lowagie.text.Rectangle;
 public class ReconocimientosReport extends PDFReport {
 
     public ReconocimientosReport(String element, String fileName,
-	    ResultSet resultMap, String[] filters) {
+	    ResultSet resultMap, ConsultasFilters filters) {
 	super(element, fileName, resultMap, filters);
     }
 

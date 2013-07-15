@@ -6,12 +6,13 @@ import com.lowagie.text.Document;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 
+import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.icarto.gvsig.extgia.consultas.PDFReport;
 
 public class JuntasCaracteristicasReport extends PDFReport {
 
     public JuntasCaracteristicasReport(String element, String fileName,
-	    ResultSet resultMap, String[] filters) {
+	    ResultSet resultMap, ConsultasFilters filters) {
 	super(element, fileName, resultMap, filters);
 	// TODO Auto-generated constructor stub
     }
@@ -64,7 +65,7 @@ public class JuntasCaracteristicasReport extends PDFReport {
     }
 
     @Override
-    protected void writeDatesRange(Document document, String[] filters) {
+    protected void writeDatesRange(Document document, ConsultasFilters filters) {
 
     }
 

@@ -14,6 +14,7 @@ import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 
+import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.icarto.gvsig.extgia.consultas.PDFReport;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -22,7 +23,7 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
     private TrabajosAgregadosReportQueries agregadosReportQueries = null;
 
     public TrabajosAgregadosReport(String[] element, String fileName,
-	    ResultSet resultMap, String[] filters) {
+	    ResultSet resultMap, ConsultasFilters filters) {
 	super(element[1], fileName, null, filters);
     }
 
