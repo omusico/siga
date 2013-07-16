@@ -19,7 +19,7 @@ public class TrabajosAgregadosReportQueries {
     public String getBaseSumQuery() {
 	return "SELECT sum(medicion_audasa) " +
 		"FROM audasa_extgia." + element + "_trabajos " +
-		"WHERE unidad = '";
+		"WHERE (unidad = '";
     }
 
     public String getDesbroceRetroaranhaQuery() {
@@ -27,7 +27,7 @@ public class TrabajosAgregadosReportQueries {
     }
 
     public String getDesbroceRetroaranhaSumQuery() {
-	return getBaseSumQuery() + "Desbroce con retroaraña'";
+	return getBaseSumQuery() + "Desbroce con retroaraña')";
     }
 
     public String getDesbroceMecanicoQuery() {
@@ -35,7 +35,7 @@ public class TrabajosAgregadosReportQueries {
     }
 
     public String getDesbroceMecanicoSumQuery() {
-	return getBaseSumQuery() + "Desbroce mecánico'";
+	return getBaseSumQuery() + "Desbroce mecánico')";
     }
 
     public String getDesbroceManualQuery() {
@@ -43,12 +43,12 @@ public class TrabajosAgregadosReportQueries {
     }
 
     public String getDesbroceManualSumQuery() {
-	return getBaseSumQuery() + "Tala y desbroce manual'";
+	return getBaseSumQuery() + "Tala y desbroce manual')";
     }
 
     public String getDesbroceTotalSumQuery() {
 	return getBaseSumQuery() + "Desbroce con retroaraña'" +
-		" OR unidad = 'Desbroce mecánico' OR unidad = 'Tala y desbroce manual'";
+		" OR unidad = 'Desbroce mecánico' OR unidad = 'Tala y desbroce manual')";
     }
 
     public String getSiegaMecanicaIsletasQuery() {
@@ -60,16 +60,16 @@ public class TrabajosAgregadosReportQueries {
     }
 
     public String getSiegaMecanicaIsletasSumQuery() {
-	return getBaseSumQuery() + "Siega mecánica isletas'";
+	return getBaseSumQuery() + "Siega mecánica isletas')";
     }
 
     public String getSiegaMecanicaMedianaSumQuery() {
-	return getBaseSumQuery() + "Siega mecánica mediana'";
+	return getBaseSumQuery() + "Siega mecánica mediana')";
     }
 
     public String getSiegaTotalSumQuery() {
 	return getBaseSumQuery() + "Siega mecánica isletas'" +
-		" OR unidad = 'Siega mecánica mediana'";
+		" OR unidad = 'Siega mecánica mediana')";
     }
 
     public String getHerbicidadQuery() {
@@ -77,7 +77,7 @@ public class TrabajosAgregadosReportQueries {
     }
 
     public String getHerbicidaSumQuery() {
-	return getBaseSumQuery() + "Herbicida'";
+	return getBaseSumQuery() + "Herbicida')";
     }
 
     public String getVegeracionQuery() {
@@ -85,7 +85,7 @@ public class TrabajosAgregadosReportQueries {
     }
 
     public String getVegeracionSumQuery() {
-	return getBaseSumQuery() + "Vegeración mediana de hormigón'";
+	return getBaseSumQuery() + "Vegeración mediana de hormigón')";
     }
 
 }

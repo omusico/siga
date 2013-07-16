@@ -325,7 +325,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
     private void createCsvReportAgregados(String outputFile, String[] element, ConsultasFilters filters) {
 	if (element[0].equals("Taludes")) {
-	    new CSVTrabajosAgregadosTaludesReport(outputFile);
+	    new CSVTrabajosAgregadosTaludesReport(outputFile, consultasFilters);
 	}else {
 	    // TODO: Isletas
 	}

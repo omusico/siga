@@ -41,8 +41,11 @@ public abstract class PDFReport {
 
     protected Document document;
 
+    private final ConsultasFilters filters;
+
     public PDFReport(String element, String fileName,
 	    ResultSet resultMap, ConsultasFilters filters) {
+	this.filters = filters;
 	writePdfReport(element, fileName, resultMap, filters);
     }
 
@@ -317,5 +320,8 @@ public abstract class PDFReport {
 	//you do what you want here
     }
 
+    protected ConsultasFilters getFilters() {
+	return filters;
+    }
 
 }

@@ -14,7 +14,7 @@ public class TrabajosAgregadosTaludesReport extends TrabajosAgregadosReport {
 
     @Override
     protected String getElement() {
-	return "taludes";
+	return "Taludes";
     }
 
 }

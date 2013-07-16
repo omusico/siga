@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 
@@ -14,8 +15,11 @@ public abstract class CSVTrabajosAgregadosReport {
     private static final CharSequence CSV_SEPARATOR = "\t";
     private final TrabajosAgregadosReportQueries agregadosReportQueries;
 
-    public CSVTrabajosAgregadosReport(String outputFile) {
+    private final ConsultasFilters filters;
+
+    public CSVTrabajosAgregadosReport(String outputFile, ConsultasFilters filters) {
 	agregadosReportQueries = new TrabajosAgregadosReportQueries(getElement());
+	this.filters = filters;
 	writeCSVFile(outputFile);
     }
 
@@ -97,7 +101,8 @@ public abstract class CSVTrabajosAgregadosReport {
     private void writeTable(FileWriter writer, String title, String query, String totalQuery) {
 	PreparedStatement statement;
 	try {
-	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query
+		    + filters.getWhereClauseFiltersForAgregados(getElement(), false));
 	    statement.execute();
 	    ResultSet rs = statement.getResultSet();
 	    if (rs.next()) {
@@ -111,7 +116,8 @@ public abstract class CSVTrabajosAgregadosReport {
 		    }
 		    writer.append("\n");
 		}
-		rs = statement.executeQuery(totalQuery);
+		rs = statement.executeQuery(totalQuery +
+			filters.getWhereClauseFiltersForAgregados(getElement(), true));
 		writer.append("TOTAL");
 		for (int i=0; i<=3; i++) {
 		    writer.append(CSV_SEPARATOR);
@@ -134,7 +140,8 @@ public abstract class CSVTrabajosAgregadosReport {
     private void writeTotal(FileWriter writer, String title, String query) {
 	PreparedStatement statement;
 	try {
-	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query
+		    + filters.getWhereClauseFiltersForAgregados(getElement(), true));
 	    statement.execute();
 	    ResultSet rs = statement.getResultSet();
 	    rs.next();

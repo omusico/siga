@@ -7,12 +7,16 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.iver.cit.gvsig.fmap.layers.LayerFactory;
 
+import es.icarto.gvsig.extgia.consultas.agregados.TrabajosAgregadosReportQueries;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
@@ -25,12 +29,22 @@ public class TestConsultas {
     @BeforeClass
     public static void doSetupBeforeClass() {
 
-	mockFilters = new ConsultasFilters(
-		new KeyValue("1", "Norte"),
-		new KeyValue("1", "Norte"),
-		new KeyValue("1", "AP-9"),
-		null,
-		null);
+	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	try {
+	    Date firstDate = sdf.parse("01/01/1980");
+	    Date lastDate = sdf.parse("01/07/2013");
+
+	    mockFilters = new ConsultasFilters(
+		    new KeyValue("1", "Norte"),
+		    new KeyValue("1", "Norte"),
+		    new KeyValue("1", "AP-9"),
+		    firstDate,
+		    lastDate);
+
+	} catch (ParseException e1) {
+	    e1.printStackTrace();
+	}
+
 	try {
 	    initializegvSIGDrivers();
 	    DBSession.createConnection("localhost", 5432, "audasa_test", null,
@@ -128,6 +142,94 @@ public class TestConsultas {
 		assertTrue(rs!=null);
 	    }
 	}
+    }
+
+    @Test
+    public void testTrabajosAgregadosReportsQueries() throws SQLException {
+	String[] elements = {"Taludes", "Isletas"};
+	TrabajosAgregadosReportQueries agregadosReportQueries = new TrabajosAgregadosReportQueries(elements[0]);
+	ResultSet rs;
+	Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
+
+	String query = agregadosReportQueries.getDesbroceManualQuery() +
+		mockFilters.getWhereClauseFiltersForAgregados(elements[0], false);
+	rs = st.executeQuery(query);
+	assertTrue(rs!=null);
+
+	query = agregadosReportQueries.getDesbroceManualSumQuery() +
+		mockFilters.getWhereClauseFiltersForAgregados(elements[0], true);
+	rs = st.executeQuery(query);
+	assertTrue(rs!=null);
+
+	query = agregadosReportQueries.getDesbroceMecanicoQuery() +
+		mockFilters.getWhereClauseFiltersForAgregados(elements[0], false);
+	rs = st.executeQuery(query);
+	assertTrue(rs!=null);
+
+	query = agregadosReportQueries.getDesbroceMecanicoSumQuery() +
+		mockFilters.getWhereClauseFiltersForAgregados(elements[0], true);
+	rs = st.executeQuery(query);
+	assertTrue(rs!=null);
+
+	query = agregadosReportQueries.getDesbroceRetroaranhaQuery() +
+		mockFilters.getWhereClauseFiltersForAgregados(elements[0], false);
+	rs = st.executeQuery(query);
+	assertTrue(rs!=null);
+
+	query = agregadosReportQueries.getDesbroceRetroaranhaSumQuery() +
+		mockFilters.getWhereClauseFiltersForAgregados(elements[0], true);
+	rs = st.executeQuery(query);
+	assertTrue(rs!=null);
+
+	query = agregadosReportQueries.getDesbroceTotalSumQuery() +
+		mockFilters.getWhereClauseFiltersForAgregados(elements[0], true);
+	rs = st.executeQuery(query);
+	assertTrue(rs!=null);
+
+	query = agregadosReportQueries.getHerbicidadQuery() +
+		mockFilters.getWhereClauseFiltersForAgregados(elements[0], false);
+	rs = st.executeQuery(query);
+	assertTrue(rs!=null);
+
+	query = agregadosReportQueries.getHerbicidaSumQuery() +
+		mockFilters.getWhereClauseFiltersForAgregados(elements[0], true);
+	rs = st.executeQuery(query);
+	assertTrue(rs!=null);
+
+	query = agregadosReportQueries.getSiegaMecanicaIsletasQuery() +
+		mockFilters.getWhereClauseFiltersForAgregados(elements[0], false);
+	rs = st.executeQuery(query);
+	assertTrue(rs!=null);
+
+	query = agregadosReportQueries.getSiegaMecanicaIsletasSumQuery() +
+		mockFilters.getWhereClauseFiltersForAgregados(elements[0], true);
+	rs = st.executeQuery(query);
+	assertTrue(rs!=null);
+
+	query = agregadosReportQueries.getSiegaMecanicaMedianaQuery() +
+		mockFilters.getWhereClauseFiltersForAgregados(elements[0], false);
+	rs = st.executeQuery(query);
+	assertTrue(rs!=null);
+
+	query = agregadosReportQueries.getSiegaMecanicaMedianaSumQuery() +
+		mockFilters.getWhereClauseFiltersForAgregados(elements[0], true);
+	rs = st.executeQuery(query);
+	assertTrue(rs!=null);
+
+	query = agregadosReportQueries.getSiegaTotalSumQuery() +
+		mockFilters.getWhereClauseFiltersForAgregados(elements[0], true);
+	rs = st.executeQuery(query);
+	assertTrue(rs!=null);
+
+	query = agregadosReportQueries.getVegeracionQuery() +
+		mockFilters.getWhereClauseFiltersForAgregados(elements[0], false);
+	rs = st.executeQuery(query);
+	assertTrue(rs!=null);
+
+	query = agregadosReportQueries.getVegeracionSumQuery() +
+		mockFilters.getWhereClauseFiltersForAgregados(elements[0], true);
+	rs = st.executeQuery(query);
+	assertTrue(rs!=null);
     }
 
     @Test

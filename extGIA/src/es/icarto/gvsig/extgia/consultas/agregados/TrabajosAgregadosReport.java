@@ -106,7 +106,8 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
     }
 
     private void writeTotal(Document document, String title, String query) {
-	ResultSet rs = getValuesFromQuery(query);
+	ResultSet rs = getValuesFromQuery(query +
+		getFilters().getWhereClauseFiltersForAgregados(getElement(), true));
 	try {
 	    rs.next();
 	    if (rs.getString(1)!=null) {
@@ -149,13 +150,15 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
 	try {
 	    ResultSet resultMap;
 
-	    resultMap = getValuesFromQuery(contentQuery);
+	    resultMap = getValuesFromQuery(contentQuery +
+		    getFilters().getWhereClauseFiltersForAgregados(getElement(), false));
 	    if (resultMap.next()) {
 		document.add(new Paragraph(tableTittle, bodyBoldStyle));
 		PdfPTable table = super.writeColumnNames(document);
 		writeTableContent(table, resultMap);
 		if (totalQuery != null) {
-		    resultMap = getValuesFromQuery(totalQuery);
+		    resultMap = getValuesFromQuery(totalQuery +
+			    getFilters().getWhereClauseFiltersForAgregados(getElement(), true));
 		    PdfPCell totalCell = new PdfPCell(new Paragraph("TOTAL", bodyBoldStyle));
 		    totalCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		    table.addCell(totalCell);
