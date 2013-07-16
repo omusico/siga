@@ -291,7 +291,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		tipo = RECONOCIMIENTOS;
 	    }
 	}else if (tipoConsulta.getSelectedItem().toString().equals("Características")) {
-	    fields = ConsultasFieldNames.getCaracteristicasFieldNames(element[0]);
+	    fields = ConsultasFieldNames.getPDFCaracteristicasFieldNames(element[0]);
 	    tipo = CARACTERISTICAS;
 	}else if (tipoConsulta.getSelectedItem().toString().equals("Trabajos (Agregados)")) {
 	    tipo = TRABAJOS_AGREGADOS;
@@ -481,7 +481,9 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	}
 	if (tipo == CARACTERISTICAS) {
 	    if (csvRadioButton.isSelected()) {
-		query = "SELECT *" + " FROM " +
+		query = "SELECT " +
+			ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
+			" FROM " +
 			DBFieldNames.GIA_SCHEMA + "." +
 			element;
 	    }else {

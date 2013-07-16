@@ -40,9 +40,8 @@ public class CSVReport {
 	writer.append(CSV_SEPARATOR);
 	if (filters.getArea() != null) {
 	    writer.append(filters.getArea().getValue());
-	    writer.append("\n");
 	}
-
+	writer.append("\n");
 
 	writer.append("Base Contratista");
 	writer.append(CSV_SEPARATOR);

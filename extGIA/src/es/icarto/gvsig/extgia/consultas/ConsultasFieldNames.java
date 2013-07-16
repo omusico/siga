@@ -36,7 +36,7 @@ public class ConsultasFieldNames {
 		"fecha_inspeccion, observaciones";
     }
 
-    public static String getCaracteristicasFieldNames(String element) {
+    public static String getPDFCaracteristicasFieldNames(String element) {
 	switch (DBFieldNames.Elements.valueOf(element)) {
 	case Taludes:
 	    break;
@@ -72,6 +72,256 @@ public class ConsultasFieldNames {
 	    break;
 	}
 	return null;
+    }
+
+    public static String getCSVCaracteristicasFieldNames(String element) {
+	switch (DBFieldNames.Elements.valueOf(element)) {
+	case Taludes:
+	    return taludesCSVFieldNames();
+	case Isletas:
+	    return isletasCSVFieldNames();
+	case Barrera_Rigida:
+	    return barreraRigidaCSVFieldNames();
+	case Areas_Servicio:
+	    return areasServicioCSVFieldNames();
+	case Areas_Descanso:
+	    return areasDescansoCSVFieldNames();
+	case Enlaces:
+	    return enlacesCSVFieldNames();
+	case Juntas:
+	    return juntasCSVFieldNames();
+	case Pasos_Mediana:
+	    return pasosMedianaCSVFieldNames();
+	case Senhalizacion_Vertical:
+	    return senhalizacionCSVFieldNames();
+	case Valla_Cierre:
+	    return vallaCierreCSVFieldNames();
+	case Firme:
+	    return firmeCSVFieldNames();
+	}
+	return null;
+    }
+
+    private static String localizationCSVFieldNames() {
+	return "area_mantenimiento as \"Area Mantenimiento\"," +
+		"base_contratista as \"Base Contratista\"," +
+		"tramo as \"Tramo\"," +
+		"tipo_via as \"Tipo Vía\"," +
+		"nombre_via as \"Nombre Vía\",";
+    }
+
+    private static String taludesCSVFieldNames() {
+	return "id_talud as \"ID Talud\"," +
+		"numero_talud as \"Nº Talud\"," +
+		"fecha_actualizacion as \"Fecha Actualización\"," +
+		localizationCSVFieldNames() +
+		"pk_inicial as \"PK Inicial\"," +
+		"pk_final as \"PK Final\"," +
+		"tipo_talud as \"Tipo Talud\"," +
+		"roca as \"Roca\"," +
+		"arboles as \"Árboles\"," +
+		"gunita as \"Gunita\"," +
+		"escollera as \"Escollera\"," +
+		"maleza as \"Maleza\"," +
+		"malla as \"Malla\"," +
+		"observaciones as \"Observaciones\"," +
+		"arcen as \"Arcén\"," +
+		"barrera_seguridad as \"Barrera Seguridad\"," +
+		"cuneta_pie as \"Cuneta Pie\"," +
+		"cuneta_pie_revestida as \"Cuneta Pie Revestida\"," +
+		"cuneta_cabeza as \"Cuneta Cabezada\"," +
+		"cuneta_cabeza_revestida as \"Cuneta Cabeza Revestida\"," +
+		"berma as \"Berma\"," +
+		"longitud as \"Longitud\"," +
+		"sector_inclinacion as \"Sector Inclinación\"," +
+		"inclinacion_media as \"Inclinación Media\"," +
+		"altura_max_talud as \"Altura Máxima Talud\"," +
+		"sup_total_analitica as \"Superficie Total Analítica\"," +
+		"sup_mecanizada_analitica as \"Superficie Mecanizada Analítica\"," +
+		"sup_manual_analitica as \"Superficie Manual Analítica\"," +
+		"sup_restada_analitica as \"Superficie Restada Analítica\"," +
+		"sup_total_campo as \"Superficie Total Campo\"," +
+		"sup_mecanizada_campo as \"Superficie Mecanizada Campo\"," +
+		"sup_restada_campo as \"Superficie Restada Campo\"," +
+		"sup_manual_campo as \"Superficie Manual Campo\"," +
+		"sup_complementaria as \"Superficie Complementaria\"," +
+		"concepto as \"Concepto\"";
+    }
+
+    private static String isletasCSVFieldNames() {
+	return "id_isleta as \"ID Isleta\"," +
+		"numero_isleta as \"Nº Isleta\"," +
+		"fecha_actualizacion as \"Fecha Actualización\"," +
+		localizationCSVFieldNames() +
+		"pk_inicial as \"PK Inicial\"," +
+		"pk_final as \"PK Final\"," +
+		"tipo_isleta as \"Tipo Isleta\"," +
+		"sup_bajo_bionda as \"Superficie Bajo Bionda\"," +
+		"posibilidad_empleo_vehiculos as \"Posibilidad Empleo Vehículos\"," +
+		"observaciones as \"Observaciones\"";
+    }
+
+    private static String barreraRigidaCSVFieldNames() {
+	return "id_barrera_rigida as \"ID Barrera Rígida\"," +
+		"numero_barrera_rigida as \"Nº Barrera Rígida\"," +
+		"fecha_actualizacion as \"Fecha Actualización\"," +
+		localizationCSVFieldNames() +
+		"pk_inicial as \"PK Inicial\"," +
+		"pk_final as \"PK Final\"," +
+		"obstaculo_protegido as \"Obstáculo Protegido\"," +
+		"longitud as \"Longitud\"," +
+		"codigo as \"Código\"," +
+		"tipo as \"Tipo\"," +
+		"metodo_constructivo as \"Método Constructivo\"," +
+		"perfil as \"Perfil\"," +
+		"observaciones as \"Observaciones\"";
+    }
+
+    private static String areasServicioCSVFieldNames() {
+	return "id_area_servicio as \"ID Área Servicio\"," +
+		"nombre as \"Nombre\"," +
+		"fecha_actualizacion as \"Fecha Actualización\"," +
+		localizationCSVFieldNames() +
+		"pk as \"PK\"," +
+		"fecha_puesta_servico as \"Fecha Puesta Servicio\"," +
+		"sup_total as \"Superficie Total\"," +
+		"sup_pavimentada as \"Superficie Pavimentada\"," +
+		"aceras as \"Aceras\"," +
+		"bordillos as \"Bordillos\"," +
+		"zona_siega as \"Zona Siega\"," +
+		"zona_ajardinada as \"Zona Ajardinada\"," +
+		"riego as \"Riego\"," +
+		"cafeteria_rest_bar as \"Cafetería\"," +
+		"aparcamiento_camion_bus as \"Aparcamientos\"," +
+		"area_picnic as \"Área Picnic\"," +
+		"fuentes_potables as \"Fuentes Potables\"," +
+		"observaciones as \"Observaciones\"";
+    }
+
+    private static String areasDescansoCSVFieldNames() {
+	return "id_area_descanso as \"ID Área Descanso\"," +
+		"nombre as \"Nombre\"," +
+		"fecha_actualizacion as \"Fecha Actualización\"," +
+		localizationCSVFieldNames() +
+		"pk as \"PK\"," +
+		"fecha_puesta_servico as \"Fecha Puesta Servicio\"," +
+		"sup_total as \"Superficie Total\"," +
+		"sup_pavimentada as \"Superficie Pavimentada\"," +
+		"aceras as \"Aceras\"," +
+		"bordillos as \"Bordillos\"," +
+		"zona_siega as \"Zona Siega\"," +
+		"zona_ajardinada as \"Zona Ajardinada\"," +
+		"riego as \"Riego\"," +
+		"aparcamiento_camion_bus as \"Aparcamientos\"," +
+		"area_picnic as \"Área Picnic\"," +
+		"fuentes_potables as \"Fuentes Potables\"," +
+		"observaciones as \"Observaciones\"";
+    }
+
+    private static String pasosMedianaCSVFieldNames() {
+	return "id_paso_mediana as \"ID Paso Mediana\"," +
+		"fecha_actualizacion as \"Fecha Actualización\"," +
+		localizationCSVFieldNames() +
+		"pk as \"PK\"," +
+		"longitud as \"Longitud\"," +
+		"numero_postes as \"Nº Postes\"," +
+		"cierre as \"Cierre\"," +
+		"longitud_cierre as \"Longitud Cierre\"," +
+		"cuneta_entubada as \"Cuneta Entubada\"," +
+		"observaciones as \"Observaciones\"";
+    }
+
+    private static String juntasCSVFieldNames() {
+	return "id_junta as \"ID Junta\"," +
+		"fecha_actualizacion as \"Fecha Actualización\"," +
+		localizationCSVFieldNames() +
+		"pk as \"PK\"," +
+		"numero_junta as \"Nº Junta\"," +
+		"ancho as \"Ancho\"," +
+		"modulo as \"Módulo\"," +
+		"elemento as \"Elemento\"," +
+		"codigo_elemento as \"Código Elemento\"," +
+		"descripcion as \"Descripción\"," +
+		"observaciones as \"Observaciones\"";
+    }
+
+    private static String enlacesCSVFieldNames() {
+	return "id_enlace as \"ID Enlace\"," +
+		"nombre as \"Nombre\"," +
+		"fecha_actualizacion as \"Fecha Actualización\"," +
+		localizationCSVFieldNames() +
+		"pk as \"PK\"," +
+		"n_salida as \"Nº Salida\"," +
+		"tipo_enlace as \"Tipo Enlace\"," +
+		"alumbrado as \"Alumbrado\"," +
+		"observaciones as \"Observaciones\"";
+    }
+
+    private static String senhalizacionCSVFieldNames() {
+	return "id_elemento_senhalizacion as \"ID Elemento\"," +
+		"fecha_actualizacion as \"Fecha Actualización\"," +
+		localizationCSVFieldNames() +
+		"pk as \"PK\"," +
+		"tipo_sustentacion as \"Tipo Sustentación\"," +
+		"material_sustentacion as \"Material Sustentación\"," +
+		"tipo_poste as \"Tipo Poste\"," +
+		"numero_postes as \"Nº Postes\"," +
+		"anclaje as \"Anclaje\"," +
+		"cimentacion_especial as \"Cimentación Especial\"," +
+		"observaciones as \"Observaciones\"";
+    }
+
+    private static String vallaCierreCSVFieldNames() {
+	return "id_valla_cierre as \"ID Valla Cierre\"," +
+		"fecha_actualizacion as \"Fecha Actualización\"," +
+		localizationCSVFieldNames() +
+		"pk_inicial as \"PK Inicial\"," +
+		"pk_final as \"PK Final\"," +
+		"tipo_valla as \"Tipo Valla\"," +
+		"longitud as \"Longitud\"," +
+		"altura as \"Altura\"," +
+		"n_panhos as \"Nº Paños\"," +
+		"n_puertas as \"Nº Puertas\"," +
+		"n_postes_simples as \"Nº Postes Simples\"," +
+		"n_postes_tripode as \"Nº Postes Trípode\"," +
+		"pastor_electrico as \"Pastor Eléctrico\"," +
+		"observaciones as \"Observaciones\"";
+    }
+
+    private static String firmeCSVFieldNames() {
+	return "id_firme as \"ID Firme\"," +
+		"fecha_inauguracion as \"Fecha Inauguración\"," +
+		"fecha_apertura as \"Fecha Apertura\"," +
+		"unidad_constructiva as \"Unidad Constructiva\"," +
+		"area_mantenimiento as \"Area Mantenimiento\"," +
+		"base_contratista as \"Base Contratista\"," +
+		"tramo as \"Tramo\"," +
+		"pk_inicial as \"PK Inicial\"," +
+		"pk_final as \"PK Final\"," +
+		"explanada_cm as \"Explanada (cm)\"," +
+		"zahorra_artificial as \"Zahorra Artificial (cm)\"," +
+		"suelo_cemento_cm as \"Suelo Cemento (cm)\"," +
+		"grava_cemento_cm as \"Grava Cemento (cm)\"," +
+		"mbc_base_cm as \"MBC Base (cm)\"," +
+		"mbc_intermedia_cm as \"MBC Intermedia (cm)\"," +
+		"mbc_rodadura_cm as \"MBC Rodadura (cm)\"," +
+		"explanada as \"Materiales: Explanada\"," +
+		"zahorra_artificial as \"Materiales: Zahorra Artificial\"," +
+		"suelo_cemento as \"Materiales: Suelo Cemento\"," +
+		"gc_arido_grueso as \"Grava-Cemento: Árido Grueso\"," +
+		"gc_arido_fino as \"Grava-Cemento: Árido Fino\"," +
+		"gc_cemento as \"Grava-Cemento: Cemento\"," +
+		"mbc_bas_huso as \"MBC Base: Huso (cm)\"," +
+		"mbc_bas_arido_grueso as \"MBC Base: Árido Grueso (cm)\"," +
+		"mbc_bas_arido_fino \"MBC Base: Árido Fino (cm)\"," +
+		"mbc_bas_filler as \"MBC Base: Filler\"," +
+		"mbc_bas_ligante as \"MBC Base: Ligante\"," +
+		"mbc_rod_huso as \"MBC Rodadura: Huso (cm)\"," +
+		"mbc_rod_arido_grueso as \"MBC Rodadura: Árido Grueso (cm)\"," +
+		"mbc_rod_arido_fino \"MBC Rodadura: Árido Fino (cm)\"," +
+		"mbc_rod_filler as \"MBC Rodadura: Filler\"," +
+		"mbc_rod_ligante as \"MBC Rodadura: Ligante\"," +
+		"observaciones as \"Observaciones\"";
     }
 
     public static void createCaracteristicasReport(String[] element, String outputFile,
