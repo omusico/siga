@@ -322,6 +322,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	}else if (element[0].equals("Isletas")){
 	    new TrabajosAgregadosIsletasReport(element, outputFile, null, filters);
 	}
+	showOpenSingleReportDialog(outputFile);
     }
 
     private void createCsvReportAgregados(String outputFile, String[] element, ConsultasFilters filters) {
@@ -330,6 +331,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	}else if (element[0].equals("Isletas")) {
 	    new CSVTrabajosAgregadosIsletasReport(outputFile, consultasFilters);
 	}
+	showOpenSingleReportDialog(outputFile);
     }
 
     private void createPdfReport(int tipo, String outputFile, String[] element,
@@ -367,29 +369,33 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		}
 
 		if (!isReportOfSeveralElements) {
-		    Object[] reportGeneratedOptions = {PluginServices.getText(this,
-			    "singleReportGeneratedOptions_open"), PluginServices.getText(this,
-				    "singleReportGeneratedOptions_close")};
-		    int m = JOptionPane.showOptionDialog(
-			    null,
-			    PluginServices.getText(this, "reportGenerated_msg") + "\""
-				    + outputFile + "\"", null,
-				    JOptionPane.YES_NO_CANCEL_OPTION,
-				    JOptionPane.INFORMATION_MESSAGE, null,
-				    reportGeneratedOptions, reportGeneratedOptions[1]);
-
-		    if (m == JOptionPane.OK_OPTION) {
-			Desktop d = Desktop.getDesktop();
-			try {
-			    d.open(new File(outputFile));
-			} catch (IOException e1) {
-			    e1.printStackTrace();
-			}
-		    }
+		    showOpenSingleReportDialog(outputFile);
 		}
 	    } catch (SQLException e1) {
 		e1.printStackTrace();
 		return;
+	    }
+	}
+    }
+
+    private void showOpenSingleReportDialog(String outputFile) {
+	Object[] reportGeneratedOptions = {PluginServices.getText(this,
+		"singleReportGeneratedOptions_open"), PluginServices.getText(this,
+			"singleReportGeneratedOptions_close")};
+	int m = JOptionPane.showOptionDialog(
+		null,
+		PluginServices.getText(this, "reportGenerated_msg") + "\""
+			+ outputFile + "\"", null,
+			JOptionPane.YES_NO_CANCEL_OPTION,
+			JOptionPane.INFORMATION_MESSAGE, null,
+			reportGeneratedOptions, reportGeneratedOptions[1]);
+
+	if (m == JOptionPane.OK_OPTION) {
+	    Desktop d = Desktop.getDesktop();
+	    try {
+		d.open(new File(outputFile));
+	    } catch (IOException e1) {
+		e1.printStackTrace();
 	    }
 	}
     }
