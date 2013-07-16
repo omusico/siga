@@ -28,7 +28,6 @@ import com.jeta.forms.components.panel.FormPanel;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLiteAppDomain;
 import es.icarto.gvsig.navtableforms.ormlite.XMLSAXParser;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.rules.ValidationRule;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.DomainValues;
 import es.icarto.gvsig.navtableforms.utils.AbeilleParser;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
@@ -106,20 +105,20 @@ public abstract class CommonMethodsForTestDBForms {
 	}
     }
 
-    @Test
-    public void test_domainValuesMatchComboBoxesNames() throws Exception {
-
-	final HashMap<String, DomainValues> domainValues = ado
-		.getDomainValues();
-
-	for (final String domainValue : domainValues.keySet()) {
-	    JComponent cb = this.widgets.get(domainValue);
-	    if (!(cb instanceof JComboBox)) {
-		fail(domainValue);
-	    }
-	}
-	assertTrue(true);
-    }
+    //    @Test
+    //    public void test_domainValuesMatchComboBoxesNames() throws Exception {
+    //
+    //	final HashMap<String, DomainValues> domainValues = ado
+    //		.getDomainValues();
+    //
+    //	for (final String domainValue : domainValues.keySet()) {
+    //	    JComponent cb = this.widgets.get(domainValue);
+    //	    if (!(cb instanceof JComboBox)) {
+    //		fail(domainValue);
+    //	    }
+    //	}
+    //	assertTrue(true);
+    //    }
 
     @Test
     public void test_ComboBoxesNamesMatchDomainValues() {
@@ -136,18 +135,18 @@ public abstract class CommonMethodsForTestDBForms {
 	assertTrue(true);
     }
 
-    @Test
-    public void test_validationRulesMatchWidgetNames() throws Exception {
-
-	final HashMap<String, Set<ValidationRule>> validationRules = new HashMap<String, Set<ValidationRule>>();
-	for (String key : ado.getDomainValidators().keySet()) {
-	    validationRules.put(key, ado.getDomainValidators().get(key)
-		    .getRules());
-	}
-	for (final String validationRule : validationRules.keySet()) {
-	    assertNotNull(validationRule, this.widgets.get(validationRule));
-	}
-    }
+    //    @Test
+    //    public void test_validationRulesMatchWidgetNames() throws Exception {
+    //
+    //	final HashMap<String, Set<ValidationRule>> validationRules = new HashMap<String, Set<ValidationRule>>();
+    //	for (String key : ado.getDomainValidators().keySet()) {
+    //	    validationRules.put(key, ado.getDomainValidators().get(key)
+    //		    .getRules());
+    //	}
+    //	for (final String validationRule : validationRules.keySet()) {
+    //	    assertNotNull(validationRule, this.widgets.get(validationRule));
+    //	}
+    //    }
 
     @Test
     public void test_widgetsWithOutDatabaseField() throws SQLException {
