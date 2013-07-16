@@ -103,11 +103,11 @@ public class ConsultasFieldNames {
     }
 
     private static String localizationCSVFieldNames() {
-	return "area_mantenimiento as \"Area Mantenimiento\"," +
-		"base_contratista as \"Base Contratista\"," +
-		"tramo as \"Tramo\"," +
-		"tipo_via as \"Tipo Vía\"," +
-		"nombre_via as \"Nombre Vía\",";
+	return "am.item as \"Area Mantenimiento\"," +
+		"bc.item as \"Base Contratista\"," +
+		"tr.item as \"Tramo\"," +
+		"tv.item as \"Tipo Vía\"," +
+		"nv.item as \"Nombre Vía\",";
     }
 
     private static String taludesCSVFieldNames() {
@@ -156,7 +156,7 @@ public class ConsultasFieldNames {
 		"pk_inicial as \"PK Inicial\"," +
 		"pk_final as \"PK Final\"," +
 		"tipo_isleta as \"Tipo Isleta\"," +
-		"sup_bajo_bionda as \"Superficie Bajo Bionda\"," +
+		"superficie_bajo_bionda as \"Superficie Bajo Bionda\"," +
 		"posibilidad_empleo_vehiculos as \"Posibilidad Empleo Vehículos\"," +
 		"observaciones as \"Observaciones\"";
     }
@@ -183,7 +183,7 @@ public class ConsultasFieldNames {
 		"fecha_actualizacion as \"Fecha Actualización\"," +
 		localizationCSVFieldNames() +
 		"pk as \"PK\"," +
-		"fecha_puesta_servico as \"Fecha Puesta Servicio\"," +
+		"fecha_puesta_servicio as \"Fecha Puesta Servicio\"," +
 		"sup_total as \"Superficie Total\"," +
 		"sup_pavimentada as \"Superficie Pavimentada\"," +
 		"aceras as \"Aceras\"," +
@@ -204,7 +204,7 @@ public class ConsultasFieldNames {
 		"fecha_actualizacion as \"Fecha Actualización\"," +
 		localizationCSVFieldNames() +
 		"pk as \"PK\"," +
-		"fecha_puesta_servico as \"Fecha Puesta Servicio\"," +
+		"fecha_puesta_servicio as \"Fecha Puesta Servicio\"," +
 		"sup_total as \"Superficie Total\"," +
 		"sup_pavimentada as \"Superficie Pavimentada\"," +
 		"aceras as \"Aceras\"," +
@@ -272,7 +272,7 @@ public class ConsultasFieldNames {
     }
 
     private static String vallaCierreCSVFieldNames() {
-	return "id_valla_cierre as \"ID Valla Cierre\"," +
+	return "id_valla as \"ID Valla\"," +
 		"fecha_actualizacion as \"Fecha Actualización\"," +
 		localizationCSVFieldNames() +
 		"pk_inicial as \"PK Inicial\"," +
@@ -293,9 +293,9 @@ public class ConsultasFieldNames {
 		"fecha_inauguracion as \"Fecha Inauguración\"," +
 		"fecha_apertura as \"Fecha Apertura\"," +
 		"unidad_constructiva as \"Unidad Constructiva\"," +
-		"area_mantenimiento as \"Area Mantenimiento\"," +
-		"base_contratista as \"Base Contratista\"," +
-		"tramo as \"Tramo\"," +
+		"am.item as \"Area Mantenimiento\"," +
+		"bc.item as \"Base Contratista\"," +
+		"tr.item as \"Tramo\"," +
 		"pk_inicial as \"PK Inicial\"," +
 		"pk_final as \"PK Final\"," +
 		"explanada_cm as \"Explanada (cm)\"," +

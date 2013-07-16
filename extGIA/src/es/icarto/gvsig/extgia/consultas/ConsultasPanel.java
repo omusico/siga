@@ -481,11 +481,35 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	}
 	if (tipo == CARACTERISTICAS) {
 	    if (csvRadioButton.isSelected()) {
-		query = "SELECT " +
-			ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
-			" FROM " +
-			DBFieldNames.GIA_SCHEMA + "." +
-			element;
+		if (element.equals("Firme")) {
+		    query = "SELECT " +
+			    ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
+			    " FROM " +
+			    DBFieldNames.GIA_SCHEMA + "." +
+			    element + " el," +
+			    " audasa_extgia_dominios.area_mantenimiento am," +
+			    " audasa_extgia_dominios.base_contratista bc," +
+			    " audasa_extgia_dominios.tramo tr," +
+			    " WHERE el.area_mantenimiento = am.id" +
+			    " AND el.base_contratista = bc.id" +
+			    " AND el.tramo = tr.id";
+		}else {
+		    query = "SELECT " +
+			    ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
+			    " FROM " +
+			    DBFieldNames.GIA_SCHEMA + "." +
+			    element + " el," +
+			    " audasa_extgia_dominios.area_mantenimiento am," +
+			    " audasa_extgia_dominios.base_contratista bc," +
+			    " audasa_extgia_dominios.tramo tr," +
+			    " audasa_extgia_dominios.tipo_via tv," +
+			    " audasa_extgia_dominios.nombre_via nv" +
+			    " WHERE el.area_mantenimiento = am.id" +
+			    " AND el.base_contratista = bc.id" +
+			    " AND el.tramo = tr.id" +
+			    " AND el.tipo_via = tv.id" +
+			    " AND el.nombre_via = cast (nv.id as text)";
+		}
 	    }else {
 		query = "SELECT " + fields + " FROM " +
 			DBFieldNames.GIA_SCHEMA + "." +

@@ -79,10 +79,10 @@ public class TestConsultas {
     public void testCaracteristicasReportsQueries() throws SQLException {
 
 	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
-	    if (ConsultasFieldNames.getCaracteristicasFieldNames(DBFieldNames.Elements.values()[i].toString())!=null) {
+	    if (ConsultasFieldNames.getPDFCaracteristicasFieldNames(DBFieldNames.Elements.values()[i].toString())!=null) {
 		Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
 		String query = "SELECT " +
-			ConsultasFieldNames.getCaracteristicasFieldNames(DBFieldNames.Elements.values()[i].toString()) +
+			ConsultasFieldNames.getPDFCaracteristicasFieldNames(DBFieldNames.Elements.values()[i].toString()) +
 			" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() + ";";
 		ResultSet rs = st.executeQuery(query);
 		assertTrue(rs!=null);
@@ -94,10 +94,10 @@ public class TestConsultas {
     public void testCaracteristicasReportsQueriesWithLocationFilters() throws SQLException {
 
 	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
-	    if (ConsultasFieldNames.getCaracteristicasFieldNames(DBFieldNames.Elements.values()[i].toString())!=null) {
+	    if (ConsultasFieldNames.getPDFCaracteristicasFieldNames(DBFieldNames.Elements.values()[i].toString())!=null) {
 		Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
 		String query = "SELECT " +
-			ConsultasFieldNames.getCaracteristicasFieldNames(DBFieldNames.Elements.values()[i].toString()) +
+			ConsultasFieldNames.getPDFCaracteristicasFieldNames(DBFieldNames.Elements.values()[i].toString()) +
 			" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
 			mockFilters.getWhereClauseByLocationWidgets() + ";";
 		ResultSet rs = st.executeQuery(query);
@@ -350,20 +350,62 @@ public class TestConsultas {
     @Test
     public void testCSVCaracteristicas() throws SQLException {
 	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
-	    if (ConsultasFieldNames.getCaracteristicasFieldNames(DBFieldNames.Elements.values()[i].toString())!=null) {
-		Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-		String query = "SELECT " +
-			ConsultasFieldNames.getCaracteristicasFieldNames(DBFieldNames.Elements.values()[i].toString()) +
-			" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() + ";";
-		ResultSet rs = st.executeQuery(query);
-		ResultSetMetaData rsMetaData = rs.getMetaData();
-		String mockFileDir = "/tmp/test_" + DBFieldNames.Elements.values()[i].toString() + ".csv";
-		new CSVReport(mockFileDir, rsMetaData, rs, mockFilters);
-		File mockFile = new File(mockFileDir);
-		assertTrue(mockFile.exists());
-		mockFile.delete();
+	    if (DBFieldNames.Elements.values()[i].toString().equals("Firme")) {
+		return;
+	    }else {
+		if (ConsultasFieldNames.getCSVCaracteristicasFieldNames(
+			DBFieldNames.Elements.values()[i].toString())!=null) {
+		    Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
+		    String query = "SELECT " +
+			    ConsultasFieldNames.getCSVCaracteristicasFieldNames(
+				    DBFieldNames.Elements.values()[i].toString()) +
+				    " FROM " + getSchema() + "." +
+				    DBFieldNames.Elements.values()[i].toString() +
+				    " el," +
+				    " audasa_extgia_dominios.area_mantenimiento am," +
+				    " audasa_extgia_dominios.base_contratista bc," +
+				    " audasa_extgia_dominios.tramo tr," +
+				    " audasa_extgia_dominios.tipo_via tv," +
+				    " audasa_extgia_dominios.nombre_via nv" +
+				    " WHERE el.area_mantenimiento = am.id" +
+				    " AND el.base_contratista = bc.id" +
+				    " AND el.tramo = tr.id" +
+				    " AND el.tipo_via = tv.id" +
+				    " AND el.nombre_via = cast (nv.id as text)" + ";";
+		    ResultSet rs = st.executeQuery(query);
+		    ResultSetMetaData rsMetaData = rs.getMetaData();
+		    String mockFileDir = "/tmp/test_" + DBFieldNames.Elements.values()[i].toString() + ".csv";
+		    new CSVReport(mockFileDir, rsMetaData, rs, mockFilters);
+		    File mockFile = new File(mockFileDir);
+		    assertTrue(mockFile.exists());
+		    mockFile.delete();
+		}
 	    }
 	}
+    }
+
+    @Test
+    public void testCSVCaracteristicasFirme() throws SQLException {
+
+	Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
+	String query = "SELECT " +
+		ConsultasFieldNames.getCSVCaracteristicasFieldNames("Firme") +
+		" FROM " + getSchema() + "." + "Firme" +
+		" el," +
+		" audasa_extgia_dominios.area_mantenimiento am," +
+		" audasa_extgia_dominios.base_contratista bc," +
+		" audasa_extgia_dominios.tramo tr" +
+		" WHERE el.area_mantenimiento = am.id" +
+		" AND el.base_contratista = bc.id" +
+		" AND el.tramo = tr.id" + ";";
+	ResultSet rs = st.executeQuery(query);
+	ResultSetMetaData rsMetaData = rs.getMetaData();
+	String mockFileDir = "/tmp/test_" + "Firme" + ".csv";
+	new CSVReport(mockFileDir, rsMetaData, rs, mockFilters);
+	File mockFile = new File(mockFileDir);
+	assertTrue(mockFile.exists());
+	mockFile.delete();
+
     }
 
     @Test
