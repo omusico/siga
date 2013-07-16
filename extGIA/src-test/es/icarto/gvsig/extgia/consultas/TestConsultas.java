@@ -26,10 +26,11 @@ public class TestConsultas {
 
     private static ConsultasFilters mockFilters;
 
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
     @BeforeClass
     public static void doSetupBeforeClass() {
 
-	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	try {
 	    Date firstDate = sdf.parse("01/01/1980");
 	    Date lastDate = sdf.parse("01/07/2013");
@@ -230,6 +231,27 @@ public class TestConsultas {
 		mockFilters.getWhereClauseFiltersForAgregados(elements[0], true);
 	rs = st.executeQuery(query);
 	assertTrue(rs!=null);
+    }
+
+    @Test
+    public void testTrabajosAgregadosReportsQueriesWithNullValues() throws SQLException {
+
+	Date firstDate;
+	try {
+	    firstDate = sdf.parse("01/01/1980");
+	    Date lastDate = sdf.parse("01/07/2013");
+
+	    mockFilters = new ConsultasFilters(
+		    null,
+		    null,
+		    null,
+		    firstDate,
+		    lastDate);
+
+	    testTrabajosAgregadosReportsQueries();
+	} catch (ParseException e) {
+	    e.printStackTrace();
+	}
     }
 
     @Test

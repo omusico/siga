@@ -35,19 +35,28 @@ public class CSVReport {
     }
 
     private void writeFilters(FileWriter writer, ConsultasFilters filters) throws IOException {
+
 	writer.append("Area Mantenimiento");
 	writer.append(CSV_SEPARATOR);
-	writer.append(filters.getArea().getValue());
-	writer.append("\n");
+	if (filters.getArea() != null) {
+	    writer.append(filters.getArea().getValue());
+	    writer.append("\n");
+	}
+
 
 	writer.append("Base Contratista");
 	writer.append(CSV_SEPARATOR);
-	writer.append(filters.getBaseContratista().getValue());
+	if (filters.getBaseContratista() != null) {
+	    writer.append(filters.getBaseContratista().getValue());
+	}
 	writer.append("\n");
+
 
 	writer.append("Tramo");
 	writer.append(CSV_SEPARATOR);
-	writer.append(filters.getTramo().getValue());
+	if (filters.getTramo() != null) {
+	    writer.append(filters.getTramo().getValue());
+	}
 	writer.append("\n");
 
 	writer.append("\n");

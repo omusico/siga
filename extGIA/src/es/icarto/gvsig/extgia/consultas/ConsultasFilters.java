@@ -98,7 +98,11 @@ public class ConsultasFilters {
 	}
 
 	if (fechaInicio != null && fechaFin != null) {
-	    query = query + ") AND fecha_certificado BETWEEN '" + fechaInicio + "' AND '" + fechaFin + "'";
+	    if (area != null || baseContratista != null || tramo != null) {
+		query = query + ") AND fecha_certificado BETWEEN '" + fechaInicio + "' AND '" + fechaFin + "'";
+	    }else {
+		query = query + " AND fecha_certificado BETWEEN '" + fechaInicio + "' AND '" + fechaFin + "'";
+	    }
 	}
 
 	return query;
