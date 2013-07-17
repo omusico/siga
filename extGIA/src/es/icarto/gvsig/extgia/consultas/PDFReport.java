@@ -57,6 +57,12 @@ public abstract class PDFReport {
 
     protected abstract float[] getColumnsWidth(int columnCount);
 
+    protected abstract boolean hasEmbebedTable();
+
+    protected abstract PdfPCell writeAditionalColumnName();
+
+    protected abstract PdfPCell writeAditionalColumnValues(String id);
+
     private Image getHeaderImage() {
 	Image image = null;
 	try {
@@ -239,6 +245,9 @@ public abstract class PDFReport {
 		valueCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		table.addCell(valueCell);
 	    }
+	    if (hasEmbebedTable()) {
+		table.addCell(writeAditionalColumnValues(resultMap.getString(1)));
+	    }
 	    numberOfRows = numberOfRows +1;
 	}
 	document.add(table);
@@ -248,10 +257,22 @@ public abstract class PDFReport {
 
     protected PdfPTable writeColumnNames(Document document)
 	    throws DocumentException {
-	PdfPTable table = new PdfPTable(getColumnNames().length);
+	PdfPTable table = getColumnNames(document);
+	return table;
+    }
+
+    private PdfPTable getColumnNames(Document document)
+	    throws DocumentException {
+	int numColumns;
+	if (hasEmbebedTable()) {
+	    numColumns = getColumnNames().length + 1;
+	}else {
+	    numColumns = getColumnNames().length;
+	}
+	PdfPTable table = new PdfPTable(numColumns);
 	table.setTotalWidth(document.getPageSize().getWidth() -
 		document.leftMargin() - document.rightMargin());
-	table.setWidths(getColumnsWidth(getColumnNames().length));
+	table.setWidths(getColumnsWidth(numColumns));
 	table.setWidthPercentage(100);
 	for (int i = 0; i < getColumnNames().length; i++) {
 	    Paragraph column = new Paragraph(getColumnNames()[i],
@@ -259,6 +280,9 @@ public abstract class PDFReport {
 	    PdfPCell columnCell = new PdfPCell(column);
 	    columnCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 	    table.addCell(columnCell);
+	}
+	if (hasEmbebedTable()) {
+	    table.addCell(writeAditionalColumnName());
 	}
 	return table;
     }
@@ -298,17 +322,7 @@ public abstract class PDFReport {
 	    if (!isFirstPage && getColumnNames() != null) {
 		try {
 		    document.add(Chunk.NEWLINE);
-		    float width = document.getPageSize().getWidth();
-		    PdfPTable table = new PdfPTable(getColumnNames().length);
-		    table.setWidthPercentage(100);
-		    table.setWidths(getColumnsWidth(getColumnNames().length));
-		    for (int i = 0; i < getColumnNames().length; i++) {
-			Paragraph column = new Paragraph(getColumnNames()[i],
-				bodyBoldStyle);
-			PdfPCell columnCell = new PdfPCell(column);
-			columnCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-			table.addCell(columnCell);
-		    }
+		    PdfPTable table = getColumnNames(document);
 		    document.add(table);
 		}catch (DocumentException e1) {
 		    e1.printStackTrace();

@@ -47,16 +47,18 @@ public class ConsultasFieldNames {
 	    return "id_barrera_rigida, tipo_via, nombre_via, pk_inicial, pk_final, obstaculo_protegido" +
 	    ", longitud, codigo, tipo, metodo_constructivo, perfil, observaciones";
 	case Areas_Servicio:
-	    return "nombre, tipo_via, nombre_via, municipio, pk, fecha_puesta_servicio, sup_total," +
-	    "sup_pavimentada, aceras, bordillos, zona_siega, zona_ajardinada, riego," +
-	    "cafeteria_rest_bar, aparcamiento_camion_bus, area_picnic, fuentes_potables, observaciones";
+	    return "id_area_servicio, nombre, tipo_via, nombre_via, municipio, pk, " +
+	    "fecha_puesta_servicio, sup_total," + "sup_pavimentada, aceras, bordillos, " +
+	    "zona_siega, zona_ajardinada, riego," + "cafeteria_rest_bar, aparcamiento_camion_bus, " +
+	    "area_picnic, fuentes_potables, observaciones";
 	case Areas_Descanso:
-	    return "nombre, tipo_via, nombre_via, municipio, pk, fecha_puesta_servicio, sup_total," +
-	    "sup_pavimentada, aceras, bordillos, zona_siega, zona_ajardinada, riego," +
-	    "aparcamiento_camion_bus, area_picnic, fuentes_potables, observaciones";
-	case Enlaces:
-	    return "nombre, tipo_via, nombre_via, municipio, pk, n_salida, tipo_enlace, alumbrado," +
+	    return "id_area_descanso, nombre, tipo_via, nombre_via, municipio, pk, " +
+	    "fecha_puesta_servicio, sup_total, sup_pavimentada, aceras, bordillos, zona_siega, " +
+	    "zona_ajardinada, riego, aparcamiento_camion_bus, area_picnic, fuentes_potables, " +
 	    "observaciones";
+	case Enlaces:
+	    return "id_enlace, nombre, tipo_via, nombre_via, municipio, pk, n_salida, tipo_enlace, " +
+	    "alumbrado, observaciones";
 	case Juntas:
 	    return "tramo, tipo_via, nombre_via, pk, numero_junta, ancho, modulo, elemento," +
 	    "codigo_elemento, descripcion, observaciones";

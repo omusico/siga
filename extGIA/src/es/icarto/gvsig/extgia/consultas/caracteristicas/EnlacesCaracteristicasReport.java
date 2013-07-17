@@ -1,13 +1,19 @@
 package es.icarto.gvsig.extgia.consultas.caracteristicas;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import com.lowagie.text.Document;
+import com.lowagie.text.Element;
 import com.lowagie.text.PageSize;
+import com.lowagie.text.Paragraph;
 import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.PdfPCell;
 
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.icarto.gvsig.extgia.consultas.PDFReport;
+import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class EnlacesCaracteristicasReport extends PDFReport {
 
@@ -30,6 +36,7 @@ public class EnlacesCaracteristicasReport extends PDFReport {
     @Override
     protected String[] getColumnNames() {
 	String[] columnNames = {
+		"ID Enlace",
 		"Nombre",
 		"Tipo Vía",
 		"Nombre Vía",
@@ -56,6 +63,9 @@ public class EnlacesCaracteristicasReport extends PDFReport {
 	columnsWidth[6] = 60f;
 	columnsWidth[7] = 60f;
 	columnsWidth[8] = 60f;
+	columnsWidth[9] = 60f;
+	// aditional column
+	columnsWidth[10] = 60f;
 
 	return columnsWidth;
     }
@@ -63,6 +73,46 @@ public class EnlacesCaracteristicasReport extends PDFReport {
     @Override
     protected void writeDatesRange(Document document, ConsultasFilters filters) {
 
+    }
+
+    @Override
+    protected boolean hasEmbebedTable() {
+	return true;
+    }
+
+    @Override
+    protected PdfPCell writeAditionalColumnName() {
+	PdfPCell aditionalCell = new PdfPCell(new Paragraph("Nº Ramales/Carreteras Enlazadas",
+		bodyBoldStyle));
+	aditionalCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+	return aditionalCell;
+    }
+
+    @Override
+    protected PdfPCell writeAditionalColumnValues(String id) {
+	try {
+	    Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
+	    String query = "SELECT count(id_ramal) FROM audasa_extgia.enlaces_ramales" +
+		    " WHERE id_enlace = '" + id + "';";
+	    ResultSet rs = st.executeQuery(query);
+	    rs.next();
+	    String data = rs.getString(1);
+
+	    query = "SELECT clave_carretera FROM audasa_extgia.enlaces_carreteras_enlazadas" +
+		    " WHERE id_enlace = '" + id + "';";
+	    rs = st.executeQuery(query);
+	    data = data + "/";
+	    while (rs.next()) {
+		data = data + rs.getString(1) + ";";
+	    }
+
+	    PdfPCell aditionalCell = new PdfPCell(new Paragraph(data, cellBoldStyle));
+	    aditionalCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+	    return aditionalCell;
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return new PdfPCell();
     }
 
 }

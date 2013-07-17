@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.PdfPCell;
 
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.icarto.gvsig.extgia.consultas.PDFReport;
@@ -53,6 +54,24 @@ public class FirmeTrabajosReport extends PDFReport {
     @Override
     protected Rectangle setPageSize() {
 	return PageSize.A4;
+    }
+
+    @Override
+    protected boolean hasEmbebedTable() {
+	// TODO Auto-generated method stub
+	return false;
+    }
+
+    @Override
+    protected PdfPCell writeAditionalColumnName() {
+	// TODO Auto-generated method stub
+	return null;
+    }
+
+    @Override
+    protected PdfPCell writeAditionalColumnValues(String id) {
+	// TODO Auto-generated method stub
+	return null;
     }
 
 }

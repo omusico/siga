@@ -1,13 +1,19 @@
 package es.icarto.gvsig.extgia.consultas.caracteristicas;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import com.lowagie.text.Document;
+import com.lowagie.text.Element;
 import com.lowagie.text.PageSize;
+import com.lowagie.text.Paragraph;
 import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.PdfPCell;
 
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.icarto.gvsig.extgia.consultas.PDFReport;
+import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class AreasDescansoCaracteristicasReport extends PDFReport {
 
@@ -24,6 +30,7 @@ public class AreasDescansoCaracteristicasReport extends PDFReport {
     @Override
     protected String[] getColumnNames() {
 	String[] columnNames = {
+		"ID Área",
 		"Nombre",
 		"Tipo Vía",
 		"Nombre Vía",
@@ -66,6 +73,9 @@ public class AreasDescansoCaracteristicasReport extends PDFReport {
 	columnsWidth[14] = 60f;
 	columnsWidth[15] = 60f;
 	columnsWidth[16] = 60f;
+	columnsWidth[17] = 60f;
+	//aditionalColumn
+	columnsWidth[18] = 60f;
 
 	return columnsWidth;
     }
@@ -78,6 +88,35 @@ public class AreasDescansoCaracteristicasReport extends PDFReport {
     @Override
     protected void writeDatesRange(Document document, ConsultasFilters filters) {
 
+    }
+
+    @Override
+    protected boolean hasEmbebedTable() {
+	return true;
+    }
+
+    @Override
+    protected PdfPCell writeAditionalColumnName() {
+	PdfPCell aditionalCell = new PdfPCell(new Paragraph("Nº Ramales", bodyBoldStyle));
+	aditionalCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+	return aditionalCell;
+    }
+
+    @Override
+    protected PdfPCell writeAditionalColumnValues(String id) {
+	try {
+	    Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
+	    String query = "SELECT count(id_ramal) FROM audasa_extgia.areas_descanso_ramales" +
+		    " WHERE id_area_descanso = '" + id + "';";
+	    ResultSet rs = st.executeQuery(query);
+	    rs.next();
+	    PdfPCell aditionalCell = new PdfPCell(new Paragraph(rs.getString(1), cellBoldStyle));
+	    aditionalCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+	    return aditionalCell;
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return new PdfPCell();
     }
 
 }
