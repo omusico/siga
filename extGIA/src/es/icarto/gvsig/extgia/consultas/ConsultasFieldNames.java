@@ -113,7 +113,7 @@ public class ConsultasFieldNames {
     }
 
     private static String taludesCSVFieldNames() {
-	return "id_talud as \"ID Talud\"," +
+	return "distinct(el.id_talud) as \"ID Talud\"," +
 		"numero_talud as \"Nº Talud\"," +
 		"fecha_actualizacion as \"Fecha Actualización\"," +
 		localizationCSVFieldNames() +
@@ -151,7 +151,7 @@ public class ConsultasFieldNames {
     }
 
     private static String isletasCSVFieldNames() {
-	return "id_isleta as \"ID Isleta\"," +
+	return "distinct(el.id_isleta) as \"ID Isleta\"," +
 		"numero_isleta as \"Nº Isleta\"," +
 		"fecha_actualizacion as \"Fecha Actualización\"," +
 		localizationCSVFieldNames() +
@@ -164,7 +164,7 @@ public class ConsultasFieldNames {
     }
 
     private static String barreraRigidaCSVFieldNames() {
-	return "id_barrera_rigida as \"ID Barrera Rígida\"," +
+	return "distinct(el.id_barrera_rigida) as \"ID Barrera Rígida\"," +
 		"numero_barrera_rigida as \"Nº Barrera Rígida\"," +
 		"fecha_actualizacion as \"Fecha Actualización\"," +
 		localizationCSVFieldNames() +
@@ -180,7 +180,7 @@ public class ConsultasFieldNames {
     }
 
     private static String areasServicioCSVFieldNames() {
-	return "id_area_servicio as \"ID Área Servicio\"," +
+	return "distinct(el.id_area_servicio) as \"ID Área Servicio\"," +
 		"nombre as \"Nombre\"," +
 		"fecha_actualizacion as \"Fecha Actualización\"," +
 		localizationCSVFieldNames() +
@@ -201,7 +201,7 @@ public class ConsultasFieldNames {
     }
 
     private static String areasDescansoCSVFieldNames() {
-	return "id_area_descanso as \"ID Área Descanso\"," +
+	return "distinct(el.id_area_descanso) as \"ID Área Descanso\"," +
 		"nombre as \"Nombre\"," +
 		"fecha_actualizacion as \"Fecha Actualización\"," +
 		localizationCSVFieldNames() +
@@ -221,7 +221,7 @@ public class ConsultasFieldNames {
     }
 
     private static String pasosMedianaCSVFieldNames() {
-	return "id_paso_mediana as \"ID Paso Mediana\"," +
+	return "distinct(el.id_paso_mediana) as \"ID Paso Mediana\"," +
 		"fecha_actualizacion as \"Fecha Actualización\"," +
 		localizationCSVFieldNames() +
 		"pk as \"PK\"," +
@@ -234,7 +234,7 @@ public class ConsultasFieldNames {
     }
 
     private static String juntasCSVFieldNames() {
-	return "id_junta as \"ID Junta\"," +
+	return "distinct(el.id_junta) as \"ID Junta\"," +
 		"fecha_actualizacion as \"Fecha Actualización\"," +
 		localizationCSVFieldNames() +
 		"pk as \"PK\"," +
@@ -248,7 +248,7 @@ public class ConsultasFieldNames {
     }
 
     private static String enlacesCSVFieldNames() {
-	return "id_enlace as \"ID Enlace\"," +
+	return "distinct(el.id_enlace) as \"ID Enlace\"," +
 		"nombre as \"Nombre\"," +
 		"fecha_actualizacion as \"Fecha Actualización\"," +
 		localizationCSVFieldNames() +
@@ -260,7 +260,7 @@ public class ConsultasFieldNames {
     }
 
     private static String senhalizacionCSVFieldNames() {
-	return "id_elemento_senhalizacion as \"ID Elemento\"," +
+	return "distinct(el.id_elemento_senhalizacion) as \"ID Elemento\"," +
 		"fecha_actualizacion as \"Fecha Actualización\"," +
 		localizationCSVFieldNames() +
 		"pk as \"PK\"," +
@@ -274,7 +274,7 @@ public class ConsultasFieldNames {
     }
 
     private static String vallaCierreCSVFieldNames() {
-	return "id_valla as \"ID Valla\"," +
+	return "distinct(el.id_valla) as \"ID Valla\"," +
 		"fecha_actualizacion as \"Fecha Actualización\"," +
 		localizationCSVFieldNames() +
 		"pk_inicial as \"PK Inicial\"," +
@@ -291,7 +291,7 @@ public class ConsultasFieldNames {
     }
 
     private static String firmeCSVFieldNames() {
-	return "id_firme as \"ID Firme\"," +
+	return "distinct(el.id_firme) as \"ID Firme\"," +
 		"fecha_inauguracion as \"Fecha Inauguración\"," +
 		"fecha_apertura as \"Fecha Apertura\"," +
 		"unidad_constructiva as \"Unidad Constructiva\"," +

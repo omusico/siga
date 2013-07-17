@@ -63,6 +63,7 @@ public class CSVReport {
 
     private void writeRows(ResultSet rs, ResultSetMetaData rsMetaData,
 	    FileWriter writer) throws SQLException, IOException {
+	rs.beforeFirst();
 	while (rs.next()) {
 	    for (int i=0; i<rsMetaData.getColumnCount(); i++) {
 		writer.append(rs.getString(i+1));

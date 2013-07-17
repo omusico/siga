@@ -17,6 +17,7 @@ import org.junit.Test;
 import com.iver.cit.gvsig.fmap.layers.LayerFactory;
 
 import es.icarto.gvsig.extgia.consultas.agregados.TrabajosAgregadosReportQueries;
+import es.icarto.gvsig.extgia.consultas.caracteristicas.CSVCaracteristicasQueries;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
@@ -356,22 +357,8 @@ public class TestConsultas {
 		if (ConsultasFieldNames.getCSVCaracteristicasFieldNames(
 			DBFieldNames.Elements.values()[i].toString())!=null) {
 		    Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-		    String query = "SELECT " +
-			    ConsultasFieldNames.getCSVCaracteristicasFieldNames(
-				    DBFieldNames.Elements.values()[i].toString()) +
-				    " FROM " + getSchema() + "." +
-				    DBFieldNames.Elements.values()[i].toString() +
-				    " el," +
-				    " audasa_extgia_dominios.area_mantenimiento am," +
-				    " audasa_extgia_dominios.base_contratista bc," +
-				    " audasa_extgia_dominios.tramo tr," +
-				    " audasa_extgia_dominios.tipo_via tv," +
-				    " audasa_extgia_dominios.nombre_via nv" +
-				    " WHERE el.area_mantenimiento = am.id" +
-				    " AND el.base_contratista = bc.id" +
-				    " AND el.tramo = tr.id" +
-				    " AND el.tipo_via = tv.id" +
-				    " AND el.nombre_via = cast (nv.id as text)" + ";";
+		    String query = CSVCaracteristicasQueries.getCSVCaracteristicasQuery(
+			    DBFieldNames.Elements.values()[i].toString());
 		    ResultSet rs = st.executeQuery(query);
 		    ResultSetMetaData rsMetaData = rs.getMetaData();
 		    String mockFileDir = "/tmp/test_" + DBFieldNames.Elements.values()[i].toString() + ".csv";

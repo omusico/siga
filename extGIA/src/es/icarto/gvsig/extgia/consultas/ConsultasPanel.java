@@ -40,6 +40,7 @@ import es.icarto.gvsig.extgia.consultas.agregados.CSVTrabajosAgregadosIsletasRep
 import es.icarto.gvsig.extgia.consultas.agregados.CSVTrabajosAgregadosTaludesReport;
 import es.icarto.gvsig.extgia.consultas.agregados.TrabajosAgregadosIsletasReport;
 import es.icarto.gvsig.extgia.consultas.agregados.TrabajosAgregadosTaludesReport;
+import es.icarto.gvsig.extgia.consultas.caracteristicas.CSVCaracteristicasQueries;
 import es.icarto.gvsig.extgia.consultas.firme.FirmeReconocimientosReport;
 import es.icarto.gvsig.extgia.consultas.firme.FirmeTrabajosReport;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
@@ -481,35 +482,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	}
 	if (tipo == CARACTERISTICAS) {
 	    if (csvRadioButton.isSelected()) {
-		if (element.equals("Firme")) {
-		    query = "SELECT " +
-			    ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
-			    " FROM " +
-			    DBFieldNames.GIA_SCHEMA + "." +
-			    element + " el," +
-			    " audasa_extgia_dominios.area_mantenimiento am," +
-			    " audasa_extgia_dominios.base_contratista bc," +
-			    " audasa_extgia_dominios.tramo tr," +
-			    " WHERE el.area_mantenimiento = am.id" +
-			    " AND el.base_contratista = bc.id" +
-			    " AND el.tramo = tr.id";
-		}else {
-		    query = "SELECT " +
-			    ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
-			    " FROM " +
-			    DBFieldNames.GIA_SCHEMA + "." +
-			    element + " el," +
-			    " audasa_extgia_dominios.area_mantenimiento am," +
-			    " audasa_extgia_dominios.base_contratista bc," +
-			    " audasa_extgia_dominios.tramo tr," +
-			    " audasa_extgia_dominios.tipo_via tv," +
-			    " audasa_extgia_dominios.nombre_via nv" +
-			    " WHERE el.area_mantenimiento = am.id" +
-			    " AND el.base_contratista = bc.id" +
-			    " AND el.tramo = tr.id" +
-			    " AND el.tipo_via = tv.id" +
-			    " AND el.nombre_via = cast (nv.id as text)";
-		}
+		query = CSVCaracteristicasQueries.getCSVCaracteristicasQuery(element);
 	    }else {
 		query = "SELECT " + fields + " FROM " +
 			DBFieldNames.GIA_SCHEMA + "." +
