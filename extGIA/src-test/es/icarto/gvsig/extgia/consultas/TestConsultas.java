@@ -359,7 +359,7 @@ public class TestConsultas {
 			DBFieldNames.Elements.values()[i].toString())!=null) {
 		    Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
 		    String query = CSVCaracteristicasQueries.getCSVCaracteristicasQuery(
-			    DBFieldNames.Elements.values()[i].toString());
+			    DBFieldNames.Elements.values()[i].toString(), mockFilters);
 		    ResultSet rs = st.executeQuery(query);
 		    ResultSetMetaData rsMetaData = rs.getMetaData();
 		    String mockFileDir = "/tmp/test_" + DBFieldNames.Elements.values()[i].toString() + ".csv";
@@ -369,6 +369,26 @@ public class TestConsultas {
 		    mockFile.delete();
 		}
 	    }
+	}
+    }
+
+    @Test
+    public void testCSVCaracteristicasWithNullValues() throws SQLException {
+	Date firstDate;
+	try {
+	    firstDate = sdf.parse("01/01/1980");
+	    Date lastDate = sdf.parse("01/07/2013");
+
+	    mockFilters = new ConsultasFilters(
+		    null,
+		    null,
+		    null,
+		    firstDate,
+		    lastDate);
+
+	    testCSVCaracteristicas();
+	}catch (ParseException e) {
+	    e.printStackTrace();
 	}
     }
 

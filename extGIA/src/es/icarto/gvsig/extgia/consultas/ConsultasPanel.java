@@ -482,7 +482,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	}
 	if (tipo == CARACTERISTICAS) {
 	    if (csvRadioButton.isSelected()) {
-		query = CSVCaracteristicasQueries.getCSVCaracteristicasQuery(element);
+		query = CSVCaracteristicasQueries.getCSVCaracteristicasQuery(element, consultasFilters);
 	    }else {
 		query = "SELECT " + fields + " FROM " +
 			DBFieldNames.GIA_SCHEMA + "." +

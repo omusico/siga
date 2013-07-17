@@ -1,11 +1,12 @@
 package es.icarto.gvsig.extgia.consultas.caracteristicas;
 
 import es.icarto.gvsig.extgia.consultas.ConsultasFieldNames;
+import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 
 public class CSVCaracteristicasQueries {
 
-    public static String getCSVCaracteristicasQuery(String element) {
+    public static String getCSVCaracteristicasQuery(String element, ConsultasFilters filters) {
 	switch (DBFieldNames.Elements.valueOf(element)) {
 	case Areas_Descanso:
 	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
@@ -14,7 +15,8 @@ public class CSVCaracteristicasQueries {
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
 		    getLocalizationTables() +
 		    ", audasa_extgia.areas_descanso_ramales ra" +
-		    getLocalizationWhere();
+		    getLocalizationWhere() +
+		    filters.getWhereClauseByLocationWidgets(true);
 	case Areas_Servicio:
 	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
 		    ", (select count(id_ramal) from audasa_extgia.areas_servicio_ramales ra " +
@@ -22,7 +24,8 @@ public class CSVCaracteristicasQueries {
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
 		    getLocalizationTables() +
 		    ", audasa_extgia.areas_servicio_ramales ra" +
-		    getLocalizationWhere();
+		    getLocalizationWhere() +
+		    filters.getWhereClauseByLocationWidgets(true);
 	case Enlaces:
 	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
 		    ", (select count(id_ramal) from audasa_extgia.enlaces_ramales ra " +
@@ -33,7 +36,8 @@ public class CSVCaracteristicasQueries {
 		    "as \"Nº Ramales/Carreteras Enlazadas\"" +
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
 		    getLocalizationTables() +
-		    getLocalizationWhere();
+		    getLocalizationWhere() +
+		    filters.getWhereClauseByLocationWidgets(true);
 	case Senhalizacion_Vertical:
 	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
@@ -41,6 +45,7 @@ public class CSVCaracteristicasQueries {
 		    getLocalizationTables() +
 		    getLocalizationWhere() +
 		    " AND el.id_elemento_senhalizacion = se.id_elemento_senhalizacion" +
+		    filters.getWhereClauseByLocationWidgets(true) +
 		    " order by el.id_elemento_senhalizacion";
 	case Firme:
 	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
@@ -50,12 +55,14 @@ public class CSVCaracteristicasQueries {
 		    " audasa_extgia_dominios.tramo tr" +
 		    " WHERE el.area_mantenimiento = am.id" +
 		    " AND el.base_contratista = bc.id" +
-		    " AND el.tramo = tr.id";
+		    " AND el.tramo = tr.id" +
+		    filters.getWhereClauseByLocationWidgets(true);
 	default:
 	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
 		    getLocalizationTables() +
-		    getLocalizationWhere();
+		    getLocalizationWhere() +
+		    filters.getWhereClauseByLocationWidgets(true);
 	}
 
     }
