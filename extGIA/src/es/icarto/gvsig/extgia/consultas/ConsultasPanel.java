@@ -494,15 +494,15 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		    element + "_" + ((KeyValue) tipoConsulta.getSelectedItem()).getKey();
 	}
 
-	if (!consultasFilters.getWhereClauseByLocationWidgets().isEmpty()) {
+	if (!consultasFilters.getWhereClauseByLocationWidgets(false).isEmpty()) {
 	    if (tipo == CARACTERISTICAS) {
 		query = query + " WHERE " + elementId + " IN (SELECT " + elementId +
 			" FROM " + DBFieldNames.GIA_SCHEMA + "." + element +
-			consultasFilters.getWhereClauseByLocationWidgets() + ");";
+			consultasFilters.getWhereClauseByLocationWidgets(false) + ");";
 	    }else {
 		query = query + " WHERE " + elementId + " IN (SELECT " + elementId +
 			" FROM " + DBFieldNames.GIA_SCHEMA + "." + element +
-			consultasFilters.getWhereClauseByLocationWidgets();
+			consultasFilters.getWhereClauseByLocationWidgets(false);
 	    }
 	}
 

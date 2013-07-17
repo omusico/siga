@@ -4,14 +4,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import es.icarto.gvsig.extgia.consultas.caracteristicas.AreasDescansoCaracteristicasReport;
-import es.icarto.gvsig.extgia.consultas.caracteristicas.AreasServicioCaracteristicasReport;
-import es.icarto.gvsig.extgia.consultas.caracteristicas.BarreraRigidaCaracteristicasReport;
-import es.icarto.gvsig.extgia.consultas.caracteristicas.EnlacesCaracteristicasReport;
-import es.icarto.gvsig.extgia.consultas.caracteristicas.IsletasCaracteristicasReport;
-import es.icarto.gvsig.extgia.consultas.caracteristicas.JuntasCaracteristicasReport;
-import es.icarto.gvsig.extgia.consultas.caracteristicas.PasosMedianaCaracteristicasReport;
-import es.icarto.gvsig.extgia.consultas.caracteristicas.VallaCierreCaracteristicasReport;
+import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.AreasDescansoCaracteristicasReport;
+import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.AreasServicioCaracteristicasReport;
+import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.BarreraRigidaCaracteristicasReport;
+import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.EnlacesCaracteristicasReport;
+import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.IsletasCaracteristicasReport;
+import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.JuntasCaracteristicasReport;
+import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.PasosMedianaCaracteristicasReport;
+import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.SenhalizacionVerticalCaracteristicasReport;
+import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.VallaCierreCaracteristicasReport;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -375,6 +376,7 @@ public class ConsultasFieldNames {
 	    new PasosMedianaCaracteristicasReport(element[1], outputFile, rs, filters);
 	    break;
 	case Senhalizacion_Vertical:
+	    new SenhalizacionVerticalCaracteristicasReport(element[1], outputFile, rs, filters);
 	    break;
 	case Valla_Cierre:
 	    new VallaCierreCaracteristicasReport(element[1], outputFile, rs, filters);

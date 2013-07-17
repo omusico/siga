@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgia.consultas.caracteristicas;
+package es.icarto.gvsig.extgia.consultas.caracteristicas.elements;
 
 import java.sql.ResultSet;
 
@@ -10,9 +10,9 @@ import com.lowagie.text.pdf.PdfPCell;
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.icarto.gvsig.extgia.consultas.PDFReport;
 
-public class BarreraRigidaCaracteristicasReport extends PDFReport {
+public class JuntasCaracteristicasReport extends PDFReport {
 
-    public BarreraRigidaCaracteristicasReport(String element, String fileName,
+    public JuntasCaracteristicasReport(String element, String fileName,
 	    ResultSet resultMap, ConsultasFilters filters) {
 	super(element, fileName, resultMap, filters);
 	// TODO Auto-generated constructor stub
@@ -31,17 +31,16 @@ public class BarreraRigidaCaracteristicasReport extends PDFReport {
     @Override
     protected String[] getColumnNames() {
 	String[] columnNames = {
-		"ID Barrera Rígida",
+		"Tramo",
 		"Tipo Vía",
 		"Nombre Vía",
-		"PK Inicial",
-		"PK Final",
-		"Obstaculo Protegido",
-		"Longitud",
-		"Codigo",
-		"Tipo",
-		"Método Constructivo",
-		"Perfil",
+		"PK",
+		"Número Junta",
+		"Ancho",
+		"Módulo",
+		"Elemento",
+		"Código Elemento",
+		"Descripción",
 		"Observaciones"
 	};
 	return columnNames;
@@ -53,7 +52,7 @@ public class BarreraRigidaCaracteristicasReport extends PDFReport {
 
 	columnsWidth[0] = 60f;
 	columnsWidth[1] = 60f;
-	columnsWidth[2] = 90f;
+	columnsWidth[2] = 60f;
 	columnsWidth[3] = 60f;
 	columnsWidth[4] = 60f;
 	columnsWidth[5] = 60f;
@@ -62,7 +61,6 @@ public class BarreraRigidaCaracteristicasReport extends PDFReport {
 	columnsWidth[8] = 60f;
 	columnsWidth[9] = 60f;
 	columnsWidth[10] = 60f;
-	columnsWidth[11] = 120f;
 
 	return columnsWidth;
     }
@@ -89,4 +87,5 @@ public class BarreraRigidaCaracteristicasReport extends PDFReport {
 	// TODO Auto-generated method stub
 	return null;
     }
+
 }

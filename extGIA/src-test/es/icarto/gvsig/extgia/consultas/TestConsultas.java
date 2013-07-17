@@ -18,6 +18,7 @@ import com.iver.cit.gvsig.fmap.layers.LayerFactory;
 
 import es.icarto.gvsig.extgia.consultas.agregados.TrabajosAgregadosReportQueries;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.CSVCaracteristicasQueries;
+import es.icarto.gvsig.extgia.consultas.caracteristicas.PDFCaracteristicasQueries;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
@@ -100,7 +101,7 @@ public class TestConsultas {
 		String query = "SELECT " +
 			ConsultasFieldNames.getPDFCaracteristicasFieldNames(DBFieldNames.Elements.values()[i].toString()) +
 			" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
-			mockFilters.getWhereClauseByLocationWidgets() + ";";
+			mockFilters.getWhereClauseByLocationWidgets(false) + ";";
 		ResultSet rs = st.executeQuery(query);
 		assertTrue(rs!=null);
 	    }
@@ -139,7 +140,7 @@ public class TestConsultas {
 				" IN (SELECT " +
 				ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()) +
 				" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
-				mockFilters.getWhereClauseByLocationWidgets() + ");";
+				mockFilters.getWhereClauseByLocationWidgets(false) + ");";
 		ResultSet rs = st.executeQuery(query);
 		assertTrue(rs!=null);
 	    }
@@ -287,7 +288,7 @@ public class TestConsultas {
 				" IN (SELECT " +
 				ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()) +
 				" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
-				mockFilters.getWhereClauseByLocationWidgets() + ");";
+				mockFilters.getWhereClauseByLocationWidgets(false) + ");";
 		ResultSet rs = st.executeQuery(query);
 		assertTrue(rs!=null);
 	    }
@@ -314,7 +315,7 @@ public class TestConsultas {
 		    ConsultasFieldNames.getFirmeTrabajosFieldNames("id_firme") +
 		    " FROM " + getSchema() + "." + "firme_trabajos" +
 		    " WHERE id_firme IN (SELECT id_firme FROM " + getSchema() +
-		    ".firme" + mockFilters.getWhereClauseByLocationWidgets() +
+		    ".firme" + mockFilters.getWhereClauseByLocationWidgets(false) +
 		    ");";
 	    ResultSet rs = st.executeQuery(query);
 	    assertTrue(rs!=null);
@@ -341,7 +342,7 @@ public class TestConsultas {
 		    ConsultasFieldNames.getFirmeReconocimientosFieldNames("id_firme") +
 		    " FROM " + getSchema() + "." + "firme_reconocimiento_estado" +
 		    " WHERE id_firme IN (SELECT id_firme FROM " + getSchema() +
-		    ".firme" + mockFilters.getWhereClauseByLocationWidgets() +
+		    ".firme" + mockFilters.getWhereClauseByLocationWidgets(false) +
 		    ");";
 	    ResultSet rs = st.executeQuery(query);
 	    assertTrue(rs!=null);
@@ -470,6 +471,34 @@ public class TestConsultas {
 	    File mockFile = new File(mockFileDir);
 	    assertTrue(mockFile.exists());
 	    mockFile.delete();
+	}
+    }
+
+    @Test
+    public void testCaracteristicasPDFReportSenhalizacionVerticalQuery() throws SQLException {
+	Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
+	String query = PDFCaracteristicasQueries.getSenhalizacionVerticalQuery(mockFilters);
+	ResultSet rs = st.executeQuery(query);
+	assertTrue(rs!=null);
+    }
+
+    @Test
+    public void testCaracteristicasPDFReportSenhalizacionVerticalQueryWithNullValues() throws SQLException {
+	Date firstDate;
+	try {
+	    firstDate = sdf.parse("01/01/1980");
+	    Date lastDate = sdf.parse("01/07/2013");
+
+	    mockFilters = new ConsultasFilters(
+		    null,
+		    null,
+		    null,
+		    firstDate,
+		    lastDate);
+
+	    testCaracteristicasPDFReportSenhalizacionVerticalQuery();
+	}catch (ParseException e) {
+	    e.printStackTrace();
 	}
     }
 }

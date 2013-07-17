@@ -41,7 +41,7 @@ public abstract class PDFReport {
 
     protected Document document;
 
-    private final ConsultasFilters filters;
+    protected final ConsultasFilters filters;
 
     public PDFReport(String element, String fileName,
 	    ResultSet resultMap, ConsultasFilters filters) {

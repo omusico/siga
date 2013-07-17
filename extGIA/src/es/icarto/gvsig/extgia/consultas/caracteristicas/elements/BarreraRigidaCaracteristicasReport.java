@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgia.consultas.caracteristicas;
+package es.icarto.gvsig.extgia.consultas.caracteristicas.elements;
 
 import java.sql.ResultSet;
 
@@ -10,9 +10,9 @@ import com.lowagie.text.pdf.PdfPCell;
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.icarto.gvsig.extgia.consultas.PDFReport;
 
-public class IsletasCaracteristicasReport extends PDFReport {
+public class BarreraRigidaCaracteristicasReport extends PDFReport {
 
-    public IsletasCaracteristicasReport(String element, String fileName,
+    public BarreraRigidaCaracteristicasReport(String element, String fileName,
 	    ResultSet resultMap, ConsultasFilters filters) {
 	super(element, fileName, resultMap, filters);
 	// TODO Auto-generated constructor stub
@@ -31,14 +31,17 @@ public class IsletasCaracteristicasReport extends PDFReport {
     @Override
     protected String[] getColumnNames() {
 	String[] columnNames = {
-		"ID Isleta",
+		"ID Barrera Rígida",
 		"Tipo Vía",
 		"Nombre Vía",
 		"PK Inicial",
 		"PK Final",
-		"Tipo Isleta",
-		"Superficie Bajo Bionda",
-		"Posibilidad Empleo Vehículos",
+		"Obstaculo Protegido",
+		"Longitud",
+		"Codigo",
+		"Tipo",
+		"Método Constructivo",
+		"Perfil",
 		"Observaciones"
 	};
 	return columnNames;
@@ -56,7 +59,10 @@ public class IsletasCaracteristicasReport extends PDFReport {
 	columnsWidth[5] = 60f;
 	columnsWidth[6] = 60f;
 	columnsWidth[7] = 60f;
-	columnsWidth[8] = 120f;
+	columnsWidth[8] = 60f;
+	columnsWidth[9] = 60f;
+	columnsWidth[10] = 60f;
+	columnsWidth[11] = 120f;
 
 	return columnsWidth;
     }
@@ -83,5 +89,4 @@ public class IsletasCaracteristicasReport extends PDFReport {
 	// TODO Auto-generated method stub
 	return null;
     }
-
 }

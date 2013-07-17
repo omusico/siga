@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgia.consultas.caracteristicas;
+package es.icarto.gvsig.extgia.consultas.caracteristicas.elements;
 
 import java.sql.ResultSet;
 

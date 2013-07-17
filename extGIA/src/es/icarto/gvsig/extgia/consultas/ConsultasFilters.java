@@ -108,10 +108,14 @@ public class ConsultasFilters {
 	return query;
     }
 
-    public String getWhereClauseByLocationWidgets() {
+    public String getWhereClauseByLocationWidgets(boolean queryHasWhere) {
 	String query = "";
 	if (area != null) {
-	    query = " WHERE area_mantenimiento =  '" + area.getKey() + "'";
+	    if (!queryHasWhere) {
+		query = " WHERE area_mantenimiento =  '" + area.getKey() + "'";
+	    }else {
+		query = " AND area_mantenimiento =  '" + area.getKey() + "'";
+	    }
 	}
 	if (baseContratista != null) {
 	    if (!query.isEmpty()) {
@@ -132,7 +136,7 @@ public class ConsultasFilters {
 
     public String getWhereClauseByDates(String dateField) {
 	String query = "";
-	if (!getWhereClauseByLocationWidgets().isEmpty()) {
+	if (!getWhereClauseByLocationWidgets(false).isEmpty()) {
 	    query = " ) AND " + dateField + " BETWEEN '" + fechaInicio + "' AND '" + fechaFin + "'";
 	}else {
 	    query = " WHERE " + dateField + " BETWEEN '" + fechaInicio + "' AND '" + fechaFin + "'";
