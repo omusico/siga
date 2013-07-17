@@ -251,8 +251,8 @@ public class ConsultasFieldNames {
 	return "distinct(el.id_enlace) as \"ID Enlace\"," +
 		"nombre as \"Nombre\"," +
 		"fecha_actualizacion as \"Fecha Actualización\"," +
+		"el.pk as \"PK\"," +
 		localizationCSVFieldNames() +
-		"pk as \"PK\"," +
 		"n_salida as \"Nº Salida\"," +
 		"tipo_enlace as \"Tipo Enlace\"," +
 		"alumbrado as \"Alumbrado\"," +
@@ -270,7 +270,29 @@ public class ConsultasFieldNames {
 		"numero_postes as \"Nº Postes\"," +
 		"anclaje as \"Anclaje\"," +
 		"cimentacion_especial as \"Cimentación Especial\"," +
-		"observaciones as \"Observaciones\"";
+		"el.observaciones as \"Observaciones\"," +
+		"tipo_senhal as \"Tipo Señal\"," +
+		"codigo_senhal as \"Código Señal\"," +
+		"leyenda as \"Leyenda\"," +
+		"panel_complementario as \"Panel Complementario\"," +
+		"codigo_panel as \"Código Panel\"," +
+		"texto_panel as \"Texto Panel\"," +
+		"reversible as \"Reversible\"," +
+		"luminosa as \"Luminosa\"," +
+		"tipo_superficie as \"Tipo Superficie\"," +
+		"material_superficie as \"Material Superficie\"," +
+		"material_retrorreflectante as \"Material Retrorreflectante\"," +
+		"nivel_reflectancia as \"Nivel Reflectancia\"," +
+		"ancho as \"Ancho\"," +
+		"alto as \"Alto\"," +
+		"superficie as \"Superficie\"," +
+		"altura as \"Altura\"," +
+		"fabricante as \"Fabricante\"," +
+		"fecha_fabricacion as \"Fecha Fabricación\"," +
+		"fecha_instalacion as \"Fecha Instalación\"," +
+		"fecha_reposicion as \"Fecha Reposición\"," +
+		"marcado_ce as \"Marcado CE\"," +
+		"se.observaciones as \"Observaciones Señal\"";
     }
 
     private static String vallaCierreCSVFieldNames() {
