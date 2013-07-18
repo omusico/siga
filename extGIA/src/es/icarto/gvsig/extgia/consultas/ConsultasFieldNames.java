@@ -122,8 +122,8 @@ public class ConsultasFieldNames {
 		"numero_talud as \"Nº Talud\"," +
 		"fecha_actualizacion as \"Fecha Actualización\"," +
 		localizationCSVFieldNames() +
-		"tv.item as \"Tipo Vía PF\"," +
-		"nv.item as \"Nombre Vía PF\"," +
+		"tvf.item as \"Tipo Vía PF\"," +
+		"nvf.item as \"Nombre Vía PF\"," +
 		"pk_inicial as \"PK Inicial\"," +
 		"pk_final as \"PK Final\"," +
 		"ramal_pi as \"Ramal\"," +
@@ -338,8 +338,8 @@ public class ConsultasFieldNames {
 	return "distinct(el.id_valla) as \"ID Valla\"," +
 		"fecha_actualizacion as \"Fecha Actualización\"," +
 		localizationCSVFieldNames() +
-		"tv.item as \"Tipo Vía PF\"," +
-		"nv.item as \"Nombre Vía PF\"," +
+		"tvf.item as \"Tipo Vía PF\"," +
+		"nvf.item as \"Nombre Vía PF\"," +
 		"pk_inicial as \"PK Inicial\"," +
 		"pk_final as \"PK Final\"," +
 		"ramal_pi as \"Ramal\"," +

@@ -62,13 +62,13 @@ public class CSVCaracteristicasQueries {
 	case Valla_Cierre:
 	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
-		    getLocalizationTablesWithSentido() +
+		    getLocalizationTablesWithSentidoAndPF() +
 		    getLocalizationWhereWithSentidoAndPF() +
 		    filters.getWhereClauseByLocationWidgets(true);
 	case Taludes:
 	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
-		    getLocalizationTablesWithSentido() +
+		    getLocalizationTablesWithSentidoAndPF() +
 		    getLocalizationWhereWithSentidoAndPF() +
 		    filters.getWhereClauseByLocationWidgets(true);
 	case Juntas:
@@ -137,6 +137,18 @@ public class CSVCaracteristicasQueries {
 		" AND el.sentido = st.id";
     }
 
+    private static String getLocalizationTablesWithSentidoAndPF() {
+	return " audasa_extgia_dominios.area_mantenimiento am," +
+		" audasa_extgia_dominios.base_contratista bc," +
+		" audasa_extgia_dominios.tramo tr," +
+		" audasa_extgia_dominios.tipo_via tv," +
+		" audasa_extgia_dominios.nombre_via nv," +
+		" audasa_extgia_dominios.tipo_via tvf," +
+		" audasa_extgia_dominios.nombre_via nvf," +
+		" audasa_extgia_dominios.municipio mu," +
+		" audasa_extgia_dominios.sentido st";
+    }
+
     private static String getLocalizationWhereWithSentidoAndPF() {
 	return " WHERE el.area_mantenimiento = am.id" +
 		" AND el.base_contratista = bc.id" +
@@ -146,8 +158,8 @@ public class CSVCaracteristicasQueries {
 		" AND el.tipo_via_pf = tv.id" +
 		" AND el.nombre_via_pf = cast (nv.id as text)" +
 		" AND el.municipio = mu.id" +
-		" AND el.tipo_via_pf = tv.id" +
-		" AND el.nombre_via_pf = cast (nv.id as text)" +
+		" AND el.tipo_via_pf = tvf.id" +
+		" AND el.nombre_via_pf = cast (nvf.id as text)" +
 		" AND el.sentido = st.id";
     }
 
