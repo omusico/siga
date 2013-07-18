@@ -455,8 +455,14 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
     private ArrayList<String[]> getElements(String tipoConsulta) {
 	ArrayList<String[]> elements = new ArrayList<String[]>();
 	PreparedStatement statement;
-	String query = "SELECT id, item FROM audasa_extgia_dominios.elemento " +
-		"WHERE id <> 'todos' AND id <> ' ' AND " + tipoConsulta + " = " + "true;";
+	String query;
+	if (tipoConsulta.equals("Características")) {
+	    query = "SELECT id, item FROM audasa_extgia_dominios.elemento " +
+		    "WHERE id_fieldname <> ' '";
+	}else {
+	    query = "SELECT id, item FROM audasa_extgia_dominios.elemento " +
+		    "WHERE id <> 'todos' AND id <> ' ' AND " + tipoConsulta + " = " + "true;";
+	}
 	try {
 	    statement = connection.prepareStatement(query);
 	    statement.execute();
