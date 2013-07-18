@@ -37,38 +37,20 @@ public class SenhalizacionVerticalCaracteristicasReport extends PDFReport {
     protected String[] getColumnNames() {
 	String[] columnNames = {
 		"ID Elemento",
+		"Tramo",
 		"Tipo Vía",
 		"Nombre Vía",
 		"PK",
-		"Tipo Sustentación",
-		"Material Sustentación",
-		"Tipo Poste",
-		"Nº Postes",
-		"Anclaje",
-		"Cimentación Especial",
-		"Observaciones",
 		"Tipo Señal",
 		"Código Señal",
 		"Leyenda",
 		"Panel Complementario",
 		"Código Panel",
 		"Texto Panel",
-		"Reversible",
-		"Luminosa",
-		"Tipo Superficie",
-		"Material Superficie",
-		"Material Retrorreflectante",
-		"Nivel Reflectancia",
-		"Ancho",
-		"Alto",
-		"Superficie",
-		"Altura",
-		"Fabricante",
 		"Fecha Fabricación",
 		"Fecha Instalación",
 		"Fecha Reposición",
-		"Marcado CE",
-		"Observaciones Señal"
+		"Tipo Sustentación"
 	};
 	return columnNames;
     }
@@ -92,24 +74,6 @@ public class SenhalizacionVerticalCaracteristicasReport extends PDFReport {
 	columnsWidth[12] = 60f;
 	columnsWidth[13] = 60f;
 	columnsWidth[14] = 60f;
-	columnsWidth[15] = 60f;
-	columnsWidth[16] = 60f;
-	columnsWidth[17] = 60f;
-	columnsWidth[18] = 60f;
-	columnsWidth[19] = 60f;
-	columnsWidth[20] = 60f;
-	columnsWidth[21] = 60f;
-	columnsWidth[22] = 60f;
-	columnsWidth[23] = 60f;
-	columnsWidth[24] = 60f;
-	columnsWidth[25] = 60f;
-	columnsWidth[26] = 60f;
-	columnsWidth[27] = 60f;
-	columnsWidth[28] = 60f;
-	columnsWidth[29] = 60f;
-	columnsWidth[30] = 60f;
-	columnsWidth[31] = 60f;
-	columnsWidth[32] = 60f;
 
 	return columnsWidth;
     }

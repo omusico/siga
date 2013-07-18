@@ -8,10 +8,12 @@ import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.AreasDescansoCa
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.AreasServicioCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.BarreraRigidaCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.EnlacesCaracteristicasReport;
+import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.FirmeCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.IsletasCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.JuntasCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.PasosMedianaCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.SenhalizacionVerticalCaracteristicasReport;
+import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.TaludesCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.VallaCierreCaracteristicasReport;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
@@ -40,39 +42,41 @@ public class ConsultasFieldNames {
     public static String getPDFCaracteristicasFieldNames(String element) {
 	switch (DBFieldNames.Elements.valueOf(element)) {
 	case Taludes:
-	    break;
+	    return "distinct(id_talud), tr.item, pk_inicial, pk_final, tipo_talud, roca, arboles, " +
+	    "gunita, escollera, maleza, malla, longitud, altura_max_talud, sup_total_analitica," +
+	    "sup_mecanizada_analitica, sup_manual_analitica, sup_restada_analitica";
 	case Isletas:
-	    return "id_isleta, tipo_via, nombre_via, pk_inicial, pk_final, tipo_isleta," +
-	    "superficie_bajo_bionda, posibilidad_empleo_vehiculos, observaciones";
+	    return "distinct(id_isleta), tr.item, tv.item, nv.item, pk_inicial, pk_final, " +
+	    "tipo_isleta, superficie_bajo_bionda, posibilidad_empleo_vehiculos, observaciones";
 	case Barrera_Rigida:
-	    return "id_barrera_rigida, tipo_via, nombre_via, pk_inicial, pk_final, obstaculo_protegido" +
-	    ", longitud, codigo, tipo, metodo_constructivo, perfil, observaciones";
+	    return "distinct(id_barrera_rigida), tr.item, tv.item, nv.item, pk_inicial, pk_final, " +
+	    "obstaculo_protegido, longitud, codigo, tipo, metodo_constructivo, perfil, observaciones";
 	case Areas_Servicio:
-	    return "id_area_servicio, nombre, tipo_via, nombre_via, municipio, pk, " +
-	    "fecha_puesta_servicio, sup_total," + "sup_pavimentada, aceras, bordillos, " +
-	    "zona_siega, zona_ajardinada, riego," + "cafeteria_rest_bar, aparcamiento_camion_bus, " +
-	    "area_picnic, fuentes_potables, observaciones";
+	    return "distinct(id_area_servicio), nombre, tr.item, pk, fecha_puesta_servicio, " +
+	    "sup_total, riego, cafeteria_rest_bar, aparcamiento_camion_bus, area_picnic, " +
+	    "fuentes_potables, observaciones";
 	case Areas_Descanso:
-	    return "id_area_descanso, nombre, tipo_via, nombre_via, municipio, pk, " +
-	    "fecha_puesta_servicio, sup_total, sup_pavimentada, aceras, bordillos, zona_siega, " +
-	    "zona_ajardinada, riego, aparcamiento_camion_bus, area_picnic, fuentes_potables, " +
-	    "observaciones";
+	    return "distinct(id_area_descanso), nombre, tr.item, pk, fecha_puesta_servicio, " +
+	    "sup_total, riego, aparcamiento_camion_bus, area_picnic, fuentes_potables, observaciones";
 	case Enlaces:
-	    return "id_enlace, nombre, tipo_via, nombre_via, municipio, pk, n_salida, tipo_enlace, " +
+	    return "distinct(id_enlace), nombre, tr.item, municipio, pk, n_salida, tipo_enlace, " +
 	    "alumbrado, observaciones";
 	case Juntas:
-	    return "tramo, tipo_via, nombre_via, pk, numero_junta, ancho, modulo, elemento," +
-	    "codigo_elemento, descripcion, observaciones";
+	    return "distinct(id_junta), tr.item, tv.item, nv.item, pk, numero_junta, ancho, modulo, " +
+	    "elemento, codigo_elemento, descripcion, observaciones";
 	case Pasos_Mediana:
-	    return "tramo, tipo_via, nombre_via, pk, longitud, numero_postes, cierre, longitud_cierre," +
-	    "cuneta_entubada, observaciones";
+	    return "distinct(id_paso_mediana), tr.item, tv.item, nv.item, pk, longitud, numero_postes, " +
+	    "cierre, longitud_cierre, cuneta_entubada, observaciones";
 	case Senhalizacion_Vertical:
 	    break;
 	case Valla_Cierre:
-	    return "pk_inicial, pk_final, tipo_valla, longitud, altura, n_panhos, n_puertas," +
-	    "n_postes_simples, n_postes_tripode, pastor_electrico, observaciones";
+	    return "distinct(id_valla), tr.item, pk_inicial, pk_final, tipo_valla, longitud, " +
+	    "altura, n_panhos, n_puertas, n_postes_simples, n_postes_tripode, pastor_electrico, " +
+	    "observaciones";
 	case Firme:
-	    break;
+	    return "distinct(id_firme), fecha_inauguracion, fecha_apertura, unidad_constructiva, " +
+	    "pk_inicial, pk_final, explanada_cm, zahorra_artificial_cm, suelo_cemento_cm, " +
+	    "grava_cemento_cm, mbc_base_cm, mbc_intermedia_cm, mbc_rodadura_cm, observaciones";
 	}
 	return null;
     }
@@ -353,6 +357,7 @@ public class ConsultasFieldNames {
 	    ResultSet rs, ConsultasFilters filters) {
 	switch (DBFieldNames.Elements.valueOf(element[0])) {
 	case Taludes:
+	    new TaludesCaracteristicasReport(element[1], outputFile, rs, filters);
 	    break;
 	case Isletas:
 	    new IsletasCaracteristicasReport(element[1], outputFile, rs, filters);
@@ -382,6 +387,7 @@ public class ConsultasFieldNames {
 	    new VallaCierreCaracteristicasReport(element[1], outputFile, rs, filters);
 	    break;
 	case Firme:
+	    new FirmeCaracteristicasReport(element[1], outputFile, rs, filters);
 	    break;
 	}
     }

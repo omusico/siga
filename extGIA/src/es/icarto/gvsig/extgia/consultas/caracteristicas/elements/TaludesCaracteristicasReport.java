@@ -2,7 +2,6 @@ package es.icarto.gvsig.extgia.consultas.caracteristicas.elements;
 
 import java.sql.ResultSet;
 
-import com.lowagie.text.Document;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
@@ -10,12 +9,11 @@ import com.lowagie.text.pdf.PdfPCell;
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.icarto.gvsig.extgia.consultas.PDFReport;
 
-public class JuntasCaracteristicasReport extends PDFReport {
+public class TaludesCaracteristicasReport extends PDFReport {
 
-    public JuntasCaracteristicasReport(String element, String fileName,
+    public TaludesCaracteristicasReport(String element, String fileName,
 	    ResultSet resultMap, ConsultasFilters filters) {
 	super(element, fileName, resultMap, filters);
-	// TODO Auto-generated constructor stub
     }
 
     @Override
@@ -31,18 +29,23 @@ public class JuntasCaracteristicasReport extends PDFReport {
     @Override
     protected String[] getColumnNames() {
 	String[] columnNames = {
-		"ID Junta",
+		"ID Talud",
 		"Tramo",
-		"Tipo Vía",
-		"Nombre Vía",
-		"PK",
-		"Número Junta",
-		"Ancho",
-		"Módulo",
-		"Elemento",
-		"Código Elemento",
-		"Descripción",
-		"Observaciones"
+		"PK Inicial",
+		"PK Final",
+		"Tipo Talud",
+		"Roca",
+		"Árboles",
+		"Gunita",
+		"Escollera",
+		"Maleza",
+		"Malla",
+		"Longitud",
+		"Altura Máxima",
+		"Superficie Total",
+		"Superficie Mecanizada",
+		"Superficie Manual",
+		"Superficie Restada"
 	};
 	return columnNames;
     }
@@ -63,13 +66,13 @@ public class JuntasCaracteristicasReport extends PDFReport {
 	columnsWidth[9] = 60f;
 	columnsWidth[10] = 60f;
 	columnsWidth[11] = 60f;
+	columnsWidth[12] = 60f;
+	columnsWidth[13] = 60f;
+	columnsWidth[14] = 60f;
+	columnsWidth[15] = 60f;
+	columnsWidth[16] = 60f;
 
 	return columnsWidth;
-    }
-
-    @Override
-    protected void writeDatesRange(Document document, ConsultasFilters filters) {
-
     }
 
     @Override

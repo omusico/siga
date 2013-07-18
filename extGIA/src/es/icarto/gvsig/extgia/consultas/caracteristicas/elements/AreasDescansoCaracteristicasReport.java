@@ -32,17 +32,10 @@ public class AreasDescansoCaracteristicasReport extends PDFReport {
 	String[] columnNames = {
 		"ID Área",
 		"Nombre",
-		"Tipo Vía",
-		"Nombre Vía",
-		"Municipio",
+		"Tramo",
 		"PK",
 		"Puesta en Servicio",
 		"Superficie Total",
-		"Superpicie Pavimentada",
-		"Aceras",
-		"Bordillos",
-		"Zona Siega",
-		"Zona Ajardinada",
 		"Riego",
 		"Aparcamiento",
 		"Area Picnic",
@@ -67,15 +60,8 @@ public class AreasDescansoCaracteristicasReport extends PDFReport {
 	columnsWidth[8] = 60f;
 	columnsWidth[9] = 60f;
 	columnsWidth[10] = 60f;
-	columnsWidth[11] = 60f;
-	columnsWidth[12] = 60f;
-	columnsWidth[13] = 60f;
-	columnsWidth[14] = 60f;
-	columnsWidth[15] = 60f;
-	columnsWidth[16] = 60f;
-	columnsWidth[17] = 60f;
 	//aditionalColumn
-	columnsWidth[18] = 60f;
+	columnsWidth[11] = 60f;
 
 	return columnsWidth;
     }

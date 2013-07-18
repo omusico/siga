@@ -78,14 +78,15 @@ public class TestConsultas {
     }
 
     @Test
-    public void testCaracteristicasReportsQueries() throws SQLException {
+    public void testCaracteristicasPDFReportsQueries() throws SQLException {
 
 	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
-	    if (ConsultasFieldNames.getPDFCaracteristicasFieldNames(DBFieldNames.Elements.values()[i].toString())!=null) {
+	    if (ConsultasFieldNames.getPDFCaracteristicasFieldNames(
+		    DBFieldNames.Elements.values()[i].toString())!=null) {
 		Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-		String query = "SELECT " +
-			ConsultasFieldNames.getPDFCaracteristicasFieldNames(DBFieldNames.Elements.values()[i].toString()) +
-			" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() + ";";
+		String query = PDFCaracteristicasQueries.getPDFCaracteristicasQuery(
+			DBFieldNames.Elements.values()[i].toString(), mockFilters);
+		System.out.println(DBFieldNames.Elements.values()[i].toString());
 		ResultSet rs = st.executeQuery(query);
 		assertTrue(rs!=null);
 	    }
@@ -93,18 +94,22 @@ public class TestConsultas {
     }
 
     @Test
-    public void testCaracteristicasReportsQueriesWithLocationFilters() throws SQLException {
+    public void testCaracteristicasPDFReportsQueriesWithNullValues() throws SQLException {
+	Date firstDate;
+	try {
+	    firstDate = sdf.parse("01/01/1980");
+	    Date lastDate = sdf.parse("01/07/2013");
 
-	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
-	    if (ConsultasFieldNames.getPDFCaracteristicasFieldNames(DBFieldNames.Elements.values()[i].toString())!=null) {
-		Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-		String query = "SELECT " +
-			ConsultasFieldNames.getPDFCaracteristicasFieldNames(DBFieldNames.Elements.values()[i].toString()) +
-			" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
-			mockFilters.getWhereClauseByLocationWidgets(false) + ";";
-		ResultSet rs = st.executeQuery(query);
-		assertTrue(rs!=null);
-	    }
+	    mockFilters = new ConsultasFilters(
+		    null,
+		    null,
+		    null,
+		    firstDate,
+		    lastDate);
+
+	    testCaracteristicasPDFReportsQueries();
+	}catch (ParseException e) {
+	    e.printStackTrace();
 	}
     }
 

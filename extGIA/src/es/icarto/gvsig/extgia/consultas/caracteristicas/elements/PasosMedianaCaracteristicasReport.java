@@ -31,6 +31,7 @@ public class PasosMedianaCaracteristicasReport extends PDFReport {
     @Override
     protected String[] getColumnNames() {
 	String[] columnNames = {
+		"ID Paso",
 		"Tramo",
 		"Tipo Vía",
 		"Nombre Vía",
@@ -59,6 +60,7 @@ public class PasosMedianaCaracteristicasReport extends PDFReport {
 	columnsWidth[7] = 60f;
 	columnsWidth[8] = 60f;
 	columnsWidth[9] = 60f;
+	columnsWidth[10] = 60f;
 
 	return columnsWidth;
     }

@@ -38,9 +38,7 @@ public class EnlacesCaracteristicasReport extends PDFReport {
 	String[] columnNames = {
 		"ID Enlace",
 		"Nombre",
-		"Tipo Vía",
-		"Nombre Vía",
-		"Municipio",
+		"Tramo",
 		"PK",
 		"Número Salida",
 		"Tipo Enlace",
@@ -62,10 +60,8 @@ public class EnlacesCaracteristicasReport extends PDFReport {
 	columnsWidth[5] = 60f;
 	columnsWidth[6] = 60f;
 	columnsWidth[7] = 60f;
-	columnsWidth[8] = 60f;
-	columnsWidth[9] = 60f;
 	// aditional column
-	columnsWidth[10] = 60f;
+	columnsWidth[8] = 60f;
 
 	return columnsWidth;
     }

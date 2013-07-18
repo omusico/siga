@@ -31,6 +31,8 @@ public class VallaCierreCaracteristicasReport extends PDFReport {
     @Override
     protected String[] getColumnNames() {
 	String[] columnNames = {
+		"ID Valla",
+		"Tramo",
 		"PK Inicial",
 		"PK Final",
 		"Tipo Valla",
@@ -61,6 +63,8 @@ public class VallaCierreCaracteristicasReport extends PDFReport {
 	columnsWidth[8] = 60f;
 	columnsWidth[9] = 60f;
 	columnsWidth[10] = 60f;
+	columnsWidth[11] = 60f;
+	columnsWidth[12] = 60f;
 
 	return columnsWidth;
     }

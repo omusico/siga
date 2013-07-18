@@ -32,6 +32,7 @@ public class BarreraRigidaCaracteristicasReport extends PDFReport {
     protected String[] getColumnNames() {
 	String[] columnNames = {
 		"ID Barrera Rígida",
+		"Tramo",
 		"Tipo Vía",
 		"Nombre Vía",
 		"PK Inicial",
@@ -53,7 +54,7 @@ public class BarreraRigidaCaracteristicasReport extends PDFReport {
 
 	columnsWidth[0] = 60f;
 	columnsWidth[1] = 60f;
-	columnsWidth[2] = 90f;
+	columnsWidth[2] = 60f;
 	columnsWidth[3] = 60f;
 	columnsWidth[4] = 60f;
 	columnsWidth[5] = 60f;
@@ -62,7 +63,8 @@ public class BarreraRigidaCaracteristicasReport extends PDFReport {
 	columnsWidth[8] = 60f;
 	columnsWidth[9] = 60f;
 	columnsWidth[10] = 60f;
-	columnsWidth[11] = 120f;
+	columnsWidth[11] = 60f;
+	columnsWidth[12] = 60f;
 
 	return columnsWidth;
     }

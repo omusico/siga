@@ -41,6 +41,7 @@ import es.icarto.gvsig.extgia.consultas.agregados.CSVTrabajosAgregadosTaludesRep
 import es.icarto.gvsig.extgia.consultas.agregados.TrabajosAgregadosIsletasReport;
 import es.icarto.gvsig.extgia.consultas.agregados.TrabajosAgregadosTaludesReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.CSVCaracteristicasQueries;
+import es.icarto.gvsig.extgia.consultas.caracteristicas.PDFCaracteristicasQueries;
 import es.icarto.gvsig.extgia.consultas.firme.FirmeReconocimientosReport;
 import es.icarto.gvsig.extgia.consultas.firme.FirmeTrabajosReport;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
@@ -484,9 +485,10 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	    if (csvRadioButton.isSelected()) {
 		query = CSVCaracteristicasQueries.getCSVCaracteristicasQuery(element, consultasFilters);
 	    }else {
-		query = "SELECT " + fields + " FROM " +
-			DBFieldNames.GIA_SCHEMA + "." +
-			element;
+		query = PDFCaracteristicasQueries.getPDFCaracteristicasQuery(element, consultasFilters);
+		//		query = "SELECT " + fields + " FROM " +
+		//			DBFieldNames.GIA_SCHEMA + "." +
+		//			element;
 	    }
 	}else {
 	    query = "SELECT " + fields + " FROM " +
