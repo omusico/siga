@@ -86,7 +86,6 @@ public class TestConsultas {
 		Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
 		String query = PDFCaracteristicasQueries.getPDFCaracteristicasQuery(
 			DBFieldNames.Elements.values()[i].toString(), mockFilters);
-		System.out.println(DBFieldNames.Elements.values()[i].toString());
 		ResultSet rs = st.executeQuery(query);
 		assertTrue(rs!=null);
 	    }
@@ -401,16 +400,7 @@ public class TestConsultas {
     public void testCSVCaracteristicasFirme() throws SQLException {
 
 	Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-	String query = "SELECT " +
-		ConsultasFieldNames.getCSVCaracteristicasFieldNames("Firme") +
-		" FROM " + getSchema() + "." + "Firme" +
-		" el," +
-		" audasa_extgia_dominios.area_mantenimiento am," +
-		" audasa_extgia_dominios.base_contratista bc," +
-		" audasa_extgia_dominios.tramo tr" +
-		" WHERE el.area_mantenimiento = am.id" +
-		" AND el.base_contratista = bc.id" +
-		" AND el.tramo = tr.id" + ";";
+	String query = CSVCaracteristicasQueries.getCSVCaracteristicasQuery("Firme", mockFilters);
 	ResultSet rs = st.executeQuery(query);
 	ResultSetMetaData rsMetaData = rs.getMetaData();
 	String mockFileDir = "/tmp/test_" + "Firme" + ".csv";

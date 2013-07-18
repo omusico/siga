@@ -122,8 +122,17 @@ public class ConsultasFieldNames {
 		"numero_talud as \"Nº Talud\"," +
 		"fecha_actualizacion as \"Fecha Actualización\"," +
 		localizationCSVFieldNames() +
+		"tv.item as \"Tipo Vía PF\"," +
+		"nv.item as \"Nombre Vía PF\"," +
 		"pk_inicial as \"PK Inicial\"," +
 		"pk_final as \"PK Final\"," +
+		"ramal_pi as \"Ramal\"," +
+		"ramal_pf as \"Ramal PF\"," +
+		"direccion_pi as \"Dirección\"," +
+		"direccion_pf as \"Dirección PF\"," +
+		"st.item as \"Sentido\"," +
+		"margen as \"Margen\"," +
+		"mu.item as \"Municipio\"," +
 		"tipo_talud as \"Tipo Talud\"," +
 		"roca as \"Roca\"," +
 		"arboles as \"Árboles\"," +
@@ -162,6 +171,11 @@ public class ConsultasFieldNames {
 		localizationCSVFieldNames() +
 		"pk_inicial as \"PK Inicial\"," +
 		"pk_final as \"PK Final\"," +
+		"ramal as \"Ramal\"," +
+		"st.item as \"Sentido\"," +
+		"direccion as \"Dirección\"," +
+		"margen as \"Margen\"," +
+		"mu.item as \"Municipio\"," +
 		"tipo_isleta as \"Tipo Isleta\"," +
 		"superficie_bajo_bionda as \"Superficie Bajo Bionda\"," +
 		"posibilidad_empleo_vehiculos as \"Posibilidad Empleo Vehículos\"," +
@@ -175,6 +189,11 @@ public class ConsultasFieldNames {
 		localizationCSVFieldNames() +
 		"pk_inicial as \"PK Inicial\"," +
 		"pk_final as \"PK Final\"," +
+		"ramal as \"Ramal\"," +
+		"st.item as \"Sentido\"," +
+		"direccion as \"Dirección\"," +
+		"margen as \"Margen\"," +
+		"mu.item as \"Municipio\"," +
 		"obstaculo_protegido as \"Obstáculo Protegido\"," +
 		"longitud as \"Longitud\"," +
 		"codigo as \"Código\"," +
@@ -190,6 +209,8 @@ public class ConsultasFieldNames {
 		"fecha_actualizacion as \"Fecha Actualización\"," +
 		localizationCSVFieldNames() +
 		"pk as \"PK\"," +
+		"st.item as \"Sentido\"," +
+		"mu.item as \"Municipio\"," +
 		"fecha_puesta_servicio as \"Fecha Puesta Servicio\"," +
 		"sup_total as \"Superficie Total\"," +
 		"sup_pavimentada as \"Superficie Pavimentada\"," +
@@ -211,6 +232,8 @@ public class ConsultasFieldNames {
 		"fecha_actualizacion as \"Fecha Actualización\"," +
 		localizationCSVFieldNames() +
 		"pk as \"PK\"," +
+		"st.item as \"Sentido\"," +
+		"mu.item as \"Municipio\"," +
 		"fecha_puesta_servicio as \"Fecha Puesta Servicio\"," +
 		"sup_total as \"Superficie Total\"," +
 		"sup_pavimentada as \"Superficie Pavimentada\"," +
@@ -230,6 +253,7 @@ public class ConsultasFieldNames {
 		"fecha_actualizacion as \"Fecha Actualización\"," +
 		localizationCSVFieldNames() +
 		"pk as \"PK\"," +
+		"mu.item as \"Municipio\"," +
 		"longitud as \"Longitud\"," +
 		"numero_postes as \"Nº Postes\"," +
 		"cierre as \"Cierre\"," +
@@ -243,6 +267,10 @@ public class ConsultasFieldNames {
 		"fecha_actualizacion as \"Fecha Actualización\"," +
 		localizationCSVFieldNames() +
 		"pk as \"PK\"," +
+		"ramal as \"Ramal\"," +
+		"st.item as \"Sentido\"," +
+		"direccion as \"Dirección\"," +
+		"mu.item as \"Municipio\"," +
 		"numero_junta as \"Nº Junta\"," +
 		"ancho as \"Ancho\"," +
 		"modulo as \"Módulo\"," +
@@ -256,8 +284,9 @@ public class ConsultasFieldNames {
 	return "distinct(el.id_enlace) as \"ID Enlace\"," +
 		"nombre as \"Nombre\"," +
 		"fecha_actualizacion as \"Fecha Actualización\"," +
-		"el.pk as \"PK\"," +
 		localizationCSVFieldNames() +
+		"el.pk as \"PK\"," +
+		"mu.item as \"Municipio\"," +
 		"n_salida as \"Nº Salida\"," +
 		"tipo_enlace as \"Tipo Enlace\"," +
 		"alumbrado as \"Alumbrado\"," +
@@ -269,6 +298,11 @@ public class ConsultasFieldNames {
 		"fecha_actualizacion as \"Fecha Actualización\"," +
 		localizationCSVFieldNames() +
 		"pk as \"PK\"," +
+		"ramal as \"Ramal\"," +
+		"st.item as \"Sentido\"," +
+		"direccion as \"Dirección\"," +
+		"margen_senhal as \"Margen Señal\"," +
+		"mu.item as \"Municipio\"," +
 		"tipo_sustentacion as \"Tipo Sustentación\"," +
 		"material_sustentacion as \"Material Sustentación\"," +
 		"tipo_poste as \"Tipo Poste\"," +
@@ -304,8 +338,17 @@ public class ConsultasFieldNames {
 	return "distinct(el.id_valla) as \"ID Valla\"," +
 		"fecha_actualizacion as \"Fecha Actualización\"," +
 		localizationCSVFieldNames() +
+		"tv.item as \"Tipo Vía PF\"," +
+		"nv.item as \"Nombre Vía PF\"," +
 		"pk_inicial as \"PK Inicial\"," +
 		"pk_final as \"PK Final\"," +
+		"ramal_pi as \"Ramal\"," +
+		"ramal_pf as \"Ramal PF\"," +
+		"direccion_pi as \"Dirección\"," +
+		"direccion_pf as \"Dirección PF\"," +
+		"st.item as \"Sentido\"," +
+		"margen as \"Margen\"," +
+		"mu.item as \"Municipio\"," +
 		"tipo_valla as \"Tipo Valla\"," +
 		"longitud as \"Longitud\"," +
 		"altura as \"Altura\"," +
@@ -327,6 +370,7 @@ public class ConsultasFieldNames {
 		"tr.item as \"Tramo\"," +
 		"pk_inicial as \"PK Inicial\"," +
 		"pk_final as \"PK Final\"," +
+		"mu.item as \"Municipio\"," +
 		"explanada_cm as \"Explanada (cm)\"," +
 		"zahorra_artificial as \"Zahorra Artificial (cm)\"," +
 		"suelo_cemento_cm as \"Suelo Cemento (cm)\"," +
