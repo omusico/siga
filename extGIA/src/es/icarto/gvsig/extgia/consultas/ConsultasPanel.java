@@ -492,9 +492,6 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		query = CSVCaracteristicasQueries.getCSVCaracteristicasQuery(element, consultasFilters);
 	    }else {
 		query = PDFCaracteristicasQueries.getPDFCaracteristicasQuery(element, consultasFilters);
-		//		query = "SELECT " + fields + " FROM " +
-		//			DBFieldNames.GIA_SCHEMA + "." +
-		//			element;
 	    }
 	}else {
 	    query = "SELECT " + fields + " FROM " +
