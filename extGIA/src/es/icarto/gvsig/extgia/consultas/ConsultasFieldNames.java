@@ -59,7 +59,7 @@ public class ConsultasFieldNames {
 	    return "distinct(id_area_descanso), nombre, tr.item, pk, fecha_puesta_servicio, " +
 	    "sup_total, riego, aparcamiento_camion_bus, area_picnic, fuentes_potables, observaciones";
 	case Enlaces:
-	    return "distinct(id_enlace), nombre, tr.item, municipio, pk, n_salida, tipo_enlace, " +
+	    return "distinct(id_enlace), nombre, tr.item, pk, n_salida, tipo_enlace, " +
 	    "alumbrado, observaciones";
 	case Juntas:
 	    return "distinct(id_junta), tr.item, tv.item, nv.item, pk, numero_junta, ancho, modulo, " +

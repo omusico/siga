@@ -64,7 +64,7 @@ public class BarreraRigidaCaracteristicasReport extends PDFReport {
 	columnsWidth[9] = 60f;
 	columnsWidth[10] = 60f;
 	columnsWidth[11] = 60f;
-	columnsWidth[12] = 60f;
+	columnsWidth[12] = 90f;
 
 	return columnsWidth;
     }

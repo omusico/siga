@@ -41,7 +41,7 @@ public class FirmeCaracteristicasReport extends PDFReport {
 		"Grava Cemento (cm)",
 		"MBC Base (cm)",
 		"MBC Intermedia (cm)",
-		"MBC Rodadura",
+		"MBC Rodadura (cm)",
 		"Observaciones"
 	};
 	return columnNames;
@@ -52,9 +52,9 @@ public class FirmeCaracteristicasReport extends PDFReport {
 	float[] columnsWidth = new float[columnCount];
 
 	columnsWidth[0] = 60f;
-	columnsWidth[1] = 60f;
+	columnsWidth[1] = 70f;
 	columnsWidth[2] = 60f;
-	columnsWidth[3] = 60f;
+	columnsWidth[3] = 70f;
 	columnsWidth[4] = 60f;
 	columnsWidth[5] = 60f;
 	columnsWidth[6] = 60f;
@@ -64,7 +64,7 @@ public class FirmeCaracteristicasReport extends PDFReport {
 	columnsWidth[10] = 60f;
 	columnsWidth[11] = 60f;
 	columnsWidth[12] = 60f;
-	columnsWidth[13] = 60f;
+	columnsWidth[13] = 90f;
 
 	return columnsWidth;
     }

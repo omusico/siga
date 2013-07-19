@@ -59,7 +59,7 @@ public class AreasDescansoCaracteristicasReport extends PDFReport {
 	columnsWidth[7] = 60f;
 	columnsWidth[8] = 60f;
 	columnsWidth[9] = 60f;
-	columnsWidth[10] = 60f;
+	columnsWidth[10] = 90f;
 	//aditionalColumn
 	columnsWidth[11] = 60f;
 

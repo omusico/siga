@@ -68,7 +68,7 @@ public class TaludesCaracteristicasReport extends PDFReport {
 	columnsWidth[11] = 60f;
 	columnsWidth[12] = 60f;
 	columnsWidth[13] = 60f;
-	columnsWidth[14] = 60f;
+	columnsWidth[14] = 90f;
 	columnsWidth[15] = 60f;
 	columnsWidth[16] = 60f;
 

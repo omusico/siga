@@ -59,9 +59,9 @@ public class EnlacesCaracteristicasReport extends PDFReport {
 	columnsWidth[4] = 60f;
 	columnsWidth[5] = 60f;
 	columnsWidth[6] = 60f;
-	columnsWidth[7] = 60f;
+	columnsWidth[7] = 90f;
 	// aditional column
-	columnsWidth[8] = 60f;
+	columnsWidth[8] = 90f;
 
 	return columnsWidth;
     }

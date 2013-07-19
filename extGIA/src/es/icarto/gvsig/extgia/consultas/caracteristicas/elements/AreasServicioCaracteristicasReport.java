@@ -64,10 +64,10 @@ public class AreasServicioCaracteristicasReport extends PDFReport {
 	columnsWidth[5] = 60f;
 	columnsWidth[6] = 60f;
 	columnsWidth[7] = 60f;
-	columnsWidth[8] = 60f;
+	columnsWidth[8] = 70f;
 	columnsWidth[9] = 60f;
 	columnsWidth[10] = 60f;
-	columnsWidth[11] = 60f;
+	columnsWidth[11] = 90f;
 	// aditional column
 	columnsWidth[12] = 60f;
 

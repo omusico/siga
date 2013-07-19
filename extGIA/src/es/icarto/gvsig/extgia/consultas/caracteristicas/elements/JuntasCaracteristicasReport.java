@@ -62,7 +62,7 @@ public class JuntasCaracteristicasReport extends PDFReport {
 	columnsWidth[8] = 60f;
 	columnsWidth[9] = 60f;
 	columnsWidth[10] = 60f;
-	columnsWidth[11] = 60f;
+	columnsWidth[11] = 90f;
 
 	return columnsWidth;
     }
