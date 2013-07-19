@@ -521,6 +521,19 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     }
 
     @Override
+    public boolean saveRecord() {
+	if (nombreViaWidget.getSelectedItem().toString().isEmpty()) {
+	    layerController.setValue(nombreViaPFWidget.getName(), "0");
+	}
+	if (elementHasIPandFP()) {
+	    if (nombreViaPFWidget.getSelectedItem().toString().isEmpty()) {
+		layerController.setValue(nombreViaWidget.getName(), "0");
+	    }
+	}
+	return super.saveRecord();
+    }
+
+    @Override
     protected void fillSpecificValues() {
 	updateBaseContratistaCombo();
 	selectBaseContratistaOption();
