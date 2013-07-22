@@ -71,13 +71,9 @@ public class MapSheetsLayoutTemplate extends Layout implements IMapSheetsIdentif
     private MapSheetGrid grid = null;
     private ProjectView pView = null;
 
-    private FFrameView viewFrame = null;
-    // private HashMap frameToAttIndex = new HashMap();
-
     //	private FFrameText titleFrame = null;
     private FFrameOverView localFrame = null;
 
-    //	private FFrameLegend legendFrame = null;
     private IFFrame[] framesFromTemplate = null;
     private AudasaTemplate audasaTemplate = null;
 
@@ -185,8 +181,14 @@ public class MapSheetsLayoutTemplate extends Layout implements IMapSheetsIdentif
 	return aux_size;
     }
 
-    public FFrameView getMainViewFrame() {
-	return viewFrame;
+    public MapSheetFrameView getMainViewFrame() {
+	IFFrame[] ffs = this.getLayoutContext().getFFrames();
+	for (int i=0; i<ffs.length; i++) {
+	    if (ffs[i] instanceof MapSheetFrameView) {
+		return (MapSheetFrameView) ffs[i];
+	    }
+	}
+	return null;
     }
 
     public ProjectView getProjectView() {
@@ -201,18 +203,18 @@ public class MapSheetsLayoutTemplate extends Layout implements IMapSheetsIdentif
 	pView = pv;
 	grid = gr;
 
-	viewFrame.setView(pView);
-	viewFrame.setLayout(this);
+	MapSheetFrameView msfv = getMainViewFrame();
+	msfv.setView(pView);
 
 	for (IFFrame frame : framesDependentOnView) {
 	    if((frame instanceof FFrameOverView) &&
 		    frame != null) {
-		((FFrameOverView) frame).setFFrameDependence(viewFrame);
+		((FFrameOverView) frame).setFFrameDependence(msfv);
 		((FFrameOverView) frame).setView(pView);
 		((FFrameOverView) frame).setLayout(this);
 	    } else if ((frame instanceof FFrameScaleBar) &&
 		    frame != null) {
-		((FFrameScaleBar) frame).setFFrameDependence(viewFrame);
+		((FFrameScaleBar) frame).setFFrameDependence(msfv);
 	    }
 	    //else if (frame instanceof FFrameLegend) {
 	    // legendFrame.setFFrameDependence(viewFrame);
@@ -250,9 +252,10 @@ public class MapSheetsLayoutTemplate extends Layout implements IMapSheetsIdentif
 	    double w_cm = grid_width.doubleValue();
 	    double h_cm = grid_height.doubleValue();
 
-	    viewFrame.setBoundBox(new Rectangle2D.Double(
-		    viewFrame.getBoundBox().getMinX(),
-		    viewFrame.getBoundBox().getMinY(),
+	    MapSheetFrameView msfv = getMainViewFrame();
+	    msfv.setBoundBox(new Rectangle2D.Double(
+		    msfv.getBoundBox().getMinX(),
+		    msfv.getBoundBox().getMinY(),
 		    w_cm, h_cm));
 	    this.repaint();
 
@@ -347,7 +350,7 @@ public class MapSheetsLayoutTemplate extends Layout implements IMapSheetsIdentif
 			- local_hei_cm - act_flds_hei_cm - title_hei_cm;
 	 */
 	// ==============================================
-	viewFrame = new MapSheetFrameView();
+	MapSheetFrameView viewFrame = new MapSheetFrameView();
 	viewFrame.setBoundBox(new Rectangle2D.Double(
 		left_cm, top_cm,
 		w_cm, h_cm));
@@ -447,6 +450,7 @@ public class MapSheetsLayoutTemplate extends Layout implements IMapSheetsIdentif
 	    fld_ind = (Integer) ind_list.get(i);
 	    addLinkedFrame(fld_ind, tem_txt);
 	}
+	MapSheetFrameView msfv = getMainViewFrame();
 	// ==============================================
 	// load frames from template
 	//audasaTemplate.setProperty("numero_hoja", (String) grid.getTheMemoryDriver().getCodes().get(0));
@@ -465,7 +469,7 @@ public class MapSheetsLayoutTemplate extends Layout implements IMapSheetsIdentif
 	    } else if (framesFromTemplate[i] instanceof FFrameOverView) {
 		if (has_ov) {
 		    localFrame = (FFrameOverView) framesFromTemplate[i];
-		    localFrame.setFFrameDependence(viewFrame);
+		    localFrame.setFFrameDependence(msfv);
 		    localFrame.setView(pView);
 		    localFrame.setLayout(this);
 		    framesDependentOnView.add(localFrame);
@@ -484,8 +488,9 @@ public class MapSheetsLayoutTemplate extends Layout implements IMapSheetsIdentif
 
     public void updateWithSheet(MapSheetGridGraphic gri) {
 
-	MapSheetsUtils.checkFrameListensToViewPort(viewFrame);
-	updateView(viewFrame, gri.getGeom());
+	MapSheetFrameView msfv = getMainViewFrame();
+	MapSheetsUtils.checkFrameListensToViewPort(msfv);
+	updateView(msfv, gri.getGeom());
 
 	IFFrame[] ffs = this.getLayoutContext().getFFrames();
 	MapSheetsFrameText aux;
@@ -619,13 +624,14 @@ public class MapSheetsLayoutTemplate extends Layout implements IMapSheetsIdentif
 	XMLEntity fra_ite = null;
 	IFFrame ifra = null;
 	String gridName = xml.getStringProperty("gridName");
+	MapSheetFrameView viewFrame = getMainViewFrame();
 	for (int i=0; i<cnt; i++) {
 	    fra_ite = ch_fra.getChild(i);
 	    ifra = createFrame(fra_ite, p);
 	    this.getLayoutContext().addFFrame(ifra, true, false);
 
 	    if (ifra.getName().compareToIgnoreCase("main_frame") == 0) {
-		this.viewFrame = (FFrameView) ifra;
+		viewFrame = (MapSheetFrameView) ifra;
 	    }
 	    //			if (ifra.getName().compareToIgnoreCase("title") == 0) {
 	    //				this.titleFrame = (FFrameText) ifra;
