@@ -1884,6 +1884,7 @@ public class MapSheetsUtils {
 
     public static void printMapSheetsLayout(
 	    final MapSheetsLayoutTemplate tem,
+	    final FLayer background_layer,
 	    final boolean user_wants_printer_setts) {
 
 	try {
@@ -1891,10 +1892,23 @@ public class MapSheetsUtils {
 
 	    PluginServices.backgroundExecution(new Runnable() {
 		public void run() {
+		    FLayer cloned = null;
+		    if (background_layer != null) {
+			cloned = cloneBackgroundLayer(background_layer);
+			if (cloned != null) {
+			    cloned.setVisible(true);
+			    MapSheetsUtils.addBackLayer(tem, cloned);
+			}
+		    }
+
 		    if (tem.getLayoutContext().getAtributes().getType() == Attributes.PREPARE_PAGE_ID_CUSTOM) {
 			tem.showPrintDialog(printerJob, user_wants_printer_setts);
 		    } else {
 			tem.showPrintDialog(null, user_wants_printer_setts);
+		    }
+
+		    if (cloned != null) {
+			MapSheetsUtils.removeLayer(tem, cloned);
 		    }
 		}
 	    });
@@ -2011,4 +2025,20 @@ public class MapSheetsUtils {
 	return integers;
     }
 
+    private static FLayer cloneBackgroundLayer(FLayer lyr) {
+
+	FLayer resp = null;
+	try {
+	    resp = lyr.cloneLayer();
+	} catch (Exception exc) {
+	    //	    ApplicationLocator.getManager().messageDialog(
+	    //		    Messages.getText("_Error_while_processing_bg_layer") +
+	    //		    ":    \n\n" + exc.getMessage(),
+	    //		    Messages.getText("Print_in_progress"),
+	    //		    JOptionPane.ERROR_MESSAGE);
+	    logger.info("Error while processing bg layer", exc);
+	    resp = null;
+	}
+	return resp;
+    }
 }

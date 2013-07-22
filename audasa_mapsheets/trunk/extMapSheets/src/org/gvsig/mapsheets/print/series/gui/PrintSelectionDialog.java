@@ -735,7 +735,9 @@ public class PrintSelectionDialog extends JPanel implements IWindow, ActionListe
 		boolean p_all = getPrintAllRB().isSelected();
 		layout_template.setPrintSelectedOnly(!p_all);
 
-		MapSheetsUtils.printMapSheetsLayout(layout_template, getUserWantsPrinterSettings());
+		MapSheetsUtils.printMapSheetsLayout(layout_template,
+			sel_back == null ? null : sel_back.getLayer(),
+				getUserWantsPrinterSettings());
 
 		if (b_l != null) {
 		    MapSheetsUtils.removeLayer(layout_template, b_l);
