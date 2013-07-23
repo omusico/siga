@@ -63,6 +63,10 @@ import com.hardcode.gdbms.driver.exceptions.OpenDriverException;
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.hardcode.gdbms.engine.values.Value;
 import com.hardcode.gdbms.engine.values.ValueFactory;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.iver.andami.PluginServices;
 import com.iver.andami.messages.NotificationManager;
 import com.iver.cit.gvsig.Print;
@@ -112,10 +116,6 @@ import com.iver.utiles.XMLEntity;
 import com.iver.utiles.swing.threads.Cancellable;
 import com.iver.utiles.xml.XMLEncodingUtils;
 import com.iver.utiles.xmlEntity.generate.XmlTag;
-import com.lowagie.text.Document;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfWriter;
 
 /**
  * Various static utility methods.
@@ -236,7 +236,7 @@ public class MapSheetsUtils {
 	ArrayList sel_ind = null;
 
 	if (lay_template.getMainViewFrame() instanceof MapSheetFrameView) {
-	    ((MapSheetFrameView) lay_template.getMainViewFrame()).setHighlight(highlight);
+	    lay_template.getMainViewFrame().setHighlight(highlight);
 	}
 
 	if (all_sheets) {
@@ -295,7 +295,7 @@ public class MapSheetsUtils {
 	}
 
 	if (lay_template.getMainViewFrame() instanceof MapSheetFrameView) {
-	    ((MapSheetFrameView) lay_template.getMainViewFrame()).setHighlight(false);
+	    lay_template.getMainViewFrame().setHighlight(false);
 	}
 
 	if (progListen != null) {

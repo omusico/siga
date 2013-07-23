@@ -37,11 +37,11 @@
 
 	<target name="copy-to-andami">
 
-        <!--
+        
 		<copy todir="${mainlibdir}"  overwrite="true">
 			<fileset dir="${lib}" includes="*.jar"/>
 		</copy>
-		-->
+		
 
 	    <copy todir="${extensionsDir}/${plugin}/" overwrite="true">
 	    	<fileset dir="${dist}" includes="**/**"/>
