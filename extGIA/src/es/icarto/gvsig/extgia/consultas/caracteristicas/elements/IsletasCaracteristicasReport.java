@@ -58,7 +58,7 @@ public class IsletasCaracteristicasReport extends PDFReport {
 	columnsWidth[6] = 60f;
 	columnsWidth[7] = 60f;
 	columnsWidth[8] = 60f;
-	columnsWidth[8] = 60f;
+	columnsWidth[9] = 90f;
 
 	return columnsWidth;
     }

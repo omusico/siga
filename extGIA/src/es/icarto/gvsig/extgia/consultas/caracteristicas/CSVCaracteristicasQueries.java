@@ -29,11 +29,11 @@ public class CSVCaracteristicasQueries {
 	case Enlaces:
 	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
 		    ", (select count(id_ramal) from audasa_extgia.enlaces_ramales ra " +
-		    "where ra.id_enlace = el.id_enlace) " + "|| '/' || " +
+		    "where ra.id_enlace = el.id_enlace) " + "|| ' | ' || " +
 		    "(select array_to_string(array_agg(clave_carretera), ';') " +
 		    "from audasa_extgia.enlaces_carreteras_enlazadas ce " +
 		    "where ce.id_enlace = el.id_enlace)" +
-		    "as \"Nº Ramales/Carreteras Enlazadas\"" +
+		    "as \"Nº Ramales | Carreteras Enlazadas\"" +
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
 		    getLocalizationTables() +
 		    getLocalizationWhere() +

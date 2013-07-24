@@ -78,7 +78,7 @@ public class EnlacesCaracteristicasReport extends PDFReport {
 
     @Override
     protected PdfPCell writeAditionalColumnName() {
-	PdfPCell aditionalCell = new PdfPCell(new Paragraph("Nº Ramales/Carreteras Enlazadas",
+	PdfPCell aditionalCell = new PdfPCell(new Paragraph("Nº Ramales | Carreteras Enlazadas",
 		bodyBoldStyle));
 	aditionalCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 	return aditionalCell;
@@ -97,7 +97,7 @@ public class EnlacesCaracteristicasReport extends PDFReport {
 	    query = "SELECT clave_carretera FROM audasa_extgia.enlaces_carreteras_enlazadas" +
 		    " WHERE id_enlace = '" + id + "';";
 	    rs = st.executeQuery(query);
-	    data = data + "/";
+	    data = data + " | ";
 	    while (rs.next()) {
 		data = data + rs.getString(1) + ";";
 	    }
