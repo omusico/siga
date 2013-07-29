@@ -14,7 +14,7 @@
   <property name="plugin" value="org.gvsig.mapsheets.print.series"/>
 
   <property name="extensionsDir" location="${andami}/gvSIG/extensiones"/>
-  <property name="mainlibdir" location="${extensionsDir}/${mainplugin}/lib"/>
+  <property name="mainlibdir" location="${extensionsDir}/${plugin}"/>
   
 
   <target name="init">
