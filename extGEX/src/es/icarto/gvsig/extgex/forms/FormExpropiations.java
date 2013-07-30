@@ -115,7 +115,6 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	if (insertedGeom != null) {
 	    this.insertedGeom = insertedGeom;
 	}
-	initWindow();
 	addButtonsToActionsToolBar();
     }
 
@@ -139,12 +138,6 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	} else {
 	    saveB.setEnabled(bool);
 	}
-    }
-
-    private void initWindow() {
-	windowInfo.setHeight(700);
-	windowInfo.setWidth(690);
-	windowInfo.setTitle("Expediente de expropiaciones");
     }
 
     @Override

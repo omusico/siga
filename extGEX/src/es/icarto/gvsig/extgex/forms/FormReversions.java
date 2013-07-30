@@ -79,7 +79,6 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 	if (insertedGeom != null) {
 	    this.insertedGeom = insertedGeom;
 	}
-	initWindow();
 	addNewButtonsToActionsToolBar();
     }
 
@@ -100,12 +99,6 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 	} else {
 	    saveB.setEnabled(bool);
 	}
-    }
-
-    private void initWindow() {
-	windowInfo.setHeight(700);
-	windowInfo.setWidth(675);
-	windowInfo.setTitle("Expediente de reversiones");
     }
 
     @Override
