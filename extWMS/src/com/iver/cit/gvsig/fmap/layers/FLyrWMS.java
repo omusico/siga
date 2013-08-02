@@ -1031,6 +1031,7 @@ public class FLyrWMS extends FLyrRasterSE implements IHasImageLegend{
 	 * @throws LoadLayerException
 	 */
 	private void rasterProcess(String filePath, Graphics2D g, ViewPort vp, double scale, Cancellable cancel, int nLyr) throws ReadDriverException, LoadLayerException, FilterTypeException {
+	    	closeAndFree();
 		//Cargamos el dataset con el raster de disco.
 		layerRaster[nLyr] = FLyrRasterSE.createLayer("", filePath, vp.getProjection());
 		//layerRaster[nLyr].getRender().setBufferFactory(layerRaster[nLyr].getBufferFactory());
@@ -1094,6 +1095,7 @@ public class FLyrWMS extends FLyrRasterSE implements IHasImageLegend{
 		if (this.renderBands == null)
 			renderBands = layerRaster[nLyr].getRender().getRenderBands();
 
+		transparency.free();
 	}
 
 	/*
