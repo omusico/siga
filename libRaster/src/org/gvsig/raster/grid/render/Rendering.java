@@ -147,6 +147,11 @@ public class Rendering implements PropertyListener, FilterListChangeListener {
 			setRenderBands(new int[] { 0, 1, 2 });
 			return;
 		}
+		
+		if (lastTransparency == null) {
+			lastTransparency = new GridTransparency(bufferFactory.getDataSource().getTransparencyFilesStatus());
+			lastTransparency.addPropertyListener(this);
+		}
 
 		//Bandas que se dibujan por defecto si la interpretación de color no tiene valores
 		switch (bufferFactory.getDataSource().getBandCount()) {
@@ -243,7 +248,7 @@ public class Rendering implements PropertyListener, FilterListChangeListener {
 	 * @throws ArrayIndexOutOfBoundsException
 	 */
 	public synchronized Image draw(Graphics2D g, ViewPortData vp, Object cancel)
-		throws RasterDriverException, InvalidSetViewException, InterruptedException {
+		throws RasterDriverException, InvalidSetViewException, InterruptedException {	
 		Image geoImage = null;
 		if (bufferFactory == null) {
 			System.err.println("Rendering.java: bufferFactory = null");
@@ -264,17 +269,14 @@ public class Rendering implements PropertyListener, FilterListChangeListener {
 		double[] step = null;
 		
 		if (bufferFactory != null) {
-			if (lastTransparency == null) {
-				lastTransparency = new GridTransparency(bufferFactory.getDataSource().getTransparencyFilesStatus());
-				lastTransparency.addPropertyListener(this);
-			}
+
 			// Asignamos la banda de transparencia si existe esta
 			if (bufferFactory.getDataSource().getTransparencyFilesStatus().getAlphaBandNumber() != -1) {
 				bufferFactory.setSupersamplingLoadingBuffer(false); // Desactivamos el supersampleo en la carga del buffer.
-				bufferFactory.setDrawableBands(new int[] { lastTransparency.getAlphaBandNumber(), -1, -1 });
+				bufferFactory.setDrawableBands(new int[] { getLastTransparency().getAlphaBandNumber(), -1, -1 });
 				bufferFactory.setAreaOfInterest(adjustedRotedRequest.getULX(), adjustedRotedRequest.getULY(), adjustedRotedRequest.getLRX(), adjustedRotedRequest.getLRY(), (int)Math.round(widthImage), (int)Math.round(heightImage));
 				bufferFactory.setSupersamplingLoadingBuffer(true);
-				lastTransparency.setAlphaBand(bufferFactory.getRasterBuf());
+				getLastTransparency().setAlphaBand(bufferFactory.getRasterBuf());
 			}
 			bufferFactory.setSupersamplingLoadingBuffer(false); // Desactivamos el supersampleo en la carga del buffer.
 			// En el renderizado será ImageDrawer el que se encargue de esta función
@@ -282,7 +284,7 @@ public class Rendering implements PropertyListener, FilterListChangeListener {
 			if (cancel != null)
 				if (cancelWrapper.isCanceled())
 					return null;
-		
+			
 			bufferFactory.setDrawableBands(getRenderBands());
 			step = bufferFactory.setAreaOfInterest(adjustedRotedRequest.getULX(), adjustedRotedRequest.getULY(),
 					adjustedRotedRequest.getLRX(), adjustedRotedRequest.getLRY(),
@@ -292,7 +294,6 @@ public class Rendering implements PropertyListener, FilterListChangeListener {
 					return null;
 			
 			bufferFactory.setSupersamplingLoadingBuffer(true);
-						
 			
 			//Asignamos los datos al objeto transparencia antes de aplicar la pila de filtros para que el valor NoData sea efectivo
 			if (bufferFactory.getDataSource().getTransparencyFilesStatus().isNoDataActive())
@@ -325,9 +326,10 @@ public class Rendering implements PropertyListener, FilterListChangeListener {
 		drawer.setStep(step); // Desplazamiento para supersampleo
 		drawer.setBufferSize((int)Math.round(widthImage), (int)Math.round(heightImage)); // Ancho y alto del buffer
 		geoImage = drawer.drawBufferOverImageObject(replicateBand, getRenderBands(), cancelWrapper); // Acción de renderizado
+		drawer=null;
 
 		// Borramos el buffer de transparencia para que siempre se tenga que regenerar.
-		lastTransparency.setAlphaBand(null);
+		getLastTransparency().setAlphaBand(null);
 		
 		//En el caso de no tenga rotación y el tamaño de pixel sea positivo en X y negativo en Y no aplicamos ninguna
 		//transformación. Esto no es necesario hacerlo, sin ello se visualiza igual. Unicamente se hace porque de esta
@@ -337,6 +339,9 @@ public class Rendering implements PropertyListener, FilterListChangeListener {
 			Point2D lastGraphicOffset = new Point2D.Double(adjustedRotedRequest.getULX(), adjustedRotedRequest.getULY());
 			vp.mat.transform(lastGraphicOffset, lastGraphicOffset);
 			g.drawImage(geoImage, (int) Math.round(lastGraphicOffset.getX()), (int) Math.round(lastGraphicOffset.getY()), null);
+			dataset=null;
+			step=null;
+			
 			return geoImage;
 		}
 
@@ -373,6 +378,11 @@ public class Rendering implements PropertyListener, FilterListChangeListener {
 		} catch (NoninvertibleTransformException e) {
 			e.printStackTrace();
 		}
+		dataset=null;
+		step=null;
+		
+		Runtime.getRuntime().gc();
+
 		return geoImage;
 		// long t2 = new Date().getTime();
 		// System.out.println("Renderizando Raster: " + ((t2 - t1) / 1000D) + ", secs.");

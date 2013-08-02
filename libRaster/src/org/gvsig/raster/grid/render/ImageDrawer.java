@@ -49,6 +49,9 @@ public class ImageDrawer {
 	private int       width     = 0;
 	private int       height    = 0;
 	private Rendering rendering = null;
+	
+	BufferedImage image;
+	byte[] data;
 
 	public ImageDrawer(Rendering rendering) {
 		this.rendering = rendering;
@@ -73,8 +76,14 @@ public class ImageDrawer {
 	public Image drawBufferOverImageObject(boolean replicateBand, int[] renderBands, Cancellable cancel) throws InterruptedException {
 		if (rasterBuf == null || width == 0 || height == 0)
 			return null;
-
-		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		
+		image=null;
+		data=null;
+		
+		System.gc();
+		
+		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		data = new byte[rasterBuf.getBandCount()];
 
 		// Dibujado de raster de 1 o 2 bandas.
 		// adaptBufferToRender(replicateBand, renderBands);
@@ -84,8 +93,6 @@ public class ImageDrawer {
 
 		// Asigna la banda de transparencia si existe esta.
 		// assignTransparencyBand(renderBands);
-
-		byte[] data = new byte[rasterBuf.getBandCount()];
 		GridTransparency transparency = rendering.getLastTransparency();
 		if (transparency != null && transparency.isTransparencyActive()) {
 			if (transparency.existAlphaBand() &&
@@ -93,10 +100,12 @@ public class ImageDrawer {
 					(transparency.getAlphaBand().getDataType() != IBuffer.TYPE_BYTE))
 				transparency.setAlphaBand(convertToByte(transparency.getAlphaBand()));
 			drawWithTransparency(image, data, (step != null), cancel);
-		} else
+		}else {
 			drawByte(image, data, (step != null), cancel);
-
-		step = null;
+		}
+		data=null;
+		transparency.free();
+		
 		return image;
 	}
 
@@ -229,6 +238,7 @@ public class ImageDrawer {
 					task.manageEvent(task.getEvent());
 			}
 		}
+		transparency.free();
 //		} finally {
 //			Quitamos el uso del free para no invocar al garbage collector en numerosas
 //			iteraciones

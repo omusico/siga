@@ -580,7 +580,6 @@ public class MultiRasterDataset implements IRasterDataSource {
 	 */
 	public IBuffer getWindowRaster(double ulx, double uly, double lrx, double lry, int bufWidth, int bufHeight, boolean adjustToExtent) 
 		throws InvalidSetViewException, InterruptedException, RasterDriverException {
-		
 		Point2D p1 = worldToRaster(new Point2D.Double(ulx, uly));
 		Point2D p2 = worldToRaster(new Point2D.Double(lrx, lry));
 		
@@ -648,6 +647,8 @@ public class MultiRasterDataset implements IRasterDataSource {
 		
 		for(int i = 0; i < bufferDatasets.length; i++)
 			bufferDatasets[i].free();
+		
+		bufferDatasets=null;
 		
 		return raster;
 	}
