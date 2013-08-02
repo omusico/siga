@@ -438,7 +438,9 @@ public class FFrameView extends FFrame implements ViewPortListener,
 									g.translate(r.getX(), r.getY());
 									
 									viewp.setZoomFactor(1);
-
+									fmap=null;
+									m_image.flush();
+									m_image=null;
 								} else {
 									viewPort.setOffset(
 											new Point2D.Double(r.x, r.y));
@@ -450,13 +452,15 @@ public class FFrameView extends FFrame implements ViewPortListener,
 											.getWidth(), (int) r.getHeight(),
 											BufferedImage.TYPE_INT_ARGB);
 									Graphics2D gimg = (Graphics2D) m_image
-											.getGraphics();
+											.createGraphics();
 									gimg.translate(- r.getX(), -r
 											.getY());
 									try {
 										MapContext mapContext = getMapContext();
 										mapContext.getMapContextDrawer().clean();
 										mapContext.draw(m_image, gimg, getScale());
+										gimg.dispose();
+										mapContext = null;
 									} catch (ReadDriverException e) {
 										e.printStackTrace();
 									}
@@ -474,6 +478,8 @@ public class FFrameView extends FFrame implements ViewPortListener,
 								scaleAnt = getLayout().getLayoutControl().getAT().getScaleX();
 								origin = (Point) getLayout().getLayoutControl().getRectOrigin();
 								setRefresh(false);
+								m_image.flush();
+								m_image=null;
 							}
 							
 							viewPort.setZoomFactor(1);
@@ -503,6 +509,8 @@ public class FFrameView extends FFrame implements ViewPortListener,
 			((FFrameGrid)grid).setFFrameDependence(this);
 			grid.draw(g,at,rv,imgBase);
 		}
+		
+		//g.dispose();
 	}
 
     private Rectangle2D calculateExtent() {
