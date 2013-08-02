@@ -390,11 +390,17 @@ public class MapSheetsUtils {
 
 	doc_.close();
 	fos.close();
+	writer.close();
+	doc_=null;
+	fos=null;
+	writer=null;
+	print=null;
 
 	if (clo_lyr != null) {
 	    lyt_tem.getMainViewFrame().getMapContext().getLayers().removeLayer(clo_lyr);
 	}
 
+	Runtime.getRuntime().gc();
     }
 
 
