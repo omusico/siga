@@ -619,6 +619,8 @@ public class FLyrRasterSE extends FLyrDefault implements IRasterProperties, IRas
 							} catch (NoninvertibleTransformException e) {
 								throw new ReadDriverException("Error en la transformación", e);
 							}
+							r=null;
+							tiles=null;
 						}
 					} else {
 						try {
@@ -664,6 +666,8 @@ public class FLyrRasterSE extends FLyrDefault implements IRasterProperties, IRas
 						} catch (NoninvertibleTransformException e) {
 							throw new ReadDriverException("Error en la transformación", e);
 						}
+						r=null;
+						tiles=null;
 					}
 				} else {
 					try {
