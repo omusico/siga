@@ -326,7 +326,6 @@ public class Rendering implements PropertyListener, FilterListChangeListener {
 		drawer.setStep(step); // Desplazamiento para supersampleo
 		drawer.setBufferSize((int)Math.round(widthImage), (int)Math.round(heightImage)); // Ancho y alto del buffer
 		geoImage = drawer.drawBufferOverImageObject(replicateBand, getRenderBands(), cancelWrapper); // Acción de renderizado
-		drawer=null;
 
 		// Borramos el buffer de transparencia para que siempre se tenga que regenerar.
 		getLastTransparency().setAlphaBand(null);
