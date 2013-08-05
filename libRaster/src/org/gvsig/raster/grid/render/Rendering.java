@@ -320,6 +320,9 @@ public class Rendering implements PropertyListener, FilterListChangeListener {
 			lastTransparency.activeTransparency();
 		}
 
+		if (drawer == null) {
+		    drawer = new ImageDrawer(this);
+		}
 		//Buffer filtrado para renderizar
 		lastRenderBuffer = grid.getRasterBuf();
 		drawer.setBuffer(lastRenderBuffer); // Buffer de datos a renderizar
@@ -340,6 +343,7 @@ public class Rendering implements PropertyListener, FilterListChangeListener {
 			g.drawImage(geoImage, (int) Math.round(lastGraphicOffset.getX()), (int) Math.round(lastGraphicOffset.getY()), null);
 			dataset=null;
 			step=null;
+			drawer=null;
 			
 			return geoImage;
 		}
@@ -379,7 +383,7 @@ public class Rendering implements PropertyListener, FilterListChangeListener {
 		}
 		dataset=null;
 		step=null;
-		
+		drawer=null;
 		Runtime.getRuntime().gc();
 
 		return geoImage;
