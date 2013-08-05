@@ -799,7 +799,9 @@ public class FLyrWMS extends FLyrRasterSE implements IHasImageLegend{
 					try {
 						if(datasets != null && datasets[0][0] != null) {
 							dataset = new CompositeDataset(datasets);
-							initializeRasterLayer(datasets, buf);
+							if (layerRaster != null && layerRaster[0] != null) {
+							    initializeRasterLayer(datasets, buf);
+							}
 							buf = null;
 						}
 					} catch (MosaicNotValidException e) {
