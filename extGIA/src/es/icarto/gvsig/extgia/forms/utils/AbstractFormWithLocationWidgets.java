@@ -17,6 +17,7 @@ import javax.swing.table.DefaultTableModel;
 
 import org.apache.log4j.Logger;
 
+import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.Launcher;
 import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.WindowInfo;
@@ -34,6 +35,7 @@ import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkButton;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkData;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
+import es.udc.cartolab.gvsig.navtable.ToggleEditing;
 
 @SuppressWarnings("serial")
 public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
@@ -78,8 +80,12 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     protected JButton addTrabajosBatchButton;
     protected JButton addReconocimientosBatchButton;
 
+    protected JButton saveRecordsBatchButton;
+
     AddTrabajosBatchListener addTrabajosBatchListener;
     AddReconocimientosBatchListener addReconocimientosBatchListener;
+
+    SaveRecordsBatchListener saveRecordsBatchListener;
 
     public AbstractFormWithLocationWidgets (FLyrVect layer) {
 	super(layer);
@@ -182,6 +188,20 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	    addReconocimientosBatchListener = new AddReconocimientosBatchListener(getElement(),
 		    getReconocimientosFormFileName(), getReconocimientosDBTableName());
 	    addReconocimientosBatchButton.addActionListener(addReconocimientosBatchListener);
+	}
+
+	if (saveRecordsBatchButton == null) {
+	    saveRecordsBatchButton = new JButton();
+	    java.net.URL imgURL = getClass().getResource("/saveSelected.png");
+	    ImageIcon icon = new ImageIcon (imgURL);
+	    saveRecordsBatchButton.setIcon(icon);
+	    saveRecordsBatchButton.setToolTipText(PluginServices.getText(this, "saveRecordsBatch_tooltip"));
+	    getActionsToolBar().add(saveRecordsBatchButton);
+	}
+
+	if (saveRecordsBatchListener == null && saveRecordsBatchButton != null) {
+	    saveRecordsBatchListener = new SaveRecordsBatchListener();
+	    saveRecordsBatchButton.addActionListener(saveRecordsBatchListener);
 	}
     }
 
@@ -394,6 +414,75 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 		updateNombreViaPFCombo();
 	    }
 	}
+    }
+
+    public class SaveRecordsBatchListener implements ActionListener {
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    if (isSaveable()) {
+		setSavingValues(true);
+		try {
+		    if (layer.getRecordset().getSelection().isEmpty()) {
+			JOptionPane.showMessageDialog(null,
+				PluginServices.getText(this, "unselectedElements_msg"),
+				PluginServices.getText(this, "warning"),
+				JOptionPane.WARNING_MESSAGE);
+			return;
+		    }
+
+		    Object[] options = {PluginServices.getText(this, "optionPane_yes"),
+			    PluginServices.getText(this, "optionPane_no")};
+		    int m = JOptionPane.showOptionDialog(
+			    null,
+			    PluginServices.getText(this, "updateInfo_msg_I" ) +
+			    layer.getRecordset().getSelection().cardinality() + " " +
+			    PluginServices.getText(this, "updateInfo_msg_II") ,
+			    null,
+			    JOptionPane.YES_NO_CANCEL_OPTION,
+			    JOptionPane.INFORMATION_MESSAGE, null,
+			    options, options[1]);
+		    if (m == JOptionPane.OK_OPTION) {
+			saveRecords();
+			JOptionPane.showMessageDialog(null,
+				PluginServices.getText(this, "updatedInfo_msg_I")
+				+ layer.getRecordset().getSelection().cardinality() + " "
+				+ PluginServices.getText(this, "updatedInfo_msg_II"));
+			setChangedValues(false);
+			setSavingValues(false);
+		    }
+		} catch (ReadDriverException exception) {
+		    exception.printStackTrace();
+		    layerController.clearAll();
+		    setChangedValues(false);
+		    setSavingValues(false);
+		}
+	    }
+	}
+
+	private void saveRecords() throws ReadDriverException {
+	    int[] indexesofValuesChanged = layerController.getIndexesOfValuesChanged();
+	    String[] valuesChanged =
+		    layerController.getValuesChanged().values().toArray(new String[0]);
+
+	    for (int i=0; i<layer.getRecordset().getRowCount(); i++) {
+		if (layer.getRecordset().isSelected(i)) {
+		    ToggleEditing te = new ToggleEditing();
+		    boolean wasEditing = layer.isEditing();
+		    if (!wasEditing) {
+			te.startEditing(layer);
+		    }
+		    te.modifyValues(layer, i,
+			    indexesofValuesChanged,
+			    valuesChanged);
+		    if (!wasEditing) {
+			te.stopEditing(layer, false);
+		    }
+		}
+	    }
+	    layerController.read(getPosition());
+	}
+
     }
 
     @Override
