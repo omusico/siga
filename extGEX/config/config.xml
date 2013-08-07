@@ -58,8 +58,7 @@
 			<tool-bar name="SIGA_Tools" position="75">
 				<action-tool icon="images/queries.png" tooltip="Consultas" action-command="QueriesExtension" position="1"/>
 			</tool-bar>
-			<menu text="SIGA" position="30599" is_separator="true"/>			
-			<menu text="SIGA/Consultas e Informes" action-command="QueriesExtension" position="30600"/>
+			<menu text="SIGA/Consultas e Informes" action-command="QueriesExtension" position="30300"/>
 		</extension>
 		<extension class-name="es.icarto.gvsig.extgex.LocatorByPKExtension" description="PK_LOCATOR" active="true">
 			<menu text="SIGA" position="30699" is_separator="true"/>			
