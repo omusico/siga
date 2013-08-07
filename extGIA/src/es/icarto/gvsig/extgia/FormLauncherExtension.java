@@ -2,7 +2,6 @@ package es.icarto.gvsig.extgia;
 
 import javax.swing.JOptionPane;
 
-import com.iver.andami.PluginServices;
 import com.iver.andami.plugins.Extension;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
@@ -30,18 +29,6 @@ public class FormLauncherExtension extends Extension {
 	return toc.getLayerByName(actionCommand);
     }
 
-    protected void registerIcons() {
-	PluginServices.getIconTheme().registerDefault(
-		"extgia-openform",
-		this.getClass().getClassLoader()
-		.getResource("images/extgia-openform.png"));
-    }
-
-    @Override
-    public void initialize() {
-	registerIcons();
-    }
-
     @Override
     public boolean isEnabled() {
 	return true;
@@ -50,6 +37,12 @@ public class FormLauncherExtension extends Extension {
     @Override
     public boolean isVisible() {
 	return true;
+    }
+
+    @Override
+    public void initialize() {
+	// TODO Auto-generated method stub
+
     }
 
 }
