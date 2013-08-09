@@ -465,20 +465,20 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	    String[] valuesChanged =
 		    layerController.getValuesChanged().values().toArray(new String[0]);
 
+	    ToggleEditing te = new ToggleEditing();
+	    boolean wasEditing = layer.isEditing();
+	    if (!wasEditing) {
+		te.startEditing(layer);
+	    }
 	    for (int i=0; i<layer.getRecordset().getRowCount(); i++) {
 		if (layer.getRecordset().isSelected(i)) {
-		    ToggleEditing te = new ToggleEditing();
-		    boolean wasEditing = layer.isEditing();
-		    if (!wasEditing) {
-			te.startEditing(layer);
-		    }
 		    te.modifyValues(layer, i,
 			    indexesofValuesChanged,
 			    valuesChanged);
-		    if (!wasEditing) {
-			te.stopEditing(layer, false);
-		    }
 		}
+	    }
+	    if (!wasEditing) {
+		te.stopEditing(layer, false);
 	    }
 	    layerController.read(getPosition());
 	}
