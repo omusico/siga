@@ -503,6 +503,8 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	    addReconocimientosBatchButton.removeActionListener(addReconocimientosBatchListener);
 	}
 
+	saveRecordsBatchButton.removeActionListener(saveRecordsBatchListener);
+
 	super.removeListeners();
     }
 
