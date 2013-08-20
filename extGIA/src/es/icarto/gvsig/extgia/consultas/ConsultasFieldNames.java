@@ -11,6 +11,8 @@ import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.EnlacesCaracter
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.FirmeCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.IsletasCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.JuntasCaracteristicasReport;
+import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.ObrasDesagueCaracteristicasReport;
+import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.ObrasPasoCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.PasosMedianaCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.SenhalizacionVerticalCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.TaludesCaracteristicasReport;
@@ -77,6 +79,13 @@ public class ConsultasFieldNames {
 	    return "distinct(id_firme), fecha_inauguracion, fecha_apertura, unidad_constructiva, " +
 	    "pk_inicial, pk_final, explanada_cm, zahorra_artificial_cm, suelo_cemento_cm, " +
 	    "grava_cemento_cm, mbc_base_cm, mbc_intermedia_cm, mbc_rodadura_cm, observaciones";
+	case Obras_Paso:
+	    return "distinct(id_obra_paso), tr.item, tv.item, nv.item, pk, codigo, nombre," +
+	    "fecha_construccion, tipo_obra, tipologia, longitud, anchura, altura," +
+	    "luz_maxima, n_vanos, n_pilas, n_carriles, galibo_h, galibo_v, observaciones";
+	case Obras_Desague:
+	    return "distinct(id_obra_desague), tr.item, tv.item, nv.item, pk, tipologia, material, " +
+	    "objeto, fecha_construccion, n_elementos, seccion, longitud, observaciones";
 	}
 	return null;
     }
@@ -105,6 +114,10 @@ public class ConsultasFieldNames {
 	    return vallaCierreCSVFieldNames();
 	case Firme:
 	    return firmeCSVFieldNames();
+	case Obras_Paso:
+	    return obrasPasoCSVFieldNames();
+	case Obras_Desague:
+	    return obrasDesagueCSVFieldNames();
 	}
 	return null;
     }
@@ -397,6 +410,54 @@ public class ConsultasFieldNames {
 		"observaciones as \"Observaciones\"";
     }
 
+    private static String obrasPasoCSVFieldNames() {
+	return "distinct(el.id_obra_paso) as \"ID Obra Paso\"," +
+		"fecha_actualizacion as \"Fecha Actualización\"," +
+		localizationCSVFieldNames() +
+		"pk as \"PK\"," +
+		"ramal as \"Ramal\"," +
+		"st.item as \"Sentido\"," +
+		"direccion as \"Dirección\"," +
+		"mu.item as \"Municipio\"," +
+		"codigo as \"Código\"," +
+		"nombre as \"Nombre\"," +
+		"fecha_construccion as \"Fecha construcción\"," +
+		"tipo_obra as \"Tipo\"," +
+		"utm_x as \"Coordenada X (UTM)\"," +
+		"utm_y as \"Coordenada Y (UTM)\"," +
+		"utm_z as \"Cota (UTM)\"," +
+		"tipologia as \"Tipología\"," +
+		"longitud as \"Longitud (m)\"," +
+		"anchura as \"Anchura (m)\"," +
+		"altura as \"Altura (m)\"," +
+		"luz_maxima as \"Luz Máxima (m)\"," +
+		"n_vanos as \"Nº vanos\"," +
+		"n_pilas as \"Nº pilas\"," +
+		"n_carriles as \"Nº carriles\"," +
+		"galibo_h as \"Gálibo H (m)\"," +
+		"galibo_v as \"Gálibo V (m)\"," +
+		"observaciones as \"Observaciones\"";
+    }
+
+    private static String obrasDesagueCSVFieldNames() {
+	return "distinct(el.id_obra_desague) as \"ID Obra Paso\"," +
+		"fecha_actualizacion as \"Fecha Actualización\"," +
+		localizationCSVFieldNames() +
+		"pk as \"PK\"," +
+		"ramal as \"Ramal\"," +
+		"st.item as \"Sentido\"," +
+		"direccion as \"Dirección\"," +
+		"mu.item as \"Municipio\"," +
+		"tipologia as \"Tipología\"," +
+		"material as \"Material\"," +
+		"objeto as \"Objeto\"," +
+		"fecha_construccion as \"Fecha construcción\"," +
+		"n_elementos as \"Nº elementos\"," +
+		"seccion as \"Sección (cm)\"," +
+		"longitud as \"Longitud (m)\"," +
+		"observaciones as \"Observaciones\"";
+    }
+
     public static void createCaracteristicasReport(String[] element, String outputFile,
 	    ResultSet rs, ConsultasFilters filters) {
 	switch (DBFieldNames.Elements.valueOf(element[0])) {
@@ -432,6 +493,12 @@ public class ConsultasFieldNames {
 	    break;
 	case Firme:
 	    new FirmeCaracteristicasReport(element[1], outputFile, rs, filters);
+	    break;
+	case Obras_Paso:
+	    new ObrasPasoCaracteristicasReport(element[1], outputFile, rs, filters);
+	    break;
+	case Obras_Desague:
+	    new ObrasDesagueCaracteristicasReport(element[1], outputFile, rs, filters);
 	    break;
 	}
     }
