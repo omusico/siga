@@ -5,7 +5,8 @@ public class DBFieldNames {
 
     public enum Elements {
 	Taludes, Isletas, Enlaces, Barrera_Rigida, Areas_Servicio, Areas_Descanso,
-	Juntas, Pasos_Mediana, Senhalizacion_Vertical, Valla_Cierre, Firme, Obras_Paso;
+	Juntas, Pasos_Mediana, Senhalizacion_Vertical, Valla_Cierre, Firme, Obras_Paso,
+	Obras_Desague;
     }
 
     public static String[] genericReconocimientoEstadoFields = {"n_inspeccion as \"Nº Inspección\"",
@@ -219,6 +220,10 @@ public class DBFieldNames {
     // OBRAS PASO
     public static final String OBRAS_PASO_LAYERNAME = "Obras_Paso";
     public static final String ID_OBRA_PASO = "id_obra_paso";
+
+    // OBRAS DESAGUE
+    public static final String OBRAS_DESAGUE_LAYERNAME = "Obras_Desague";
+    public static final String ID_OBRA_DESAGUE = "id_obra_desague";
 
     public static void setReconocimientoEstadoFields(String[] fields) {
 	reconocimientoEstadoFields = fields;

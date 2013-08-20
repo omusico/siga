@@ -31,6 +31,7 @@ import es.icarto.gvsig.extgia.forms.enlaces.EnlacesForm;
 import es.icarto.gvsig.extgia.forms.firme.FirmeForm;
 import es.icarto.gvsig.extgia.forms.isletas.IsletasForm;
 import es.icarto.gvsig.extgia.forms.juntas.JuntasForm;
+import es.icarto.gvsig.extgia.forms.obras_desague.ObrasDesagueForm;
 import es.icarto.gvsig.extgia.forms.obras_paso.ObrasPasoForm;
 import es.icarto.gvsig.extgia.forms.pasos_mediana.PasosMedianaForm;
 import es.icarto.gvsig.extgia.forms.senhalizacion_vertical.SenhalizacionVerticalForm;
@@ -40,8 +41,6 @@ import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 
 public class LaunchGIAForms {
-
-
 
     public static void callFormDependingOfLayer(String layerName, boolean editing) {
 	final TOCLayerManager toc = new TOCLayerManager();
@@ -158,6 +157,15 @@ public class LaunchGIAForms {
 	    }
 	    if (editing) {
 		obrasPasoForm.last();
+	    }
+	    break;
+	case Obras_Desague:
+	    final ObrasDesagueForm obrasDesagueForm = new ObrasDesagueForm(layer);
+	    if (obrasDesagueForm.init()) {
+		PluginServices.getMDIManager().addWindow(obrasDesagueForm);
+	    }
+	    if (editing) {
+		obrasDesagueForm.last();
 	    }
 	    break;
 	}

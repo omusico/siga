@@ -18,10 +18,11 @@
 			<menu text="SIGA/Elementos Inventario/Isletas" action-command="Isletas" position="30404"/>
 			<menu text="SIGA/Elementos Inventario/Juntas" action-command="Juntas" position="30405"/>
 			<menu text="SIGA/Elementos Inventario/Obras Paso" action-command="Obras_Paso" position="30406"/>
-			<menu text="SIGA/Elementos Inventario/Pasos Mediana" action-command="Pasos_Mediana" position="30407"/>
-			<menu text="SIGA/Elementos Inventario/Señalización Vertical" action-command="Senhalizacion_Vertical" position="30408"/>
-			<menu text="SIGA/Elementos Inventario/Taludes" action-command="Taludes" position="30409"/>
-			<menu text="SIGA/Elementos Inventario/Valla Cierre" action-command="Valla_Cierre" position="30410"/>
+			<menu text="SIGA/Elementos Inventario/Obras Desagüe" action-command="Obras_Desague" position="30407"/>
+			<menu text="SIGA/Elementos Inventario/Pasos Mediana" action-command="Pasos_Mediana" position="30408"/>
+			<menu text="SIGA/Elementos Inventario/Señalización Vertical" action-command="Senhalizacion_Vertical" position="30409"/>
+			<menu text="SIGA/Elementos Inventario/Taludes" action-command="Taludes" position="30410"/>
+			<menu text="SIGA/Elementos Inventario/Valla Cierre" action-command="Valla_Cierre" position="30411"/>
 		</extension>
 		
 		<extension class-name="es.icarto.gvsig.extgia.ToolBarFormLauncherExtension" description="toolbar_form_launcher" active="true">
