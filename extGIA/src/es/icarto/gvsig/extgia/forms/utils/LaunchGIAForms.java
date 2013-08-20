@@ -31,6 +31,7 @@ import es.icarto.gvsig.extgia.forms.enlaces.EnlacesForm;
 import es.icarto.gvsig.extgia.forms.firme.FirmeForm;
 import es.icarto.gvsig.extgia.forms.isletas.IsletasForm;
 import es.icarto.gvsig.extgia.forms.juntas.JuntasForm;
+import es.icarto.gvsig.extgia.forms.obras_paso.ObrasPasoForm;
 import es.icarto.gvsig.extgia.forms.pasos_mediana.PasosMedianaForm;
 import es.icarto.gvsig.extgia.forms.senhalizacion_vertical.SenhalizacionVerticalForm;
 import es.icarto.gvsig.extgia.forms.taludes.TaludesForm;
@@ -148,6 +149,15 @@ public class LaunchGIAForms {
 	    }
 	    if (editing) {
 		firmeForm.last();
+	    }
+	    break;
+	case Obras_Paso:
+	    final ObrasPasoForm obrasPasoForm = new ObrasPasoForm(layer);
+	    if (obrasPasoForm.init()) {
+		PluginServices.getMDIManager().addWindow(obrasPasoForm);
+	    }
+	    if (editing) {
+		obrasPasoForm.last();
 	    }
 	    break;
 	}
