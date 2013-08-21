@@ -299,7 +299,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	}else if (tipoConsulta.getSelectedItem().toString().equals("Características")) {
 	    fields = ConsultasFieldNames.getPDFCaracteristicasFieldNames(element[0]);
 	    tipo = CARACTERISTICAS;
-	}else if (tipoConsulta.getSelectedItem().toString().equals("Trabajos (Agregados)")) {
+	}else if (tipoConsulta.getSelectedItem().toString().equals("Trabajos Agrupados")) {
 	    tipo = TRABAJOS_AGREGADOS;
 	}
 
