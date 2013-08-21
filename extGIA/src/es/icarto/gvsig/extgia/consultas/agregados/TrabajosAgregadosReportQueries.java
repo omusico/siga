@@ -8,11 +8,29 @@ public class TrabajosAgregadosReportQueries {
 	this.element = element;
 
     }
+
     public String getBaseQuery() {
+	if (element.equalsIgnoreCase("isletas")) {
+	    return getIsletasBaseQuery();
+	}else if (element.equalsIgnoreCase("taludes")) {
+	    return getTaludesBaseQuery();
+	}
+	return null;
+    }
+
+    public String getTaludesBaseQuery() {
 	return "SELECT a.id_talud, pk_inicial, pk_final, c.item, medicion_audasa " +
 		"FROM audasa_extgia." + element + "_trabajos a, audasa_extgia." + element +
 		" b, " + "audasa_extgia_dominios.sentido c " +
 		"WHERE a.id_talud = b.id_talud AND b.sentido = c.id " +
+		"AND unidad = '";
+    }
+
+    public String getIsletasBaseQuery() {
+	return "SELECT a.id_isleta, pk_inicial, pk_final, c.item, medicion_audasa " +
+		"FROM audasa_extgia." + element + "_trabajos a, audasa_extgia." + element +
+		" b, " + "audasa_extgia_dominios.sentido c " +
+		"WHERE a.id_isleta = b.id_isleta AND b.sentido = c.id " +
 		"AND unidad = '";
     }
 
