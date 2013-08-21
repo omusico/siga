@@ -129,6 +129,10 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	HashMap<String, JComponent> widgetsVector = AbeilleParser.getWidgetsFromContainer(form);
 
 	elemento = (JComboBox) widgetsVector.get("elemento");
+	KeyValue blankValue = new KeyValue(" ", " ");
+	elemento.addItem(blankValue);
+	KeyValue allItemsValue = new KeyValue("todos", "-TODOS-");
+	elemento.addItem(allItemsValue);
 	setComboBoxValues(elemento);
 	tipoConsulta = (JComboBox) widgetsVector.get("tipo_consulta");
 	setComboBoxValues(tipoConsulta);
