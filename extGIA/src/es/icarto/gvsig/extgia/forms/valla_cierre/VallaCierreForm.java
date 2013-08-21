@@ -290,4 +290,10 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
     public String getTrabajosFormFileName() {
 	return ABEILLE_TRABAJOS_FILENAME;
     }
+
+    @Override
+    protected boolean hasSentido() {
+	// TODO Auto-generated method stub
+	return false;
+    }
 }

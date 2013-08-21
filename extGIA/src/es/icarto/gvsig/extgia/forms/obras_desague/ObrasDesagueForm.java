@@ -215,4 +215,9 @@ public class ObrasDesagueForm extends AbstractFormWithLocationWidgets {
 	return "Obras Desague";
     }
 
+    @Override
+    protected boolean hasSentido() {
+	return true;
+    }
+
 }

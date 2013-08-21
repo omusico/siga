@@ -355,4 +355,9 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 	return ABEILLE_TRABAJOS_FILENAME;
     }
 
+    @Override
+    protected boolean hasSentido() {
+	return true;
+    }
+
 }

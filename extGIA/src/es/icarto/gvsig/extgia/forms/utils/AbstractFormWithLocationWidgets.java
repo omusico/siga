@@ -49,6 +49,8 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     private static final String NOMBRE_VIA = "nombre_via";
     private static final String NOMBRE_VIA_PF = "nombre_via_pf";
 
+    private static final String SENTIDO = "sentido";
+
     protected FormPanel form;
     protected FilesLinkButton filesLinkButton;
 
@@ -60,6 +62,8 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 
     private JComboBox tipoViaPFWidget;
     private JComboBox nombreViaPFWidget;
+
+    private JComboBox sentidoWidget;
 
     protected UpdateBaseContratistaListener updateBaseContratistaListener;
     protected UpdateTramoListener updateTramoListener;
@@ -145,6 +149,10 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 		updateNombreViaPFListener = new UpdateNombreViaPFListener();
 		tipoViaPFWidget.addActionListener(updateNombreViaPFListener);
 		nombreViaPFWidget = (JComboBox) widgets.get(NOMBRE_VIA_PF);
+	    }
+
+	    if (hasSentido()) {
+		sentidoWidget = (JComboBox) widgets.get(SENTIDO);
 	    }
 
 	    reconocimientoEstado = (JTable) widgets.get("reconocimiento_estado");
@@ -621,6 +629,11 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 		layerController.setValue(nombreViaPFWidget.getName(), "0");
 	    }
 	}
+	if (hasSentido()) {
+	    if (sentidoWidget.getSelectedItem().toString().isEmpty()) {
+		layerController.setValue(sentidoWidget.getName(), "0");
+	    }
+	}
 	return super.saveRecord();
     }
 
@@ -673,4 +686,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     public abstract boolean isSpecialCase();
 
     protected abstract String getBasicName();
+
+    protected abstract boolean hasSentido();
 }

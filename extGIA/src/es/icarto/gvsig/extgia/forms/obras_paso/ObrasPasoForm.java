@@ -214,4 +214,9 @@ public class ObrasPasoForm extends AbstractFormWithLocationWidgets {
 	return "Obras Paso";
     }
 
+    @Override
+    protected boolean hasSentido() {
+	return true;
+    }
+
 }

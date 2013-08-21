@@ -427,4 +427,9 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     public String getTrabajosFormFileName() {
 	return ABEILLE_TRABAJOS_FILENAME;
     }
+
+    @Override
+    protected boolean hasSentido() {
+	return true;
+    }
 }

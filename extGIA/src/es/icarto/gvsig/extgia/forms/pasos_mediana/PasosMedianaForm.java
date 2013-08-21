@@ -260,4 +260,10 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
 	return ABEILLE_TRABAJOS_FILENAME;
     }
 
+    @Override
+    protected boolean hasSentido() {
+	// TODO Auto-generated method stub
+	return false;
+    }
+
 }

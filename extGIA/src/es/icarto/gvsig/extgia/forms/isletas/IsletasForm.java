@@ -315,4 +315,9 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 	return ABEILLE_TRABAJOS_FILENAME;
     }
 
+    @Override
+    protected boolean hasSentido() {
+	return true;
+    }
+
 }

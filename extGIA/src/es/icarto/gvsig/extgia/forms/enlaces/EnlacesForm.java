@@ -367,4 +367,10 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 	return null;
     }
 
+    @Override
+    protected boolean hasSentido() {
+	// TODO Auto-generated method stub
+	return false;
+    }
+
 }
