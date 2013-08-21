@@ -505,9 +505,9 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
 	if (!consultasFilters.getWhereClauseByLocationWidgets(false).isEmpty()) {
 	    if (tipo == CARACTERISTICAS) {
-		query = query + " WHERE " + elementId + " IN (SELECT " + elementId +
-			" FROM " + DBFieldNames.GIA_SCHEMA + "." + element +
-			consultasFilters.getWhereClauseByLocationWidgets(false) + ");";
+		//		query = query + " WHERE " + elementId + " IN (SELECT " + elementId +
+		//			" FROM " + DBFieldNames.GIA_SCHEMA + "." + element +
+		//			consultasFilters.getWhereClauseByLocationWidgets(false) + ");";
 	    }else {
 		query = query + " WHERE " + elementId + " IN (SELECT " + elementId +
 			" FROM " + DBFieldNames.GIA_SCHEMA + "." + element +
