@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
+import es.icarto.gvsig.extgia.utils.Utils;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 
@@ -111,7 +112,7 @@ public abstract class CSVTrabajosAgregadosReport {
 		rs.beforeFirst();
 		while (rs.next()) {
 		    for (int i=0; i<getColumnNames().length; i++) {
-			writer.append(rs.getString(i+1));
+			writer.append(Utils.writeValue(rs.getString(i+1)));
 			writer.append(CSV_SEPARATOR);
 		    }
 		    writer.append("\n");
@@ -124,7 +125,7 @@ public abstract class CSVTrabajosAgregadosReport {
 		}
 		if (rs.next()) {
 		    for (int i=0; i<rs.getMetaData().getColumnCount(); i++) {
-			writer.append(rs.getString(i+1));
+			writer.append(Utils.writeValue(rs.getString(i+1)));
 			writer.append(CSV_SEPARATOR);
 		    }
 		}

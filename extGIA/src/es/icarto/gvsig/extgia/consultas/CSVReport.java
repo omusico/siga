@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
+import es.icarto.gvsig.extgia.utils.Utils;
+
 public class CSVReport {
     private static final String CSV_SEPARATOR = "\t";
 
@@ -66,7 +68,7 @@ public class CSVReport {
 	rs.beforeFirst();
 	while (rs.next()) {
 	    for (int i=0; i<rsMetaData.getColumnCount(); i++) {
-		writer.append(rs.getString(i+1));
+		writer.append(Utils.writeValue(rs.getString(i+1)));
 		writer.append(CSV_SEPARATOR);
 	    }
 	    writer.append("\n");
