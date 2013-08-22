@@ -205,6 +205,12 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		return;
 	    }
 
+	    if (!isCheckingTrabajosAgregadosOK()) {
+		JOptionPane.showMessageDialog(null,
+			PluginServices.getText(this, "unavailableQuery_msg"));
+		return;
+	    }
+
 	    if (elemento.getSelectedItem().toString().equals("-TODOS-")) {
 		isReportOfSeveralElements = true;
 		JFileChooser fileChooser = new JFileChooser();
@@ -270,6 +276,19 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 			    PluginServices.getText(this, "unavailableQuery_msg"));
 		}
 	    }
+	}
+    }
+
+    private boolean isCheckingTrabajosAgregadosOK() {
+	if (tipoConsulta.getSelectedItem().toString().equals("Trabajos Agrupados")) {
+	    if (elemento.getSelectedItem().toString().equals("Taludes") ||
+		    elemento.getSelectedItem().toString().equals("Isletas")) {
+		return true;
+	    }else {
+		return false;
+	    }
+	}else {
+	    return true;
 	}
     }
 
