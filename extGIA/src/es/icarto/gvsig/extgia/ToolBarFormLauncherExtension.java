@@ -21,9 +21,11 @@ public class ToolBarFormLauncherExtension extends Extension {
     @Override
     public void execute(String actionCommand) {
 	TOCLayerManager toc = new TOCLayerManager();
-	FLyrVect layer = toc.getActiveLayer();
-	if (layer != null) {
-	    LaunchGIAForms.callFormDependingOfLayer(layer.getName(), false);
+	FLyrVect[] layers = toc.getActiveLayers();
+	for (FLyrVect layer : layers) {
+	    if (layer != null) {
+		LaunchGIAForms.callFormDependingOfLayer(layer.getName(), false);
+	    }
 	}
     }
 
