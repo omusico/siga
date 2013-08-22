@@ -337,7 +337,9 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	}else if (element[0].equals("Isletas")) {
 	    new CSVTrabajosAgregadosIsletasReport(outputFile, consultasFilters);
 	}
-	showOpenSingleReportDialog(outputFile);
+	JOptionPane.showMessageDialog(null,
+		PluginServices.getText(this, "csvReportGenerated_msg") +
+		outputFile);
     }
 
     private void createPdfReport(int tipo, String outputFile, String[] element,
