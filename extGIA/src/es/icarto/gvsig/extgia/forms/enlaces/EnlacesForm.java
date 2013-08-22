@@ -2,6 +2,10 @@ package es.icarto.gvsig.extgia.forms.enlaces;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 
 import javax.swing.JButton;
@@ -19,6 +23,7 @@ import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
+import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
 public class EnlacesForm extends AbstractFormWithLocationWidgets {
@@ -148,6 +153,34 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 	super.removeListeners();
 
 	DBFieldNames.setReconocimientoEstadoFields(DBFieldNames.genericReconocimientoEstadoFields);
+    }
+
+    @Override
+    protected boolean validationHasErrors() {
+	if (this.getFormController().getValuesChanged().containsKey("id_enlace")) {
+	    if (enlaceIDWidget.getText() != "") {
+		String query = "SELECT id_enlace FROM audasa_extgia.enlaces "
+			+ " WHERE id_enlace = '" + enlaceIDWidget.getText()
+			+ "';";
+		PreparedStatement statement = null;
+		Connection connection = DBSession.getCurrentSession()
+			.getJavaConnection();
+		try {
+		    statement = connection.prepareStatement(query);
+		    statement.execute();
+		    ResultSet rs = statement.getResultSet();
+		    if (rs.next()) {
+			JOptionPane.showMessageDialog(null,
+				"El ID está en uso, por favor, escoja otro.",
+				"ID en uso", JOptionPane.WARNING_MESSAGE);
+			return true;
+		    }
+		} catch (SQLException e) {
+		    e.printStackTrace();
+		}
+	    }
+	}
+	return super.validationHasErrors();
     }
 
     public class AddReconocimientoListener implements ActionListener {

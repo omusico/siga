@@ -3,14 +3,12 @@ package es.icarto.gvsig.extgia.forms.taludes;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -80,9 +78,9 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     }
 
     private void addNewButtonsToActionsToolBar() {
-	URL reportPath = this.getClass().getClassLoader()
-		.getResource("reports/taludes.jasper");
-	String extensionPath = reportPath.getPath().replace("reports/taludes.jasper", "");
+	//	URL reportPath = this.getClass().getClassLoader()
+	//		.getResource("reports/taludes.jasper");
+	//	String extensionPath = reportPath.getPath().replace("reports/taludes.jasper", "");
 	JPanel actionsToolBar = this.getActionsToolBar();
 
 	filesLinkButton = new FilesLinkButton(this, new FilesLinkData() {
@@ -117,30 +115,30 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	    hasJustOpened = false;
 	}
 
-	ntPrintButton = new NavTableComponentsPrintButton();
-	JButton printReportB = null;
-	if (!layer.isEditing()) {
-	    printReportB = ntPrintButton.getPrintButton(this, extensionPath, reportPath.getPath(),
-		    DBFieldNames.TALUDES_TABLENAME, DBFieldNames.ID_TALUD, taludIDWidget.getText());
-	    printReportB.setName("printButton");
-	}
-
-	if (printReportB != null) {
-	    for (int i=0; i<this.getActionsToolBar().getComponents().length; i++) {
-		if (getActionsToolBar().getComponents()[i].getName() != null) {
-		    if (getActionsToolBar().getComponents()[i].getName().equalsIgnoreCase("printButton")) {
-			this.getActionsToolBar().remove(getActionsToolBar().getComponents()[i]);
-			actionsToolBar.add(printReportB);
-			break;
-		    }
-		}
-	    }
-	    actionsToolBar.add(printReportB);
-	}
-
-	if (printReportB != null) {
-	    actionsToolBar.add(printReportB);
-	}
+	//	ntPrintButton = new NavTableComponentsPrintButton();
+	//	JButton printReportB = null;
+	//	if (!layer.isEditing()) {
+	//	    printReportB = ntPrintButton.getPrintButton(this, extensionPath, reportPath.getPath(),
+	//		    DBFieldNames.TALUDES_TABLENAME, DBFieldNames.ID_TALUD, taludIDWidget.getText());
+	//	    printReportB.setName("printButton");
+	//	}
+	//
+	//	if (printReportB != null) {
+	//	    for (int i=0; i<this.getActionsToolBar().getComponents().length; i++) {
+	//		if (getActionsToolBar().getComponents()[i].getName() != null) {
+	//		    if (getActionsToolBar().getComponents()[i].getName().equalsIgnoreCase("printButton")) {
+	//			this.getActionsToolBar().remove(getActionsToolBar().getComponents()[i]);
+	//			actionsToolBar.add(printReportB);
+	//			break;
+	//		    }
+	//		}
+	//	    }
+	//	    actionsToolBar.add(printReportB);
+	//	}
+	//
+	//	if (printReportB != null) {
+	//	    actionsToolBar.add(printReportB);
+	//	}
     }
 
     @Override
