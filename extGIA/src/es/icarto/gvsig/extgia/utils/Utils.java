@@ -9,6 +9,8 @@ public class Utils {
 	    return "Sí";
 	}else if (value.equalsIgnoreCase("f")) {
 	    return "No";
+	}else if (value.contains(".")) {
+	    return value.replace(".", ",");
 	}else {
 	    return value;
 	}

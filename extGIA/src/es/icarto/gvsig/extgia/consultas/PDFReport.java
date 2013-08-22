@@ -232,6 +232,11 @@ public abstract class PDFReport {
 			}else if (resultMap.getString(column).toString().equals("t")) {
 			    value = new Paragraph("Sí",
 				    cellBoldStyle);
+			}else if (resultMap.getString(column).toString().contains(".")) {
+			    value = new Paragraph(
+				    resultMap.getString(column).toString().replace(".", ","),
+				    cellBoldStyle);
+
 			}else {
 			    value = new Paragraph(resultMap
 				    .getString(column).toString(),

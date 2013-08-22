@@ -16,6 +16,7 @@ import com.lowagie.text.pdf.PdfPTable;
 
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.icarto.gvsig.extgia.consultas.PDFReport;
+import es.icarto.gvsig.extgia.utils.Utils;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public abstract class TrabajosAgregadosReport extends PDFReport {
@@ -204,8 +205,8 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
 	while (resultMap.next()) {
 	    for (int column = 1; column <= getColumnNames().length; column++) {
 		if (resultMap.getString(column) != null) {
-		    value = new Paragraph(resultMap
-			    .getString(column).toString(),
+		    value = new Paragraph(Utils.writeValue(resultMap
+			    .getString(column).toString()),
 			    cellBoldStyle);
 		} else {
 		    value = new Paragraph("");
