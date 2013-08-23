@@ -220,4 +220,9 @@ public class ObrasDesagueForm extends AbstractFormWithLocationWidgets {
 	return true;
     }
 
+    @Override
+    public String getElementID() {
+	return "id_obra_desague";
+    }
+
 }

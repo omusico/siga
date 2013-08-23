@@ -393,4 +393,9 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 	return true;
     }
 
+    @Override
+    public String getElementID() {
+	return "id_area_servicio";
+    }
+
 }

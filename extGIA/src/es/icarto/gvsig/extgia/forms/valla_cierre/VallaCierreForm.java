@@ -296,4 +296,9 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
 	// TODO Auto-generated method stub
 	return false;
     }
+
+    @Override
+    public String getElementID() {
+	return "id_valla_cierre";
+    }
 }

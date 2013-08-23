@@ -430,4 +430,9 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     protected boolean hasSentido() {
 	return true;
     }
+
+    @Override
+    public String getElementID() {
+	return "id_talud";
+    }
 }

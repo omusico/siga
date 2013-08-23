@@ -396,4 +396,9 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 	return true;
     }
 
+    @Override
+    public String getElementID() {
+	return "id_area_descanso";
+    }
+
 }

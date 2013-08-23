@@ -376,4 +376,9 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 	return true;
     }
 
+    @Override
+    public String getElementID() {
+	return "id_elemento_senhalizacion";
+    }
+
 }

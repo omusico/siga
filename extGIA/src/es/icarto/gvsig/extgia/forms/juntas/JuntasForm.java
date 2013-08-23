@@ -286,4 +286,9 @@ public class JuntasForm extends AbstractFormWithLocationWidgets {
     protected boolean hasSentido() {
 	return true;
     }
+
+    @Override
+    public String getElementID() {
+	return "id_junta";
+    }
 }

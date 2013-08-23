@@ -406,4 +406,9 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 	return false;
     }
 
+    @Override
+    public String getElementID() {
+	return "id_enlace";
+    }
+
 }

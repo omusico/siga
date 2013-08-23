@@ -323,4 +323,9 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 	return true;
     }
 
+    @Override
+    public String getElementID() {
+	return "id_barrera_rigida";
+    }
+
 }

@@ -320,4 +320,9 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 	return true;
     }
 
+    @Override
+    public String getElementID() {
+	return "id_isleta";
+    }
+
 }

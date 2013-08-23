@@ -439,6 +439,17 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 			return;
 		    }
 
+		    if (layerController.getValuesChanged().containsKey(getElementID())) {
+			JOptionPane.showMessageDialog(null,
+				"La actualización masiva no funciona en campos que forman parte del ID.",
+				"Cambios en el ID",
+				JOptionPane.WARNING_MESSAGE);
+			layerController.clearAll();
+			setChangedValues(false);
+			setSavingValues(false);
+			return;
+		    }
+
 		    Object[] options = {PluginServices.getText(this, "optionPane_yes"),
 			    PluginServices.getText(this, "optionPane_no")};
 		    int m = JOptionPane.showOptionDialog(
@@ -654,6 +665,8 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     }
 
     public abstract String getElement();
+
+    public abstract String getElementID();
 
     public abstract String getFormBodyPath();
 

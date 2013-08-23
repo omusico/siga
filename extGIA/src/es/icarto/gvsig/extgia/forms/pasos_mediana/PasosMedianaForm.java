@@ -299,4 +299,9 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
 	return false;
     }
 
+    @Override
+    public String getElementID() {
+	return "id_paso_mediana";
+    }
+
 }

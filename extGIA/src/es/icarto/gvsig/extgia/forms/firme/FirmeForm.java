@@ -310,4 +310,9 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 	return false;
     }
 
+    @Override
+    public String getElementID() {
+	return "id_firme";
+    }
+
 }
