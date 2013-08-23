@@ -118,7 +118,7 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
     // SOUTH
     // actions buttons
     protected JButton filterB = null;
-    protected JButton noFilterB = null;
+    //protected JButton noFilterB = null;
     protected JButton copyPreviousB = null;
     protected JButton copySelectedB = null;
     protected JButton zoomB = null;
@@ -137,7 +137,7 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
     private boolean isSomeNavTableFormOpen = false;
 
     protected EditionListener listener;
-    private PositionEventSource positionEventSource = new PositionEventSource();
+    private final PositionEventSource positionEventSource = new PositionEventSource();
 
     private JPanel actionsToolBar;
     private JPanel optionsPanel;
@@ -170,7 +170,7 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
     public AbstractNavTable(SelectableDataSource recordset, String tableName) {
 	this(tableName);
     }
-    
+
     public AbstractNavTable(String tableName) {
 	super();
 	this.dataName = tableName;
@@ -217,30 +217,30 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
 
 	initGUI();
 	initWidgets();
-	
+
 	refreshGUI();
 	super.repaint();
 	super.setVisible(true);
 	setOpenNavTableForm(true);
 	setFocusCycleRoot(true);
-	
+
 	setLayerListeners();
 	return true;
     }
-    
+
     /**
      * In NavTable it will get the attribute names from the layer and
      * set it on the left column of the table. On AbstractForm it will
      * initialize the widget vector from the Abeille file
      */
     protected abstract void initWidgets();
-    
+
     protected void initGUI() {
-    	MigLayout thisLayout = new MigLayout("inset 0, align center", "[grow]","[][grow][]");
-    	this.setLayout(thisLayout);
-    	this.add(getNorthPanel(), "shrink, wrap, align center");
-    	this.add(getCenterPanel(), "shrink, growx, growy, wrap");
-    	this.add(getSouthPanel(), "shrink, align center");
+	MigLayout thisLayout = new MigLayout("inset 0, align center", "[grow]","[][grow][]");
+	this.setLayout(thisLayout);
+	this.add(getNorthPanel(), "shrink, wrap, align center");
+	this.add(getCenterPanel(), "shrink, growx, growy, wrap");
+	this.add(getSouthPanel(), "shrink, align center");
     }
 
     protected boolean initController() {
@@ -460,10 +460,10 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
 	extensionPoints.add(NAVTABLE_ACTIONS_TOOLBAR, "button-enable-filter",
 		filterB);
 
-	noFilterB = getNavTableButton(noFilterB, "/nofilter.png",
-		"noFilterTooltip");
-	extensionPoints.add(NAVTABLE_ACTIONS_TOOLBAR, "button-disable-filter",
-		noFilterB);
+	//	noFilterB = getNavTableButton(noFilterB, "/nofilter.png",
+	//		"noFilterTooltip");
+	//	extensionPoints.add(NAVTABLE_ACTIONS_TOOLBAR, "button-disable-filter",
+	//		noFilterB);
 
 	copySelectedB = getNavTableButton(copySelectedB, "/copy-selected.png",
 		"copySelectedButtonTooltip");
@@ -801,10 +801,10 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
 	if (windowInfo == null) {
 	    windowInfo = new WindowInfo(WindowInfo.MODELESSDIALOG
 		    | WindowInfo.PALETTE | WindowInfo.RESIZABLE);
-	    
+
 	    windowInfo.setTitle("NavTable: " + dataName);
 	    Dimension dim = getPreferredSize();
-	    // To calculate the maximum size of a form we take the size of the 
+	    // To calculate the maximum size of a form we take the size of the
 	    // main frame minus a "magic number" for the menus, toolbar, state bar
 	    // Take into account that in edition mode there is less available space
 	    MDIFrame a = (MDIFrame) PluginServices.getMainFrame();
@@ -823,7 +823,7 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
 	    } else {
 		width = new Double(dim.getWidth()).intValue();
 	    }
-	    
+
 	    // getPreferredSize doesn't take into account the borders and other stuff
 	    // introduced by Andami, neither scroll bars so we must increase the "preferred"
 	    // dimensions
@@ -890,6 +890,7 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
 	    zoomB.setEnabled(navEnabled);
 	    selectionB.setEnabled(navEnabled);
 	    setIconAndPositionBackgroundForSelection();
+	    setIconBackgroundForFilter();
 	    enableSaveButton(navEnabled);
 	    removeB.setEnabled(navEnabled);
 
@@ -943,6 +944,20 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
 	}
     }
 
+    private void setIconBackgroundForFilter() {
+	try {
+	    if (layer.getRecordset().getSelection().isEmpty()) {
+		ImageIcon imagenFilter = getIcon("/filter.png");
+		filterB.setIcon(imagenFilter);
+	    }else {
+		ImageIcon imagenNoFilter = getIcon("/nofilter.png");
+		filterB.setIcon(imagenNoFilter);
+	    }
+	} catch (ReadDriverException e) {
+	    e.printStackTrace();
+	}
+    }
+
     protected boolean isSomeRowToWorkOn() {
 	if (onlySelectedCB == null) {
 	    return false;
@@ -969,7 +984,7 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
 	    posNumber = getPosition();
 	} finally {
 	    showWarning();
-	    //user will set a 1-based index to navigate through layer, 
+	    //user will set a 1-based index to navigate through layer,
 	    // so we need to adapt it to currentPosition (a zero-based index)
 	    setPosition(posNumber-1);
 	}
@@ -1044,7 +1059,7 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
 	}
 
 	if (getRecordset() == null) {
-	    // If there is an error on the recordset of the layer 
+	    // If there is an error on the recordset of the layer
 	    // do nothing.
 	    return;
 	}
@@ -1079,12 +1094,20 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
 	    }
 	    refreshGUI();
 	} else if (e.getSource() == filterB) {
-	    FiltroExtension fe = new FiltroExtension();
-	    fe.initialize();
-	    fe.setDatasource(getRecordset(), dataName);
-	    fe.execute("FILTER_DATASOURCE");
-	} else if (e.getSource() == noFilterB) {
-	    clearSelection();
+	    try {
+		if (layer.getRecordset().getSelection().isEmpty()) {
+		    FiltroExtension fe = new FiltroExtension();
+		    fe.initialize();
+		    fe.setDatasource(getRecordset(), dataName);
+		    fe.execute("FILTER_DATASOURCE");
+		}else {
+		    clearSelection();
+		}
+	    } catch (ReadDriverException e1) {
+		e1.printStackTrace();
+	    }
+	    //	} else if (e.getSource() == noFilterB) {
+	    //	    clearSelection();
 	} else if (e.getSource() == nextB) {
 	    next();
 	} else if (e.getSource() == lastB) {
@@ -1221,12 +1244,12 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
     public abstract boolean isSavingValues();
 
     public SelectableDataSource getRecordset() {
-        try {
-            return layer.getSource().getRecordset();
-        } catch (ReadDriverException e) {
-            e.printStackTrace();
-            return null;
-        }
+	try {
+	    return layer.getSource().getRecordset();
+	} catch (ReadDriverException e) {
+	    e.printStackTrace();
+	    return null;
+	}
     }
 
     @Override
