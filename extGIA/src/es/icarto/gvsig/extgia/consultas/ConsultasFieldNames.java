@@ -81,8 +81,8 @@ public class ConsultasFieldNames {
 	    "grava_cemento_cm, mbc_base_cm, mbc_intermedia_cm, mbc_rodadura_cm, observaciones";
 	case Obras_Paso:
 	    return "distinct(id_obra_paso), tr.item, tv.item, nv.item, pk, codigo, nombre," +
-	    "fecha_construccion, tipo_obra, tipologia, longitud, anchura, altura," +
-	    "luz_maxima, n_vanos, n_pilas, n_carriles, galibo_h, galibo_v, observaciones";
+	    "tipo_obra, tipologia, longitud, anchura, altura," +
+	    "galibo_v_c, galibo_v_d, observaciones";
 	case Obras_Desague:
 	    return "distinct(id_obra_desague), tr.item, tv.item, nv.item, pk, tipologia, material, " +
 	    "objeto, fecha_construccion, n_elementos, seccion, longitud, observaciones";
@@ -423,10 +423,10 @@ public class ConsultasFieldNames {
 		"nombre as \"Nombre\"," +
 		"fecha_construccion as \"Fecha construcción\"," +
 		"tipo_obra as \"Tipo\"," +
+		"tipologia as \"Tipología\"," +
 		"utm_x as \"Coordenada X (UTM)\"," +
 		"utm_y as \"Coordenada Y (UTM)\"," +
 		"utm_z as \"Cota (UTM)\"," +
-		"tipologia as \"Tipología\"," +
 		"longitud as \"Longitud (m)\"," +
 		"anchura as \"Anchura (m)\"," +
 		"altura as \"Altura (m)\"," +
@@ -434,8 +434,8 @@ public class ConsultasFieldNames {
 		"n_vanos as \"Nº vanos\"," +
 		"n_pilas as \"Nº pilas\"," +
 		"n_carriles as \"Nº carriles\"," +
-		"galibo_h as \"Gálibo H (m)\"," +
-		"galibo_v as \"Gálibo V (m)\"," +
+		"galibo_v_c as \"Gálibo V Cre. (m)\"," +
+		"galibo_v_d as \"Gálibo V Dec. (m)\"," +
 		"observaciones as \"Observaciones\"";
     }
 
