@@ -20,6 +20,7 @@ import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
 import com.lowagie.text.HeaderFooter;
 import com.lowagie.text.Image;
+import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
@@ -65,7 +66,7 @@ public class Report {
 	Image image = null;
 	try {
 	    image = Image
-	    .getInstance("gvSIG/extensiones/es.icarto.gvsig.extgex/images/logo_audasa.gif");
+		    .getInstance("gvSIG/extensiones/es.icarto.gvsig.extgex/images/logo_audasa.gif");
 	    image.scalePercent((float) 15.00);
 	    image.setAbsolutePosition(0, 0);
 	    image.setAlignment(Chunk.ALIGN_RIGHT);
@@ -359,6 +360,7 @@ public class Report {
     public void writeRtfReport(String fileName,
 	    ArrayList<ResultTableModel> resultMap, String[] filters) {
 	Document document = new Document();
+	document.setPageSize(PageSize.A4.rotate());
 	RtfWriter2 writer;
 	try {
 	    // Open RTF file and prepare it to write on
@@ -383,6 +385,7 @@ public class Report {
     public void writePdfReport(String fileName,
 	    ArrayList<ResultTableModel> resultMap, String[] filters) {
 	Document document = new Document();
+	document.setPageSize(PageSize.A4.rotate());
 	try {
 	    PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(fileName));
 	    writer.setPageEvent(new MyPageEvent(writer, document, resultMap));
