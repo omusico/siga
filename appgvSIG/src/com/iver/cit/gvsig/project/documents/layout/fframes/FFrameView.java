@@ -75,7 +75,6 @@ import com.iver.cit.gvsig.fmap.layers.LegendChangedEvent;
 import com.iver.cit.gvsig.fmap.layers.XMLException;
 import com.iver.cit.gvsig.fmap.rendering.LegendListener;
 import com.iver.cit.gvsig.project.Project;
-import com.iver.cit.gvsig.project.documents.exceptions.OpenException;
 import com.iver.cit.gvsig.project.documents.exceptions.SaveException;
 import com.iver.cit.gvsig.project.documents.layout.FLayoutUtilities;
 import com.iver.cit.gvsig.project.documents.layout.LayoutControl;
@@ -93,7 +92,7 @@ import com.iver.utiles.XMLEntity;
  * @author Vicente Caballero Navarro
  */
 public class FFrameView extends FFrame implements ViewPortListener,
-    LegendListener, IFFrameUseProject, IFFrameUseFMap {
+LegendListener, IFFrameUseProject, IFFrameUseFMap {
     //private static Logger logger = Logger.getLogger(FFrameView.class.getName());
     public static final int PRESENTACION = 0;
     public static final int BORRADOR = 1;
@@ -112,17 +111,17 @@ public class FFrameView extends FFrame implements ViewPortListener,
     private AffineTransform at = null;
     protected Project project = null;
     private double scaleAnt;
-	private boolean refresh_=false;
-	private Point origin;
-	private Point2D p1;
-	private Point2D p2;
-	private IFFrame grid;
-	private boolean showGrid=false;
-	/**
+    private boolean refresh_=false;
+    private Point origin;
+    private Point2D p1;
+    private Point2D p2;
+    private IFFrame grid;
+    private boolean showGrid=false;
+    /**
      * Creates a new FFrameView object.
      */
     public FFrameView() {
-        num++;
+	num++;
     }
 
     /**
@@ -130,28 +129,29 @@ public class FFrameView extends FFrame implements ViewPortListener,
      *
      * @return Descripción.
      */
+    @Override
     public String toString() {
-        if (getView() == null) {
-            return "FFrameView " + num + ": " + "Vacio";
-        }
+	if (getView() == null) {
+	    return "FFrameView " + num + ": " + "Vacio";
+	}
 
-        return "FFrameView " + num + ": " + getView().getName();
+	return "FFrameView " + num + ": " + getView().getName();
     }
 
-    
+
     private void setRefresh(boolean b) {
-//    	System.out.println("################### SET REFRESH = " + b + " (" +
-//    			this.getName()
-//    			+ ")");
-//    	Thread.dumpStack();
-    	refresh_ = b;
+	//    	System.out.println("################### SET REFRESH = " + b + " (" +
+	//    			this.getName()
+	//    			+ ")");
+	//    	Thread.dumpStack();
+	refresh_ = b;
     }
-    
+
     private boolean getRefresh() {
-//    	System.out.println("################### GET REFRESH = " + refresh_ + " (" +
-//    			this.getName()
-//    			+ ")");
-    	return refresh_;
+	//    	System.out.println("################### GET REFRESH = " + refresh_ + " (" +
+	//    			this.getName()
+	//    			+ ")");
+	return refresh_;
     }
     /**
      * Rellena la escala de la vista que contiene el fframe.
@@ -159,7 +159,7 @@ public class FFrameView extends FFrame implements ViewPortListener,
      * @param d escala de la vista.
      */
     public void setScale(double d) {
-        m_Scale = d;
+	m_Scale = d;
     }
 
     /**
@@ -168,11 +168,11 @@ public class FFrameView extends FFrame implements ViewPortListener,
      * @param r Rectángulo a ocupar por el FFrameView.
      */
     public void setNewExtent(Rectangle2D r) {
-        getMapContext().getViewPort().setExtent(r);
-        setRefresh(true);
-        m_Scale = FLayoutUtilities.getScaleView(getMapContext().getViewPort(),
-                getBoundBox().width,
-                getBoundingBox(null).width / getBoundBox().width);
+	getMapContext().getViewPort().setExtent(r);
+	setRefresh(true);
+	m_Scale = FLayoutUtilities.getScaleView(getMapContext().getViewPort(),
+		getBoundBox().width,
+		getBoundingBox(null).width / getBoundBox().width);
     }
 
     /**
@@ -182,7 +182,7 @@ public class FFrameView extends FFrame implements ViewPortListener,
      * @return FMap.
      */
     public MapContext getMapContext() {
-    	return m_fmap;
+	return m_fmap;
     }
 
     /**
@@ -191,7 +191,7 @@ public class FFrameView extends FFrame implements ViewPortListener,
      * @param q entero que representa la calidad a aplicar.
      */
     public void setQuality(int q) {
-        m_quality = q;
+	m_quality = q;
     }
 
     /**
@@ -200,7 +200,7 @@ public class FFrameView extends FFrame implements ViewPortListener,
      * @return tipo de calidad selccionada.
      */
     public int getQuality() {
-        return m_quality;
+	return m_quality;
     }
 
     /**
@@ -209,7 +209,7 @@ public class FFrameView extends FFrame implements ViewPortListener,
      * @return forma que se actualiza la vista.
      */
     public int getViewing() {
-        return m_viewing;
+	return m_viewing;
     }
 
     /**
@@ -219,7 +219,7 @@ public class FFrameView extends FFrame implements ViewPortListener,
      * @param v entero que representa la forma de actualizar la vista.
      */
     public void setViewing(int v) {
-        m_viewing = v;
+	m_viewing = v;
     }
 
     /**
@@ -229,73 +229,73 @@ public class FFrameView extends FFrame implements ViewPortListener,
      * @param v Modelo de la vista.
      */
     public void setView(ProjectView v) {
-    	view=v;
-    	ViewPort vp =null;
-    	if (getMapContext()!=null){
-        	vp=getMapContext().getViewPort();
-        }else{
-        	vp = v.getMapContext().getViewPort().cloneViewPort();
-        }
-        vp.setImageSize(new Dimension((int) getBoundingBox(null).width,
-                (int) getBoundingBox(null).height));
+	view=v;
+	ViewPort vp =null;
+	if (getMapContext()!=null){
+	    vp=getMapContext().getViewPort();
+	}else{
+	    vp = v.getMapContext().getViewPort().cloneViewPort();
+	}
+	vp.setImageSize(new Dimension((int) getBoundingBox(null).width,
+		(int) getBoundingBox(null).height));
 
-        if (m_bLinked) {
-            if (getTypeScale() == AUTOMATICO) {
-                m_fmap = v.getMapContext().createNewFMap(v.getMapContext()
-                                                          .getViewPort()
-                                                          .cloneViewPort());
-                // FJP: Nuevo para que se vean los graficos                
-                m_fmap.setGraphicsLayer(v.getMapContext().getGraphicsLayer());
-                // FJP: Fin nuevo
-                m_fmap.getViewPort().setImageSize(new Dimension(
-                        (int) getBoundingBox(null).width,
-                        (int) getBoundingBox(null).height));
-                v.getMapContext().getViewPort().addViewPortListener(this);
-                v.getMapContext().addLayerListener(this);
-            } else if (getTypeScale() == CONSTANTE) {
-            	m_fmap = v.getMapContext().createNewFMap(vp);
-                // FJP: Nuevo para que se vean los graficos                
-                m_fmap.setGraphicsLayer(v.getMapContext().getGraphicsLayer());
-                // FJP: Fin nuevo            	
-            	vp.setExtent(getNewExtent(getScale()));
-            	v.getMapContext().getViewPort().addViewPortListener(this);
-                v.getMapContext().addLayerListener(this);
-            } else if (getTypeScale() == MANUAL) {
-                m_fmap = v.getMapContext().createNewFMap(vp);
-                // FJP: Nuevo para que se vean los graficos                
-                m_fmap.setGraphicsLayer(v.getMapContext().getGraphicsLayer());
-                // FJP: Fin nuevo
-                
-                vp.setExtent(getNewExtent(getScale()));
-                v.getMapContext().getViewPort().addViewPortListener(this);
-                v.getMapContext().addLayerListener(this);
-            }
-        } else if (!m_bLinked) {
-            try {
-                if (getTypeScale() == AUTOMATICO) {
-                    m_fmap = v.getMapContext().cloneFMap(); //(v.getMapContext().getViewPort().cloneViewPort());
-                    m_fmap.setViewPort(v.getMapContext().getViewPort()
-                                        .cloneViewPort());
-                    m_fmap.getViewPort().setImageSize(new Dimension(
-                            (int) getBoundingBox(null).width,
-                            (int) getBoundingBox(null).height));
-                    v.getMapContext().getViewPort().addViewPortListener(this);
-                } else if (getTypeScale() == CONSTANTE) {
-                	m_fmap = v.getMapContext().cloneFMap();
-                	vp.setExtent(getNewExtent(getScale()));
-                    m_fmap.setViewPort(vp);
-                     v.getMapContext().getViewPort().addViewPortListener(this);
-                } else if (getTypeScale() == MANUAL) {
-                    m_fmap = v.getMapContext().cloneFMap();
-                    vp.setExtent(getNewExtent(getScale()));
-                    m_fmap.setViewPort(vp);
-                    v.getMapContext().getViewPort().addViewPortListener(this);
-                }
-            } catch (XMLException e1) {
-                NotificationManager.addError("Cuando se añade una vista al Layout",
-                    e1);
-            }
-        }
+	if (m_bLinked) {
+	    if (getTypeScale() == AUTOMATICO) {
+		m_fmap = v.getMapContext().createNewFMap(v.getMapContext()
+			.getViewPort()
+			.cloneViewPort());
+		// FJP: Nuevo para que se vean los graficos
+		m_fmap.setGraphicsLayer(v.getMapContext().getGraphicsLayer());
+		// FJP: Fin nuevo
+		m_fmap.getViewPort().setImageSize(new Dimension(
+			(int) getBoundingBox(null).width,
+			(int) getBoundingBox(null).height));
+		v.getMapContext().getViewPort().addViewPortListener(this);
+		v.getMapContext().addLayerListener(this);
+	    } else if (getTypeScale() == CONSTANTE) {
+		m_fmap = v.getMapContext().createNewFMap(vp);
+		// FJP: Nuevo para que se vean los graficos
+		m_fmap.setGraphicsLayer(v.getMapContext().getGraphicsLayer());
+		// FJP: Fin nuevo
+		vp.setExtent(getNewExtent(getScale()));
+		v.getMapContext().getViewPort().addViewPortListener(this);
+		v.getMapContext().addLayerListener(this);
+	    } else if (getTypeScale() == MANUAL) {
+		m_fmap = v.getMapContext().createNewFMap(vp);
+		// FJP: Nuevo para que se vean los graficos
+		m_fmap.setGraphicsLayer(v.getMapContext().getGraphicsLayer());
+		// FJP: Fin nuevo
+
+		vp.setExtent(getNewExtent(getScale()));
+		v.getMapContext().getViewPort().addViewPortListener(this);
+		v.getMapContext().addLayerListener(this);
+	    }
+	} else if (!m_bLinked) {
+	    try {
+		if (getTypeScale() == AUTOMATICO) {
+		    m_fmap = v.getMapContext().cloneFMap(); //(v.getMapContext().getViewPort().cloneViewPort());
+		    m_fmap.setViewPort(v.getMapContext().getViewPort()
+			    .cloneViewPort());
+		    m_fmap.getViewPort().setImageSize(new Dimension(
+			    (int) getBoundingBox(null).width,
+			    (int) getBoundingBox(null).height));
+		    v.getMapContext().getViewPort().addViewPortListener(this);
+		} else if (getTypeScale() == CONSTANTE) {
+		    m_fmap = v.getMapContext().cloneFMap();
+		    vp.setExtent(getNewExtent(getScale()));
+		    m_fmap.setViewPort(vp);
+		    v.getMapContext().getViewPort().addViewPortListener(this);
+		} else if (getTypeScale() == MANUAL) {
+		    m_fmap = v.getMapContext().cloneFMap();
+		    vp.setExtent(getNewExtent(getScale()));
+		    m_fmap.setViewPort(vp);
+		    v.getMapContext().getViewPort().addViewPortListener(this);
+		}
+	    } catch (XMLException e1) {
+		NotificationManager.addError("Cuando se añade una vista al Layout",
+			e1);
+	    }
+	}
     }
 
     /**
@@ -304,7 +304,7 @@ public class FFrameView extends FFrame implements ViewPortListener,
      * @return Modelo de la vista.
      */
     public ProjectView getView() {
-        return view;
+	return view;
     }
 
     /**
@@ -316,241 +316,251 @@ public class FFrameView extends FFrame implements ViewPortListener,
      * @return Rectángulo.
      */
     protected Rectangle2D getNewExtent(long scale) {
-        double hview = getBoundBox().getHeight();
-        double wview = getBoundBox().getWidth();
-        double hextent = (scale * hview) / 100.0;
-        double wextent = (scale * wview) / 100.0;
+	double hview = getBoundBox().getHeight();
+	double wview = getBoundBox().getWidth();
+	double hextent = (scale * hview) / 100.0;
+	double wextent = (scale * wview) / 100.0;
 
-        if (m_fmap.getViewPort().getExtent()==null)
-        	return new Rectangle2D.Double();
-        double newx = m_fmap.getViewPort().getExtent().getCenterX() -
-            (wextent / 2.0);
-        double newy = m_fmap.getViewPort().getExtent().getCenterY() -
-            (hextent / 2.0);
-        IProjection proj=m_fmap.getViewPort().getProjection();
- 		Rectangle2D r = new Rectangle2D.Double(newx, newy, wextent, hextent);
-        if (!proj.isProjected()){
-			 r = m_fmap.getViewPort().getProjection().getExtent(r,scale,wview,hview,1,100,2.54);
-		}
-        return r;
+	if (m_fmap.getViewPort().getExtent()==null) {
+	    return new Rectangle2D.Double();
+	}
+	double newx = m_fmap.getViewPort().getExtent().getCenterX() -
+		(wextent / 2.0);
+	double newy = m_fmap.getViewPort().getExtent().getCenterY() -
+		(hextent / 2.0);
+	IProjection proj=m_fmap.getViewPort().getProjection();
+	Rectangle2D r = new Rectangle2D.Double(newx, newy, wextent, hextent);
+	if (!proj.isProjected()){
+	    r = m_fmap.getViewPort().getProjection().getExtent(r,scale,wview,hview,1,100,2.54);
+	}
+	return r;
     }
 
     /**
-	 * Método que dibuja sobre el graphics que se le pasa como parámetro, según
-	 * la transformada afin que se debe de aplicar y el rectángulo que se debe
-	 * de dibujar.
-	 *
-	 * @param g
-	 *            Graphics2D
-	 * @param at
-	 *            Transformada afín.
-	 * @param rv
-	 *            rectángulo sobre el que hacer un clip.
-	 * @param imgBase
-	 *            Imagen para acelerar el dibujado.
-	 */
-	public void draw(Graphics2D g, AffineTransform at, Rectangle2D rv,
-			BufferedImage imgBase) {
-		Rectangle2D.Double r = getBoundingBox(at);
-		if (getRotation() != 0)
-			g.rotate(Math.toRadians(getRotation()), r.x + (r.width / 2), r.y
-					+ (r.height / 2));
-		if (intersects(rv, r)) {
-			if (getMapContext() == null) {
-				drawEmpty(g);
-			} else {
-				if (rv != null) {
-					// Dibujamos en pantalla
-					
-					double scale1_1 = MapContext.getScreenDPI() / 2.54;
-					// compute zoom factor
-					double zf = at.getScaleX() / scale1_1;
-					
-					Rectangle rclip = null;
-					if (g.getClipBounds()!=null)
-						rclip = (Rectangle)g.getClipBounds().clone();
-					g.clipRect((int) r.getMinX(), (int) r.getMinY(), (int) r
-							.getWidth(), (int) r.getHeight());
+     * Método que dibuja sobre el graphics que se le pasa como parámetro, según
+     * la transformada afin que se debe de aplicar y el rectángulo que se debe
+     * de dibujar.
+     *
+     * @param g
+     *            Graphics2D
+     * @param at
+     *            Transformada afín.
+     * @param rv
+     *            rectángulo sobre el que hacer un clip.
+     * @param imgBase
+     *            Imagen para acelerar el dibujado.
+     */
+    @Override
+    public void draw(Graphics2D g, AffineTransform at, Rectangle2D rv,
+	    BufferedImage imgBase) {
+	Rectangle2D.Double r = getBoundingBox(at);
+	if (getRotation() != 0) {
+	    g.rotate(Math.toRadians(getRotation()), r.x + (r.width / 2), r.y
+		    + (r.height / 2));
+	}
+	if (intersects(rv, r)) {
+	    if (getMapContext() == null) {
+		drawEmpty(g);
+	    } else {
+		if (rv != null) {
+		    // Dibujamos en pantalla
 
-					if (getQuality() == PRESENTACION) {
-						if (rv.intersects(r)) {
-							ViewPort viewPort = this.getMapContext().getViewPort();
-							viewPort.setZoomFactor(zf);
-							
-							Color theBackColor = viewPort.getBackColor();
+		    double scale1_1 = MapContext.getScreenDPI() / 2.54;
+		    // compute zoom factor
+		    double zf = at.getScaleX() / scale1_1;
 
-							if (origin != null
-									&& origin.equals(getLayout().getLayoutControl().getRectOrigin())
-									&& getLayout() != null
-									&& getLayout().getLayoutControl().getAT().getScaleX() == scaleAnt
-									&& m_image != null && !getRefresh() && !(r.getWidth() > getLayout().getWidth()
-											|| r.getHeight() > getLayout().getHeight())) {
-								if (theBackColor != null) {
-									g.setColor(theBackColor);
-									g.fillRect((int) r.x, (int) r.y, viewPort
-											.getImageWidth(), viewPort
-											.getImageHeight());
-								}
-								g.translate(r.getX(), r.getY());
-								g.drawImage(m_image, 0, 0, getLayout().getLayoutControl());
-								g.translate(-r.getX(), -r.getY());
-								scaleAnt = getLayout().getLayoutControl().getAT().getScaleX();
-								origin = (Point) getLayout().getLayoutControl().getRectOrigin();
-							} else {
+		    Rectangle rclip = null;
+		    if (g.getClipBounds()!=null) {
+			rclip = (Rectangle)g.getClipBounds().clone();
+		    }
+		    g.clipRect((int) r.getMinX(), (int) r.getMinY(), (int) r
+			    .getWidth(), (int) r.getHeight());
 
+		    if (getQuality() == PRESENTACION) {
+			if (rv.intersects(r)) {
+			    ViewPort viewPort = this.getMapContext().getViewPort();
+			    viewPort.setZoomFactor(zf);
 
-//								System.err.println("r : " + r);
-								if (r.getWidth() > getLayout().getWidth()
-										|| r.getHeight() > getLayout().getHeight()) {
-									viewPort.setOffset(
-											new Point2D.Double(r.getX(), r
-													.getY()));
-									viewPort.setImageSize(
-											new Dimension((int) r.getWidth(),
-													(int) r.getHeight()));
-									MapContext fmap = getMapContext().cloneToDraw();
-									ViewPort viewp = viewPort.cloneViewPort();
-									viewp.setImageSize(new Dimension(
-											getLayout().getWidth(),
-											getLayout().getHeight()));
-									Rectangle2D r1 = calculateExtent();
-									double width = getLayout().getLayoutContext().getAtributes()
-											.getSizeInUnits().getAncho();
-									double scale = FLayoutUtilities
-											.getScaleView(viewp, width, r1
-													.getWidth()
-													/ width);
-									viewp.setExtent(r1);
+			    Color theBackColor = viewPort.getBackColor();
 
-									fmap.setViewPort(viewp);
-									g.translate(-r.getX(), -r.getY());
-									if (theBackColor != null) {
-										g.setColor(theBackColor);
-										g.fillRect((int) r.x, (int) r.y, viewp
-												.getImageWidth(), viewp
-												.getImageHeight());
-									}
-									try {
-										fmap.draw(imgBase, g, scale);
-									} catch (ReadDriverException e) {
-										e.printStackTrace();
-									}
-									g.translate(r.getX(), r.getY());
-									
-									viewp.setZoomFactor(1);
-									fmap=null;
-									m_image.flush();
-									m_image=null;
-								} else {
-									viewPort.setOffset(
-											new Point2D.Double(r.x, r.y));
-									viewPort.setImageSize(
-											new Dimension((int) r.width,
-													(int) r.height));
-									viewPort.refreshExtent();
-									m_image = new BufferedImage((int) r
-											.getWidth(), (int) r.getHeight(),
-											BufferedImage.TYPE_INT_ARGB);
-									Graphics2D gimg = (Graphics2D) m_image
-											.createGraphics();
-									gimg.translate(- r.getX(), -r
-											.getY());
-									try {
-										MapContext mapContext = getMapContext();
-										mapContext.getMapContextDrawer().clean();
-										mapContext.draw(m_image, gimg, getScale());
-										gimg.dispose();
-										mapContext = null;
-									} catch (ReadDriverException e) {
-										e.printStackTrace();
-									}
-									gimg.translate( r.getX(), r
-											.getY());
-									if (theBackColor != null) {
-										g.setColor(theBackColor);
-										g.fillRect((int) r.x, (int) r.y, viewPort
-												.getImageWidth(), viewPort
-												.getImageHeight());
-									}
-									g.drawImage(m_image, (int) r.getX(),
-											(int) r.getY(), getLayout());
-								}
-								scaleAnt = getLayout().getLayoutControl().getAT().getScaleX();
-								origin = (Point) getLayout().getLayoutControl().getRectOrigin();
-								setRefresh(false);
-								m_image.flush();
-								m_image=null;
-							}
-							
-							viewPort.setZoomFactor(1);
-						}
-					} else {
-						drawDraft(g);
-					}
-					if (rclip != null) {
-						g.setClip(rclip.x, rclip.y, rclip.width,
-								rclip.height);
-					}
-				} else {
-					printX(g, at);
+			    if (origin != null
+				    && origin.equals(getLayout().getLayoutControl().getRectOrigin())
+				    && getLayout() != null
+				    && getLayout().getLayoutControl().getAT().getScaleX() == scaleAnt
+				    && m_image != null && !getRefresh() && !(r.getWidth() > getLayout().getWidth()
+					    || r.getHeight() > getLayout().getHeight())) {
+				if (theBackColor != null) {
+				    g.setColor(theBackColor);
+				    g.fillRect((int) r.x, (int) r.y, viewPort
+					    .getImageWidth(), viewPort
+					    .getImageHeight());
 				}
+				g.translate(r.getX(), r.getY());
+				g.drawImage(m_image, 0, 0, getLayout().getLayoutControl());
+				g.translate(-r.getX(), -r.getY());
+				scaleAnt = getLayout().getLayoutControl().getAT().getScaleX();
+				origin = getLayout().getLayoutControl().getRectOrigin();
+			    } else {
+
+
+				//								System.err.println("r : " + r);
+				if (r.getWidth() > getLayout().getWidth()
+					|| r.getHeight() > getLayout().getHeight()) {
+				    viewPort.setOffset(
+					    new Point2D.Double(r.getX(), r
+						    .getY()));
+				    viewPort.setImageSize(
+					    new Dimension((int) r.getWidth(),
+						    (int) r.getHeight()));
+				    MapContext fmap = getMapContext().cloneToDraw();
+				    ViewPort viewp = viewPort.cloneViewPort();
+				    viewp.setImageSize(new Dimension(
+					    getLayout().getWidth(),
+					    getLayout().getHeight()));
+				    Rectangle2D r1 = calculateExtent();
+				    double width = getLayout().getLayoutContext().getAtributes()
+					    .getSizeInUnits().getAncho();
+				    double scale = FLayoutUtilities
+					    .getScaleView(viewp, width, r1
+						    .getWidth()
+						    / width);
+				    viewp.setExtent(r1);
+
+				    fmap.setViewPort(viewp);
+				    g.translate(-r.getX(), -r.getY());
+				    if (theBackColor != null) {
+					g.setColor(theBackColor);
+					g.fillRect((int) r.x, (int) r.y, viewp
+						.getImageWidth(), viewp
+						.getImageHeight());
+				    }
+				    try {
+					fmap.draw(imgBase, g, scale);
+				    } catch (ReadDriverException e) {
+					e.printStackTrace();
+				    }
+				    g.translate(r.getX(), r.getY());
+
+				    viewp.setZoomFactor(1);
+				    fmap=null;
+				    if (m_image != null) {
+					m_image.flush();
+					m_image=null;
+				    }
+				} else {
+				    viewPort.setOffset(
+					    new Point2D.Double(r.x, r.y));
+				    viewPort.setImageSize(
+					    new Dimension((int) r.width,
+						    (int) r.height));
+				    viewPort.refreshExtent();
+				    m_image = new BufferedImage((int) r
+					    .getWidth(), (int) r.getHeight(),
+					    BufferedImage.TYPE_INT_ARGB);
+				    Graphics2D gimg = m_image
+					    .createGraphics();
+				    gimg.translate(- r.getX(), -r
+					    .getY());
+				    try {
+					MapContext mapContext = getMapContext();
+					mapContext.getMapContextDrawer().clean();
+					mapContext.draw(m_image, gimg, getScale());
+					gimg.dispose();
+					mapContext = null;
+				    } catch (ReadDriverException e) {
+					e.printStackTrace();
+				    }
+				    gimg.translate( r.getX(), r
+					    .getY());
+				    if (theBackColor != null) {
+					g.setColor(theBackColor);
+					g.fillRect((int) r.x, (int) r.y, viewPort
+						.getImageWidth(), viewPort
+						.getImageHeight());
+				    }
+				    g.drawImage(m_image, (int) r.getX(),
+					    (int) r.getY(), getLayout());
+				}
+				scaleAnt = getLayout().getLayoutControl().getAT().getScaleX();
+				origin = getLayout().getLayoutControl().getRectOrigin();
+				setRefresh(false);
+				if (m_image != null) {
+				    m_image.flush();
+				    m_image=null;
+				}
+			    }
+
+			    viewPort.setZoomFactor(1);
 			}
+		    } else {
+			drawDraft(g);
+		    }
+		    if (rclip != null) {
+			g.setClip(rclip.x, rclip.y, rclip.width,
+				rclip.height);
+		    }
+		} else {
+		    printX(g, at);
 		}
-		if (getRotation() != 0)
-			g.rotate(Math.toRadians(-getRotation()), r.x + (r.width / 2), r.y
-					+ (r.height / 2));
-
-		if (getMapContext() != null) {
-			setATMap(getMapContext().getViewPort()
-					.getAffineTransform());
-
-		}
-		if (showGrid && grid!=null){
-			((FFrameGrid)grid).setFFrameDependence(this);
-			grid.draw(g,at,rv,imgBase);
-		}
-		
-		//g.dispose();
+	    }
+	}
+	if (getRotation() != 0) {
+	    g.rotate(Math.toRadians(-getRotation()), r.x + (r.width / 2), r.y
+		    + (r.height / 2));
 	}
 
+	if (getMapContext() != null) {
+	    setATMap(getMapContext().getViewPort()
+		    .getAffineTransform());
+
+	}
+	if (showGrid && grid!=null){
+	    ((FFrameGrid)grid).setFFrameDependence(this);
+	    grid.draw(g,at,rv,imgBase);
+	}
+
+	//g.dispose();
+    }
+
     private Rectangle2D calculateExtent() {
-    	Rectangle2D.Double r = new Rectangle2D.Double();
-		if (p1==null||p2==null)
-			return r;
-    	r.setFrameFromDiagonal(p1, p2);
-		return r;
+	Rectangle2D.Double r = new Rectangle2D.Double();
+	if (p1==null||p2==null) {
+	    return r;
+	}
+	r.setFrameFromDiagonal(p1, p2);
+	return r;
     }
 
     public void print(Graphics2D g, AffineTransform at, FShape shape, PrintRequestAttributeSet prroperties) {
-        draw(g, at, null, null);
+	draw(g, at, null, null);
     }
 
     protected void printX(Graphics2D g, AffineTransform at) {
-        Rectangle2D.Double r = getBoundingBox(at);
+	Rectangle2D.Double r = getBoundingBox(at);
 
-        // Dibujamos en impresora
-        Rectangle rclip = g.getClipBounds();
-        g.clipRect((int) r.getMinX(), (int) r.getMinY(), (int) r.getWidth(),
-            (int) r.getHeight());
-        this.getMapContext().getViewPort().setOffset(new Point2D.Double(r.x, r.y));
-        this.getMapContext().getViewPort().setImageSize(new Dimension((int) r.width,
-                (int) r.height));
+	// Dibujamos en impresora
+	Rectangle rclip = g.getClipBounds();
+	g.clipRect((int) r.getMinX(), (int) r.getMinY(), (int) r.getWidth(),
+		(int) r.getHeight());
+	this.getMapContext().getViewPort().setOffset(new Point2D.Double(r.x, r.y));
+	this.getMapContext().getViewPort().setImageSize(new Dimension((int) r.width,
+		(int) r.height));
 
-        ViewPort viewPort = this.getMapContext().getViewPort();
-        Color theBackColor = viewPort.getBackColor();
-		if (theBackColor != null) {
-			g.setColor(theBackColor);
-			g.fillRect((int) r.x, (int) r.y, viewPort
-					.getImageWidth(), viewPort
-					.getImageHeight());
-		}
-		
-        try {
-        	this.getMapContext().print(g, getScale(),getLayout().getLayoutContext().getAtributes().toPrintAttributes());
-        } catch (ReadDriverException e) {
-            NotificationManager.addError(e.getMessage(), e);
-        }
- 		g.setClip(rclip.x, rclip.y, rclip.width, rclip.height);
+	ViewPort viewPort = this.getMapContext().getViewPort();
+	Color theBackColor = viewPort.getBackColor();
+	if (theBackColor != null) {
+	    g.setColor(theBackColor);
+	    g.fillRect((int) r.x, (int) r.y, viewPort
+		    .getImageWidth(), viewPort
+		    .getImageHeight());
+	}
+
+	try {
+	    this.getMapContext().print(g, getScale(),getLayout().getLayoutContext().getAtributes().toPrintAttributes());
+	} catch (ReadDriverException e) {
+	    NotificationManager.addError(e.getMessage(), e);
+	}
+	g.setClip(rclip.x, rclip.y, rclip.width, rclip.height);
     }
 
     /**
@@ -559,7 +569,7 @@ public class FFrameView extends FFrame implements ViewPortListener,
      * @param i entero que representa la unidad de medida de la vista.
      */
     public void setMapUnits(int i) {
-        m_mapUnits = i;
+	m_mapUnits = i;
     }
 
     /**
@@ -568,7 +578,7 @@ public class FFrameView extends FFrame implements ViewPortListener,
      * @return Unidad de medida.
      */
     public int getMapUnits() {
-        return m_mapUnits;
+	return m_mapUnits;
     }
 
     /**
@@ -578,22 +588,23 @@ public class FFrameView extends FFrame implements ViewPortListener,
      * @return escala.
      */
     public long getScale() {
-        /*if (m_bLinked){
+	/*if (m_bLinked){
            return getScaleView1(METROS);
                }
-         */
-    	if (getMapContext()==null)
-    		return 0;
-        if (getTypeScale() == AUTOMATICO) {
-            return FLayoutUtilities.getScaleView(getMapContext().getViewPort(),
-                getBoundBox().width, getBoundingBox(null).width);
-        } else if (getTypeScale() == CONSTANTE) {
-            return (long) m_Scale;
-        } else if (getTypeScale() == MANUAL) {
-            return (long) m_Scale;
-        }
+	 */
+	if (getMapContext()==null) {
+	    return 0;
+	}
+	if (getTypeScale() == AUTOMATICO) {
+	    return FLayoutUtilities.getScaleView(getMapContext().getViewPort(),
+		    getBoundBox().width, getBoundingBox(null).width);
+	} else if (getTypeScale() == CONSTANTE) {
+	    return (long) m_Scale;
+	} else if (getTypeScale() == MANUAL) {
+	    return (long) m_Scale;
+	}
 
-        return (long) m_Scale;
+	return (long) m_Scale;
     }
 
     /**
@@ -602,7 +613,7 @@ public class FFrameView extends FFrame implements ViewPortListener,
      * @param b true si está ligada y false si no lo está.
      */
     public void setLinked(boolean b) {
-        m_bLinked = b;
+	m_bLinked = b;
     }
 
     /**
@@ -611,7 +622,7 @@ public class FFrameView extends FFrame implements ViewPortListener,
      * @return True si la vista está ligada.
      */
     public boolean getLinked() {
-        return m_bLinked;
+	return m_bLinked;
     }
 
     /**
@@ -621,7 +632,7 @@ public class FFrameView extends FFrame implements ViewPortListener,
      * @return entero que representa la opción elegida.
      */
     public int getExtension() {
-        return m_extension;
+	return m_extension;
     }
 
     /**
@@ -631,7 +642,7 @@ public class FFrameView extends FFrame implements ViewPortListener,
      * @return entero que representa el tipo seleccionado.
      */
     public int getTypeScale() {
-        return m_typeScale;
+	return m_typeScale;
     }
 
     /**
@@ -640,7 +651,7 @@ public class FFrameView extends FFrame implements ViewPortListener,
      * @param i entero que representa la opción elegida.
      */
     public void setExtension(int i) {
-        m_extension = i;
+	m_extension = i;
     }
 
     /**
@@ -649,7 +660,7 @@ public class FFrameView extends FFrame implements ViewPortListener,
      * @param i entero que representa el tipo de escala.
      */
     public void setTypeScale(int i) {
-        m_typeScale = i;
+	m_typeScale = i;
     }
 
     /**
@@ -661,61 +672,63 @@ public class FFrameView extends FFrame implements ViewPortListener,
      *
      * @see com.iver.cit.gvsig.project.documents.layout.fframes.IFFrame#getXMLEntity()
      */
+    @Override
     public XMLEntity getXMLEntity() throws SaveException {
-        XMLEntity xml = super.getXMLEntity();
+	XMLEntity xml = super.getXMLEntity();
 
-        try {
-//            xml.putProperty("type", Layout.RECTANGLEVIEW);
-            xml.putProperty("m_Mode", m_Mode);
-            xml.putProperty("m_typeScale", m_typeScale);
-            xml.putProperty("m_extension", m_extension);
-            xml.putProperty("m_quality", m_quality);
-            xml.putProperty("m_viewing", m_viewing);
-            xml.putProperty("m_bLinked", m_bLinked);
-            xml.putProperty("m_mapUnits", m_mapUnits);
-            xml.putProperty("m_Scale", m_Scale);
+	try {
+	    //            xml.putProperty("type", Layout.RECTANGLEVIEW);
+	    xml.putProperty("m_Mode", m_Mode);
+	    xml.putProperty("m_typeScale", m_typeScale);
+	    xml.putProperty("m_extension", m_extension);
+	    xml.putProperty("m_quality", m_quality);
+	    xml.putProperty("m_viewing", m_viewing);
+	    xml.putProperty("m_bLinked", m_bLinked);
+	    xml.putProperty("m_mapUnits", m_mapUnits);
+	    xml.putProperty("m_Scale", m_Scale);
 
-            ProjectExtension pe = (ProjectExtension) PluginServices.getExtension(ProjectExtension.class);
-            ArrayList views = pe.getProject().getDocumentsByType(ProjectViewFactory.registerName);
+	    ProjectExtension pe = (ProjectExtension) PluginServices.getExtension(ProjectExtension.class);
+	    ArrayList views = pe.getProject().getDocumentsByType(ProjectViewFactory.registerName);
 
-            boolean hasIndex = false;
+	    boolean hasIndex = false;
 
 
-            if (view != null) {
-            	xml.putProperty("viewName",view.getName());
-	            for (int i = 0; i < views.size(); i++) {
-	                if (view.getName().equals(((ProjectView) views.get(i)).getName())) {
-	                    xml.putProperty("indice", i);
-	                    hasIndex = true;
-	                    break;
-	                }
-	            }
-            }
+	    if (view != null) {
+		xml.putProperty("viewName",view.getName());
+		for (int i = 0; i < views.size(); i++) {
+		    if (view.getName().equals(((ProjectView) views.get(i)).getName())) {
+			xml.putProperty("indice", i);
+			hasIndex = true;
+			break;
+		    }
+		}
+	    }
 
-            if (!hasIndex) {
-                xml.putProperty("indice", -1);
-            }
+	    if (!hasIndex) {
+		xml.putProperty("indice", -1);
+	    }
 
-            if (getMapContext() != null && getMapContext().getViewPort().getExtent()!=null) {
-                xml.putProperty("extentX",
-                    getMapContext().getViewPort().getExtent().getX());
-                xml.putProperty("extentY",
-                    getMapContext().getViewPort().getExtent().getY());
-                xml.putProperty("extentW",
-                    getMapContext().getViewPort().getExtent().getWidth());
-                xml.putProperty("extentH",
-                    getMapContext().getViewPort().getExtent().getHeight());
+	    if (getMapContext() != null && getMapContext().getViewPort().getExtent()!=null) {
+		xml.putProperty("extentX",
+			getMapContext().getViewPort().getExtent().getX());
+		xml.putProperty("extentY",
+			getMapContext().getViewPort().getExtent().getY());
+		xml.putProperty("extentW",
+			getMapContext().getViewPort().getExtent().getWidth());
+		xml.putProperty("extentH",
+			getMapContext().getViewPort().getExtent().getHeight());
 
-                xml.addChild(getMapContext().getXMLEntity());
-            }
-            xml.putProperty("showGrid", showGrid);
-            if (grid!=null)
-            	xml.addChild(grid.getXMLEntity());
-        } catch (Exception e) {
-            throw new SaveException(e, this.getClass().getName());
-        }
+		xml.addChild(getMapContext().getXMLEntity());
+	    }
+	    xml.putProperty("showGrid", showGrid);
+	    if (grid!=null) {
+		xml.addChild(grid.getXMLEntity());
+	    }
+	} catch (Exception e) {
+	    throw new SaveException(e, this.getClass().getName());
+	}
 
-        return xml;
+	return xml;
     }
 
     /**
@@ -724,7 +737,7 @@ public class FFrameView extends FFrame implements ViewPortListener,
      * @param bi Imagen para repintar.
      */
     public void setBufferedImage(BufferedImage bi) {
-        m_image = bi;
+	m_image = bi;
     }
 
     /**
@@ -733,7 +746,7 @@ public class FFrameView extends FFrame implements ViewPortListener,
      * @return Imagen para repintar.
      */
     public BufferedImage getBufferedImage() {
-        return m_image;
+	return m_image;
     }
 
     /**
@@ -742,7 +755,7 @@ public class FFrameView extends FFrame implements ViewPortListener,
      * @return MAtriz de transformación.
      */
     public AffineTransform getATMap() {
-        return at;
+	return at;
     }
 
     /**
@@ -751,7 +764,7 @@ public class FFrameView extends FFrame implements ViewPortListener,
      * @param transform Matriz de transformación.
      */
     public void setATMap(AffineTransform transform) {
-        at = transform;
+	at = transform;
     }
     /**
      * Inserta el proyecto.
@@ -759,7 +772,7 @@ public class FFrameView extends FFrame implements ViewPortListener,
      * @param p Proyecto.
      */
     public void setProject(Project p) {
-        project = p;
+	project = p;
     }
 
     /**
@@ -767,107 +780,107 @@ public class FFrameView extends FFrame implements ViewPortListener,
      *      com.iver.cit.gvsig.project.Project)
      */
     public void setXMLEntity03(XMLEntity xml, Layout l) {
-        if (xml.getIntProperty("m_Selected") != 0) {
-            this.setSelected(true);
-        } else {
-            this.setSelected(false);
-        }
+	if (xml.getIntProperty("m_Selected") != 0) {
+	    this.setSelected(true);
+	} else {
+	    this.setSelected(false);
+	}
 
-        this.setName(xml.getStringProperty("m_name"));
-        this.setBoundBox(new Rectangle2D.Double(xml.getDoubleProperty("x"),
-                xml.getDoubleProperty("y"), xml.getDoubleProperty("w"),
-                xml.getDoubleProperty("h")));
+	this.setName(xml.getStringProperty("m_name"));
+	this.setBoundBox(new Rectangle2D.Double(xml.getDoubleProperty("x"),
+		xml.getDoubleProperty("y"), xml.getDoubleProperty("w"),
+		xml.getDoubleProperty("h")));
 
-        this.m_Mode = xml.getIntProperty("m_Mode");
-        this.m_typeScale = xml.getIntProperty("m_typeScale");
-        this.m_extension = xml.getIntProperty("m_extension");
-        this.m_quality = xml.getIntProperty("m_quality");
-        this.m_viewing = xml.getIntProperty("m_viewing");
-        this.m_bLinked = xml.getBooleanProperty("m_bLinked");
-        this.m_mapUnits = xml.getIntProperty("m_mapUnits");
+	this.m_Mode = xml.getIntProperty("m_Mode");
+	this.m_typeScale = xml.getIntProperty("m_typeScale");
+	this.m_extension = xml.getIntProperty("m_extension");
+	this.m_quality = xml.getIntProperty("m_quality");
+	this.m_viewing = xml.getIntProperty("m_viewing");
+	this.m_bLinked = xml.getBooleanProperty("m_bLinked");
+	this.m_mapUnits = xml.getIntProperty("m_mapUnits");
 
-        //ProjectExtension pe = (ProjectExtension) PluginServices.getExtension(ProjectExtension.class);
-        this.m_Scale = xml.getDoubleProperty("m_Scale");
+	//ProjectExtension pe = (ProjectExtension) PluginServices.getExtension(ProjectExtension.class);
+	this.m_Scale = xml.getDoubleProperty("m_Scale");
 
-        int indice = xml.getIntProperty("indice");
+	int indice = xml.getIntProperty("indice");
 
-        if (indice != -1) {
-        	ArrayList views = project.getDocumentsByType(ProjectViewFactory.registerName);
+	if (indice != -1) {
+	    ArrayList views = project.getDocumentsByType(ProjectViewFactory.registerName);
 
-            ProjectView view = (ProjectView) views.get(indice);
-            this.m_fmap = view.getMapContext();
-            this.setView(view);
+	    ProjectView view = (ProjectView) views.get(indice);
+	    this.m_fmap = view.getMapContext();
+	    this.setView(view);
 
-            try {
-                if (m_bLinked) {
-                    this.getMapContext().getViewPort().setExtent(new Rectangle2D.Double(
-                            xml.getDoubleProperty("extentX"),
-                            xml.getDoubleProperty("extentY"),
-                            xml.getDoubleProperty("extentW"),
-                            xml.getDoubleProperty("extentH")));
-                } else if (!m_bLinked) {
-                    this.m_fmap = MapContext.createFromXML03(xml.getChild(0));
-                }
-            } catch (XMLException e) {
-                NotificationManager.addError("Pasando las propiedades del XMLEntity al objeto",
-                    e);
-            }
-        }
+	    try {
+		if (m_bLinked) {
+		    this.getMapContext().getViewPort().setExtent(new Rectangle2D.Double(
+			    xml.getDoubleProperty("extentX"),
+			    xml.getDoubleProperty("extentY"),
+			    xml.getDoubleProperty("extentW"),
+			    xml.getDoubleProperty("extentH")));
+		} else if (!m_bLinked) {
+		    this.m_fmap = MapContext.createFromXML03(xml.getChild(0));
+		}
+	    } catch (XMLException e) {
+		NotificationManager.addError("Pasando las propiedades del XMLEntity al objeto",
+			e);
+	    }
+	}
     }
 
     /**
      * @see com.iver.cit.gvsig.project.documents.layout.fframes.IFFrame#getNameFFrame()
      */
     public String getNameFFrame() {
-        return PluginServices.getText(this, "Vista")+ num;
+	return PluginServices.getText(this, "Vista")+ num;
     }
 
     /**
      * @see com.iver.cit.gvsig.fmap.ExtentListener#extentChanged(com.iver.cit.gvsig.fmap.ExtentEvent)
      */
     public void extentChanged(ExtentEvent e) {
-        if (getTypeScale() == AUTOMATICO) {
-            m_fmap.getViewPort().setExtent(e.getNewExtent());
-            if (getLayout() != null) {
-            	getLayout().getLayoutControl().setStatus(LayoutControl.DESACTUALIZADO);
-            }
-        }else if (getTypeScale() == MANUAL) {
-        	Rectangle2D oldExtent = m_fmap.getViewPort().getExtent();
-        	Rectangle2D newExtent=e.getNewExtent();
-        	double xDif=newExtent.getCenterX()-oldExtent.getCenterX();
-        	double yDif=newExtent.getCenterY()-oldExtent.getCenterY();
-        	m_fmap.getViewPort().setExtent(new Rectangle2D.Double(oldExtent.getX()+xDif,oldExtent.getY()+yDif,oldExtent.getWidth(),oldExtent.getHeight()));
-            if (getLayout() != null) {
-            	getLayout().getLayoutControl().setStatus(LayoutControl.DESACTUALIZADO);
-            }
-        }
-        setRefresh(true);
+	if (getTypeScale() == AUTOMATICO) {
+	    m_fmap.getViewPort().setExtent(e.getNewExtent());
+	    if (getLayout() != null) {
+		getLayout().getLayoutControl().setStatus(LayoutControl.DESACTUALIZADO);
+	    }
+	}else if (getTypeScale() == MANUAL) {
+	    Rectangle2D oldExtent = m_fmap.getViewPort().getExtent();
+	    Rectangle2D newExtent=e.getNewExtent();
+	    double xDif=newExtent.getCenterX()-oldExtent.getCenterX();
+	    double yDif=newExtent.getCenterY()-oldExtent.getCenterY();
+	    m_fmap.getViewPort().setExtent(new Rectangle2D.Double(oldExtent.getX()+xDif,oldExtent.getY()+yDif,oldExtent.getWidth(),oldExtent.getHeight()));
+	    if (getLayout() != null) {
+		getLayout().getLayoutControl().setStatus(LayoutControl.DESACTUALIZADO);
+	    }
+	}
+	setRefresh(true);
     }
 
     /**
      * @see com.iver.cit.gvsig.fmap.ViewPortListener#backColorChanged(com.iver.cit.gvsig.fmap.ColorEvent)
      */
     public void backColorChanged(ColorEvent e) {
-        if (getLinked()) {
-            m_fmap.getViewPort().setBackColor(e.getNewColor());
-            getLayout().getLayoutControl().setStatus(LayoutControl.DESACTUALIZADO);
+	if (getLinked()) {
+	    m_fmap.getViewPort().setBackColor(e.getNewColor());
+	    getLayout().getLayoutControl().setStatus(LayoutControl.DESACTUALIZADO);
 
-            //setBufferedImage(null);
-        }
+	    //setBufferedImage(null);
+	}
     }
 
     /**
      * @see com.iver.cit.gvsig.fmap.ViewPortListener#projectionChanged(com.iver.cit.gvsig.fmap.ProjectionEvent)
      */
-	public void projectionChanged(ProjectionEvent e) {
-        if (getTypeScale() == AUTOMATICO) {
-            m_fmap.getViewPort().setProjection(e.getNewProjection());
+    public void projectionChanged(ProjectionEvent e) {
+	if (getTypeScale() == AUTOMATICO) {
+	    m_fmap.getViewPort().setProjection(e.getNewProjection());
 
-            if (getLayout() != null) {
-            	getLayout().getLayoutControl().setStatus(LayoutControl.DESACTUALIZADO);
-            }
-        }
+	    if (getLayout() != null) {
+		getLayout().getLayoutControl().setStatus(LayoutControl.DESACTUALIZADO);
+	    }
 	}
+    }
 
     /**
      * DOCUMENT ME!
@@ -875,11 +888,11 @@ public class FFrameView extends FFrame implements ViewPortListener,
      * @param e DOCUMENT ME!
      */
     public void legendChanged(LegendChangedEvent e) {
-        if (getLinked()) {
-        	getLayout().getLayoutControl().setStatus(LayoutControl.DESACTUALIZADO);
-            setRefresh(true);
-            //setBufferedImage(null);
-        }
+	if (getLinked()) {
+	    getLayout().getLayoutControl().setStatus(LayoutControl.DESACTUALIZADO);
+	    setRefresh(true);
+	    //setBufferedImage(null);
+	}
     }
 
     /**
@@ -888,85 +901,85 @@ public class FFrameView extends FFrame implements ViewPortListener,
      * @param xml DOCUMENT ME!
      */
     public void setXMLEntity(XMLEntity xml) {
-        if (xml.getIntProperty("m_Selected") != 0) {
-            this.setSelected(true);
-        } else {
-            this.setSelected(false);
-        }
+	if (xml.getIntProperty("m_Selected") != 0) {
+	    this.setSelected(true);
+	} else {
+	    this.setSelected(false);
+	}
 
-        this.setName(xml.getStringProperty("m_name"));
-        this.setBoundBox(new Rectangle2D.Double(xml.getDoubleProperty("x"),
-                xml.getDoubleProperty("y"), xml.getDoubleProperty("w"),
-                xml.getDoubleProperty("h")));
+	this.setName(xml.getStringProperty("m_name"));
+	this.setBoundBox(new Rectangle2D.Double(xml.getDoubleProperty("x"),
+		xml.getDoubleProperty("y"), xml.getDoubleProperty("w"),
+		xml.getDoubleProperty("h")));
 
-        this.m_Mode = xml.getIntProperty("m_Mode");
-        this.m_typeScale = xml.getIntProperty("m_typeScale");
-        this.m_extension = xml.getIntProperty("m_extension");
-        this.m_quality = xml.getIntProperty("m_quality");
-        this.m_viewing = xml.getIntProperty("m_viewing");
-        this.m_bLinked = xml.getBooleanProperty("m_bLinked");
-        this.m_mapUnits = xml.getIntProperty("m_mapUnits");
-        setRotation(xml.getDoubleProperty("m_rotation"));
+	this.m_Mode = xml.getIntProperty("m_Mode");
+	this.m_typeScale = xml.getIntProperty("m_typeScale");
+	this.m_extension = xml.getIntProperty("m_extension");
+	this.m_quality = xml.getIntProperty("m_quality");
+	this.m_viewing = xml.getIntProperty("m_viewing");
+	this.m_bLinked = xml.getBooleanProperty("m_bLinked");
+	this.m_mapUnits = xml.getIntProperty("m_mapUnits");
+	setRotation(xml.getDoubleProperty("m_rotation"));
 
-        this.m_Scale = xml.getDoubleProperty("m_Scale");
+	this.m_Scale = xml.getDoubleProperty("m_Scale");
 
-        int indice = xml.getIntProperty("indice");
+	int indice = xml.getIntProperty("indice");
 
-        ProjectView view = null;
+	ProjectView view = null;
 
-        if (xml.contains("viewName")){
-        	view = (ProjectView)project.getProjectDocumentByName(xml.getStringProperty("viewName"),ProjectViewFactory.registerName);
-        }else {
-        	if (indice != -1) {
-        		try {
-        			ArrayList views = project.getDocumentsByType(ProjectViewFactory.registerName);
+	if (xml.contains("viewName")){
+	    view = (ProjectView)project.getProjectDocumentByName(xml.getStringProperty("viewName"),ProjectViewFactory.registerName);
+	}else {
+	    if (indice != -1) {
+		try {
+		    ArrayList views = project.getDocumentsByType(ProjectViewFactory.registerName);
 
-        			view = (ProjectView) views.get(indice);
-        		} catch (IndexOutOfBoundsException e) {
-        			NotificationManager.addError("No se ha encontrado la vista de indice "+ indice,
-            				e);
-        		}
-        	}
-        }
-
-
-        if (view != null) {
-        	this.setView(view);
-
-        	try {
-        		if (xml.contains("extentX")) {
-        			if (m_bLinked) {
-        				this.getMapContext().getViewPort().setExtent(new Rectangle2D.Double(
-        						xml.getDoubleProperty("extentX"),
-        						xml.getDoubleProperty("extentY"),
-        						xml.getDoubleProperty("extentW"),
-        						xml.getDoubleProperty("extentH")));
-        			} else if (!m_bLinked) {
-        				this.m_fmap = MapContext.createFromXML(xml.getChild(0));
-        			}
-        		}
-        	} catch (XMLException e) {
-        		NotificationManager.addError("Pasando las propiedades del XMLEntity al objeto",
-        				e);
-        	}
-        } else if (!m_bLinked) {
-            try {
-                this.m_fmap = MapContext.createFromXML(xml.getChild(0));
-            } catch (XMLException e) {
-                e.printStackTrace();
-            }
-        }
-        if (xml.contains("showGrid")){
-        	showGrid=xml.getBooleanProperty("showGrid");
-        }
-        Iterator iterator=xml.findChildren("fframegrid","fframegrid");
-        while (iterator.hasNext()) {
-			XMLEntity element = (XMLEntity) iterator.next();
-			FFrameGridFactory gridFactory=new FFrameGridFactory();
-			grid=gridFactory.createFrame();//FFrameGridFactory.createFrameFromName("grid : "+this.getName());//element,project,getLayout());
-			grid.setXMLEntity(element);
-			grid.setLayout(getLayout());
+		    view = (ProjectView) views.get(indice);
+		} catch (IndexOutOfBoundsException e) {
+		    NotificationManager.addError("No se ha encontrado la vista de indice "+ indice,
+			    e);
 		}
+	    }
+	}
+
+
+	if (view != null) {
+	    this.setView(view);
+
+	    try {
+		if (xml.contains("extentX")) {
+		    if (m_bLinked) {
+			this.getMapContext().getViewPort().setExtent(new Rectangle2D.Double(
+				xml.getDoubleProperty("extentX"),
+				xml.getDoubleProperty("extentY"),
+				xml.getDoubleProperty("extentW"),
+				xml.getDoubleProperty("extentH")));
+		    } else if (!m_bLinked) {
+			this.m_fmap = MapContext.createFromXML(xml.getChild(0));
+		    }
+		}
+	    } catch (XMLException e) {
+		NotificationManager.addError("Pasando las propiedades del XMLEntity al objeto",
+			e);
+	    }
+	} else if (!m_bLinked) {
+	    try {
+		this.m_fmap = MapContext.createFromXML(xml.getChild(0));
+	    } catch (XMLException e) {
+		e.printStackTrace();
+	    }
+	}
+	if (xml.contains("showGrid")){
+	    showGrid=xml.getBooleanProperty("showGrid");
+	}
+	Iterator iterator=xml.findChildren("fframegrid","fframegrid");
+	while (iterator.hasNext()) {
+	    XMLEntity element = (XMLEntity) iterator.next();
+	    FFrameGridFactory gridFactory=new FFrameGridFactory();
+	    grid=gridFactory.createFrame();//FFrameGridFactory.createFrameFromName("grid : "+this.getName());//element,project,getLayout());
+	    grid.setXMLEntity(element);
+	    grid.setLayout(getLayout());
+	}
     }
 
     /**
@@ -977,33 +990,33 @@ public class FFrameView extends FFrame implements ViewPortListener,
      * @return DOCUMENT ME!
      */
     public boolean compare(Object arg0) {
-        if (!(arg0 instanceof FFrameView)) {
-            return false;
-        }
+	if (!(arg0 instanceof FFrameView)) {
+	    return false;
+	}
 
-        if (!this.getName().equals(((FFrameView) arg0).getName())) {
-            return false;
-        }
+	if (!this.getName().equals(((FFrameView) arg0).getName())) {
+	    return false;
+	}
 
-        if (Math.abs(this.getBoundBox().getWidth()-(((FFrameView) arg0).getBoundBox().getWidth()))>0.05) {
-            return false;
-        }
-        if (Math.abs(this.getBoundBox().getHeight()-(((FFrameView) arg0).getBoundBox().getHeight()))>0.05) {
-            return false;
-        }
+	if (Math.abs(this.getBoundBox().getWidth()-(((FFrameView) arg0).getBoundBox().getWidth()))>0.05) {
+	    return false;
+	}
+	if (Math.abs(this.getBoundBox().getHeight()-(((FFrameView) arg0).getBoundBox().getHeight()))>0.05) {
+	    return false;
+	}
 
-        if (!this.toString().equals(((FFrameView) arg0).toString())) {
-            return false;
-        }
+	if (!this.toString().equals(((FFrameView) arg0).toString())) {
+	    return false;
+	}
 
-        if (this.getMapContext()!=null && !this.getMapContext().equals(((FFrameView) arg0).getMapContext())) {
-            return false;
-        }
+	if (this.getMapContext()!=null && !this.getMapContext().equals(((FFrameView) arg0).getMapContext())) {
+	    return false;
+	}
 
-        if (this.getRotation()!=((FFrameView)arg0).getRotation()){
-        	return false;
-        }
-        return true;
+	if (this.getRotation()!=((FFrameView)arg0).getRotation()){
+	    return false;
+	}
+	return true;
     }
 
     /**
@@ -1013,132 +1026,138 @@ public class FFrameView extends FFrame implements ViewPortListener,
      *
      * @return DOCUMENT ME!
      */
+    @Override
     public boolean equals(Object arg0) {
-        return this.compare(arg0);
+	return this.compare(arg0);
     }
 
-	public void refresh() {
-		if (view!=null && (getTypeScale() == MANUAL || getTypeScale() == CONSTANTE ))
-			getMapContext().getViewPort().setExtent(getNewExtent(getScale()));
-		setRefresh(true);
+    public void refresh() {
+	if (view!=null && (getTypeScale() == MANUAL || getTypeScale() == CONSTANTE )) {
+	    getMapContext().getViewPort().setExtent(getNewExtent(getScale()));
 	}
-
-	public void fullExtent() throws ReadDriverException {
-		setNewExtent(getMapContext().getFullExtent());
-	}
-
-	public void setPointsToZoom(Point2D px1, Point2D px2) {
-		p1=px1;
-		p2=px2;
-	}
-
-	public void movePoints(Point2D px1, Point2D px2) {
-		double difX=-px2.getX()+px1.getX();
-		double difY=-px2.getY()+px1.getY();
-		if (p1!=null) {
-			p1.setLocation(p1.getX()+difX,p1.getY()+difY);
-			p2.setLocation(p2.getX()+difX,p2.getY()+difY);
-		}
-	}
-
-	public void cloneActions(IFFrame frame) {
-		if (view ==null || view.getMapContext()==null)
-			return;
-		if (m_bLinked) {
-            if (getTypeScale() == AUTOMATICO) {
-            	view.getMapContext().getViewPort().addViewPortListener(this);
-                view.getMapContext().addLayerListener(this);
-            } else if (getTypeScale() == CONSTANTE) {
-                view.getMapContext().getViewPort().removeViewPortListener(this);
-                view.getMapContext().addLayerListener(this);
-            } else if (getTypeScale() == MANUAL) {
-                view.getMapContext().getViewPort().removeViewPortListener(this);
-                view.getMapContext().addLayerListener(this);
-            }
-        } else if (!m_bLinked) {
-        	if (getTypeScale() == AUTOMATICO) {
-                view.getMapContext().getViewPort().addViewPortListener(this);
-            } else if (getTypeScale() == CONSTANTE) {
-                view.getMapContext().getViewPort().removeViewPortListener(this);
-            } else if (getTypeScale() == MANUAL) {
-                view.getMapContext().getViewPort().removeViewPortListener(this);
-            }
-        }
-		((FFrameView)frame).view.getMapContext().removeLayerListener((FFrameView)frame);
-    	((FFrameView)frame).view.getMapContext().getViewPort().removeViewPortListener((FFrameView)frame);
-
-
-	}
-	public IFFrame cloneFFrame(Layout layout) {
-		
-		FFrameView frame =(FFrameView)FrameFactory.createFrameFromName(FFrameViewFactory.registerName);
-        frame.setLevel(this.getLevel());
-        frame.setNum(this.num);
-        frame.setName(this.getName());
-        frame.setBoundBox(this.getBoundBox());
-        frame.setTag(this.getTag());
-        frame.m_Mode = this.m_Mode;
-        frame.m_typeScale = this.m_typeScale;
-        frame.m_extension = this.m_extension;
-        frame.m_quality = this.m_quality;
-        frame.m_viewing = this.m_viewing;
-        frame.m_bLinked = this.m_bLinked;
-        frame.m_mapUnits = this.m_mapUnits;
-        frame.setRotation(this.getRotation());
-
-        frame.m_Scale = this.m_Scale;
-        frame.view=this.getView();
-        frame.m_fmap = this.getMapContext();
-        frame.setSelected(this.getSelected()!=IFFrame.NOSELECT);
-        frame.setLayout(layout);
-
-        if (frame instanceof IFFrameViewDependence) {
-            ((IFFrameViewDependence) frame).initDependence(layout.getLayoutContext().getAllFFrames());
-        }
-        if (grid!=null){
-        	FFrameGrid newGrid=(FFrameGrid)this.grid.cloneFFrame(layout);
-        	newGrid.setFFrameDependence(frame);
-        	frame.setGrid(newGrid);
-        }
-        frame.showGrid=showGrid;
-        cloneActions(frame);
-        return frame;
+	setRefresh(true);
     }
-	public void setGrid(IFFrame grid) {
-		this.grid=grid;
-		this.grid.setRotation(this.getRotation());
-	}
-	public IFFrame getGrid(){
-		return this.grid;
-	}
 
-	public void setRotation(double rotation) {
-		super.setRotation(rotation);
-		if (grid!=null)
-			grid.setRotation(rotation);
-	}
-	public IFFrameDialog getPropertyDialog() {
-		return new FFrameViewDialog(getLayout(),this);
-	}
-	public void showGrid(boolean b){
-		showGrid=b;
-	}
+    public void fullExtent() throws ReadDriverException {
+	setNewExtent(getMapContext().getFullExtent());
+    }
 
-	public boolean isShowGrid() {
-		return showGrid;
-	}
+    public void setPointsToZoom(Point2D px1, Point2D px2) {
+	p1=px1;
+	p2=px2;
+    }
 
-	public void refreshOriginalExtent(){
-		if (getTypeScale() == AUTOMATICO) {
-			view.getMapContext().getViewPort().setExtent(getMapContext().getViewPort().getExtent());
-			view.getMapContext().getViewPort().refreshExtent();
-		}else if (getTypeScale() == MANUAL){
-			Rectangle2D oldExtent = view.getMapContext().getViewPort().getExtent();
-        	Rectangle2D newExtent=getMapContext().getViewPort().getExtent();
-        	double xDif=newExtent.getCenterX()-oldExtent.getCenterX();
-        	double yDif=newExtent.getCenterY()-oldExtent.getCenterY();
-        	view.getMapContext().getViewPort().setExtent(new Rectangle2D.Double(oldExtent.getX()+xDif,oldExtent.getY()+yDif,oldExtent.getWidth(),oldExtent.getHeight()));
-        	view.getMapContext().getViewPort().refreshExtent();
-		}
+    public void movePoints(Point2D px1, Point2D px2) {
+	double difX=-px2.getX()+px1.getX();
+	double difY=-px2.getY()+px1.getY();
+	if (p1!=null) {
+	    p1.setLocation(p1.getX()+difX,p1.getY()+difY);
+	    p2.setLocation(p2.getX()+difX,p2.getY()+difY);
 	}
+    }
+
+    public void cloneActions(IFFrame frame) {
+	if (view ==null || view.getMapContext()==null) {
+	    return;
+	}
+	if (m_bLinked) {
+	    if (getTypeScale() == AUTOMATICO) {
+		view.getMapContext().getViewPort().addViewPortListener(this);
+		view.getMapContext().addLayerListener(this);
+	    } else if (getTypeScale() == CONSTANTE) {
+		view.getMapContext().getViewPort().removeViewPortListener(this);
+		view.getMapContext().addLayerListener(this);
+	    } else if (getTypeScale() == MANUAL) {
+		view.getMapContext().getViewPort().removeViewPortListener(this);
+		view.getMapContext().addLayerListener(this);
+	    }
+	} else if (!m_bLinked) {
+	    if (getTypeScale() == AUTOMATICO) {
+		view.getMapContext().getViewPort().addViewPortListener(this);
+	    } else if (getTypeScale() == CONSTANTE) {
+		view.getMapContext().getViewPort().removeViewPortListener(this);
+	    } else if (getTypeScale() == MANUAL) {
+		view.getMapContext().getViewPort().removeViewPortListener(this);
+	    }
+	}
+	((FFrameView)frame).view.getMapContext().removeLayerListener((FFrameView)frame);
+	((FFrameView)frame).view.getMapContext().getViewPort().removeViewPortListener((FFrameView)frame);
+
+
+    }
+    @Override
+    public IFFrame cloneFFrame(Layout layout) {
+
+	FFrameView frame =(FFrameView)FrameFactory.createFrameFromName(FFrameViewFactory.registerName);
+	frame.setLevel(this.getLevel());
+	frame.setNum(this.num);
+	frame.setName(this.getName());
+	frame.setBoundBox(this.getBoundBox());
+	frame.setTag(this.getTag());
+	frame.m_Mode = this.m_Mode;
+	frame.m_typeScale = this.m_typeScale;
+	frame.m_extension = this.m_extension;
+	frame.m_quality = this.m_quality;
+	frame.m_viewing = this.m_viewing;
+	frame.m_bLinked = this.m_bLinked;
+	frame.m_mapUnits = this.m_mapUnits;
+	frame.setRotation(this.getRotation());
+
+	frame.m_Scale = this.m_Scale;
+	frame.view=this.getView();
+	frame.m_fmap = this.getMapContext();
+	frame.setSelected(this.getSelected()!=IFFrame.NOSELECT);
+	frame.setLayout(layout);
+
+	if (frame instanceof IFFrameViewDependence) {
+	    ((IFFrameViewDependence) frame).initDependence(layout.getLayoutContext().getAllFFrames());
+	}
+	if (grid!=null){
+	    FFrameGrid newGrid=(FFrameGrid)this.grid.cloneFFrame(layout);
+	    newGrid.setFFrameDependence(frame);
+	    frame.setGrid(newGrid);
+	}
+	frame.showGrid=showGrid;
+	cloneActions(frame);
+	return frame;
+    }
+    public void setGrid(IFFrame grid) {
+	this.grid=grid;
+	this.grid.setRotation(this.getRotation());
+    }
+    public IFFrame getGrid(){
+	return this.grid;
+    }
+
+    @Override
+    public void setRotation(double rotation) {
+	super.setRotation(rotation);
+	if (grid!=null) {
+	    grid.setRotation(rotation);
+	}
+    }
+    public IFFrameDialog getPropertyDialog() {
+	return new FFrameViewDialog(getLayout(),this);
+    }
+    public void showGrid(boolean b){
+	showGrid=b;
+    }
+
+    public boolean isShowGrid() {
+	return showGrid;
+    }
+
+    public void refreshOriginalExtent(){
+	if (getTypeScale() == AUTOMATICO) {
+	    view.getMapContext().getViewPort().setExtent(getMapContext().getViewPort().getExtent());
+	    view.getMapContext().getViewPort().refreshExtent();
+	}else if (getTypeScale() == MANUAL){
+	    Rectangle2D oldExtent = view.getMapContext().getViewPort().getExtent();
+	    Rectangle2D newExtent=getMapContext().getViewPort().getExtent();
+	    double xDif=newExtent.getCenterX()-oldExtent.getCenterX();
+	    double yDif=newExtent.getCenterY()-oldExtent.getCenterY();
+	    view.getMapContext().getViewPort().setExtent(new Rectangle2D.Double(oldExtent.getX()+xDif,oldExtent.getY()+yDif,oldExtent.getWidth(),oldExtent.getHeight()));
+	    view.getMapContext().getViewPort().refreshExtent();
+	}
+    }
 }
