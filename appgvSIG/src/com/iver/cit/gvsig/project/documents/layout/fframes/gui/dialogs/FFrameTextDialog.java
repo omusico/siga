@@ -379,6 +379,9 @@ public class FFrameTextDialog extends JPanel implements IFFrameDialog {
 				    .getLineStartOffset(i));
 
 			    if (!s.equals("")) { //$NON-NLS-1$
+				if (newFFrameText.getText() != null) {
+				    newFFrameText.getText().clear();
+				}
 				newFFrameText.addText(s);
 			    }
 			} catch (Exception ex) {
@@ -441,6 +444,7 @@ public class FFrameTextDialog extends JPanel implements IFFrameDialog {
 		    }
 
 		    newFFrameText.setRotation(getPRotation().getRotation());
+		    fframetext=null;
 		    fframetext = newFFrameText;
 		    PluginServices.getMDIManager().closeWindow(
 			    FFrameTextDialog.this);
