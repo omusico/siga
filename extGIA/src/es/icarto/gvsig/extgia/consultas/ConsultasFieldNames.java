@@ -440,7 +440,7 @@ public class ConsultasFieldNames {
     }
 
     private static String obrasDesagueCSVFieldNames() {
-	return "distinct(el.id_obra_desague) as \"ID Obra Paso\"," +
+	return "distinct(el.id_obra_desague) as \"ID Obra Desagüe\"," +
 		"fecha_actualizacion as \"Fecha Actualización\"," +
 		localizationCSVFieldNames() +
 		"pk as \"PK\"," +
