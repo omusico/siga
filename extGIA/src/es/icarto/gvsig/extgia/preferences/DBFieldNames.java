@@ -272,6 +272,12 @@ public class DBFieldNames {
 	    break;
 	case Valla_Cierre:
 	    pk = "id_valla";
+	    break;
+	case Obras_Desague:
+	    pk = "id_obra_desague";
+	    break;
+	case Obras_Paso:
+	    pk = "id_obra_paso";
 	}
 	return pk;
     }
