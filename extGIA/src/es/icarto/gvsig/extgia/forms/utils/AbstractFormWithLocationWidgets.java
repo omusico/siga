@@ -165,16 +165,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	    deleteTrabajoButton = (JButton) form.getComponentByName("delete_trabajo_button");
 	}
 
-	if (SqlUtils.elementHasType(layerName, "trabajos")) {
-	    if (addTrabajosBatchButton == null) {
-		addTrabajosBatchButton = new JButton();
-		java.net.URL imgURL = getClass().getResource("/batch_trabajo.png");
-		ImageIcon icon = new ImageIcon (imgURL);
-		addTrabajosBatchButton.setIcon(icon);
-		addTrabajosBatchButton.setToolTipText(PluginServices.getText(this, "addBatchTrabajos_tooltip"));
-		getActionsToolBar().add(addTrabajosBatchButton);
-	    }
-	}
 	if (SqlUtils.elementHasType(layerName, "inspecciones")) {
 	    if (addReconocimientosBatchButton == null) {
 		addReconocimientosBatchButton = new JButton();
@@ -183,6 +173,17 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 		addReconocimientosBatchButton.setIcon(icon);
 		addReconocimientosBatchButton.setToolTipText(PluginServices.getText(this, "addBatchReconocimientos_tooltip"));
 		getActionsToolBar().add(addReconocimientosBatchButton);
+	    }
+	}
+
+	if (SqlUtils.elementHasType(layerName, "trabajos")) {
+	    if (addTrabajosBatchButton == null) {
+		addTrabajosBatchButton = new JButton();
+		java.net.URL imgURL = getClass().getResource("/batch_trabajo.png");
+		ImageIcon icon = new ImageIcon (imgURL);
+		addTrabajosBatchButton.setIcon(icon);
+		addTrabajosBatchButton.setToolTipText(PluginServices.getText(this, "addBatchTrabajos_tooltip"));
+		getActionsToolBar().add(addTrabajosBatchButton);
 	    }
 	}
 
