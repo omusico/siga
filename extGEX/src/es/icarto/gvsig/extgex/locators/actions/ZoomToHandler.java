@@ -4,8 +4,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Rectangle2D;
 
+import javax.swing.JOptionPane;
+
 import com.hardcode.gdbms.driver.exceptions.InitializeDriverException;
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
+import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.layers.FBitSet;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
@@ -15,7 +18,7 @@ import es.udc.cartolab.gvsig.navtable.AbstractNavTable;
 
 public class ZoomToHandler implements ActionListener {
 
-    private IPositionRetriever zoomHandlerData;
+    private final IPositionRetriever zoomHandlerData;
 
     public ZoomToHandler(IPositionRetriever zoomHandlerData) {
 	this.zoomHandlerData = zoomHandlerData;
@@ -52,22 +55,28 @@ public class ZoomToHandler implements ActionListener {
 	    source.start();
 	    g = source.getShape(pos);
 	    source.stop();
-	    /*
-	     * fix to avoid zoom problems when layer and view projections aren't
-	     * the same.
-	     */
-	    if (layer.getCoordTrans() != null) {
-		g.reProject(layer.getCoordTrans());
-	    }
-	    rectangle = g.getBounds2D();
-	    if (rectangle.getWidth() < 200) {
-		rectangle.setFrameFromCenter(rectangle.getCenterX(),
-			rectangle.getCenterY(),
-			rectangle.getCenterX() + 50,
-			rectangle.getCenterY() + 50);
-	    }
-	    if (rectangle != null) {
-		layer.getMapContext().getViewPort().setExtent(rectangle);
+
+	    if (g != null) {
+		/*
+		 * fix to avoid zoom problems when layer and view projections aren't
+		 * the same.
+		 */
+		if (layer.getCoordTrans() != null) {
+		    g.reProject(layer.getCoordTrans());
+		}
+		rectangle = g.getBounds2D();
+		if (rectangle.getWidth() < 200) {
+		    rectangle.setFrameFromCenter(rectangle.getCenterX(),
+			    rectangle.getCenterY(),
+			    rectangle.getCenterX() + 50,
+			    rectangle.getCenterY() + 50);
+		}
+		if (rectangle != null) {
+		    layer.getMapContext().getViewPort().setExtent(rectangle);
+		}
+	    }else {
+		JOptionPane.showMessageDialog(null, PluginServices.getText(
+			this, "feature_has_no_geometry_to_zoom"));
 	    }
 	} catch (InitializeDriverException e) {
 	    e.printStackTrace();
