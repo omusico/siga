@@ -9,7 +9,7 @@ import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.gui.cad.CADTool;
-import com.iver.cit.gvsig.gui.cad.tools.EIELPolylineCADTool;
+import com.iver.cit.gvsig.gui.cad.tools.PolylineCADTool;
 import com.iver.cit.gvsig.listeners.CADListenerManager;
 import com.iver.cit.gvsig.listeners.EndGeometryListener;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
@@ -99,13 +99,13 @@ public class FormExpropiationsExtension extends Extension {
 
     private class NTEndGeometryListener implements EndGeometryListener {
 
-	public void endGeometry(FLayer layer) {
+	public void endGeometry(FLayer layer, String cadToolKey) {
 	    if (layer.getName().equalsIgnoreCase("Reversiones")) {
 		FLyrVect l = (FLyrVect) layer;
 		CADTool cadTool = CADExtension.getCADTool();
 		IGeometry insertedGeom = null;
-		if (cadTool instanceof EIELPolylineCADTool) {
-		    insertedGeom = ((EIELPolylineCADTool) cadTool).getInsertedGeom();
+		if (cadTool instanceof PolylineCADTool) {
+		    insertedGeom = ((PolylineCADTool) cadTool).getGeometry();
 		}
 		es.icarto.gvsig.extgex.forms.FormReversions dialog = new es.icarto.gvsig.extgex.forms.FormReversions((FLyrVect) layer, insertedGeom);
 		if (dialog.init()) {
@@ -116,8 +116,8 @@ public class FormExpropiationsExtension extends Extension {
 		DBSession.getCurrentSession().setSchema(DBNames.EXPROPIATIONS_SCHEMA);
 		IGeometry insertedGeom = null;
 		CADTool cadTool = CADExtension.getCADTool();
-		if (cadTool instanceof EIELPolylineCADTool) {
-		    insertedGeom = ((EIELPolylineCADTool) cadTool).getInsertedGeom();
+		if (cadTool instanceof PolylineCADTool) {
+		    insertedGeom = ((PolylineCADTool) cadTool).getGeometry();
 		}
 		es.icarto.gvsig.extgex.forms.FormExpropiations dialog = new es.icarto.gvsig.extgex.forms.FormExpropiations((FLyrVect) layer, insertedGeom);
 		if (dialog.init()) {
@@ -128,5 +128,6 @@ public class FormExpropiationsExtension extends Extension {
 		LaunchGIAForms.callFormDependingOfLayer(layer.getName(), true);
 	    }
 	}
+
     }
 }
