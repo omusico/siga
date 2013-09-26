@@ -423,28 +423,28 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
     @Override
     public int getPosition() {
 	try {
-	    if (ELLEMap.getFiltered()) {
-		TOCLayerManager tm = new TOCLayerManager();
-		FLyrVect fincasLayer = tm.getLayerByName(DBNames.LAYER_FINCAS);
-		SelectableDataSource rs = fincasLayer.getRecordset();
-		int index = rs.getFieldIndexByName(DBNames.FIELD_IDFINCA);
-		for (int i=0; i<rs.getRowCount();i++) {
-		    if (rs.getFieldValue(i, index).toString().compareTo(getFincaID()) == 0) {
-			return i;
-		    }
+	    //	    if (ELLEMap.getFiltered()) {
+	    TOCLayerManager tm = new TOCLayerManager();
+	    FLyrVect fincasLayer = tm.getLayerByName(DBNames.LAYER_FINCAS);
+	    SelectableDataSource rs = fincasLayer.getRecordset();
+	    int index = rs.getFieldIndexByName(DBNames.FIELD_IDFINCA);
+	    for (int i=0; i<rs.getRowCount();i++) {
+		if (rs.getFieldValue(i, index).toString().compareTo(getFincaID()) == 0) {
+		    return i;
 		}
-	    }else {
-		String query = "SELECT gid FROM " + DBNames.EXPROPIATIONS_SCHEMA + "." + DBNames.TABLE_FINCAS +
-			" WHERE id_finca = " + "'" + getFincaID() + "';";
-		Connection con = dbs.getJavaConnection();
-		Statement st = con.createStatement();
-		ResultSet resultSet = st.executeQuery(query);
-		resultSet.first();
-		return resultSet.getInt(1)-1;
 	    }
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	    return -1;
+	    //	    }else {
+	    //		String query = "SELECT gid FROM " + DBNames.EXPROPIATIONS_SCHEMA + "." + DBNames.TABLE_FINCAS +
+	    //			" WHERE id_finca = " + "'" + getFincaID() + "';";
+	    //		Connection con = dbs.getJavaConnection();
+	    //		Statement st = con.createStatement();
+	    //		ResultSet resultSet = st.executeQuery(query);
+	    //		resultSet.first();
+	    //		return resultSet.getInt(1)-1;
+	    //	    }
+	    //	} catch (SQLException e) {
+	    //	    e.printStackTrace();
+	    //	    return -1;
 	} catch (ReadDriverException e) {
 	    e.printStackTrace();
 	    return -1;
