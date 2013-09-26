@@ -1,0 +1,617 @@
+/* gvSIG. Sistema de Información Geográfica de la Generalitat Valenciana
+ *
+ * Copyright (C) 2004 IVER T.I. and Generalitat Valenciana.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307,USA.
+ *
+ * For more information, contact:
+ *
+ *  Generalitat Valenciana
+ *   Conselleria d'Infraestructures i Transport
+ *   Av. Blasco Ibáñez, 50
+ *   46010 VALENCIA
+ *   SPAIN
+ *
+ *      +34 963862235
+ *   gvsig@gva.es
+ *      www.gvsig.gva.es
+ *
+ *    or
+ *
+ *   IVER T.I. S.A
+ *   Salamanca 50
+ *   46005 Valencia
+ *   Spain
+ *
+ *   +34 963163400
+ *   dac@iver.es
+ */
+package com.iver.cit.gvsig.gui.cad;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.PathIterator;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
+
+import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
+import com.hardcode.gdbms.engine.values.Value;
+import com.hardcode.gdbms.engine.values.ValueFactory;
+import com.iver.andami.PluginServices;
+import com.iver.andami.messages.NotificationManager;
+import com.iver.andami.ui.mdiManager.IWindow;
+import com.iver.cit.gvsig.CADExtension;
+import com.iver.cit.gvsig.exceptions.expansionfile.ExpansionFileWriteException;
+import com.iver.cit.gvsig.exceptions.validate.ValidateRowException;
+import com.iver.cit.gvsig.fmap.ViewPort;
+import com.iver.cit.gvsig.fmap.core.DefaultFeature;
+import com.iver.cit.gvsig.fmap.core.FShape;
+import com.iver.cit.gvsig.fmap.core.GeneralPathX;
+import com.iver.cit.gvsig.fmap.core.Handler;
+import com.iver.cit.gvsig.fmap.core.IFeature;
+import com.iver.cit.gvsig.fmap.core.IGeometry;
+import com.iver.cit.gvsig.fmap.core.ShapeFactory;
+import com.iver.cit.gvsig.fmap.core.SymbologyFactory;
+import com.iver.cit.gvsig.fmap.core.symbols.ISymbol;
+import com.iver.cit.gvsig.fmap.core.v02.FConverter;
+import com.iver.cit.gvsig.fmap.core.v02.FGraphicUtilities;
+import com.iver.cit.gvsig.fmap.edition.DefaultRowEdited;
+import com.iver.cit.gvsig.fmap.edition.EditionEvent;
+import com.iver.cit.gvsig.fmap.edition.IRowEdited;
+import com.iver.cit.gvsig.fmap.edition.VectorialEditableAdapter;
+import com.iver.cit.gvsig.fmap.layers.FBitSet;
+import com.iver.cit.gvsig.fmap.layers.FLayer;
+import com.iver.cit.gvsig.fmap.layers.FLyrVect;
+import com.iver.cit.gvsig.fmap.layers.SpatialCache;
+import com.iver.cit.gvsig.gui.cad.exception.CommandException;
+import com.iver.cit.gvsig.layers.VectorialLayerEdited;
+import com.iver.cit.gvsig.listeners.CADListenerManager;
+import com.iver.cit.gvsig.project.documents.view.gui.IView;
+import com.iver.cit.gvsig.project.documents.view.gui.View;
+import com.iver.utiles.console.JConsole;
+
+/**
+ * DOCUMENT ME!
+ * 
+ * @author Vicente Caballero Navarro
+ * @author Laboratorio de Bases de Datos. Universidad de A Coruña
+ * @author Cartolab. Universidad de A Coruña
+ */
+public abstract class DefaultCADTool implements CADTool {
+    public static ISymbol selectionSymbol = SymbologyFactory
+	    .createDefaultSymbolByShapeType(FShape.MULTI, new Color(255, 0, 0,
+		    100)); // Le ponemos una transparencia
+    public static ISymbol axisReferencesSymbol = SymbologyFactory
+	    .createDefaultSymbolByShapeType(FShape.MULTI, new Color(100, 100,
+		    100, 100));
+    public static ISymbol geometrySelectSymbol = SymbologyFactory
+	    .createDefaultSymbolByShapeType(FShape.MULTI, Color.RED);
+    public static ISymbol handlerSymbol = SymbologyFactory
+	    .createDefaultSymbolByShapeType(FShape.MULTI, Color.ORANGE);
+
+    private CADToolAdapter cadToolAdapter;
+
+    private String question;
+
+    private String[] currentdescriptions;
+
+    private String tool = "selection";
+
+    private DefaultCADTool previousTool;
+
+    private boolean multiTransition = false;
+    private boolean errorOnIntersection;
+
+    private ArrayList temporalCache = new ArrayList();
+
+    public void addTemporalCache(IGeometry geom) {
+	temporalCache.add(geom);
+	insertSpatialCache(geom);
+    }
+
+    public void clearTemporalCache() {
+	IGeometry[] geoms = (IGeometry[]) temporalCache
+		.toArray(new IGeometry[0]);
+	for (int i = 0; i < geoms.length; i++) {
+	    removeSpatialCache(geoms[i]);
+	}
+	temporalCache.clear();
+    }
+
+    protected void insertSpatialCache(IGeometry geom) {
+	VectorialLayerEdited vle = getVLE();
+	SpatialCache spatialCache = ((FLyrVect) vle.getLayer())
+		.getSpatialCache();
+	Rectangle2D r = geom.getBounds2D();
+	if (geom.getGeometryType() == FShape.POINT) {
+	    r = new Rectangle2D.Double(r.getX(), r.getY(), 1, 1);
+	}
+	spatialCache.insert(r, geom);
+
+    }
+
+    private void removeSpatialCache(IGeometry geom) {
+	VectorialLayerEdited vle = getVLE();
+	SpatialCache spatialCache = ((FLyrVect) vle.getLayer())
+		.getSpatialCache();
+	Rectangle2D r = null;
+	if (geom.getGeometryType() == FShape.POINT) {
+	    r = new Rectangle2D.Double(r.getX(), r.getY(), 1, 1);
+	} else {
+	    r = geom.getBounds2D();
+	}
+	spatialCache.remove(r, geom);
+
+    }
+
+    public void draw(IGeometry geometry) {
+	if (geometry != null) {
+	    BufferedImage img = getCadToolAdapter().getMapControl().getImage();
+	    Graphics2D gImag = (Graphics2D) img.getGraphics();
+	    ViewPort vp = getCadToolAdapter().getMapControl().getViewPort();
+	    geometry.draw(gImag, vp, DefaultCADTool.selectionSymbol);
+	}
+    }
+
+    @Override
+    public void setCadToolAdapter(CADToolAdapter cta) {
+	cadToolAdapter = cta;
+    }
+
+    @Override
+    public CADToolAdapter getCadToolAdapter() {
+	return cadToolAdapter;
+    }
+
+    @Override
+    public VectorialLayerEdited getVLE() {
+	return (VectorialLayerEdited) CADExtension.getEditionManager()
+		.getActiveLayerEdited();
+    }
+
+    public void drawLine(Graphics2D g, Point2D firstPoint, Point2D endPoint,
+	    ISymbol symbol) {
+	GeneralPathX elShape = new GeneralPathX(GeneralPathX.WIND_EVEN_ODD, 2);
+	elShape.moveTo(firstPoint.getX(), firstPoint.getY());
+	elShape.lineTo(endPoint.getX(), endPoint.getY());
+	ShapeFactory.createPolyline2D(elShape).draw(g,
+		getCadToolAdapter().getMapControl().getViewPort(), symbol);
+    }
+
+    public void drawLine(Graphics2D g, Point2D firstPoint, Point2D endPoint) {
+	GeneralPathX elShape = new GeneralPathX(GeneralPathX.WIND_EVEN_ODD, 2);
+	elShape.moveTo(firstPoint.getX(), firstPoint.getY());
+	elShape.lineTo(endPoint.getX(), endPoint.getY());
+	ShapeFactory.createPolyline2D(elShape).draw(g,
+		getCadToolAdapter().getMapControl().getViewPort(),
+		CADTool.drawingSymbol);
+    }
+
+    public void addGeometry(IGeometry geometry) {
+	VectorialEditableAdapter vea = getVLE().getVEA();
+	try {
+	    // Deberï¿½amos comprobar que lo que escribimos es correcto:
+	    // Lo hacemos en el VectorialAdapter, justo antes de
+	    // aï¿½adir, borrar o modificar una feature
+
+	    int numAttr = vea.getRecordset().getFieldCount();
+	    Value[] values = new Value[numAttr];
+	    for (int i = 0; i < numAttr; i++) {
+		values[i] = ValueFactory.createNullValue();
+	    }
+	    String newFID = vea.getNewFID();
+	    DefaultFeature df = new DefaultFeature(geometry, values, newFID);
+	    int index = vea.addRow(df, getName(), EditionEvent.GRAPHIC);
+	    VectorialLayerEdited vle = getVLE();
+	    clearSelection();
+	    // ArrayList selectedRow = vle.getSelectedRow();
+
+	    ViewPort vp = vle.getLayer().getMapContext().getViewPort();
+	    BufferedImage selectionImage = new BufferedImage(
+		    vp.getImageWidth(), vp.getImageHeight(),
+		    BufferedImage.TYPE_INT_ARGB);
+	    Graphics2D gs = selectionImage.createGraphics();
+	    int inversedIndex = vea.getInversedIndex(index);
+	    vle.addSelectionCache(new DefaultRowEdited(df,
+		    IRowEdited.STATUS_ADDED, inversedIndex));
+	    vea.getSelection().set(inversedIndex);
+	    IGeometry geom = df.getGeometry();
+	    geom.cloneGeometry().draw(gs, vp, DefaultCADTool.selectionSymbol);
+	    vle.drawHandlers(geom.cloneGeometry(), gs, vp);
+	    vea.setSelectionImage(selectionImage);
+	    insertSpatialCache(geom);
+	} catch (ReadDriverException e) {
+	    NotificationManager.addError(e.getMessage(), e);
+	    return;
+	} catch (ValidateRowException e) {
+	    NotificationManager.addError(e.getMessage(), e);
+	    return;
+	}
+	draw(geometry.cloneGeometry());
+    }
+
+    /**
+     * TODO. This is a provisory solution. We use the same listener to warn
+     * about all changes, which can be differentiated by means of the key used
+     * in the listener. Likely a better solution will be having several
+     * listener. How that could be implemented should be discussed (several
+     * listeners shared for all cadtools, especific listeners for every cadtool,
+     * etc).
+     * 
+     * Example (not to use in production code, please, first check types and
+     * so):
+     * 
+     * public class YourClass implements EndGeometryListener {
+     * 
+     * public void endGeometry(FLayer layer, String cadToolKey){ CADTool cadTool
+     * = CADExtension.getCADTool(); Value[] values = getYourValuesAsYouWant();
+     * ((CutPolygonCADTool) cadTool).setParametrizableValues(values); }
+     * 
+     * }
+     */
+    public void addGeometryWithParametrizedValues(IGeometry geometry,
+	    Value[] values) {
+	VectorialEditableAdapter vea = getVLE().getVEA();
+	try {
+	    // Deberï¿½amos comprobar que lo que escribimos es correcto:
+	    // Lo hacemos en el VectorialAdapter, justo antes de
+	    // aï¿½adir, borrar o modificar una feature
+	    String newFID = vea.getNewFID();
+	    DefaultFeature df = new DefaultFeature(geometry, values, newFID);
+	    int index = vea.addRow(df, getName(), EditionEvent.GRAPHIC);
+	    VectorialLayerEdited vle = getVLE();
+	    clearSelection();
+	    // ArrayList selectedRow = vle.getSelectedRow();
+
+	    ViewPort vp = vle.getLayer().getMapContext().getViewPort();
+	    BufferedImage selectionImage = new BufferedImage(
+		    vp.getImageWidth(), vp.getImageHeight(),
+		    BufferedImage.TYPE_INT_ARGB);
+	    Graphics2D gs = selectionImage.createGraphics();
+	    int inversedIndex = vea.getInversedIndex(index);
+	    vle.addSelectionCache(new DefaultRowEdited(df,
+		    IRowEdited.STATUS_ADDED, inversedIndex));
+	    vea.getSelection().set(inversedIndex);
+	    IGeometry geom = df.getGeometry();
+	    geom.cloneGeometry().draw(gs, vp, DefaultCADTool.selectionSymbol);
+	    vle.drawHandlers(geom.cloneGeometry(), gs, vp);
+	    vea.setSelectionImage(selectionImage);
+	    insertSpatialCache(geom);
+	} catch (ReadDriverException e) {
+	    NotificationManager.addError(e.getMessage(), e);
+	    return;
+	} catch (ValidateRowException e) {
+	    NotificationManager.addError(e.getMessage(), e);
+	    return;
+	}
+	draw(geometry.cloneGeometry());
+    }
+
+    public void modifyFeature(int index, IFeature row) {
+	try {
+	    getVLE().getVEA().modifyRow(index, row, getName(),
+		    EditionEvent.GRAPHIC);
+	} catch (ValidateRowException e) {
+	    NotificationManager.addError(e.getMessage(), e);
+	} catch (ExpansionFileWriteException e) {
+	    NotificationManager.addError(e.getMessage(), e);
+	} catch (ReadDriverException e) {
+	    NotificationManager.addError(e.getMessage(), e);
+	}
+	draw(row.getGeometry().cloneGeometry());
+    }
+
+    public int addGeometry(IGeometry geometry, Value[] values) {
+	int index = 0;
+	VectorialEditableAdapter vea = getVLE().getVEA();
+	try {
+	    String newFID = vea.getNewFID();
+	    DefaultFeature df = new DefaultFeature(geometry, values, newFID);
+	    index = vea.addRow(df, getName(), EditionEvent.GRAPHIC);
+	    insertSpatialCache(geometry);
+	} catch (ValidateRowException e) {
+	    NotificationManager.addError(e);
+	} catch (ReadDriverException e) {
+	    NotificationManager.addError(e);
+	}
+	return vea.getInversedIndex(index);
+    }
+
+    /**
+     * Returns the string of the actual state
+     */
+    @Override
+    public String getQuestion() {
+	return question;
+    }
+
+    /**
+     * Updates the text for the actual state
+     * 
+     * @param s
+     *            String that will be shown in the console
+     */
+    @Override
+    public void setQuestion(String s) {
+	question = s;
+	// ConsoleToken.addQuestion(s);
+    }
+
+    /**
+     * Provoca un repintado "soft" de la capa activa en edición. Las capas por
+     * debajo de ella no se dibujan de verdad, solo se dibuja la que está en
+     * edición y las que están por encima de ella en el TOC.
+     */
+    public void refresh() {
+	// getCadToolAdapter().getMapControl().drawMap(false);
+	// getVLE().getLayer().setDirty(true);
+	getCadToolAdapter().getMapControl().rePaintDirtyLayers();
+    }
+
+    public void drawHandlers(Graphics g, ArrayList selectedRows,
+	    AffineTransform at) {
+	for (int i = 0; i < selectedRows.size(); i++) {
+	    IRowEdited edRow = (IRowEdited) selectedRows.get(i);
+	    IFeature feat = (IFeature) edRow.getLinkedRow();
+	    IGeometry ig = feat.getGeometry().cloneGeometry();
+	    if (ig == null) {
+		continue;
+	    }
+	    Handler[] handlers = ig.getHandlers(IGeometry.SELECTHANDLER);
+	    FGraphicUtilities.DrawHandlers((Graphics2D) g, at, handlers,
+		    DefaultCADTool.handlerSymbol);
+	}
+    }
+
+    @Override
+    public void setDescription(String[] currentdescriptions) {
+	this.currentdescriptions = currentdescriptions;
+    }
+
+    @Override
+    public String[] getDescriptions() {
+	return currentdescriptions;
+    }
+
+    @Override
+    public void end() {
+	CADExtension.setCADTool("_selection", true);
+	PluginServices.getMainFrame().setSelectedTool("_selection");
+	CADTool cadtool = CADExtension.getCADTool();
+	cadtool.setPreviosTool(this);
+    }
+
+    @Override
+    public void init() {
+	// jaume, should not be necessary
+	// CADTool.drawingSymbol.setOutlined(true);
+	// CADTool.drawingSymbol.setOutlineColor(Color.GREEN);
+
+    }
+
+    protected ArrayList getSelectedRows() {
+	VectorialLayerEdited vle = getVLE();
+	ArrayList selectedRow = vle.getSelectedRow();
+	return selectedRow;
+    }
+
+    protected ArrayList getSelectedHandlers() {
+	VectorialLayerEdited vle = getVLE();
+	ArrayList selectedHandlers = vle.getSelectedHandler();
+	return selectedHandlers;
+    }
+
+    @Override
+    public void clearSelection() throws ReadDriverException {
+	VectorialLayerEdited vle = getVLE();
+	ArrayList selectedRow = vle.getSelectedRow();
+	ArrayList selectedHandlers = vle.getSelectedHandler();
+	selectedRow.clear();
+	selectedHandlers.clear();
+	VectorialEditableAdapter vea = vle.getVEA();
+	FBitSet selection = vea.getSelection();
+	selection.clear();
+	vea.setSelectionImage(null);
+	vea.setHandlersImage(null);
+
+    }
+
+    public String getNextTool() {
+	return tool;
+    }
+
+    public void setNextTool(String tool) {
+	this.tool = tool;
+    }
+
+    public boolean changeCommand(String name) throws CommandException {
+	CADTool[] cadtools = CADExtension.getCADTools();
+	for (int i = 0; i < cadtools.length; i++) {
+	    CADTool ct = cadtools[i];
+	    if (name.equalsIgnoreCase(ct.getName())
+		    || name.equalsIgnoreCase(ct.toString())) {
+		int type = FShape.POINT;
+		try {
+		    type = ((FLyrVect) getVLE().getLayer()).getShapeType();
+		} catch (ReadDriverException e) {
+		    throw new CommandException(e);
+		}
+		if (ct.isApplicable(type)) {
+		    getCadToolAdapter().setCadTool(ct);
+		    ct.init();
+		    View vista = (View) PluginServices.getMDIManager()
+			    .getActiveWindow();
+		    vista.getConsolePanel().addText("\n" + ct.getName(),
+			    JConsole.COMMAND);
+		    String question = ct.getQuestion();
+		    vista.getConsolePanel().addText(
+			    "\n" + "#" + question + " > ", JConsole.MESSAGE);
+		    return true;
+		}
+		throw new CommandException(name);
+	    }
+	}
+	return false;
+    }
+
+    @Override
+    public boolean isApplicable(int shapeType) {
+	return true;
+    }
+
+    @Override
+    public abstract String toString();
+
+    public void throwValueException(String s, double d) {
+	IWindow window = PluginServices.getMDIManager().getActiveWindow();
+	if (window instanceof View) {
+	    ((View) window).getConsolePanel().addText(s + " : " + d,
+		    JConsole.ERROR);
+	}
+    }
+
+    public void throwOptionException(String s, String o) {
+	IWindow window = PluginServices.getMDIManager().getActiveWindow();
+	if (window instanceof View) {
+	    ((View) window).getConsolePanel().addText(s + " : " + o,
+		    JConsole.ERROR);
+	}
+    }
+
+    public void throwPointException(String s, double x, double y) {
+	IWindow window = PluginServices.getMDIManager().getActiveWindow();
+	if (window instanceof View) {
+	    ((View) window).getConsolePanel().addText(
+		    s + " : " + " X = " + x + ", Y = " + y, JConsole.ERROR);
+	}
+    }
+
+    public void throwInvalidGeometryException(String s) {
+	JOptionPane.showMessageDialog(
+		(Component) PluginServices.getMainFrame(), s,
+		PluginServices.getText(this, "error"),
+		JOptionPane.WARNING_MESSAGE);
+    }
+
+    public void throwNoPointsException(String s) {
+	View vista = (View) PluginServices.getMDIManager().getActiveWindow();
+	vista.getConsolePanel().addText(s, JConsole.ERROR);
+    }
+
+    public boolean isErrorOnIntersection() {
+	return errorOnIntersection;
+    }
+
+    public void setErrorOnIntersection(boolean errorOnIntersection) {
+	this.errorOnIntersection = errorOnIntersection;
+    }
+
+    @Override
+    public void setPreviosTool(DefaultCADTool tool) {
+	previousTool = tool;
+    }
+
+    @Override
+    public void restorePreviousTool() {
+	CADExtension.setCADTool(previousTool.toString(), true);
+	PluginServices.getMainFrame().setSelectedTool(previousTool.toString());
+    }
+
+    @Override
+    public void endTransition(double x, double y, MouseEvent e) {
+    }
+
+    /**
+     * Allows multiple transitions to use the snaps of "follow geometry"
+     */
+    @Override
+    public boolean isMultiTransition() {
+	return multiTransition;
+    }
+
+    public void setMultiTransition(boolean condicion) {
+	multiTransition = condicion;
+    }
+
+    public IView obtenerView() {
+	boolean encontrado = false;
+	IWindow[] ventanas = PluginServices.getMDIManager().getOrderedWindows();
+	int i = 0;
+	IView vista = null;
+	while (!encontrado && i < ventanas.length) {
+	    if (ventanas[i] instanceof IView) {
+		vista = (IView) ventanas[i];
+		encontrado = true;
+	    } else {
+		i++;
+	    }
+	}
+	return vista;
+    }
+
+    /**
+     * Returns the "first" active layer
+     */
+    public FLayer getActiveLayer() {
+	FLayer[] sel = obtenerView().getMapControl().getMapContext()
+		.getLayers().getActives();
+	return sel[0];
+    }
+
+    public void changeActiveLayer(FLayer layer) {
+	FLayer activeLayer = getActiveLayer();
+	activeLayer.setActive(false);
+	layer.setActive(true);
+    }
+
+    public boolean checksOnEdition(IGeometry Igeom, String geoid) {
+	// return checksOnEdition(Igeom, geoid, true);
+	return true;
+    }
+
+    public boolean checksOnEditionSinContinuidad(IGeometry Igeom, String geoid) {
+	return checksOnEditionSinContinuidad(Igeom, geoid, true);
+    }
+
+    public boolean checksOnEditionSinContinuidad(IGeometry Igeom, String geoid,
+	    boolean lanzaventana) {
+	boolean checksOnEdition = true;
+	return checksOnEdition;
+    }
+
+    public void fireEndGeometry(String cadToolKey) {
+	CADListenerManager.endGeometry(getActiveLayer(), cadToolKey);
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    protected IGeometry flattenGeometry(IGeometry geom) {
+	PathIterator pi = geom.getPathIterator(null, FConverter.FLATNESS);
+	GeneralPathX gpx = new GeneralPathX();
+	gpx.append(pi, true);
+	return ShapeFactory.createPolyline2D(gpx);
+    }
+}
