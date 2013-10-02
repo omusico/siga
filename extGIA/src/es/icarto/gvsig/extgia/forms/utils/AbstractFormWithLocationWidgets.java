@@ -86,6 +86,10 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 
     protected JButton saveRecordsBatchButton;
 
+    protected ImageComponent imageComponent;
+    protected JButton addImageButton;
+    protected JButton deleteImageButton;
+
     AddTrabajosBatchListener addTrabajosBatchListener;
     AddReconocimientosBatchListener addReconocimientosBatchListener;
 
@@ -125,6 +129,10 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	    ImageComponent image = (ImageComponent) form.getComponentByName("image");
 	    ImageIcon icon = new ImageIcon (PreferencesPage.AUDASA_ICON);
 	    image.setIcon(icon);
+
+	    imageComponent = (ImageComponent) form.getComponentByName("element_image");
+	    addImageButton = (JButton) form.getComponentByName("add_image_button");
+	    deleteImageButton = (JButton) form.getComponentByName("delete_image_button");
 
 	    HashMap<String, JComponent> widgets = getWidgetComponents();
 
