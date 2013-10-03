@@ -2,12 +2,15 @@ package es.icarto.gvsig.extgia.forms.images;
 
 import static org.junit.Assert.assertTrue;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Arrays;
+
+import javax.imageio.ImageIO;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -42,7 +45,8 @@ public class TestImages {
     public void testingInsertAndReadCroquis() throws Exception {
 
 	try {
-	    File image = new File("data-test/test.jpg");
+	    File fileImage = new File("data-test/test.jpg");
+	    BufferedImage image = ImageIO.read(fileImage);
 	    String query = "DELETE FROM audasa_extgia.taludes_imagenes";
 	    PreparedStatement statement = connection.prepareStatement(query);
 	    statement.execute();
@@ -66,7 +70,8 @@ public class TestImages {
     public void testingUpdateAndReadCroquis() throws Exception {
 
 	try {
-	    File image = new File("data-test/test.jpg");
+	    File fileImage = new File("data-test/test.jpg");
+	    BufferedImage image = ImageIO.read(fileImage);
 	    String query = "DELETE FROM audasa_extgia.taludes_imagenes";
 	    PreparedStatement statement = connection.prepareStatement(query);
 	    statement.execute();
@@ -75,7 +80,8 @@ public class TestImages {
 	    ImagesDAO postgresCroquis = new ImagesDAO();
 	    postgresCroquis.insertImageIntoDb(connection, "audasa_extgia", "taludes_imagenes",
 		    "id_talud", "C-002N", image, false);
-	    File imageToUpdate = new File("data-test/test2.jpg");
+	    File fileImageToUpdate = new File("data-test/test2.jpg");
+	    BufferedImage imageToUpdate = ImageIO.read(fileImageToUpdate);
 	    postgresCroquis.insertImageIntoDb(connection, "audasa_extgia", "taludes_imagenes",
 		    "id_talud", "C-002N", imageToUpdate, true);
 

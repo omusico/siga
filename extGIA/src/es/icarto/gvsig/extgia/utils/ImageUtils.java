@@ -3,7 +3,6 @@ package es.icarto.gvsig.extgia.utils;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -18,17 +17,21 @@ public abstract class ImageUtils {
 
     public static final Color NOT_ENABLED_COLOR = new Color(240, 240, 240);
 
-    public static byte[] convertImageToBytea(File image) throws IOException {
-	BufferedImage bufferedImage = ImageIO.read(image);
+    public static byte[] convertImageToBytea(BufferedImage image) throws IOException {
 	ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	ImageIO.write(bufferedImage, "jpg", baos);
+	ImageIO.write(image, "png", baos);
 	baos.flush();
 	byte[] imageBytes = baos.toByteArray();
 	baos.close();
 	return imageBytes;
     }
 
-    public static Image convertByteaToImage(byte[] imageBytes) {
+    public static byte[] convertImageToBytea(File image) throws IOException {
+	BufferedImage bufferedImage = ImageIO.read(image);
+	return convertImageToBytea(bufferedImage);
+    }
+
+    public static BufferedImage convertByteaToImage(byte[] imageBytes) {
 	InputStream in = new ByteArrayInputStream(imageBytes);
 	try {
 	    return ImageIO.read(in);

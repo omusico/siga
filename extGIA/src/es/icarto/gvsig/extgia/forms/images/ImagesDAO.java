@@ -1,6 +1,6 @@
 package es.icarto.gvsig.extgia.forms.images;
 
-import java.io.File;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,8 +14,7 @@ public class ImagesDAO {
     private static final String IMAGE_FIELDNAME = "image";
 
     public void insertImageIntoDb(Connection connection, String schema, String tablename,
-	    String pkField, String pkValue, File image, boolean update) throws SQLException, IOException {
-
+	    String pkField, String pkValue, BufferedImage image, boolean update) throws SQLException, IOException {
 	byte[] imageBytes = ImageUtils.convertImageToBytea(image);
 	PreparedStatement statement;
 	if (update) {
