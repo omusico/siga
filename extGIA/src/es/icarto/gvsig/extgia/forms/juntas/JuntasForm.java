@@ -291,4 +291,14 @@ public class JuntasForm extends AbstractFormWithLocationWidgets {
     public String getElementID() {
 	return "id_junta";
     }
+
+    @Override
+    public String getElementIDValue() {
+	return juntaIDWidget.getText();
+    }
+
+    @Override
+    public String getImagesDBTableName() {
+	return "juntas_imagenes";
+    }
 }

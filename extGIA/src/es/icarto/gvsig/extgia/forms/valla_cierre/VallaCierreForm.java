@@ -301,4 +301,14 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
     public String getElementID() {
 	return "id_valla_cierre";
     }
+
+    @Override
+    public String getElementIDValue() {
+	return vallaCierreIDWidget.getText();
+    }
+
+    @Override
+    public String getImagesDBTableName() {
+	return "valla_cierre_imagenes";
+    }
 }

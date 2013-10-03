@@ -315,4 +315,14 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 	return "id_firme";
     }
 
+    @Override
+    public String getElementIDValue() {
+	return firmeIDWidget.getText();
+    }
+
+    @Override
+    public String getImagesDBTableName() {
+	return "firme_imagenes";
+    }
+
 }

@@ -401,4 +401,14 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 	return "id_area_descanso";
     }
 
+    @Override
+    public String getElementIDValue() {
+	return areaDescansoIDWidget.getText();
+    }
+
+    @Override
+    public String getImagesDBTableName() {
+	return "areas_descanso_imagenes";
+    }
+
 }

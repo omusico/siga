@@ -224,4 +224,14 @@ public class ObrasPasoForm extends AbstractFormWithLocationWidgets {
 	return "id_obra_paso";
     }
 
+    @Override
+    public String getElementIDValue() {
+	return obraPasoIDWidget.getText();
+    }
+
+    @Override
+    public String getImagesDBTableName() {
+	return "obras_paso_images";
+    }
+
 }

@@ -411,4 +411,14 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 	return "id_enlace";
     }
 
+    @Override
+    public String getElementIDValue() {
+	return enlaceIDWidget.getText();
+    }
+
+    @Override
+    public String getImagesDBTableName() {
+	return "enlaces_imagenes";
+    }
+
 }

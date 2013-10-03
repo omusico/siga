@@ -225,4 +225,14 @@ public class ObrasDesagueForm extends AbstractFormWithLocationWidgets {
 	return "id_obra_desague";
     }
 
+    @Override
+    public String getElementIDValue() {
+	return obraDesagueIDWidget.getText();
+    }
+
+    @Override
+    public String getImagesDBTableName() {
+	return "obras_desague_imagenes";
+    }
+
 }

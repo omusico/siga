@@ -435,4 +435,15 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     public String getElementID() {
 	return "id_talud";
     }
+
+    @Override
+    public String getElementIDValue() {
+	return taludIDWidget.getText();
+    }
+
+    @Override
+    public String getImagesDBTableName() {
+	return "taludes_imagenes";
+    }
+
 }

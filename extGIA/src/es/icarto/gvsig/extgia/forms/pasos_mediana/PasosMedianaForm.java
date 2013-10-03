@@ -304,4 +304,14 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
 	return "id_paso_mediana";
     }
 
+    @Override
+    public String getElementIDValue() {
+	return pasoMedianaIDWidget.getText();
+    }
+
+    @Override
+    public String getImagesDBTableName() {
+	return "pasos_mediana_imagenes";
+    }
+
 }
