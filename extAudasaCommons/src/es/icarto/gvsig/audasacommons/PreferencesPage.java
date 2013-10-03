@@ -24,6 +24,7 @@ ActionListener {
 
     private static final String PLUGIN_NAME = "es.icarto.gvsig.audasacommons";
     public static final String AUDASA_ICON = "gvSIG/extensiones/es.icarto.gvsig.audasacommons/images/logo_audasa.png";
+    public static final String IMG_UNAVAILABLE = "gvSIG/extensiones/es.icarto.gvsig.audasacommons/images/img_no_disponible.jpg";
 
     // fileslink
     private static final String DEFAULT_FILES_DIR_KEY_NAME = "FilesDir";

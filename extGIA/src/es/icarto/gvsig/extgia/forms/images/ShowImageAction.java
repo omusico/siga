@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 
 import com.jeta.forms.components.image.ImageComponent;
 
+import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.ImageUtils;
 
@@ -36,7 +37,7 @@ public class ShowImageAction {
 	    byte[] elementImageBytes = dao.readImageFromDb(connection, DBFieldNames.GIA_SCHEMA,
 		    tablename, pkField, pkValue);
 	    if (elementImageBytes == null) {
-		imageComponent.setIcon(null);
+		imageComponent.setIcon(getUnavailableImageIcon());
 		return;
 	    }
 	    BufferedImage elementImage = ImageUtils.convertByteaToImage(elementImageBytes);
@@ -45,6 +46,10 @@ public class ShowImageAction {
 	} catch (SQLException e1) {
 	    e1.printStackTrace();
 	}
+    }
+
+    private ImageIcon getUnavailableImageIcon() {
+	return new ImageIcon (PreferencesPage.IMG_UNAVAILABLE);
     }
 
 }
