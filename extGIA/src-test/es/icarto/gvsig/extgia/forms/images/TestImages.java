@@ -1,5 +1,6 @@
 package es.icarto.gvsig.extgia.forms.images;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.image.BufferedImage;
@@ -20,10 +21,16 @@ import es.icarto.gvsig.extgia.utils.ImageUtils;
 
 public class TestImages {
 
+    private static final String PKVALUE = "C-002N";
+    private static final String PKFIELD = "id_talud";
+    private static final String TABLENAME = "taludes_imagenes";
+    private static final String SCHEMA = "audasa_extgia";
+
     Connection connection;
+    ImagesDAO dao;
 
     @Before
-    public void doSetupCroquis() {
+    public void doSetupImage() {
 	String url = "jdbc:postgresql://localhost:5432/audasa_test";
 	String user = "postgres";
 	String passwd = "postgres";
@@ -39,10 +46,11 @@ public class TestImages {
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
+	dao = new ImagesDAO();
     }
 
     @Test
-    public void testingInsertAndReadCroquis() throws Exception {
+    public void testingInsertAndReadImage() throws Exception {
 
 	try {
 	    File fileImage = new File("data-test/test.jpg");
@@ -52,11 +60,10 @@ public class TestImages {
 	    statement.execute();
 	    connection.commit();
 
-	    ImagesDAO postgresCroquis = new ImagesDAO();
-	    postgresCroquis.insertImageIntoDb(connection, "audasa_extgia", "taludes_imagenes",
-		    "id_talud", "C-002N", image, false);
-	    byte[] imageDbBytes = postgresCroquis.readImageFromDb(connection,
-		    "audasa_extgia", "taludes_imagenes", "id_talud", "C-002N");
+	    dao.insertImageIntoDb(connection, SCHEMA, TABLENAME,
+		    PKFIELD, PKVALUE, image, false);
+	    byte[] imageDbBytes = dao.readImageFromDb(connection,
+		    SCHEMA, TABLENAME, PKFIELD, PKVALUE);
 
 	    byte[] imageMockBytes = ImageUtils.convertImageToBytea(image);
 
@@ -67,7 +74,7 @@ public class TestImages {
     }
 
     @Test
-    public void testingUpdateAndReadCroquis() throws Exception {
+    public void testingUpdateAndReadImage() throws Exception {
 
 	try {
 	    File fileImage = new File("data-test/test.jpg");
@@ -77,21 +84,32 @@ public class TestImages {
 	    statement.execute();
 	    connection.commit();
 
-	    ImagesDAO postgresCroquis = new ImagesDAO();
-	    postgresCroquis.insertImageIntoDb(connection, "audasa_extgia", "taludes_imagenes",
-		    "id_talud", "C-002N", image, false);
+	    dao.insertImageIntoDb(connection, SCHEMA, TABLENAME,
+		    PKFIELD, PKVALUE, image, false);
 	    File fileImageToUpdate = new File("data-test/test2.jpg");
 	    BufferedImage imageToUpdate = ImageIO.read(fileImageToUpdate);
-	    postgresCroquis.insertImageIntoDb(connection, "audasa_extgia", "taludes_imagenes",
-		    "id_talud", "C-002N", imageToUpdate, true);
+	    dao.insertImageIntoDb(connection, SCHEMA, TABLENAME,
+		    PKFIELD, PKVALUE, imageToUpdate, true);
 
-	    byte[] imageDbBytes = postgresCroquis.readImageFromDb(connection, "audasa_extgia",
-		    "taludes_imagenes", "id_talud", "C-002N");
+	    byte[] imageDbBytes = dao.readImageFromDb(connection, SCHEMA,
+		    TABLENAME, PKFIELD, PKVALUE);
 
 	    byte[] imageMockBytes = ImageUtils
 		    .convertImageToBytea(imageToUpdate);
 
 	    assertTrue(Arrays.equals(imageDbBytes, imageMockBytes));
+	} finally {
+	    connection.rollback();
+	}
+    }
+
+    @Test
+    public void testingDeleteImage() throws Exception {
+	try {
+	    dao.deleteImageFromDb(connection, SCHEMA, TABLENAME, PKFIELD, PKVALUE);
+	    byte[] image = dao.readImageFromDb(connection, SCHEMA, TABLENAME,
+		    PKFIELD, PKVALUE);
+	    assertNull(image);
 	} finally {
 	    connection.rollback();
 	}

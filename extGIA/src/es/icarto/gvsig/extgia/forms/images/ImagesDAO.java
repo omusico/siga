@@ -62,4 +62,20 @@ public class ImagesDAO {
 	}
     }
 
+    public void deleteImageFromDb(Connection connection, String schema, String tablename,
+	    String pkField, String pkValue) throws SQLException {
+	PreparedStatement statement = null;
+	try {
+	    statement = connection.prepareStatement("DELETE FROM "
+		    + schema + "." + tablename
+		    + " WHERE " + pkField + " = ?");
+	    statement.setString(1, pkValue);
+	    statement.execute();
+	} finally {
+	    if (statement != null) {
+		statement.close();
+	    }
+	}
+    }
+
 }
