@@ -29,6 +29,9 @@ import com.jeta.forms.gui.common.FormException;
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.extgia.batch.AddReconocimientosBatchListener;
 import es.icarto.gvsig.extgia.batch.AddTrabajosBatchListener;
+import es.icarto.gvsig.extgia.forms.images.AddImageListener;
+import es.icarto.gvsig.extgia.forms.images.DeleteImageListener;
+import es.icarto.gvsig.extgia.forms.images.ShowImageAction;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.AbstractForm;
@@ -94,6 +97,9 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     AddReconocimientosBatchListener addReconocimientosBatchListener;
 
     SaveRecordsBatchListener saveRecordsBatchListener;
+
+    protected AddImageListener addImageListener;
+    protected DeleteImageListener deleteImageListener;
 
     public AbstractFormWithLocationWidgets (FLyrVect layer) {
 	super(layer);
@@ -219,6 +225,18 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	if (saveRecordsBatchListener == null && saveRecordsBatchButton != null) {
 	    saveRecordsBatchListener = new SaveRecordsBatchListener();
 	    saveRecordsBatchButton.addActionListener(saveRecordsBatchListener);
+	}
+
+	if (addImageListener == null) {
+	    addImageListener = new AddImageListener(imageComponent, addImageButton,
+		    getImagesDBTableName(), getElementID());
+	    addImageButton.addActionListener(addImageListener);
+	}
+
+	if (deleteImageListener == null) {
+	    deleteImageListener = new DeleteImageListener(imageComponent, addImageButton,
+		    getImagesDBTableName(), getElementID());
+	    deleteImageButton.addActionListener(deleteImageListener);
 	}
     }
 
@@ -533,6 +551,9 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 
 	saveRecordsBatchButton.removeActionListener(saveRecordsBatchListener);
 
+	addImageButton.removeActionListener(addImageListener);
+	deleteImageButton.removeActionListener(deleteImageListener);
+
 	super.removeListeners();
     }
 
@@ -671,11 +692,25 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	    updateNombreViaPFCombo();
 	    selectNombreViaPFOption();
 	}
+
+	if (addImageListener != null) {
+	    addImageListener.setPkValue(getElementIDValue());
+	}
+
+	if (deleteImageListener != null) {
+	    deleteImageListener.setPkValue(getElementIDValue());
+	}
+
+	// Element image
+	new ShowImageAction(imageComponent, addImageButton, getImagesDBTableName(), getElementID(),
+		getElementIDValue());
     }
 
     public abstract String getElement();
 
     public abstract String getElementID();
+
+    public abstract String getElementIDValue();
 
     public abstract String getFormBodyPath();
 
@@ -692,6 +727,8 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     public abstract String getReconocimientosDBTableName();
 
     public abstract String getTrabajosDBTableName();
+
+    public abstract String getImagesDBTableName();
 
     public abstract String getReconocimientosFormFileName();
 

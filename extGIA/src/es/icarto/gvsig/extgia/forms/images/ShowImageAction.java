@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 
 import com.jeta.forms.components.image.ImageComponent;
 
@@ -15,30 +16,36 @@ import es.icarto.gvsig.extgia.utils.ImageUtils;
 public class ShowImageAction {
 
     private final ImageComponent imageComponent;
+    private final JButton addImageButton;
     private final Connection connection;
     private final String tablename;
     private final String pkField;
     private final String pkValue;
 
-    public ShowImageAction(ImageComponent imageComponent, String tablename,
+    public ShowImageAction(ImageComponent imageComponent, JButton addImageButton, String tablename,
 	    String pkField, String pkValue) {
 	this.imageComponent = imageComponent;
+	this.addImageButton = addImageButton;
 	this.tablename = tablename;
 	this.pkField = pkField;
 	this.pkValue = pkValue;
 	DBFacade dbFacade = new DBFacade();
 	connection = dbFacade.getConnection();
-	showImage();
+	if (showImage()) {
+	    addImageButton.setText("Actualizar");
+	}else {
+	    addImageButton.setText("Añadir");
+	}
     }
 
-    private void showImage() {
+    public boolean showImage() {
 	ImagesDAO dao = new ImagesDAO();
 	try {
 	    byte[] elementImageBytes = dao.readImageFromDb(connection, DBFieldNames.GIA_SCHEMA,
 		    tablename, pkField, pkValue);
 	    if (elementImageBytes == null) {
 		imageComponent.setIcon(getUnavailableImageIcon());
-		return;
+		return false;
 	    }
 	    BufferedImage elementImage = ImageUtils.convertByteaToImage(elementImageBytes);
 	    ImageIcon elementIcon = new ImageIcon(elementImage);
@@ -46,6 +53,7 @@ public class ShowImageAction {
 	} catch (SQLException e1) {
 	    e1.printStackTrace();
 	}
+	return true;
     }
 
     private ImageIcon getUnavailableImageIcon() {
