@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
 import com.iver.andami.PluginServices;
+import com.jeta.forms.components.image.ImageComponent;
 
 import es.icarto.gvsig.audasacommons.forms.reports.imagefilechooser.ImageFileChooser;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
@@ -21,6 +22,7 @@ public class AddImageListener implements ActionListener {
 
     private final Connection connection;
     private final ImagesDAO dao;
+    private final ImageComponent imageComponent;
     private final String tablename;
     private final String pkField;
     private String pkValue;
@@ -33,7 +35,8 @@ public class AddImageListener implements ActionListener {
 	this.pkValue = pkValue;
     }
 
-    public AddImageListener(String tablename, String pkField) {
+    public AddImageListener(ImageComponent imageComponent, String tablename, String pkField) {
+	this.imageComponent = imageComponent;
 	this.tablename = tablename;
 	this.pkField = pkField;
 
@@ -67,6 +70,7 @@ public class AddImageListener implements ActionListener {
 	    }
 	    JOptionPane.showMessageDialog(null,
 		    PluginServices.getText(this, "image_msg_added"));
+	    new ShowImageAction(imageComponent, tablename, pkField, pkValue);
 	}
     }
 
