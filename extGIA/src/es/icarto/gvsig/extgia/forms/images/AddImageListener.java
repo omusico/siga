@@ -2,17 +2,20 @@ package es.icarto.gvsig.extgia.forms.images;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
 import com.iver.andami.PluginServices;
 
 import es.icarto.gvsig.audasacommons.forms.reports.imagefilechooser.ImageFileChooser;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.extgia.utils.ImageUtils;
 
 public class AddImageListener implements ActionListener {
 
@@ -42,31 +45,21 @@ public class AddImageListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 	if (hasAlreadyImage()) {
-	    Object[] overwriteImageOptions = {
-		    PluginServices.getText(this, "image_msg_overwrite"),
-		    PluginServices.getText(this, "image_msg_cancel") };
-
-	    int m = JOptionPane.showOptionDialog(null,
-		    PluginServices.getText(this, "image_msg_already_exists"),
-		    null, JOptionPane.YES_NO_CANCEL_OPTION,
-		    JOptionPane.INFORMATION_MESSAGE, null,
-		    overwriteImageOptions, overwriteImageOptions[1]);
-
-	    if (m == JOptionPane.OK_OPTION) {
-		addImage(true);
-	    }
-	} else {
+	    addImage(true);
+	}else {
 	    addImage(false);
 	}
     }
 
     private void addImage(boolean update) {
 	final ImageFileChooser fileChooser = new ImageFileChooser();
-	File image = fileChooser.showDialog();
-	if (image != null) {
+	File fileImage = fileChooser.showDialog();
+	if (fileImage != null) {
 	    try {
+		BufferedImage image = ImageIO.read(fileImage);
+		BufferedImage imageResized = resizeImage(image);
 		dao.insertImageIntoDb(connection, DBFieldNames.GIA_SCHEMA, tablename,
-			pkField, pkValue, image, update);
+			pkField, pkValue, imageResized, update);
 	    } catch (SQLException e) {
 		e.printStackTrace();
 	    } catch (IOException e) {
@@ -77,17 +70,29 @@ public class AddImageListener implements ActionListener {
 	}
     }
 
+    private BufferedImage resizeImage(BufferedImage image) {
+	BufferedImage imageResized;
+	if (image.getWidth() > image.getHeight()) {
+	    imageResized =
+		    ImageUtils.resizeImageWithHint(image, 615, 460);
+	}else {
+	    imageResized =
+		    ImageUtils.resizeImageWithHint(image, 345, 460);
+	}
+	return imageResized;
+    }
+
     private boolean hasAlreadyImage() {
 	try {
-	    byte[] image = dao.readImageFromDb(connection, DBFieldNames.GIA_SCHEMA,
-		    tablename, pkField, pkValue);
+	    byte[] image = dao.readImageFromDb(connection, DBFieldNames.GIA_SCHEMA, tablename,
+		    pkField, pkValue);
 	    if (image != null) {
 		return true;
-	    } else {
+	    }else {
 		return false;
 	    }
-	} catch (SQLException e1) {
-	    e1.printStackTrace();
+	} catch (SQLException e) {
+	    e.printStackTrace();
 	}
 	return false;
     }

@@ -1,6 +1,5 @@
 package es.icarto.gvsig.extgia.forms.images;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -40,10 +39,8 @@ public class ShowImageAction {
 		imageComponent.setIcon(null);
 		return;
 	    }
-	    Image elementImage = ImageUtils.convertByteaToImage(elementImageBytes);
-	    BufferedImage imageResized =
-		    ImageUtils.resizeImageWithHint((BufferedImage) elementImage, 350, 250);
-	    ImageIcon elementIcon = new ImageIcon(imageResized);
+	    BufferedImage elementImage = ImageUtils.convertByteaToImage(elementImageBytes);
+	    ImageIcon elementIcon = new ImageIcon(elementImage);
 	    imageComponent.setIcon(elementIcon);
 	} catch (SQLException e1) {
 	    e1.printStackTrace();
