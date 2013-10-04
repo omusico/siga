@@ -340,13 +340,15 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
 			    " WHERE " + DBNames.FIELD_TRAMO_FINCAS + " = " + "'" + getTramoId() +
 			    "' AND " + DBNames.FIELD_UC_FINCAS + " = " + "'" + getUcId() +
 			    "' AND " + DBNames.FIELD_AYUNTAMIENTO_FINCAS + " = " + "'" + getAyuntamientoId() +
-			    "' AND " + DBNames.FIELD_PARROQUIASUBTRAMO_FINCAS + " = " + "'" + getParroquiaId() + "'";
+			    "' AND " + DBNames.FIELD_PARROQUIASUBTRAMO_FINCAS + " = " + "'" + getParroquiaId() +
+			    "' ORDER BY " + DBNames.FIELD_NUMEROFINCA_FINCAS;
 		}else {
 		    query = "SELECT " + DBNames.FIELD_NUMEROFINCA_FINCAS + ", " + DBNames.FIELD_SECCION_FINCAS +
 			    " FROM " + DBNames.EXPROPIATIONS_SCHEMA + "." + DBNames.TABLE_FINCAS +
 			    " WHERE " + DBNames.FIELD_TRAMO_FINCAS + " = " + "'" + getTramoId() +
 			    "' AND " + DBNames.FIELD_UC_FINCAS + " = " + "'" + getUcId() +
-			    "' AND " + DBNames.FIELD_AYUNTAMIENTO_FINCAS + " = " + "'" + getAyuntamientoId() + "'";
+			    "' AND " + DBNames.FIELD_AYUNTAMIENTO_FINCAS + " = " + "'" + getAyuntamientoId() +
+			    "' ORDER BY " + DBNames.FIELD_NUMEROFINCA_FINCAS;;
 		}
 		statement = dbs.getJavaConnection().prepareStatement(query);
 		statement.execute();
