@@ -2,19 +2,20 @@ package es.icarto.gvsig.extgex.utils.retrievers;
 
 import javax.swing.JComboBox;
 
-import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
+
 
 public class IDFincaRetriever {
 
-    private String idFinca;
-    private JComboBox tramo;
-    private JComboBox uc;
-    private JComboBox ayuntamiento;
-    private JComboBox subtramo;
-    private JComboBox finca_seccion;
+    private final String idFinca;
+    private final JComboBox tramo;
+    private final JComboBox uc;
+    private final JComboBox ayuntamiento;
+    private final JComboBox subtramo;
+    private final JComboBox finca_seccion;
 
-    public IDFincaRetriever(JComboBox tramo, 
-	    JComboBox uc, 
+    public IDFincaRetriever(JComboBox tramo,
+	    JComboBox uc,
 	    JComboBox ayuntamiento,
 	    JComboBox parroquia_subtramo,
 	    JComboBox finca_seccion) {
@@ -29,7 +30,7 @@ public class IDFincaRetriever {
 
     private String calculateIDFinca() {
 	String idFinca = LocalizadorFormatter.getTramo(((KeyValue) tramo.getSelectedItem()).getKey())
-		+ LocalizadorFormatter.getUC(((KeyValue) uc.getSelectedItem()).getKey()) 
+		+ LocalizadorFormatter.getUC(((KeyValue) uc.getSelectedItem()).getKey())
 		+ LocalizadorFormatter.getAyuntamiento(((KeyValue) ayuntamiento.getSelectedItem()).getKey());
 	if(subtramo.getSelectedItem() instanceof KeyValue) {
 	    idFinca = idFinca + LocalizadorFormatter.getSubtramo(

@@ -14,7 +14,7 @@ import com.iver.cit.gvsig.fmap.edition.EditionEvent;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 
-import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 
 public class KeyValueRetriever {
 
@@ -24,15 +24,15 @@ public class KeyValueRetriever {
     private ArrayList<KeyValue> foreignKeys = null;
     private String orderByField = null;
 
-    public KeyValueRetriever(FLyrVect layer, 
-	    String alias, 
+    public KeyValueRetriever(FLyrVect layer,
+	    String alias,
 	    String value) {
 
 	this(layer, alias, value, null);
     }
 
-    public KeyValueRetriever(FLyrVect layer, 
-	    String alias, 
+    public KeyValueRetriever(FLyrVect layer,
+	    String alias,
 	    String value,
 	    ArrayList<KeyValue> foreignKeys) {
 
@@ -70,11 +70,11 @@ public class KeyValueRetriever {
     private SelectableDataSource getFilteredRecordset()
 	    throws ReadDriverException {
 	if((foreignKeys != null)) {
-	    String sqlQuery = "select * from " + layer.getRecordset().getName() + 
+	    String sqlQuery = "select * from " + layer.getRecordset().getName() +
 		    buildSQLWhereSentence() + ";";
 	    return doFilterRecordset(sqlQuery);
 	} else if (orderByField != null) {
-	    String sqlQuery = "select * from " + layer.getRecordset().getName() + 
+	    String sqlQuery = "select * from " + layer.getRecordset().getName() +
 		    " where 1 = 1 order by " + orderByField + ";";
 	    return doFilterRecordset(sqlQuery);
 	} else {
@@ -120,7 +120,7 @@ public class KeyValueRetriever {
 	    //whereValues.add(fk.getKey() + " = '" + fk.getValue() + "'");//string values
 	}
 	for (int i=0; i<whereValues.size()-1; i++) {
-	    where = where + whereValues.get(i) + " and ";    
+	    where = where + whereValues.get(i) + " and ";
 	}
 	where = where + whereValues.get(whereValues.size()-1);
 	if(orderByField != null) {

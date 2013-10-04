@@ -3,25 +3,27 @@ package es.icarto.gvsig.extgex.utils.retrievers;
 import java.util.ArrayList;
 
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
-import es.icarto.gvsig.navtableforms.ormlite.domain.DomainValues;
-import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalues.DomainValues;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 
 public class FincaSeccionRetriever {
 
-    private String xmlFilePath;
-    private ArrayList<String> values;
-    private ArrayList<String> fksNumeroFinca;
-    private ArrayList<String> fksSeccion;
+    private final String xmlFilePath;
+    private final ArrayList<String> values;
+    private final ArrayList<String> fksNumeroFinca;
+    private final ArrayList<String> fksSeccion;
 
-    private String tramoKey;
-    private String ucKey;
-    private String ayuntamientoKey;
-    private String subtramoKey;
+    private final String tramoKey;
+    private final String ucKey;
+    private final String ayuntamientoKey;
+    private final String subtramoKey;
+
+    private final ORMLite orm;
 
     public FincaSeccionRetriever(String xmlFilePath,
-	    String tramoKey, 
-	    String ucKey, 
-	    String ayuntamientoKey, 
+	    String tramoKey,
+	    String ucKey,
+	    String ayuntamientoKey,
 	    String subtramoKey) {
 
 	this.xmlFilePath = xmlFilePath;
@@ -34,6 +36,7 @@ public class FincaSeccionRetriever {
 	this.subtramoKey = subtramoKey;
 
 	this.values = retrieveValues();
+	orm = new ORMLite(xmlFilePath);
     }
 
     public ArrayList<String> getValues(){
@@ -43,8 +46,7 @@ public class FincaSeccionRetriever {
     private ArrayList<String> retrieveValues(){
 	setFKNumeroFinca();
 	ArrayList<String> values = new ArrayList<String>();
-	DomainValues dvNumeroFinca = ORMLite.getAplicationDomainObject(xmlFilePath)
-		.getDomainValuesForComponent("numero_finca");
+	DomainValues dvNumeroFinca = orm.getAppDomain().getDomainValuesForComponent("numero_finca");
 	ArrayList<KeyValue> numerosFinca = dvNumeroFinca.getValuesFilteredBy(fksNumeroFinca);
 	for(KeyValue numeroFinca : numerosFinca) {
 	    ArrayList<KeyValue> seccionValues = getSeccionValues(numeroFinca.getKey());
@@ -66,8 +68,7 @@ public class FincaSeccionRetriever {
     }
 
     private ArrayList<KeyValue> getSeccionValues(String finca){
-	DomainValues dvSeccion = ORMLite.getAplicationDomainObject(xmlFilePath)
-		.getDomainValuesForComponent("seccion");
+	DomainValues dvSeccion = orm.getAppDomain().getDomainValuesForComponent("seccion");
 	fksSeccion.clear();
 	fksSeccion.add(tramoKey);
 	fksSeccion.add(ucKey);

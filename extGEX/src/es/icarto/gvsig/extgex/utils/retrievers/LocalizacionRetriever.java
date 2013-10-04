@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.preferences.GEXPreferences;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
-import es.icarto.gvsig.navtableforms.ormlite.domain.DomainValues;
-import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalues.DomainValues;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 
 public class LocalizacionRetriever {
 
@@ -17,8 +17,11 @@ public class LocalizacionRetriever {
     private KeyValue nro_finca;
     private KeyValue seccion;
 
+    private final ORMLite orm;
+
     public LocalizacionRetriever(String idFinca) {
 	decipher(idFinca);
+	orm = new ORMLite(getXMLPath());
     }
 
     private void decipher(String idFinca) {
@@ -51,8 +54,7 @@ public class LocalizacionRetriever {
     }
 
     private String getTramoValue() {
-	DomainValues dv = ORMLite.getAplicationDomainObject(getXMLPath())
-	.getDomainValuesForComponent(DBNames.FIELD_TRAMO_FINCAS);
+	DomainValues dv = orm.getAppDomain().getDomainValuesForComponent(DBNames.FIELD_TRAMO_FINCAS);
 	ArrayList<KeyValue> kvs = dv.getValues();
 	String value = null;
 	for (KeyValue kv : kvs) {
@@ -64,8 +66,7 @@ public class LocalizacionRetriever {
     }
 
     private String getUCValue() {
-	DomainValues dv = ORMLite.getAplicationDomainObject(getXMLPath())
-	.getDomainValuesForComponent(DBNames.FIELD_UC_FINCAS);
+	DomainValues dv = orm.getAppDomain().getDomainValuesForComponent(DBNames.FIELD_UC_FINCAS);
 	ArrayList<String> foreignKeys = new ArrayList<String>();
 	foreignKeys.add(tramo.getKey());
 	ArrayList<KeyValue> kvs = dv.getValuesFilteredBy(foreignKeys);
@@ -79,8 +80,7 @@ public class LocalizacionRetriever {
     }
 
     private String getAyuntamientoValue() {
-	DomainValues dv = ORMLite.getAplicationDomainObject(getXMLPath())
-	.getDomainValuesForComponent(DBNames.FIELD_AYUNTAMIENTO_FINCAS);
+	DomainValues dv = orm.getAppDomain().getDomainValuesForComponent(DBNames.FIELD_AYUNTAMIENTO_FINCAS);
 	ArrayList<String> foreignKeys = new ArrayList<String>();
 	foreignKeys.add(uc.getKey());
 	ArrayList<KeyValue> kvs = dv.getValuesFilteredBy(foreignKeys);
@@ -94,8 +94,7 @@ public class LocalizacionRetriever {
     }
 
     private String getParroquiaSubtramoValue() {
-	DomainValues dv = ORMLite.getAplicationDomainObject(getXMLPath())
-	.getDomainValuesForComponent(DBNames.FIELD_PARROQUIASUBTRAMO_FINCAS);
+	DomainValues dv = orm.getAppDomain().getDomainValuesForComponent(DBNames.FIELD_PARROQUIASUBTRAMO_FINCAS);
 	ArrayList<String> foreignKeys = new ArrayList<String>();
 	foreignKeys.add(uc.getKey());
 	foreignKeys.add(ayuntamiento.getKey());
