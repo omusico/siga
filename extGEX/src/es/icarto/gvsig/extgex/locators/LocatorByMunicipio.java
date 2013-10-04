@@ -24,7 +24,7 @@ import es.icarto.gvsig.extgex.utils.gvWindow;
 import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
 import es.icarto.gvsig.extgex.utils.retrievers.KeyValueRetriever;
 import es.icarto.gvsig.extgex.utils.retrievers.PositionRetriever;
-import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 import es.udc.cartolab.gvsig.navtable.AbstractNavTable;
 
 public class LocatorByMunicipio extends gvWindow implements IPositionRetriever, ActionListener {
