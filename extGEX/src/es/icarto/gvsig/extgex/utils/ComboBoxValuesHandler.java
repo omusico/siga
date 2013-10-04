@@ -5,24 +5,25 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 import javax.swing.JComboBox;
 
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
-import es.icarto.gvsig.navtableforms.ormlite.domain.DomainValues;
-import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalues.DomainValues;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 
 public class ComboBoxValuesHandler implements ItemListener {
 
-    private ArrayList<JComboBox> cbParents;
-    private JComboBox cbToFill;
-    private String xmlFilePath;
+    private final ArrayList<JComboBox> cbParents;
+    private final JComboBox cbToFill;
+    private final String xmlFilePath;
+    private final ORMLite orm;
 
     public ComboBoxValuesHandler(String xmlFilePath, JComboBox cbToFill, ArrayList<JComboBox> cbParents) {
 	this.xmlFilePath = xmlFilePath;
 	this.cbParents = cbParents;
 	this.cbToFill = cbToFill;
+	orm = new ORMLite(xmlFilePath);
     }
 
     public ComboBoxValuesHandler(String xmlFilePath, JComboBox cbToFill, JComboBox cbParent) {
@@ -30,19 +31,19 @@ public class ComboBoxValuesHandler implements ItemListener {
 	this.cbToFill = cbToFill;
 	this.cbParents = new ArrayList<JComboBox>();
 	this.cbParents.add(cbParent);
+	orm = new ORMLite(xmlFilePath);
     }
 
     @Override
     public void itemStateChanged(ItemEvent e) {
 	if((e.getStateChange() == ItemEvent.SELECTED) &&
 		allParentsHaveProperValue()) {
-	    DomainValues dv = ORMLite.getAplicationDomainObject(xmlFilePath)
-		    .getDomainValuesForComponent(cbToFill.getName());
+	    DomainValues dv = orm.getAppDomain().getDomainValuesForComponent(cbToFill.getName());
 	    ArrayList<String> fk = getForeignKeys();
 	    if(dv.getValuesFilteredBy(fk).size() > 0) {
 		cbToFill.setEnabled(true);
 		cbToFill.removeAllItems();
-		Collections.sort((List<KeyValue>) dv.getValues(),
+		Collections.sort(dv.getValues(),
 			new Comparator<KeyValue>() {
 		    public int compare(KeyValue a, KeyValue b) {
 			int aInt = Integer.parseInt(a.getKey());
