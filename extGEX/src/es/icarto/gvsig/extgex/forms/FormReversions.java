@@ -20,7 +20,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
@@ -41,12 +40,12 @@ import es.icarto.gvsig.extgex.navtable.NavTableComponentsFactory;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.preferences.GEXPreferences;
 import es.icarto.gvsig.navtableforms.AbstractForm;
-import es.icarto.gvsig.navtableforms.launcher.ILauncherForm;
-import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 import es.udc.cartolab.gvsig.navtable.format.DoubleFormatNT;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
-public class FormReversions extends AbstractForm implements ILauncherForm, TableModelListener {
+@SuppressWarnings("serial")
+public class FormReversions extends AbstractForm implements TableModelListener {
 
     private static final String WIDGET_TABLAFINCASAFECTADAS = "tabla_fincas_afectadas";
 
@@ -449,40 +448,6 @@ public class FormReversions extends AbstractForm implements ILauncherForm, Table
 		continue;
 	    }
 	}
-    }
-
-    @Override
-    public void internalFrameOpened(InternalFrameEvent e) {
-    }
-
-    @Override
-    public void internalFrameClosing(InternalFrameEvent e) {
-    }
-
-    @Override
-    public void internalFrameClosed(InternalFrameEvent e) {
-    }
-
-    @Override
-    public void internalFrameIconified(InternalFrameEvent e) {
-    }
-
-    @Override
-    public void internalFrameDeiconified(InternalFrameEvent e) {
-    }
-
-    @Override
-    public void internalFrameActivated(InternalFrameEvent e) {
-    }
-
-    @Override
-    public void internalFrameDeactivated(InternalFrameEvent e) {
-	updateJTableFincasAfectadas();
-    }
-
-    @Override
-    public String getSQLQuery(String queryID) {
-	return null;
     }
 
     @Override

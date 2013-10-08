@@ -43,15 +43,13 @@ import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.preferences.GEXPreferences;
 import es.icarto.gvsig.extgex.utils.retrievers.LocalizadorFormatter;
 import es.icarto.gvsig.navtableforms.AbstractForm;
-import es.icarto.gvsig.navtableforms.launcher.AlphanumericNavTableLauncher;
-import es.icarto.gvsig.navtableforms.launcher.ILauncherForm;
-import es.icarto.gvsig.navtableforms.launcher.LauncherParams;
-import es.icarto.gvsig.navtableforms.ormlite.domain.KeyValue;
-import es.icarto.gvsig.navtableforms.validation.listeners.DependentComboboxesHandler;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 import es.udc.cartolab.gvsig.navtable.format.DoubleFormatNT;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
-public class FormExpropiations extends AbstractForm implements ILauncherForm, TableModelListener {
+@SuppressWarnings("serial")
+public class FormExpropiations extends AbstractForm implements TableModelListener {
 
     private static final String WIDGET_REVERSIONES = "tabla_reversiones_afectan";
     private static final String WIDGET_EXPROPIACIONES = "tabla_expropiaciones";
@@ -93,15 +91,15 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
     private JButton addExpropiationButton;
     private JButton deleteExpropiationButton;
 
-    private DependentComboboxesHandler ucDomainHandler;
-    private DependentComboboxesHandler ayuntamientoDomainHandler;
-    private DependentComboboxesHandler subtramoDomainHandler;
+    private DependentComboboxHandler ucDomainHandler;
+    private DependentComboboxHandler ayuntamientoDomainHandler;
+    private DependentComboboxHandler subtramoDomainHandler;
     private UpdateNroFincaHandler updateNroFincaHandler;
 
     private UpdateImportePendienteHandler updateImportePendienteHandler;
     private UpdateImportePagadoHandler updateImportePagadoHandler;
 
-    private AlphanumericNavTableLauncher tableExpropiationsLauncher;
+    //    private AlphanumericNavTableLauncher tableExpropiationsLauncher;
     private FormReversionsLauncher formReversionsLauncher;
 
     private FLyrVect layer = null;
@@ -229,16 +227,16 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	deleteExpropiationButton.addActionListener(deleteExpropiationListener);
 
 	// BIND LISTENERS TO WIDGETS
-	ucDomainHandler = new DependentComboboxesHandler(this, tramo, uc);
+	ucDomainHandler = new DependentComboboxHandler(this, tramo, uc);
 	tramo.addActionListener(ucDomainHandler);
 
-	ayuntamientoDomainHandler = new DependentComboboxesHandler(this, uc, ayuntamiento);
+	ayuntamientoDomainHandler = new DependentComboboxHandler(this, uc, ayuntamiento);
 	uc.addActionListener(ayuntamientoDomainHandler);
 
-	ArrayList<JComboBox> parentComponents = new ArrayList<JComboBox>();
+	ArrayList<JComponent> parentComponents = new ArrayList<JComponent>();
 	parentComponents.add(uc);
 	parentComponents.add(ayuntamiento);
-	subtramoDomainHandler = new DependentComboboxesHandler(this, parentComponents, subtramo);
+	subtramoDomainHandler = new DependentComboboxHandler(this, parentComponents, subtramo);
 	ayuntamiento.addActionListener(subtramoDomainHandler);
 
 	updateNroFincaHandler = new UpdateNroFincaHandler();
@@ -247,15 +245,15 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	seccion.addKeyListener(updateNroFincaHandler);
 
 	// BIND LAUNCHERS TO WIDGETS
-	LauncherParams expropiationsParams = new LauncherParams(this,
-		DBNames.TABLE_EXPROPIACIONES,
-		"Cultivos",
-		"Abrir cultivos");
-	tableExpropiationsLauncher = new AlphanumericNavTableLauncher(
-		this, expropiationsParams);
-	formReversionsLauncher = new FormReversionsLauncher(this);
-	expropiaciones.addMouseListener(tableExpropiationsLauncher);
-	reversiones.addMouseListener(formReversionsLauncher);
+	//	LauncherParams expropiationsParams = new LauncherParams(this,
+	//		DBNames.TABLE_EXPROPIACIONES,
+	//		"Cultivos",
+	//		"Abrir cultivos");
+	//	tableExpropiationsLauncher = new AlphanumericNavTableLauncher(
+	//		this, expropiationsParams);
+	//	formReversionsLauncher = new FormReversionsLauncher(this);
+	//	expropiaciones.addMouseListener(tableExpropiationsLauncher);
+	//	reversiones.addMouseListener(formReversionsLauncher);
 
     }
 
@@ -281,7 +279,7 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	importe_pagos_varios.removeKeyListener(updateImportePagadoHandler);
 	importe_deposito_previo_levantado.removeKeyListener(updateImportePagadoHandler);
 
-	expropiaciones.removeMouseListener(tableExpropiationsLauncher);
+	//	expropiaciones.removeMouseListener(tableExpropiationsLauncher);
 	reversiones.removeMouseListener(formReversionsLauncher);
 
 	addReversionsButton.removeActionListener(addReversionsListener);
@@ -876,36 +874,10 @@ public class FormExpropiations extends AbstractForm implements ILauncherForm, Ta
 	return cultivoID;
     }
 
-    @Override
-    public void internalFrameOpened(InternalFrameEvent e) {
-    }
-
-    @Override
-    public void internalFrameClosing(InternalFrameEvent e) {
-    }
-
-    @Override
-    public void internalFrameClosed(InternalFrameEvent e) {
-    }
-
-    @Override
-    public void internalFrameIconified(InternalFrameEvent e) {
-    }
-
-    @Override
-    public void internalFrameDeiconified(InternalFrameEvent e) {
-    }
-
-    @Override
-    public void internalFrameActivated(InternalFrameEvent e) {
-    }
-
-    @Override
     public void internalFrameDeactivated(InternalFrameEvent e) {
 	updateJTables();
     }
 
-    @Override
     public String getSQLQuery(String queryID) {
 	if (queryID.equalsIgnoreCase("EXPROPIACIONES")) {
 	    return "select * from " + "'"
