@@ -10,6 +10,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
+import javax.swing.event.InternalFrameListener;
 
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
@@ -19,7 +20,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
 import es.icarto.gvsig.extgex.utils.managers.TableLayerManager;
-import es.icarto.gvsig.navtableforms.gui.tables.TableUtils;
+import es.icarto.gvsig.navtableforms.gui.TableUtils;
 import es.udc.cartolab.gvsig.navtable.AbstractNavTable;
 import es.udc.cartolab.gvsig.navtable.AlphanumericNavTable;
 
@@ -98,9 +99,9 @@ public class FormExpropiationsLauncher implements MouseListener {
 		    selectFeaturesInForm();
 		    PluginServices.getMDIManager().addWindow(formExpropiations);
 		    // Listening closing actions of formReversions
-		    JInternalFrame parent = (JInternalFrame) formExpropiations
-			    .getRootPane().getParent();
-		    parent.addInternalFrameListener(formReversions);
+		    //		    JInternalFrame parent = (JInternalFrame) formExpropiations
+		    //			    .getRootPane().getParent();
+		    //		    parent.addInternalFrameListener((InternalFrameListener) formReversions);
 		}
 	    }
 	} catch (ReadDriverException e) {
@@ -123,7 +124,7 @@ public class FormExpropiationsLauncher implements MouseListener {
 		    // Listening closing actions of formReversions
 		    JInternalFrame parent = (JInternalFrame) ant
 			    .getRootPane().getParent();
-		    parent.addInternalFrameListener(formReversions);
+		    parent.addInternalFrameListener((InternalFrameListener) formReversions);
 		}
 	    }
 	} catch (ReadDriverException e) {

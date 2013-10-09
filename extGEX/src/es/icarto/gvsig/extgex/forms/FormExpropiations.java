@@ -251,9 +251,9 @@ public class FormExpropiations extends AbstractForm implements TableModelListene
 	//		"Abrir cultivos");
 	//	tableExpropiationsLauncher = new AlphanumericNavTableLauncher(
 	//		this, expropiationsParams);
-	//	formReversionsLauncher = new FormReversionsLauncher(this);
-	//	expropiaciones.addMouseListener(tableExpropiationsLauncher);
-	//	reversiones.addMouseListener(formReversionsLauncher);
+	formReversionsLauncher = new FormReversionsLauncher(this);
+	//		expropiaciones.addMouseListener(tableExpropiationsLauncher);
+	reversiones.addMouseListener(formReversionsLauncher);
 
     }
 
