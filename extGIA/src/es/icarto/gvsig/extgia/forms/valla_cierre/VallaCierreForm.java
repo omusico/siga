@@ -299,7 +299,7 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public String getElementID() {
-	return "id_valla_cierre";
+	return "id_valla";
     }
 
     @Override
