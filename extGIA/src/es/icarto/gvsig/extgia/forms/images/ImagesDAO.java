@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 import es.icarto.gvsig.extgia.utils.ImageUtils;
@@ -29,7 +30,11 @@ public class ImagesDAO {
 	    statement = connection.prepareStatement("INSERT INTO "
 		    + schema + "."
 		    + tablename + " VALUES (?, ?)");
-	    statement.setString(1, pkValue);
+	    if (getPKFieldType(connection, schema, tablename, pkField) ==  4)  {
+		statement.setInt(1, Integer.parseInt(pkValue));
+	    }else {
+		statement.setString(1, pkValue);
+	    }
 	    statement.setBytes(2, imageBytes);
 	}
 	statement.executeUpdate();
@@ -48,7 +53,11 @@ public class ImagesDAO {
 		    + IMAGE_FIELDNAME + " FROM "
 		    + schema + "." + tablename
 		    + " WHERE " + pkField + " = ?");
-	    statement.setString(1, pkValue);
+	    if (getPKFieldType(connection, schema, tablename, pkField) ==  4)  {
+		statement.setInt(1, Integer.parseInt(pkValue));
+	    }else {
+		statement.setString(1, pkValue);
+	    }
 	    ResultSet rs = statement.executeQuery();
 	    if (rs.next()) {
 		return rs.getBytes(1);
@@ -69,7 +78,11 @@ public class ImagesDAO {
 	    statement = connection.prepareStatement("DELETE FROM "
 		    + schema + "." + tablename
 		    + " WHERE " + pkField + " = ?");
-	    statement.setString(1, pkValue);
+	    if (getPKFieldType(connection, schema, tablename, pkField) ==  4)  {
+		statement.setInt(1, Integer.parseInt(pkValue));
+	    }else {
+		statement.setString(1, pkValue);
+	    }
 	    statement.execute();
 	} finally {
 	    if (statement != null) {
@@ -78,4 +91,19 @@ public class ImagesDAO {
 	}
     }
 
+    private int getPKFieldType(Connection connection, String schema, String tablename,
+	    String pkField) {
+	PreparedStatement statement;
+	try {
+	    statement = connection.prepareStatement("SELECT "
+		    + pkField + " FROM "
+		    + schema + "." + tablename);
+	    ResultSet rs = statement.executeQuery();
+	    ResultSetMetaData metadata = rs.getMetaData();
+	    return metadata.getColumnType(1);
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return -1;
+    }
 }
