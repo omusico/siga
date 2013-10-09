@@ -5,8 +5,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
-import es.icarto.gvsig.extgex.preferences.GEXPreferences;
-import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
+import es.icarto.gvsig.extgex.preferences.DBNames;
 
 public class FilesLinkData {
 
@@ -34,9 +33,10 @@ public class FilesLinkData {
     }
 
     public String getDirectoryFieldName() {
-	String xmlFilePath = GEXPreferences.getPreferences().getXMLFilePath();
-	return ORMLite.getDataBaseObject(xmlFilePath).getTable(layer.getName())
-		.getPrimaryKey()[0];
-
+	if (layer.getName().equalsIgnoreCase(DBNames.LAYER_FINCAS)) {
+	    return DBNames.FIELD_IDFINCA_FINCAS;
+	}else {
+	    return DBNames.FIELD_IDREVERSION_REVERSIONES;
+	}
     }
 }
