@@ -33,7 +33,7 @@ public class FormExpropiationsExtension extends Extension {
 	layer = getLayer();
 	dialog = new FormExpropiations(layer, null);
 	if (dialog.init()) {
-	    PluginServices.getMDIManager().addCentredWindow(dialog);
+	    PluginServices.getMDIManager().addWindow(dialog);
 	}
     }
 

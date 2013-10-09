@@ -22,7 +22,7 @@ public class FormReversionsExtension extends Extension {
 	layer = getLayer();
 	dialog = new FormReversions(layer, null);
 	if (dialog.init()) {
-	    PluginServices.getMDIManager().addCentredWindow(dialog);
+	    PluginServices.getMDIManager().addWindow(dialog);
 	}
 	//	} else {
 	//	    JOptionPane.showMessageDialog(null, PluginServices.getText(this,
