@@ -76,7 +76,15 @@
 			<ENABLEIF>
 				<CONDITION>
 				<COMPONENT>tipo_via</COMPONENT>
-				<VALUE>Intercambiador</VALUE>
+				<VALUE>Área de descanso</VALUE>
+				</CONDITION>
+				<CONDITION>
+				<COMPONENT>tipo_via</COMPONENT>
+				<VALUE>Área de servicio</VALUE>
+				</CONDITION>
+				<CONDITION>
+				<COMPONENT>tipo_via</COMPONENT>
+				<VALUE>Área de mantenimiento</VALUE>
 				</CONDITION>
 				<CONDITION>
 				<COMPONENT>tipo_via</COMPONENT>
@@ -84,7 +92,15 @@
 				</CONDITION>
 				<CONDITION>
 				<COMPONENT>tipo_via</COMPONENT>
-				<VALUE>Área de Servicio</VALUE>
+				<VALUE>Estación de peaje</VALUE>
+				</CONDITION>
+				<CONDITION>
+				<COMPONENT>tipo_via</COMPONENT>
+				<VALUE>Intercambiador</VALUE>
+				</CONDITION>
+				<CONDITION>
+				<COMPONENT>tipo_via</COMPONENT>
+				<VALUE>Túnel</VALUE>
 				</CONDITION>
 			</ENABLEIF>
 		</FIELD>
@@ -115,6 +131,20 @@
 				<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
 				<DRDBFOREIGNKEY>id_intercambiador</DRDBFOREIGNKEY>
 			</DOMAINREADER>
+			<ENABLEIF>
+				<CONDITION>
+				<COMPONENT>tipo_via</COMPONENT>
+				<VALUE>Intercambiador</VALUE>
+				</CONDITION>
+				<CONDITION>
+				<COMPONENT>tipo_via</COMPONENT>
+				<VALUE>Enlace</VALUE>
+				</CONDITION>
+				<CONDITION>
+				<COMPONENT>tipo_via</COMPONENT>
+				<VALUE>Área de Servicio</VALUE>
+				</CONDITION>
+			</ENABLEIF>
 		</FIELD>
 
 		<FIELD>

@@ -79,6 +79,36 @@
 				<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
 				<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
 			</DOMAINREADER>
+			<ENABLEIF>
+				<CONDITION>
+				<COMPONENT>tipo_via</COMPONENT>
+				<VALUE>Área de descanso</VALUE>
+				</CONDITION>
+				<CONDITION>
+				<COMPONENT>tipo_via</COMPONENT>
+				<VALUE>Área de servicio</VALUE>
+				</CONDITION>
+				<CONDITION>
+				<COMPONENT>tipo_via</COMPONENT>
+				<VALUE>Área de mantenimiento</VALUE>
+				</CONDITION>
+				<CONDITION>
+				<COMPONENT>tipo_via</COMPONENT>
+				<VALUE>Enlace</VALUE>
+				</CONDITION>
+				<CONDITION>
+				<COMPONENT>tipo_via</COMPONENT>
+				<VALUE>Estación de peaje</VALUE>
+				</CONDITION>
+				<CONDITION>
+				<COMPONENT>tipo_via</COMPONENT>
+				<VALUE>Intercambiador</VALUE>
+				</CONDITION>
+				<CONDITION>
+				<COMPONENT>tipo_via</COMPONENT>
+				<VALUE>Túnel</VALUE>
+				</CONDITION>
+			</ENABLEIF>
 		</FIELD>
 
 		<FIELD>
