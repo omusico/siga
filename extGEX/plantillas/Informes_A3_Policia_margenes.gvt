@@ -5,7 +5,7 @@
     <property key="isCuadricula" value="false"/>
     <property key="isEditable" value="true"/>
     <property key="numBehind" value="-17"/>
-    <property key="numBefore" value="670"/>
+    <property key="numBefore" value="704"/>
     <property key="followHeaderEncoding" value="true"/>
     <xml-tag>
         <property key="className" value="com.iver.cit.gvsig.project.documents.layout.Attributes"/>
@@ -14,8 +14,8 @@
         <property key="m_TypeUnit" value="1.0"/>
         <property key="m_numX" value="0.25"/>
         <property key="m_numY" value="0.25"/>
-        <property key="m_unitX" value="6.910714285714286"/>
-        <property key="m_unitY" value="6.910714285714286"/>
+        <property key="m_unitX" value="30.161531960386313"/>
+        <property key="m_unitY" value="30.161531960386313"/>
         <property key="hasmargin" value="false"/>
         <property key="m_resolutionSel" value="1"/>
         <property key="m_typeSel" value="2"/>
@@ -44,7 +44,7 @@
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
-        <property key="level" value="631"/>
+        <property key="level" value="671"/>
         <property key="num" value="0"/>
         <property key="m_type" value="24"/>
         <xml-tag>
@@ -91,7 +91,7 @@
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
-        <property key="level" value="633"/>
+        <property key="level" value="672"/>
         <property key="num" value="1"/>
         <property key="m_type" value="24"/>
         <xml-tag>
@@ -138,7 +138,7 @@
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
-        <property key="level" value="634"/>
+        <property key="level" value="673"/>
         <property key="num" value="2"/>
         <property key="m_type" value="24"/>
         <xml-tag>
@@ -185,7 +185,7 @@
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
-        <property key="level" value="635"/>
+        <property key="level" value="674"/>
         <property key="num" value="3"/>
         <property key="m_type" value="24"/>
         <xml-tag>
@@ -232,7 +232,7 @@
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
-        <property key="level" value="636"/>
+        <property key="level" value="675"/>
         <property key="num" value="0"/>
         <property key="s" value="Nº REFERENCIA"/>
         <property key="m_isFixed" value="false"/>
@@ -262,7 +262,7 @@
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
-        <property key="level" value="637"/>
+        <property key="level" value="676"/>
         <property key="num" value="1"/>
         <property key="s" value="TÍTULO DEL PROYECTO"/>
         <property key="m_isFixed" value="false"/>
@@ -292,7 +292,7 @@
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
-        <property key="level" value="638"/>
+        <property key="level" value="677"/>
         <property key="num" value="2"/>
         <property key="s" value="FECHA"/>
         <property key="m_isFixed" value="false"/>
@@ -322,7 +322,7 @@
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
-        <property key="level" value="639"/>
+        <property key="level" value="678"/>
         <property key="num" value="0"/>
         <property key="m_path" value="Fomento.png"/>
         <property key="m_quality" value="0"/>
@@ -334,13 +334,13 @@
         <property key="x" value="36.0"/>
         <property key="y" value="27.9"/>
         <property key="w" value="3.8"/>
-        <property key="h" value="0.4"/>
+        <property key="h" value="0.7"/>
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
-        <property key="level" value="640"/>
+        <property key="level" value="679"/>
         <property key="num" value="3"/>
-        <property key="s" value="PLANTA GENERAL"/>
+        <property key="s" value=""/>
         <property key="m_isFixed" value="false"/>
         <property key="m_pos" value="1"/>
         <property key="fontName" value="Arial Negrita"/>
@@ -352,7 +352,7 @@
         <property key="fixedFontSize" value="true"/>
         <property key="surrounded" value="false"/>
         <property key="hasTitle" value="false"/>
-        <property key="title" value="CONCESIONARIA"/>
+        <property key="title" value="titulo_plano"/>
         <property key="titleSize" value="7"/>
         <property key="frameBorderSize" value="0.01"/>
         <property key="frameColor" value="0,0,0,255"/>
@@ -361,15 +361,15 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="34"/>
+        <property key="x" value="34.0"/>
         <property key="y" value="27.58"/>
         <property key="w" value="1.2"/>
         <property key="h" value="0.2"/>
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
-        <property key="level" value="638"/>
-        <property key="num" value="20"/>
+        <property key="level" value="680"/>
+        <property key="num" value="4"/>
         <property key="s" value="HOJA  DE  "/>
         <property key="m_isFixed" value="false"/>
         <property key="m_pos" value="0"/>
@@ -391,15 +391,15 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="34.0"/>
+        <property key="x" value="34.2"/>
         <property key="y" value="27.9"/>
         <property key="w" value="1.8"/>
-        <property key="h" value="0.4"/>
-        <property key="m_Selected" value="0"/>
+        <property key="h" value="0.7"/>
+        <property key="m_Selected" value="9"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
-        <property key="level" value="641"/>
-        <property key="num" value="4"/>
+        <property key="level" value="681"/>
+        <property key="num" value="5"/>
         <property key="s" value="HOJA"/>
         <property key="m_isFixed" value="false"/>
         <property key="m_pos" value="0"/>
@@ -421,15 +421,15 @@
     <xml-tag>
         <property key="className" value="FFrameText"/>
         <property key="m_name" value="FFrame"/>
-        <property key="x" value="34.67"/>
+        <property key="x" value="34.87"/>
         <property key="y" value="27.9"/>
         <property key="w" value="0.6"/>
-        <property key="h" value="0.4"/>
+        <property key="h" value="0.7"/>
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
-        <property key="level" value="282"/>
-        <property key="num" value="14"/>
+        <property key="level" value="682"/>
+        <property key="num" value="6"/>
         <property key="s" value=""/>
         <property key="m_isFixed" value="false"/>
         <property key="m_pos" value="0"/>
@@ -458,7 +458,7 @@
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
-        <property key="level" value="642"/>
+        <property key="level" value="683"/>
         <property key="num" value="4"/>
         <property key="m_type" value="24"/>
         <xml-tag>
@@ -505,7 +505,7 @@
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
-        <property key="level" value="643"/>
+        <property key="level" value="684"/>
         <property key="num" value="5"/>
         <property key="m_type" value="24"/>
         <xml-tag>
@@ -552,8 +552,8 @@
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
-        <property key="level" value="645"/>
-        <property key="num" value="5"/>
+        <property key="level" value="685"/>
+        <property key="num" value="7"/>
         <property key="s" value="AUTOPISTAS DEL ATLÁNTICO  ,Concesionaria Española\, S.A."/>
         <property key="m_isFixed" value="false"/>
         <property key="m_pos" value="0"/>
@@ -582,8 +582,8 @@
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
-        <property key="level" value="646"/>
-        <property key="num" value="6"/>
+        <property key="level" value="686"/>
+        <property key="num" value="8"/>
         <property key="s" value="CONCESIONARIA"/>
         <property key="m_isFixed" value="false"/>
         <property key="m_pos" value="0"/>
@@ -612,8 +612,8 @@
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
-        <property key="level" value="647"/>
-        <property key="num" value="1"/>
+        <property key="level" value="687"/>
+        <property key="num" value="0"/>
         <xml-tag>
             <property key="className" value="FFramePicture"/>
             <property key="m_name" value="Audasa.JPG"/>
@@ -641,8 +641,8 @@
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
-        <property key="level" value="648"/>
-        <property key="num" value="7"/>
+        <property key="level" value="688"/>
+        <property key="num" value="9"/>
         <property key="s" value="ESCALAS"/>
         <property key="m_isFixed" value="false"/>
         <property key="m_pos" value="0"/>
@@ -671,8 +671,8 @@
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
-        <property key="level" value="649"/>
-        <property key="num" value="8"/>
+        <property key="level" value="689"/>
+        <property key="num" value="10"/>
         <property key="s" value="ORIGINAL DIN-A3"/>
         <property key="m_isFixed" value="false"/>
         <property key="m_pos" value="0"/>
@@ -701,7 +701,7 @@
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
-        <property key="level" value="650"/>
+        <property key="level" value="690"/>
         <property key="num" value="0"/>
         <property key="m_bIntervalSet" value="false"/>
         <property key="m_dif" value="0.927428703918386"/>
@@ -737,7 +737,7 @@
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
-        <property key="level" value="651"/>
+        <property key="level" value="691"/>
         <property key="num" value="1"/>
         <property key="m_bIntervalSet" value="false"/>
         <property key="m_dif" value="0.9274287039183862"/>
@@ -773,8 +773,8 @@
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
-        <property key="level" value="652"/>
-        <property key="num" value="9"/>
+        <property key="level" value="692"/>
+        <property key="num" value="11"/>
         <property key="s" value="PROVINCIA"/>
         <property key="m_isFixed" value="false"/>
         <property key="m_pos" value="0"/>
@@ -803,8 +803,8 @@
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
-        <property key="level" value="653"/>
-        <property key="num" value="10"/>
+        <property key="level" value="693"/>
+        <property key="num" value="12"/>
         <property key="s" value="MUNICIPIO"/>
         <property key="m_isFixed" value="false"/>
         <property key="m_pos" value="0"/>
@@ -833,8 +833,8 @@
         <property key="m_Selected" value="0"/>
         <property key="tag"/>
         <property key="m_rotation" value="0.0"/>
-        <property key="level" value="654"/>
-        <property key="num" value="7"/>
+        <property key="level" value="694"/>
+        <property key="num" value="6"/>
         <property key="m_type" value="24"/>
         <xml-tag>
             <property key="className" value="com.iver.cit.gvsig.fmap.core.symbols.SimpleFillSymbol"/>
@@ -869,5 +869,185 @@
             <property key="points" value="21.0 ,28.7 ,17.5 ,27.5"/>
             <property key="className" value="com.iver.cit.gvsig.fmap.core.adapter.RectangleAdapter"/>
         </xml-tag>
-    </xml-tag>   
+    </xml-tag>
+    <xml-tag>
+        <property key="className" value="FFrameText"/>
+        <property key="m_name" value="FFrame"/>
+        <property key="x" value="17.9"/>
+        <property key="y" value="27.9"/>
+        <property key="w" value="3.0"/>
+        <property key="h" value="0.7"/>
+        <property key="m_Selected" value="0"/>
+        <property key="tag"/>
+        <property key="m_rotation" value="0.0"/>
+        <property key="level" value="699"/>
+        <property key="num" value="17"/>
+        <property key="s" value=""/>
+        <property key="m_isFixed" value="false"/>
+        <property key="m_pos" value="0"/>
+        <property key="fontName" value="Arial Negrita"/>
+        <property key="fontStyle" value="1"/>
+        <property key="textColor" value="0,0,0,255"/>
+        <property key="transicionPixelsMilimetros" value="true"/>
+        <property key="cellPadding" value="0.0"/>
+        <property key="fontSize" value="10"/>
+        <property key="fixedFontSize" value="true"/>
+        <property key="surrounded" value="false"/>
+        <property key="hasTitle" value="false"/>
+        <property key="title" value="provincia"/>
+        <property key="titleSize" value="7"/>
+        <property key="frameBorderSize" value="0.01"/>
+        <property key="frameColor" value="0,0,0,255"/>
+        <property key="titleColor" value="51,51,51,255"/>
+    </xml-tag>
+    <xml-tag>
+        <property key="className" value="FFrameText"/>
+        <property key="m_name" value="FFrame"/>
+        <property key="x" value="11.9"/>
+        <property key="y" value="27.9"/>
+        <property key="w" value="4.0"/>
+        <property key="h" value="0.7"/>
+        <property key="m_Selected" value="0"/>
+        <property key="tag"/>
+        <property key="m_rotation" value="0.0"/>
+        <property key="level" value="700"/>
+        <property key="num" value="18"/>
+        <property key="s" value=""/>
+        <property key="m_isFixed" value="false"/>
+        <property key="m_pos" value="0"/>
+        <property key="fontName" value="Arial Negrita"/>
+        <property key="fontStyle" value="1"/>
+        <property key="textColor" value="0,0,0,255"/>
+        <property key="transicionPixelsMilimetros" value="true"/>
+        <property key="cellPadding" value="0.0"/>
+        <property key="fontSize" value="10"/>
+        <property key="fixedFontSize" value="true"/>
+        <property key="surrounded" value="false"/>
+        <property key="hasTitle" value="false"/>
+        <property key="title" value="proyecto"/>
+        <property key="titleSize" value="7"/>
+        <property key="frameBorderSize" value="0.01"/>
+        <property key="frameColor" value="0,0,0,255"/>
+        <property key="titleColor" value="51,51,51,255"/>
+    </xml-tag>
+    <xml-tag>
+        <property key="className" value="FFrameText"/>
+        <property key="m_name" value="FFrame"/>
+        <property key="x" value="21.4"/>
+        <property key="y" value="27.9"/>
+        <property key="w" value="3.0"/>
+        <property key="h" value="0.7"/>
+        <property key="m_Selected" value="0"/>
+        <property key="tag"/>
+        <property key="m_rotation" value="0.0"/>
+        <property key="level" value="701"/>
+        <property key="num" value="19"/>
+        <property key="s" value=""/>
+        <property key="m_isFixed" value="false"/>
+        <property key="m_pos" value="0"/>
+        <property key="fontName" value="Arial Negrita"/>
+        <property key="fontStyle" value="1"/>
+        <property key="textColor" value="0,0,0,255"/>
+        <property key="transicionPixelsMilimetros" value="true"/>
+        <property key="cellPadding" value="0.0"/>
+        <property key="fontSize" value="10"/>
+        <property key="fixedFontSize" value="true"/>
+        <property key="surrounded" value="false"/>
+        <property key="hasTitle" value="false"/>
+        <property key="title" value="municipio"/>
+        <property key="titleSize" value="7"/>
+        <property key="frameBorderSize" value="0.01"/>
+        <property key="frameColor" value="0,0,0,255"/>
+        <property key="titleColor" value="51,51,51,255"/>
+    </xml-tag>
+    <xml-tag>
+        <property key="className" value="FFrameText"/>
+        <property key="m_name" value="FFrame"/>
+        <property key="x" value="28.4"/>
+        <property key="y" value="27.9"/>
+        <property key="w" value="2.0"/>
+        <property key="h" value="0.7"/>
+        <property key="m_Selected" value="0"/>
+        <property key="tag"/>
+        <property key="m_rotation" value="0.0"/>
+        <property key="level" value="702"/>
+        <property key="num" value="20"/>
+        <property key="s" value=""/>
+        <property key="m_isFixed" value="false"/>
+        <property key="m_pos" value="0"/>
+        <property key="fontName" value="Arial Negrita"/>
+        <property key="fontStyle" value="1"/>
+        <property key="textColor" value="0,0,0,255"/>
+        <property key="transicionPixelsMilimetros" value="true"/>
+        <property key="cellPadding" value="0.0"/>
+        <property key="fontSize" value="10"/>
+        <property key="fixedFontSize" value="true"/>
+        <property key="surrounded" value="false"/>
+        <property key="hasTitle" value="false"/>
+        <property key="title" value="referencia"/>
+        <property key="titleSize" value="7"/>
+        <property key="frameBorderSize" value="0.01"/>
+        <property key="frameColor" value="0,0,0,255"/>
+        <property key="titleColor" value="51,51,51,255"/>
+    </xml-tag>
+    <xml-tag>
+        <property key="className" value="FFrameText"/>
+        <property key="m_name" value="FFrame"/>
+        <property key="x" value="31.3"/>
+        <property key="y" value="27.9"/>
+        <property key="w" value="2.0"/>
+        <property key="h" value="0.7"/>
+        <property key="m_Selected" value="0"/>
+        <property key="tag"/>
+        <property key="m_rotation" value="0.0"/>
+        <property key="level" value="703"/>
+        <property key="num" value="21"/>
+        <property key="s" value=""/>
+        <property key="m_isFixed" value="false"/>
+        <property key="m_pos" value="0"/>
+        <property key="fontName" value="Arial Negrita"/>
+        <property key="fontStyle" value="1"/>
+        <property key="textColor" value="0,0,0,255"/>
+        <property key="transicionPixelsMilimetros" value="true"/>
+        <property key="cellPadding" value="0.0"/>
+        <property key="fontSize" value="10"/>
+        <property key="fixedFontSize" value="true"/>
+        <property key="surrounded" value="false"/>
+        <property key="hasTitle" value="false"/>
+        <property key="title" value="fecha"/>
+        <property key="titleSize" value="7"/>
+        <property key="frameBorderSize" value="0.01"/>
+        <property key="frameColor" value="0,0,0,255"/>
+        <property key="titleColor" value="51,51,51,255"/>
+    </xml-tag>
+    <xml-tag>
+        <property key="className" value="FFrameText"/>
+        <property key="m_name" value="FFrame"/>
+        <property key="x" value="36.0"/>
+        <property key="y" value="27.58"/>
+        <property key="w" value="1.2"/>
+        <property key="h" value="0.2"/>
+        <property key="m_Selected" value="0"/>
+        <property key="tag"/>
+        <property key="m_rotation" value="0.0"/>
+        <property key="level" value="704"/>
+        <property key="num" value="22"/>
+        <property key="s" value="TÍTULO DEL PLANO"/>
+        <property key="m_isFixed" value="false"/>
+        <property key="m_pos" value="0"/>
+        <property key="fontName" value="Arial Negrita"/>
+        <property key="fontStyle" value="1"/>
+        <property key="textColor" value="51,51,51,255"/>
+        <property key="transicionPixelsMilimetros" value="true"/>
+        <property key="cellPadding" value="0.0"/>
+        <property key="fontSize" value="7"/>
+        <property key="fixedFontSize" value="true"/>
+        <property key="surrounded" value="false"/>
+        <property key="hasTitle" value="false"/>
+        <property key="title" value="EL INGENIERO DE C.C Y P. DIRECTOR DEL PROYECTO"/>
+        <property key="titleSize" value="8"/>
+        <property key="frameBorderSize" value="0.01"/>
+        <property key="frameColor" value="0,0,0,255"/>
+        <property key="titleColor" value="51,51,51,255"/>
+    </xml-tag>
 </xml-tag>
