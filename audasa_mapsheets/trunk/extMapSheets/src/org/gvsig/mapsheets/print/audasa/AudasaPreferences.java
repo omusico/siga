@@ -50,6 +50,7 @@ public class AudasaPreferences {
     public static final String TITULO_PLANO = "titulo_plano";
     public static final String TRAMO = "tramo";
     public static final String NUMERO_PLANO = "numero_plano";
+    public static final String NUMERO_REFERENCIA = "referencia";
     public static final String CONSULTORA = "consultora";
     public static final String INGENIERO_AUTOR = "ingeniero_autor";
     public static final String CLAVE = "clave";

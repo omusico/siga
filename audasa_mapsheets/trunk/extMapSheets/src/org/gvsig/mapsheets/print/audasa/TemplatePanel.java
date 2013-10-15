@@ -29,6 +29,8 @@ public class TemplatePanel {
     public static ArrayList<Component> create(String template) {
 	if(template.equals(AudasaPreferences.A3_DIMENSIONES)){
 	    return getComponentsForTemplateDimensiones();
+	} else if (template.equals(AudasaPreferences.A4_POLICIA_MARGENES)) {
+	    return getComponentsForTemplatePM();
 	} else {
 	    return getComponentsForTemplateConsultas();
 	}
@@ -52,7 +54,7 @@ public class TemplatePanel {
 		MARGIN_LEFT_TITLE, MARGIN_TOP*2, WIDTH_TITLE, HEIGHT_TITLE));
 	JTextField provinciaText = new JTextField();
 	provinciaText.setBounds(new Rectangle(
-		MARGIN_LEFT_TXT, MARGIN_TOP*2, WIDTH_TXT, HEIGHT_TXT));	
+		MARGIN_LEFT_TXT, MARGIN_TOP*2, WIDTH_TXT, HEIGHT_TXT));
 	provinciaText.setName(AudasaPreferences.PROVINCIA);
 	componentsList.add(provinciaTitle);
 	componentsList.add(provinciaText);
@@ -112,7 +114,7 @@ public class TemplatePanel {
 		MARGIN_LEFT_TITLE, MARGIN_TOP*8, WIDTH_TITLE, HEIGHT_TITLE));
 	JTextField tituloEstudioText = new JTextField();
 	tituloEstudioText.setBounds(new Rectangle(
-		MARGIN_LEFT_TXT, MARGIN_TOP*8, WIDTH_TXT, HEIGHT_TXT));	
+		MARGIN_LEFT_TXT, MARGIN_TOP*8, WIDTH_TXT, HEIGHT_TXT));
 	tituloEstudioText.setName(AudasaPreferences.TITULO_ESTUDIO);
 	componentsList.add(tituloEstudioTitle);
 	componentsList.add(tituloEstudioText);
@@ -122,7 +124,7 @@ public class TemplatePanel {
 		MARGIN_LEFT_TITLE, MARGIN_TOP*9, WIDTH_TITLE, HEIGHT_TITLE));
 	JTextField tituloPlanoText = new JTextField();
 	tituloPlanoText.setBounds(new Rectangle(
-		MARGIN_LEFT_TXT, MARGIN_TOP*9, WIDTH_TXT, HEIGHT_TXT));	
+		MARGIN_LEFT_TXT, MARGIN_TOP*9, WIDTH_TXT, HEIGHT_TXT));
 	tituloPlanoText.setName(AudasaPreferences.TITULO_PLANO);
 	componentsList.add(tituloPlanoTitle);
 	componentsList.add(tituloPlanoText);
@@ -175,7 +177,7 @@ public class TemplatePanel {
 		MARGIN_LEFT_TITLE, MARGIN_TOP*2, WIDTH_TITLE, HEIGHT_TITLE));
 	JTextField consultoraText = new JTextField();
 	consultoraText.setBounds(new Rectangle(
-		MARGIN_LEFT_TXT, MARGIN_TOP*2, WIDTH_TXT, HEIGHT_TXT));	
+		MARGIN_LEFT_TXT, MARGIN_TOP*2, WIDTH_TXT, HEIGHT_TXT));
 	consultoraText.setName(AudasaPreferences.CONSULTORA);
 	componentsList.add(consultoraTitle);
 	componentsList.add(consultoraText);
@@ -185,7 +187,7 @@ public class TemplatePanel {
 		MARGIN_LEFT_TITLE, MARGIN_TOP*3, WIDTH_TITLE, HEIGHT_TITLE));
 	JTextField ingenieroAutorText = new JTextField();
 	ingenieroAutorText.setBounds(new Rectangle(
-		MARGIN_LEFT_TXT, MARGIN_TOP*3, WIDTH_TXT, HEIGHT_TXT));	
+		MARGIN_LEFT_TXT, MARGIN_TOP*3, WIDTH_TXT, HEIGHT_TXT));
 	ingenieroAutorText.setName(AudasaPreferences.INGENIERO_AUTOR);
 	componentsList.add(ingenieroAutorTitle);
 	componentsList.add(ingenieroAutorText);
@@ -195,7 +197,7 @@ public class TemplatePanel {
 		MARGIN_LEFT_TITLE, MARGIN_TOP*4, WIDTH_TITLE, HEIGHT_TITLE));
 	JTextField proyectoText = new JTextField();
 	proyectoText.setBounds(new Rectangle(
-		MARGIN_LEFT_TXT, MARGIN_TOP*4, WIDTH_TXT, HEIGHT_TXT));	
+		MARGIN_LEFT_TXT, MARGIN_TOP*4, WIDTH_TXT, HEIGHT_TXT));
 	proyectoText.setName(AudasaPreferences.PROYECTO);
 	componentsList.add(proyectoTitle);
 	componentsList.add(proyectoText);
@@ -225,7 +227,7 @@ public class TemplatePanel {
 		MARGIN_LEFT_TITLE, MARGIN_TOP*7, WIDTH_TITLE, HEIGHT_TITLE));
 	JTextField fechaText = new JTextField();
 	fechaText.setBounds(new Rectangle(
-		MARGIN_LEFT_TXT, MARGIN_TOP*7, WIDTH_TXT, HEIGHT_TXT));	
+		MARGIN_LEFT_TXT, MARGIN_TOP*7, WIDTH_TXT, HEIGHT_TXT));
 	fechaText.setName(AudasaPreferences.FECHA);
 	componentsList.add(fechaTitle);
 	componentsList.add(fechaText);
@@ -245,7 +247,7 @@ public class TemplatePanel {
 		MARGIN_LEFT_TITLE, MARGIN_TOP*9, WIDTH_TITLE, HEIGHT_TITLE));
 	JTextField sustituidoPorText = new JTextField();
 	sustituidoPorText.setBounds(new Rectangle(
-		MARGIN_LEFT_TXT, MARGIN_TOP*9, WIDTH_TXT, HEIGHT_TXT));	
+		MARGIN_LEFT_TXT, MARGIN_TOP*9, WIDTH_TXT, HEIGHT_TXT));
 	sustituidoPorText.setName(AudasaPreferences.SUSTITUIDO_POR);
 	componentsList.add(sustituidoPorTitle);
 	componentsList.add(sustituidoPorText);
@@ -275,6 +277,79 @@ public class TemplatePanel {
 	continuarButton.setMnemonic(KeyEvent.VK_C);
 	continuarButton.setBounds(new Rectangle(
 		MARGIN_LEFT_TXT+(WIDTH_TXT/2)+10, MARGIN_TOP*(12+1), (WIDTH_TXT/2)-5, 26));
+	componentsList.add(continuarButton);
+
+	return componentsList;
+    }
+
+    private static ArrayList<Component> getComponentsForTemplatePM() {
+	componentsList = new ArrayList<Component>();
+
+	JLabel proyectoTitle = new JLabel("Proyecto:");
+	proyectoTitle.setBounds(new Rectangle(
+		MARGIN_LEFT_TITLE, MARGIN_TOP*1, WIDTH_TITLE, HEIGHT_TITLE));
+	JTextField proyectoText = new JTextField();
+	proyectoText.setBounds(new Rectangle(
+		MARGIN_LEFT_TXT, MARGIN_TOP*1, WIDTH_TXT, HEIGHT_TXT));
+	proyectoText.setName(AudasaPreferences.PROYECTO);
+	componentsList.add(proyectoTitle);
+	componentsList.add(proyectoText);
+
+	JLabel provinciaTitle = new JLabel("Provincia:");
+	provinciaTitle.setBounds(new Rectangle(
+		MARGIN_LEFT_TITLE, MARGIN_TOP*2, WIDTH_TITLE, HEIGHT_TITLE));
+	JTextField provinciaText = new JTextField();
+	provinciaText.setBounds(new Rectangle(
+		MARGIN_LEFT_TXT, MARGIN_TOP*2, WIDTH_TXT, HEIGHT_TXT));
+	provinciaText.setName(AudasaPreferences.PROVINCIA);
+	componentsList.add(provinciaTitle);
+	componentsList.add(provinciaText);
+
+	JLabel municipioTitle = new JLabel("Municipio:");
+	municipioTitle.setBounds(new Rectangle(
+		MARGIN_LEFT_TITLE, MARGIN_TOP*3, WIDTH_TITLE, HEIGHT_TITLE));
+	JTextField municipioText = new JTextField();
+	municipioText.setBounds(new Rectangle(
+		MARGIN_LEFT_TXT, MARGIN_TOP*3, WIDTH_TXT, HEIGHT_TXT));
+	municipioText.setName(AudasaPreferences.MUNICIPIO);
+	componentsList.add(municipioTitle);
+	componentsList.add(municipioText);
+
+	JLabel consultaTitle = new JLabel("Nº Referencia:");
+	consultaTitle.setBounds(new Rectangle(
+		MARGIN_LEFT_TITLE, MARGIN_TOP*4, WIDTH_TITLE, HEIGHT_TITLE));
+	JTextField consultaText = new JTextField();
+	consultaText.setBounds(new Rectangle(
+		MARGIN_LEFT_TXT, MARGIN_TOP*4, WIDTH_TXT, HEIGHT_TXT));
+	consultaText.setName(AudasaPreferences.NUMERO_REFERENCIA);
+	componentsList.add(consultaTitle);
+	componentsList.add(consultaText);
+
+	JLabel fechaTitle = new JLabel("Fecha:");
+	fechaTitle.setBounds(new Rectangle(
+		MARGIN_LEFT_TITLE, MARGIN_TOP*5, WIDTH_TITLE, HEIGHT_TITLE));
+	JTextField fechaText = new JTextField();
+	fechaText.setBounds(new Rectangle(
+		MARGIN_LEFT_TXT, MARGIN_TOP*5, WIDTH_TXT, HEIGHT_TXT));
+	fechaText.setName(AudasaPreferences.FECHA);
+	componentsList.add(fechaTitle);
+	componentsList.add(fechaText);
+
+	JLabel tituloPlanoTitle = new JLabel("Título del plano:");
+	tituloPlanoTitle.setBounds(new Rectangle(
+		MARGIN_LEFT_TITLE, MARGIN_TOP*6, WIDTH_TITLE, HEIGHT_TITLE));
+	JTextField tituloPlanoText = new JTextField();
+	tituloPlanoText.setBounds(new Rectangle(
+		MARGIN_LEFT_TXT, MARGIN_TOP*6, WIDTH_TXT, HEIGHT_TXT));
+	tituloPlanoText.setName(AudasaPreferences.TITULO_PLANO);
+	componentsList.add(tituloPlanoTitle);
+	componentsList.add(tituloPlanoText);
+
+	JButton continuarButton = new JButton(CONTINUAR_BUTTON);
+	continuarButton.setName(CONTINUAR_BUTTON);
+	continuarButton.setMnemonic(KeyEvent.VK_C);
+	continuarButton.setBounds(new Rectangle(
+		MARGIN_LEFT_TXT+(WIDTH_TXT/2), MARGIN_TOP*(7+1), WIDTH_TXT/2, 26));
 	componentsList.add(continuarButton);
 
 	return componentsList;

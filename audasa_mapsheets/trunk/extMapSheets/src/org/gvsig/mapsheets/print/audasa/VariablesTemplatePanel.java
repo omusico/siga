@@ -9,7 +9,6 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-
 import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.andami.ui.mdiManager.WindowInfo;
@@ -19,8 +18,8 @@ public class VariablesTemplatePanel extends JPanel implements IWindow, ActionLis
     private String template = null;
     private ArrayList<Component> componentsList = null;
 
-    private static final int WIDTH = 520;
-    private static final int HEIGHT = 320;
+    private final int width = 520;
+    private int height = 320;
     private AudasaTemplate audasaTemplate = null;
 
     private WindowInfo winfo = null;
@@ -34,9 +33,15 @@ public class VariablesTemplatePanel extends JPanel implements IWindow, ActionLis
     public void init() {
 	this.setLayout(null);
 	componentsList = new ArrayList<Component>();
-	if(template.equals(AudasaPreferences.A3_DIMENSIONES) || 
+	if(template.equals(AudasaPreferences.A3_DIMENSIONES) ||
 		template.equals(AudasaPreferences.A3_DIMENSIONES_LOCALIZADOR)) {
 	    componentsList = TemplatePanel.create(AudasaPreferences.A3_DIMENSIONES);
+	} else if(template.equals(AudasaPreferences.A3_POLICIA_MARGENES) ||
+		template.equals(AudasaPreferences.A3_POLICIA_MARGENES_LEYENDA) ||
+		template.equals(AudasaPreferences.A4_POLICIA_MARGENES) ||
+		template.equals(AudasaPreferences.A4_POLICIA_MARGENES_LEYENDA)) {
+	    height = 200;
+	    componentsList = TemplatePanel.create(AudasaPreferences.A4_POLICIA_MARGENES);
 	} else {
 	    componentsList = TemplatePanel.create(AudasaPreferences.A4_CONSULTAS);
 	}
@@ -64,9 +69,9 @@ public class VariablesTemplatePanel extends JPanel implements IWindow, ActionLis
     public WindowInfo getWindowInfo() {
 	if (winfo == null) {
 	    winfo = new WindowInfo(WindowInfo.MODALDIALOG);
-	    winfo.setHeight(HEIGHT);
+	    winfo.setHeight(height);
 	    winfo.setTitle("Variables del mapa");
-	    winfo.setWidth(WIDTH);
+	    winfo.setWidth(width);
 	}
 	return winfo;
     }

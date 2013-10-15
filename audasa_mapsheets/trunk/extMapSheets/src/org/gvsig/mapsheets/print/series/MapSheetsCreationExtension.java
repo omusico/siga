@@ -179,11 +179,7 @@ public class MapSheetsCreationExtension extends Extension {
 		}
 
 		AudasaTemplate variables;
-		if (panel.getSelectedTemplate().toLowerCase().endsWith(".gvt") ||
-			panel.getSelectedTemplate().equals(AudasaPreferences.A4_POLICIA_MARGENES) ||
-			panel.getSelectedTemplate().equals(AudasaPreferences.A4_POLICIA_MARGENES_LEYENDA) ||
-			panel.getSelectedTemplate().equals(AudasaPreferences.A3_POLICIA_MARGENES) ||
-			panel.getSelectedTemplate().equals(AudasaPreferences.A3_POLICIA_MARGENES_LEYENDA)) {
+		if (panel.getSelectedTemplate().toLowerCase().endsWith(".gvt")) {
 		    variables = new AudasaTemplate();
 		} else {
 		    // ask the user
