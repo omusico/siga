@@ -368,7 +368,7 @@ public class FFrameTextDialog extends JPanel implements IFFrameDialog {
 		    newFFrameText.setPos(pos);
 		    //		    newFFrameText.setBoundBox(FLayoutUtilities.toSheetRect(
 		    //			    rect, m_layout.getLayoutControl().getAT()));
-		    //		    newFFrameText.getText().clear();
+		    newFFrameText.getText().clear();
 		    //
 		    for (int i = 0; i < getTaTexto().getLineCount(); i++) {
 			try {
@@ -379,9 +379,6 @@ public class FFrameTextDialog extends JPanel implements IFFrameDialog {
 				    .getLineStartOffset(i));
 
 			    if (!s.equals("")) { //$NON-NLS-1$
-				if (newFFrameText.getText() != null) {
-				    newFFrameText.getText().clear();
-				}
 				newFFrameText.addText(s);
 			    }
 			} catch (Exception ex) {
