@@ -4,7 +4,7 @@ package es.icarto.gvsig.extgia.preferences;
 public class DBFieldNames {
 
     public enum Elements {
-	Taludes, Isletas, Enlaces, Barrera_Rigida, Areas_Servicio, Areas_Descanso,
+	Taludes, Isletas, Enlaces, Barrera_Rigida, Areas_Servicio, Areas_Descanso, Areas_Peaje,
 	Juntas, Pasos_Mediana, Senhalizacion_Vertical, Valla_Cierre, Firme, Obras_Paso,
 	Obras_Desague;
     }
@@ -22,6 +22,10 @@ public class DBFieldNames {
 	"nombre_revisor as \"Revisor\"",
 	"fecha_inspeccion as \"Fecha Inspección\"",
     "indice_estado as \"Índice Estado\""};
+
+    public static String[] reconocimientoEstadoWhitoutIndexFields = {"n_inspeccion as \"Nº Inspección\"",
+	"nombre_revisor as \"Revisor\"",
+    "fecha_inspeccion as \"Fecha Inspección\""};
 
     public static String[] genericTrabajoFields = {"id_trabajo as \"ID\"",
 	"fecha_certificado as \"Fecha cert\"",
@@ -87,6 +91,11 @@ public class DBFieldNames {
 	"pk_final as \"PK fin\"",
 	"sentido as \"Sentido\"",
     "descripcion as \"Descripción\""};
+
+    public static String[] viasFields = {"via as \"Nª Vía\"",
+	"via_tipo as \"Tipo Vía\"",
+	"reversible as \"Reversible\"",
+    "cabinas as \"Nº Cabinas\""};
 
     public static final String GIA_SCHEMA = "audasa_extgia";
 
@@ -257,6 +266,9 @@ public class DBFieldNames {
 	    break;
 	case Areas_Descanso:
 	    pk = "id_area_descanso";
+	    break;
+	case Areas_Peaje:
+	    pk = "id_area_peaje";
 	    break;
 	case Juntas:
 	    pk = "id_junta";

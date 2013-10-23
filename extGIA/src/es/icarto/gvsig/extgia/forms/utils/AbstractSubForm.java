@@ -198,6 +198,10 @@ IWindowListener {
 		fields = DBFieldNames.reconocimientoEstadoFields;
 		SqlUtils.reloadEmbebedTable(embebedTable, fields, DBFieldNames.GIA_SCHEMA,
 			dbTableName, idElementField, idElementValue, "n_inspeccion");
+	    }else if (embebedTable.getName().equalsIgnoreCase("reconocimiento_estado_sin_indice")) {
+		fields = DBFieldNames.reconocimientoEstadoWhitoutIndexFields;
+		SqlUtils.reloadEmbebedTable(embebedTable, fields, DBFieldNames.GIA_SCHEMA,
+			dbTableName, idElementField, idElementValue, "n_inspeccion");
 	    }else if (embebedTable.getName().equalsIgnoreCase("reconocimiento_estado_firme")) {
 		fields = DBFieldNames.firmeReconocimientoEstadoFields;
 		SqlUtils.reloadEmbebedTable(embebedTable, fields, DBFieldNames.GIA_SCHEMA,
@@ -218,6 +222,10 @@ IWindowListener {
 		fields = DBFieldNames.ramales;
 		SqlUtils.reloadEmbebedTable(embebedTable, fields, DBFieldNames.GIA_SCHEMA,
 			dbTableName, idElementField, idElementValue, "id_ramal");
+	    }else if (embebedTable.getName().equalsIgnoreCase("tabla_vias")) {
+		fields = DBFieldNames.viasFields;
+		SqlUtils.reloadEmbebedTable(embebedTable, fields, DBFieldNames.GIA_SCHEMA,
+			dbTableName, idElementField, idElementValue, "id_via");
 	    }else {
 		fields = DBFieldNames.trabajoFields;
 		SqlUtils.reloadEmbebedTable(embebedTable, fields, DBFieldNames.GIA_SCHEMA,

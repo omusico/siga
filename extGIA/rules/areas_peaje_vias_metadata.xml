@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LAYER alias="areas_peaje_vias">
+
+	<FIELD>
+		<FIELDNAME>via_tipo</FIELDNAME>
+		<DOMAINREADER>
+			<DRTYPE>db</DRTYPE>
+			<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+			<DRDBTABLE>areas_peaje_vias_tipo</DRDBTABLE>
+			<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+			<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+		</DOMAINREADER>
+	</FIELD>
+
+	<FIELD>
+		<FIELDNAME>cabinas</FIELDNAME>
+		<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+	</FIELD>
+
+</LAYER>

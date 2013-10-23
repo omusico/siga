@@ -27,7 +27,7 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class SqlUtils {
 
-    private static final String[] serialFields = {"id_trabajo", "id_ramal", "id_carretera_enlazada", "id_senhal_vertical", "n_inspeccion"};
+    private static final String[] serialFields = {"id_trabajo", "id_ramal", "id_carretera_enlazada", "id_senhal_vertical", "n_inspeccion", "id_via"};
 
     public static ArrayList<KeyValue> getKeyValueListFromSql(String query) {
 	ArrayList<KeyValue> values = new ArrayList<KeyValue>();

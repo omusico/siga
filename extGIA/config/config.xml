@@ -11,18 +11,19 @@
 		<extension class-name="es.icarto.gvsig.extgia.FormLauncherExtension" description="form_launcher" active="true">
 			<menu text="SIGA" position="30398" is_separator="true"/>
 			<menu text="SIGA/Elementos Inventario/Áreas Descanso" action-command="Areas_Descanso" position="30399"/>
-			<menu text="SIGA/Elementos Inventario/Áreas Servicio" action-command="Areas_Servicio" position="30400"/>
-			<menu text="SIGA/Elementos Inventario/Barrera Rígida" action-command="Barrera_Rigida" position="30401"/>
-			<menu text="SIGA/Elementos Inventario/Enlaces" action-command="Enlaces" position="30402"/>
-			<menu text="SIGA/Elementos Inventario/Firme" action-command="Firme" position="30403"/>
-			<menu text="SIGA/Elementos Inventario/Isletas" action-command="Isletas" position="30404"/>
-			<menu text="SIGA/Elementos Inventario/Juntas" action-command="Juntas" position="30405"/>
-			<menu text="SIGA/Elementos Inventario/Obras Paso" action-command="Obras_Paso" position="30406"/>
-			<menu text="SIGA/Elementos Inventario/Obras Desagüe" action-command="Obras_Desague" position="30407"/>
-			<menu text="SIGA/Elementos Inventario/Pasos Mediana" action-command="Pasos_Mediana" position="30408"/>
-			<menu text="SIGA/Elementos Inventario/Señalización Vertical" action-command="Senhalizacion_Vertical" position="30409"/>
-			<menu text="SIGA/Elementos Inventario/Taludes" action-command="Taludes" position="30410"/>
-			<menu text="SIGA/Elementos Inventario/Valla Cierre" action-command="Valla_Cierre" position="30411"/>
+			<menu text="SIGA/Elementos Inventario/Áreas Peaje" action-command="Areas_Peaje" position="30400"/>
+			<menu text="SIGA/Elementos Inventario/Áreas Servicio" action-command="Areas_Servicio" position="30401"/>
+			<menu text="SIGA/Elementos Inventario/Barrera Rígida" action-command="Barrera_Rigida" position="30402"/>
+			<menu text="SIGA/Elementos Inventario/Enlaces" action-command="Enlaces" position="30403"/>
+			<menu text="SIGA/Elementos Inventario/Firme" action-command="Firme" position="30404"/>
+			<menu text="SIGA/Elementos Inventario/Isletas" action-command="Isletas" position="30405"/>
+			<menu text="SIGA/Elementos Inventario/Juntas" action-command="Juntas" position="30406"/>
+			<menu text="SIGA/Elementos Inventario/Obras Paso" action-command="Obras_Paso" position="30407"/>
+			<menu text="SIGA/Elementos Inventario/Obras Desagüe" action-command="Obras_Desague" position="30408"/>
+			<menu text="SIGA/Elementos Inventario/Pasos Mediana" action-command="Pasos_Mediana" position="30409"/>
+			<menu text="SIGA/Elementos Inventario/Señalización Vertical" action-command="Senhalizacion_Vertical" position="30410"/>
+			<menu text="SIGA/Elementos Inventario/Taludes" action-command="Taludes" position="30411"/>
+			<menu text="SIGA/Elementos Inventario/Valla Cierre" action-command="Valla_Cierre" position="30412"/>
 		</extension>
 		
 		<extension class-name="es.icarto.gvsig.extgia.ToolBarFormLauncherExtension" description="toolbar_form_launcher" active="true">
