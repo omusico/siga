@@ -177,14 +177,26 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	    editTrabajoButton = (JButton) form.getComponentByName("edit_trabajo_button");
 	    deleteReconocimientoButton = (JButton) form.getComponentByName("delete_reconocimiento_button");
 	    deleteTrabajoButton = (JButton) form.getComponentByName("delete_trabajo_button");
+
+	    if (addImageListener == null) {
+		addImageListener = new AddImageListener(imageComponent, addImageButton,
+			getImagesDBTableName(), getElementID());
+		addImageButton.addActionListener(addImageListener);
+	    }
+
+	    if (deleteImageListener == null) {
+		deleteImageListener = new DeleteImageListener(imageComponent, addImageButton,
+			getImagesDBTableName(), getElementID());
+		deleteImageButton.addActionListener(deleteImageListener);
+	    }
 	}
 
 	if (SqlUtils.elementHasType(layerName, "inspecciones")) {
 	    if (addReconocimientosBatchButton == null) {
 		addReconocimientosBatchButton = new JButton();
 		java.net.URL imgURL = getClass().getResource("/batch_reconocimiento.png");
-		ImageIcon icon = new ImageIcon (imgURL);
-		addReconocimientosBatchButton.setIcon(icon);
+		ImageIcon batchReconocimientoIcon = new ImageIcon (imgURL);
+		addReconocimientosBatchButton.setIcon(batchReconocimientoIcon);
 		addReconocimientosBatchButton.setToolTipText(PluginServices.getText(this, "addBatchReconocimientos_tooltip"));
 		getActionsToolBar().add(addReconocimientosBatchButton);
 	    }
@@ -194,8 +206,8 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	    if (addTrabajosBatchButton == null) {
 		addTrabajosBatchButton = new JButton();
 		java.net.URL imgURL = getClass().getResource("/batch_trabajo.png");
-		ImageIcon icon = new ImageIcon (imgURL);
-		addTrabajosBatchButton.setIcon(icon);
+		ImageIcon trabajosBatchIcon = new ImageIcon (imgURL);
+		addTrabajosBatchButton.setIcon(trabajosBatchIcon);
 		addTrabajosBatchButton.setToolTipText(PluginServices.getText(this, "addBatchTrabajos_tooltip"));
 		getActionsToolBar().add(addTrabajosBatchButton);
 	    }
@@ -216,8 +228,8 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	if (saveRecordsBatchButton == null) {
 	    saveRecordsBatchButton = new JButton();
 	    java.net.URL imgURL = getClass().getResource("/saveSelected.png");
-	    ImageIcon icon = new ImageIcon (imgURL);
-	    saveRecordsBatchButton.setIcon(icon);
+	    ImageIcon saveBatchIcon = new ImageIcon (imgURL);
+	    saveRecordsBatchButton.setIcon(saveBatchIcon);
 	    saveRecordsBatchButton.setToolTipText(PluginServices.getText(this, "saveRecordsBatch_tooltip"));
 	    getActionsToolBar().add(saveRecordsBatchButton);
 	}
@@ -227,17 +239,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	    saveRecordsBatchButton.addActionListener(saveRecordsBatchListener);
 	}
 
-	if (addImageListener == null) {
-	    addImageListener = new AddImageListener(imageComponent, addImageButton,
-		    getImagesDBTableName(), getElementID());
-	    addImageButton.addActionListener(addImageListener);
-	}
-
-	if (deleteImageListener == null) {
-	    deleteImageListener = new DeleteImageListener(imageComponent, addImageButton,
-		    getImagesDBTableName(), getElementID());
-	    deleteImageButton.addActionListener(deleteImageListener);
-	}
     }
 
     protected void updateBaseContratistaCombo() {

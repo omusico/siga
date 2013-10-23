@@ -19,6 +19,8 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.image.ImageComponent;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
+import es.icarto.gvsig.extgia.forms.images.AddImageListener;
+import es.icarto.gvsig.extgia.forms.images.DeleteImageListener;
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
@@ -90,6 +92,10 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 
 	HashMap<String, JComponent> widgets = getWidgetComponents();
 
+	imageComponent = (ImageComponent) form.getComponentByName("element_image");
+	addImageButton = (JButton) form.getComponentByName("add_image_button");
+	deleteImageButton = (JButton) form.getComponentByName("delete_image_button");
+
 	areaMantenimientoWidget = (JComboBox) widgets.get(AREA_MANTENIMIENTO);
 	baseContratistaWidget = (JComboBox) widgets.get(BASE_CONTRATISTA);
 	tramoWidget = (JComboBox) widgets.get(TRAMO);
@@ -108,6 +114,18 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 	editTrabajoButton = (JButton) form.getComponentByName("edit_trabajo_button");
 	deleteReconocimientoButton = (JButton) form.getComponentByName("delete_reconocimiento_button");
 	deleteTrabajoButton = (JButton) form.getComponentByName("delete_trabajo_button");
+
+	if (addImageListener == null) {
+	    addImageListener = new AddImageListener(imageComponent, addImageButton,
+		    getImagesDBTableName(), getElementID());
+	    addImageButton.addActionListener(addImageListener);
+	}
+
+	if (deleteImageListener == null) {
+	    deleteImageListener = new DeleteImageListener(imageComponent, addImageButton,
+		    getImagesDBTableName(), getElementID());
+	    deleteImageButton.addActionListener(deleteImageListener);
+	}
     }
 
     protected void initListeners() {
