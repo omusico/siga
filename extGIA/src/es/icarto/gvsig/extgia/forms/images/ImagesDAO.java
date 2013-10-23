@@ -16,7 +16,8 @@ public class ImagesDAO {
 
     public void insertImageIntoDb(Connection connection, String schema, String tablename,
 	    String pkField, String pkValue, BufferedImage image, boolean update) throws SQLException, IOException {
-	if (schema == null || tablename == null || pkField == null || pkValue == null || image == null) {
+	if (schema == null || tablename == null || pkField == null || pkValue == null
+		|| pkValue.isEmpty() || image == null) {
 	    return;
 	}
 	byte[] imageBytes = ImageUtils.convertImageToBytea(image);
@@ -51,7 +52,8 @@ public class ImagesDAO {
     public byte[] readImageFromDb(Connection connection, String schema, String tablename,
 	    String pkField, String pkValue) throws SQLException {
 	PreparedStatement statement = null;
-	if (schema == null || tablename == null || pkField == null || pkValue == null) {
+	if (schema == null || tablename == null || pkField == null || pkValue == null
+		|| pkValue.isEmpty()) {
 	    return null;
 	}
 	try {
@@ -80,7 +82,8 @@ public class ImagesDAO {
     public void deleteImageFromDb(Connection connection, String schema, String tablename,
 	    String pkField, String pkValue) throws SQLException {
 	PreparedStatement statement = null;
-	if (schema == null || tablename == null || pkField == null || pkValue == null) {
+	if (schema == null || tablename == null || pkField == null || pkValue == null
+		|| pkValue.isEmpty()) {
 	    return;
 	}
 	try {
