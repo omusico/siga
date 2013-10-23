@@ -3,6 +3,7 @@ package es.icarto.gvsig.extgex.locators;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,7 +18,13 @@ import javax.swing.JComboBox;
 
 import org.apache.log4j.Logger;
 
+import com.hardcode.driverManager.DriverLoadException;
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
+import com.hardcode.gdbms.engine.data.DataSource;
+import com.hardcode.gdbms.engine.data.DataSourceFactory;
+import com.hardcode.gdbms.engine.instruction.EvaluationException;
+import com.hardcode.gdbms.engine.instruction.SemanticException;
+import com.hardcode.gdbms.parser.ParseException;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 import com.jeta.forms.components.image.ImageComponent;
@@ -425,31 +432,26 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
     @Override
     public int getPosition() {
 	try {
-	    //	    if (ELLEMap.getFiltered()) {
 	    TOCLayerManager tm = new TOCLayerManager();
 	    FLyrVect fincasLayer = tm.getLayerByName(DBNames.LAYER_FINCAS);
 	    SelectableDataSource rs = fincasLayer.getRecordset();
-	    int index = rs.getFieldIndexByName(DBNames.FIELD_IDFINCA);
-	    for (int i=0; i<rs.getRowCount();i++) {
-		if (rs.getFieldValue(i, index).toString().compareTo(getFincaID()) == 0) {
-		    return i;
-		}
-	    }
-	    //	    }else {
-	    //		String query = "SELECT gid FROM " + DBNames.EXPROPIATIONS_SCHEMA + "." + DBNames.TABLE_FINCAS +
-	    //			" WHERE id_finca = " + "'" + getFincaID() + "';";
-	    //		Connection con = dbs.getJavaConnection();
-	    //		Statement st = con.createStatement();
-	    //		ResultSet resultSet = st.executeQuery(query);
-	    //		resultSet.first();
-	    //		return resultSet.getInt(1)-1;
-	    //	    }
-	    //	} catch (SQLException e) {
-	    //	    e.printStackTrace();
-	    //	    return -1;
+	    String expression = "select * from " + rs.getName() + " where id_finca = '" + getFincaID() + "';";
+	    DataSource rsFiltered = rs.getDataSourceFactory().executeSQL(expression , DataSourceFactory.MANUAL_OPENING);
+	    long[] result = rsFiltered.getWhereFilter();
+	    return (int) result[0];
 	} catch (ReadDriverException e) {
 	    e.printStackTrace();
 	    return -1;
+	} catch (DriverLoadException e) {
+	    e.printStackTrace();
+	} catch (ParseException e) {
+	    e.printStackTrace();
+	} catch (SemanticException e) {
+	    e.printStackTrace();
+	} catch (EvaluationException e) {
+	    e.printStackTrace();
+	} catch (IOException e) {
+	    e.printStackTrace();
 	}
 	return -1;
     }
