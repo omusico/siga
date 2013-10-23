@@ -92,7 +92,8 @@ public class DBFieldNames {
 	"sentido as \"Sentido\"",
     "descripcion as \"Descripción\""};
 
-    public static String[] viasFields = {"via as \"Nª Vía\"",
+    public static String[] viasFields = {"id_via as \"ID\"",
+	"via as \"Nª Vía\"",
 	"via_tipo as \"Tipo Vía\"",
 	"reversible as \"Reversible\"",
     "cabinas as \"Nº Cabinas\""};
