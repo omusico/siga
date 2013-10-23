@@ -80,6 +80,14 @@ public class SqlUtils {
 			String doubleAsString = doubleFormat.format(doubleValue);
 			values.put(rsMetaData.getColumnName(i+1),
 				ValueFactory.createValueByType((doubleAsString), 12));
+		    }else if (rsMetaData.getColumnType(i+1) == -7){
+			boolean booleanValue = rs.getBoolean(i+1);
+			String booleanAsString = "No";
+			if (booleanValue) {
+			    booleanAsString = "Sí";
+			}
+			values.put(rsMetaData.getColumnName(i+1),
+				ValueFactory.createValueByType((booleanAsString), 12));
 		    }else {
 			values.put(rsMetaData.getColumnName(i+1),
 				ValueFactory.createValueByType(rs.getString(i+1),
@@ -190,6 +198,15 @@ public class SqlUtils {
 			tableValues[i] =
 				ValueFactory.createValueByType(doubleAsString,
 					12);
+		    }else if (rsMetaData.getColumnType(i+1) == -7){
+			boolean booleanValue = rs.getBoolean(i+1);
+			String booleanAsString = "No";
+			if (booleanValue) {
+			    booleanAsString = "Sí";
+			}
+			tableValues[i] =
+				ValueFactory.createValueByType(booleanAsString,
+					12);
 		    }else {
 			tableValues[i] =
 				ValueFactory.createValueByType(rs.getString(i+1),
@@ -248,6 +265,15 @@ public class SqlUtils {
 			String doubleAsString = doubleFormat.format(doubleValue);
 			tableValues[i] =
 				ValueFactory.createValueByType(doubleAsString,
+					12);
+		    }else if (rsMetaData.getColumnType(i+1) == -7){
+			boolean booleanValue = rs.getBoolean(i+1);
+			String booleanAsString = "No";
+			if (booleanValue) {
+			    booleanAsString = "Sí";
+			}
+			tableValues[i] =
+				ValueFactory.createValueByType(booleanAsString,
 					12);
 		    }else {
 			tableValues[i] =
