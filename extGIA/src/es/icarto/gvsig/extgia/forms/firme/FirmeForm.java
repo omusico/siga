@@ -21,6 +21,7 @@ import com.jeta.forms.components.image.ImageComponent;
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.extgia.forms.images.AddImageListener;
 import es.icarto.gvsig.extgia.forms.images.DeleteImageListener;
+import es.icarto.gvsig.extgia.forms.images.ShowImageAction;
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
@@ -68,6 +69,18 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 	if (filesLinkButton == null) {
 	    addNewButtonsToActionsToolBar();
 	}
+
+	if (addImageListener != null) {
+	    addImageListener.setPkValue(getElementIDValue());
+	}
+
+	if (deleteImageListener != null) {
+	    deleteImageListener.setPkValue(getElementIDValue());
+	}
+
+	// Element image
+	new ShowImageAction(imageComponent, addImageButton, getImagesDBTableName(), getElementID(),
+		getElementIDValue());
 
 	// Embebed Tables
 	int[] trabajoColumnsSize = {1, 1, 1, 1, 30, 250};

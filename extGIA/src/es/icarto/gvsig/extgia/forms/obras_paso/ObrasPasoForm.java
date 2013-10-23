@@ -231,7 +231,7 @@ public class ObrasPasoForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public String getImagesDBTableName() {
-	return "obras_paso_images";
+	return "obras_paso_imagenes";
     }
 
 }
