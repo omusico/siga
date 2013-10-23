@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -279,6 +280,9 @@ IWindowListener {
 		    formData.put(comp.getName(),
 			    ValueFactory.createNullValue());
 		}
+	    } else if (comp instanceof JCheckBox) {
+		formData.put(comp.getName(),
+			(ValueFactory.createValue(((JCheckBox) comp).isSelected())));
 	    }
 	}
 	return formData;
@@ -294,6 +298,8 @@ IWindowListener {
 	    }else {
 		if (comp instanceof JTextField) {
 		    fillJTextField((JTextField) comp);
+		} else if (comp instanceof JCheckBox) {
+		    fillJCheckBox((JCheckBox) comp);
 		} else if (comp instanceof JTextArea) {
 		    fillJTextArea((JTextArea) comp);
 		} else if (comp instanceof JComboBox) {
@@ -308,6 +314,16 @@ IWindowListener {
 	String colName = field.getName();
 	Value fieldValue = values.get(colName);
 	field.setText(fieldValue.toString());
+    }
+
+    protected void fillJCheckBox(JCheckBox checkBox) {
+	String colName = checkBox.getName();
+	Value fieldValue = values.get(colName);
+	if (fieldValue.toString().equals("Sí")) {
+	    checkBox.setSelected(true);
+	}else {
+	    checkBox.setSelected(false);
+	}
     }
 
     protected void fillJTextArea(JTextArea textArea) {
