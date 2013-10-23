@@ -74,6 +74,33 @@ public class TestImages {
     }
 
     @Test
+    public void testingInsertAndReadImageWithNullValues() throws Exception {
+
+	try {
+	    File fileImage = new File("data-test/test.jpg");
+	    BufferedImage image = ImageIO.read(fileImage);
+	    String query = "DELETE FROM audasa_extgia.taludes_imagenes";
+	    PreparedStatement statement = connection.prepareStatement(query);
+	    statement.execute();
+	    connection.commit();
+
+	    dao.insertImageIntoDb(connection, SCHEMA, TABLENAME,
+		    PKFIELD, null, image, false);
+	    byte[] imageDbBytes = dao.readImageFromDb(connection,
+		    SCHEMA, TABLENAME, PKFIELD, null);
+
+	    if (imageDbBytes != null) {
+		byte[] imageMockBytes = ImageUtils.convertImageToBytea(image);
+		assertTrue(Arrays.equals(imageDbBytes, imageMockBytes));
+	    }else {
+		assertTrue(true);
+	    }
+	} finally {
+	    connection.rollback();
+	}
+    }
+
+    @Test
     public void testingUpdateAndReadImage() throws Exception {
 
 	try {
