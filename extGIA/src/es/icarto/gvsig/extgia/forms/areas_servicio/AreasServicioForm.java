@@ -400,12 +400,12 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public String getElementIDValue() {
-	return "areas_servicio_imagenes";
+	return areaServicioIDWidget.getText();
     }
 
     @Override
     public String getImagesDBTableName() {
-	return areaServicioIDWidget.getText();
+	return "areas_servicio_imagenes";
     }
 
 }
