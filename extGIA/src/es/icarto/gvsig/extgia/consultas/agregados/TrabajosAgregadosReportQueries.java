@@ -70,24 +70,24 @@ public class TrabajosAgregadosReportQueries {
     }
 
     public String getSiegaMecanicaIsletasQuery() {
-	return getBaseQuery() + "Siega mecánica isletas'";
+	return getBaseQuery() + "Siega mecánica de isletas'";
     }
 
     public String getSiegaMecanicaMedianaQuery() {
-	return getBaseQuery() + "Siega mecánica mediana'";
+	return getBaseQuery() + "Siega mecánica de medianas'";
     }
 
     public String getSiegaMecanicaIsletasSumQuery() {
-	return getBaseSumQuery() + "Siega mecánica isletas')";
+	return getBaseSumQuery() + "Siega mecánica de isletas')";
     }
 
     public String getSiegaMecanicaMedianaSumQuery() {
-	return getBaseSumQuery() + "Siega mecánica mediana')";
+	return getBaseSumQuery() + "Siega mecánica de medianas')";
     }
 
     public String getSiegaTotalSumQuery() {
-	return getBaseSumQuery() + "Siega mecánica isletas'" +
-		" OR unidad = 'Siega mecánica mediana')";
+	return getBaseSumQuery() + "Siega mecánica de isletas'" +
+		" OR unidad = 'Siega mecánica de medianas')";
     }
 
     public String getHerbicidadQuery() {

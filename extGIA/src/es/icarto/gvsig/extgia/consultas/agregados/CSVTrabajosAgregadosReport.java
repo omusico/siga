@@ -56,11 +56,11 @@ public abstract class CSVTrabajosAgregadosReport {
 			"TOTAL DESBROCES",
 			agregadosReportQueries.getDesbroceTotalSumQuery());
 		writeTable(writer,
-			"\nSiega mecánica isletas\n\n",
+			"\nSiega mecánica de isletas\n\n",
 			agregadosReportQueries.getSiegaMecanicaIsletasQuery(),
 			agregadosReportQueries.getSiegaMecanicaIsletasSumQuery());
 		writeTable(writer,
-			"\nSiega mecánica medianas\n\n",
+			"\nSiega mecánica de medianas\n\n",
 			agregadosReportQueries.getSiegaMecanicaMedianaQuery(),
 			agregadosReportQueries.getSiegaMecanicaMedianaSumQuery());
 		writeTotal(writer,

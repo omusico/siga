@@ -86,11 +86,11 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
 	writeTotal(document, "TOTAL DESBROCES",
 		agregadosReportQueries.getDesbroceTotalSumQuery());
 
-	writeTable("\nSiega mecánica isletas\n\n",
+	writeTable("\nSiega mecánica de isletas\n\n",
 		agregadosReportQueries.getSiegaMecanicaIsletasQuery(),
 		agregadosReportQueries.getSiegaMecanicaIsletasSumQuery());
 
-	writeTable("\nSiega mecánica medianas\n\n",
+	writeTable("\nSiega mecánica de medianas\n\n",
 		agregadosReportQueries.getSiegaMecanicaMedianaQuery(),
 		agregadosReportQueries.getSiegaMecanicaMedianaSumQuery());
 
