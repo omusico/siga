@@ -266,11 +266,15 @@ public class TestConsultas {
 	    if (SqlUtils.elementHasType(DBFieldNames.Elements.values()[i].toString(), "Inspecciones") &&
 		    !DBFieldNames.Elements.values()[i].toString().equals("Firme")) {
 		Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-		String query = "SELECT " +
-			ConsultasFieldNames.getReconocimientosFieldNames(
-				ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString())) +
-				" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
-				"_reconocimiento_estado;";
+		String fields = ConsultasFieldNames.getReconocimientosFieldNames(
+			ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()));
+		if (!ConsultasFieldNames.hasIndiceFieldOnReconocimientos(DBFieldNames.Elements.values()[i].toString())) {
+		    fields = ConsultasFieldNames.getReconocimientosFieldNamesWithoutIndice(
+			    ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()));
+		}
+		String query = "SELECT " + fields +
+			" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
+			"_reconocimiento_estado;";
 		ResultSet rs = st.executeQuery(query);
 		assertTrue(rs!=null);
 	    }
@@ -283,16 +287,20 @@ public class TestConsultas {
 	    if (SqlUtils.elementHasType(DBFieldNames.Elements.values()[i].toString(), "Inspecciones") &&
 		    !DBFieldNames.Elements.values()[i].toString().equals("Firme")) {
 		Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-		String query = "SELECT " +
-			ConsultasFieldNames.getReconocimientosFieldNames(
-				ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString())) +
-				" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
-				"_reconocimiento_estado" +
-				" WHERE " + ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()) +
-				" IN (SELECT " +
-				ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()) +
-				" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
-				mockFilters.getWhereClauseByLocationWidgets(false) + ");";
+		String fields = ConsultasFieldNames.getReconocimientosFieldNames(
+			ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()));
+		if (!ConsultasFieldNames.hasIndiceFieldOnReconocimientos(DBFieldNames.Elements.values()[i].toString())) {
+		    fields = ConsultasFieldNames.getReconocimientosFieldNamesWithoutIndice(
+			    ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()));
+		}
+		String query = "SELECT " + fields +
+			" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
+			"_reconocimiento_estado" +
+			" WHERE " + ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()) +
+			" IN (SELECT " +
+			ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()) +
+			" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
+			mockFilters.getWhereClauseByLocationWidgets(false) + ");";
 		ResultSet rs = st.executeQuery(query);
 		assertTrue(rs!=null);
 	    }
@@ -439,11 +447,13 @@ public class TestConsultas {
 	    if (SqlUtils.elementHasType(DBFieldNames.Elements.values()[i].toString(), "Inspecciones") &&
 		    !DBFieldNames.Elements.values()[i].toString().equals("Firme")) {
 		Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-		String query = "SELECT " +
-			ConsultasFieldNames.getReconocimientosFieldNames(
-				ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString())) +
-				" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
-				"_reconocimiento_estado;";
+		String fields = ConsultasFieldNames.getReconocimientosFieldNames(ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()));
+		if (!ConsultasFieldNames.hasIndiceFieldOnReconocimientos(DBFieldNames.Elements.values()[i].toString())){
+		    fields = ConsultasFieldNames.getReconocimientosFieldNamesWithoutIndice(ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()));
+		}
+		String query = "SELECT " + fields +
+			" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
+			"_reconocimiento_estado;";
 		ResultSet rs = st.executeQuery(query);
 		ResultSetMetaData rsMetaData = rs.getMetaData();
 		String mockFileDir = "/tmp/test_" + DBFieldNames.Elements.values()[i].toString() + ".csv";

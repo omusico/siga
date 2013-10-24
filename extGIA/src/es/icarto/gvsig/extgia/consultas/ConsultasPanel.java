@@ -311,6 +311,9 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	    if (elemento.getSelectedItem().toString().equals("Firme") || element[1].equals("Firme")) {
 		fields = ConsultasFieldNames.getFirmeReconocimientosFieldNames(elementId);
 		tipo = RECONOCIMIENTOS_FIRME;
+	    }else if (!ConsultasFieldNames.hasIndiceFieldOnReconocimientos(element[0])) {
+		fields = ConsultasFieldNames.getReconocimientosFieldNamesWithoutIndice(elementId);
+		tipo = RECONOCIMIENTOS;
 	    }else {
 		fields = ConsultasFieldNames.getReconocimientosFieldNames(elementId);
 		tipo = RECONOCIMIENTOS;

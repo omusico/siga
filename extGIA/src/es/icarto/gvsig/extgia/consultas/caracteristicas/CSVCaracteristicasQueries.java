@@ -101,6 +101,12 @@ public class CSVCaracteristicasQueries {
 		    getLocalizationTablesWithSentido() +
 		    getLocalizationWhereWithSentido() +
 		    filters.getWhereClauseByLocationWidgets(true);
+	case Areas_Peaje:
+	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
+		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
+		    getLocalizationTablesWithSentido() +
+		    getLocalizationWhereWithSentido() +
+		    filters.getWhereClauseByLocationWidgets(true);
 	default:
 	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +

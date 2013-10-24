@@ -3,8 +3,10 @@ package es.icarto.gvsig.extgia.consultas;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Vector;
 
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.AreasDescansoCaracteristicasReport;
+import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.AreasPeajeCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.AreasServicioCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.BarreraRigidaCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.EnlacesCaracteristicasReport;
@@ -36,6 +38,10 @@ public class ConsultasFieldNames {
 	return elementId + ", nombre_revisor, fecha_inspeccion, indice_estado, observaciones";
     }
 
+    public static String getReconocimientosFieldNamesWithoutIndice(String elementId) {
+	return elementId + ", nombre_revisor, fecha_inspeccion, observaciones";
+    }
+
     public static String getFirmeReconocimientosFieldNames(String elementId) {
 	return elementId + ", tipo_inspeccion, nombre_revisor, aparato_medicion," +
 		"fecha_inspeccion, observaciones";
@@ -60,6 +66,10 @@ public class ConsultasFieldNames {
 	case Areas_Descanso:
 	    return "distinct(id_area_descanso), nombre, tr.item, pk, fecha_puesta_servicio, " +
 	    "sup_total, riego, aparcamiento_camion_bus, area_picnic, fuentes_potables, observaciones";
+	case Areas_Peaje:
+	    return "distinct(id_area_peaje), nombre, tr.item, pk, fecha_puesta_servicio, " +
+	    "bordillos, bumpers, tunel_peaje, marquesina_tipo, marquesina_sup, sup_total, " +
+	    "observaciones, numero_vias";
 	case Enlaces:
 	    return "distinct(id_enlace), nombre, tr.item, pk, n_salida, tipo_enlace, " +
 	    "alumbrado, observaciones";
@@ -102,6 +112,8 @@ public class ConsultasFieldNames {
 	    return areasServicioCSVFieldNames();
 	case Areas_Descanso:
 	    return areasDescansoCSVFieldNames();
+	case Areas_Peaje:
+	    return areasPeajeCSVFieldNames();
 	case Enlaces:
 	    return enlacesCSVFieldNames();
 	case Juntas:
@@ -258,6 +270,30 @@ public class ConsultasFieldNames {
 		"aparcamiento_camion_bus as \"Aparcamientos\"," +
 		"area_picnic as \"Área Picnic\"," +
 		"fuentes_potables as \"Fuentes Potables\"," +
+		"observaciones as \"Observaciones\"";
+    }
+
+    private static String areasPeajeCSVFieldNames() {
+	return "distinct(el.id_area_peaje) as \"ID Área Peaje\"," +
+		"nombre as \"Nombre\"," +
+		"fecha_actualizacion as \"Fecha Actualización\"," +
+		localizationCSVFieldNames() +
+		"pk as \"PK\"," +
+		"st.item as \"Sentido\"," +
+		"mu.item as \"Municipio\"," +
+		"fecha_puesta_servicio as \"Fecha Puesta Servicio\"," +
+		"n_salida as \"Número de salida\"," +
+		"bordillos as \"Longitud bordillos(m)\"," +
+		"bumpers as \"Bumpers(nº)\"," +
+		"tunel_peaje as \"Túnel de peaje\"," +
+		"long_tunel as \"Longitud Túnel\"," +
+		"marquesina_tipo as \"Tipo\"," +
+		"marquesina_sup as \"Superficie (m2)\"," +
+		"sup_total as \"Superficie total(m2)\"," +
+		"sup_trieff as \"Sup. adoquín trieff(m2)\"," +
+		"sup_hormigon as \"Sup. adoquín hormigón(m2)\"," +
+		"sup_otros as \"Sup. otros(m2)\"," +
+		"numero_vias as \"Número vías\"," +
 		"observaciones as \"Observaciones\"";
     }
 
@@ -476,6 +512,9 @@ public class ConsultasFieldNames {
 	case Areas_Descanso:
 	    new AreasDescansoCaracteristicasReport(element[1], outputFile, rs, filters);
 	    break;
+	case Areas_Peaje:
+	    new AreasPeajeCaracteristicasReport(element[1], outputFile, rs, filters);
+	    break;
 	case Enlaces:
 	    new EnlacesCaracteristicasReport(element[1], outputFile, rs, filters);
 	    break;
@@ -517,6 +556,16 @@ public class ConsultasFieldNames {
 	    e.printStackTrace();
 	}
 	return null;
+    }
+
+    public static boolean hasIndiceFieldOnReconocimientos(String element) {
+	Vector<String> elements = new Vector<String>();
+	elements.add("Areas_Peaje");
+	if (elements.contains(element)){
+	    return false;
+	}else {
+	    return true;
+	}
     }
 
 }
