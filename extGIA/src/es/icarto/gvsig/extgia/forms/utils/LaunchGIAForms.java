@@ -16,6 +16,8 @@ import es.icarto.gvsig.extgia.batch.elements.BatchIsletasReconocimientos;
 import es.icarto.gvsig.extgia.batch.elements.BatchIsletasTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchJuntasReconocimientos;
 import es.icarto.gvsig.extgia.batch.elements.BatchJuntasTrabajos;
+import es.icarto.gvsig.extgia.batch.elements.BatchObrasDesagueTrabajos;
+import es.icarto.gvsig.extgia.batch.elements.BatchObrasPasoTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchPasosMedianaReconocimientos;
 import es.icarto.gvsig.extgia.batch.elements.BatchPasosMedianaTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchSenhalizacionVerticalReconocimientos;
@@ -243,6 +245,16 @@ public class LaunchGIAForms {
 	    final BatchFirmeTrabajos firmeSubForm = new BatchFirmeTrabajos(formFileName,
 		    dbTableName);
 	    PluginServices.getMDIManager().addWindow(firmeSubForm);
+	    break;
+	case Obras_Paso:
+	    final BatchObrasPasoTrabajos obrasPasoSubForm = new BatchObrasPasoTrabajos(formFileName,
+		    dbTableName);
+	    PluginServices.getMDIManager().addWindow(obrasPasoSubForm);
+	    break;
+	case Obras_Desague:
+	    final BatchObrasDesagueTrabajos obrasDesagueSubForm = new BatchObrasDesagueTrabajos(formFileName,
+		    dbTableName);
+	    PluginServices.getMDIManager().addWindow(obrasDesagueSubForm);
 	    break;
 	}
     }
