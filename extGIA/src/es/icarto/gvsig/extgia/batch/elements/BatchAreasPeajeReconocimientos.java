@@ -1,0 +1,31 @@
+package es.icarto.gvsig.extgia.batch.elements;
+
+import es.icarto.gvsig.extgia.batch.BatchAbstractSubForm;
+import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+
+@SuppressWarnings("serial")
+public class BatchAreasPeajeReconocimientos extends BatchAbstractSubForm {
+
+    public BatchAreasPeajeReconocimientos(String formFile, String dbTableName) {
+	super(formFile, dbTableName);
+	// TODO Auto-generated constructor stub
+    }
+
+    @Override
+    public String getLayerName() {
+	return DBFieldNames.AREAS_PEAJE_LAYERNAME;
+    }
+
+    @Override
+    public String getIdFieldName() {
+	return DBFieldNames.ID_AREA_PEAJE;
+    }
+
+    @Override
+    public String getXMLPath() {
+	return this.getClass().getClassLoader()
+		.getResource("rules/areas_peaje_reconocimientos_metadata.xml")
+		.getPath();
+    }
+
+}

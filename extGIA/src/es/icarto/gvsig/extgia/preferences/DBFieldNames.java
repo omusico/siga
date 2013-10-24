@@ -235,6 +235,10 @@ public class DBFieldNames {
     public static final String OBRAS_DESAGUE_LAYERNAME = "Obras_Desague";
     public static final String ID_OBRA_DESAGUE = "id_obra_desague";
 
+    // AREAS PEAJE
+    public static final String AREAS_PEAJE_LAYERNAME = "Areas_Peaje";
+    public static final String ID_AREA_PEAJE = "id_area_peaje";
+
     public static void setReconocimientoEstadoFields(String[] fields) {
 	reconocimientoEstadoFields = fields;
     }

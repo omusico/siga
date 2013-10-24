@@ -5,6 +5,8 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.batch.elements.BatchAreasDescansoReconocimientos;
 import es.icarto.gvsig.extgia.batch.elements.BatchAreasDescansoTrabajos;
+import es.icarto.gvsig.extgia.batch.elements.BatchAreasPeajeReconocimientos;
+import es.icarto.gvsig.extgia.batch.elements.BatchAreasPeajeTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchAreasServicioReconocimientos;
 import es.icarto.gvsig.extgia.batch.elements.BatchAreasServicioTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchBarreraRigidaReconocimientos;
@@ -221,6 +223,11 @@ public class LaunchGIAForms {
 		    dbTableName);
 	    PluginServices.getMDIManager().addWindow(areasDescansoSubForm);
 	    break;
+	case Areas_Peaje:
+	    final BatchAreasPeajeTrabajos areasPeajeSubForm = new BatchAreasPeajeTrabajos(formFileName,
+		    dbTableName);
+	    PluginServices.getMDIManager().addWindow(areasPeajeSubForm);
+	    break;
 	case Juntas:
 	    final BatchJuntasTrabajos juntasSubForm = new BatchJuntasTrabajos(formFileName,
 		    dbTableName);
@@ -286,6 +293,11 @@ public class LaunchGIAForms {
 	    final BatchAreasDescansoReconocimientos areasDescansoSubForm = new BatchAreasDescansoReconocimientos(formFileName,
 		    dbTableName);
 	    PluginServices.getMDIManager().addWindow(areasDescansoSubForm);
+	    break;
+	case Areas_Peaje:
+	    final BatchAreasPeajeReconocimientos areasPeajeSubForm = new BatchAreasPeajeReconocimientos(formFileName,
+		    dbTableName);
+	    PluginServices.getMDIManager().addWindow(areasPeajeSubForm);
 	    break;
 	case Enlaces:
 	    final BatchEnlacesReconocimientos enlacesSubForm = new BatchEnlacesReconocimientos(formFileName,
