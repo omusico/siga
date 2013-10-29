@@ -18,6 +18,8 @@ import es.icarto.gvsig.extgia.batch.elements.BatchIsletasReconocimientos;
 import es.icarto.gvsig.extgia.batch.elements.BatchIsletasTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchJuntasReconocimientos;
 import es.icarto.gvsig.extgia.batch.elements.BatchJuntasTrabajos;
+import es.icarto.gvsig.extgia.batch.elements.BatchMurosReconocimientos;
+import es.icarto.gvsig.extgia.batch.elements.BatchMurosTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchObrasDesagueTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchObrasPasoTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchPasosMedianaReconocimientos;
@@ -36,6 +38,7 @@ import es.icarto.gvsig.extgia.forms.enlaces.EnlacesForm;
 import es.icarto.gvsig.extgia.forms.firme.FirmeForm;
 import es.icarto.gvsig.extgia.forms.isletas.IsletasForm;
 import es.icarto.gvsig.extgia.forms.juntas.JuntasForm;
+import es.icarto.gvsig.extgia.forms.muros.MurosForm;
 import es.icarto.gvsig.extgia.forms.obras_desague.ObrasDesagueForm;
 import es.icarto.gvsig.extgia.forms.obras_paso.ObrasPasoForm;
 import es.icarto.gvsig.extgia.forms.pasos_mediana.PasosMedianaForm;
@@ -182,6 +185,15 @@ public class LaunchGIAForms {
 		obrasDesagueForm.last();
 	    }
 	    break;
+	case Muros:
+	    final MurosForm murosForm = new MurosForm(layer);
+	    if (murosForm.init()) {
+		PluginServices.getMDIManager().addWindow(murosForm);
+	    }
+	    if (editing) {
+		murosForm.last();
+	    }
+	    break;
 	}
     }
 
@@ -263,6 +275,11 @@ public class LaunchGIAForms {
 		    dbTableName);
 	    PluginServices.getMDIManager().addWindow(obrasDesagueSubForm);
 	    break;
+	case Muros:
+	    final BatchMurosTrabajos murosSubForm = new BatchMurosTrabajos(formFileName,
+		    dbTableName);
+	    PluginServices.getMDIManager().addWindow(murosSubForm);
+	    break;
 	}
     }
 
@@ -328,6 +345,11 @@ public class LaunchGIAForms {
 	    final BatchFirmeReconocimientos firmeSubForm = new BatchFirmeReconocimientos(formFileName,
 		    dbTableName);
 	    PluginServices.getMDIManager().addWindow(firmeSubForm);
+	    break;
+	case Muros:
+	    final BatchMurosReconocimientos murosSubForm = new BatchMurosReconocimientos(formFileName,
+		    dbTableName);
+	    PluginServices.getMDIManager().addWindow(murosSubForm);
 	    break;
 	}
     }

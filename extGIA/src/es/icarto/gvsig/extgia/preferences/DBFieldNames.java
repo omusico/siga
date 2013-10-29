@@ -6,7 +6,7 @@ public class DBFieldNames {
     public enum Elements {
 	Taludes, Isletas, Enlaces, Barrera_Rigida, Areas_Servicio, Areas_Descanso, Areas_Peaje,
 	Juntas, Pasos_Mediana, Senhalizacion_Vertical, Valla_Cierre, Firme, Obras_Paso,
-	Obras_Desague;
+	Obras_Desague, Muros;
     }
 
     public static String[] genericReconocimientoEstadoFields = {"n_inspeccion as \"Nº Inspección\"",
@@ -239,6 +239,21 @@ public class DBFieldNames {
     public static final String AREAS_PEAJE_LAYERNAME = "Areas_Peaje";
     public static final String ID_AREA_PEAJE = "id_area_peaje";
 
+    // MUROS
+    public static final String MUROS_LAYERNAME = "Muros";
+    public static final String ID_MUROS = "id_muro";
+    public static final String MUROS_INDEX = "indice_estado";
+    public static final String MUROS_A = "descalces_socavaciones";
+    public static final String MUROS_B = "asentamientos_giros";
+    public static final String MUROS_C = "golpes_roturas";
+    public static final String MUROS_D = "fisuras_grietas";
+    public static final String MUROS_E = "armaduras_vistas";
+    public static final String MUROS_F = "filtraciones_humedades";
+    public static final String MUROS_G = "vegetacion_perjudicial";
+    public static final String MUROS_H = "coqueras";
+    public static final String MUROS_I = "juntas_degradadas";
+    public static final String MUROS_J = "drenaje_ineficaz";
+
     public static void setReconocimientoEstadoFields(String[] fields) {
 	reconocimientoEstadoFields = fields;
     }
@@ -295,6 +310,8 @@ public class DBFieldNames {
 	    break;
 	case Obras_Paso:
 	    pk = "id_obra_paso";
+	case Muros:
+	    pk = "id_muro";
 	}
 	return pk;
     }
