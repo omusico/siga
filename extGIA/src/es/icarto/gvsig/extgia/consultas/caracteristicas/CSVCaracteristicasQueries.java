@@ -107,6 +107,12 @@ public class CSVCaracteristicasQueries {
 		    getLocalizationTablesWithSentido() +
 		    getLocalizationWhereWithSentido() +
 		    filters.getWhereClauseByLocationWidgets(true);
+	case Muros:
+	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
+		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
+		    getLocalizationTablesWithSentidoAndPF() +
+		    getLocalizationWhereWithSentidoAndPF() +
+		    filters.getWhereClauseByLocationWidgets(true);
 	default:
 	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +

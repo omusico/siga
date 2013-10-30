@@ -29,6 +29,7 @@ public class PDFCaracteristicasQueries {
 	case Areas_Peaje:
 	case Enlaces:
 	case Taludes:
+	case Muros:
 	case Valla_Cierre:
 	    return "SELECT " + ConsultasFieldNames.getPDFCaracteristicasFieldNames(element) +
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +

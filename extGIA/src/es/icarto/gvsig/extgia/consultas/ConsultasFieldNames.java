@@ -13,6 +13,7 @@ import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.EnlacesCaracter
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.FirmeCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.IsletasCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.JuntasCaracteristicasReport;
+import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.MurosCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.ObrasDesagueCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.ObrasPasoCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.PasosMedianaCaracteristicasReport;
@@ -96,6 +97,9 @@ public class ConsultasFieldNames {
 	case Obras_Desague:
 	    return "distinct(id_obra_desague), tr.item, tv.item, nv.item, pk, tipologia, material, " +
 	    "objeto, fecha_construccion, n_elementos, seccion, longitud, observaciones";
+	case Muros:
+	    return "distinct(id_muro), tr.item, pk_inicial, pk_final, material, longitud, " +
+	    "altura_max, observaciones";
 	}
 	return null;
     }
@@ -130,6 +134,8 @@ public class ConsultasFieldNames {
 	    return obrasPasoCSVFieldNames();
 	case Obras_Desague:
 	    return obrasDesagueCSVFieldNames();
+	case Muros:
+	    return murosCSVFieldNames();
 	}
 	return null;
     }
@@ -494,6 +500,27 @@ public class ConsultasFieldNames {
 		"observaciones as \"Observaciones\"";
     }
 
+    private static String murosCSVFieldNames() {
+	return "distinct(el.id_muro) as \"ID Muro\"," +
+		"fecha_actualizacion as \"Fecha Actualización\"," +
+		localizationCSVFieldNames() +
+		"tvf.item as \"Tipo Vía PF\"," +
+		"nvf.item as \"Nombre Vía PF\"," +
+		"pk_inicial as \"PK Inicial\"," +
+		"pk_final as \"PK Final\"," +
+		"ramal_pi as \"Ramal\"," +
+		"ramal_pf as \"Ramal PF\"," +
+		"direccion_pi as \"Dirección\"," +
+		"direccion_pf as \"Dirección PF\"," +
+		"st.item as \"Sentido\"," +
+		"margen as \"Margen\"," +
+		"mu.item as \"Municipio\"," +
+		"material as \"Material\"," +
+		"longitud as \"Longitud\"," +
+		"altura_max as \"Altura Máxima\"," +
+		"observaciones as \"Observaciones\"";
+    }
+
     public static void createCaracteristicasReport(String[] element, String outputFile,
 	    ResultSet rs, ConsultasFilters filters) {
 	switch (DBFieldNames.Elements.valueOf(element[0])) {
@@ -538,6 +565,9 @@ public class ConsultasFieldNames {
 	    break;
 	case Obras_Desague:
 	    new ObrasDesagueCaracteristicasReport(element[1], outputFile, rs, filters);
+	    break;
+	case Muros:
+	    new MurosCaracteristicasReport(element[1], outputFile, rs, filters);
 	    break;
 	}
     }
