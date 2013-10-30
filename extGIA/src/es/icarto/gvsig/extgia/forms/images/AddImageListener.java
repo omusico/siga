@@ -81,6 +81,9 @@ public class AddImageListener implements ActionListener {
 
     private BufferedImage resizeImage(BufferedImage image) {
 	BufferedImage imageResized;
+	if (image.getWidth() < 615) {
+	    return image;
+	}
 	if (image.getWidth() > image.getHeight()) {
 	    imageResized =
 		    ImageUtils.resizeImageWithHint(image, 615, 460);
