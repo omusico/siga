@@ -349,7 +349,7 @@
 		<extension class-name="com.iver.cit.gvsig.SnappersExtension"
 			   description="Extension to activate and deactivate the Snappers"
 			   active="true">
-			<menu action-command="separator" text="geometry"position="70499" is_separator="true"/>
+			<menu action-command="separator" text="geometry" position="70499" is_separator="true"/>
 			<menu text="geometry/snappers" action-command="_snappers" icon="Snapper" position="70500"/>
 			<tool-bar name="ed_options" position="140">
 				<selectable-tool icon="Snapper" action-command="_snappers" tooltip="snappers" group="snappers" position="5"/>
