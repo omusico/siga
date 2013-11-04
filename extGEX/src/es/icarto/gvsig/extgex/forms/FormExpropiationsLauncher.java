@@ -48,7 +48,7 @@ public class FormExpropiationsLauncher implements MouseListener {
 	    openForm();
 	} else if((e.getButton() == BUTTON_RIGHT)
 		&& TableUtils.hasRows(table)
-		&& (table.getSelectedRow() != -1)) {
+		&& TableUtils.isProperRowSelected(table)) {
 	    JPopupMenu popup = new JPopupMenu();
 
 	    JMenuItem menuOpenForm = new JMenuItem("Abrir expropiaciones");
@@ -96,7 +96,7 @@ public class FormExpropiationsLauncher implements MouseListener {
 		formExpropiations = new FormExpropiations(layerExpropiations, null);
 		if (formExpropiations.init()) {
 		    formExpropiations.setPosition(rowIndex);
-		    selectFeaturesInForm();
+		    selectFeaturesInForm(rowIndex);
 		    PluginServices.getMDIManager().addWindow(formExpropiations);
 		    // Listening closing actions of formReversions
 		    //		    JInternalFrame parent = (JInternalFrame) formExpropiations
@@ -132,16 +132,16 @@ public class FormExpropiationsLauncher implements MouseListener {
 	}
     }
 
-    private void selectFeaturesInForm() {
+    private void selectFeaturesInForm(int rowIndex) {
 	try {
 	    ArrayList<Long> rowIndexes = TableUtils.getFeatureIndexesFromJTable(
 		    table,
 		    layerExpropiations.getRecordset(),
 		    DBNames.FIELD_IDEXPROPIACION_FINCAS_REVERSIONES);
 	    formExpropiations.clearSelectedFeatures();
-	    for (long rowIndex : rowIndexes) {
-		formExpropiations.selectFeature(rowIndex);
-	    }
+	    //	    for (long rowIndex : rowIndexes) {
+	    formExpropiations.selectFeature(rowIndex);
+	    //	    }
 	    formExpropiations.setOnlySelected(true);
 	} catch (ReadDriverException e) {
 	    e.printStackTrace();

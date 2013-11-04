@@ -91,7 +91,7 @@ public class FormReversionsLauncher implements MouseListener {
 	try {
 	    int index = (int) TableUtils.getFeatureIndexFromJTable(table,
 		    layerReversions.getRecordset(),
-		    DBNames.FIELD_IDREVERSION_FINCAS_REVERSIONES);
+		    "exp_id");
 	    if (index != AbstractNavTable.EMPTY_REGISTER) {
 		formReversions = new FormReversions(layerReversions, null);
 		if (formReversions.init()) {

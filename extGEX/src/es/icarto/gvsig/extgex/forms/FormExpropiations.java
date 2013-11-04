@@ -619,9 +619,9 @@ public class FormExpropiations extends AbstractForm implements TableModelListene
 
     private void updateReversionsTable() {
 	ArrayList<String> columnasReversiones = new ArrayList<String>();
-	columnasReversiones.add(DBNames.FIELD_IDREVERSION_FINCAS_REVERSIONES);
-	columnasReversiones.add(DBNames.FIELD_SUPERFICIE_FINCAS_REVERSIONES);
-	columnasReversiones.add(DBNames.FIELD_IMPORTE_FINCAS_REVERSIONES);
+	columnasReversiones.add("Exp_Id");
+	columnasReversiones.add("Superficie");
+	columnasReversiones.add("Importe");
 
 	try {
 	    DefaultTableModel tableModel;
@@ -694,10 +694,15 @@ public class FormExpropiations extends AbstractForm implements TableModelListene
 	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
 	    statement.execute();
 	    ResultSet rs = statement.getResultSet();
+	    if (rs.next()) {
+		if (afectado_pm.getItemCount() > 1) {
+		    afectado_pm.setSelectedIndex(1);
+		}
+	    }
+	    rs.beforeFirst();
 	    while (rs.next()) {
 		pmData[0] = ValueFactory.createValue(rs.getString(1));
 		tableModel.addRow(pmData);
-		afectado_pm.setSelectedIndex(1);
 	    }
 	    repaint();
 	} catch (SQLException e) {

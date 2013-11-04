@@ -143,7 +143,7 @@ public class TableUtils {
     public static int getColumnIndex(JTable table, String columnName) {
 	TableModel model = table.getModel();
 	for(int i=0; i<model.getColumnCount(); i++) {
-	    if(columnName.equals(model.getColumnName(i))) {
+	    if(columnName.equalsIgnoreCase(model.getColumnName(i))) {
 		return i;
 	    }
 	}
@@ -156,6 +156,19 @@ public class TableUtils {
 	    return true;
 	}
 	return false;
+    }
+
+    public static boolean isProperRowSelected(JTable table) {
+	TableModel model = table.getModel();
+	if (table.getSelectedRows().length == 1) {
+	    if (table.getSelectedRow() < model.getRowCount() -1) {
+		return true;
+	    }else {
+		return false;
+	    }
+	}else {
+	    return false;
+	}
     }
 
     private static boolean firstRowIsVoid(TableModel model) {
@@ -229,6 +242,7 @@ public class TableUtils {
 			    colIndex).getStringValue(new ValueFormatNT());
 		    if (fieldValue.equals(row.get(key))) {
 			checkRow = true;
+			break;
 		    } else {
 			checkRow = false;
 			break;

@@ -138,7 +138,7 @@ public class FormReversions extends AbstractForm implements TableModelListener {
     private void updateJTableFincasAfectadas() {
 
 	ArrayList<String> columnasFincas = new ArrayList<String>();
-	columnasFincas.add("Finca");
+	columnasFincas.add("Id_Finca");
 	columnasFincas.add("Expedientes PM");
 	columnasFincas.add("Superficie");
 	columnasFincas.add("Importe");
@@ -148,16 +148,21 @@ public class FormReversions extends AbstractForm implements TableModelListener {
 	double totalImporte = 0.0;
 
 	try {
-	    DefaultTableModel tableModel;
-	    tableModel = new DefaultTableModel();
+	    DefaultTableModel tableModel = new DefaultTableModel() {
+		@Override
+		public boolean isCellEditable(int row, int column) {
+		    return false;
+		}
+	    };
 	    for (String columnName : columnasFincas) {
 		tableModel.addColumn(columnName);
 	    }
 	    fincasAfectadas.setModel(tableModel);
 	    fincasAfectadas.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-	    fincasAfectadas.getColumnModel().getColumn(0).setPreferredWidth(125);
-	    fincasAfectadas.getColumnModel().getColumn(1).setPreferredWidth(237);
-	    fincasAfectadas.getColumnModel().getColumn(4).setPreferredWidth(100);
+	    fincasAfectadas.getColumnModel().getColumn(0).setPreferredWidth(165);
+	    fincasAfectadas.getColumnModel().getColumn(1).setPreferredWidth(207);
+	    fincasAfectadas.getColumnModel().getColumn(4).setPreferredWidth(90);
+
 
 	    Value[] reversionData = new Value[5];
 	    ResultSet rs = getFincasByExpReversion();
@@ -184,7 +189,7 @@ public class FormReversions extends AbstractForm implements TableModelListener {
 		}
 		tableModel.addRow(reversionData);
 	    }
-	    reversionData[0] = ValueFactory.createValue("<html><b>Total</b></html>");
+	    reversionData[0] = ValueFactory.createValue("<html><b>" + "TOTAL" + "</b></html>");
 	    reversionData[1] = ValueFactory.createNullValue();
 	    reversionData[2] = ValueFactory.createValue("<html><b>" + totalSuperficie + "</b></html>");
 	    reversionData[3] = ValueFactory.createValue("<html><b>" + totalImporte + "</b></html>");
