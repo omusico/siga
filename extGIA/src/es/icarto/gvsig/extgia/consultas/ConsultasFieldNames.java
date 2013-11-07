@@ -17,6 +17,7 @@ import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.MurosCaracteris
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.ObrasDesagueCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.ObrasPasoCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.PasosMedianaCaracteristicasReport;
+import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.SenhalizacionVariableCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.SenhalizacionVerticalCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.TaludesCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.VallaCierreCaracteristicasReport;
@@ -100,6 +101,10 @@ public class ConsultasFieldNames {
 	case Muros:
 	    return "distinct(id_muro), tr.item, pk_inicial, pk_final, material, longitud, " +
 	    "altura_max, observaciones";
+	case Senhalizacion_Variable:
+	    return "distinct(id_senhal_variable), tr.item, tv.item, nv.item, pk, referencia, " +
+	    "fecha_instalacion, tipo, tipo_sustentacion, corunha, ferrol, santiago, pontevedra, " +
+	    "vigo, tui, observaciones";
 	}
 	return null;
     }
@@ -136,6 +141,8 @@ public class ConsultasFieldNames {
 	    return obrasDesagueCSVFieldNames();
 	case Muros:
 	    return murosCSVFieldNames();
+	case Senhalizacion_Variable:
+	    return senhalizacionVariableCSVFieldNames();
 	}
 	return null;
     }
@@ -521,6 +528,29 @@ public class ConsultasFieldNames {
 		"observaciones as \"Observaciones\"";
     }
 
+    private static String senhalizacionVariableCSVFieldNames() {
+	return "distinct(el.id_senhal_variable) as \"ID Señal\"," +
+		"fecha_actualizacion as \"Fecha Actualización\"," +
+		localizationCSVFieldNames() +
+		"pk as \"PK\"," +
+		"ramal as \"Ramal\"," +
+		"st.item as \"Sentido\"," +
+		"direccion as \"Dirección\"," +
+		"margen_senhal as \"Margen Señal\"," +
+		"mu.item as \"Municipio\"," +
+		"referencia as \"Nº Referencia\"," +
+		"fecha_instalacion as \"Fecha Instalación\"," +
+		"tipo as \"Tipo\"," +
+		"tipo_sustentacion as \"Tipo Sustentación\"," +
+		"corunha as \"A Coruña\"," +
+		"ferrol as \"Ferrol\"," +
+		"santiago as \"Santiago\"," +
+		"pontevedra as \"Pontevedra\"," +
+		"vigo as \"Vigo\"," +
+		"tui as \"Tui\"," +
+		"observaciones as \"Observaciones\"";
+    }
+
     public static void createCaracteristicasReport(String[] element, String outputFile,
 	    ResultSet rs, ConsultasFilters filters) {
 	switch (DBFieldNames.Elements.valueOf(element[0])) {
@@ -568,6 +598,9 @@ public class ConsultasFieldNames {
 	    break;
 	case Muros:
 	    new MurosCaracteristicasReport(element[1], outputFile, rs, filters);
+	    break;
+	case Senhalizacion_Variable:
+	    new SenhalizacionVariableCaracteristicasReport(element[1], outputFile, rs, filters);
 	    break;
 	}
     }
