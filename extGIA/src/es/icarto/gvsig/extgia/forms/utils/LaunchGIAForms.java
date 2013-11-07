@@ -24,6 +24,8 @@ import es.icarto.gvsig.extgia.batch.elements.BatchObrasDesagueTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchObrasPasoTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchPasosMedianaReconocimientos;
 import es.icarto.gvsig.extgia.batch.elements.BatchPasosMedianaTrabajos;
+import es.icarto.gvsig.extgia.batch.elements.BatchSenhalizacionVariableReconocimientos;
+import es.icarto.gvsig.extgia.batch.elements.BatchSenhalizacionVariableTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchSenhalizacionVerticalReconocimientos;
 import es.icarto.gvsig.extgia.batch.elements.BatchSenhalizacionVerticalTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchTaludesReconocimientos;
@@ -42,6 +44,7 @@ import es.icarto.gvsig.extgia.forms.muros.MurosForm;
 import es.icarto.gvsig.extgia.forms.obras_desague.ObrasDesagueForm;
 import es.icarto.gvsig.extgia.forms.obras_paso.ObrasPasoForm;
 import es.icarto.gvsig.extgia.forms.pasos_mediana.PasosMedianaForm;
+import es.icarto.gvsig.extgia.forms.senhalizacion_variable.SenhalizacionVariableForm;
 import es.icarto.gvsig.extgia.forms.senhalizacion_vertical.SenhalizacionVerticalForm;
 import es.icarto.gvsig.extgia.forms.taludes.TaludesForm;
 import es.icarto.gvsig.extgia.forms.valla_cierre.VallaCierreForm;
@@ -194,6 +197,15 @@ public class LaunchGIAForms {
 		murosForm.last();
 	    }
 	    break;
+	case Senhalizacion_Variable:
+	    final SenhalizacionVariableForm senhalizacionVariableForm = new SenhalizacionVariableForm(layer);
+	    if (senhalizacionVariableForm.init()) {
+		PluginServices.getMDIManager().addWindow(senhalizacionVariableForm);
+	    }
+	    if (editing) {
+		senhalizacionVariableForm.last();
+	    }
+	    break;
 	}
     }
 
@@ -280,6 +292,11 @@ public class LaunchGIAForms {
 		    dbTableName);
 	    PluginServices.getMDIManager().addWindow(murosSubForm);
 	    break;
+	case Senhalizacion_Variable:
+	    final BatchSenhalizacionVariableTrabajos senhalizacionVariableSubForm = new BatchSenhalizacionVariableTrabajos(formFileName,
+		    dbTableName);
+	    PluginServices.getMDIManager().addWindow(senhalizacionVariableSubForm);
+	    break;
 	}
     }
 
@@ -350,6 +367,11 @@ public class LaunchGIAForms {
 	    final BatchMurosReconocimientos murosSubForm = new BatchMurosReconocimientos(formFileName,
 		    dbTableName);
 	    PluginServices.getMDIManager().addWindow(murosSubForm);
+	    break;
+	case Senhalizacion_Variable:
+	    final BatchSenhalizacionVariableReconocimientos senhalizacionVariableSubForm = new BatchSenhalizacionVariableReconocimientos(formFileName,
+		    dbTableName);
+	    PluginServices.getMDIManager().addWindow(senhalizacionVariableSubForm);
 	    break;
 	}
     }

@@ -6,7 +6,7 @@ public class DBFieldNames {
     public enum Elements {
 	Taludes, Isletas, Enlaces, Barrera_Rigida, Areas_Servicio, Areas_Descanso, Areas_Peaje,
 	Juntas, Pasos_Mediana, Senhalizacion_Vertical, Valla_Cierre, Firme, Obras_Paso,
-	Obras_Desague, Muros;
+	Obras_Desague, Muros, Senhalizacion_Variable;
     }
 
     public static String[] genericReconocimientoEstadoFields = {"n_inspeccion as \"Nº Inspección\"",
@@ -239,6 +239,10 @@ public class DBFieldNames {
     public static final String AREAS_PEAJE_LAYERNAME = "Areas_Peaje";
     public static final String ID_AREA_PEAJE = "id_area_peaje";
 
+    // SENHALIZACION VARIABLE
+    public static final String SENHALIZACION_VARIABLE_LAYERNAME = "Senhalizacion_Variable";
+    public static final String ID_SENHAL_VARIABLE = "id_senhal_variable";
+
     // MUROS
     public static final String MUROS_LAYERNAME = "Muros";
     public static final String ID_MUROS = "id_muro";
@@ -312,6 +316,8 @@ public class DBFieldNames {
 	    pk = "id_obra_paso";
 	case Muros:
 	    pk = "id_muro";
+	case Senhalizacion_Variable:
+	    pk = "id_senhal_variable";
 	}
 	return pk;
     }
