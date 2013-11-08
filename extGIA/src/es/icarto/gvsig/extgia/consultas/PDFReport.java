@@ -217,9 +217,9 @@ public abstract class PDFReport {
 	int numberOfRows = 0;
 	resultMap.beforeFirst();
 	while (resultMap.next()) {
-	    for (int column = 1; column <= getColumnNames().length; column++) {
+	    for (int column = 2; column <= getColumnNames().length+1; column++) {
 		if (resultMap.getString(column) != null) {
-		    if (getColumnNames()[column-1].contains("Fecha")) {
+		    if (resultMap.getMetaData().getColumnType(column) == 91) {
 			SimpleDateFormat dateFormat = DateFormatNT.getDateFormat();
 			Date date = resultMap.getDate(column);
 			String dateAsString = dateFormat.format(date);
@@ -251,7 +251,7 @@ public abstract class PDFReport {
 		table.addCell(valueCell);
 	    }
 	    if (hasEmbebedTable()) {
-		table.addCell(writeAditionalColumnValues(resultMap.getString(1)));
+		table.addCell(writeAditionalColumnValues(resultMap.getString(2)));
 	    }
 	    numberOfRows = numberOfRows +1;
 	}

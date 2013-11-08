@@ -16,7 +16,8 @@ public class CSVCaracteristicasQueries {
 		    getLocalizationTablesWithSentido() +
 		    ", audasa_extgia.areas_descanso_ramales ra" +
 		    getLocalizationWhereWithSentido() +
-		    filters.getWhereClauseByLocationWidgets(true);
+		    filters.getWhereClauseByLocationWidgets(true) +
+		    " ORDER BY gid";
 	case Areas_Servicio:
 	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
 		    ", (select count(id_ramal) from audasa_extgia.areas_servicio_ramales ra " +
@@ -25,7 +26,8 @@ public class CSVCaracteristicasQueries {
 		    getLocalizationTablesWithSentido() +
 		    ", audasa_extgia.areas_servicio_ramales ra" +
 		    getLocalizationWhereWithSentido() +
-		    filters.getWhereClauseByLocationWidgets(true);
+		    filters.getWhereClauseByLocationWidgets(true) +
+		    " ORDER BY gid";
 	case Enlaces:
 	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
 		    ", (select count(id_ramal) from audasa_extgia.enlaces_ramales ra " +
@@ -37,7 +39,8 @@ public class CSVCaracteristicasQueries {
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
 		    getLocalizationTables() +
 		    getLocalizationWhere() +
-		    filters.getWhereClauseByLocationWidgets(true);
+		    filters.getWhereClauseByLocationWidgets(true) +
+		    " ORDER BY gid";
 	case Senhalizacion_Vertical:
 	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
@@ -58,73 +61,85 @@ public class CSVCaracteristicasQueries {
 		    " AND el.base_contratista = bc.id" +
 		    " AND el.tramo = tr.id" +
 		    " AND el.municipio = mu.id" +
-		    filters.getWhereClauseByLocationWidgets(true);
+		    filters.getWhereClauseByLocationWidgets(true) +
+		    " ORDER BY gid";
 	case Valla_Cierre:
 	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
 		    getLocalizationTablesWithSentidoAndPF() +
 		    getLocalizationWhereWithSentidoAndPF() +
-		    filters.getWhereClauseByLocationWidgets(true);
+		    filters.getWhereClauseByLocationWidgets(true) +
+		    " ORDER BY gid";
 	case Taludes:
 	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
 		    getLocalizationTablesWithSentidoAndPF() +
 		    getLocalizationWhereWithSentidoAndPF() +
-		    filters.getWhereClauseByLocationWidgets(true);
+		    filters.getWhereClauseByLocationWidgets(true) +
+		    " ORDER BY gid";
 	case Juntas:
 	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
 		    getLocalizationTablesWithSentido() +
 		    getLocalizationWhereWithSentido() +
-		    filters.getWhereClauseByLocationWidgets(true);
+		    filters.getWhereClauseByLocationWidgets(true) +
+		    " ORDER BY gid";
 	case Isletas:
 	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
 		    getLocalizationTablesWithSentido() +
 		    getLocalizationWhereWithSentido() +
-		    filters.getWhereClauseByLocationWidgets(true);
+		    filters.getWhereClauseByLocationWidgets(true) +
+		    " ORDER BY gid";
 	case Barrera_Rigida:
 	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
 		    getLocalizationTablesWithSentido() +
 		    getLocalizationWhereWithSentido() +
-		    filters.getWhereClauseByLocationWidgets(true);
+		    filters.getWhereClauseByLocationWidgets(true) +
+		    " ORDER BY gid";
 	case Obras_Paso:
 	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
 		    getLocalizationTablesWithSentido() +
 		    getLocalizationWhereWithSentido() +
-		    filters.getWhereClauseByLocationWidgets(true);
+		    filters.getWhereClauseByLocationWidgets(true) +
+		    " ORDER BY gid";
 	case Obras_Desague:
 	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
 		    getLocalizationTablesWithSentido() +
 		    getLocalizationWhereWithSentido() +
-		    filters.getWhereClauseByLocationWidgets(true);
+		    filters.getWhereClauseByLocationWidgets(true) +
+		    " ORDER BY gid";
 	case Areas_Peaje:
 	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
 		    getLocalizationTablesWithSentido() +
 		    getLocalizationWhereWithSentido() +
-		    filters.getWhereClauseByLocationWidgets(true);
+		    filters.getWhereClauseByLocationWidgets(true) +
+		    " ORDER BY gid";
 	case Muros:
 	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
 		    getLocalizationTablesWithSentidoAndPF() +
 		    getLocalizationWhereWithSentidoAndPF() +
-		    filters.getWhereClauseByLocationWidgets(true);
+		    filters.getWhereClauseByLocationWidgets(true) +
+		    " ORDER BY gid";
 	case Senhalizacion_Variable:
 	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
 		    getLocalizationTablesWithSentido() +
 		    getLocalizationWhereWithSentido() +
-		    filters.getWhereClauseByLocationWidgets(true);
+		    filters.getWhereClauseByLocationWidgets(true) +
+		    " ORDER BY gid";
 	default:
 	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
 		    getLocalizationTables() +
 		    getLocalizationWhere() +
-		    filters.getWhereClauseByLocationWidgets(true);
+		    filters.getWhereClauseByLocationWidgets(true) +
+		    " ORDER BY gid";
 	}
 
     }

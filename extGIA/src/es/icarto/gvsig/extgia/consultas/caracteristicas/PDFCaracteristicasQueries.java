@@ -7,7 +7,7 @@ import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 public class PDFCaracteristicasQueries {
 
     public static final String getSenhalizacionVerticalQuery(ConsultasFilters filters) {
-	return "SELECT sv.id_elemento_senhalizacion, tr.item, tv.item, nv.item, pk, tipo_senhal, " +
+	return "SELECT distinct(gid), sv.id_elemento_senhalizacion, tr.item, tv.item, nv.item, pk, tipo_senhal, " +
 		"codigo_senhal, leyenda, panel_complementario, codigo_panel, texto_panel, " +
 		"fecha_fabricacion, fecha_instalacion, fecha_reposicion, tipo_sustentacion " +
 		" FROM audasa_extgia.senhalizacion_vertical sv," +
@@ -31,21 +31,24 @@ public class PDFCaracteristicasQueries {
 	case Taludes:
 	case Muros:
 	case Valla_Cierre:
-	    return "SELECT " + ConsultasFieldNames.getPDFCaracteristicasFieldNames(element) +
+	    return "SELECT distinct(gid), " + ConsultasFieldNames.getPDFCaracteristicasFieldNames(element) +
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
 		    getTramoTable() +
 		    getTramoWhere()+
-		    filters.getWhereClauseByLocationWidgets(true);
+		    filters.getWhereClauseByLocationWidgets(true) +
+		    " ORDER BY gid";
 	case Firme:
-	    return "SELECT " + ConsultasFieldNames.getPDFCaracteristicasFieldNames(element) +
+	    return "SELECT distinct(gid), " + ConsultasFieldNames.getPDFCaracteristicasFieldNames(element) +
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element +
-		    filters.getWhereClauseByLocationWidgets(false);
+		    filters.getWhereClauseByLocationWidgets(false) +
+		    " ORDER BY gid";
 	default:
-	    return "SELECT " + ConsultasFieldNames.getPDFCaracteristicasFieldNames(element) +
+	    return "SELECT distinct(gid), " + ConsultasFieldNames.getPDFCaracteristicasFieldNames(element) +
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
 		    getLocalizationTables() +
 		    getLocalizationWhere()+
-		    filters.getWhereClauseByLocationWidgets(true);
+		    filters.getWhereClauseByLocationWidgets(true) +
+		    " ORDER BY gid";
 
 	}
     }
