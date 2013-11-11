@@ -29,7 +29,11 @@ public class ImagesDAO {
 		    + " = " + "? WHERE " + pkField
 		    + " = ?");
 	    statement.setBytes(1, imageBytes);
-	    statement.setString(2, pkValue);
+	    if (getPKFieldType(connection, schema, tablename, pkField) ==  4)  {
+		statement.setInt(2, Integer.parseInt(pkValue));
+	    }else {
+		statement.setString(2, pkValue);
+	    }
 	} else {
 	    statement = connection.prepareStatement("INSERT INTO "
 		    + schema + "."
