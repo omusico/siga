@@ -36,7 +36,7 @@ public class AreasPeajeCaracteristicasReport extends PDFReport {
 		"PK",
 		"Puesta en Servicio",
 		"Longitud bordillos (m)",
-		"Bumpers (nª)",
+		"Nº Bumpers",
 		"Túnel de peaje",
 		"Tipo",
 		"Superficie",
