@@ -20,8 +20,8 @@ public class LocalizacionRetriever {
     private final ORMLite orm;
 
     public LocalizacionRetriever(String idFinca) {
-	decipher(idFinca);
 	orm = new ORMLite(getXMLPath());
+	decipher(idFinca);
     }
 
     private void decipher(String idFinca) {

@@ -68,7 +68,7 @@ public class PrintReportsDataSubreportReversions implements JRDataSource {
 	    //	    }
 	    SelectableDataSource sdsReversions = reversionsLayer.getRecordset();
 	    PreparedStatement statement;
-	    String query = "SELECT id_reversion FROM audasa_expropiaciones.fincas_reversiones " +
+	    String query = "SELECT id_reversion FROM audasa_expropiaciones.finca_reversion " +
 		    "WHERE id_finca = '" + idFinca + "';";
 	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
 	    statement.execute();

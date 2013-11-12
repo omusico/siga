@@ -106,7 +106,7 @@ public class PrintReportsData implements JRDataSource {
 	    for (int index = 0; index < sds.getFieldCount(); index++) {
 		if (java.sql.Types.INTEGER == sds.getFieldType(index)) {
 		    value = sds.getFieldValue(currentPosition, index)
-		    .toString();
+			    .toString();
 		    if (!value.equals("")) {
 			value = Integer.parseInt((String) value);
 		    } else {
@@ -114,7 +114,7 @@ public class PrintReportsData implements JRDataSource {
 		    }
 		} else if (java.sql.Types.DOUBLE == sds.getFieldType(index)) {
 		    value = sds.getFieldValue(currentPosition, index)
-		    .toString();
+			    .toString();
 		    if (!value.equals("")) {
 			value = Double.parseDouble((String) value);
 		    } else {
@@ -181,7 +181,7 @@ public class PrintReportsData implements JRDataSource {
     }
 
     private Date getDateValue(SelectableDataSource sds, int index)
-    throws ReadDriverException {
+	    throws ReadDriverException {
 	Value val = sds.getFieldValue(currentPosition, index);
 	if (val instanceof NullValue) {
 	    return null;
@@ -244,48 +244,57 @@ public class PrintReportsData implements JRDataSource {
     }
 
     private Object getScaleFromView() {
-	BaseView view = (BaseView) PluginServices.getMDIManager()
-	.getActiveWindow();
-	MapContext mapContext = view.getMapControl().getMapContext();
-	return Double.toString(mapContext.getScaleView());
+	if (PluginServices.getMDIManager()
+		.getActiveWindow() instanceof BaseView) {
+	    BaseView view = (BaseView) PluginServices.getMDIManager()
+		    .getActiveWindow();
+	    MapContext mapContext = view.getMapControl().getMapContext();
+	    return Double.toString(mapContext.getScaleView());
+	}
+	return centroid;
     }
 
     private Object getImageFromView() {
 	if (isGeometryNull()) {
 	    return PluginServices.getPluginServices("es.icarto.gvsig.extgex")
-	    .getClassLoader()
-	    .getResource("images/image-not-available.png");
+		    .getClassLoader()
+		    .getResource("images/image-not-available.png");
 	}
 	BufferedImage bufferedImage = calculateImage();
 	java.net.URL mapInReport = PluginServices
-	.getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
-	.getResource("images/map-for-report.png");
+		.getPluginServices("es.icarto.gvsig.extgex").getClassLoader()
+		.getResource("images/map-for-report.png");
 	try {
-	    ImageIO.write(bufferedImage, "png", new File(mapInReport.getFile()));
+	    if (bufferedImage != null) {
+		ImageIO.write(bufferedImage, "png", new File(mapInReport.getFile()));
+	    }
 	    return mapInReport;
 	} catch (IOException e) {
 	    e.printStackTrace();
 	    return PluginServices.getPluginServices("es.icarto.gvsig.extgex")
-	    .getClassLoader()
-	    .getResource("images/image-not-available.png");
+		    .getClassLoader()
+		    .getResource("images/image-not-available.png");
 	} catch (NullPointerException npe) {
 	    return PluginServices.getPluginServices("es.icarto.gvsig.extgex")
-	    .getClassLoader()
-	    .getResource("images/image-not-available.png");
+		    .getClassLoader()
+		    .getResource("images/image-not-available.png");
 	}
     }
 
     private BufferedImage calculateImage() {
-	BaseView view = (BaseView) PluginServices.getMDIManager()
-	.getActiveWindow();
-	MapControl mapControl = view.getMapControl();
-	ViewPort vp = mapControl.getViewPort();
-	int widthImageFromJasperReport = JASPER_IMAGEWIDTH;
-	int heightImageFromJasperReport = JASPER_IMAGEHEIGHT;
-	int x = (vp.getImageWidth() / 2) - (widthImageFromJasperReport / 2);
-	int y = (vp.getImageHeight() / 2) - (heightImageFromJasperReport / 2);
-	return mapControl.getImage().getSubimage(x, y,
-		widthImageFromJasperReport, heightImageFromJasperReport);
+	if (PluginServices.getMDIManager().getActiveWindow() instanceof BaseView) {
+	    BaseView view = (BaseView) PluginServices.getMDIManager()
+		    .getActiveWindow();
+	    MapControl mapControl = view.getMapControl();
+	    ViewPort vp = mapControl.getViewPort();
+	    int widthImageFromJasperReport = JASPER_IMAGEWIDTH;
+	    int heightImageFromJasperReport = JASPER_IMAGEHEIGHT;
+	    int x = (vp.getImageWidth() / 2) - (widthImageFromJasperReport / 2);
+	    int y = (vp.getImageHeight() / 2) - (heightImageFromJasperReport / 2);
+	    return mapControl.getImage().getSubimage(x, y,
+		    widthImageFromJasperReport, heightImageFromJasperReport);
+	}
+	return null;
     }
 
     private boolean isGeometryNull() {
