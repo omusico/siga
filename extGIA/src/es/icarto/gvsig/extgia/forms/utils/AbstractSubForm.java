@@ -407,7 +407,7 @@ IWindowListener {
 	viewInfo = new WindowInfo(WindowInfo.MODALDIALOG);
 	viewInfo.setTitle(title);
 	viewInfo.setWidth(width);
-	viewInfo.setHeight(height);
+	viewInfo.setHeight((int) getPreferredSize().getHeight()-25);
 	return viewInfo;
     }
 
