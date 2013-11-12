@@ -10,7 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
@@ -45,6 +47,7 @@ import es.icarto.gvsig.extgex.utils.retrievers.LocalizadorFormatter;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
+import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 import es.udc.cartolab.gvsig.navtable.format.DoubleFormatNT;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -622,6 +625,7 @@ public class FormExpropiations extends AbstractForm implements TableModelListene
 	columnasReversiones.add("Exp_Id");
 	columnasReversiones.add("Superficie");
 	columnasReversiones.add("Importe");
+	columnasReversiones.add("Fecha");
 
 	try {
 	    DefaultTableModel tableModel;
@@ -630,12 +634,13 @@ public class FormExpropiations extends AbstractForm implements TableModelListene
 		tableModel.addColumn(columnName);
 	    }
 	    reversiones.setModel(tableModel);
-	    Value[] reversionData = new Value[3];
+	    Value[] reversionData = new Value[4];
 	    PreparedStatement statement;
 	    String query = "SELECT " +
 		    DBNames.FIELD_IDREVERSION_FINCAS_REVERSIONES + ", " +
 		    DBNames.FIELD_SUPERFICIE_FINCAS_REVERSIONES + ", " +
-		    DBNames.FIELD_IMPORTE_FINCAS_REVERSIONES + " " +
+		    DBNames.FIELD_IMPORTE_FINCAS_REVERSIONES + ", " +
+		    DBNames.FIELD_FECHA_FINCAS_REVERSIONES + " " +
 		    "FROM " + DBNames.SCHEMA_DATA + "." + DBNames.TABLE_FINCASREVERSIONES + " " +
 		    "WHERE " + DBNames.FIELD_IDEXPROPIACION_FINCAS_REVERSIONES + " = '" + getIDFinca() +
 		    "';";
@@ -645,20 +650,19 @@ public class FormExpropiations extends AbstractForm implements TableModelListene
 	    while (rs.next()) {
 		reversionData[0] = ValueFactory.createValue(rs.getString(1));
 		if (rs.getObject(2) != null) {
-		    NumberFormat doubleFormat = DoubleFormatNT.getDisplayingFormat();
-		    Double doubleValue = rs.getDouble(2);
-		    String doubleAsString = doubleFormat.format(doubleValue);
-		    reversionData[1] = ValueFactory.createValue(doubleAsString);
+		    reversionData[1] = ValueFactory.createValue(getDoubleFormatted(rs.getDouble(2)));
 		}else {
-		    reversionData[1] = null;
+		    reversionData[1] = ValueFactory.createNullValue();
 		}
 		if (rs.getObject(3) != null) {
-		    NumberFormat doubleFormat = DoubleFormatNT.getDisplayingFormat();
-		    Double doubleValue = rs.getDouble(3);
-		    String doubleAsString = doubleFormat.format(doubleValue);
-		    reversionData[2] = ValueFactory.createValue(doubleAsString);
+		    reversionData[2] = ValueFactory.createValue(getDoubleFormatted(rs.getDouble(3)));
 		}else {
-		    reversionData[2] = null;
+		    reversionData[2] = ValueFactory.createNullValue();
+		}
+		if (rs.getObject(4) != null) {
+		    reversionData[3] = ValueFactory.createValue(getDateFormatted(rs.getDate(4)));
+		}else {
+		    reversionData[3] = ValueFactory.createNullValue();
 		}
 		tableModel.addRow(reversionData);
 		//Save current Fincas in order to remove them
@@ -670,6 +674,16 @@ public class FormExpropiations extends AbstractForm implements TableModelListene
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
+    }
+
+    private String getDateFormatted(Date date) {
+	SimpleDateFormat dateFormat = DateFormatNT.getDateFormat();
+	return dateFormat.format(date);
+    }
+
+    private String getDoubleFormatted(Double doubleValue) {
+	NumberFormat doubleFormat = DoubleFormatNT.getDisplayingFormat();
+	return doubleFormat.format(doubleValue);
     }
 
     public void updatePMTable() {

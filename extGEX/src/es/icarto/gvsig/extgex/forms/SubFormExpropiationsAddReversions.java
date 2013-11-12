@@ -49,12 +49,13 @@ public class SubFormExpropiationsAddReversions extends JPanel implements IWindow
     private JComboBox idReversion;
     private JTextField superficie;
     private JTextField importe;
+    private JTextField fecha;
     private JButton addReversionButton;
 
     protected WindowInfo viewInfo = null;
     private final String title = "Añadir Reversiones";
-    private final int width = 300;
-    private final int height = 105;
+    private final int width = 350;
+    private final int height = 135;
 
     public SubFormExpropiationsAddReversions(FLyrVect layer, JTable reversionsTable, String idFinca, IGeometry insertedGeom) {
 	InputStream stream = getClass().getClassLoader().getResourceAsStream("expropiaciones_add_reversiones.xml");
@@ -85,6 +86,7 @@ public class SubFormExpropiationsAddReversions extends JPanel implements IWindow
 
 	superficie =  (JTextField) form.getComponentByName(DBNames.SUBFORMEXPROPIATIONS_SUPERFICIE);
 	importe = (JTextField) form.getComponentByName(DBNames.SUBFORMEXPROPIATIONS_IMPORTE);
+	fecha = (JTextField) form.getComponentByName(DBNames.SUBFORMEXPROPIATIONS_FECHA);
 
 	idReversion = (JComboBox) form.getComponentByName(DBNames.SUBFORMSEXPROPIATIONS_IDREVERSIONS);
 	for (String id_reversion : getReversionsFromFinca()) {
@@ -179,7 +181,7 @@ public class SubFormExpropiationsAddReversions extends JPanel implements IWindow
     }
 
     private Value[] getReversionData(String idReversion) {
-	Value[] reversionData = new Value[3];
+	Value[] reversionData = new Value[4];
 
 	reversionData[0] = ValueFactory.createValue(idReversion);
 	if (!superficie.getText().isEmpty()) {
@@ -187,6 +189,9 @@ public class SubFormExpropiationsAddReversions extends JPanel implements IWindow
 	}
 	if (!importe.getText().isEmpty()) {
 	    reversionData[2] = ValueFactory.createValue(importe.getText());
+	}
+	if (!importe.getText().isEmpty()) {
+	    reversionData[3] = ValueFactory.createValue(fecha.getText());
 	}
 
 	return reversionData;

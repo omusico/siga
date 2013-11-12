@@ -55,7 +55,7 @@ public class DBNames {
     public static final String FIELD_SUPERFICIE_REVERSIONES = "superficie";
     public static final String FIELD_OCUPACION_REVERSIONES = "ocupacion";
     public static final String FIELD_FECHAACTA_REVERSIONES = "fecha_acta_reversion";
-    public static final String FIELD_IDREVERSION_REVERSIONES = "id_reversion";
+    public static final String FIELD_IDREVERSION_REVERSIONES = "exp_id";
     public static final String FIELD_NUMEROREVERSION_REVERSIONES = "numero_reversion";
     public static final String FIELD_GID_REVERSIONES = "gid";
 
@@ -141,6 +141,7 @@ public class DBNames {
     public static final String SUBFORMSEXPROPIATIONS_IDREVERSIONS = "id_reversion";
     public static final String SUBFORMEXPROPIATIONS_SUPERFICIE = "superficie";
     public static final String SUBFORMEXPROPIATIONS_IMPORTE = "importe";
+    public static final String SUBFORMEXPROPIATIONS_FECHA = "fecha_acta";
 
     public static final String EXPROPIATIONS_AFECTADO_PM = "afectado_por_policia_margenes";
 
