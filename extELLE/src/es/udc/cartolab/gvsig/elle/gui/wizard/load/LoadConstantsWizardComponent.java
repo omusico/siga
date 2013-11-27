@@ -59,6 +59,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
     public final static String CONSTANTS_QUERY_FIELD_NAME = "campo_query";
 
     private static final String MUNICIPIO_CONSTANTS_TABLENAME = "audasa_extgia_dominios.municipio_constantes";
+    private static final String USUARIOS_TABLENAME = "audasa_aplicaciones.usuarios";
 
     //ZoomToConstant
     public final static String CONSTANTS_ZOOM_LAYER_FIELD = "municipio_codigo";
@@ -87,6 +88,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	    valuesList.setListData(getValuesFromConstantByQuery(selectedConstant));
 	    valuesList.addListSelectionListener(new ListSelectionListener() {
 
+		@Override
 		public void valueChanged(ListSelectionEvent arg0) {
 		    int[] selected = valuesList.getSelectedIndices();
 		    callStateChanged();
@@ -113,7 +115,12 @@ public class LoadConstantsWizardComponent extends WizardComponent {
     }
 
     private String[] getValuesFromConstantByQuery(String constant) {
-	String query = "SELECT tag FROM " + MUNICIPIO_CONSTANTS_TABLENAME +  " ORDER BY orden;";
+	String query;
+	if (getAreaByConnectedUser().equalsIgnoreCase("ambas")) {
+	    query = "SELECT tag FROM " + MUNICIPIO_CONSTANTS_TABLENAME + " ORDER BY orden;";
+	}else {
+	    query = "SELECT tag FROM " + MUNICIPIO_CONSTANTS_TABLENAME +  " WHERE area = " + "'" + getAreaByConnectedUser() + "' ORDER BY orden;";
+	}
 	PreparedStatement statement;
 	try {
 	    statement = dbs.getJavaConnection().prepareStatement(query);
@@ -325,7 +332,8 @@ public class LoadConstantsWizardComponent extends WizardComponent {
     }
 
     private String getIdByConstantTag(String constantTag) {
-	String query = "SELECT id FROM " + MUNICIPIO_CONSTANTS_TABLENAME + " WHERE tag ="  + "'" + constantTag + "'" + ";";
+	String query = "SELECT id FROM " + MUNICIPIO_CONSTANTS_TABLENAME +
+		" WHERE tag ="  + "'" + constantTag + "'" + ";";
 	PreparedStatement statement;
 	try {
 	    statement = dbs.getJavaConnection().prepareStatement(query);
@@ -340,7 +348,24 @@ public class LoadConstantsWizardComponent extends WizardComponent {
     }
 
     private String getNombreMunicipioById(String id) {
-	String query = "SELECT item FROM " + MUNICIPIO_CONSTANTS_TABLENAME + " WHERE id ="  + "'" + id + "'" + ";";
+	String query = "SELECT item FROM " + MUNICIPIO_CONSTANTS_TABLENAME +
+		" WHERE id ="  + "'" + id + "'" + ";";
+	PreparedStatement statement;
+	try {
+	    statement = dbs.getJavaConnection().prepareStatement(query);
+	    statement.execute();
+	    ResultSet rs = statement.getResultSet();
+	    rs.first();
+	    return rs.getString(1);
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return null;
+    }
+
+    private String getAreaByConnectedUser() {
+	String query = "SELECT area FROM " + USUARIOS_TABLENAME +
+		" WHERE nombre ="  + "'" + dbs.getUserName() + "'" + ";";
 	PreparedStatement statement;
 	try {
 	    statement = dbs.getJavaConnection().prepareStatement(query);
