@@ -225,6 +225,10 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 		    map.setWhereOnAllLayers(where);
 		    map.setWhereOnAllOverviewLayers(where);
 		    ELLEMap.setFiltered(true);
+		}else if (selectedValue == null && selectedValuesList == null && !getAreaByConnectedUser().equalsIgnoreCase("ambas")) {
+		    where = where + getWhereWithAllCouncilsOfArea();
+		    map.setWhereOnAllLayers(where);
+		    map.setWhereOnAllOverviewLayers(where);
 		} else {
 		    ELLEMap.setFiltered(false);
 		}
@@ -377,5 +381,36 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	    e.printStackTrace();
 	}
 	return null;
+    }
+
+    private ArrayList<String> getCouncilsByConnectedUser() {
+	ArrayList<String> councils = new ArrayList<String>();
+	String query = "SELECT id FROM " + MUNICIPIO_CONSTANTS_TABLENAME +
+		" WHERE area = '" + getAreaByConnectedUser() + "';";
+	PreparedStatement statement;
+	try {
+	    statement = dbs.getJavaConnection().prepareStatement(query);
+	    statement.execute();
+	    ResultSet rs = statement.getResultSet();
+	    while (rs.next()) {
+		councils.add(rs.getString(1));
+	    }
+	    return councils;
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return null;
+    }
+
+    private String getWhereWithAllCouncilsOfArea() {
+	String where = "";
+	for (int i=0; i<getCouncilsByConnectedUser().size(); i++) {
+	    if (i != getCouncilsByConnectedUser().size()-1) {
+		where = where + getValueOfFieldByConstant(selectedConstant, CONSTANTS_FILTER_FIELD_NAME) + " = " + "'" + getCouncilsByConnectedUser().get(i) + "'" + " OR ";
+	    }else {
+		where = where + getValueOfFieldByConstant(selectedConstant, CONSTANTS_FILTER_FIELD_NAME) + " = " + "'" + getCouncilsByConnectedUser().get(i) + "')";
+	    }
+	}
+	return where;
     }
 }
