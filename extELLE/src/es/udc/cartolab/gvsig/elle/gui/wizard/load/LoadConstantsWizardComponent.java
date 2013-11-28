@@ -236,19 +236,31 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 		if (view.getModel().getName().equals("ELLE View") && (view.getModel() instanceof ProjectView)) {
 		    ((ProjectView) view.getModel()).setName(mapName);
 		}
-		if (selectedValue == null) {
-		    PluginServices.getMainFrame().getStatusBar().setMessage("constants",
-			    selectedConstant + ": " + "TODOS");
-		}else {
-		    PluginServices.getMainFrame().getStatusBar().setMessage("constants",
-			    selectedConstant + ": " + getNombreMunicipioById(selectedValue));
-		}
+		writeCouncilsLoadedInStatusBar();
 		zoomToConstant();
 	    } catch (Exception e) {
 		throw new WizardException(e);
 	    }
 	} else {
 	    throw new WizardException("Couldn't retrieve the view");
+	}
+    }
+
+    private void writeCouncilsLoadedInStatusBar() {
+	if (selectedValue == null) {
+	    if (getAreaByConnectedUser().equalsIgnoreCase("ambas")) {
+		PluginServices.getMainFrame().getStatusBar().setMessage("constants",
+			selectedConstant + ": " + "TODOS");
+	    }else if (getAreaByConnectedUser().equalsIgnoreCase("norte")) {
+		PluginServices.getMainFrame().getStatusBar().setMessage("constants",
+			selectedConstant + ": " + "Área Norte");
+	    }else {
+		PluginServices.getMainFrame().getStatusBar().setMessage("constants",
+			selectedConstant + ": " + "Área Sur");
+	    }
+	}else {
+	    PluginServices.getMainFrame().getStatusBar().setMessage("constants",
+		    selectedConstant + ": " + getNombreMunicipioById(selectedValue));
 	}
     }
 
