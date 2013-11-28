@@ -1139,7 +1139,7 @@
         <property key="m_rotation" value="0.0"/>
         <property key="level" value="657"/>
         <property key="num" value="12"/>
-        <property key="s" value="Arista Exterior ExplanaciÃ³n"/>
+        <property key="s" value="Arista Exterior Explanación"/>
         <property key="m_isFixed" value="false"/>
         <property key="m_pos" value="0"/>
         <property key="fontName" value="SansSerif.plain"/>
@@ -1202,7 +1202,7 @@
         <property key="m_rotation" value="0.0"/>
         <property key="level" value="659"/>
         <property key="num" value="13"/>
-        <property key="s" value="LÃ­nea lÃ­mite de EdificaciÃ³n"/>
+        <property key="s" value="Línea límite de Edificación"/>
         <property key="m_isFixed" value="false"/>
         <property key="m_pos" value="0"/>
         <property key="fontName" value="SansSerif.plain"/>
@@ -1328,7 +1328,7 @@
         <property key="m_rotation" value="0.0"/>
         <property key="level" value="663"/>
         <property key="num" value="15"/>
-        <property key="s" value="Zona de Dominio PÃºblico"/>
+        <property key="s" value="Zona de Dominio Público"/>
         <property key="m_isFixed" value="false"/>
         <property key="m_pos" value="0"/>
         <property key="fontName" value="SansSerif.plain"/>
@@ -1454,7 +1454,7 @@
         <property key="m_rotation" value="0.0"/>
         <property key="level" value="667"/>
         <property key="num" value="17"/>
-        <property key="s" value="Linea de ExpropiaciÃ³n"/>
+        <property key="s" value="Línea de Expropiación"/>
         <property key="m_isFixed" value="false"/>
         <property key="m_pos" value="0"/>
         <property key="fontName" value="SansSerif.plain"/>
@@ -1517,7 +1517,7 @@
         <property key="m_rotation" value="0.0"/>
         <property key="level" value="669"/>
         <property key="num" value="18"/>
-        <property key="s" value="Zona de AfecciÃ³n"/>
+        <property key="s" value="Zona de Afección"/>
         <property key="m_isFixed" value="false"/>
         <property key="m_pos" value="0"/>
         <property key="fontName" value="SansSerif.plain"/>
