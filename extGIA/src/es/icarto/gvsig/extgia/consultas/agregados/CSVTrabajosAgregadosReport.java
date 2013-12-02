@@ -27,6 +27,9 @@ public abstract class CSVTrabajosAgregadosReport {
     protected String[] getColumnNames() {
 	String[] columnNames = {
 		"ID Elemento",
+		"Tramo",
+		"Tipo Vía",
+		"Nombre Vía",
 		"PK Inicial",
 		"PK Final",
 		"Sentido",
@@ -120,7 +123,7 @@ public abstract class CSVTrabajosAgregadosReport {
 		rs = statement.executeQuery(totalQuery +
 			filters.getWhereClauseFiltersForAgregados(getElement(), true));
 		writer.append("TOTAL");
-		for (int i=0; i<=3; i++) {
+		for (int i=0; i<=6; i++) {
 		    writer.append(CSV_SEPARATOR);
 		}
 		if (rs.next()) {
@@ -150,7 +153,7 @@ public abstract class CSVTrabajosAgregadosReport {
 		rs.beforeFirst();
 		writer.append("\n");
 		writer.append(title);
-		for (int i=0; i<=3; i++) {
+		for (int i=0; i<=6; i++) {
 		    writer.append(CSV_SEPARATOR);
 		}
 		rs.next();

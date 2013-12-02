@@ -44,6 +44,9 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
     protected String[] getColumnNames() {
 	String[] columnNames = {
 		"ID Elemento",
+		"Tramo",
+		"Tipo Vía",
+		"Nombre Vía",
 		"PK Inicial",
 		"PK Final",
 		"Sentido",
@@ -61,6 +64,9 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
 	columnsWidth[2] = 60f;
 	columnsWidth[3] = 60f;
 	columnsWidth[4] = 60f;
+	columnsWidth[5] = 60f;
+	columnsWidth[6] = 60f;
+	columnsWidth[7] = 60f;
 
 	return columnsWidth;
     }
@@ -125,7 +131,7 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
 		totalCell.setBorder(Rectangle.NO_BORDER);
 		totalTable.addCell(totalCell);
 
-		for (int i=0; i<3; i++) {
+		for (int i=0; i<6; i++) {
 		    PdfPCell cell = new PdfPCell();
 		    cell.setBorder(Rectangle.NO_BORDER);
 		    totalTable.addCell(cell);
@@ -164,7 +170,7 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
 		    totalCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		    table.addCell(totalCell);
 
-		    for (int i=0; i<3; i++) {
+		    for (int i=0; i<6; i++) {
 			PdfPCell cell = new PdfPCell();
 			table.addCell(cell);
 		    }
