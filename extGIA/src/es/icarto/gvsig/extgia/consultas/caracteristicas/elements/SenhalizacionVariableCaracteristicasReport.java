@@ -12,8 +12,8 @@ import es.icarto.gvsig.extgia.consultas.PDFReport;
 public class SenhalizacionVariableCaracteristicasReport extends PDFReport {
 
     public SenhalizacionVariableCaracteristicasReport(String element,
-	    String fileName, ResultSet resultMap, ConsultasFilters filters) {
-	super(element, fileName, resultMap, filters);
+	    String fileName, ResultSet resultMap, ConsultasFilters filters, int reportType) {
+	super(element, fileName, resultMap, filters, reportType);
 	// TODO Auto-generated constructor stub
     }
 

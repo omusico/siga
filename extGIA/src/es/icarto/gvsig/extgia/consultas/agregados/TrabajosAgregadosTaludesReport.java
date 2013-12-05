@@ -9,8 +9,8 @@ import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 public class TrabajosAgregadosTaludesReport extends TrabajosAgregadosReport {
 
     public TrabajosAgregadosTaludesReport(String[] element, String fileName,
-	    ResultSet resultMap, ConsultasFilters filters) {
-	super(element, fileName, resultMap, filters);
+	    ResultSet resultMap, ConsultasFilters filters, int reportType) {
+	super(element, fileName, resultMap, filters, reportType);
 	// TODO Auto-generated constructor stub
     }
 

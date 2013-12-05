@@ -18,8 +18,8 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 public class AreasDescansoCaracteristicasReport extends PDFReport {
 
     public AreasDescansoCaracteristicasReport(String element, String fileName,
-	    ResultSet resultMap, ConsultasFilters filters) {
-	super(element, fileName, resultMap, filters);
+	    ResultSet resultMap, ConsultasFilters filters, int reportType) {
+	super(element, fileName, resultMap, filters, reportType);
     }
 
     @Override

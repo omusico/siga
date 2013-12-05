@@ -330,7 +330,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
 	if (pdfRadioButton.isSelected()) {
 	    if (tipo == TRABAJOS_AGREGADOS) {
-		createPdfReportAgregados(outputFile, element, filters);
+		createPdfReportAgregados(outputFile, element, filters, tipo);
 	    }else {
 		createPdfReport(tipo, outputFile, element, filters, query);
 	    }
@@ -344,11 +344,11 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
     }
 
     private void createPdfReportAgregados(String outputFile, String[] element,
-	    ConsultasFilters filters) {
+	    ConsultasFilters filters, int reportType) {
 	if (element[0].equals("Taludes")) {
-	    new TrabajosAgregadosTaludesReport(element, outputFile, null, filters);
+	    new TrabajosAgregadosTaludesReport(element, outputFile, null, filters, reportType);
 	}else if (element[0].equals("Isletas")){
-	    new TrabajosAgregadosIsletasReport(element, outputFile, null, filters);
+	    new TrabajosAgregadosIsletasReport(element, outputFile, null, filters, reportType);
 	}
 	showOpenSingleReportDialog(outputFile);
     }
@@ -381,21 +381,21 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		if (tipo == TRABAJOS) {
 		    new TrabajosReport(
 			    element[1],
-			    outputFile, rs, filters);
+			    outputFile, rs, filters, tipo);
 		}else if (tipo == TRABAJOS_FIRME) {
 		    new FirmeTrabajosReport(
 			    element[1],
-			    outputFile, rs, filters);
+			    outputFile, rs, filters, tipo);
 		}else if (tipo == RECONOCIMIENTOS_FIRME) {
 		    new FirmeReconocimientosReport(
 			    element[1],
-			    outputFile, rs, filters);
+			    outputFile, rs, filters, tipo);
 		}else if (tipo == CARACTERISTICAS) {
-		    ConsultasFieldNames.createCaracteristicasReport(element, outputFile, rs, filters);
+		    ConsultasFieldNames.createCaracteristicasReport(element, outputFile, rs, filters, tipo);
 		}else {
 		    new ReconocimientosReport(
 			    element[1],
-			    outputFile, rs, filters);
+			    outputFile, rs, filters, tipo);
 		}
 
 		if (!isReportOfSeveralElements) {

@@ -12,8 +12,8 @@ import es.icarto.gvsig.extgia.consultas.PDFReport;
 public class TaludesCaracteristicasReport extends PDFReport {
 
     public TaludesCaracteristicasReport(String element, String fileName,
-	    ResultSet resultMap, ConsultasFilters filters) {
-	super(element, fileName, resultMap, filters);
+	    ResultSet resultMap, ConsultasFilters filters, int reportType) {
+	super(element, fileName, resultMap, filters, reportType);
     }
 
     @Override

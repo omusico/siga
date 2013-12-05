@@ -567,55 +567,55 @@ public class ConsultasFieldNames {
     }
 
     public static void createCaracteristicasReport(String[] element, String outputFile,
-	    ResultSet rs, ConsultasFilters filters) {
+	    ResultSet rs, ConsultasFilters filters, int reportType) {
 	switch (DBFieldNames.Elements.valueOf(element[0])) {
 	case Taludes:
-	    new TaludesCaracteristicasReport(element[1], outputFile, rs, filters);
+	    new TaludesCaracteristicasReport(element[1], outputFile, rs, filters, reportType);
 	    break;
 	case Isletas:
-	    new IsletasCaracteristicasReport(element[1], outputFile, rs, filters);
+	    new IsletasCaracteristicasReport(element[1], outputFile, rs, filters, reportType);
 	    break;
 	case Barrera_Rigida:
-	    new BarreraRigidaCaracteristicasReport(element[1], outputFile, rs, filters);
+	    new BarreraRigidaCaracteristicasReport(element[1], outputFile, rs, filters, reportType);
 	    break;
 	case Areas_Servicio:
-	    new AreasServicioCaracteristicasReport(element[1], outputFile, rs, filters);
+	    new AreasServicioCaracteristicasReport(element[1], outputFile, rs, filters, reportType);
 	    break;
 	case Areas_Descanso:
-	    new AreasDescansoCaracteristicasReport(element[1], outputFile, rs, filters);
+	    new AreasDescansoCaracteristicasReport(element[1], outputFile, rs, filters, reportType);
 	    break;
 	case Areas_Peaje:
-	    new AreasPeajeCaracteristicasReport(element[1], outputFile, rs, filters);
+	    new AreasPeajeCaracteristicasReport(element[1], outputFile, rs, filters, reportType);
 	    break;
 	case Enlaces:
-	    new EnlacesCaracteristicasReport(element[1], outputFile, rs, filters);
+	    new EnlacesCaracteristicasReport(element[1], outputFile, rs, filters, reportType);
 	    break;
 	case Juntas:
-	    new JuntasCaracteristicasReport(element[1], outputFile, rs, filters);
+	    new JuntasCaracteristicasReport(element[1], outputFile, rs, filters, reportType);
 	    break;
 	case Pasos_Mediana:
-	    new PasosMedianaCaracteristicasReport(element[1], outputFile, rs, filters);
+	    new PasosMedianaCaracteristicasReport(element[1], outputFile, rs, filters, reportType);
 	    break;
 	case Senhalizacion_Vertical:
-	    new SenhalizacionVerticalCaracteristicasReport(element[1], outputFile, rs, filters);
+	    new SenhalizacionVerticalCaracteristicasReport(element[1], outputFile, rs, filters, reportType);
 	    break;
 	case Valla_Cierre:
-	    new VallaCierreCaracteristicasReport(element[1], outputFile, rs, filters);
+	    new VallaCierreCaracteristicasReport(element[1], outputFile, rs, filters, reportType);
 	    break;
 	case Firme:
-	    new FirmeCaracteristicasReport(element[1], outputFile, rs, filters);
+	    new FirmeCaracteristicasReport(element[1], outputFile, rs, filters, reportType);
 	    break;
 	case Obras_Paso:
-	    new ObrasPasoCaracteristicasReport(element[1], outputFile, rs, filters);
+	    new ObrasPasoCaracteristicasReport(element[1], outputFile, rs, filters, reportType);
 	    break;
 	case Obras_Desague:
-	    new ObrasDesagueCaracteristicasReport(element[1], outputFile, rs, filters);
+	    new ObrasDesagueCaracteristicasReport(element[1], outputFile, rs, filters, reportType);
 	    break;
 	case Muros:
-	    new MurosCaracteristicasReport(element[1], outputFile, rs, filters);
+	    new MurosCaracteristicasReport(element[1], outputFile, rs, filters, reportType);
 	    break;
 	case Senhalizacion_Variable:
-	    new SenhalizacionVariableCaracteristicasReport(element[1], outputFile, rs, filters);
+	    new SenhalizacionVariableCaracteristicasReport(element[1], outputFile, rs, filters, reportType);
 	    break;
 	}
     }

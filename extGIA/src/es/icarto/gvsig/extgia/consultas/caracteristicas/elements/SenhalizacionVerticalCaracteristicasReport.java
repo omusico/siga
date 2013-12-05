@@ -19,8 +19,8 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 public class SenhalizacionVerticalCaracteristicasReport extends PDFReport {
 
     public SenhalizacionVerticalCaracteristicasReport(String element,
-	    String fileName, ResultSet resultMap, ConsultasFilters filters) {
-	super(element, fileName, resultMap, filters);
+	    String fileName, ResultSet resultMap, ConsultasFilters filters, int reportType) {
+	super(element, fileName, resultMap, filters, reportType);
     }
 
     @Override
@@ -80,11 +80,11 @@ public class SenhalizacionVerticalCaracteristicasReport extends PDFReport {
 
     @Override
     protected void writeValues(Document document, ResultSet resultMap,
-	    PdfPTable table) throws SQLException, DocumentException {
+	    PdfPTable table, int reportType) throws SQLException, DocumentException {
 	Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
 	String query = PDFCaracteristicasQueries.getSenhalizacionVerticalQuery(filters);
 	ResultSet rs = st.executeQuery(query);
-	super.writeValues(document, rs, table);
+	super.writeValues(document, rs, table, reportType);
     }
 
     @Override

@@ -24,8 +24,8 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
     private TrabajosAgregadosReportQueries agregadosReportQueries = null;
 
     public TrabajosAgregadosReport(String[] element, String fileName,
-	    ResultSet resultMap, ConsultasFilters filters) {
-	super(element[1], fileName, null, filters);
+	    ResultSet resultMap, ConsultasFilters filters, int reportType) {
+	super(element[1], fileName, null, filters, reportType);
     }
 
     protected abstract String getElement();
@@ -77,7 +77,7 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
     }
 
     @Override
-    protected void writeValues (Document document, ResultSet resultMap, PdfPTable table) {
+    protected void writeValues (Document document, ResultSet resultMap, PdfPTable table, int reportType) {
 	agregadosReportQueries = new TrabajosAgregadosReportQueries(getElement());
 	writeTable("Desbroce con retroaraña\n\n",
 		agregadosReportQueries.getDesbroceRetroaranhaQuery(),

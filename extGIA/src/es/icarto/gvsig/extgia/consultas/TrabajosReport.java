@@ -10,8 +10,8 @@ import com.lowagie.text.pdf.PdfPCell;
 public class TrabajosReport extends PDFReport {
 
     public TrabajosReport(String element, String fileName, ResultSet resultMap,
-	    ConsultasFilters filters) {
-	super(element, fileName, resultMap, filters);
+	    ConsultasFilters filters, int reportType) {
+	super(element, fileName, resultMap, filters, reportType);
     }
 
     @Override

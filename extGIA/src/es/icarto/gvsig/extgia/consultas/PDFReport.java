@@ -44,9 +44,9 @@ public abstract class PDFReport {
     protected final ConsultasFilters filters;
 
     public PDFReport(String element, String fileName,
-	    ResultSet resultMap, ConsultasFilters filters) {
+	    ResultSet resultMap, ConsultasFilters filters, int reportType) {
 	this.filters = filters;
-	writePdfReport(element, fileName, resultMap, filters);
+	writePdfReport(element, fileName, resultMap, filters, reportType);
     }
 
     protected abstract String getTitle();
@@ -176,7 +176,7 @@ public abstract class PDFReport {
     }
 
     private void writePdfReportContent(Document document, String element,
-	    ResultSet resultMap, ConsultasFilters filters) {
+	    ResultSet resultMap, ConsultasFilters filters, int reportType) {
 	try {
 	    // Header
 	    Image image = getHeaderImage();
@@ -198,7 +198,7 @@ public abstract class PDFReport {
 	    isFirstPage = false;
 
 	    // Values
-	    writeValues(document, resultMap, table);
+	    writeValues(document, resultMap, table, reportType);
 
 	    // Close file
 	    document.close();
@@ -212,12 +212,21 @@ public abstract class PDFReport {
     }
 
     protected void writeValues(Document document, ResultSet resultMap,
-	    PdfPTable table) throws SQLException, DocumentException {
+	    PdfPTable table, int reportType) throws SQLException, DocumentException {
 	Paragraph value;
 	int numberOfRows = 0;
 	resultMap.beforeFirst();
+	int startColumn;
+	int endColumn;
+	if (reportType != 4) {
+	    startColumn = 1;
+	    endColumn = getColumnNames().length;
+	}else {
+	    startColumn = 2;
+	    endColumn = getColumnNames().length + 1 ;
+	}
 	while (resultMap.next()) {
-	    for (int column = 2; column <= getColumnNames().length+1; column++) {
+	    for (int column = startColumn; column <= endColumn; column++) {
 		if (resultMap.getString(column) != null) {
 		    if (resultMap.getMetaData().getColumnType(column) == 91) {
 			SimpleDateFormat dateFormat = DateFormatNT.getDateFormat();
@@ -293,7 +302,7 @@ public abstract class PDFReport {
     }
 
     public void writePdfReport(String element, String fileName,
-	    ResultSet resultMap, ConsultasFilters filters) {
+	    ResultSet resultMap, ConsultasFilters filters, int reportType) {
 	document = new Document(setPageSize());
 	try {
 	    PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(fileName));
@@ -301,7 +310,7 @@ public abstract class PDFReport {
 	    document.open();
 
 	    // Write report into document
-	    writePdfReportContent(document, element, resultMap, filters);
+	    writePdfReportContent(document, element, resultMap, filters, reportType);
 	    // Close file
 	    document.close();
 
