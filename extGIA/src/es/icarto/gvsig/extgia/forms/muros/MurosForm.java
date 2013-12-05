@@ -272,7 +272,7 @@ public class MurosForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public String getReconocimientosDBTableName() {
-	return "muros_reconocimiento_estado";
+	return "muros_reconocimientos";
     }
 
     @Override

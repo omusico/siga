@@ -257,7 +257,7 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public String getReconocimientosDBTableName() {
-	return "valla_cierre_reconocimiento_estado";
+	return "valla_cierre_reconocimientos";
     }
 
     @Override

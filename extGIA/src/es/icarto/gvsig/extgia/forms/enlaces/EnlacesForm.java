@@ -364,7 +364,7 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public String getReconocimientosDBTableName() {
-	return "enlaces_reconocimiento_estado";
+	return "enlaces_reconocimientos";
     }
 
     @Override

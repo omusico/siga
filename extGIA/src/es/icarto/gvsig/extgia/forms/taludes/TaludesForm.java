@@ -392,7 +392,7 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public String getReconocimientosDBTableName() {
-	return "taludes_reconocimiento_estado";
+	return "taludes_reconocimientos";
     }
 
     @Override

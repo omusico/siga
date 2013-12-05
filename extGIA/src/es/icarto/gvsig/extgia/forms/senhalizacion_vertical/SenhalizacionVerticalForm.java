@@ -337,7 +337,7 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public String getReconocimientosDBTableName() {
-	return "senhalizacion_vertical_reconocimiento_estado";
+	return "senhalizacion_vertical_reconocimientos";
     }
 
     @Override

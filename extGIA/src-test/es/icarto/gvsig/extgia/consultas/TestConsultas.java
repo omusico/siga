@@ -274,7 +274,7 @@ public class TestConsultas {
 		}
 		String query = "SELECT " + fields +
 			" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
-			"_reconocimiento_estado;";
+			"_reconocimientos;";
 		ResultSet rs = st.executeQuery(query);
 		assertTrue(rs!=null);
 	    }
@@ -295,7 +295,7 @@ public class TestConsultas {
 		}
 		String query = "SELECT " + fields +
 			" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
-			"_reconocimiento_estado" +
+			"_reconocimientos" +
 			" WHERE " + ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()) +
 			" IN (SELECT " +
 			ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()) +
@@ -340,7 +340,7 @@ public class TestConsultas {
 	    Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
 	    String query = "SELECT " +
 		    ConsultasFieldNames.getFirmeReconocimientosFieldNames("id_firme") +
-		    " FROM " + getSchema() + "." + "firme_reconocimiento_estado;";
+		    " FROM " + getSchema() + "." + "firme_reconocimientos;";
 	    ResultSet rs = st.executeQuery(query);
 	    assertTrue(rs!=null);
 	}
@@ -352,7 +352,7 @@ public class TestConsultas {
 	    Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
 	    String query = "SELECT " +
 		    ConsultasFieldNames.getFirmeReconocimientosFieldNames("id_firme") +
-		    " FROM " + getSchema() + "." + "firme_reconocimiento_estado" +
+		    " FROM " + getSchema() + "." + "firme_reconocimientos" +
 		    " WHERE id_firme IN (SELECT id_firme FROM " + getSchema() +
 		    ".firme" + mockFilters.getWhereClauseByLocationWidgets(false) +
 		    ");";
@@ -453,7 +453,7 @@ public class TestConsultas {
 		}
 		String query = "SELECT " + fields +
 			" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
-			"_reconocimiento_estado;";
+			"_reconocimientos;";
 		ResultSet rs = st.executeQuery(query);
 		ResultSetMetaData rsMetaData = rs.getMetaData();
 		String mockFileDir = "/tmp/test_" + DBFieldNames.Elements.values()[i].toString() + ".csv";
@@ -488,7 +488,7 @@ public class TestConsultas {
 	    Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
 	    String query = "SELECT " +
 		    ConsultasFieldNames.getFirmeReconocimientosFieldNames("id_firme") +
-		    " FROM " + getSchema() + "." + "firme_reconocimiento_estado;";
+		    " FROM " + getSchema() + "." + "firme_reconocimientos;";
 	    ResultSet rs = st.executeQuery(query);
 	    ResultSetMetaData rsMetaData = rs.getMetaData();
 	    String mockFileDir = "/tmp/test_" + DBFieldNames.Elements.values()[i].toString() + ".csv";

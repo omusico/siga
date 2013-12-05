@@ -248,7 +248,7 @@ public class JuntasForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public String getReconocimientosDBTableName() {
-	return "juntas_reconocimiento_estado";
+	return "juntas_reconocimientos";
     }
 
     @Override

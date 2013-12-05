@@ -302,7 +302,7 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public String getReconocimientosDBTableName() {
-	return "firme_reconocimiento_estado";
+	return "firme_reconocimientos";
     }
 
     @Override

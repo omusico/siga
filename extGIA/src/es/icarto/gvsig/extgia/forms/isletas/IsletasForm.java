@@ -281,7 +281,7 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public String getReconocimientosDBTableName() {
-	return "isletas_reconocimiento_estado";
+	return "isletas_reconocimientos";
     }
 
     @Override

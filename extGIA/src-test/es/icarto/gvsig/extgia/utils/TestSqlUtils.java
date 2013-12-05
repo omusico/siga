@@ -109,10 +109,10 @@ public class TestSqlUtils {
 	mockData.put("indice_estado", ValueFactory.createValue(1.0));
 	mockData.put("observaciones", ValueFactory.createValue("bar"));
 
-	SqlUtils.insert("audasa_extgia", "areas_descanso_reconocimiento_estado", mockData);
+	SqlUtils.insert("audasa_extgia", "areas_descanso_reconocimientos", mockData);
 
 	Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-	ResultSet rs = st.executeQuery("SELECT * FROM audasa_extgia.areas_descanso_reconocimiento_estado" +
+	ResultSet rs = st.executeQuery("SELECT * FROM audasa_extgia.areas_descanso_reconocimientos" +
 		" WHERE " + "id_area_descanso = '2311360581' AND nombre_revisor = 'foo'");
 	boolean inserted = false;
 	if (rs.next()) {
@@ -136,10 +136,10 @@ public class TestSqlUtils {
 	mockData.put("indice_estado", ValueFactory.createValue(1.0));
 	mockData.put("observaciones", ValueFactory.createValue("bar"));
 
-	SqlUtils.insert("audasa_extgia", "areas_descanso_reconocimiento_estado", mockData);
+	SqlUtils.insert("audasa_extgia", "areas_descanso_reconocimientos", mockData);
 
 	Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-	ResultSet rs = st.executeQuery("SELECT * FROM audasa_extgia.areas_descanso_reconocimiento_estado" +
+	ResultSet rs = st.executeQuery("SELECT * FROM audasa_extgia.areas_descanso_reconocimientos" +
 		" WHERE " + "id_area_descanso = '2311360581' AND nombre_revisor = 'foo'");
 	boolean inserted = false;
 	if (rs.next()) {
@@ -312,13 +312,13 @@ public class TestSqlUtils {
 	mockData.put("observaciones", ValueFactory.createValue("foo"));
 
 	SqlUtils.update("audasa_extgia",
-		"areas_descanso_reconocimiento_estado",
+		"areas_descanso_reconocimientos",
 		mockData,
 		"id_area_descanso",
 		"2311360581");
 
 	Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-	ResultSet rs = st.executeQuery("SELECT * FROM audasa_extgia.areas_descanso_reconocimiento_estado" +
+	ResultSet rs = st.executeQuery("SELECT * FROM audasa_extgia.areas_descanso_reconocimientos" +
 		" WHERE " + "id_area_descanso = '2311360581' AND nombre_revisor = 'bar'");
 	boolean inserted = false;
 	if (rs.next()) {
@@ -350,13 +350,13 @@ public class TestSqlUtils {
 	mockData.put("observaciones", ValueFactory.createValue("foo"));
 
 	SqlUtils.update("audasa_extgia",
-		"areas_descanso_reconocimiento_estado",
+		"areas_descanso_reconocimientos",
 		mockData,
 		"id_area_descanso",
 		"2311360581");
 
 	Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-	ResultSet rs = st.executeQuery("SELECT * FROM audasa_extgia.areas_descanso_reconocimiento_estado" +
+	ResultSet rs = st.executeQuery("SELECT * FROM audasa_extgia.areas_descanso_reconocimientos" +
 		" WHERE " + "id_area_descanso = '2311360581' AND nombre_revisor = 'bar'");
 	boolean inserted = false;
 	if (rs.next()) {
@@ -504,17 +504,17 @@ public class TestSqlUtils {
     @Test
     public void deleteReconocimiento() throws SQLException {
 	Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-	ResultSet rs = st.executeQuery("SELECT * FROM audasa_extgia.areas_descanso_reconocimiento_estado" +
+	ResultSet rs = st.executeQuery("SELECT * FROM audasa_extgia.areas_descanso_reconocimientos" +
 		" WHERE " + "id_area_descanso = '2311360581' AND nombre_revisor = 'bar'");
 	rs.next();
 
 	SqlUtils.delete("audasa_extgia",
-		"areas_descanso_reconocimiento_estado",
+		"areas_descanso_reconocimientos",
 		"n_inspeccion",
 		rs.getString(2));
 
 	st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-	rs = st.executeQuery("SELECT * FROM audasa_extgia.areas_descanso_reconocimiento_estado WHERE " +
+	rs = st.executeQuery("SELECT * FROM audasa_extgia.areas_descanso_reconocimientos WHERE " +
 		"id_area_descanso = '2311360581' AND n_inspeccion = '" + rs.getString(2) + "'");
 	boolean inserted = false;
 	if (rs.next()) {

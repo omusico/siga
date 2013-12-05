@@ -356,7 +356,7 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public String getReconocimientosDBTableName() {
-	return "areas_descanso_reconocimiento_estado";
+	return "areas_descanso_reconocimientos";
     }
 
     @Override

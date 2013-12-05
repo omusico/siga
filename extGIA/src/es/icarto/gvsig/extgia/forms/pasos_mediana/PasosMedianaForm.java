@@ -260,7 +260,7 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
     }
     @Override
     public String getReconocimientosDBTableName() {
-	return "pasos_mediana_reconocimiento_estado";
+	return "pasos_mediana_reconocimientos";
     }
     @Override
     public String getTrabajosDBTableName() {

@@ -353,7 +353,7 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public String getReconocimientosDBTableName() {
-	return "areas_servicio_reconocimiento_estado";
+	return "areas_servicio_reconocimientos";
     }
 
     @Override
