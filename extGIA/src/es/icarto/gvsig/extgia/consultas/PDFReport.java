@@ -19,8 +19,10 @@ import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
 import com.lowagie.text.FontFactory;
+import com.lowagie.text.HeaderFooter;
 import com.lowagie.text.Image;
 import com.lowagie.text.Paragraph;
+import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
@@ -181,6 +183,12 @@ public abstract class PDFReport {
 	    // Header
 	    Image image = getHeaderImage();
 	    document.add(image);
+
+	    // Footer
+	    Phrase footerPhrase = new Phrase("Página: ", bodyBoldStyle);
+	    HeaderFooter footer = new HeaderFooter(footerPhrase, true);
+	    footer.setBorder(Rectangle.NO_BORDER);
+	    document.setFooter(footer);
 
 	    // Write title,subtitle and date report
 	    String title = getTitle();
@@ -343,10 +351,13 @@ public abstract class PDFReport {
 		}
 	    }
 	}
+
+	@Override
+	public void onEndPage(PdfWriter pdfWriter, Document document) {
+
+	}
     }
-    public void onEndPage(PdfWriter pdfWriter, Document document) {
-	//you do what you want here
-    }
+
 
     protected ConsultasFilters getFilters() {
 	return filters;
