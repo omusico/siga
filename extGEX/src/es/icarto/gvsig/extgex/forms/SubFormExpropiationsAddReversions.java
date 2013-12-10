@@ -35,6 +35,7 @@ import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
+@SuppressWarnings("serial")
 public class SubFormExpropiationsAddReversions extends JPanel implements IWindow, ActionListener {
 
     private final double INTERSECTION_BUFFER = 100.0;
@@ -89,12 +90,14 @@ public class SubFormExpropiationsAddReversions extends JPanel implements IWindow
 	fecha = (JTextField) form.getComponentByName(DBNames.SUBFORMEXPROPIATIONS_FECHA);
 
 	idReversion = (JComboBox) form.getComponentByName(DBNames.SUBFORMSEXPROPIATIONS_IDREVERSIONS);
-	for (String id_reversion : getReversionsFromFinca()) {
-	    idReversion.addItem(id_reversion);
+	if (!getReversionsFromFinca().isEmpty()) {
+	    for (String id_reversion : getReversionsFromFinca()) {
+		idReversion.addItem(id_reversion);
+	    }
 	}
     }
 
-    private ArrayList<String> getReversionsFromFinca() {
+    public ArrayList<String> getReversionsFromFinca() {
 	ArrayList<String> reversions = null;
 	try {
 	    reversions = new ArrayList<String>();
@@ -116,18 +119,21 @@ public class SubFormExpropiationsAddReversions extends JPanel implements IWindow
 		}
 		fincaGeometry = layer.getSource().getFeature(rowIndex).getGeometry();
 	    }
-	    Geometry jtsFincaGeometry = fincaGeometry.toJTSGeometry();
 
-	    int numReversionIndex = reversionsRecordset.getFieldIndexByName(DBNames.FIELD_IDREVERSION_REVERSIONES);
-	    ReadableVectorial layerSourceFeats = reversionsLayer.getSource();
-	    for (int i = 0; i < reversionsRecordset.getRowCount(); i++) {
-		IGeometry gvGeom = layerSourceFeats.getShape(i);
-		if (gvGeom != null) {
-		    if (!gvGeom.equals(jtsFincaGeometry)) {
-			Geometry auxJTSGeom = gvGeom.toJTSGeometry();
-			if ((jtsFincaGeometry.buffer(INTERSECTION_BUFFER)).intersects(auxJTSGeom)) {
-			    String reversion = reversionsRecordset.getFieldValue(i, numReversionIndex).toString();
-			    reversions.add(reversion);
+	    if (fincaGeometry != null) {
+		Geometry jtsFincaGeometry = fincaGeometry.toJTSGeometry();
+
+		int numReversionIndex = reversionsRecordset.getFieldIndexByName(DBNames.FIELD_IDREVERSION_REVERSIONES);
+		ReadableVectorial layerSourceFeats = reversionsLayer.getSource();
+		for (int i = 0; i < reversionsRecordset.getRowCount(); i++) {
+		    IGeometry gvGeom = layerSourceFeats.getShape(i);
+		    if (gvGeom != null) {
+			if (!gvGeom.equals(jtsFincaGeometry)) {
+			    Geometry auxJTSGeom = gvGeom.toJTSGeometry();
+			    if ((jtsFincaGeometry.buffer(INTERSECTION_BUFFER)).intersects(auxJTSGeom)) {
+				String reversion = reversionsRecordset.getFieldValue(i, numReversionIndex).toString();
+				reversions.add(reversion);
+			    }
 			}
 		    }
 		}
@@ -196,4 +202,5 @@ public class SubFormExpropiationsAddReversions extends JPanel implements IWindow
 
 	return reversionData;
     }
+
 }

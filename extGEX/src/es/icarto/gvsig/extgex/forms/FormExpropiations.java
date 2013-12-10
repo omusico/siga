@@ -297,7 +297,12 @@ public class FormExpropiations extends AbstractForm implements TableModelListene
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 	    SubFormExpropiationsAddReversions subForm = new SubFormExpropiationsAddReversions(layer, reversiones, getIDFinca(), insertedGeom);
-	    PluginServices.getMDIManager().addWindow(subForm);
+	    if (!subForm.getReversionsFromFinca().isEmpty()) {
+		PluginServices.getMDIManager().addWindow(subForm);
+	    }else {
+		JOptionPane.showMessageDialog(null,
+			PluginServices.getText(this, "cannotAddReversion"));
+	    }
 	}
 
     }
