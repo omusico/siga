@@ -60,7 +60,9 @@ CalculateReconocimientoIndexValue {
 	value += Integer.parseInt(strI) * 0.10;
 	value += Integer.parseInt(strJ) * 0.07;
 
-	String strValue = Float.toString(value);
+	double valueFormatted = Math.rint(value*1000)/1000;
+
+	String strValue = Double.toString(valueFormatted);
 	resultComponent.setText(strValue);
     }
 
