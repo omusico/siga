@@ -314,10 +314,13 @@ public class DBFieldNames {
 	    break;
 	case Obras_Paso:
 	    pk = "id_obra_paso";
+	    break;
 	case Muros:
 	    pk = "id_muro";
+	    break;
 	case Senhalizacion_Variable:
 	    pk = "id_senhal_variable";
+	    break;
 	}
 	return pk;
     }
