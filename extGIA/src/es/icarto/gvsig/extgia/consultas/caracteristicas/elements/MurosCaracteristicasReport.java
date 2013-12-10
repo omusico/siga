@@ -2,6 +2,7 @@ package es.icarto.gvsig.extgia.consultas.caracteristicas.elements;
 
 import java.sql.ResultSet;
 
+import com.lowagie.text.Document;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
@@ -56,6 +57,11 @@ public class MurosCaracteristicasReport extends PDFReport {
 	columnsWidth[7] = 90f;
 
 	return columnsWidth;
+    }
+
+    @Override
+    protected void writeDatesRange(Document document, ConsultasFilters filters) {
+
     }
 
     @Override

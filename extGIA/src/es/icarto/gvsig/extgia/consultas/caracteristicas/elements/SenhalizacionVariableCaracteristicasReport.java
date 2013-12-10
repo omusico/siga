@@ -2,6 +2,7 @@ package es.icarto.gvsig.extgia.consultas.caracteristicas.elements;
 
 import java.sql.ResultSet;
 
+import com.lowagie.text.Document;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
@@ -73,6 +74,11 @@ public class SenhalizacionVariableCaracteristicasReport extends PDFReport {
 
 
 	return columnsWidth;
+    }
+
+    @Override
+    protected void writeDatesRange(Document document, ConsultasFilters filters) {
+
     }
 
     @Override

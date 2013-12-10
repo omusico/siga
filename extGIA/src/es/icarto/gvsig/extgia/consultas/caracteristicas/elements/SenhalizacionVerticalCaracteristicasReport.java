@@ -88,6 +88,11 @@ public class SenhalizacionVerticalCaracteristicasReport extends PDFReport {
     }
 
     @Override
+    protected void writeDatesRange(Document document, ConsultasFilters filters) {
+
+    }
+
+    @Override
     protected boolean hasEmbebedTable() {
 	// TODO Auto-generated method stub
 	return false;
