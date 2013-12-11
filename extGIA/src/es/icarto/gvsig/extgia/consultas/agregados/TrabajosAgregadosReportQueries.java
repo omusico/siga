@@ -113,12 +113,12 @@ public class TrabajosAgregadosReportQueries {
 	return getBaseSumQuery() + "Herbicida')";
     }
 
-    public String getVegeracionQuery() {
-	return getBaseQuery() + "Vegeración mediana de hormigón'";
+    public String getVegetacionQuery() {
+	return getBaseQuery() + "Vegetación mediana de hormigón'";
     }
 
-    public String getVegeracionSumQuery() {
-	return getBaseSumQuery() + "Vegeración mediana de hormigón')";
+    public String getVegetacionSumQuery() {
+	return getBaseSumQuery() + "Vegetación mediana de hormigón')";
     }
 
 }

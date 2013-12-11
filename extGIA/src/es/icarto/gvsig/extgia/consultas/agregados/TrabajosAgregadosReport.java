@@ -111,9 +111,9 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
 		agregadosReportQueries.getHerbicidadQuery(),
 		agregadosReportQueries.getHerbicidaSumQuery());
 
-	writeTable("\nVegeración mediana de hormigón\n\n",
-		agregadosReportQueries.getVegeracionQuery(),
-		agregadosReportQueries.getVegeracionSumQuery());
+	writeTable("\nVegetación mediana de hormigón\n\n",
+		agregadosReportQueries.getVegetacionQuery(),
+		agregadosReportQueries.getVegetacionSumQuery());
     }
 
     private void writeTotal(Document document, String title, String query) {
