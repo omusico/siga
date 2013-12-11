@@ -8,7 +8,6 @@ import java.net.MalformedURLException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -30,7 +29,7 @@ import com.lowagie.text.pdf.PdfPageEventHelper;
 import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.rtf.style.RtfParagraphStyle;
 
-import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
+import es.icarto.gvsig.extgia.utils.Utils;
 
 public abstract class PDFReport {
 
@@ -226,6 +225,7 @@ public abstract class PDFReport {
 	resultMap.beforeFirst();
 	int startColumn;
 	int endColumn;
+	//reportType 4 is características
 	if (reportType != 4) {
 	    startColumn = 1;
 	    endColumn = getColumnNames().length;
@@ -236,30 +236,8 @@ public abstract class PDFReport {
 	while (resultMap.next()) {
 	    for (int column = startColumn; column <= endColumn; column++) {
 		if (resultMap.getString(column) != null) {
-		    if (resultMap.getMetaData().getColumnType(column) == 91) {
-			SimpleDateFormat dateFormat = DateFormatNT.getDateFormat();
-			Date date = resultMap.getDate(column);
-			String dateAsString = dateFormat.format(date);
-			value = new Paragraph(dateAsString, cellBoldStyle);
-		    }else {
-			// Boolean field
-			if (resultMap.getString(column).toString().equals("f")) {
-			    value = new Paragraph("No",
-				    cellBoldStyle);
-			}else if (resultMap.getString(column).toString().equals("t")) {
-			    value = new Paragraph("Sí",
-				    cellBoldStyle);
-			}else if (resultMap.getString(column).toString().contains(".")) {
-			    value = new Paragraph(
-				    resultMap.getString(column).toString().replace(".", ","),
-				    cellBoldStyle);
-
-			}else {
-			    value = new Paragraph(resultMap
-				    .getString(column).toString(),
-				    cellBoldStyle);
-			}
-		    }
+		    String valueFormatted = Utils.writeDBValueFormatted(resultMap, column);
+		    value = new Paragraph(valueFormatted,cellBoldStyle);
 		} else {
 		    value = new Paragraph("");
 		}
