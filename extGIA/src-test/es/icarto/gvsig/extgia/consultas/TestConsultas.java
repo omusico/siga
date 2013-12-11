@@ -228,12 +228,12 @@ public class TestConsultas {
 	rs = st.executeQuery(query);
 	assertTrue(rs!=null);
 
-	query = agregadosReportQueries.getVegeracionQuery() +
+	query = agregadosReportQueries.getVegetacionQuery() +
 		mockFilters.getWhereClauseFiltersForAgregados(elements[0], false);
 	rs = st.executeQuery(query);
 	assertTrue(rs!=null);
 
-	query = agregadosReportQueries.getVegeracionSumQuery() +
+	query = agregadosReportQueries.getVegetacionSumQuery() +
 		mockFilters.getWhereClauseFiltersForAgregados(elements[0], true);
 	rs = st.executeQuery(query);
 	assertTrue(rs!=null);
