@@ -83,6 +83,10 @@ public class TrabajosAgregadosReportQueries {
 	return getBaseQuery() + "Siega mecánica de medianas'";
     }
 
+    public String getSiegaMecanicaMediana1_5mQuery() {
+	return getBaseQuery() + "Siega mecánica de medianas < 1,5 m'";
+    }
+
     public String getSiegaMecanicaIsletasSumQuery() {
 	return getBaseSumQuery() + "Siega mecánica de isletas')";
     }
@@ -91,9 +95,14 @@ public class TrabajosAgregadosReportQueries {
 	return getBaseSumQuery() + "Siega mecánica de medianas')";
     }
 
+    public String getSiegaMecanicaMediana1_5mSumQuery() {
+	return getBaseSumQuery() + "Siega mecánica de medianas < 1,5 m')";
+    }
+
     public String getSiegaTotalSumQuery() {
 	return getBaseSumQuery() + "Siega mecánica de isletas'" +
-		" OR unidad = 'Siega mecánica de medianas')";
+		" OR unidad = 'Siega mecánica de medianas'" +
+		" OR unidad = 'Siega mecánica de medianas < 1,5 m')";
     }
 
     public String getHerbicidadQuery() {

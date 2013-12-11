@@ -100,6 +100,10 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
 		agregadosReportQueries.getSiegaMecanicaMedianaQuery(),
 		agregadosReportQueries.getSiegaMecanicaMedianaSumQuery());
 
+	writeTable("\nSiega mecánica de medianas < 1,5 m\n\n",
+		agregadosReportQueries.getSiegaMecanicaMediana1_5mQuery(),
+		agregadosReportQueries.getSiegaMecanicaMediana1_5mSumQuery());
+
 	writeTotal(document, "TOTAL SEGADO DE HIERBAS",
 		agregadosReportQueries.getSiegaTotalSumQuery());
 
