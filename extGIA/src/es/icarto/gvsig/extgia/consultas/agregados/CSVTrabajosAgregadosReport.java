@@ -66,6 +66,10 @@ public abstract class CSVTrabajosAgregadosReport {
 			"\nSiega mecánica de medianas\n\n",
 			agregadosReportQueries.getSiegaMecanicaMedianaQuery(),
 			agregadosReportQueries.getSiegaMecanicaMedianaSumQuery());
+		writeTable(writer,
+			"\nSiega mecánica de medianas < 1,5 m\n\n",
+			agregadosReportQueries.getSiegaMecanicaMediana1_5mQuery(),
+			agregadosReportQueries.getSiegaMecanicaMediana1_5mSumQuery());
 		writeTotal(writer,
 			"TOTAL SEGADO DE HIERBAS",
 			agregadosReportQueries.getSiegaTotalSumQuery());
@@ -74,9 +78,9 @@ public abstract class CSVTrabajosAgregadosReport {
 			agregadosReportQueries.getHerbicidadQuery(),
 			agregadosReportQueries.getHerbicidaSumQuery());
 		writeTable(writer,
-			"\nVegeración mediana de hormigón\n\n",
-			agregadosReportQueries.getVegeracionQuery(),
-			agregadosReportQueries.getVegeracionSumQuery());
+			"\nVegetación mediana de hormigón\n\n",
+			agregadosReportQueries.getVegetacionQuery(),
+			agregadosReportQueries.getVegetacionSumQuery());
 
 		writer.flush();
 		writer.close();
