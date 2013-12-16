@@ -126,6 +126,11 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	}
 	if (MapDAO.getInstance().getAreaByConnectedUser().equalsIgnoreCase("ambas")) {
 	    query = "SELECT tag FROM " + MUNICIPIO_CONSTANTS_TABLENAME + " ORDER BY orden;";
+	}else if (MapDAO.getInstance().getAreaByConnectedUser().equalsIgnoreCase("sur")) {
+	    //Include Padron in councils list if area = Sur
+	    query = "SELECT tag, orden FROM " + MUNICIPIO_CONSTANTS_TABLENAME +  " WHERE area = " + "'" + MapDAO.getInstance().getAreaByConnectedUser() +
+		    "UNION SELECT tag, orden FROM " + MUNICIPIO_CONSTANTS_TABLENAME +  " WHERE id = '15065'" +
+		    " ORDER BY orden;";
 	}else {
 	    query = "SELECT tag FROM " + MUNICIPIO_CONSTANTS_TABLENAME +  " WHERE area = " + "'" + MapDAO.getInstance().getAreaByConnectedUser() + "' ORDER BY orden;";
 	}
@@ -401,6 +406,10 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	    ResultSet rs = statement.getResultSet();
 	    while (rs.next()) {
 		councils.add(rs.getString(1));
+	    }
+	    //If area=Sur included also Padron into councils list
+	    if (MapDAO.getInstance().getAreaByConnectedUser().equalsIgnoreCase("sur")) {
+		councils.add("15065");
 	    }
 	    return councils;
 	} catch (SQLException e) {
