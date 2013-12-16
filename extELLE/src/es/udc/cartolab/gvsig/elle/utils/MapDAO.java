@@ -31,6 +31,7 @@ import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.icarto.gvsig.elle.db.DBStructure;
+import es.udc.cartolab.gvsig.elle.gui.wizard.load.LoadConstantsWizardComponent;
 import es.udc.cartolab.gvsig.elle.gui.wizard.save.LayerProperties;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -76,7 +77,7 @@ public class MapDAO {
     }
 
     public FLayer getLayer(LayerProperties lp, IProjection proj)
-    throws SQLException, DBException {
+	    throws SQLException, DBException {
 	return getLayer(lp.getLayername(), lp.getTablename(), lp.getSchema(),
 		lp.getWhere(), proj, lp.visible());
     }
@@ -378,7 +379,7 @@ public class MapDAO {
 	    DBSession dbs = DBSession.getCurrentSession();
 	    Connection con = dbs.getJavaConnection();
 	    String sqlCreateSchema = "DROP SCHEMA " + DBStructure.getSchema()
-	    + " CASCADE";
+		    + " CASCADE";
 	    try {
 		Statement stat = con.createStatement();
 		stat.execute(sqlCreateSchema);
@@ -422,7 +423,7 @@ public class MapDAO {
 	DBSession dbs = DBSession.getCurrentSession();
 	Connection con = dbs.getJavaConnection();
 	String sqlHasSchema = "SELECT COUNT(*) AS schemaCount FROM information_schema.schemata WHERE schema_name = '"
-	    + DBStructure.getSchema() + "'";
+		+ DBStructure.getSchema() + "'";
 	try {
 	    Statement stat = con.createStatement();
 	    ResultSet rs = stat.executeQuery(sqlHasSchema);
@@ -445,29 +446,29 @@ public class MapDAO {
 	DBSession dbs = DBSession.getCurrentSession();
 
 	String sqlCreateMap = "CREATE TABLE " + DBStructure.getSchema() +"."+DBStructure.getMapTable()+" "
-	+ "("
-	+ "   mapa character varying(255) NOT NULL,"
-	+ "   nombre_capa character varying(255) NOT NULL,"
-	+ "   nombre_tabla character varying(255),"
-	+ "   posicion integer NOT NULL DEFAULT 0,"
-	+ "   visible boolean,"
-	+ "   max_escala character varying(50),"
-	+ "   min_escala character varying(50),"
-	+ "   grupo character varying,"
-	+ "   \"schema\" character varying,"
-	+ "   localizador boolean,"
-	+ "   PRIMARY KEY (mapa, nombre_capa)"
-	+ ")";
+		+ "("
+		+ "   mapa character varying(255) NOT NULL,"
+		+ "   nombre_capa character varying(255) NOT NULL,"
+		+ "   nombre_tabla character varying(255),"
+		+ "   posicion integer NOT NULL DEFAULT 0,"
+		+ "   visible boolean,"
+		+ "   max_escala character varying(50),"
+		+ "   min_escala character varying(50),"
+		+ "   grupo character varying,"
+		+ "   \"schema\" character varying,"
+		+ "   localizador boolean,"
+		+ "   PRIMARY KEY (mapa, nombre_capa)"
+		+ ")";
 
 	String sqlCreateMapOverview =  "CREATE TABLE " + DBStructure.getSchema() + "."+DBStructure.getOverviewTable()
-	+ "("
-	+ "  mapa character varying NOT NULL,"
-	+ "  nombre_capa character varying NOT NULL,"
-	+ "  \"schema\" character varying,"
-	+ "  posicion integer,"
-	+ "  nombre_tabla character varying,"
-	+ "  PRIMARY KEY (mapa, nombre_capa)"
-	+ ")";
+		+ "("
+		+ "  mapa character varying NOT NULL,"
+		+ "  nombre_capa character varying NOT NULL,"
+		+ "  \"schema\" character varying,"
+		+ "  posicion integer,"
+		+ "  nombre_tabla character varying,"
+		+ "  PRIMARY KEY (mapa, nombre_capa)"
+		+ ")";
 
 	String sqlGrant = "GRANT SELECT ON TABLE " + DBStructure.getSchema() + ".%s TO public";
 
@@ -533,5 +534,23 @@ public class MapDAO {
 	return maps;
     }
 
+    public String getAreaByConnectedUser() {
+	String query = "SELECT area FROM " + LoadConstantsWizardComponent.USUARIOS_TABLENAME +
+		" WHERE name ="  + "'" + DBSession.getCurrentSession().getUserName() + "'" + ";";
+	PreparedStatement statement;
+	try {
+	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+	    statement.execute();
+	    ResultSet rs = statement.getResultSet();
+	    if (!rs.next()) {
+		return null;
+	    }
+	    rs.first();
+	    return rs.getString(1);
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return null;
+    }
 }
 

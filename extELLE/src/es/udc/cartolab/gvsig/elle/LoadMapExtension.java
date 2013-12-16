@@ -16,6 +16,8 @@
  */
 package es.udc.cartolab.gvsig.elle;
 
+import javax.swing.JOptionPane;
+
 import com.iver.andami.PluginServices;
 import com.iver.andami.plugins.Extension;
 import com.iver.andami.preferences.IPreference;
@@ -34,16 +36,23 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
 import es.udc.cartolab.gvsig.elle.gui.EllePreferencesPage;
 import es.udc.cartolab.gvsig.elle.gui.ElleWizard;
 import es.udc.cartolab.gvsig.elle.gui.wizard.load.LoadMapWizard;
+import es.udc.cartolab.gvsig.elle.utils.MapDAO;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class LoadMapExtension extends Extension implements IPreferenceExtension {
 
     public static EllePreferencesPage ellePreferencesPage = new EllePreferencesPage();
 
+    @Override
     public void execute(String actionCommand) {
 	View view = createViewIfNeeded();
 	LoadMapWizard wizard = new LoadMapWizard(view);
-	wizard.open();
+	if (MapDAO.getInstance().getAreaByConnectedUser() == null) {
+	    JOptionPane.showMessageDialog(null,
+		    PluginServices.getText(this, "userHasNotAreaDefined"));
+	}else {
+	    wizard.open();
+	}
     }
 
     /**
@@ -75,6 +84,7 @@ public class LoadMapExtension extends Extension implements IPreferenceExtension 
 	return view;
     }
 
+    @Override
     public void initialize() {
 	About about = (About) PluginServices.getExtension(About.class);
 	FPanelAbout panelAbout = about.getAboutPanel();
@@ -96,15 +106,18 @@ public class LoadMapExtension extends Extension implements IPreferenceExtension 
 			"images/mapacargar.png"));
     }
 
+    @Override
     public boolean isEnabled() {
 	DBSession dbs = DBSession.getCurrentSession();
 	return dbs != null;
     }
 
+    @Override
     public boolean isVisible() {
 	return true;
     }
 
+    @Override
     public IPreference[] getPreferencesPages() {
 	IPreference[] preferences = new IPreference[1];
 	preferences[0] = ellePreferencesPage;

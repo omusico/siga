@@ -59,7 +59,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
     public final static String CONSTANTS_QUERY_FIELD_NAME = "campo_query";
 
     private static final String MUNICIPIO_CONSTANTS_TABLENAME = "audasa_extgia_dominios.municipio_constantes";
-    private static final String USUARIOS_TABLENAME = "audasa_aplicaciones.usuarios";
+    public static final String USUARIOS_TABLENAME = "audasa_expedientes.usuarios";
 
     //ZoomToConstant
     public final static String CONSTANTS_ZOOM_LAYER_FIELD = "municipio_codigo";
@@ -68,7 +68,9 @@ public class LoadConstantsWizardComponent extends WizardComponent {
     public LoadConstantsWizardComponent(Map<String, Object> properties) {
 	super(properties);
 	setLayout(new BorderLayout());
-	add(getListPanel());
+	if (getListPanel()!=null) {
+	    add(getListPanel());
+	}
     }
 
     private JPanel getListPanel() {
@@ -85,6 +87,9 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	    selectedConstant = "Municipio";
 
 	    valuesList = form.getList("valuesList");
+	    if (getValuesFromConstantByQuery(selectedConstant) == null) {
+		return null;
+	    }
 	    valuesList.setListData(getValuesFromConstantByQuery(selectedConstant));
 	    valuesList.addListSelectionListener(new ListSelectionListener() {
 
@@ -116,10 +121,13 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 
     private String[] getValuesFromConstantByQuery(String constant) {
 	String query;
-	if (getAreaByConnectedUser().equalsIgnoreCase("ambas")) {
+	if (MapDAO.getInstance().getAreaByConnectedUser() == null) {
+	    return null;
+	}
+	if (MapDAO.getInstance().getAreaByConnectedUser().equalsIgnoreCase("ambas")) {
 	    query = "SELECT tag FROM " + MUNICIPIO_CONSTANTS_TABLENAME + " ORDER BY orden;";
 	}else {
-	    query = "SELECT tag FROM " + MUNICIPIO_CONSTANTS_TABLENAME +  " WHERE area = " + "'" + getAreaByConnectedUser() + "' ORDER BY orden;";
+	    query = "SELECT tag FROM " + MUNICIPIO_CONSTANTS_TABLENAME +  " WHERE area = " + "'" + MapDAO.getInstance().getAreaByConnectedUser() + "' ORDER BY orden;";
 	}
 	PreparedStatement statement;
 	try {
@@ -225,7 +233,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 		    map.setWhereOnAllLayers(where);
 		    map.setWhereOnAllOverviewLayers(where);
 		    ELLEMap.setFiltered(true);
-		}else if (selectedValue == null && selectedValuesList == null && !getAreaByConnectedUser().equalsIgnoreCase("ambas")) {
+		}else if (selectedValue == null && selectedValuesList == null && !MapDAO.getInstance().getAreaByConnectedUser().equalsIgnoreCase("ambas")) {
 		    where = where + getWhereWithAllCouncilsOfArea();
 		    map.setWhereOnAllLayers(where);
 		    map.setWhereOnAllOverviewLayers(where);
@@ -248,10 +256,10 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 
     private void writeCouncilsLoadedInStatusBar() {
 	if (selectedValue == null) {
-	    if (getAreaByConnectedUser().equalsIgnoreCase("ambas")) {
+	    if (MapDAO.getInstance().getAreaByConnectedUser().equalsIgnoreCase("ambas")) {
 		PluginServices.getMainFrame().getStatusBar().setMessage("constants",
 			selectedConstant + ": " + "TODOS");
-	    }else if (getAreaByConnectedUser().equalsIgnoreCase("norte")) {
+	    }else if (MapDAO.getInstance().getAreaByConnectedUser().equalsIgnoreCase("norte")) {
 		PluginServices.getMainFrame().getStatusBar().setMessage("constants",
 			selectedConstant + ": " + "Área Norte");
 	    }else {
@@ -379,26 +387,13 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	return null;
     }
 
-    private String getAreaByConnectedUser() {
-	String query = "SELECT area FROM " + USUARIOS_TABLENAME +
-		" WHERE nombre ="  + "'" + dbs.getUserName() + "'" + ";";
-	PreparedStatement statement;
-	try {
-	    statement = dbs.getJavaConnection().prepareStatement(query);
-	    statement.execute();
-	    ResultSet rs = statement.getResultSet();
-	    rs.first();
-	    return rs.getString(1);
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
-	return null;
-    }
-
     private ArrayList<String> getCouncilsByConnectedUser() {
 	ArrayList<String> councils = new ArrayList<String>();
+	if (MapDAO.getInstance().getAreaByConnectedUser() == null) {
+	    return null;
+	}
 	String query = "SELECT id FROM " + MUNICIPIO_CONSTANTS_TABLENAME +
-		" WHERE area = '" + getAreaByConnectedUser() + "';";
+		" WHERE area = '" + MapDAO.getInstance().getAreaByConnectedUser() + "';";
 	PreparedStatement statement;
 	try {
 	    statement = dbs.getJavaConnection().prepareStatement(query);
