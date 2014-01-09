@@ -13,6 +13,7 @@ import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.EnlacesCaracter
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.FirmeCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.IsletasCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.JuntasCaracteristicasReport;
+import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.LechoFrenadoCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.MurosCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.ObrasDesagueCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.ObrasPasoCaracteristicasReport;
@@ -105,6 +106,9 @@ public class ConsultasFieldNames {
 	    return "id_senhal_variable, tr.item, tv.item, nv.item, pk, referencia, " +
 	    "fecha_instalacion, tipo, tipo_sustentacion, corunha, ferrol, santiago, pontevedra, " +
 	    "vigo, tui, observaciones";
+	case Lecho_Frenado:
+	    return "id_lecho_frenado, tr.item, pk, longitud, anchura, pendiente, " +
+	    "observaciones";
 	}
 	return null;
     }
@@ -143,6 +147,8 @@ public class ConsultasFieldNames {
 	    return murosCSVFieldNames();
 	case Senhalizacion_Variable:
 	    return senhalizacionVariableCSVFieldNames();
+	case Lecho_Frenado:
+	    return lechoFrenadoCSVFieldNames();
 	}
 	return null;
     }
@@ -542,6 +548,20 @@ public class ConsultasFieldNames {
 		"observaciones as \"Observaciones\"";
     }
 
+    private static String lechoFrenadoCSVFieldNames() {
+	return "distinct(gid), " +
+		"el.id_lecho_frenado as \"ID Lecho Frenado\"," +
+		"fecha_actualizacion as \"Fecha Actualización\"," +
+		localizationCSVFieldNames() +
+		"pk as \"PK\"," +
+		"st.item as \"Sentido\"," +
+		"mu.item as \"Municipio\"," +
+		"longitud as \"Longitud(m)\"," +
+		"anchura as \"Anchura(m)\"," +
+		"pendiente as \"Pendiente máxima(%)\"," +
+		"observaciones as \"Observaciones\"";
+    }
+
     private static String senhalizacionVariableCSVFieldNames() {
 	return "distinct(gid), " +
 		"el.id_senhal_variable as \"ID Señal\"," +
@@ -616,6 +636,9 @@ public class ConsultasFieldNames {
 	    break;
 	case Senhalizacion_Variable:
 	    new SenhalizacionVariableCaracteristicasReport(element[1], outputFile, rs, filters, reportType);
+	    break;
+	case Lecho_Frenado:
+	    new LechoFrenadoCaracteristicasReport(element[1], outputFile, rs, filters, reportType);
 	    break;
 	}
     }
