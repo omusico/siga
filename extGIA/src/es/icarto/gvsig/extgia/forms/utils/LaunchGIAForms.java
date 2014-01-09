@@ -18,6 +18,8 @@ import es.icarto.gvsig.extgia.batch.elements.BatchIsletasReconocimientos;
 import es.icarto.gvsig.extgia.batch.elements.BatchIsletasTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchJuntasReconocimientos;
 import es.icarto.gvsig.extgia.batch.elements.BatchJuntasTrabajos;
+import es.icarto.gvsig.extgia.batch.elements.BatchLechoFrenadoReconocimientos;
+import es.icarto.gvsig.extgia.batch.elements.BatchLechoFrenadoTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchMurosReconocimientos;
 import es.icarto.gvsig.extgia.batch.elements.BatchMurosTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchObrasDesagueTrabajos;
@@ -40,6 +42,7 @@ import es.icarto.gvsig.extgia.forms.enlaces.EnlacesForm;
 import es.icarto.gvsig.extgia.forms.firme.FirmeForm;
 import es.icarto.gvsig.extgia.forms.isletas.IsletasForm;
 import es.icarto.gvsig.extgia.forms.juntas.JuntasForm;
+import es.icarto.gvsig.extgia.forms.lecho_frenado.LechoFrenadoForm;
 import es.icarto.gvsig.extgia.forms.muros.MurosForm;
 import es.icarto.gvsig.extgia.forms.obras_desague.ObrasDesagueForm;
 import es.icarto.gvsig.extgia.forms.obras_paso.ObrasPasoForm;
@@ -206,6 +209,15 @@ public class LaunchGIAForms {
 		senhalizacionVariableForm.last();
 	    }
 	    break;
+	case Lecho_Frenado:
+	    final LechoFrenadoForm lechoFrenadoForm = new LechoFrenadoForm(layer);
+	    if (lechoFrenadoForm.init()) {
+		PluginServices.getMDIManager().addWindow(lechoFrenadoForm);
+	    }
+	    if (editing) {
+		lechoFrenadoForm.last();
+	    }
+	    break;
 	}
     }
 
@@ -297,6 +309,11 @@ public class LaunchGIAForms {
 		    dbTableName);
 	    PluginServices.getMDIManager().addWindow(senhalizacionVariableSubForm);
 	    break;
+	case Lecho_Frenado:
+	    final BatchLechoFrenadoTrabajos lechoFrenadoSubForm = new BatchLechoFrenadoTrabajos(formFileName,
+		    dbTableName);
+	    PluginServices.getMDIManager().addWindow(lechoFrenadoSubForm);
+	    break;
 	}
     }
 
@@ -372,6 +389,11 @@ public class LaunchGIAForms {
 	    final BatchSenhalizacionVariableReconocimientos senhalizacionVariableSubForm = new BatchSenhalizacionVariableReconocimientos(formFileName,
 		    dbTableName);
 	    PluginServices.getMDIManager().addWindow(senhalizacionVariableSubForm);
+	    break;
+	case Lecho_Frenado:
+	    final BatchLechoFrenadoReconocimientos lechoFrenadoSubForm = new BatchLechoFrenadoReconocimientos(formFileName,
+		    dbTableName);
+	    PluginServices.getMDIManager().addWindow(lechoFrenadoSubForm);
 	    break;
 	}
     }
