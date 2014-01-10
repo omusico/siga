@@ -35,6 +35,7 @@ import es.icarto.gvsig.extgia.batch.elements.BatchTaludesTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchVallaCierreReconocimientos;
 import es.icarto.gvsig.extgia.batch.elements.BatchVallaCierreTrabajos;
 import es.icarto.gvsig.extgia.forms.areas_descanso.AreasDescansoForm;
+import es.icarto.gvsig.extgia.forms.areas_mantenimiento.AreasMantenimientoForm;
 import es.icarto.gvsig.extgia.forms.areas_peaje.AreasPeajeForm;
 import es.icarto.gvsig.extgia.forms.areas_servicio.AreasServicioForm;
 import es.icarto.gvsig.extgia.forms.barrera_rigida.BarreraRigidaForm;
@@ -216,6 +217,15 @@ public class LaunchGIAForms {
 	    }
 	    if (editing) {
 		lechoFrenadoForm.last();
+	    }
+	    break;
+	case Areas_Mantenimiento:
+	    final AreasMantenimientoForm areasMantenimientoForm = new AreasMantenimientoForm(layer);
+	    if (areasMantenimientoForm.init()) {
+		PluginServices.getMDIManager().addWindow(areasMantenimientoForm);
+	    }
+	    if (editing) {
+		areasMantenimientoForm.last();
 	    }
 	    break;
 	}
