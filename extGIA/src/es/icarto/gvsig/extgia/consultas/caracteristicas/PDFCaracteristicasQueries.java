@@ -25,6 +25,7 @@ public class PDFCaracteristicasQueries {
     public static String getPDFCaracteristicasQuery(String element, ConsultasFilters filters) {
 	switch (DBFieldNames.Elements.valueOf(element)) {
 	case Areas_Descanso:
+	case Areas_Mantenimiento:
 	case Areas_Servicio:
 	case Areas_Peaje:
 	case Enlaces:

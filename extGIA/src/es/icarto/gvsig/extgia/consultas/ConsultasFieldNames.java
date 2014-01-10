@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.AreasDescansoCaracteristicasReport;
+import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.AreasMantenimientoCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.AreasPeajeCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.AreasServicioCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.BarreraRigidaCaracteristicasReport;
@@ -109,6 +110,10 @@ public class ConsultasFieldNames {
 	case Lecho_Frenado:
 	    return "id_lecho_frenado, tr.item, pk, longitud, anchura, pendiente, " +
 	    "observaciones";
+	case Areas_Mantenimiento:
+	    return "id_area_mantenimiento, nombre, tr.item, pk, centro_operaciones, " +
+	    "centro_comunicaciones, control_postes_auxilio, control_tuneles, almacen_fundentes, " +
+	    "alumbrado, observaciones";
 	}
 	return null;
     }
@@ -149,6 +154,8 @@ public class ConsultasFieldNames {
 	    return senhalizacionVariableCSVFieldNames();
 	case Lecho_Frenado:
 	    return lechoFrenadoCSVFieldNames();
+	case Areas_Mantenimiento:
+	    return areasMantenimientoCSVFieldNames();
 	}
 	return null;
     }
@@ -562,6 +569,24 @@ public class ConsultasFieldNames {
 		"observaciones as \"Observaciones\"";
     }
 
+    private static String areasMantenimientoCSVFieldNames() {
+	return "distinct(gid), " +
+		"el.id_area_mantenimiento as \"ID Área Mantenimiento\"," +
+		"nombre as \"Nombre\"," +
+		"fecha_actualizacion as \"Fecha Actualización\"," +
+		localizationCSVFieldNames() +
+		"pk as \"PK\"," +
+		"st.item as \"Sentido\"," +
+		"mu.item as \"Municipio\"," +
+		"centro_operaciones as \"Centro de operaciones\"," +
+		"centro_comunicaciones as \"Centro de comunicaciones\"," +
+		"control_postes_auxilio as \"Control de postes de auxilio\"," +
+		"control_tuneles as \"Control de túneles\"," +
+		"almacen_fundentes as \"Almacén de fundentes\"," +
+		"alumbrado as \"Alumbrado\"," +
+		"observaciones as \"Observaciones\"";
+    }
+
     private static String senhalizacionVariableCSVFieldNames() {
 	return "distinct(gid), " +
 		"el.id_senhal_variable as \"ID Señal\"," +
@@ -639,6 +664,9 @@ public class ConsultasFieldNames {
 	    break;
 	case Lecho_Frenado:
 	    new LechoFrenadoCaracteristicasReport(element[1], outputFile, rs, filters, reportType);
+	    break;
+	case Areas_Mantenimiento:
+	    new AreasMantenimientoCaracteristicasReport(element[1], outputFile, rs, filters, reportType);
 	    break;
 	}
     }

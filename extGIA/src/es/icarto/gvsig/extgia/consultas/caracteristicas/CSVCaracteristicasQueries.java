@@ -28,6 +28,16 @@ public class CSVCaracteristicasQueries {
 		    getLocalizationWhereWithSentido() +
 		    filters.getWhereClauseByLocationWidgets(true) +
 		    " ORDER BY gid";
+	case Areas_Mantenimiento:
+	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
+		    ", (select count(id_ramal) from audasa_extgia.areas_mantenimiento_ramales ra " +
+		    "where ra.id_area_mantenimiento = el.id_area_mantenimiento) as \"Nº Ramales\"" +
+		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
+		    getLocalizationTablesWithSentido() +
+		    ", audasa_extgia.areas_mantenimiento_ramales ra" +
+		    getLocalizationWhereWithSentido() +
+		    filters.getWhereClauseByLocationWidgets(true) +
+		    " ORDER BY gid";
 	case Enlaces:
 	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
 		    ", (select count(id_ramal) from audasa_extgia.enlaces_ramales ra " +
