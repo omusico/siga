@@ -74,7 +74,7 @@ public class DBFieldNames {
     public static String[] ramales_area_mantenimiento = {"id_ramal as \"ID Ramal\"",
 	"ramal as \"Nombre Ramal\"",
 	"sentido as \"Sentido\"",
-	"dirección as \"Dirección\"",
+	"direccion as \"Dirección\"",
 	"longitud as \"Longitud\""
     };
 

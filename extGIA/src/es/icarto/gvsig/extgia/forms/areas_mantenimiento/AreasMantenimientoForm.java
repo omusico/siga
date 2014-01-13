@@ -19,11 +19,6 @@ import org.apache.log4j.Logger;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
-import es.icarto.gvsig.extgia.forms.areas_peaje.AreasPeajeForm.AddViaListener;
-import es.icarto.gvsig.extgia.forms.areas_peaje.AreasPeajeForm.DeleteViaListener;
-import es.icarto.gvsig.extgia.forms.areas_peaje.AreasPeajeForm.EditViaListener;
-import es.icarto.gvsig.extgia.forms.areas_servicio.AreasServicioRamalesSubForm;
-import es.icarto.gvsig.extgia.forms.obras_paso.ObrasPasoCalculateIDValue;
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
@@ -45,9 +40,9 @@ public class AreasMantenimientoForm extends AbstractFormWithLocationWidgets {
 
     JTable ramales;
 
-    AddViaListener addRamalListener;
-    EditViaListener editRamalListener;
-    DeleteViaListener deleteRamalListener;
+    AddRamalListener addRamalListener;
+    EditRamalListener editRamalListener;
+    DeleteRamalListener deleteRamalListener;
 
     public AreasMantenimientoForm(FLyrVect layer) {
 	super(layer);
@@ -63,7 +58,7 @@ public class AreasMantenimientoForm extends AbstractFormWithLocationWidgets {
 	super.fillSpecificValues();
 
 	if (areaMantenimientoIDWidget.getText().isEmpty()) {
-	    areaMantenimientoid = new ObrasPasoCalculateIDValue(this, getWidgetComponents(),
+	    areaMantenimientoid = new AreasMantenimientoCalculateIDValue(this, getWidgetComponents(),
 		    getElementID(), getElementID());
 	    areaMantenimientoid.setValue(true);
 	}
@@ -74,7 +69,7 @@ public class AreasMantenimientoForm extends AbstractFormWithLocationWidgets {
 
 	// Embebed Tables
 	SqlUtils.createEmbebedTableFromDB(ramales, DBFieldNames.GIA_SCHEMA,
-		"areas_peaje_vias", DBFieldNames.ramales_area_mantenimiento,
+		"areas_mantenimiento_ramales", DBFieldNames.ramales_area_mantenimiento,
 		null, getElementID(), areaMantenimientoIDWidget.getText(), "id_ramal");
 	repaint();
     }
@@ -119,8 +114,11 @@ public class AreasMantenimientoForm extends AbstractFormWithLocationWidgets {
 	editRamalButton = (JButton) super.getFormBody().getComponentByName("edit_ramal_button");
 	deleteRamalButton = (JButton) super.getFormBody().getComponentByName("delete_ramal_button");
 
+	addRamalListener = new AddRamalListener();
 	addRamalButton.addActionListener(addRamalListener);
+	editRamalListener = new EditRamalListener();
 	editRamalButton.addActionListener(editRamalListener);
+	deleteRamalListener = new DeleteRamalListener();
 	deleteRamalButton.addActionListener(deleteRamalListener);
     }
 
@@ -136,8 +134,8 @@ public class AreasMantenimientoForm extends AbstractFormWithLocationWidgets {
     public class AddRamalListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    AreasServicioRamalesSubForm subForm =
-		    new AreasServicioRamalesSubForm(
+	    AreasMantenimientoRamalesSubForm subForm =
+		    new AreasMantenimientoRamalesSubForm(
 			    ABEILLE_RAMALES_FILENAME,
 			    "areas_mantenimiento_ramales",
 			    ramales,
@@ -155,10 +153,10 @@ public class AreasMantenimientoForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    if (ramales.getSelectedRowCount() != 0) {
 		int row = ramales.getSelectedRow();
-		AreasServicioRamalesSubForm subForm =
-			new AreasServicioRamalesSubForm(
+		AreasMantenimientoRamalesSubForm subForm =
+			new AreasMantenimientoRamalesSubForm(
 				ABEILLE_RAMALES_FILENAME,
-				"areas_servicio_ramales",
+				"areas_mantenimiento_ramales",
 				ramales,
 				getElementID(),
 				areaMantenimientoIDWidget.getText(),
