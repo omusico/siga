@@ -33,6 +33,8 @@ public class MurosCaracteristicasReport extends PDFReport {
 	String[] columnNames = {
 		"ID Muro",
 		"Tramo",
+		"Tipo Vía",
+		"Nombre Vía",
 		"PK Inicial",
 		"PK Final",
 		"Material",
@@ -54,7 +56,8 @@ public class MurosCaracteristicasReport extends PDFReport {
 	columnsWidth[4] = 60f;
 	columnsWidth[5] = 60f;
 	columnsWidth[6] = 60f;
-	columnsWidth[7] = 90f;
+	columnsWidth[7] = 60f;
+	columnsWidth[8] = 90f;
 
 	return columnsWidth;
     }

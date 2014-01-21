@@ -33,6 +33,8 @@ public class LechoFrenadoCaracteristicasReport extends PDFReport {
 	String[] columnNames = {
 		"ID Lecho Frenado",
 		"Tramo",
+		"Tipo Vía",
+		"Nombre Vía",
 		"PK",
 		"Longitud (m)",
 		"Anchura (m)",
@@ -52,7 +54,9 @@ public class LechoFrenadoCaracteristicasReport extends PDFReport {
 	columnsWidth[3] = 60f;
 	columnsWidth[4] = 60f;
 	columnsWidth[5] = 60f;
-	columnsWidth[6] = 90f;
+	columnsWidth[6] = 60f;
+	columnsWidth[7] = 60f;
+	columnsWidth[8] = 90f;
 
 	return columnsWidth;
     }

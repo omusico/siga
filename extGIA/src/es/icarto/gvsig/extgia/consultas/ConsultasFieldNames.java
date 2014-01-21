@@ -101,14 +101,14 @@ public class ConsultasFieldNames {
 	    return "id_obra_desague, tr.item, tv.item, nv.item, pk, tipologia, material, " +
 	    "objeto, fecha_construccion, n_elementos, seccion, longitud, observaciones";
 	case Muros:
-	    return "id_muro, tr.item, pk_inicial, pk_final, material, longitud, " +
+	    return "id_muro, tr.item, tv.item, nv.item, pk_inicial, pk_final, material, longitud, " +
 	    "altura_max, observaciones";
 	case Senhalizacion_Variable:
 	    return "id_senhal_variable, tr.item, tv.item, nv.item, pk, referencia, " +
 	    "fecha_instalacion, tipo, tipo_sustentacion, corunha, ferrol, santiago, pontevedra, " +
 	    "vigo, tui, observaciones";
 	case Lecho_Frenado:
-	    return "id_lecho_frenado, tr.item, pk, longitud, anchura, pendiente, " +
+	    return "id_lecho_frenado, tr.item, tv.item, nv.item, pk, longitud, anchura, pendiente, " +
 	    "observaciones";
 	case Areas_Mantenimiento:
 	    return "id_area_mantenimiento, nombre, tr.item, pk, centro_operaciones, " +
