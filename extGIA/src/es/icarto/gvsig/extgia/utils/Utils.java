@@ -45,7 +45,7 @@ public class Utils {
 		valueFormatted = nf.format(rs.getDouble(column));
 	    }else if (rs.getString(column).equals("t")){
 		valueFormatted = "Sí";
-	    }else if (rs.getString(column).equals("t")){
+	    }else if (rs.getString(column).equals("f")){
 		valueFormatted = "No";
 	    } else {
 		valueFormatted = rs.getString(column);
