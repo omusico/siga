@@ -20,6 +20,7 @@ public class ReconocimientosReport extends PDFReport {
 
     @Override
     protected String[] getColumnNames() {
+
 	String[] columnNames = {
 		"ID Elemento",
 		"Nombre Revisor",
@@ -27,18 +28,37 @@ public class ReconocimientosReport extends PDFReport {
 		"Índice Estado",
 		"Observaciones"
 	};
-	return columnNames;
+
+	String[] columnNamesWithoutIndex = {
+		"ID Elemento",
+		"Nombre Revisor",
+		"Fecha Inspección",
+		"Observaciones"
+	};
+
+	if(!ConsultasFieldNames.hasIndiceFieldOnReconocimientos(getElement())) {
+	    return columnNamesWithoutIndex;
+	} else {
+	    return columnNames;
+	}
     }
 
     @Override
     protected float[] getColumnsWidth(int columnCount) {
 	float[] columnsWidth = new float[columnCount];
 
-	columnsWidth[0] = 70f;
-	columnsWidth[1] = 170f;
-	columnsWidth[2] = 70f;
-	columnsWidth[3] = 70f;
-	columnsWidth[4] = 215f;
+	if(!ConsultasFieldNames.hasIndiceFieldOnReconocimientos(getElement())) {
+	    columnsWidth[0] = 70f;
+	    columnsWidth[1] = 170f;
+	    columnsWidth[2] = 70f;
+	    columnsWidth[3] = 215f;
+	}else {
+	    columnsWidth[0] = 70f;
+	    columnsWidth[1] = 170f;
+	    columnsWidth[2] = 70f;
+	    columnsWidth[3] = 70f;
+	    columnsWidth[4] = 215f;
+	}
 
 	return columnsWidth;
     }

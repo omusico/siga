@@ -690,6 +690,7 @@ public class ConsultasFieldNames {
     public static boolean hasIndiceFieldOnReconocimientos(String element) {
 	Vector<String> elements = new Vector<String>();
 	elements.add("Areas_Peaje");
+	elements.add("Enlaces");
 	elements.add("Senhalizacion_Variable");
 	if (elements.contains(element)){
 	    return false;

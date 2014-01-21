@@ -41,12 +41,14 @@ public abstract class PDFReport {
     boolean isFirstPage = true;
 
     protected Document document;
+    private final String element;
 
     protected final ConsultasFilters filters;
 
     public PDFReport(String element, String fileName,
 	    ResultSet resultMap, ConsultasFilters filters, int reportType) {
 	this.filters = filters;
+	this.element = element;
 	writePdfReport(element, fileName, resultMap, filters, reportType);
     }
 
@@ -339,6 +341,10 @@ public abstract class PDFReport {
 
     protected ConsultasFilters getFilters() {
 	return filters;
+    }
+
+    protected String getElement() {
+	return element;
     }
 
 }
