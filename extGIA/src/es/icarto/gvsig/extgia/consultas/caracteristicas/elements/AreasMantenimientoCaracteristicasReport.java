@@ -84,7 +84,10 @@ public class AreasMantenimientoCaracteristicasReport extends PDFReport {
 
     @Override
     protected PdfPCell writeAditionalColumnName() {
-	return null;
+	PdfPCell aditionalCell = new PdfPCell(new Paragraph("Nº Ramales",
+		bodyBoldStyle));
+	aditionalCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+	return aditionalCell;
     }
 
     @Override
