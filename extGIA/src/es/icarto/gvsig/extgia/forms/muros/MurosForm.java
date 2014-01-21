@@ -49,7 +49,7 @@ public class MurosForm extends AbstractFormWithLocationWidgets {
     }
 
     private void addNewButtonsToActionsToolBar() {
-	super.addNewButtonsToActionsToolBar(DBFieldNames.Elements.Valla_Cierre);
+	super.addNewButtonsToActionsToolBar(DBFieldNames.Elements.Muros);
     }
 
     @Override
