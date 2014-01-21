@@ -293,6 +293,30 @@
 				<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
 			</DOMAINREADER>
 		</FIELD>
+		
+		<FIELD>
+			<FIELDNAME>altura</FIELDNAME>
+			<VALIDATIONRULE>double_positive</VALIDATIONRULE>
+		</FIELD>
 
+		<FIELD>
+			<FIELDNAME>n_postes_simples</FIELDNAME>
+			<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+		</FIELD>
+
+		<FIELD>
+			<FIELDNAME>n_postes_tripodes</FIELDNAME>
+			<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+		</FIELD>
+		
+		<FIELD>
+			<FIELDNAME>n_puertas</FIELDNAME>
+			<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+		</FIELD>
+		
+		<FIELD>
+			<FIELDNAME>n_panhos</FIELDNAME>
+			<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+		</FIELD>
 	</RECORDSET>
 </LAYER>
