@@ -25,10 +25,11 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
 
     public TrabajosAgregadosReport(String[] element, String fileName,
 	    ResultSet resultMap, ConsultasFilters filters, int reportType) {
-	super(element[1], fileName, null, filters, reportType);
+	super(element, fileName, null, filters, reportType);
     }
 
-    protected abstract String getElement();
+    @Override
+    protected abstract String getElementID();
 
     @Override
     protected String getTitle() {
@@ -78,7 +79,7 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
 
     @Override
     protected void writeValues (Document document, ResultSet resultMap, PdfPTable table, int reportType) {
-	agregadosReportQueries = new TrabajosAgregadosReportQueries(getElement());
+	agregadosReportQueries = new TrabajosAgregadosReportQueries(getElementID());
 	writeTable("Desbroce con retroaraña\n\n",
 		agregadosReportQueries.getDesbroceRetroaranhaQuery(),
 		agregadosReportQueries.getDesbroceRetroaranhaSumQuery());
@@ -118,7 +119,7 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
 
     private void writeTotal(Document document, String title, String query) {
 	ResultSet rs = getValuesFromQuery(query +
-		getFilters().getWhereClauseFiltersForAgregados(getElement(), true));
+		getFilters().getWhereClauseFiltersForAgregados(getElementID(), true));
 	try {
 	    rs.next();
 	    if (rs.getString(1)!=null) {
@@ -162,14 +163,14 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
 	    ResultSet resultMap;
 
 	    resultMap = getValuesFromQuery(contentQuery +
-		    getFilters().getWhereClauseFiltersForAgregados(getElement(), false));
+		    getFilters().getWhereClauseFiltersForAgregados(getElementID(), false));
 	    if (resultMap.next()) {
 		document.add(new Paragraph(tableTittle, bodyBoldStyle));
 		PdfPTable table = super.writeColumnNames(document);
 		writeTableContent(table, resultMap);
 		if (totalQuery != null) {
 		    resultMap = getValuesFromQuery(totalQuery +
-			    getFilters().getWhereClauseFiltersForAgregados(getElement(), true));
+			    getFilters().getWhereClauseFiltersForAgregados(getElementID(), true));
 		    PdfPCell totalCell = new PdfPCell(new Paragraph("TOTAL", bodyBoldStyle));
 		    totalCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		    table.addCell(totalCell);

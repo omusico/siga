@@ -8,7 +8,7 @@ import com.lowagie.text.pdf.PdfPCell;
 
 public class ReconocimientosReport extends PDFReport {
 
-    public ReconocimientosReport(String element, String fileName,
+    public ReconocimientosReport(String[] element, String fileName,
 	    ResultSet resultMap, ConsultasFilters filters, int reportType) {
 	super(element, fileName, resultMap, filters, reportType);
     }
@@ -36,7 +36,7 @@ public class ReconocimientosReport extends PDFReport {
 		"Observaciones"
 	};
 
-	if(!ConsultasFieldNames.hasIndiceFieldOnReconocimientos(getElement())) {
+	if(!ConsultasFieldNames.hasIndiceFieldOnReconocimientos(getElementID())) {
 	    return columnNamesWithoutIndex;
 	} else {
 	    return columnNames;
@@ -47,7 +47,7 @@ public class ReconocimientosReport extends PDFReport {
     protected float[] getColumnsWidth(int columnCount) {
 	float[] columnsWidth = new float[columnCount];
 
-	if(!ConsultasFieldNames.hasIndiceFieldOnReconocimientos(getElement())) {
+	if(!ConsultasFieldNames.hasIndiceFieldOnReconocimientos(getElementID())) {
 	    columnsWidth[0] = 70f;
 	    columnsWidth[1] = 170f;
 	    columnsWidth[2] = 70f;

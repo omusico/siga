@@ -12,7 +12,7 @@ import es.icarto.gvsig.extgia.consultas.PDFReport;
 
 public class FirmeCaracteristicasReport extends PDFReport {
 
-    public FirmeCaracteristicasReport(String element, String fileName,
+    public FirmeCaracteristicasReport(String element[], String fileName,
 	    ResultSet resultMap, ConsultasFilters filters, int reportType) {
 	super(element, fileName, resultMap, filters, reportType);
     }

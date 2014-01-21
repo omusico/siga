@@ -12,7 +12,7 @@ import es.icarto.gvsig.extgia.consultas.PDFReport;
 
 public class PasosMedianaCaracteristicasReport extends PDFReport {
 
-    public PasosMedianaCaracteristicasReport(String element, String fileName,
+    public PasosMedianaCaracteristicasReport(String[] element, String fileName,
 	    ResultSet resultMap, ConsultasFilters filters, int reportType) {
 	super(element, fileName, resultMap, filters, reportType);
 	// TODO Auto-generated constructor stub

@@ -17,7 +17,7 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class EnlacesCaracteristicasReport extends PDFReport {
 
-    public EnlacesCaracteristicasReport(String element, String fileName,
+    public EnlacesCaracteristicasReport(String element[], String fileName,
 	    ResultSet resultMap, ConsultasFilters filters, int reportType) {
 	super(element, fileName, resultMap, filters, reportType);
 	// TODO Auto-generated constructor stub

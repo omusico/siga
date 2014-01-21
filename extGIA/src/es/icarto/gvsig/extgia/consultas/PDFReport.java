@@ -41,15 +41,15 @@ public abstract class PDFReport {
     boolean isFirstPage = true;
 
     protected Document document;
-    private final String element;
+    private final String elementID;
 
     protected final ConsultasFilters filters;
 
-    public PDFReport(String element, String fileName,
+    public PDFReport(String[] element, String fileName,
 	    ResultSet resultMap, ConsultasFilters filters, int reportType) {
 	this.filters = filters;
-	this.element = element;
-	writePdfReport(element, fileName, resultMap, filters, reportType);
+	this.elementID = element[0];
+	writePdfReport(element[1], fileName, resultMap, filters, reportType);
     }
 
     protected abstract String getTitle();
@@ -343,8 +343,8 @@ public abstract class PDFReport {
 	return filters;
     }
 
-    protected String getElement() {
-	return element;
+    protected String getElementID() {
+	return elementID;
     }
 
 }

@@ -18,7 +18,7 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class SenhalizacionVerticalCaracteristicasReport extends PDFReport {
 
-    public SenhalizacionVerticalCaracteristicasReport(String element,
+    public SenhalizacionVerticalCaracteristicasReport(String[] element,
 	    String fileName, ResultSet resultMap, ConsultasFilters filters, int reportType) {
 	super(element, fileName, resultMap, filters, reportType);
     }

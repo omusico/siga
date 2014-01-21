@@ -11,7 +11,7 @@ import es.icarto.gvsig.extgia.consultas.PDFReport;
 
 public class FirmeTrabajosReport extends PDFReport {
 
-    public FirmeTrabajosReport(String element, String fileName,
+    public FirmeTrabajosReport(String[] element, String fileName,
 	    ResultSet resultMap, ConsultasFilters filters, int reportType) {
 	super(element, fileName, resultMap, filters, reportType);
 	// TODO Auto-generated constructor stub

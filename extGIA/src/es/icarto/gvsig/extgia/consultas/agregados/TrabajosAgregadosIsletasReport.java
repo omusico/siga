@@ -15,7 +15,7 @@ public class TrabajosAgregadosIsletasReport extends TrabajosAgregadosReport {
     }
 
     @Override
-    protected String getElement() {
+    protected String getElementID() {
 	return "Isletas";
     }
 

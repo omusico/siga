@@ -17,7 +17,7 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class AreasMantenimientoCaracteristicasReport extends PDFReport {
 
-    public AreasMantenimientoCaracteristicasReport(String element,
+    public AreasMantenimientoCaracteristicasReport(String[] element,
 	    String fileName, ResultSet resultMap, ConsultasFilters filters,
 	    int reportType) {
 	super(element, fileName, resultMap, filters, reportType);

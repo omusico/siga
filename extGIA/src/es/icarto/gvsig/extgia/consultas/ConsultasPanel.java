@@ -380,21 +380,21 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
 		if (tipo == TRABAJOS) {
 		    new TrabajosReport(
-			    element[1],
+			    element,
 			    outputFile, rs, filters, tipo);
 		}else if (tipo == TRABAJOS_FIRME) {
 		    new FirmeTrabajosReport(
-			    element[1],
+			    element,
 			    outputFile, rs, filters, tipo);
 		}else if (tipo == RECONOCIMIENTOS_FIRME) {
 		    new FirmeReconocimientosReport(
-			    element[1],
+			    element,
 			    outputFile, rs, filters, tipo);
 		}else if (tipo == CARACTERISTICAS) {
 		    ConsultasFieldNames.createCaracteristicasReport(element, outputFile, rs, filters, tipo);
 		}else {
 		    new ReconocimientosReport(
-			    element[1],
+			    element,
 			    outputFile, rs, filters, tipo);
 		}
 
