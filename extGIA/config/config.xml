@@ -23,7 +23,7 @@
 			<menu text="SIGA/Elementos Inventario/Muros" action-command="Muros" position="30409"/>
 			<menu text="SIGA/Elementos Inventario/Obras Paso" action-command="Obras_Paso" position="30410"/>
 			<menu text="SIGA/Elementos Inventario/Obras Desagüe" action-command="Obras_Desague" position="30411"/>
-			<menu text="SIGA/Elementos Inventario/Pasos Mediana" action-command="Pasos_Mediana" position="304012"/>
+			<menu text="SIGA/Elementos Inventario/Pasos Mediana" action-command="Pasos_Mediana" position="30412"/>
 			<menu text="SIGA/Elementos Inventario/Señalización Variable" action-command="Senhalizacion_Variable" position="30413"/>
 			<menu text="SIGA/Elementos Inventario/Señalización Vertical" action-command="Senhalizacion_Vertical" position="30414"/>
 			<menu text="SIGA/Elementos Inventario/Taludes" action-command="Taludes" position="30415"/>
@@ -37,7 +37,7 @@
 		</extension>
 
 		<extension class-name="es.icarto.gvsig.extgia.ConsultasExtension" description="consultas" active="true">
-			<menu text="SIGA/Consultas Inventario" action-command="Consultas" position="30411"/>
+			<menu text="SIGA/Consultas Inventario" action-command="Consultas" position="30417"/>
 		</extension>
 	</extensions>
 </plugin-config>
