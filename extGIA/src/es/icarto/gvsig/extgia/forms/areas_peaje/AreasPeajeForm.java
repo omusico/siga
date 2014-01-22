@@ -84,7 +84,7 @@ public class AreasPeajeForm extends AbstractFormWithLocationWidgets {
 		DBFieldNames.reconocimientoEstadoWhitoutIndexFields, null, getElementID(),
 		areaPeajeIDWidget.getText(), "n_inspeccion");
 
-	int[] trabajoColumnsSize = {1, 1, 110, 70, 60};
+	int[] trabajoColumnsSize = {1, 30, 90, 70, 200};
 	SqlUtils.createEmbebedTableFromDB(trabajos, DBFieldNames.GIA_SCHEMA,
 		getTrabajosDBTableName(), DBFieldNames.trabajoFields,
 		trabajoColumnsSize, getElementID(), areaPeajeIDWidget.getText(), "id_trabajo");

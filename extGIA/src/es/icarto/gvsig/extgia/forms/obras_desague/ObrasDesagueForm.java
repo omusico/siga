@@ -62,7 +62,7 @@ public class ObrasDesagueForm extends AbstractFormWithLocationWidgets {
 	}
 
 	// Embebed Tables
-	int[] trabajoColumnsSize = {1, 1, 110, 70, 60};
+	int[] trabajoColumnsSize = {1, 30, 90, 70, 200};
 	SqlUtils.createEmbebedTableFromDB(trabajos,
 		"audasa_extgia", getTrabajosDBTableName(),
 		DBFieldNames.trabajoFields, trabajoColumnsSize, "id_obra_desague",

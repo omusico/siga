@@ -76,7 +76,7 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 		DBFieldNames.GIA_SCHEMA, getReconocimientosDBTableName(),
 		DBFieldNames.reconocimientoEstadoFields, null, "id_area_servicio", areaServicioIDWidget.getText(), "n_inspeccion");
 
-	int[] trabajoColumnsSize = {1, 1, 110, 70, 60};
+	int[] trabajoColumnsSize = {1, 30, 90, 70, 200};
 	SqlUtils.createEmbebedTableFromDB(trabajos, DBFieldNames.GIA_SCHEMA,
 		getTrabajosDBTableName(), DBFieldNames.trabajoFields,
 		trabajoColumnsSize, "id_area_servicio", areaServicioIDWidget.getText(), "id_trabajo");

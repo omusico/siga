@@ -71,7 +71,7 @@ public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
 		DBFieldNames.reconocimientoEstadoFields, null, getElementID(),
 		getElementIDValue(), "n_inspeccion");
 
-	int[] trabajoColumnsSize = {1, 1, 110, 70, 60};
+	int[] trabajoColumnsSize = {1, 30, 90, 70, 200};
 	SqlUtils.createEmbebedTableFromDB(trabajos, DBFieldNames.GIA_SCHEMA,
 		getTrabajosDBTableName(), DBFieldNames.trabajoFields,
 		trabajoColumnsSize, getElementID(), getElementIDValue(), "id_trabajo");

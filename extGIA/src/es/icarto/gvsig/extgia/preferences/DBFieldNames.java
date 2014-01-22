@@ -30,20 +30,20 @@ public class DBFieldNames {
     public static String[] genericTrabajoFields = {"id_trabajo as \"ID\"",
 	"fecha_certificado as \"Fecha cert\"",
 	"unidad as \"Unidad\"",
-	"medicion_contratista as \"Medición Contratista\"",
-    "medicion_audasa as \"Medición AUDASA\""};
+	"medicion_audasa as \"Medición AUDASA\"",
+    "observaciones as \"Observaciones\""};
 
     public static String[] senhalizacionVerticalTrabajoFields = {"id_trabajo as \"ID\"",
 	"fecha_certificado as \"Fecha cert\"",
 	"unidad as \"Unidad\"",
-	"medicion_contratista as \"Medición Contratista\"",
-    "medicion_audasa as \"Medición AUDASA\""};
+	"medicion_audasa as \"Medición AUDASA\"",
+    "observaciones as \"Observaciones\""};
 
     public static String[] trabajoFields = {"id_trabajo as \"ID\"",
 	"fecha_certificado as \"Fecha cert\"",
 	"unidad as \"Unidad\"",
-	"medicion_contratista as \"Medición Contratista\"",
-    "medicion_audasa as \"Medición AUDASA\""};
+	"medicion_audasa as \"Medición AUDASA\"",
+    "observaciones as \"Observaciones\""};
 
     public static String[] carreteras_enlazadas = {"id_carretera_enlazada as \"ID Carretera\"",
 	"clave_carretera as \"Clave\"",
