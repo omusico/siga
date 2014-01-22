@@ -129,7 +129,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	}else if (MapDAO.getInstance().getAreaByConnectedUser().equalsIgnoreCase("sur")) {
 	    //Include Padron in councils list if area = Sur
 	    query = "SELECT tag, orden FROM " + MUNICIPIO_CONSTANTS_TABLENAME +  " WHERE area = " + "'" + MapDAO.getInstance().getAreaByConnectedUser() +
-		    "UNION SELECT tag, orden FROM " + MUNICIPIO_CONSTANTS_TABLENAME +  " WHERE id = '15065'" +
+		    "' UNION SELECT tag, orden FROM " + MUNICIPIO_CONSTANTS_TABLENAME +  " WHERE id = '15065'" +
 		    " ORDER BY orden;";
 	}else {
 	    query = "SELECT tag FROM " + MUNICIPIO_CONSTANTS_TABLENAME +  " WHERE area = " + "'" + MapDAO.getInstance().getAreaByConnectedUser() + "' ORDER BY orden;";
