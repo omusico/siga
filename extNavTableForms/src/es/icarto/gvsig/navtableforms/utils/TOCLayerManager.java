@@ -15,6 +15,7 @@ public class TOCLayerManager {
 
     private FLayers layersInTOC = null;
     private MapControl mapControl = null;
+    FLyrVect layer;
 
     public TOCLayerManager() {
 	IWindow[] windows = PluginServices.getMDIManager().getOrderedWindows();
@@ -27,12 +28,12 @@ public class TOCLayerManager {
 	}
 	if(view != null) {
 	    mapControl = view.getMapControl();
-	    layersInTOC = mapControl.getMapContext().getLayers();	    
+	    layersInTOC = mapControl.getMapContext().getLayers();
 	}
     }
 
     public void setVisibleAllLayers() {
-	if(layersInTOC != null) {	    
+	if(layersInTOC != null) {
 	    layersInTOC.setAllVisibles(true);
 	}
     }
@@ -53,23 +54,21 @@ public class TOCLayerManager {
     }
 
     public FLyrVect getLayerByName(String layerName) {
-	if(layersInTOC != null) {
-	    for (int i = 0; i < layersInTOC.getLayersCount(); i++) {
-		if (layersInTOC.getLayer(i).getName().equalsIgnoreCase(layerName)) {
-		    return (FLyrVect) layersInTOC.getLayer(i);
-		}
-		//Checking if layer is a group
-		if (layersInTOC.getLayer(i) instanceof FLayers) {
-			FLayers layersInGroup = (FLayers) layersInTOC.getLayer(i);
-			for (int j = 0; j < layersInGroup.getLayersCount(); j++) {
-				if (layersInGroup.getLayer(j).getName().equalsIgnoreCase(layerName)) {
-				    return (FLyrVect) layersInGroup.getLayer(j);
-				}
-			}
-		}
+	getLayerFromGroup(layerName, layersInTOC);
+	return layer;
+    }
+
+    private void getLayerFromGroup(String layerName, FLayers layersInGroup) {
+	for (int j = 0; j < layersInGroup.getLayersCount(); j++) {
+	    if (layersInGroup.getLayer(j) instanceof FLayers) {
+		FLayers layers = (FLayers) layersInGroup.getLayer(j);
+		getLayerFromGroup(layerName, layers);
+	    }
+	    if (layersInGroup.getLayer(j).getName().equalsIgnoreCase(layerName)) {
+		layer = (FLyrVect) layersInGroup.getLayer(j);
+		break;
 	    }
 	}
-	return null;
     }
 
     public FLyrVect getActiveLayer() {
