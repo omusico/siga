@@ -216,9 +216,8 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
 	while (resultMap.next()) {
 	    for (int column = 1; column <= getColumnNames().length; column++) {
 		if (resultMap.getString(column) != null) {
-		    value = new Paragraph(Utils.writeValue(resultMap
-			    .getString(column).toString()),
-			    cellBoldStyle);
+		    String valueFormatted = Utils.writeDBValueFormatted(resultMap, column);
+		    value = new Paragraph(valueFormatted,cellBoldStyle);
 		} else {
 		    value = new Paragraph("");
 		}
