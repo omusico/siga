@@ -8,9 +8,9 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class DBFacade {
 
-    private Connection connection;
+    private static Connection connection;
 
-    public DBFacade() {
+    private DBFacade() {
 	String server = DBSession.getCurrentSession().getServer();
 	int port = DBSession.getCurrentSession().getPort();
 	String database = DBSession.getCurrentSession().getDatabase();
@@ -30,7 +30,11 @@ public class DBFacade {
 	}
     }
 
-    public Connection getConnection() {
+    public static Connection getConnection() {
+	if (connection == null) {
+	    new DBFacade();
+	}
 	return connection;
     }
+
 }

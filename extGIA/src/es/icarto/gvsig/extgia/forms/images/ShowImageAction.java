@@ -29,8 +29,7 @@ public class ShowImageAction {
 	this.tablename = tablename;
 	this.pkField = pkField;
 	this.pkValue = pkValue;
-	DBFacade dbFacade = new DBFacade();
-	connection = dbFacade.getConnection();
+	connection = DBFacade.getConnection();
 	if (showImage()) {
 	    addImageButton.setText("Actualizar");
 	}else {

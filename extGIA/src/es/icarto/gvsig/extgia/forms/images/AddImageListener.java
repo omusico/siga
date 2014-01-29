@@ -44,8 +44,7 @@ public class AddImageListener implements ActionListener {
 	this.tablename = tablename;
 	this.pkField = pkField;
 
-	DBFacade dbFacade = new DBFacade();
-	connection = dbFacade.getConnection();
+	connection = DBFacade.getConnection();
 	dao = new ImagesDAO();
     }
 
