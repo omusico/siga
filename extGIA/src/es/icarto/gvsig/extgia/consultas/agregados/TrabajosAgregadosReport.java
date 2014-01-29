@@ -3,6 +3,8 @@ package es.icarto.gvsig.extgia.consultas.agregados;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
@@ -20,6 +22,7 @@ import es.icarto.gvsig.extgia.utils.Utils;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public abstract class TrabajosAgregadosReport extends PDFReport {
+
 
     private TrabajosAgregadosReportQueries agregadosReportQueries = null;
 
@@ -144,8 +147,9 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
 
 		rs.beforeFirst();
 		while (rs.next()) {
+		    NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
 		    PdfPCell medicionAudasaCell =
-			    new PdfPCell(new Paragraph(rs.getString(1), cellBoldStyle));
+			    new PdfPCell(new Paragraph(nf.format(rs.getDouble(1)), cellBoldStyle));
 		    medicionAudasaCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		    totalTable.addCell(medicionAudasaCell);
 		}
@@ -181,8 +185,10 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
 		    }
 
 		    while (resultMap.next()) {
+			NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
 			PdfPCell medicionAudasaCell =
-				new PdfPCell(new Paragraph(resultMap.getString(1), cellBoldStyle));
+				new PdfPCell(new Paragraph(nf.format(resultMap.getDouble(1)),
+					cellBoldStyle));
 			medicionAudasaCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			table.addCell(medicionAudasaCell);
 		    }
