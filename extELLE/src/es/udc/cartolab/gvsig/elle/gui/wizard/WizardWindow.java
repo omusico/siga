@@ -59,9 +59,7 @@ public abstract class WizardWindow extends JPanel implements IWindow, WizardList
     protected abstract void addWizardComponents();
 
     public void open() {
-	MigLayout layout = new MigLayout("inset 0, align center",
-		"10[grow]10",
-		"10[grow][]");
+	MigLayout layout = new MigLayout("inset 0 45 0 5, align center");
 
 	setLayout(layout);
 
@@ -69,7 +67,7 @@ public abstract class WizardWindow extends JPanel implements IWindow, WizardList
 	changeView(0);
 
 	add(mainPanel, "shrink, growx, growy, wrap");
-	add(getSouthPanel(), "shrink, align right");
+	add(getSouthPanel(), "shrink, align center");
 	PluginServices.getMDIManager().addCentredWindow(this);
     }
 
@@ -124,6 +122,7 @@ public abstract class WizardWindow extends JPanel implements IWindow, WizardList
 	finishButton.setEnabled(currentView.canFinish());
     }
 
+    @Override
     public void wizardChanged() {
 	updateButtons();
     }
@@ -172,6 +171,7 @@ public abstract class WizardWindow extends JPanel implements IWindow, WizardList
 	changeView(currentPos-1);
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
 	if (e.getSource() == cancelButton) {
 	    close();
@@ -195,4 +195,5 @@ public abstract class WizardWindow extends JPanel implements IWindow, WizardList
     public void remove(WizardComponent component) {
 	views.remove(component);
     }
+
 }
