@@ -15,6 +15,7 @@ import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.FirmeCaracteris
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.IsletasCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.JuntasCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.LechoFrenadoCaracteristicasReport;
+import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.LineasSuministroCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.MurosCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.ObrasDesagueCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.ObrasPasoCaracteristicasReport;
@@ -114,6 +115,9 @@ public class ConsultasFieldNames {
 	    return "id_area_mantenimiento, nombre, tr.item, pk, centro_operaciones, " +
 	    "centro_comunicaciones, control_postes_auxilio, control_tuneles, almacen_fundentes, " +
 	    "alumbrado, observaciones";
+	case Lineas_Suministro:
+	    return "id_linea_suministro, tr.item, tv.item, nv.item, pk_inicial, pk_final, " +
+	    "denominacion, titularidad, estado, tipo, longitud, num_apoyos, observaciones";
 	}
 	return null;
     }
@@ -156,6 +160,8 @@ public class ConsultasFieldNames {
 	    return lechoFrenadoCSVFieldNames();
 	case Areas_Mantenimiento:
 	    return areasMantenimientoCSVFieldNames();
+	case Lineas_Suministro:
+	    return lineasSuministroCSVFieldNames();
 	}
 	return null;
     }
@@ -611,6 +617,31 @@ public class ConsultasFieldNames {
 		"observaciones as \"Observaciones\"";
     }
 
+    private static String lineasSuministroCSVFieldNames() {
+	return "distinct(gid), " +
+		"el.id_linea_suministro as \"ID Línea\"," +
+		"fecha_actualizacion as \"Fecha Actualización\"," +
+		localizationCSVFieldNames() +
+		"tvf.item as \"Tipo Vía PF\"," +
+		"nvf.item as \"Nombre Vía PF\"," +
+		"pk_inicial as \"PK Inicial\"," +
+		"pk_final as \"PK Final\"," +
+		"ramal_pi as \"Ramal\"," +
+		"ramal_pf as \"Ramal PF\"," +
+		"direccion_pi as \"Dirección\"," +
+		"direccion_pf as \"Dirección PF\"," +
+		"st.item as \"Sentido\"," +
+		"margen as \"Margen\"," +
+		"mu.item as \"Municipio\"," +
+		"denominacion as \"Denominación\"," +
+		"titularidad as \"Titularidad\"," +
+		"estado as \"Estado\"," +
+		"tipo as \"Tipo\"," +
+		"longitud as \"Longitud(m)\"," +
+		"num_apoyos as \"Nº Apoyos\"," +
+		"observaciones as \"Observaciones\"";
+    }
+
     public static void createCaracteristicasReport(String[] element, String outputFile,
 	    ResultSet rs, ConsultasFilters filters, int reportType) {
 	switch (DBFieldNames.Elements.valueOf(element[0])) {
@@ -668,6 +699,9 @@ public class ConsultasFieldNames {
 	case Areas_Mantenimiento:
 	    new AreasMantenimientoCaracteristicasReport(element, outputFile, rs, filters, reportType);
 	    break;
+	case Lineas_Suministro:
+	    new LineasSuministroCaracteristicasReport(element, outputFile, rs, filters, reportType);
+	    break;
 	}
     }
 
@@ -692,6 +726,7 @@ public class ConsultasFieldNames {
 	elements.add("Areas_Peaje");
 	elements.add("Enlaces");
 	elements.add("Senhalizacion_Variable");
+	elements.add("Lineas_Suministro");
 	if (elements.contains(element)){
 	    return false;
 	}else {
