@@ -19,7 +19,6 @@ import org.apache.log4j.Logger;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
-import es.icarto.gvsig.extgia.forms.obras_paso.ObrasPasoCalculateIDValue;
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
@@ -69,7 +68,7 @@ public class AreasPeajeForm extends AbstractFormWithLocationWidgets {
 	super.fillSpecificValues();
 
 	if (areaPeajeIDWidget.getText().isEmpty()) {
-	    areaPeajeid = new ObrasPasoCalculateIDValue(this, getWidgetComponents(),
+	    areaPeajeid = new AreasPeajeCalculateIDValue(this, getWidgetComponents(),
 		    getElementID(), getElementID());
 	    areaPeajeid.setValue(true);
 	}
