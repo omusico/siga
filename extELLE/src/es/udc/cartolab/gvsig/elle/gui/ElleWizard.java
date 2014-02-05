@@ -53,10 +53,12 @@ public class ElleWizard extends WizardPanel {
     private String[][] layers;
 
 
+    @Override
     public void execute() {
 
     }
 
+    @Override
     public FLayer getLayer() {
 
 	dbs = DBSession.getCurrentSession();
@@ -145,10 +147,11 @@ public class ElleWizard extends WizardPanel {
 	return dbs.getLayer(layerName, tableName, schema, whereClause, proj);
     }
 
+    @Override
     public void initWizard() {
 
 	dbs = DBSession.getCurrentSession();
-	setTabName("ELLE");
+	setTabName("AUDASA");
 
 	setLayout(new BorderLayout());
 	JPanel mainPanel = new JPanel();
@@ -191,7 +194,7 @@ public class ElleWizard extends WizardPanel {
 		    Vector<String> mapsToShow = new Vector<String>();
 
 		    String[] maps = MapDAO.getInstance().getMaps();
-		    
+
 		    //Show only maps that starts like 'BDD_'
 		    for (int i=0; i<maps.length; i++) {
 			if (maps[i].startsWith("BDD_")) {
@@ -199,22 +202,23 @@ public class ElleWizard extends WizardPanel {
 			}
 		    }
 		    Collections.sort(mapsToShow);
-		    
+
 		    layerList = form.getList("layerList");
 		    groupList = form.getList("groupList");
 		    groupList.setListData(mapsToShow);
-		    
+
 		    groupList.addListSelectionListener(new ListSelectionListener() {
 
+			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
 			    int[] selected = groupList.getSelectedIndices();
 			    if (selected.length == 1) {
 				String where = String.format("where mapa ='%s'", groupList.getSelectedValues()[0]);
 				try {
-					    layers = dbs.getTable(
-						    DBStructure.getMapTable(),
-						    DBStructure.getSchema(),
-						    where);
+				    layers = dbs.getTable(
+					    DBStructure.getMapTable(),
+					    DBStructure.getSchema(),
+					    where);
 				} catch (SQLException e) {
 				    JOptionPane.showMessageDialog(null,
 					    "Error SQL: " + e.getMessage(),
@@ -243,6 +247,7 @@ public class ElleWizard extends WizardPanel {
 
 		    layerList.addListSelectionListener(new ListSelectionListener() {
 
+			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
 			    int[] selected = groupList.getSelectedIndices();
 			    if (selected.length > 0) {
@@ -280,6 +285,7 @@ public class ElleWizard extends WizardPanel {
 	if (crsPanel == null) {
 	    crsPanel = CRSSelectPanel.getPanel(AddLayerDialog.getLastProjection());
 	    crsPanel.addActionListener(new java.awt.event.ActionListener() {
+		@Override
 		public void actionPerformed(java.awt.event.ActionEvent e) {
 		    if (crsPanel.isOkPressed()) {
 			AddLayerDialog.setLastProjection(crsPanel.getCurProj());
