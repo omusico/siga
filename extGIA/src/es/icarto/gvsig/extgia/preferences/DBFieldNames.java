@@ -6,7 +6,8 @@ public class DBFieldNames {
     public enum Elements {
 	Taludes, Isletas, Enlaces, Barrera_Rigida, Areas_Servicio, Areas_Descanso, Areas_Peaje,
 	Juntas, Pasos_Mediana, Senhalizacion_Vertical, Valla_Cierre, Firme, Obras_Paso,
-	Obras_Desague, Muros, Senhalizacion_Variable, Lecho_Frenado, Areas_Mantenimiento;
+	Obras_Desague, Muros, Senhalizacion_Variable, Lecho_Frenado, Areas_Mantenimiento,
+	Lineas_Suministro;
     }
 
     public static String[] genericReconocimientoEstadoFields = {"n_inspeccion as \"Nº Inspección\"",
@@ -273,6 +274,10 @@ public class DBFieldNames {
     public static final String LECHO_FRENADO_B = "elementos_contencion";
     public static final String LECHO_FRENADO_C = "acceso";
 
+    // LINEAS SUMINISTRO
+    public static final String LINEAS_SUMINISTRO_LAYERNAME = "Lineas_Suministro";
+    public static final String ID_LINEAS_SUMINISTRO = "id_linea_suministro";
+
     public static void setReconocimientoEstadoFields(String[] fields) {
 	reconocimientoEstadoFields = fields;
     }
@@ -341,6 +346,9 @@ public class DBFieldNames {
 	    break;
 	case Areas_Mantenimiento:
 	    pk = "id_area_mantenimiento";
+	    break;
+	case Lineas_Suministro:
+	    pk = "id_linea_suministro";
 	    break;
 	}
 	return pk;

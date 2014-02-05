@@ -20,6 +20,8 @@ import es.icarto.gvsig.extgia.batch.elements.BatchJuntasReconocimientos;
 import es.icarto.gvsig.extgia.batch.elements.BatchJuntasTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchLechoFrenadoReconocimientos;
 import es.icarto.gvsig.extgia.batch.elements.BatchLechoFrenadoTrabajos;
+import es.icarto.gvsig.extgia.batch.elements.BatchLineasSuministroReconocimientos;
+import es.icarto.gvsig.extgia.batch.elements.BatchLineasSuministroTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchMurosReconocimientos;
 import es.icarto.gvsig.extgia.batch.elements.BatchMurosTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchObrasDesagueTrabajos;
@@ -44,6 +46,7 @@ import es.icarto.gvsig.extgia.forms.firme.FirmeForm;
 import es.icarto.gvsig.extgia.forms.isletas.IsletasForm;
 import es.icarto.gvsig.extgia.forms.juntas.JuntasForm;
 import es.icarto.gvsig.extgia.forms.lecho_frenado.LechoFrenadoForm;
+import es.icarto.gvsig.extgia.forms.lineas_suministro.LineasSuministroForm;
 import es.icarto.gvsig.extgia.forms.muros.MurosForm;
 import es.icarto.gvsig.extgia.forms.obras_desague.ObrasDesagueForm;
 import es.icarto.gvsig.extgia.forms.obras_paso.ObrasPasoForm;
@@ -228,6 +231,15 @@ public class LaunchGIAForms {
 		areasMantenimientoForm.last();
 	    }
 	    break;
+	case Lineas_Suministro:
+	    final LineasSuministroForm lineasSuministroForm = new LineasSuministroForm(layer);
+	    if (lineasSuministroForm.init()) {
+		PluginServices.getMDIManager().addWindow(lineasSuministroForm);
+	    }
+	    if (editing) {
+		lineasSuministroForm.last();
+	    }
+	    break;
 	}
     }
 
@@ -324,6 +336,11 @@ public class LaunchGIAForms {
 		    dbTableName);
 	    PluginServices.getMDIManager().addWindow(lechoFrenadoSubForm);
 	    break;
+	case Lineas_Suministro:
+	    final BatchLineasSuministroTrabajos lineasSuministroSubForm = new BatchLineasSuministroTrabajos(formFileName,
+		    dbTableName);
+	    PluginServices.getMDIManager().addWindow(lineasSuministroSubForm);
+	    break;
 	}
     }
 
@@ -404,6 +421,11 @@ public class LaunchGIAForms {
 	    final BatchLechoFrenadoReconocimientos lechoFrenadoSubForm = new BatchLechoFrenadoReconocimientos(formFileName,
 		    dbTableName);
 	    PluginServices.getMDIManager().addWindow(lechoFrenadoSubForm);
+	    break;
+	case Lineas_Suministro:
+	    final BatchLineasSuministroReconocimientos lineasSuministroSubForm = new BatchLineasSuministroReconocimientos(formFileName,
+		    dbTableName);
+	    PluginServices.getMDIManager().addWindow(lineasSuministroSubForm);
 	    break;
 	}
     }
