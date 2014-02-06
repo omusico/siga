@@ -34,6 +34,8 @@ import es.icarto.gvsig.extgia.batch.elements.BatchSenhalizacionVerticalReconocim
 import es.icarto.gvsig.extgia.batch.elements.BatchSenhalizacionVerticalTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchTaludesReconocimientos;
 import es.icarto.gvsig.extgia.batch.elements.BatchTaludesTrabajos;
+import es.icarto.gvsig.extgia.batch.elements.BatchTransformadoresReconocimientos;
+import es.icarto.gvsig.extgia.batch.elements.BatchTransformadoresTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchVallaCierreReconocimientos;
 import es.icarto.gvsig.extgia.batch.elements.BatchVallaCierreTrabajos;
 import es.icarto.gvsig.extgia.forms.areas_descanso.AreasDescansoForm;
@@ -54,6 +56,7 @@ import es.icarto.gvsig.extgia.forms.pasos_mediana.PasosMedianaForm;
 import es.icarto.gvsig.extgia.forms.senhalizacion_variable.SenhalizacionVariableForm;
 import es.icarto.gvsig.extgia.forms.senhalizacion_vertical.SenhalizacionVerticalForm;
 import es.icarto.gvsig.extgia.forms.taludes.TaludesForm;
+import es.icarto.gvsig.extgia.forms.transformadores.TransformadoresForm;
 import es.icarto.gvsig.extgia.forms.valla_cierre.VallaCierreForm;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
@@ -240,6 +243,15 @@ public class LaunchGIAForms {
 		lineasSuministroForm.last();
 	    }
 	    break;
+	case Transformadores:
+	    final TransformadoresForm transformadoresForm = new TransformadoresForm(layer);
+	    if (transformadoresForm.init()) {
+		PluginServices.getMDIManager().addWindow(transformadoresForm);
+	    }
+	    if (editing) {
+		transformadoresForm.last();
+	    }
+	    break;
 	}
     }
 
@@ -341,6 +353,11 @@ public class LaunchGIAForms {
 		    dbTableName);
 	    PluginServices.getMDIManager().addWindow(lineasSuministroSubForm);
 	    break;
+	case Transformadores:
+	    final BatchTransformadoresTrabajos transformadoresSubForm = new BatchTransformadoresTrabajos(formFileName,
+		    dbTableName);
+	    PluginServices.getMDIManager().addWindow(transformadoresSubForm);
+	    break;
 	}
     }
 
@@ -426,6 +443,11 @@ public class LaunchGIAForms {
 	    final BatchLineasSuministroReconocimientos lineasSuministroSubForm = new BatchLineasSuministroReconocimientos(formFileName,
 		    dbTableName);
 	    PluginServices.getMDIManager().addWindow(lineasSuministroSubForm);
+	    break;
+	case Transformadores:
+	    final BatchTransformadoresReconocimientos transformadoresSubForm = new BatchTransformadoresReconocimientos(formFileName,
+		    dbTableName);
+	    PluginServices.getMDIManager().addWindow(transformadoresSubForm);
 	    break;
 	}
     }

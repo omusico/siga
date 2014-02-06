@@ -28,7 +28,8 @@
 			<menu text="SIGA/Elementos Inventario/Señalización Variable" action-command="Senhalizacion_Variable" position="30414"/>
 			<menu text="SIGA/Elementos Inventario/Señalización Vertical" action-command="Senhalizacion_Vertical" position="30415"/>
 			<menu text="SIGA/Elementos Inventario/Taludes" action-command="Taludes" position="30416"/>
-			<menu text="SIGA/Elementos Inventario/Valla Cierre" action-command="Valla_Cierre" position="30417"/>
+			<menu text="SIGA/Elementos Inventario/Transformadores" action-command="Transformadores" position="30417"/>
+			<menu text="SIGA/Elementos Inventario/Valla Cierre" action-command="Valla_Cierre" position="30418"/>
 		</extension>
 		
 		<extension class-name="es.icarto.gvsig.extgia.ToolBarFormLauncherExtension" description="toolbar_form_launcher" active="true">
@@ -38,7 +39,7 @@
 		</extension>
 
 		<extension class-name="es.icarto.gvsig.extgia.ConsultasExtension" description="consultas" active="true">
-			<menu text="SIGA/Consultas Inventario" action-command="Consultas" position="30417"/>
+			<menu text="SIGA/Consultas Inventario" action-command="Consultas" position="30419"/>
 		</extension>
 	</extensions>
 </plugin-config>
