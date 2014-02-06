@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LAYER alias="transformadores_reconocimientos">
+
+	<FIELD>
+		<FIELDNAME>fecha_inspeccion</FIELDNAME>
+		<VALIDATIONRULE>DATE</VALIDATIONRULE>
+	</FIELD>
+
+</LAYER>
