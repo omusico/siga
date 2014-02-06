@@ -23,6 +23,7 @@ import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.PasosMedianaCar
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.SenhalizacionVariableCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.SenhalizacionVerticalCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.TaludesCaracteristicasReport;
+import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.TransformadoresCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.VallaCierreCaracteristicasReport;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
@@ -118,6 +119,10 @@ public class ConsultasFieldNames {
 	case Lineas_Suministro:
 	    return "id_linea_suministro, tr.item, tv.item, nv.item, pk_inicial, pk_final, " +
 	    "denominacion, titularidad, estado, tipo, longitud, num_apoyos, observaciones";
+	case Transformadores:
+	    return "id_transformador, tr.item, tv.item, nv.item, pk, denominacion, titularidad, " +
+	    "estado, referencia, fabricante, tipo, ubicacion, " +
+	    "potencia, observaciones";
 	}
 	return null;
     }
@@ -162,8 +167,38 @@ public class ConsultasFieldNames {
 	    return areasMantenimientoCSVFieldNames();
 	case Lineas_Suministro:
 	    return lineasSuministroCSVFieldNames();
+	case Transformadores:
+	    return transformadoresCSVFieldNames();
 	}
 	return null;
+    }
+
+    private static String transformadoresCSVFieldNames() {
+	return "distinct(gid), " +
+		"el.id_transformador as \"ID Transformador\"," +
+		"fecha_actualizacion as \"Fecha Actualización\"," +
+		localizationCSVFieldNames() +
+		"pk as \"PK\"," +
+		"ramal as \"Ramal\"," +
+		"st.item as \"Sentido\"," +
+		"direccion as \"Dirección\"," +
+		"margen as \"Margen\"," +
+		"mu.item as \"Municipio\"," +
+		"denominacion as \"Denominación\"," +
+		"titularidad as \"Titularidad\"," +
+		"estado as \"Estado\"," +
+		"referencia as \"Referencia compañia\"," +
+		"expediente as \"Nº Expediente\"," +
+		"fecha_puesta_servicio as \"Fecha Puesta Servicio\"," +
+		"fabricante as \"Fabricante\"," +
+		"numero_fabricacion as \"Nª Fabricación\"," +
+		"fecha_fabricacion as \"Fecha Fabricación\"," +
+		"tipo as \"Tipo\"," +
+		"ubicacion as \"Ubicación\"," +
+		"potencia as \"Potencia(KvA)\"," +
+		"nivel_aislamiento as \"Nivel aislamiento\"," +
+		"nivel_ruido as \"Nivel ruido(dBA)\"," +
+		"observaciones as \"Observaciones\"";
     }
 
     private static String localizationCSVFieldNames() {
@@ -702,6 +737,9 @@ public class ConsultasFieldNames {
 	case Lineas_Suministro:
 	    new LineasSuministroCaracteristicasReport(element, outputFile, rs, filters, reportType);
 	    break;
+	case Transformadores:
+	    new TransformadoresCaracteristicasReport(element, outputFile, rs, filters, reportType);
+	    break;
 	}
     }
 
@@ -727,6 +765,7 @@ public class ConsultasFieldNames {
 	elements.add("Enlaces");
 	elements.add("Senhalizacion_Variable");
 	elements.add("Lineas_Suministro");
+	elements.add("Transformadores");
 	if (elements.contains(element)){
 	    return false;
 	}else {

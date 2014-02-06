@@ -157,6 +157,13 @@ public class CSVCaracteristicasQueries {
 		    getLocalizationWhereWithSentidoAndPF() +
 		    filters.getWhereClauseByLocationWidgets(true) +
 		    " ORDER BY gid";
+	case Transformadores:
+	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
+		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
+		    getLocalizationTablesWithSentido() +
+		    getLocalizationWhereWithSentido() +
+		    filters.getWhereClauseByLocationWidgets(true) +
+		    " ORDER BY gid";
 	default:
 	    return "SELECT " + ConsultasFieldNames.getCSVCaracteristicasFieldNames(element) +
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
