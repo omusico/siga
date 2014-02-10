@@ -568,7 +568,10 @@ public class VectorialEditableAdapter extends EditableAdapter implements
 		System.err.println("Elimina una Row en la posición: " + index);
 		// Se actualiza el índice
 		if (feat != null) {
-			Rectangle2D r = feat.getGeometry().getBounds2D();
+		    Rectangle2D r = null;
+		    	if (feat.getGeometry()!=null) {
+		    		r = feat.getGeometry().getBounds2D();
+		    	}
 			this.fmapSpatialIndex.delete(r,
 					new Integer(index));
 //			System.out.println("Está borrado : " + borrado);

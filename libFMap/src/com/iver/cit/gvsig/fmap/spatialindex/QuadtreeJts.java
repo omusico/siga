@@ -92,11 +92,16 @@ public class QuadtreeJts implements ISpatialIndex {
 	}
 	
 	private Envelope fromRect(Rectangle2D rect){
-		Envelope env = new Envelope(rect.getMinX(),
+	    Envelope env;
+	    if (rect!=null) {
+		env = new Envelope(rect.getMinX(),
 				rect.getMaxX(),
 				rect.getMinY(),
 				rect.getMaxY());
-		return env;
+	    }else {
+		env = new Envelope(0,0,0,0);
+	    }
+	    return env;
 	}
 
 }
