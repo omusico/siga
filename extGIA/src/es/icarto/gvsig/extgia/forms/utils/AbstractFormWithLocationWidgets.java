@@ -666,8 +666,10 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 
     @Override
     public boolean saveRecord() {
-	if (nombreViaWidget.getSelectedItem().toString().isEmpty()) {
-	    layerController.setValue(nombreViaWidget.getName(), "0");
+	if (nombreViaWidget != null) {
+	    if (nombreViaWidget.getSelectedItem().toString().isEmpty()) {
+		layerController.setValue(nombreViaWidget.getName(), "0");
+	    }
 	}
 	if (elementHasIPandFP()) {
 	    if (nombreViaPFWidget.getSelectedItem().toString().isEmpty()) {
