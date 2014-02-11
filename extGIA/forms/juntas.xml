@@ -24,7 +24,7 @@
     </at>
     <at name="componentclass">com.jeta.forms.gui.form.FormComponent</at>
    </super>
-   <at name="id">C:\APLICACIONES\gvSIG_AUDASA_IV\bin\gvSIG\extensiones\es.icarto.gvsig.extgia\forms\juntas.xml</at>
+   <at name="id">/home/psanxiao/workspace/siga/extGIA/forms/juntas.xml</at>
    <at name="rowspecs">CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:DEFAULT:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE</at>
    <at name="colspecs">FILL:5PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE,FILL:10PX:NONE,FILL:5PX:NONE,FILL:10PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE</at>
    <at name="components">
@@ -53,7 +53,7 @@
           <at name="classname">javax.swing.JTabbedPane</at>
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
-            <at name="height">580</at>
+            <at name="height">577</at>
             <at name="font">
              <object classname="com.jeta.forms.store.properties.FontProperty">
               <at name="family">Arial</at>
@@ -62,8 +62,8 @@
              </object>
             </at>
             <at name="componentCount">4</at>
+            <at name="name"/>
             <at name="width">631</at>
-            <at name="name"></at>
             <at name="border">
              <object classname="com.jeta.forms.store.properties.CompoundBorderProperty">
               <super classname="com.jeta.forms.store.properties.BorderProperty">
@@ -108,7 +108,7 @@
                       </at>
                       <at name="componentclass">com.jeta.forms.gui.form.FormComponent</at>
                      </super>
-                     <at name="id">embedded.15278607</at>
+                     <at name="id">embedded.10330589</at>
                      <at name="rowspecs">CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE</at>
                      <at name="colspecs">FILL:2PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE,FILL:10PX:NONE,FILL:5PX:NONE,FILL:10PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE</at>
                      <at name="components">
@@ -139,7 +139,7 @@
                              <object classname="com.jeta.forms.store.support.PropertyMap">
                               <at name="lineWrap">true</at>
                               <at name="scrollableTracksViewportWidth">true</at>
-                              <at name="height">54</at>
+                              <at name="height">58</at>
                               <at name="font">
                                <object classname="com.jeta.forms.store.properties.FontProperty">
                                 <at name="family">Arial</at>
@@ -147,7 +147,7 @@
                                 <at name="size">11</at>
                                </object>
                               </at>
-                              <at name="width">609</at>
+                              <at name="width">594</at>
                               <at name="name">observaciones</at>
                               <at name="scollBars">
                                <object classname="com.jeta.forms.store.properties.ScrollBarsProperty">
@@ -197,7 +197,6 @@
                                </object>
                               </at>
                               <at name="wrapStyleWord">true</at>
-                              <at name="scrollableTracksViewportHeight">true</at>
                              </object>
                             </at>
                            </object>
@@ -230,7 +229,7 @@
                             <at name="properties">
                              <object classname="com.jeta.forms.store.support.PropertyMap">
                               <at name="text">Características:</at>
-                              <at name="height">15</at>
+                              <at name="height">14</at>
                               <at name="font">
                                <object classname="com.jeta.forms.store.properties.FontProperty">
                                 <at name="family">Arial</at>
@@ -298,7 +297,7 @@
                             <at name="properties">
                              <object classname="com.jeta.forms.store.support.PropertyMap">
                               <at name="text">Número de junta:</at>
-                              <at name="height">14</at>
+                              <at name="height">13</at>
                               <at name="font">
                                <object classname="com.jeta.forms.store.properties.FontProperty">
                                 <at name="family">Arial</at>
@@ -421,7 +420,7 @@
                             <at name="properties">
                              <object classname="com.jeta.forms.store.support.PropertyMap">
                               <at name="text">Elemento al que pertenece:</at>
-                              <at name="height">14</at>
+                              <at name="height">13</at>
                               <at name="font">
                                <object classname="com.jeta.forms.store.properties.FontProperty">
                                 <at name="family">Arial</at>
@@ -548,8 +547,8 @@
                             <at name="classname">com.jeta.forms.components.label.JETALabel</at>
                             <at name="properties">
                              <object classname="com.jeta.forms.store.support.PropertyMap">
-                              <at name="text">Ancho (m):</at>
-                              <at name="height">14</at>
+                              <at name="text">Ancho (cm):</at>
+                              <at name="height">13</at>
                               <at name="font">
                                <object classname="com.jeta.forms.store.properties.FontProperty">
                                 <at name="family">Arial</at>
@@ -557,8 +556,8 @@
                                 <at name="size">11</at>
                                </object>
                               </at>
-                              <at name="name"/>
                               <at name="width">146</at>
+                              <at name="name"></at>
                               <at name="fill">
                                <object classname="com.jeta.forms.store.properties.effects.PaintProperty">
                                 <at name="name">fill</at>
@@ -678,7 +677,7 @@
                             <at name="properties">
                              <object classname="com.jeta.forms.store.support.PropertyMap">
                               <at name="text">Módulo:</at>
-                              <at name="height">14</at>
+                              <at name="height">13</at>
                               <at name="font">
                                <object classname="com.jeta.forms.store.properties.FontProperty">
                                 <at name="family">Arial</at>
@@ -801,7 +800,7 @@
                             <at name="properties">
                              <object classname="com.jeta.forms.store.support.PropertyMap">
                               <at name="text">Código elemento:</at>
-                              <at name="height">14</at>
+                              <at name="height">13</at>
                               <at name="font">
                                <object classname="com.jeta.forms.store.properties.FontProperty">
                                 <at name="family">Arial</at>
@@ -929,7 +928,7 @@
                             <at name="properties">
                              <object classname="com.jeta.forms.store.support.PropertyMap">
                               <at name="text">Descripción elemento:</at>
-                              <at name="height">14</at>
+                              <at name="height">13</at>
                               <at name="font">
                                <object classname="com.jeta.forms.store.properties.FontProperty">
                                 <at name="family">Arial</at>
@@ -997,7 +996,7 @@
                              <object classname="com.jeta.forms.store.support.PropertyMap">
                               <at name="lineWrap">true</at>
                               <at name="scrollableTracksViewportWidth">true</at>
-                              <at name="height">39</at>
+                              <at name="height">43</at>
                               <at name="font">
                                <object classname="com.jeta.forms.store.properties.FontProperty">
                                 <at name="family">Arial</at>
@@ -1005,7 +1004,7 @@
                                 <at name="size">11</at>
                                </object>
                               </at>
-                              <at name="width">129</at>
+                              <at name="width">114</at>
                               <at name="name">descripcion</at>
                               <at name="scollBars">
                                <object classname="com.jeta.forms.store.properties.ScrollBarsProperty">
@@ -1055,7 +1054,6 @@
                                </object>
                               </at>
                               <at name="wrapStyleWord">true</at>
-                              <at name="scrollableTracksViewportHeight">true</at>
                              </object>
                             </at>
                            </object>
@@ -1088,7 +1086,7 @@
                             <at name="properties">
                              <object classname="com.jeta.forms.store.support.PropertyMap">
                               <at name="text">Observaciones:</at>
-                              <at name="height">15</at>
+                              <at name="height">14</at>
                               <at name="font">
                                <object classname="com.jeta.forms.store.properties.FontProperty">
                                 <at name="family">Arial</at>
@@ -1297,7 +1295,7 @@
                       </at>
                       <at name="componentclass">com.jeta.forms.gui.form.FormComponent</at>
                      </super>
-                     <at name="id">embedded.21630806</at>
+                     <at name="id">embedded.6673800</at>
                      <at name="rowspecs">CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE</at>
                      <at name="colspecs">FILL:2PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE,FILL:10PX:NONE,FILL:5PX:NONE,FILL:10PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE</at>
                      <at name="components">
@@ -1327,7 +1325,7 @@
                             <at name="properties">
                              <object classname="com.jeta.forms.store.support.PropertyMap">
                               <at name="text">Listado de reconocimientos:</at>
-                              <at name="height">15</at>
+                              <at name="height">14</at>
                               <at name="font">
                                <object classname="com.jeta.forms.store.properties.FontProperty">
                                 <at name="family">Arial</at>
@@ -1819,7 +1817,7 @@
                       </at>
                       <at name="componentclass">com.jeta.forms.gui.form.FormComponent</at>
                      </super>
-                     <at name="id">embedded.16528278</at>
+                     <at name="id">embedded.28823870</at>
                      <at name="rowspecs">CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE</at>
                      <at name="colspecs">FILL:2PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE,FILL:10PX:NONE,FILL:5PX:NONE,FILL:10PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE</at>
                      <at name="components">
@@ -1849,7 +1847,7 @@
                             <at name="properties">
                              <object classname="com.jeta.forms.store.support.PropertyMap">
                               <at name="text">Listado de trabajos:</at>
-                              <at name="height">15</at>
+                              <at name="height">14</at>
                               <at name="font">
                                <object classname="com.jeta.forms.store.properties.FontProperty">
                                 <at name="family">Arial</at>
@@ -2321,7 +2319,6 @@
                    <at name="icon">
                     <object classname="com.jeta.forms.store.properties.IconProperty">
                      <at name="embedded">false</at>
-                     <at name="description"></at>
                      <at name="width">0</at>
                      <at name="height">0</at>
                     </object>
@@ -2342,7 +2339,7 @@
                       </at>
                       <at name="componentclass">com.jeta.forms.gui.form.FormComponent</at>
                      </super>
-                     <at name="id">embedded.T0c2c6dbS141785e4b97WQ7fa9</at>
+                     <at name="id">embedded.32260915</at>
                      <at name="rowspecs">CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE</at>
                      <at name="colspecs">FILL:2PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE</at>
                      <at name="components">
@@ -2543,7 +2540,7 @@
                        <at name="classname">com.jeta.forms.gui.form.GridView</at>
                        <at name="properties">
                         <object classname="com.jeta.forms.store.support.PropertyMap">
-                         <at name="name"></at>
+                         <at name="name"/>
                          <at name="fill">
                           <object classname="com.jeta.forms.store.properties.effects.PaintProperty">
                            <at name="name">fill</at>
@@ -2554,6 +2551,26 @@
                            <at name="name">scollBars</at>
                            <at name="verticalpolicy">21</at>
                            <at name="horizontalpolicy">31</at>
+                           <at name="border">
+                            <object classname="com.jeta.forms.store.properties.CompoundBorderProperty">
+                             <super classname="com.jeta.forms.store.properties.BorderProperty">
+                              <at name="name">border</at>
+                             </super>
+                             <at name="borders">
+                              <object classname="java.util.LinkedList">
+                               <item >
+                                <at name="value">
+                                 <object classname="com.jeta.forms.store.properties.DefaultBorderProperty">
+                                  <super classname="com.jeta.forms.store.properties.BorderProperty">
+                                   <at name="name">border</at>
+                                  </super>
+                                 </object>
+                                </at>
+                               </item>
+                              </object>
+                             </at>
+                            </object>
+                           </at>
                           </object>
                          </at>
                          <at name="border">
@@ -2775,7 +2792,7 @@
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="text">Área de mantenimiento:</at>
-            <at name="height">14</at>
+            <at name="height">13</at>
             <at name="font">
              <object classname="com.jeta.forms.store.properties.FontProperty">
               <at name="family">Arial</at>
@@ -2842,7 +2859,7 @@
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="text">Base de contratista:</at>
-            <at name="height">14</at>
+            <at name="height">13</at>
             <at name="font">
              <object classname="com.jeta.forms.store.properties.FontProperty">
               <at name="family">Arial</at>
@@ -2909,7 +2926,7 @@
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="text">Tramo:</at>
-            <at name="height">14</at>
+            <at name="height">13</at>
             <at name="font">
              <object classname="com.jeta.forms.store.properties.FontProperty">
               <at name="family">Arial</at>
@@ -3450,7 +3467,7 @@
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="text">Fecha de actualización:</at>
-            <at name="height">14</at>
+            <at name="height">13</at>
             <at name="font">
              <object classname="com.jeta.forms.store.properties.FontProperty">
               <at name="family">Arial</at>
@@ -3578,7 +3595,7 @@
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="text">Tipo de vía:</at>
-            <at name="height">14</at>
+            <at name="height">13</at>
             <at name="font">
              <object classname="com.jeta.forms.store.properties.FontProperty">
               <at name="family">Arial</at>
@@ -3701,7 +3718,7 @@
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="text">Nombre de vía:</at>
-            <at name="height">14</at>
+            <at name="height">13</at>
             <at name="font">
              <object classname="com.jeta.forms.store.properties.FontProperty">
               <at name="family">Arial</at>
@@ -3936,7 +3953,7 @@
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="text">PK (km):</at>
-            <at name="height">14</at>
+            <at name="height">13</at>
             <at name="font">
              <object classname="com.jeta.forms.store.properties.FontProperty">
               <at name="family">Arial</at>
@@ -4065,7 +4082,7 @@
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="text">ID Junta:</at>
-            <at name="height">14</at>
+            <at name="height">13</at>
             <at name="font">
              <object classname="com.jeta.forms.store.properties.FontProperty">
               <at name="family">Arial</at>
@@ -4198,7 +4215,7 @@
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="text">Ramal:</at>
-            <at name="height">14</at>
+            <at name="height">13</at>
             <at name="font">
              <object classname="com.jeta.forms.store.properties.FontProperty">
               <at name="family">Arial</at>
@@ -4321,7 +4338,7 @@
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="text">Sentido:</at>
-            <at name="height">14</at>
+            <at name="height">13</at>
             <at name="font">
              <object classname="com.jeta.forms.store.properties.FontProperty">
               <at name="family">Arial</at>
@@ -4444,7 +4461,7 @@
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="text">Dirección:</at>
-            <at name="height">14</at>
+            <at name="height">13</at>
             <at name="font">
              <object classname="com.jeta.forms.store.properties.FontProperty">
               <at name="family">Arial</at>
@@ -4567,7 +4584,7 @@
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="text">Municipio:</at>
-            <at name="height">14</at>
+            <at name="height">13</at>
             <at name="font">
              <object classname="com.jeta.forms.store.properties.FontProperty">
               <at name="family">Arial</at>
