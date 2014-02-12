@@ -60,6 +60,12 @@ public class TransformadoresForm extends AbstractFormWithLocationWidgets {
 
 	direccionDomainHandler.updateComboBoxValues();
 
+	if (transformadorIDWidget.getText().isEmpty()) {
+	    transformadorid = new TransformadoresCalculateIDValue(this, getWidgetComponents(),
+		    getElementID(), getElementID());
+	    transformadorid.setValue(true);
+	}
+
 	if (filesLinkButton == null) {
 	    addNewButtonsToActionsToolBar();
 	}
