@@ -82,7 +82,7 @@ public class JoinCADTool extends DefaultCADTool {
 	    new Comparator<DefaultRowEdited>() {
 		@Override
 		public int compare(DefaultRowEdited o1, DefaultRowEdited o2) {
-		    return new Integer(o2.getIndex()).compareTo(new Integer(o1
+		    return new Integer(o1.getIndex()).compareTo(new Integer(o2
 			    .getIndex()));
 		}
 	    });
