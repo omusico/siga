@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<plugin-config>
+	<depends plugin-name="com.iver.cit.gvsig" />
+	<depends plugin-name="com.iver.cit.gvsig.cad"/>
+	<depends plugin-name="org.gvsig.extended-symbology"/>
+	<libraries library-dir="lib"/>
+    <resourceBundle name="text"/>
+	<extensions>
+		<extension class-name="com.iver.cit.gvsig.Annotation_AboutExtension"
+			description="Annotation about extension"
+			active="false"
+			priority="1">
+		</extension>
+		<extension class-name="com.iver.cit.gvsig.Annotation_Extension"
+			description="Annotation extension"
+			active="true"
+			priority="1">
+
+			<menu text="Capa/export_to/annotation" action-command="ANNOTATIONLAYER"
+				tooltip="create_annotation_layer"
+				priority="999"/>
+		</extension>
+		<extension class-name="com.iver.cit.gvsig.Annotation_ToolExtension"
+			description="Annotation tool extension"
+			active="true"
+			priority="2">
+
+			<menu text="Capa/modify_annotation" action-command="MODIFYANNOTATION" icon="ext-annotation"
+ 				tooltip="modify_annotation"
+				priority="2"/>
+		</extension>
+		<extension class-name="org.gvsig.tools.annotations.labeling.SingleLabelingExtension"
+			description="Extension to show and customize labels that will
+			             pop up over the feature that is clicked over
+			             (available since v2.0)."
+			active="true"
+			priority="20">
+		</extension>
+	</extensions>
+</plugin-config>

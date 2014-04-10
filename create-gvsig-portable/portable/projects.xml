@@ -1,0 +1,103 @@
+<project name="fonsagua-projects">
+
+	<!-- Removed
+		extOracleSpatial,
+		libArcIMS,
+		extArcims,
+		extSDE,
+	-->
+	
+	<!-- Handled scecifically
+		sextante
+		binaries
+	-->
+
+	<property name="gvSIG_dist_projects_on_main_svn" value="
+		libExceptions,
+		libInternationalization,
+		libIverUtiles,
+		libUIComponent,
+		_fwAndami,
+		libGeoUtils,
+		libCorePlugin,
+		libProjection,
+		libRaster,
+		libDXF,
+		libDriverManager,
+		libRemoteServices,
+		libGDBMS,
+		libFMap,
+		libGPE,
+		libGPE-XML,
+		libGPE-GML,
+		libGPE-KML,
+		appgvSIG,
+		libJCRS,
+		extJCRS,
+		libTopology,
+		libDwg,
+		extDwg,
+		extSymbology,
+		extRasterTools-SE,
+		extAddEventTheme,
+		extJDBC,
+		extCAD,
+		extGPE-gvSIG,
+		extDataLocator,
+		extGeoProcessing,
+		extGeoprocessingExtensions,
+		extGeoreferencing,
+		extScripting,
+		extAnnotations,
+		extExpressionField,
+		extWCS,
+		extWFS2,
+		extWMS,
+		extIconThemeBase,
+		extProjectBackup,
+		extDerivedGeometries,
+		extI18n,
+		extHelp,
+		extTableImport,
+		extTableExport,
+		appCatalogAndGazetteerClient,
+		extCatalogAndGazetteer,
+		extCenterViewToPoint,
+		extTableSummarize,
+		extSelectionTools,
+		extQuickInfo,
+		extHyperlink,
+		extQuickPrint,
+		extLayerLoadingOrder,
+		org.gvsig.installer.app.extension
+	"/>
+	
+	
+	<property name="gvSIG_dist_projects_on_other_svn" value="
+		org.gvsig.copypastegeom,
+		org.gvsig.selectduplicates,
+		org.gvsig.newgeoprocess,
+		org.gvsig.consecutivenumber,
+		org.gvsig.chartlegend,
+		extNavTable
+	"/>
+	
+	<property name="custom-projects" value="
+		libGeocoding,
+		extNormalization,
+		extTopology,
+		extGraph,
+		extMapSheets,
+		extRemoteSensing,
+		extTOCExtra,
+		extDerivedGeometries,
+		jgpx
+	"/>
+		
+	<property name="gvSIG_dist" value="
+		${gvSIG_dist_projects_on_main_svn},
+		${gvSIG_dist_projects_on_other_svn},
+		${custom-projects}
+	"/>
+
+</project>
