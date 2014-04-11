@@ -10,20 +10,19 @@
 
 	<target name="batch-build" depends="init, compile, create-jar, copy-data-files, copy-libs, move-to-andami">
 	</target>
+	
+	<target name="generate-without-source" depends="init, create-jar, copy-data-files, copy-libs, move-to-andami" >
+	</target>
 
 	<target name="init">
     	<tstamp/>
+		<mkdir dir="${build}" />
     	<mkdir dir="${dist}/lib" />
   	</target>
 
-	<target name="compile">
-		<mkdir dir="${build}" />
-		<echo>${compile-classpath}</echo>
-		<javac  srcdir="${src}"
-			destdir="${build}"
-			debug="${debug}"
-			debuglevel="${debuglevel}"
-			classpath="${compile-classpath}" />
+	<target name="compile" depends="init">
+		<loadEclipseClasspath project="${basedir}" />
+		<gvSIG-javac classpath="${eclipseClasspath}" />
 	</target>
 
 	<target name="create-jar">
@@ -67,11 +66,6 @@
 	   <move todir="${extensionsDir}/${plugin}/">
 	    	<fileset dir="${dist}" includes="**/**"/>
 	    </move>
-	</target>
-
-	<target name="generate-without-source"
-		description="generate the distribution without the source file"
-		depends="init, create-jar, copy-data-files, copy-libs, move-to-andami" >
 	</target>
 
 	<target name="clean">
