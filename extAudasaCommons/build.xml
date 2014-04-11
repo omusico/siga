@@ -21,12 +21,8 @@
 
 	<target name="compile">
 		<mkdir dir="${build}" />
-		<echo>${compile-classpath}</echo>
-		<javac  srcdir="${src}"
-			destdir="${build}"
-			debug="${debug}"
-			debuglevel="${debuglevel}"
-			classpath="${compile-classpath}" />
+		<loadEclipseClasspath project="${basedir}" />
+		<gvSIG-javac classpath="${eclipseClasspath}" />
 	</target>
 
 	<target name="create-jar">
