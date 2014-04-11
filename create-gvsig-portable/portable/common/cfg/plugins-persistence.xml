@@ -1,7 +1,135 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xml-tag xmlns="http://www.gvsig.gva.es">
-    <xml-tag>
+
+	<xml-tag>
+        <property key="options.view.open_view_window_maximized" value="true"/>
+        <property key="db-connections" value=""/>
+        <property key="layer.order.manager" value="com.iver.cit.gvsig.fmap.layers.order.DefaultOrderManager"/>
         <property key="com.iver.andami.pluginName" value="com.iver.cit.gvsig"/>
+        <property key="ForeColor" value="128,128,128,255"/>
+        <property key="FillColor" value="60,235,235,255"/>
         <property key="AleatoryFillColor" value="true"/>
+        <property key="ImageFolder" value="../cfg/Symbols"/>
+        <property key="FontType" value="Andale Mono"/>
+        <property key="FontSize" value="8"/>
+        <property key="DefaultProjection" value="EPSG:23029"/>
+        <property key="ZoomInFactor" value="2.0"/>
+        <property key="ZoomOutFactor" value="0.5"/>
+        <property key="NewLayersInInvisibleMode" value="false"/>
+        <property key="KeepScaleOnResizing" value="false"/>
+        <property key="ShowFileExtensions" value="false"/>
+        <property key="DefaultViewBackColor" value="255,255,255,255"/>
+        <property key="DefaultSelectionColor" value="255,255,0,255"/>
+        <property key="DefaultMapUnits" value="1"/>
+        <property key="DefaultDistanceUnits" value="1"/>
+        <property key="DefaultDistanceArea" value="1"/>
+        <property key="TOC_CURRENT_TOC" value="Default JTree-based TOC"/>
+    </xml-tag>
+    
+    <xml-tag>
+        <property key="FilesDir" value="../cfg/"/>
+        <property key="com.iver.andami.pluginName" value="es.icarto.gvsig.extgex"/>
+    </xml-tag>
+    
+    <xml-tag>
+        <property key="host" value="192.168.0.12"/>
+        <property key="port" value="5434"/>
+        <property key="database" value="audasa_test"/>
+        <property key="user" value="postgres"/>
+        <property key="schema" value="audasa_expropiaciones"/>
+        <property key="com.iver.andami.pluginName" value="es.udc.cartolab.gvsig.users"/>
+    </xml-tag>
+    
+    <xml-tag>
+        <property key="general_auto_preview" value="true"/>
+        <property key="general_ask_coordinates" value="false"/>
+        <property key="general_defaultNumberOfClasses" value="64"/>
+        <property key="cache_size" value="64"/>
+        <property key="cache_pagesize" value="4.0"/>
+        <property key="cache_pagspergroup" value="5"/>
+        <property key="cache_blockheight" value="512"/>
+        <property key="nodata_value" value="-99999.0"/>
+        <property key="nodata_transparency_enabled" value="false"/>
+        <property key="overviews_number" value="4"/>
+        <property key="overviews_rate" value="2"/>
+        <property key="overviews_resampling_algorithm" value="1"/>
+        <property key="path_temp_cache_directory" value="../bin"/>
+        <property key="general_ask_projection" value="true"/>
+        <property key="com.iver.andami.pluginName" value="org.gvsig.rastertools"/>
+    </xml-tag>
+    
+        <xml-tag>
+        <property key="com.iver.andami.pluginName" value="com.iver.cit.gvsig.wms"/>
+        <xml-tag>
+            <property key="serverURL" value="http://www.idee.es/wms/IDEE-Base/IDEE-Base"/>
+            <property key="added" value="2012-05-10 12:35:46.226"/>
+            <property key="lastAccess" value="2012-05-10 12:35:46.226"/>
+            <property key="type" value="WMS"/>
+            <property key="subType" value=""/>
+        </xml-tag>
+        
+        <xml-tag>
+            <property key="serverURL" value="http://www2.dmsolutions.ca/cgi-bin/mswms_gmap?"/>
+            <property key="added" value="2012-05-10 12:35:46.226"/>
+            <property key="lastAccess" value="2012-05-10 12:35:46.226"/>
+            <property key="type" value="WMS"/>
+            <property key="subType" value=""/>
+        </xml-tag>
+        <xml-tag>
+            <property key="serverURL" value="http://orto.cth.gva.es/wmsconnector/com.esri.wms.Esrimap/wms_patricova"/>
+            <property key="added" value="2012-05-10 12:35:46.226"/>
+            <property key="lastAccess" value="2012-05-10 12:35:46.226"/>
+            <property key="type" value="WMS"/>
+            <property key="subType" value=""/>
+        </xml-tag>
+        <xml-tag>
+            <property key="serverURL" value="http://orto.cth.gva.es/wmsconnector/com.esri.wms.Esrimap/wms_parque_fondo_prug"/>
+            <property key="added" value="2012-05-10 12:35:46.226"/>
+            <property key="lastAccess" value="2012-05-10 12:35:46.226"/>
+            <property key="type" value="WMS"/>
+            <property key="subType" value=""/>
+        </xml-tag>
+        <xml-tag>
+            <property key="serverURL" value="http://orto.cth.gva.es/wmsconnector/com.esri.wms.Esrimap/wms_pgof"/>
+            <property key="added" value="2012-05-10 12:35:46.226"/>
+            <property key="lastAccess" value="2012-05-10 12:35:46.226"/>
+            <property key="type" value="WMS"/>
+            <property key="subType" value=""/>
+        </xml-tag>
+        <xml-tag>
+            <property key="serverURL" value="http://orto.cth.gva.es/wmsconnector/com.esri.wms.Esrimap/wms_urbanismo_tematicos"/>
+            <property key="added" value="2012-05-10 12:35:46.226"/>
+            <property key="lastAccess" value="2012-05-10 12:35:46.226"/>
+            <property key="type" value="WMS"/>
+            <property key="subType" value=""/>
+        </xml-tag>
+        <xml-tag>
+            <property key="serverURL" value="http://www.ign.es/wms-inspire/ign-base"/>
+            <property key="added" value="2012-05-10 12:35:46.226"/>
+            <property key="lastAccess" value="2012-05-10 12:35:46.226"/>
+            <property key="type" value="WMS"/>
+            <property key="subType" value=""/>
+        </xml-tag>
+        <xml-tag>
+            <property key="serverURL" value="http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx"/>
+            <property key="added" value="2012-05-10 12:35:46.226"/>
+            <property key="lastAccess" value="2012-05-10 12:35:46.226"/>
+            <property key="type" value="WMS"/>
+            <property key="subType" value=""/>
+        </xml-tag>
+        <xml-tag>
+            <property key="serverURL" value="http://www.idee.es/wms/PNOA/PNOA"/>
+            <property key="added" value="2012-05-10 12:36:05.860"/>
+            <property key="lastAccess" value="2012-05-10 17:36:47.985"/>
+            <property key="type" value="WMS"/>
+            <property key="subType" value=""/>
+        </xml-tag>
+        <xml-tag>
+            <property key="serverURL" value="http://192.168.0.12:8000/geoserver/audasa/wms"/>
+            <property key="added" value="2012-05-10 18:42:09.848"/>
+            <property key="lastAccess" value="2012-05-10 18:42:09.848"/>
+            <property key="type" value="WMS"/>
+            <property key="subType" value=""/>
+        </xml-tag>
     </xml-tag>
 </xml-tag>

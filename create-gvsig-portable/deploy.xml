@@ -7,8 +7,8 @@
 	<property name="custom-portable-path" value="../${this-folder}/portable/" /> <!-- remember to use the trailing slash -->
 	
 	<tstamp />
-	<property name="name-lin" value="gvSIG-cartolab-allinone-lin32-${DSTAMP}" />
-	<property name="name-win" value="gvSIG-cartolab-allinone-win32-${DSTAMP}" />
+	<property name="name-lin" value="gvSIG_AUDASA_lin32_${DSTAMP}" />
+	<property name="name-win" value="gvSIG_AUDASA_${DSTAMP}" />
 	
 	<!-- Projects to be builded.
 	Check the file ../install/gvsig_default_installation_projects.xml,
@@ -20,7 +20,7 @@
 	
 	<!-- DON'T TOUCH BELOW THIS LINE -->
 	
-	<import file="../install/deploy.xml"/>
+	<import file="../appgvSIG/build.xml"/>
 	
 	<property name="base-lin" value="base-lin" />
 	<property name="base-win" value="base-win" />
@@ -175,5 +175,30 @@
 		<zip destfile="/tmp/${name-win}.zip" basedir="/tmp/${name-win}" />
 		
 	</target>
+	
+	
+	<target name="buildFromSource">
+			<antcall target="clean-all" inheritAll="false">
+				<param name="gvSIG_projects" value="${gvSIG_dist}" />
+				<param name="mandatoryProjets" value="${gvSIG_dist}" />
+			</antcall>
+			
+			<ant antfile="../appgvSIG/build.xml" target="buildNumber" inheritall="false" />
+			
+			<!-- TODO:
+			This target compile for 1.5. Maybe we should use 1.6
+			Maybe "make-binary-distribution" should be used. That target makes: clean-all, build-number, build-all
+			We should thing about debug=on and debug-level
+			-->
+			
+			<antcall target="build-all" inheritAll="false">
+				<param name="gvSIG_projects" value="${gvSIG_dist}" />
+				<param name="mandatoryProjets" value="${gvSIG_dist}" />
+			</antcall>
+			
+			<!-- Workaround to get the binaries "compiled" at the same time for both platforms -->
+			<ant antfile="../binaries/w32/build.xml" inheritall="false" />
+			<ant antfile="../binaries/linux/build.xml" inheritall="false" />
+		</target>
 
 </project>
