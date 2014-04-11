@@ -9,7 +9,7 @@
   <property name="install"  location="install"/>
   <property name="manzip"  location="manzip"/>
   <property name="lib"  location="lib"/>
-  <property name="andami" location="../../../_fwAndami"/>
+  <property name="andami" location="../_fwAndami"/>
   <property name="mainplugin" value="com.iver.cit.gvsig"/>
   <property name="plugin" value="org.gvsig.mapsheets.print.series"/>
 
@@ -30,7 +30,18 @@
 	  		description="generate the distribution without the source file"
 	  	depends="init,create-jar,copy-data-files,copy-to-andami,clean">
 	  </target>
+	
+	<target name="batch-build"
+		depends="init, compile, create-jar,copy-data-files,copy-to-andami,clean">
+	</target>
 
+	<target name="compile"  >
+		<!-- Compile the Java code from ${src} to ${build} -->
+		<mkdir dir="${build}" />
+		<loadEclipseClasspath project="${basedir}"/>
+		<gvSIG-javac classpath="${eclipseClasspath}" />
+	</target>
+		
 	<target name="create-jar" description="Creates the plugin jar">
 	  	<jar jarfile="${dist}/${plugin}.jar" basedir="${build}"/>
 	</target>
@@ -50,13 +61,12 @@
 	</target>
 
 
-  <target name="clean"
-        description="clean up" >
-    <!-- Delete the ${build} and ${dist} directory trees -->
-	<delete>
-		<fileset dir="${dist}" includes="**/*"/>
-	</delete>
-  </target>
+	 <target name="clean"
+	        description="clean up" >
+	    <!-- Delete the ${build} and ${dist} directory trees -->
+	    <delete dir="${dist}"/>
+	    <delete dir="${build}"/>
+	  </target>
   
   	<target name="copy-data-files">
 
