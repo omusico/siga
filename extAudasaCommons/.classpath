@@ -13,5 +13,10 @@
 	<classpathentry kind="lib" path="lib/jasperreports-4.6.0.jar"/>
 	<classpathentry kind="src" path="/extDBConnection"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/appgvSIG"/>
+	<classpathentry kind="src" path="/libGDBMS"/>
+	<classpathentry kind="src" path="/libFMap"/>
+	<classpathentry kind="src" path="/extELLE"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/libExceptions"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/libProjection"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

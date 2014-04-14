@@ -30,8 +30,8 @@ import com.iver.cit.gvsig.fmap.drivers.DBException;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
+import es.icarto.gvsig.audasacommons.LoadConstantsWizardComponent;
 import es.icarto.gvsig.elle.db.DBStructure;
-import es.udc.cartolab.gvsig.elle.gui.wizard.load.LoadConstantsWizardComponent;
 import es.udc.cartolab.gvsig.elle.gui.wizard.save.LayerProperties;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 

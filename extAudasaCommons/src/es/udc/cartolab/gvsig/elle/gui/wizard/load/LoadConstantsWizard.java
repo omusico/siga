@@ -4,6 +4,8 @@ import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
+import es.udc.cartolab.gvsig.elle.gui.wizard.load.LoadMapWizard;
+
 public class LoadConstantsWizard extends LoadMapWizard {
 
 	public LoadConstantsWizard(View view) {

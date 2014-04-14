@@ -20,6 +20,7 @@ import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
+import es.icarto.gvsig.audasacommons.LoadConstantsWizardComponent;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardWindow;
 
 public class LoadMapWizard extends WizardWindow {
