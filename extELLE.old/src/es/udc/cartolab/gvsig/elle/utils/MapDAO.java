@@ -30,7 +30,7 @@ import com.iver.cit.gvsig.fmap.drivers.DBException;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
-import es.icarto.gvsig.audasacommons.LoadConstantsWizardComponent;
+
 import es.icarto.gvsig.elle.db.DBStructure;
 import es.udc.cartolab.gvsig.elle.gui.wizard.save.LayerProperties;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
@@ -532,25 +532,6 @@ public class MapDAO {
 	String[] maps = DBSession.getCurrentSession().getDistinctValues(
 		DBStructure.getMapTable(), DBStructure.getSchema(), "mapa");
 	return maps;
-    }
-
-    public String getAreaByConnectedUser() {
-	String query = "SELECT area FROM " + LoadConstantsWizardComponent.USUARIOS_TABLENAME +
-		" WHERE name ="  + "'" + DBSession.getCurrentSession().getUserName() + "'" + ";";
-	PreparedStatement statement;
-	try {
-	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
-	    statement.execute();
-	    ResultSet rs = statement.getResultSet();
-	    if (!rs.next()) {
-		return null;
-	    }
-	    rs.first();
-	    return rs.getString(1);
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
-	return null;
     }
 }
 

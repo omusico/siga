@@ -122,18 +122,18 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 
     private String[] getValuesFromConstantByQuery(String constant) {
 	String query;
-	if (MapDAO.getInstance().getAreaByConnectedUser() == null) {
+	if (getAreaByConnectedUser() == null) {
 	    return null;
 	}
-	if (MapDAO.getInstance().getAreaByConnectedUser().equalsIgnoreCase("ambas")) {
+	if (getAreaByConnectedUser().equalsIgnoreCase("ambas")) {
 	    query = "SELECT tag FROM " + MUNICIPIO_CONSTANTS_TABLENAME + " ORDER BY orden;";
-	}else if (MapDAO.getInstance().getAreaByConnectedUser().equalsIgnoreCase("sur")) {
+	}else if (getAreaByConnectedUser().equalsIgnoreCase("sur")) {
 	    //Include Padron in councils list if area = Sur
-	    query = "SELECT tag, orden FROM " + MUNICIPIO_CONSTANTS_TABLENAME +  " WHERE area = " + "'" + MapDAO.getInstance().getAreaByConnectedUser() +
+	    query = "SELECT tag, orden FROM " + MUNICIPIO_CONSTANTS_TABLENAME +  " WHERE area = " + "'" + getAreaByConnectedUser() +
 		    "' UNION SELECT tag, orden FROM " + MUNICIPIO_CONSTANTS_TABLENAME +  " WHERE id = '15065'" +
 		    " ORDER BY orden;";
 	}else {
-	    query = "SELECT tag FROM " + MUNICIPIO_CONSTANTS_TABLENAME +  " WHERE area = " + "'" + MapDAO.getInstance().getAreaByConnectedUser() + "' ORDER BY orden;";
+	    query = "SELECT tag FROM " + MUNICIPIO_CONSTANTS_TABLENAME +  " WHERE area = " + "'" + getAreaByConnectedUser() + "' ORDER BY orden;";
 	}
 	PreparedStatement statement;
 	try {
@@ -239,7 +239,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 		    map.setWhereOnAllLayers(where);
 		    map.setWhereOnAllOverviewLayers(where);
 		    ELLEMap.setFiltered(true);
-		}else if (selectedValue == null && selectedValuesList == null && !MapDAO.getInstance().getAreaByConnectedUser().equalsIgnoreCase("ambas")) {
+		}else if (selectedValue == null && selectedValuesList == null && !getAreaByConnectedUser().equalsIgnoreCase("ambas")) {
 		    where = where + getWhereWithAllCouncilsOfArea();
 		    map.setWhereOnAllLayers(where);
 		    map.setWhereOnAllOverviewLayers(where);
@@ -262,10 +262,10 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 
     private void writeCouncilsLoadedInStatusBar() {
 	if (selectedValue == null) {
-	    if (MapDAO.getInstance().getAreaByConnectedUser().equalsIgnoreCase("ambas")) {
+	    if (getAreaByConnectedUser().equalsIgnoreCase("ambas")) {
 		PluginServices.getMainFrame().getStatusBar().setMessage("constants",
 			selectedConstant + ": " + "TODOS");
-	    }else if (MapDAO.getInstance().getAreaByConnectedUser().equalsIgnoreCase("norte")) {
+	    }else if (getAreaByConnectedUser().equalsIgnoreCase("norte")) {
 		PluginServices.getMainFrame().getStatusBar().setMessage("constants",
 			selectedConstant + ": " + "Área Norte");
 	    }else {
@@ -395,11 +395,11 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 
     private ArrayList<String> getCouncilsByConnectedUser() {
 	ArrayList<String> councils = new ArrayList<String>();
-	if (MapDAO.getInstance().getAreaByConnectedUser() == null) {
+	if (getAreaByConnectedUser() == null) {
 	    return null;
 	}
 	String query = "SELECT id FROM " + MUNICIPIO_CONSTANTS_TABLENAME +
-		" WHERE area = '" + MapDAO.getInstance().getAreaByConnectedUser() + "';";
+		" WHERE area = '" + getAreaByConnectedUser() + "';";
 	PreparedStatement statement;
 	try {
 	    statement = dbs.getJavaConnection().prepareStatement(query);
@@ -409,7 +409,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 		councils.add(rs.getString(1));
 	    }
 	    //If area=Sur included also Padron into councils list
-	    if (MapDAO.getInstance().getAreaByConnectedUser().equalsIgnoreCase("sur")) {
+	    if (getAreaByConnectedUser().equalsIgnoreCase("sur")) {
 		councils.add("15065");
 	    }
 	    return councils;
@@ -429,5 +429,24 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	    }
 	}
 	return where;
+    }
+    
+    public String getAreaByConnectedUser() {
+	String query = "SELECT area FROM " + LoadConstantsWizardComponent.USUARIOS_TABLENAME +
+		" WHERE name ="  + "'" + DBSession.getCurrentSession().getUserName() + "'" + ";";
+	PreparedStatement statement;
+	try {
+	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+	    statement.execute();
+	    ResultSet rs = statement.getResultSet();
+	    if (!rs.next()) {
+		return null;
+	    }
+	    rs.first();
+	    return rs.getString(1);
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return null;
     }
 }
