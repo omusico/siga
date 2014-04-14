@@ -10,5 +10,16 @@
 		<extension class-name="es.icarto.gvsig.audasacommons.MockExtension" active="true">
 		</extension>
 		
+		<extension
+            class-name="es.udc.cartolab.gvsig.elle.SigaLoadMapExtension"
+            active="true" description="Load map">
+            <menu action-command="LoadMap" icon="load-map"
+                text="data_base_menu/Load_map" position="20100"/>
+            <tool-bar name="ELLE" position="30">
+                <action-tool name="load-map" action-command="LoadMap"
+                    icon="load-map" tooltip="Load_map" position="1"/>
+            </tool-bar>
+        </extension>
+		
 	</extensions>
 </plugin-config>

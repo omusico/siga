@@ -23,17 +23,16 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardWindow;
 
 @SuppressWarnings("serial")
-public class LoadMapWizard extends WizardWindow {
+public class SigaLoadMapWizard extends WizardWindow {
 
     private WindowInfo viewInfo;
 
-    public LoadMapWizard(View view) {
+    public SigaLoadMapWizard(View view) {
 	super();
 
-	properties.put(LoadMapWizardComponent.PROPERTY_VEW, view);
+	properties.put(SigaLoadMapWizardComponent.PROPERTY_VEW, view);
 
     }
-
 
     public WindowInfo getWindowInfo() {
 	if (viewInfo == null) {
@@ -45,16 +44,13 @@ public class LoadMapWizard extends WizardWindow {
 	return viewInfo;
     }
 
-
     public Object getWindowProfile() {
 	return WindowInfo.DIALOG_PROFILE;
     }
 
-
     protected void addWizardComponents() {
-	views.add(new LoadMapWizardComponent(properties));
+	views.add(new SigaLoadMapWizardComponent(properties));
+	views.add(new LoadConstantsWizardComponent(properties));
 	views.add(new LoadLegendWizardComponent(properties));
     }
-
-
 }

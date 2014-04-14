@@ -4,9 +4,10 @@ import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
-import es.udc.cartolab.gvsig.elle.gui.wizard.load.LoadMapWizard;
+import es.udc.cartolab.gvsig.elle.gui.wizard.load.SigaLoadMapWizard;
 
-public class LoadConstantsWizard extends LoadMapWizard {
+@SuppressWarnings("serial")
+public class LoadConstantsWizard extends SigaLoadMapWizard {
 
 	public LoadConstantsWizard(View view) {
 		super(view);

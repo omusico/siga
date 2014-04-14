@@ -35,7 +35,7 @@ import com.jeta.forms.components.panel.FormPanel;
 import es.icarto.gvsig.elle.db.DBStructure;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardComponent;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardException;
-import es.udc.cartolab.gvsig.elle.gui.wizard.load.LoadMapWizardComponent;
+import es.udc.cartolab.gvsig.elle.gui.wizard.load.SigaLoadMapWizardComponent;
 import es.udc.cartolab.gvsig.elle.utils.ELLEMap;
 import es.udc.cartolab.gvsig.elle.utils.MapDAO;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
@@ -214,7 +214,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 
     @Override
     public void finish() throws WizardException {
-	Object tmp = properties.get(LoadMapWizardComponent.PROPERTY_MAP_NAME);
+	Object tmp = properties.get(SigaLoadMapWizardComponent.PROPERTY_MAP_NAME);
 	String mapName = (tmp == null ? "" : tmp.toString());
 
 	Object aux = properties.get(PROPERTY_VIEW);
