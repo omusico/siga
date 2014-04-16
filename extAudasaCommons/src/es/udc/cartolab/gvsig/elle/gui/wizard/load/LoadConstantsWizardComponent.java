@@ -431,7 +431,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	return where;
     }
     
-    public String getAreaByConnectedUser() {
+    public static String getAreaByConnectedUser() {
 	String query = "SELECT area FROM " + LoadConstantsWizardComponent.USUARIOS_TABLENAME +
 		" WHERE name ="  + "'" + DBSession.getCurrentSession().getUserName() + "'" + ";";
 	PreparedStatement statement;

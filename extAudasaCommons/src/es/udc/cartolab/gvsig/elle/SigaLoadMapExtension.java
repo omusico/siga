@@ -18,10 +18,10 @@ package es.udc.cartolab.gvsig.elle;
 
 import java.sql.SQLException;
 
+import javax.swing.JOptionPane;
+
 import com.iver.andami.PluginServices;
 import com.iver.andami.plugins.Extension;
-import com.iver.andami.preferences.IPreference;
-import com.iver.andami.preferences.IPreferenceExtension;
 import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.cit.gvsig.ProjectExtension;
 import com.iver.cit.gvsig.project.Project;
@@ -31,17 +31,22 @@ import com.iver.cit.gvsig.project.documents.view.ProjectViewFactory;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.icarto.gvsig.elle.db.DBStructure;
-import es.udc.cartolab.gvsig.elle.gui.EllePreferencesPage;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardWindow;
+import es.udc.cartolab.gvsig.elle.gui.wizard.load.LoadConstantsWizardComponent;
 import es.udc.cartolab.gvsig.elle.gui.wizard.load.SigaLoadMapWizard;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class SigaLoadMapExtension extends Extension {
 
     public void execute(String actionCommand) {
-	View view = createViewIfNeeded();
-	WizardWindow wizard = new SigaLoadMapWizard(view);
-	wizard.open();
+	if (LoadConstantsWizardComponent.getAreaByConnectedUser() == null) {
+	    JOptionPane.showMessageDialog(null,
+		    PluginServices.getText(this, "userHasNotAreaDefined"));
+	}else {
+	    View view = createViewIfNeeded();
+	    WizardWindow wizard = new SigaLoadMapWizard(view);
+	    wizard.open();
+	}
     }
 
     /**
