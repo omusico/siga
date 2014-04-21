@@ -419,8 +419,6 @@ public class WMSLayerNode {
      */
     public void addStyle(WMSStyle style) {
     	if (style.getName().toLowerCase().contains("default")) {
-    		// Para que funcione el wms del JRC
-    		style.setName("default");
     		selectedStyleIndex = styles.size();
     	}
         if (styles==null)
