@@ -14,7 +14,7 @@
 		</extension>
 			<extension class-name="org.gvsig.installer.app.extension.execution.InstallPackageExtension"
 			description="This extension is used to install a package from a bundle in gvSIG"
-			active="true">
+			active="false">
 			<menu text="tools/install_package"
 				  tooltip="install_package_description"
 				  action-command=""
