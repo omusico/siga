@@ -1,0 +1,67 @@
+<project name="libRemoteServices" default="dist" basedir=".">
+	<description>
+        Genera el jar con RemoteClient y sus dependencias
+    </description>
+	<!-- set global properties for this build -->
+	<property name="src" location="src" />
+	<property name="build" location="bin" />
+	<property name="src-test" location="test" />
+	<property name="build-test" location="bin-test" />
+	<property name="dist" location="dist" />
+	<property name="lib" location="lib" />
+	<property name="jarName" value="remote-clients" />
+	<property name="targetDir" location="../libFMap/lib" />
+	<import file="../binaries/ant/utilities.xml"/>
+
+	
+
+	<target name="dist" description="generate the distribution" depends="init, create-jar, move-to-fmap" > 
+	</target>
+
+	<target	name="batch-build" description="compile the sources, create the jar file" depends="init,compile,create-jar,move-to-fmap">
+	</target>
+
+	<target name="init">
+		<tstamp />
+		<echo> Compiling ${ant.project.name}...</echo>
+		<mkdir dir="${build}" />
+	</target>
+	
+	<target name="compile" description="compile the source">
+		<!-- Compile the Java code from ${src} to ${build} -->
+		<mkdir dir="${build}" />
+		<loadEclipseClasspath project="${basedir}"/>
+		<gvSIG-javac
+			classpath="${eclipseClasspath}"/>
+	</target>
+
+	<target name="create-jar" description="Crea el jar de la aplicacion">
+		<mkdir dir="${dist}" />
+			<jar jarfile="${dist}/${jarName}.jar" basedir="${build}" />
+			<jar jarfile="${dist}/${jarName}.jar" basedir="." includes="images/*" update="true" />
+	</target>
+	
+	<target name="move-to-fmap" description="Move jars and required libraries to fmap">
+		<move todir="${targetDir}/">
+			<fileset dir="${dist}" includes="**/**" />
+		</move>		
+		<copy todir="${targetDir}">
+			<fileset dir="./lib" includes="*.jar" />
+		</copy>
+	</target>
+
+	
+
+	<target name="clean" description="clean up">
+		<!-- Delete the ${build} and ${dist} directory trees -->
+		<delete dir="${build}" />
+		<delete dir="${dist}" />
+	</target>
+
+	<target name="run-tests" depends="batch-build,compile-tests">
+		<antcall target="generic-run-tests">
+			<param name="TestSuite.Name" value="org.gvsig.remoteClient.AllTests"/>
+		</antcall>
+	</target>
+</project>
+
