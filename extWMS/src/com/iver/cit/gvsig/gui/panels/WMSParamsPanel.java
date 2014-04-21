@@ -1302,8 +1302,8 @@ public class WMSParamsPanel extends WizardPanel {
 		for (int i = 0; i < layers.length; i++) {
 			if (layers[i].getName().equalsIgnoreCase(layerName)) {
 				FMapWMSStyle sty = layers[i].getSelectedStyle();
-//				String s = (sty != null) ? sty.name : "";
-				v.add(sty);
+				String s = (sty != null) ? sty.name : "";
+				v.add(s);
 				return v;
 			}
 		}
