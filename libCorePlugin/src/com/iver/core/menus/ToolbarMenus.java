@@ -21,7 +21,7 @@ import com.iver.utiles.XMLEntity;
  */
 public class ToolbarMenus extends Extension implements ActionListener {
 	private final String ACTIONCOMMANDBASE = "CHANGE_VISIBILITY-";
-	private final String MENUBASE = "Ver/Toolbars/";
+	private final String MENUBASE = "Ventana/Toolbars/";
 	private final String ENABLEDIMAGE = "images/enabled.png";
 
 	/* (non-Javadoc)
