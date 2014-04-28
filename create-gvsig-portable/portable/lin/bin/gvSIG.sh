@@ -57,7 +57,7 @@ GVSIG_CLASSPATH=$LIBRARIES
 # Initial gvSIG memory (M=Megabytes, G=Gigabytes)
 GVSIG_INITIAL_MEM=512M
 # Maximum gvSIG memory (M=Megabytes, G=Gigabytes)
-GVSIG_MAX_MEM=1024M
+GVSIG_MAX_MEM=1500M
 # Maximum permanent memory size: needed to load classes and statics
 GVSIG_MAX_PERM_SIZE=96M
 

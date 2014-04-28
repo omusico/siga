@@ -12,7 +12,7 @@
   <customProcName>true</customProcName>
   <stayAlive>false</stayAlive>
   <manifest></manifest>
-  <icon>./install/launch4j/images/ico-gvSIG.ico</icon>
+  <icon>./create-gvsig-portable/portable/common/bin/ico-gvSIG.ico</icon>
   <var>PROJ_LIB=./gvSIG/extensiones/org.gvsig.crs/data</var>
   <var>GDAL_DATA=./data/gdal</var>
   <classPath>
@@ -25,7 +25,7 @@
     <maxVersion></maxVersion>
     <jdkPreference>preferJre</jdkPreference>
     <initialHeapSize>512</initialHeapSize>
-    <maxHeapSize>1024</maxHeapSize>
+    <maxHeapSize>1500</maxHeapSize>
     <opt>-XX:MaxPermSize=96M</opt>
     <opt>-DgvSIG.confDir=../cfg</opt>
   </jre>
@@ -36,8 +36,8 @@
     <copyright>(c) 2009-2014 gvSIG Association</copyright>
     <productVersion>1.12.0.1417</productVersion>
     <txtProductVersion>1.12.0 build 1417</txtProductVersion>
-    <productName>gvSIG Cartolab allinone</productName>
-    <companyName>Cartolab</companyName>
+    <productName>SIGA</productName>
+    <companyName>iCarto</companyName>
     <internalName>gvsig-desktop</internalName>
     <originalFilename>gvsig-desktop.exe</originalFilename>
   </versionInfo>
