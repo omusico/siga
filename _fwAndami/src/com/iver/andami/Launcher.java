@@ -50,12 +50,14 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -186,6 +188,9 @@ public class Launcher {
 	private static String andamiConfigPath;
 	private static String pluginsPersistencePath;
 	private static final String nonWinDefaultLookAndFeel =  "com.jgoodies.looks.plastic.PlasticXPLookAndFeel";
+	
+	static BufferedWriter bw;
+	static String timesDir;
 
     private static ArrayList pluginsOrdered = new ArrayList();
     private static ArrayList extensions=new ArrayList();
@@ -207,13 +212,19 @@ public class Launcher {
 
 	
 	public static void main(String[] args) throws Exception {
+	    File currentDir = new File(".");
+	    timesDir = currentDir.getAbsolutePath();
+	    String timesFileName = timesDir + File.separator + "times.txt";
+		File  timesFile = new File(timesFileName);
+		bw = new BufferedWriter(new FileWriter(timesFile));
+		bw.write("#TIME#;MAIN STARTS;" + (int)(System.currentTimeMillis()/1000) + "\n");
 		boolean install = false;
 		for (int i = 0; i < args.length; i++) {
 			if (args[i].equalsIgnoreCase("--install")) {
 				install = true;
 			}
 		}
-    	
+		bw.write("#TIME#;default libraries initializer;" + (int)(System.currentTimeMillis()/1000) + "\n");
     	new DefaultLibrariesInitializer().fullInitialize();
 
 		try {
@@ -321,14 +332,17 @@ public class Launcher {
     }
 
     private static void doMain(String[] args) throws Exception {
+	
     	try{
-
+    	    	
+    	    	
+    	    
     		if (args.length < 1) {
     			System.err.println("Uso: Launcher appName plugins-directory [language=locale]");
     		}
-
+    		bw.write("#TIME#;initialize app;" + (int)(System.currentTimeMillis()/1000) + "\n");
     		initializeApp(args);
-
+    		bw.write("#TIME#;policy;" + (int)(System.currentTimeMillis()/1000) + "\n");
     		// Solucionamos el problema de permisos que se producï¿½a con Java Web Start con este cï¿½digo.
     		// System.setSecurityManager(null);
     		Policy.setPolicy(new Policy() {
@@ -340,81 +354,83 @@ public class Launcher {
     			public void
     			refresh() {}
     		});
-
+    		bw.write("#TIME#;icons;" + (int)(System.currentTimeMillis()/1000) + "\n");
     		initIconThemes();
 //    		Registramos los iconos base
     		registerIcons();
+    		bw.write("#TIME#;validate;" + (int)(System.currentTimeMillis()/1000) + "\n");
     		validate();
-
+    		bw.write("#TIME#;theme;" + (int)(System.currentTimeMillis()/1000) + "\n");
     		// Obtener la personalización de la aplicación.
     		Theme theme=getTheme();
 
     		// Mostrar la ventana de inicio
+    		bw.write("#TIME#;splash;" + (int)(System.currentTimeMillis()/1000) + "\n");
     		Frame f=new Frame();
     		splashWindow=new MultiSplashWindow(f,theme, 190);
-
+    		bw.write("#TIME#;proxy;" + (int)(System.currentTimeMillis()/1000) + "\n");
     		// 1. Ponemos los datos del proxy
     		splashWindow.process(10,
     				PluginServices.getText(Launcher.class, "SplashWindow.configuring_proxy"));
     		configureProxy();
-
+    		bw.write("#TIME#;updates;" + (int)(System.currentTimeMillis()/1000) + "\n");
     		// 2. TODO Buscar actualizaciones de los plugins
     		splashWindow.process(20,
     				PluginServices.getText(Launcher.class, "SplashWindow.looking_for_updates"));
     		downloadExtensions(andamiConfig.getPluginsDirectory());
-
+    		bw.write("#TIME#;read plugin xml;" + (int)(System.currentTimeMillis()/1000) + "\n");
     		// 3. Se leen los config.xml de los plugins -----++++
     		splashWindow.process(30,
     				PluginServices.getText(Launcher.class, "SplashWindow.reading_plugins_config.xml"));
     		loadPlugins(andamiConfig.getPluginsDirectory());
-
+    		bw.write("#TIME#;class loader;" + (int)(System.currentTimeMillis()/1000) + "\n");
     		// 4. Se configura el classloader del plugin
     		splashWindow.process(40,
     				PluginServices.getText(Launcher.class, "SplashWindow.setting_up_class_loaders"));
     		pluginsClassLoaders();
-
+    		bw.write("#TIME#;skin;" + (int)(System.currentTimeMillis()/1000) + "\n");
     		// 5. Se carga un Skin si alguno de los plugins trae información para ello
     		splashWindow.process(50,
     				PluginServices.getText(Launcher.class, "SplashWindow.looking_for_a_skin"));
 //    		skinPlugin(	"com.iver.core.mdiManager.NewSkin");
     		skinPlugin(null);
-
+    		bw.write("#TIME#;event queue;" + (int)(System.currentTimeMillis()/1000) + "\n");
     		// 6. Se configura la cola de eventos
     		splashWindow.process(60,
     				PluginServices.getText(Launcher.class, "setting_up_event_queue"));
     		EventQueue waitQueue = new AndamiEventQueue();
     		Toolkit.getDefaultToolkit().getSystemEventQueue().push(waitQueue);
-
+    		bw.write("#TIME#;plugin messages;" + (int)(System.currentTimeMillis()/1000) + "\n");
     		// 7. Se configura la mensajería del plugin
     		splashWindow.process(70,
     				PluginServices.getText(Launcher.class, "SplashWindow.starting_plugin_internationalization_system"));
     		pluginsMessages();
-
+    		bw.write("#TIME#;update andami config;" + (int)(System.currentTimeMillis()/1000) + "\n");
     		// 8. Se modifica el andami-config con los plugins nuevos
     		splashWindow.process(80,
     				PluginServices.getText(Launcher.class, "SplashWindow.looking_for_a_skin"));
     		updateAndamiConfig();
 
-
+    		bw.write("#TIME#;name and icon;" + (int)(System.currentTimeMillis()/1000) + "\n");
     		frame = new MDIFrame();
     		// 9. Se configura el nombre e icono de la aplicación
     		splashWindow.process(90,
     				PluginServices.getText(Launcher.class, "SplashWindow.setting_up_applications_name_and_icons"));
     		frameIcon(theme);
-
+    		bw.write("#TIME#;prepare main frame;" + (int)(System.currentTimeMillis()/1000) + "\n");
     		// 10. Se prepara el MainFrame para albergar las extensiones
     		splashWindow.process(100,
     				PluginServices.getText(Launcher.class, "SplashWindow.preparing_workbench"));
     		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-
+    		bw.write("#TIME#;wait;" + (int)(System.currentTimeMillis()/1000) + "\n");
     		SwingUtilities.invokeAndWait(new Runnable() {
     			public void run() {
     				frame.init();
     			}
     		});
+    		bw.write("#TIME#;weak up;" + (int)(System.currentTimeMillis()/1000) + "\n");
 
-
-
+    		bw.write("#TIME#;load plugins persistence;" + (int)(System.currentTimeMillis()/1000) + "\n");
     		// 11. Leer el fichero de persistencia
     		//  info de los plugins
     		//  bookmarks de los plugins
@@ -423,7 +439,7 @@ public class Launcher {
     		loadPluginsPersistence();
 
 
-
+    		bw.write("#TIME#;initialize extensions;" + (int)(System.currentTimeMillis()/1000) + "\n");
     		// Se instalan los controles del skin
     		// 12. Se inicializan todas las extensiones de todos los plugins
     		splashWindow.process(120,
@@ -433,7 +449,7 @@ public class Launcher {
     				initializeExtensions();
     			}
     		});
-
+    		bw.write("#TIME#;initialize exclusive extension;" + (int)(System.currentTimeMillis()/1000) + "\n");
     		// 13. Se inicializan la extensión exclusiva
 			splashWindow.process(130,
 					PluginServices.getText(Launcher.class, "SplashWindow.setting_up_master_extension"));
@@ -447,7 +463,7 @@ public class Launcher {
 
 
 
-
+    		bw.write("#TIME#;install plugin controls;" + (int)(System.currentTimeMillis()/1000) + "\n");
     		// 14. Se instalan los controles de las extensiones de los plugins
     		splashWindow.process(140,
     				PluginServices.getText(Launcher.class, "SplashWindow.installing_extensions_controls"));
@@ -457,7 +473,7 @@ public class Launcher {
 
     			}
     		});
-
+    		bw.write("#TIME#;install plugin menu;" + (int)(System.currentTimeMillis()/1000) + "\n");
     		// 15. Se instalan los menus de las extensiones de los plugins
     		splashWindow.process(150,
     				PluginServices.getText(Launcher.class, "SplashWindow.installing_extensions_menus"));
@@ -467,7 +483,7 @@ public class Launcher {
 
     			}
     		});
-
+    		bw.write("#TIME#;install plugin labels;" + (int)(System.currentTimeMillis()/1000) + "\n");
     		// 16. Se instalan las etiquetas de las extensiones de los plugins
     		splashWindow.process(160,
     				PluginServices.getText(Launcher.class, "SplashWindow.installing_extensions_labels"));
@@ -480,12 +496,12 @@ public class Launcher {
 
 
     		// 17. Se instalan los bookmarks de los plugins
-
+    		bw.write("#TIME#;show frame;" + (int)(System.currentTimeMillis()/1000) + "\n");
     		// 18. Se muestra el frame principal
     		splashWindow.process(180,
     				PluginServices.getText(Launcher.class, "creating_main_window"));
     		frame.setVisible(true);
-
+    		bw.write("#TIME#;postinitialize extensions;" + (int)(System.currentTimeMillis()/1000) + "\n");
     		// 19. Se ejecuta el postInitialize
 			splashWindow.process(190,
 					PluginServices.getText(Launcher.class, "SplashWindow.post_initializing_extensions"));
@@ -496,23 +512,25 @@ public class Launcher {
     			}
     		});
 
-
+    		bw.write("#TIME#;key dispatcher;" + (int)(System.currentTimeMillis()/1000) + "\n");
     		// Definimos un KeyEventDispatcher global para que las extensiones
     		// puedan registrar sus "teclas rápidas".
     		GlobalKeyEventDispatcher keyDispatcher = GlobalKeyEventDispatcher.getInstance();
     		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyDispatcher);
-
+    		bw.write("#TIME#;enable controls;" + (int)(System.currentTimeMillis()/1000) + "\n");
     		SwingUtilities.invokeAndWait(new Runnable() {
     			public void run() {
     				frame.enableControls();
     			}
     		});
+    		bw.write("#TIME#;close splash;" + (int)(System.currentTimeMillis()/1000) + "\n");
     		splashWindow.close();
     	}catch(Exception e){
     		logger.error("excepción al arrancar", e);
     		System.exit(-1);
     	}
-
+    	bw.write("#TIME#;CLOSING GVSIG;" + (int)(System.currentTimeMillis()/1000) + "\n");
+    	bw.close();
     }
 
 
@@ -957,9 +975,15 @@ public class Launcher {
 
 	private static void initializeExtensions() {
 		Iterator i = pluginsOrdered.iterator();
+		String timesFileName = timesDir + File.separator + "timesExtensions.txt";
+		File  timesFile = new File(timesFileName);
+		try {
+		    BufferedWriter bw = new BufferedWriter(new FileWriter(timesFile));
+		
 
 		while (i.hasNext()) {
 			String pName = (String) i.next();
+			bw.write("#TIME#; Plugin: " + pName + ": " + (int)(System.currentTimeMillis()/1000) + "\n");
             logger.debug("Initializing extensions from " + pName);
 			PluginConfig pc = (PluginConfig) pluginsConfig.get(pName);
 			PluginServices ps = (PluginServices) pluginsServices.get(pName);
@@ -1027,6 +1051,11 @@ public class Launcher {
 						extension.getClassName(), e1);
 				}
 			}
+		}
+		bw.close();
+		} catch (IOException e2) {
+		    // TODO Auto-generated catch block
+		    e2.printStackTrace();
 		}
 	}
 
