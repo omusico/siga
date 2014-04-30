@@ -55,6 +55,10 @@ public class ToolBarFormLauncherExtension extends Extension {
     }
 
     private boolean isAnyLayerLoaded() {
+	IWindow iWindow = PluginServices.getMDIManager().getActiveWindow();
+	if (!(iWindow instanceof View)) {
+	    return false;
+	}
 	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
 	    if (isLayerLoaded(DBFieldNames.Elements.values()[i].toString())) {
 		return true;
