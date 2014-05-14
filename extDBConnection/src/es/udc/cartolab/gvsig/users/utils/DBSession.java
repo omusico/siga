@@ -103,6 +103,7 @@ public class DBSession {
 		}
 		instance = new DBSession(server, port, database, schema, username, password);
 		connect();
+		LaunchFakeRequestsThread();
 		return instance;
 	}
 
@@ -697,5 +698,13 @@ public class DBSession {
 		}
 		return true;
 	}
+	
+	private static void LaunchFakeRequestsThread() {
+	    FakeRequestsThread fakeRequestThread = new FakeRequestsThread();
+	    fakeRequestThread.setName("fake_requests");
+	    fakeRequestThread.start();
+	}
+	
+
 
 }

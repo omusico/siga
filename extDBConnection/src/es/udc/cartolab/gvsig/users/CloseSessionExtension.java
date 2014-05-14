@@ -16,6 +16,8 @@
 */
 package es.udc.cartolab.gvsig.users;
 
+import java.util.Set;
+
 import com.iver.andami.PluginServices;
 import com.iver.andami.plugins.Extension;
 import com.iver.cit.gvsig.ProjectExtension;
@@ -37,6 +39,7 @@ public class CloseSessionExtension extends Extension {
 
 				ProjectExtension pExt = (ProjectExtension) PluginServices.getExtension(ProjectExtension.class);
 				pExt.execute("NUEVO");
+				stopFakeRequestsThread();
 
 			} catch (DBException e) {
 				// TODO Auto-generated catch block
@@ -45,7 +48,24 @@ public class CloseSessionExtension extends Extension {
 		}
 	}
 
+	private void stopFakeRequestsThread() {
+	    Thread fakeRequestsThread = getThreadByName("fake_requests");
+	    fakeRequestsThread.interrupt();
+	    fakeRequestsThread = null;
+	}
 
+	public Thread getThreadByName(String threadName) {
+	    Thread thread = null;
+
+	    Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+	    Thread[] threadArray = threadSet.toArray(new Thread[threadSet.size()]);
+
+	    for (int i = 0; i < threadArray.length; i++) {
+	        if (threadArray[i].getName().equalsIgnoreCase(threadName))
+	            thread =  threadArray[i];
+	    }
+	    return thread;
+	}
 
 
 	public void initialize() {
