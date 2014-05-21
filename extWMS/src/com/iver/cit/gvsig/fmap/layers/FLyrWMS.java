@@ -159,8 +159,8 @@ public class FLyrWMS extends FLyrRasterSE implements IHasImageLegend{
 	private boolean 					mustTilePrint = true;
 	private final int 					maxTileDrawWidth = 1023;
 	private final int 					maxTileDrawHeight = 1023;
-	private final int 					maxTilePrintWidth = 1023;
-	private final int 					maxTilePrintHeight = 1023;
+	private final int 					maxTilePrintWidth = 1999;
+	private final int 					maxTilePrintHeight = 1999;
 	private final int					minTilePrintWidth = 12;
 	private final int					minTilePrintHeight = 12;
 
