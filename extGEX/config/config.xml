@@ -98,16 +98,20 @@
 			<menu text="SIGA/WMS/Ortofotos PNOA (Internet)" action-command="LoadPNOAExtension" position="30830"/>
 		</extension>
 		
-		<extension class-name="es.icarto.gvsig.extgex.WMSLoadCatastroExtension" description="LOAD_CATASTRO_WMS" active="true">
-			<menu text="SIGA/WMS/Catastro" action-command="LoadCatastroExtension" position="30840"/>
+		<extension class-name="es.icarto.gvsig.extgex.WMSLoadVueloAmericanoExtension" description="LOAD_VUELO_AMERICANO_WMS" active="true">
+			<menu text="SIGA/WMS/Ortofotos 1956-1957 (Vuelo Americano)" action-command="LoadVueloAmericanoExtension" position="30840"/>
+		</extension>
+		
+		<extension class-name="es.icarto.gvsig.extgex.WMSLoadCatastroExtension" description="LOAD_LOAD_CATASTRO_WMS" active="true">
+			<menu text="SIGA/WMS/Catastro" action-command="LoadCatastroExtension" position="30850"/>
 		</extension>
 		
 		<extension class-name="es.icarto.gvsig.extgex.WMSLoadPUSectoresExtension" description="LOAD_PUSectores_WMS" active="true">
-			<menu text="SIGA/WMS/Planeamiento Urbanístico (Sectores)" action-command="LoadPUSectoresExtension" position="30850"/>
+			<menu text="SIGA/WMS/Planeamiento Urbanístico (Sectores)" action-command="LoadPUSectoresExtension" position="30860"/>
 		</extension>
 		
 		<extension class-name="es.icarto.gvsig.extgex.WMSLoadPUClasesDeSueloExtension" description="LOAD_PUClasesDeSuelo_WMS" active="true">
-			<menu text="SIGA/WMS/Planeamiento Urbanístico (Clases de Suelo)" action-command="LoadPUClasesDeSueloExtension" position="30860"/>
+			<menu text="SIGA/WMS/Planeamiento Urbanístico (Clases de Suelo)" action-command="LoadPUClasesDeSueloExtension" position="30870"/>
 		</extension>
 
 
