@@ -33,14 +33,14 @@
 		</extension>
 		<extension class-name="com.iver.cit.gvsig.RedoViewExtension" description="Extensión encargada de rehacer la edición sobre la capa activa." active="true">
 			<menu text="Capa/redo" action-command="REDO" icon="view-redo" position="50120"/>
-			<tool-bar name="modificar" position="139">
-				<action-tool name="redo" icon="view-redo" action-command="REDO" tooltip="redo" position="2"/>
+			<tool-bar name="ed_options" position="140">
+				<action-tool name="redo" icon="view-redo" action-command="REDO" tooltip="redo" position="8"/>
 			</tool-bar>
 		</extension>
 		<extension class-name="com.iver.cit.gvsig.UndoViewExtension" description="Extensión encargada de dehacer la edición sobre la capa activa." active="true" >
 			<menu text="Capa/undo" action-command="UNDO" icon="view-undo" position="50110"/>
-			<tool-bar name="modificar" position="139">
-				<action-tool name="deshacer" icon="view-undo" action-command="UNDO" tooltip="undo" position="1"/>
+			<tool-bar name="ed_options" position="140">
+				<action-tool name="deshacer" icon="view-undo" action-command="UNDO" tooltip="undo" position="7"/>
 			</tool-bar>
 		</extension>
 		<extension class-name="com.iver.cit.gvsig.ViewCommandStackExtension" description="Extensión encargada de administrar la pila de comados de edición sobre una vista." active="true">
