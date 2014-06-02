@@ -55,7 +55,12 @@
                 	action-command="ALL" position="4" name="save-all-legends" />
             </tool-bar>
         </extension>
-
+		<extension class-name="es.udc.cartolab.gvsig.elle.DeleteAllLegendsExtension" description="delete_all_legends" active="true">
+			<menu text="data_base_menu/delete_legends"
+				icon="delete-all-legends"
+				action-command="DeleteAllLegends"
+				position="20600" />
+		</extension>
         <extension class-name="es.udc.cartolab.gvsig.elle.ConfigExtension" active="true">
 		</extension>
     </extensions>
