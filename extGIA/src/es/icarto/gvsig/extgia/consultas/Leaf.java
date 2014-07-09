@@ -54,16 +54,6 @@ public class Leaf implements Component {
 	this.outputFile = new File("./" + element[0]);
 	this.tipoConsulta = tipoConsulta;
 	this.pdf = pdf;
-
-    }
-
-    @Override
-    public boolean lookUp() {
-
-	// TODO: Hacer la query
-
-	// return queryHasResults(rs);
-	return true;
     }
 
     @Override
@@ -91,24 +81,6 @@ public class Leaf implements Component {
 	}
 
 	return outputFile != null;
-    }
-
-    @Override
-    public void finalActions() {
-
-	if (emptyQuery) {
-	    JOptionPane.showMessageDialog(null,
-		    PluginServices.getText(this, "queryWithoutResults_msg"));
-	} else {
-
-	    if (pdf) {
-		showOpenSingleReportDialog(outputFile.toString());
-	    } else {
-		JOptionPane.showMessageDialog(null,
-			PluginServices.getText(this, "csvReportGenerated_msg")
-				+ outputFile);
-	    }
-	}
     }
 
     @Override
@@ -144,20 +116,19 @@ public class Leaf implements Component {
 	}
     }
 
-    private ResultSet getRS4Report(String query) {
-	PreparedStatement statement;
-	ResultSet rs = null;
-	try {
-	    Connection connection = DBSession.getCurrentSession()
-		    .getJavaConnection();
-	    statement = connection.prepareStatement(query);
-	    statement.execute();
-	    rs = statement.getResultSet();
-	} catch (SQLException e1) {
-	    e1.printStackTrace();
-	    return null;
+    private void createPdfReportAgregados(String outputFile, String[] element,
+	    ConsultasFilters filters) {
+	new TrabajosAgregadosReport(element, outputFile, null, filters,
+		TYPE_NOT_SET); // TODO
+    }
+
+    private void createCsvReportAgregados(String outputFile, String[] element,
+	    ConsultasFilters filters) {
+	if (element[0].equals("Taludes")) {
+	    new CSVTrabajosAgregadosTaludesReport(outputFile, consultasFilters);
+	} else if (element[0].equals("Isletas")) {
+	    new CSVTrabajosAgregadosIsletasReport(outputFile, consultasFilters);
 	}
-	return rs;
     }
 
     private int getTipo() {
@@ -240,19 +211,32 @@ public class Leaf implements Component {
 	return query;
     }
 
-    private void createPdfReportAgregados(String outputFile, String[] element,
-	    ConsultasFilters filters) {
-	new TrabajosAgregadosReport(element, outputFile, null, filters,
-		TYPE_NOT_SET); // TODO
+    private ResultSet getRS4Report(String query) {
+	PreparedStatement statement;
+	ResultSet rs = null;
+	try {
+	    Connection connection = DBSession.getCurrentSession()
+		    .getJavaConnection();
+	    statement = connection.prepareStatement(query);
+	    statement.execute();
+	    rs = statement.getResultSet();
+	} catch (SQLException e1) {
+	    e1.printStackTrace();
+	    return null;
+	}
+	return rs;
     }
 
-    private void createCsvReportAgregados(String outputFile, String[] element,
-	    ConsultasFilters filters) {
-	if (element[0].equals("Taludes")) {
-	    new CSVTrabajosAgregadosTaludesReport(outputFile, consultasFilters);
-	} else if (element[0].equals("Isletas")) {
-	    new CSVTrabajosAgregadosIsletasReport(outputFile, consultasFilters);
+    private boolean isEmptyQuery(ResultSet rs) {
+	boolean isEmpty = true;
+	try {
+	    if ((rs != null) && rs.next()) {
+		isEmpty = false;
+	    }
+	} catch (SQLException e) {
+	    logger.error(e.getStackTrace(), e);
 	}
+	return isEmpty;
     }
 
     private void createPdfReport(int tipo, String outputFile, String[] element,
@@ -287,6 +271,24 @@ public class Leaf implements Component {
 
     }
 
+    @Override
+    public void finalActions() {
+
+	if (emptyQuery) {
+	    JOptionPane.showMessageDialog(null,
+		    PluginServices.getText(this, "queryWithoutResults_msg"));
+	} else {
+
+	    if (pdf) {
+		showOpenSingleReportDialog(outputFile.toString());
+	    } else {
+		JOptionPane.showMessageDialog(null,
+			PluginServices.getText(this, "csvReportGenerated_msg")
+				+ outputFile);
+	    }
+	}
+    }
+
     private void showOpenSingleReportDialog(String outputFile) {
 	Object[] reportGeneratedOptions = {
 		PluginServices.getText(this,
@@ -308,18 +310,6 @@ public class Leaf implements Component {
 		e1.printStackTrace();
 	    }
 	}
-    }
-
-    private boolean isEmptyQuery(ResultSet rs) {
-	boolean isEmpty = true;
-	try {
-	    if ((rs != null) && rs.next()) {
-		isEmpty = false;
-	    }
-	} catch (SQLException e) {
-	    logger.error(e.getStackTrace(), e);
-	}
-	return isEmpty;
     }
 
 }

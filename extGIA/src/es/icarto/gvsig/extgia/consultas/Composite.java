@@ -29,14 +29,6 @@ public class Composite implements Component {
     }
 
     @Override
-    public boolean lookUp() {
-	for (Component c : childs) {
-	    c.lookUp();
-	}
-	return true;
-    }
-
-    @Override
     public boolean setOutputPath(File path) {
 	if (path == null) {
 	    JFileChooser fileChooser = new JFileChooser();
@@ -53,10 +45,10 @@ public class Composite implements Component {
 	return outputPath != null;
     }
 
-    public void add(List<String[]> list) {
-	for (String[] e : list) {
-	    Leaf leaf = new Leaf(e, consultasFilters, tipoConsulta, pdf);
-	    childs.add(leaf);
+    @Override
+    public void generateReportFile() {
+	for (Component child : childs) {
+	    child.generateReportFile();
 	}
     }
 
@@ -82,11 +74,10 @@ public class Composite implements Component {
 	}
     }
 
-    @Override
-    public void generateReportFile() {
-	for (Component child : childs) {
-	    child.generateReportFile();
+    public void add(List<String[]> list) {
+	for (String[] e : list) {
+	    Leaf leaf = new Leaf(e, consultasFilters, tipoConsulta, pdf);
+	    childs.add(leaf);
 	}
     }
-
 }
