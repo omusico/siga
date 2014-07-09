@@ -17,8 +17,7 @@ import com.iver.andami.PluginServices;
 import es.icarto.gvsig.audasacommons.forms.reports.SaveFileDialog;
 import es.icarto.gvsig.extgia.consultas.agregados.CSVTrabajosAgregadosIsletasReport;
 import es.icarto.gvsig.extgia.consultas.agregados.CSVTrabajosAgregadosTaludesReport;
-import es.icarto.gvsig.extgia.consultas.agregados.TrabajosAgregadosIsletasReport;
-import es.icarto.gvsig.extgia.consultas.agregados.TrabajosAgregadosTaludesReport;
+import es.icarto.gvsig.extgia.consultas.agregados.TrabajosAgregadosReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.CSVCaracteristicasQueries;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.PDFCaracteristicasQueries;
 import es.icarto.gvsig.extgia.consultas.firme.FirmeReconocimientosReport;
@@ -230,14 +229,8 @@ public class Leaf implements Component {
     }
 
     private void createPdfReportAgregados(String outputFile, String[] element,
-	    ConsultasFilters filters, int reportType) {
-	if (element[0].equals("Taludes")) {
-	    new TrabajosAgregadosTaludesReport(element, outputFile, null,
-		    filters, reportType);
-	} else if (element[0].equals("Isletas")) {
-	    new TrabajosAgregadosIsletasReport(element, outputFile, null,
-		    filters, reportType);
-	}
+	    ConsultasFilters filters, int tipo) {
+	new TrabajosAgregadosReport(element, outputFile, null, filters, tipo); // TODO
     }
 
     private void createCsvReportAgregados(String outputFile, String[] element,

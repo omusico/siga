@@ -21,7 +21,7 @@ import es.icarto.gvsig.extgia.consultas.PDFReport;
 import es.icarto.gvsig.extgia.utils.Utils;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
-public abstract class TrabajosAgregadosReport extends PDFReport {
+public class TrabajosAgregadosReport extends PDFReport {
 
 
     private TrabajosAgregadosReportQueries agregadosReportQueries = null;
@@ -30,9 +30,6 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
 	    ResultSet resultMap, ConsultasFilters filters, int reportType) {
 	super(element, fileName, null, filters, reportType);
     }
-
-    @Override
-    protected abstract String getElementID();
 
     @Override
     protected String getTitle() {
@@ -232,6 +229,21 @@ public abstract class TrabajosAgregadosReport extends PDFReport {
 		table.addCell(valueCell);
 	    }
 	}
+    }
+
+    @Override
+    protected boolean hasEmbebedTable() {
+	return false;
+    }
+
+    @Override
+    protected PdfPCell writeAditionalColumnName() {
+	return null;
+    }
+
+    @Override
+    protected PdfPCell writeAditionalColumnValues(String id) {
+	return null;
     }
 
 }
