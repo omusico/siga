@@ -294,7 +294,7 @@ public abstract class PDFReport {
 	document = new Document(setPageSize());
 	try {
 	    PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(fileName));
-	    writer.setPageEvent(new MyPageEvent(writer, document, resultMap));
+	    writer.setPageEvent(new MyPageEvent(writer, document));
 	    document.open();
 
 	    // Write report into document
@@ -312,12 +312,10 @@ public abstract class PDFReport {
     public class MyPageEvent extends PdfPageEventHelper {
 	private final PdfWriter pdfWriter;
 	private final Document document;
-	private final ResultSet resultMap;
 
-	public MyPageEvent(PdfWriter pdfWriter, Document document, ResultSet resultMap) {
+	public MyPageEvent(PdfWriter pdfWriter, Document document) {
 	    this.pdfWriter = pdfWriter;
 	    this.document = document;
-	    this.resultMap = resultMap;
 	}
 	@Override
 	public void onStartPage(PdfWriter pdfWriter, Document document) {
