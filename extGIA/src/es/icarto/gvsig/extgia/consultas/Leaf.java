@@ -8,9 +8,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.Date;
 
 import javax.swing.JOptionPane;
+
+import org.apache.log4j.Logger;
 
 import com.iver.andami.PluginServices;
 
@@ -28,12 +29,15 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class Leaf implements Component {
 
+    private static final int TYPE_NOT_SET = -1;
     private static final int TRABAJOS = 0;
     private static final int RECONOCIMIENTOS = 1;
     private static final int TRABAJOS_FIRME = 2;
     private static final int RECONOCIMIENTOS_FIRME = 3;
     private static final int CARACTERISTICAS = 4;
     private static final int TRABAJOS_AGREGADOS = 5;
+
+    private static final Logger logger = Logger.getLogger(Leaf.class);
 
     private final String[] element;
     private final ConsultasFilters consultasFilters;
@@ -109,83 +113,102 @@ public class Leaf implements Component {
 
     @Override
     public void generateReportFile() {
-	generateReportFile(element, outputFile.getAbsolutePath(),
-		consultasFilters.getFechaInicio(),
-		consultasFilters.getFechaFin(), consultasFilters);
+	if (tipoConsulta.equals("Trabajos Agrupados")) {
+	    if (pdf) {
+		createPdfReportAgregados(outputFile.getAbsolutePath(), element,
+			consultasFilters);
+	    } else {
+		createCsvReportAgregados(outputFile.getAbsolutePath(), element,
+			consultasFilters);
+	    }
+
+	} else {
+	    int tipo = getTipo();
+	    String elementId = ConsultasFieldNames.getElementId(element[0]);
+	    String fields = getFields(tipo, elementId);
+	    String query = getReportQuery(tipo, consultasFilters, element[0],
+		    elementId, fields);
+
+	    ResultSet rs = getRS4Report(query);
+	    if (isEmptyQuery(rs)) {
+		emptyQuery = true;
+		return;
+	    }
+	    if (pdf) {
+		createPdfReport(tipo, outputFile.getAbsolutePath(), element,
+			consultasFilters, rs);
+	    } else {
+		createCsvReport(outputFile.getAbsolutePath(), rs,
+			consultasFilters);
+	    }
+	}
     }
 
-    private void generateReportFile(String[] element, String outputFile,
-	    Date fechaInicial, Date fechaFinal, ConsultasFilters filters) {
+    private ResultSet getRS4Report(String query) {
+	PreparedStatement statement;
+	ResultSet rs = null;
+	try {
+	    Connection connection = DBSession.getCurrentSession()
+		    .getJavaConnection();
+	    statement = connection.prepareStatement(query);
+	    statement.execute();
+	    rs = statement.getResultSet();
+	} catch (SQLException e1) {
+	    e1.printStackTrace();
+	    return null;
+	}
+	return rs;
+    }
 
-	int tipo = -1;
-	String elementId = ConsultasFieldNames.getElementId(element[0]);
-	String fields = "";
-
-	if (tipoConsulta.equals("Trabajos")) {
-	    if (element[1].equals("Firme")) {
-		fields = ConsultasFieldNames
-			.getFirmeTrabajosFieldNames(elementId);
-		tipo = TRABAJOS_FIRME;
-	    } else {
-		fields = ConsultasFieldNames.getTrabajosFieldNames(elementId);
-		tipo = TRABAJOS;
-	    }
+    private int getTipo() {
+	int tipo = TYPE_NOT_SET;
+	if (tipoConsulta.equals("Trabajos") && element[1].equals("Firme")) {
+	    tipo = TRABAJOS_FIRME;
+	} else if (tipoConsulta.equals("Trabajos")) {
+	    tipo = TRABAJOS;
+	} else if (tipoConsulta.equals("Inspecciones")
+		&& element[1].equals("Firme")) {
+	    tipo = RECONOCIMIENTOS_FIRME;
 	} else if (tipoConsulta.equals("Inspecciones")) {
-	    if (element[1].equals("Firme")) {
-		fields = ConsultasFieldNames
-			.getFirmeReconocimientosFieldNames(elementId);
-		tipo = RECONOCIMIENTOS_FIRME;
-	    } else if (!ConsultasFieldNames
-		    .hasIndiceFieldOnReconocimientos(element[0])) {
-		fields = ConsultasFieldNames
-			.getReconocimientosFieldNamesWithoutIndice(elementId);
-		tipo = RECONOCIMIENTOS;
-	    } else {
-		fields = ConsultasFieldNames
-			.getReconocimientosFieldNames(elementId);
-		tipo = RECONOCIMIENTOS;
-	    }
+	    tipo = RECONOCIMIENTOS;
 	} else if (tipoConsulta.equals("Características")) {
-	    fields = ConsultasFieldNames
-		    .getPDFCaracteristicasFieldNames(element[0]);
 	    tipo = CARACTERISTICAS;
 	} else if (tipoConsulta.equals("Trabajos Agrupados")) {
 	    tipo = TRABAJOS_AGREGADOS;
 	}
 
-	String query = getReportQuery(tipo, fechaInicial, fechaFinal,
-		element[0], elementId, fields);
-
-	if (pdf) {
-	    if (tipo == TRABAJOS_AGREGADOS) {
-		createPdfReportAgregados(outputFile, element, filters, tipo);
-	    } else {
-		createPdfReport(tipo, outputFile, element, filters, query);
-	    }
-	} else {
-	    if (tipo == TRABAJOS_AGREGADOS) {
-		createCsvReportAgregados(outputFile, element, filters);
-	    } else {
-		createCsvReport(outputFile, query, filters);
-	    }
-	}
+	return tipo;
     }
 
-    private String getReportQuery(int tipo, Date fechaInicial, Date fechaFinal,
+    private String getFields(int tipo, String elementId) {
+	switch (tipo) {
+	case TRABAJOS_FIRME:
+	    return ConsultasFieldNames.getFirmeTrabajosFieldNames(elementId);
+	case TRABAJOS:
+	    return ConsultasFieldNames.getTrabajosFieldNames(elementId);
+	case RECONOCIMIENTOS_FIRME:
+	    return ConsultasFieldNames
+		    .getFirmeReconocimientosFieldNames(elementId);
+	case RECONOCIMIENTOS:
+	    return ConsultasFieldNames.getReconocimientosFieldNames(elementId);
+	case CARACTERISTICAS:
+	    return ConsultasFieldNames
+		    .getPDFCaracteristicasFieldNames(element[0]);
+	}
+	return "";
+    }
+
+    private String getReportQuery(int tipo, ConsultasFilters filters,
 	    String element, String elementId, String fields) {
 	String query;
 
-	if (tipo == TRABAJOS_AGREGADOS) {
-	    query = "SELECT 1=1";
-	    return query;
-	}
 	if (tipo == CARACTERISTICAS) {
 	    if (pdf) {
 		query = PDFCaracteristicasQueries.getPDFCaracteristicasQuery(
-			element, consultasFilters);
+			element, filters);
 	    } else {
 		query = CSVCaracteristicasQueries.getCSVCaracteristicasQuery(
-			element, consultasFilters);
+			element, filters);
 	    }
 	} else {
 	    query = "SELECT " + fields + " FROM " + DBFieldNames.GIA_SCHEMA
@@ -200,37 +223,27 @@ public class Leaf implements Component {
 		// consultasFilters.getWhereClauseByLocationWidgets(false) +
 		// ");";
 	    } else {
-		query = query
-			+ " WHERE "
-			+ elementId
-			+ " IN (SELECT "
-			+ elementId
-			+ " FROM "
-			+ DBFieldNames.GIA_SCHEMA
-			+ "."
+		query = query + " WHERE " + elementId + " IN (SELECT "
+			+ elementId + " FROM " + DBFieldNames.GIA_SCHEMA + "."
 			+ element
-			+ consultasFilters
-				.getWhereClauseByLocationWidgets(false);
+			+ filters.getWhereClauseByLocationWidgets(false);
 	    }
 	}
 
 	if (tipo == CARACTERISTICAS) {
 	    return query;
 	} else if (tipo == TRABAJOS || tipo == TRABAJOS_FIRME) {
-	    query = query
-		    + consultasFilters
-			    .getWhereClauseByDates("fecha_certificado");
+	    query = query + filters.getWhereClauseByDates("fecha_certificado");
 	} else {
-	    query = query
-		    + consultasFilters
-			    .getWhereClauseByDates("fecha_inspeccion");
+	    query = query + filters.getWhereClauseByDates("fecha_inspeccion");
 	}
 	return query;
     }
 
     private void createPdfReportAgregados(String outputFile, String[] element,
-	    ConsultasFilters filters, int tipo) {
-	new TrabajosAgregadosReport(element, outputFile, null, filters, tipo); // TODO
+	    ConsultasFilters filters) {
+	new TrabajosAgregadosReport(element, outputFile, null, filters,
+		TYPE_NOT_SET); // TODO
     }
 
     private void createCsvReportAgregados(String outputFile, String[] element,
@@ -243,70 +256,35 @@ public class Leaf implements Component {
     }
 
     private void createPdfReport(int tipo, String outputFile, String[] element,
-	    ConsultasFilters filters, String query) {
-	if (outputFile != null) {
+	    ConsultasFilters filters, ResultSet rs) {
 
-	    PreparedStatement statement;
-	    try {
-		Connection connection = DBSession.getCurrentSession()
-			.getJavaConnection();
-		statement = connection.prepareStatement(query);
-		statement.execute();
-		ResultSet rs = statement.getResultSet();
-
-		if (!queryHasResults(rs)) {
-		    emptyQuery = true;
-		    return;
-		}
-
-		if (tipo == TRABAJOS) {
-		    new TrabajosReport(element, outputFile, rs, filters, tipo);
-		} else if (tipo == TRABAJOS_FIRME) {
-		    new FirmeTrabajosReport(element, outputFile, rs, filters,
-			    tipo);
-		} else if (tipo == RECONOCIMIENTOS_FIRME) {
-		    new FirmeReconocimientosReport(element, outputFile, rs,
-			    filters, tipo);
-		} else if (tipo == CARACTERISTICAS) {
-		    ConsultasFieldNames.createCaracteristicasReport(element,
-			    outputFile, rs, filters, tipo);
-		} else {
-		    new ReconocimientosReport(element, outputFile, rs, filters,
-			    tipo);
-		}
-
-	    } catch (SQLException e1) {
-		e1.printStackTrace();
-		return;
-	    }
+	if (tipo == TRABAJOS) {
+	    new TrabajosReport(element, outputFile, rs, filters, tipo);
+	} else if (tipo == TRABAJOS_FIRME) {
+	    new FirmeTrabajosReport(element, outputFile, rs, filters, tipo);
+	} else if (tipo == RECONOCIMIENTOS_FIRME) {
+	    new FirmeReconocimientosReport(element, outputFile, rs, filters,
+		    tipo);
+	} else if (tipo == CARACTERISTICAS) {
+	    ConsultasFieldNames.createCaracteristicasReport(element,
+		    outputFile, rs, filters, tipo);
+	} else {
+	    new ReconocimientosReport(element, outputFile, rs, filters, tipo);
 	}
     }
 
-    private void createCsvReport(String outputFile, String query,
+    private void createCsvReport(String outputFile, ResultSet rs,
 	    ConsultasFilters filters) {
-	PreparedStatement statement;
 
-	if (outputFile != null) {
-	    try {
-		Connection connection = DBSession.getCurrentSession()
-			.getJavaConnection();
-		statement = connection.prepareStatement(query);
-		statement.execute();
-		ResultSet rs = statement.getResultSet();
-		ResultSetMetaData rsMetaData = rs.getMetaData();
-
-		if (!queryHasResults(rs)) {
-		    emptyQuery = true;
-		    return;
-		}
-
-		new CSVReport(outputFile, rsMetaData, rs, filters);
-
-	    } catch (SQLException e) {
-		e.printStackTrace();
-	    }
-
+	ResultSetMetaData metaData = null;
+	try {
+	    metaData = rs.getMetaData();
+	    new CSVReport(outputFile, metaData, rs, filters);
+	} catch (SQLException e) {
+	    logger.error(e.getStackTrace(), e);
+	    throw new RuntimeException("Problema accediendo a la base de dato");
 	}
+
     }
 
     private void showOpenSingleReportDialog(String outputFile) {
@@ -332,11 +310,16 @@ public class Leaf implements Component {
 	}
     }
 
-    private boolean queryHasResults(ResultSet rs) throws SQLException {
-	if (rs.next()) {
-	    return true;
+    private boolean isEmptyQuery(ResultSet rs) {
+	boolean isEmpty = true;
+	try {
+	    if ((rs != null) && rs.next()) {
+		isEmpty = false;
+	    }
+	} catch (SQLException e) {
+	    logger.error(e.getStackTrace(), e);
 	}
-	return false;
+	return isEmpty;
     }
 
 }
