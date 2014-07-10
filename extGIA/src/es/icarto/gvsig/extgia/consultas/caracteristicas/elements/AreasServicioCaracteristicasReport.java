@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.swing.table.DefaultTableModel;
+
 import com.lowagie.text.Document;
 import com.lowagie.text.Element;
 import com.lowagie.text.PageSize;
@@ -18,8 +20,8 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 public class AreasServicioCaracteristicasReport extends PDFReport {
 
     public AreasServicioCaracteristicasReport(String[] element, String fileName,
-	    ResultSet resultMap, ConsultasFilters filters, int reportType) {
-	super(element, fileName, resultMap, filters, reportType);
+	    DefaultTableModel tableModel, ConsultasFilters filters, int reportType) {
+	super(element, fileName, tableModel, filters, reportType);
 	// TODO Auto-generated constructor stub
     }
 

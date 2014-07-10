@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+import javax.swing.table.DefaultTableModel;
+
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -78,7 +80,7 @@ public class TrabajosAgregadosReport extends PDFReport {
     }
 
     @Override
-    protected void writeValues (Document document, ResultSet resultMap, PdfPTable table, int reportType) {
+    protected void writeValues (Document document, DefaultTableModel tableModel, PdfPTable table, int reportType) {
 	agregadosReportQueries = new TrabajosAgregadosReportQueries(getElementID());
 	writeTable("Desbroce con retroaraña\n\n",
 		agregadosReportQueries.getDesbroceRetroaranhaQuery(),

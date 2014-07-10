@@ -5,12 +5,15 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+import javax.swing.table.DefaultTableModel;
 
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Chunk;
@@ -29,12 +32,19 @@ import com.lowagie.text.pdf.PdfPageEventHelper;
 import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.rtf.style.RtfParagraphStyle;
 
-import es.icarto.gvsig.extgia.utils.Utils;
+import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 
 public abstract class PDFReport {
 
-    protected final com.lowagie.text.Font cellBoldStyle = FontFactory.getFont("arial", 6, Font.BOLD);
-    protected final com.lowagie.text.Font bodyBoldStyle = FontFactory.getFont("arial", 8, Font.BOLD);
+    private final static SimpleDateFormat DATE_FORMAT = DateFormatNT
+	    .getDateFormat();
+    private final static NumberFormat NUMBER_FORMAT = NumberFormat
+	    .getInstance(Locale.getDefault());
+
+    protected final com.lowagie.text.Font cellBoldStyle = FontFactory.getFont(
+	    "arial", 6, Font.BOLD);
+    protected final com.lowagie.text.Font bodyBoldStyle = FontFactory.getFont(
+	    "arial", 8, Font.BOLD);
 
     private final Locale loc = new Locale("es");
 
@@ -46,10 +56,10 @@ public abstract class PDFReport {
     protected final ConsultasFilters filters;
 
     public PDFReport(String[] element, String fileName,
-	    ResultSet resultMap, ConsultasFilters filters, int reportType) {
+	    DefaultTableModel table, ConsultasFilters filters, int reportType) {
 	this.filters = filters;
 	this.elementID = element[0];
-	writePdfReport(element[1], fileName, resultMap, filters, reportType);
+	writePdfReport(element[1], fileName, table, filters, reportType);
     }
 
     protected abstract String getTitle();
@@ -88,17 +98,18 @@ public abstract class PDFReport {
 	    Paragraph amP = null;
 	    if (filters.getArea() == null) {
 		amP = new Paragraph("Área Mantenimiento: -", bodyBoldStyle);
-	    }else {
-		amP = new Paragraph("Área Mantenimiento: " + filters.getArea().getValue(),
-			bodyBoldStyle);
+	    } else {
+		amP = new Paragraph("Área Mantenimiento: "
+			+ filters.getArea().getValue(), bodyBoldStyle);
 	    }
 	    document.add(amP);
 
 	    Paragraph bcP = null;
 	    if (filters.getBaseContratista() == null) {
 		bcP = new Paragraph("Base Contratista: -", bodyBoldStyle);
-	    }else {
-		bcP = new Paragraph("Base Contratista: " + filters.getBaseContratista().getValue(),
+	    } else {
+		bcP = new Paragraph("Base Contratista: "
+			+ filters.getBaseContratista().getValue(),
 			bodyBoldStyle);
 	    }
 	    document.add(bcP);
@@ -106,7 +117,7 @@ public abstract class PDFReport {
 	    Paragraph tramoP = null;
 	    if (filters.getTramo() == null) {
 		tramoP = new Paragraph("Tramo: -", bodyBoldStyle);
-	    }else {
+	    } else {
 		tramoP = new Paragraph("Tramo: "
 			+ filters.getTramo().getValue(), bodyBoldStyle);
 	    }
@@ -179,7 +190,8 @@ public abstract class PDFReport {
     }
 
     private void writePdfReportContent(Document document, String element,
-	    ResultSet resultMap, ConsultasFilters filters, int reportType) {
+	    DefaultTableModel tableModel, ConsultasFilters filters,
+	    int reportType) {
 	try {
 	    // Header
 	    Image image = getHeaderImage();
@@ -207,7 +219,7 @@ public abstract class PDFReport {
 	    isFirstPage = false;
 
 	    // Values
-	    writeValues(document, resultMap, table, reportType);
+	    writeValues(document, tableModel, table, reportType);
 
 	    // Close file
 	    document.close();
@@ -220,41 +232,59 @@ public abstract class PDFReport {
 
     }
 
-    protected void writeValues(Document document, ResultSet resultMap,
-	    PdfPTable table, int reportType) throws SQLException, DocumentException {
-	Paragraph value;
-	int numberOfRows = 0;
-	resultMap.beforeFirst();
+    protected void writeValues(Document document, DefaultTableModel tableModel,
+	    PdfPTable table, int reportType) throws SQLException,
+	    DocumentException {
+	Paragraph paragraph;
 	int startColumn;
 	int endColumn;
-	//reportType 4 is características
+	// reportType 4 is características
 	if (reportType != 4) {
+	    startColumn = 0;
+	    endColumn = getColumnNames().length - 1;
+	} else {
 	    startColumn = 1;
 	    endColumn = getColumnNames().length;
-	}else {
-	    startColumn = 2;
-	    endColumn = getColumnNames().length + 1 ;
 	}
-	while (resultMap.next()) {
+
+	for (int row = 0; row < tableModel.getRowCount(); row++) {
 	    for (int column = startColumn; column <= endColumn; column++) {
-		if (resultMap.getString(column) != null) {
-		    String valueFormatted = Utils.writeDBValueFormatted(resultMap, column);
-		    value = new Paragraph(valueFormatted,cellBoldStyle);
-		} else {
-		    value = new Paragraph("");
-		}
-		PdfPCell valueCell = new PdfPCell(value);
+		Object value = tableModel.getValueAt(row, column);
+		paragraph = new Paragraph(formatValue(value), cellBoldStyle);
+		PdfPCell valueCell = new PdfPCell(paragraph);
 		valueCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		table.addCell(valueCell);
 	    }
 	    if (hasEmbebedTable()) {
-		table.addCell(writeAditionalColumnValues(resultMap.getString(2)));
+		table.addCell(writeAditionalColumnValues(tableModel.getValueAt(
+			row, 1).toString()));
 	    }
-	    numberOfRows = numberOfRows +1;
 	}
+
 	document.add(table);
 	document.add(Chunk.NEWLINE);
-	writeNumberOfRows(document, numberOfRows);
+	writeNumberOfRows(document, tableModel.getRowCount());
+    }
+
+    private String formatValue(Object o) {
+
+	// TODO
+	// This is a little 'hack' because of fecha_puesta_servicio
+	// is Integer on database instead of Date
+	// }else if (rs.getMetaData().getColumnName(column).
+	// equalsIgnoreCase("fecha_puesta_servicio")) {
+	// valueFormatted = rs.getString(column);
+	// }
+	if (o == null) {
+	    return "";
+	} else if (o instanceof Date) {
+	    return DATE_FORMAT.format(o);
+	} else if (o instanceof Number) {
+	    return NUMBER_FORMAT.format(o);
+	} else if (o instanceof Boolean) {
+	    return ((Boolean) o) ? "Sí" : "No";
+	}
+	return o.toString();
     }
 
     protected PdfPTable writeColumnNames(Document document)
@@ -268,17 +298,16 @@ public abstract class PDFReport {
 	int numColumns;
 	if (hasEmbebedTable()) {
 	    numColumns = getColumnNames().length + 1;
-	}else {
+	} else {
 	    numColumns = getColumnNames().length;
 	}
 	PdfPTable table = new PdfPTable(numColumns);
-	table.setTotalWidth(document.getPageSize().getWidth() -
-		document.leftMargin() - document.rightMargin());
+	table.setTotalWidth(document.getPageSize().getWidth()
+		- document.leftMargin() - document.rightMargin());
 	table.setWidths(getColumnsWidth(numColumns));
 	table.setWidthPercentage(100);
 	for (int i = 0; i < getColumnNames().length; i++) {
-	    Paragraph column = new Paragraph(getColumnNames()[i],
-		    bodyBoldStyle);
+	    Paragraph column = new Paragraph(getColumnNames()[i], bodyBoldStyle);
 	    PdfPCell columnCell = new PdfPCell(column);
 	    columnCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 	    table.addCell(columnCell);
@@ -290,16 +319,16 @@ public abstract class PDFReport {
     }
 
     public void writePdfReport(String element, String fileName,
-	    ResultSet resultMap, ConsultasFilters filters, int reportType) {
+	    DefaultTableModel table, ConsultasFilters filters, int reportType) {
 	document = new Document(setPageSize());
 	try {
-	    PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(fileName));
-	    writer.setPageEvent(new MyPageEvent(writer, document));
+	    PdfWriter writer = PdfWriter.getInstance(document,
+		    new FileOutputStream(fileName));
+	    writer.setPageEvent(new MyPageEvent());
 	    document.open();
 
-	    // Write report into document
-	    writePdfReportContent(document, element, resultMap, filters, reportType);
-	    // Close file
+	    writePdfReportContent(document, element, table, filters, reportType);
+
 	    document.close();
 
 	} catch (FileNotFoundException e) {
@@ -310,13 +339,7 @@ public abstract class PDFReport {
     }
 
     public class MyPageEvent extends PdfPageEventHelper {
-	private final PdfWriter pdfWriter;
-	private final Document document;
 
-	public MyPageEvent(PdfWriter pdfWriter, Document document) {
-	    this.pdfWriter = pdfWriter;
-	    this.document = document;
-	}
 	@Override
 	public void onStartPage(PdfWriter pdfWriter, Document document) {
 	    if (!isFirstPage && getColumnNames() != null) {
@@ -324,7 +347,7 @@ public abstract class PDFReport {
 		    document.add(Chunk.NEWLINE);
 		    PdfPTable table = getColumnNames(document);
 		    document.add(table);
-		}catch (DocumentException e1) {
+		} catch (DocumentException e1) {
 		    e1.printStackTrace();
 		}
 	    }
@@ -335,7 +358,6 @@ public abstract class PDFReport {
 
 	}
     }
-
 
     protected ConsultasFilters getFilters() {
 	return filters;

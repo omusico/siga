@@ -1,6 +1,6 @@
 package es.icarto.gvsig.extgia.consultas.firme;
 
-import java.sql.ResultSet;
+import javax.swing.table.DefaultTableModel;
 
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
@@ -12,8 +12,9 @@ import es.icarto.gvsig.extgia.consultas.PDFReport;
 public class FirmeTrabajosReport extends PDFReport {
 
     public FirmeTrabajosReport(String[] element, String fileName,
-	    ResultSet resultMap, ConsultasFilters filters, int reportType) {
-	super(element, fileName, resultMap, filters, reportType);
+	    DefaultTableModel tableModel, ConsultasFilters filters,
+	    int reportType) {
+	super(element, fileName, tableModel, filters, reportType);
 	// TODO Auto-generated constructor stub
     }
 
@@ -24,15 +25,8 @@ public class FirmeTrabajosReport extends PDFReport {
 
     @Override
     protected String[] getColumnNames() {
-	String[] columnNames = {
-		"ID Elemento",
-		"Fecha",
-		"PK inicio",
-		"PK final",
-		"Sentido",
-		"Descripción",
-		"Fecha Certificado"
-	};
+	String[] columnNames = { "ID Elemento", "Fecha", "PK inicio",
+		"PK final", "Sentido", "Descripción", "Fecha Certificado" };
 	return columnNames;
     }
 

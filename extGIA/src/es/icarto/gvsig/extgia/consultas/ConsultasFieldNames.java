@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
+import javax.swing.table.DefaultTableModel;
+
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.AreasDescansoCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.AreasMantenimientoCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.AreasPeajeCaracteristicasReport;
@@ -678,67 +680,67 @@ public class ConsultasFieldNames {
     }
 
     public static void createCaracteristicasReport(String[] element, String outputFile,
-	    ResultSet rs, ConsultasFilters filters, int reportType) {
+	    DefaultTableModel tableModel, ConsultasFilters filters, int reportType) {
 	switch (DBFieldNames.Elements.valueOf(element[0])) {
 	case Taludes:
-	    new TaludesCaracteristicasReport(element, outputFile, rs, filters, reportType);
+	    new TaludesCaracteristicasReport(element, outputFile, tableModel, filters, reportType);
 	    break;
 	case Isletas:
-	    new IsletasCaracteristicasReport(element, outputFile, rs, filters, reportType);
+	    new IsletasCaracteristicasReport(element, outputFile, tableModel, filters, reportType);
 	    break;
 	case Barrera_Rigida:
-	    new BarreraRigidaCaracteristicasReport(element, outputFile, rs, filters, reportType);
+	    new BarreraRigidaCaracteristicasReport(element, outputFile, tableModel, filters, reportType);
 	    break;
 	case Areas_Servicio:
-	    new AreasServicioCaracteristicasReport(element, outputFile, rs, filters, reportType);
+	    new AreasServicioCaracteristicasReport(element, outputFile, tableModel, filters, reportType);
 	    break;
 	case Areas_Descanso:
-	    new AreasDescansoCaracteristicasReport(element, outputFile, rs, filters, reportType);
+	    new AreasDescansoCaracteristicasReport(element, outputFile, tableModel, filters, reportType);
 	    break;
 	case Areas_Peaje:
-	    new AreasPeajeCaracteristicasReport(element, outputFile, rs, filters, reportType);
+	    new AreasPeajeCaracteristicasReport(element, outputFile, tableModel, filters, reportType);
 	    break;
 	case Enlaces:
-	    new EnlacesCaracteristicasReport(element, outputFile, rs, filters, reportType);
+	    new EnlacesCaracteristicasReport(element, outputFile, tableModel, filters, reportType);
 	    break;
 	case Juntas:
-	    new JuntasCaracteristicasReport(element, outputFile, rs, filters, reportType);
+	    new JuntasCaracteristicasReport(element, outputFile, tableModel, filters, reportType);
 	    break;
 	case Pasos_Mediana:
-	    new PasosMedianaCaracteristicasReport(element, outputFile, rs, filters, reportType);
+	    new PasosMedianaCaracteristicasReport(element, outputFile, tableModel, filters, reportType);
 	    break;
 	case Senhalizacion_Vertical:
-	    new SenhalizacionVerticalCaracteristicasReport(element, outputFile, rs, filters, reportType);
+	    new SenhalizacionVerticalCaracteristicasReport(element, outputFile, tableModel, filters, reportType);
 	    break;
 	case Valla_Cierre:
-	    new VallaCierreCaracteristicasReport(element, outputFile, rs, filters, reportType);
+	    new VallaCierreCaracteristicasReport(element, outputFile, tableModel, filters, reportType);
 	    break;
 	case Firme:
-	    new FirmeCaracteristicasReport(element, outputFile, rs, filters, reportType);
+	    new FirmeCaracteristicasReport(element, outputFile, tableModel, filters, reportType);
 	    break;
 	case Obras_Paso:
-	    new ObrasPasoCaracteristicasReport(element, outputFile, rs, filters, reportType);
+	    new ObrasPasoCaracteristicasReport(element, outputFile, tableModel, filters, reportType);
 	    break;
 	case Obras_Desague:
-	    new ObrasDesagueCaracteristicasReport(element, outputFile, rs, filters, reportType);
+	    new ObrasDesagueCaracteristicasReport(element, outputFile, tableModel, filters, reportType);
 	    break;
 	case Muros:
-	    new MurosCaracteristicasReport(element, outputFile, rs, filters, reportType);
+	    new MurosCaracteristicasReport(element, outputFile, tableModel, filters, reportType);
 	    break;
 	case Senhalizacion_Variable:
-	    new SenhalizacionVariableCaracteristicasReport(element, outputFile, rs, filters, reportType);
+	    new SenhalizacionVariableCaracteristicasReport(element, outputFile, tableModel, filters, reportType);
 	    break;
 	case Lecho_Frenado:
-	    new LechoFrenadoCaracteristicasReport(element, outputFile, rs, filters, reportType);
+	    new LechoFrenadoCaracteristicasReport(element, outputFile, tableModel, filters, reportType);
 	    break;
 	case Areas_Mantenimiento:
-	    new AreasMantenimientoCaracteristicasReport(element, outputFile, rs, filters, reportType);
+	    new AreasMantenimientoCaracteristicasReport(element, outputFile, tableModel, filters, reportType);
 	    break;
 	case Lineas_Suministro:
-	    new LineasSuministroCaracteristicasReport(element, outputFile, rs, filters, reportType);
+	    new LineasSuministroCaracteristicasReport(element, outputFile, tableModel, filters, reportType);
 	    break;
 	case Transformadores:
-	    new TransformadoresCaracteristicasReport(element, outputFile, rs, filters, reportType);
+	    new TransformadoresCaracteristicasReport(element, outputFile, tableModel, filters, reportType);
 	    break;
 	}
     }

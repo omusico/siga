@@ -10,6 +10,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 import org.apache.log4j.Logger;
 
@@ -106,9 +107,18 @@ public class Leaf implements Component {
 		emptyQuery = true;
 		return;
 	    }
+	    DefaultTableModel table = new DefaultTableModel();
+	    try {
+		resultSetToTable(table, rs);
+	    } catch (SQLException e) {
+		logger.error(e.getStackTrace(), e);
+		emptyQuery = true;
+		return;
+	    }
+
 	    if (pdf) {
 		createPdfReport(tipo, outputFile.getAbsolutePath(), element,
-			consultasFilters, rs);
+			consultasFilters, table);
 	    } else {
 		createCsvReport(outputFile.getAbsolutePath(), rs,
 			consultasFilters);
@@ -239,21 +249,44 @@ public class Leaf implements Component {
 	return isEmpty;
     }
 
+    private void resultSetToTable(DefaultTableModel result, ResultSet rs)
+	    throws SQLException {
+	rs.beforeFirst();
+	ResultSetMetaData metaData = rs.getMetaData();
+	int numColumns = metaData.getColumnCount();
+
+	for (int i = 0; i < numColumns; i++) {
+	    result.addColumn(metaData.getColumnName(i + 1));
+	}
+
+	while (rs.next()) {
+
+	    Object rowData[] = new Object[numColumns];
+	    for (int i = 0; i < numColumns; i++) {
+		rowData[i] = rs.getObject(i + 1);
+	    }
+	    result.addRow(rowData);
+	}
+
+	// TODO: Close the resultset and the statement
+
+    }
+
     private void createPdfReport(int tipo, String outputFile, String[] element,
-	    ConsultasFilters filters, ResultSet rs) {
+	    ConsultasFilters filters, DefaultTableModel table) {
 
 	if (tipo == TRABAJOS) {
-	    new TrabajosReport(element, outputFile, rs, filters, tipo);
+	    new TrabajosReport(element, outputFile, table, filters, tipo);
 	} else if (tipo == TRABAJOS_FIRME) {
-	    new FirmeTrabajosReport(element, outputFile, rs, filters, tipo);
+	    new FirmeTrabajosReport(element, outputFile, table, filters, tipo);
 	} else if (tipo == RECONOCIMIENTOS_FIRME) {
-	    new FirmeReconocimientosReport(element, outputFile, rs, filters,
+	    new FirmeReconocimientosReport(element, outputFile, table, filters,
 		    tipo);
 	} else if (tipo == CARACTERISTICAS) {
 	    ConsultasFieldNames.createCaracteristicasReport(element,
-		    outputFile, rs, filters, tipo);
+		    outputFile, table, filters, tipo);
 	} else {
-	    new ReconocimientosReport(element, outputFile, rs, filters, tipo);
+	    new ReconocimientosReport(element, outputFile, table, filters, tipo);
 	}
     }
 

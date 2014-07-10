@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.swing.table.DefaultTableModel;
+
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.PageSize;
@@ -19,8 +21,8 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 public class SenhalizacionVerticalCaracteristicasReport extends PDFReport {
 
     public SenhalizacionVerticalCaracteristicasReport(String[] element,
-	    String fileName, ResultSet resultMap, ConsultasFilters filters, int reportType) {
-	super(element, fileName, resultMap, filters, reportType);
+	    String fileName, DefaultTableModel tableModel, ConsultasFilters filters, int reportType) {
+	super(element, fileName, tableModel, filters, reportType);
     }
 
     @Override

@@ -2,6 +2,8 @@ package es.icarto.gvsig.extgia.consultas.caracteristicas.elements;
 
 import java.sql.ResultSet;
 
+import javax.swing.table.DefaultTableModel;
+
 import com.lowagie.text.Document;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
@@ -13,8 +15,8 @@ import es.icarto.gvsig.extgia.consultas.PDFReport;
 public class FirmeCaracteristicasReport extends PDFReport {
 
     public FirmeCaracteristicasReport(String element[], String fileName,
-	    ResultSet resultMap, ConsultasFilters filters, int reportType) {
-	super(element, fileName, resultMap, filters, reportType);
+	    DefaultTableModel tableModel, ConsultasFilters filters, int reportType) {
+	super(element, fileName, tableModel, filters, reportType);
     }
 
     @Override

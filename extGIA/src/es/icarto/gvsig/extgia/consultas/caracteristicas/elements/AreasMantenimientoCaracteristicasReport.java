@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.swing.table.DefaultTableModel;
+
 import com.lowagie.text.Document;
 import com.lowagie.text.Element;
 import com.lowagie.text.PageSize;
@@ -18,9 +20,9 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 public class AreasMantenimientoCaracteristicasReport extends PDFReport {
 
     public AreasMantenimientoCaracteristicasReport(String[] element,
-	    String fileName, ResultSet resultMap, ConsultasFilters filters,
+	    String fileName, DefaultTableModel tableModel, ConsultasFilters filters,
 	    int reportType) {
-	super(element, fileName, resultMap, filters, reportType);
+	super(element, fileName, tableModel, filters, reportType);
     }
 
     @Override

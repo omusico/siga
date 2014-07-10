@@ -2,6 +2,8 @@ package es.icarto.gvsig.extgia.consultas;
 
 import java.sql.ResultSet;
 
+import javax.swing.table.DefaultTableModel;
+
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
@@ -9,8 +11,8 @@ import com.lowagie.text.pdf.PdfPCell;
 public class ReconocimientosReport extends PDFReport {
 
     public ReconocimientosReport(String[] element, String fileName,
-	    ResultSet resultMap, ConsultasFilters filters, int reportType) {
-	super(element, fileName, resultMap, filters, reportType);
+	    DefaultTableModel tableModel, ConsultasFilters filters, int reportType) {
+	super(element, fileName, tableModel, filters, reportType);
     }
 
     @Override
