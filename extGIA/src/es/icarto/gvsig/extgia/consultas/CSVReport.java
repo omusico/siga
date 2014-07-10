@@ -2,20 +2,12 @@ package es.icarto.gvsig.extgia.consultas;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 import javax.swing.table.DefaultTableModel;
 
-import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
+import es.icarto.gvsig.extgia.utils.Utils;
 
 public class CSVReport {
-    private final static SimpleDateFormat DATE_FORMAT = DateFormatNT
-	    .getDateFormat();
-    private final static NumberFormat NUMBER_FORMAT = NumberFormat
-	    .getInstance(Locale.getDefault());
 
     private static final String CSV_SEPARATOR = "\t";
 
@@ -74,32 +66,11 @@ public class CSVReport {
 	for (int row = 0; row < tableModel.getRowCount(); row++) {
 	    for (int column = 0; column < tableModel.getColumnCount(); column++) {
 		Object value = tableModel.getValueAt(row, column);
-		writer.append(formatValue(value));
+		writer.append(Utils.formatValue(value));
 		writer.append(CSV_SEPARATOR);
 	    }
 	    writer.append("\n");
 	}
-    }
-
-    private String formatValue(Object o) {
-
-	// TODO
-	// This is a little 'hack' because of fecha_puesta_servicio
-	// is Integer on database instead of Date
-	// }else if (rs.getMetaData().getColumnName(column).
-	// equalsIgnoreCase("fecha_puesta_servicio")) {
-	// valueFormatted = rs.getString(column);
-	// }
-	if (o == null) {
-	    return "";
-	} else if (o instanceof Date) {
-	    return DATE_FORMAT.format(o);
-	} else if (o instanceof Number) {
-	    return NUMBER_FORMAT.format(o);
-	} else if (o instanceof Boolean) {
-	    return ((Boolean) o) ? "Sí" : "No";
-	}
-	return o.toString();
     }
 
     private void writeColumnNames(DefaultTableModel tableModel,

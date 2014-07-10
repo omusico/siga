@@ -11,6 +11,15 @@ import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 
 public class Utils {
 
+    private final static SimpleDateFormat DATE_FORMAT = DateFormatNT
+	    .getDateFormat();
+    private final static NumberFormat NUMBER_FORMAT = NumberFormat
+	    .getInstance(Locale.getDefault());
+
+    private Utils() {
+	throw new AssertionError("Non instantiable class");
+    }
+
     @Deprecated
     public static String writeValue(String value) {
 	if (value == null) {
@@ -56,5 +65,26 @@ public class Utils {
 	    e.printStackTrace();
 	}
 	return valueFormatted;
+    }
+
+    public static String formatValue(Object o) {
+
+	// TODO
+	// This is a little 'hack' because of fecha_puesta_servicio
+	// is Integer on database instead of Date
+	// }else if (rs.getMetaData().getColumnName(column).
+	// equalsIgnoreCase("fecha_puesta_servicio")) {
+	// valueFormatted = rs.getString(column);
+	// }
+	if (o == null) {
+	    return "";
+	} else if (o instanceof Date) {
+	    return DATE_FORMAT.format(o);
+	} else if (o instanceof Number) {
+	    return NUMBER_FORMAT.format(o);
+	} else if (o instanceof Boolean) {
+	    return ((Boolean) o) ? "Sí" : "No";
+	}
+	return o.toString();
     }
 }

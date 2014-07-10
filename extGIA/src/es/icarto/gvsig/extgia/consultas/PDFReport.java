@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.sql.SQLException;
 import java.text.DateFormat;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -32,14 +30,9 @@ import com.lowagie.text.pdf.PdfPageEventHelper;
 import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.rtf.style.RtfParagraphStyle;
 
-import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
+import es.icarto.gvsig.extgia.utils.Utils;
 
 public abstract class PDFReport {
-
-    private final static SimpleDateFormat DATE_FORMAT = DateFormatNT
-	    .getDateFormat();
-    private final static NumberFormat NUMBER_FORMAT = NumberFormat
-	    .getInstance(Locale.getDefault());
 
     protected final com.lowagie.text.Font cellBoldStyle = FontFactory.getFont(
 	    "arial", 6, Font.BOLD);
@@ -250,7 +243,8 @@ public abstract class PDFReport {
 	for (int row = 0; row < tableModel.getRowCount(); row++) {
 	    for (int column = startColumn; column <= endColumn; column++) {
 		Object value = tableModel.getValueAt(row, column);
-		paragraph = new Paragraph(formatValue(value), cellBoldStyle);
+		paragraph = new Paragraph(Utils.formatValue(value),
+			cellBoldStyle);
 		PdfPCell valueCell = new PdfPCell(paragraph);
 		valueCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		table.addCell(valueCell);
@@ -264,27 +258,6 @@ public abstract class PDFReport {
 	document.add(table);
 	document.add(Chunk.NEWLINE);
 	writeNumberOfRows(document, tableModel.getRowCount());
-    }
-
-    private String formatValue(Object o) {
-
-	// TODO
-	// This is a little 'hack' because of fecha_puesta_servicio
-	// is Integer on database instead of Date
-	// }else if (rs.getMetaData().getColumnName(column).
-	// equalsIgnoreCase("fecha_puesta_servicio")) {
-	// valueFormatted = rs.getString(column);
-	// }
-	if (o == null) {
-	    return "";
-	} else if (o instanceof Date) {
-	    return DATE_FORMAT.format(o);
-	} else if (o instanceof Number) {
-	    return NUMBER_FORMAT.format(o);
-	} else if (o instanceof Boolean) {
-	    return ((Boolean) o) ? "Sí" : "No";
-	}
-	return o.toString();
     }
 
     protected PdfPTable writeColumnNames(Document document)
