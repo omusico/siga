@@ -6,22 +6,6 @@ import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 
 public class PDFCaracteristicasQueries {
 
-    public static final String getSenhalizacionVerticalQuery(ConsultasFilters filters) {
-	return "SELECT distinct(gid), sv.id_elemento_senhalizacion, tr.item, tv.item, nv.item, pk, tipo_senhal, " +
-		"codigo_senhal, leyenda, panel_complementario, codigo_panel, texto_panel, " +
-		"fecha_fabricacion, fecha_instalacion, fecha_reposicion, tipo_sustentacion " +
-		" FROM audasa_extgia.senhalizacion_vertical sv," +
-		" audasa_extgia.senhalizacion_vertical_senhales se," +
-		" audasa_extgia_dominios.tramo tr," +
-		" audasa_extgia_dominios.tipo_via tv," +
-		" audasa_extgia_dominios.nombre_via nv" +
-		" WHERE sv.id_elemento_senhalizacion = se.id_elemento_senhalizacion" +
-		" AND sv.tramo = tr.id AND sv.tipo_via = tv.id" +
-		" AND sv.nombre_via = cast (nv.id as text)" +
-		filters.getWhereClauseByLocationWidgets(true) +
-		" ORDER BY sv.id_elemento_senhalizacion";
-    }
-
     public static String getPDFCaracteristicasQuery(String element, ConsultasFilters filters) {
 	switch (DBFieldNames.Elements.valueOf(element)) {
 	case Areas_Descanso:
@@ -42,6 +26,17 @@ public class PDFCaracteristicasQueries {
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element +
 		    filters.getWhereClauseByLocationWidgets(false) +
 		    " ORDER BY gid";
+	case Senhalizacion_Vertical:
+	    return "SELECT distinct(gid), el.id_elemento_senhalizacion, tr.item, tv.item, nv.item, pk, tipo_senhal, " +
+			"codigo_senhal, leyenda, panel_complementario, codigo_panel, texto_panel, " +
+			"fecha_fabricacion, fecha_instalacion, fecha_reposicion, tipo_sustentacion " +
+			" FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +
+			" audasa_extgia.senhalizacion_vertical_senhales se," +
+			getLocalizationTables() +
+			getLocalizationWhere() +
+			" AND el.id_elemento_senhalizacion = se.id_elemento_senhalizacion" +
+			filters.getWhereClauseByLocationWidgets(true) +
+			" ORDER BY el.id_elemento_senhalizacion";
 	default:
 	    return "SELECT distinct(gid), " + ConsultasFieldNames.getPDFCaracteristicasFieldNames(element) +
 		    " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + " el," +

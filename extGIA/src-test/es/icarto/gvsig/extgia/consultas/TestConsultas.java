@@ -28,7 +28,8 @@ public class TestConsultas {
 
     private static ConsultasFilters mockFilters;
 
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    private static final SimpleDateFormat sdf = new SimpleDateFormat(
+	    "dd/MM/yyyy");
 
     @BeforeClass
     public static void doSetupBeforeClass() {
@@ -37,12 +38,9 @@ public class TestConsultas {
 	    Date firstDate = sdf.parse("01/01/1980");
 	    Date lastDate = sdf.parse("01/07/2013");
 
-	    mockFilters = new ConsultasFilters(
-		    new KeyValue("1", "Norte"),
-		    new KeyValue("1", "Norte"),
-		    new KeyValue("1", "AP-9"),
-		    firstDate,
-		    lastDate);
+	    mockFilters = new ConsultasFilters(new KeyValue("1", "Norte"),
+		    new KeyValue("1", "Norte"), new KeyValue("1", "AP-9"),
+		    firstDate, lastDate);
 
 	} catch (ParseException e1) {
 	    e1.printStackTrace();
@@ -80,178 +78,215 @@ public class TestConsultas {
     @Test
     public void testCaracteristicasPDFReportsQueries() throws SQLException {
 
-	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
-	    if (ConsultasFieldNames.getPDFCaracteristicasFieldNames(
-		    DBFieldNames.Elements.values()[i].toString())!=null) {
-		Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-		String query = PDFCaracteristicasQueries.getPDFCaracteristicasQuery(
-			DBFieldNames.Elements.values()[i].toString(), mockFilters);
+	for (int i = 0; i < DBFieldNames.Elements.values().length; i++) {
+	    if (ConsultasFieldNames
+		    .getPDFCaracteristicasFieldNames(DBFieldNames.Elements
+			    .values()[i].toString()) != null) {
+		Statement st = DBSession.getCurrentSession()
+			.getJavaConnection().createStatement();
+		String query = PDFCaracteristicasQueries
+			.getPDFCaracteristicasQuery(
+				DBFieldNames.Elements.values()[i].toString(),
+				mockFilters);
 		ResultSet rs = st.executeQuery(query);
-		assertTrue(rs!=null);
+		assertTrue(rs != null);
 	    }
 	}
     }
 
     @Test
-    public void testCaracteristicasPDFReportsQueriesWithNullValues() throws SQLException {
+    public void testCaracteristicasPDFReportsQueriesWithNullValues()
+	    throws SQLException {
 	Date firstDate;
 	try {
 	    firstDate = sdf.parse("01/01/1980");
 	    Date lastDate = sdf.parse("01/07/2013");
 
-	    mockFilters = new ConsultasFilters(
-		    null,
-		    null,
-		    null,
-		    firstDate,
+	    mockFilters = new ConsultasFilters(null, null, null, firstDate,
 		    lastDate);
 
 	    testCaracteristicasPDFReportsQueries();
-	}catch (ParseException e) {
+	} catch (ParseException e) {
 	    e.printStackTrace();
 	}
     }
 
     @Test
     public void testTrabajosReportsQueries() throws SQLException {
-	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
-	    if (SqlUtils.elementHasType(DBFieldNames.Elements.values()[i].toString(), "Trabajos") &&
-		    !DBFieldNames.Elements.values()[i].toString().equals("Firme")) {
-		Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-		String query = "SELECT " +
-			ConsultasFieldNames.getTrabajosFieldNames(
-				ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString())) +
-				" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
-				"_trabajos;";
+	for (int i = 0; i < DBFieldNames.Elements.values().length; i++) {
+	    if (SqlUtils.elementHasType(
+		    DBFieldNames.Elements.values()[i].toString(), "Trabajos")
+		    && !DBFieldNames.Elements.values()[i].toString().equals(
+			    "Firme")) {
+		Statement st = DBSession.getCurrentSession()
+			.getJavaConnection().createStatement();
+		String query = "SELECT "
+			+ ConsultasFieldNames
+				.getTrabajosFieldNames(ConsultasFieldNames
+					.getElementId(DBFieldNames.Elements
+						.values()[i].toString()))
+			+ " FROM " + getSchema() + "."
+			+ DBFieldNames.Elements.values()[i].toString()
+			+ "_trabajos;";
 		ResultSet rs = st.executeQuery(query);
-		assertTrue(rs!=null);
+		assertTrue(rs != null);
 	    }
 	}
     }
 
     @Test
-    public void testTrabajosReportsQueriesWithLocationFilters() throws SQLException {
-	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
-	    if (SqlUtils.elementHasType(DBFieldNames.Elements.values()[i].toString(), "Trabajos") &&
-		    !DBFieldNames.Elements.values()[i].toString().equals("Firme")) {
-		Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-		String query = "SELECT " +
-			ConsultasFieldNames.getTrabajosFieldNames(
-				ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString())) +
-				" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
-				"_trabajos" +
-				" WHERE " + ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()) +
-				" IN (SELECT " +
-				ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()) +
-				" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
-				mockFilters.getWhereClauseByLocationWidgets(false) + ");";
+    public void testTrabajosReportsQueriesWithLocationFilters()
+	    throws SQLException {
+	for (int i = 0; i < DBFieldNames.Elements.values().length; i++) {
+	    if (SqlUtils.elementHasType(
+		    DBFieldNames.Elements.values()[i].toString(), "Trabajos")
+		    && !DBFieldNames.Elements.values()[i].toString().equals(
+			    "Firme")) {
+		Statement st = DBSession.getCurrentSession()
+			.getJavaConnection().createStatement();
+		String query = "SELECT "
+			+ ConsultasFieldNames
+				.getTrabajosFieldNames(ConsultasFieldNames
+					.getElementId(DBFieldNames.Elements
+						.values()[i].toString()))
+			+ " FROM "
+			+ getSchema()
+			+ "."
+			+ DBFieldNames.Elements.values()[i].toString()
+			+ "_trabajos"
+			+ " WHERE "
+			+ ConsultasFieldNames
+				.getElementId(DBFieldNames.Elements.values()[i]
+					.toString())
+			+ " IN (SELECT "
+			+ ConsultasFieldNames
+				.getElementId(DBFieldNames.Elements.values()[i]
+					.toString()) + " FROM " + getSchema()
+			+ "." + DBFieldNames.Elements.values()[i].toString()
+			+ mockFilters.getWhereClauseByLocationWidgets(false)
+			+ ");";
 		ResultSet rs = st.executeQuery(query);
-		assertTrue(rs!=null);
+		assertTrue(rs != null);
 	    }
 	}
     }
 
     @Test
     public void testTrabajosAgregadosReportsQueries() throws SQLException {
-	String[] elements = {"Taludes", "Isletas"};
-	TrabajosAgregadosReportQueries agregadosReportQueries = new TrabajosAgregadosReportQueries(elements[0]);
+	String[] elements = { "Taludes", "Isletas" };
+	TrabajosAgregadosReportQueries agregadosReportQueries = new TrabajosAgregadosReportQueries(
+		elements[0]);
 	ResultSet rs;
-	Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
+	Statement st = DBSession.getCurrentSession().getJavaConnection()
+		.createStatement();
 
-	String query = agregadosReportQueries.getDesbroceManualQuery() +
-		mockFilters.getWhereClauseFiltersForAgregados(elements[0], false);
+	String query = agregadosReportQueries.getDesbroceManualQuery()
+		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
+			false);
 	rs = st.executeQuery(query);
-	assertTrue(rs!=null);
+	assertTrue(rs != null);
 
-	query = agregadosReportQueries.getDesbroceManualSumQuery() +
-		mockFilters.getWhereClauseFiltersForAgregados(elements[0], true);
+	query = agregadosReportQueries.getDesbroceManualSumQuery()
+		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
+			true);
 	rs = st.executeQuery(query);
-	assertTrue(rs!=null);
+	assertTrue(rs != null);
 
-	query = agregadosReportQueries.getDesbroceMecanicoQuery() +
-		mockFilters.getWhereClauseFiltersForAgregados(elements[0], false);
+	query = agregadosReportQueries.getDesbroceMecanicoQuery()
+		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
+			false);
 	rs = st.executeQuery(query);
-	assertTrue(rs!=null);
+	assertTrue(rs != null);
 
-	query = agregadosReportQueries.getDesbroceMecanicoSumQuery() +
-		mockFilters.getWhereClauseFiltersForAgregados(elements[0], true);
+	query = agregadosReportQueries.getDesbroceMecanicoSumQuery()
+		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
+			true);
 	rs = st.executeQuery(query);
-	assertTrue(rs!=null);
+	assertTrue(rs != null);
 
-	query = agregadosReportQueries.getDesbroceRetroaranhaQuery() +
-		mockFilters.getWhereClauseFiltersForAgregados(elements[0], false);
+	query = agregadosReportQueries.getDesbroceRetroaranhaQuery()
+		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
+			false);
 	rs = st.executeQuery(query);
-	assertTrue(rs!=null);
+	assertTrue(rs != null);
 
-	query = agregadosReportQueries.getDesbroceRetroaranhaSumQuery() +
-		mockFilters.getWhereClauseFiltersForAgregados(elements[0], true);
+	query = agregadosReportQueries.getDesbroceRetroaranhaSumQuery()
+		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
+			true);
 	rs = st.executeQuery(query);
-	assertTrue(rs!=null);
+	assertTrue(rs != null);
 
-	query = agregadosReportQueries.getDesbroceTotalSumQuery() +
-		mockFilters.getWhereClauseFiltersForAgregados(elements[0], true);
+	query = agregadosReportQueries.getDesbroceTotalSumQuery()
+		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
+			true);
 	rs = st.executeQuery(query);
-	assertTrue(rs!=null);
+	assertTrue(rs != null);
 
-	query = agregadosReportQueries.getHerbicidadQuery() +
-		mockFilters.getWhereClauseFiltersForAgregados(elements[0], false);
+	query = agregadosReportQueries.getHerbicidadQuery()
+		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
+			false);
 	rs = st.executeQuery(query);
-	assertTrue(rs!=null);
+	assertTrue(rs != null);
 
-	query = agregadosReportQueries.getHerbicidaSumQuery() +
-		mockFilters.getWhereClauseFiltersForAgregados(elements[0], true);
+	query = agregadosReportQueries.getHerbicidaSumQuery()
+		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
+			true);
 	rs = st.executeQuery(query);
-	assertTrue(rs!=null);
+	assertTrue(rs != null);
 
-	query = agregadosReportQueries.getSiegaMecanicaIsletasQuery() +
-		mockFilters.getWhereClauseFiltersForAgregados(elements[0], false);
+	query = agregadosReportQueries.getSiegaMecanicaIsletasQuery()
+		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
+			false);
 	rs = st.executeQuery(query);
-	assertTrue(rs!=null);
+	assertTrue(rs != null);
 
-	query = agregadosReportQueries.getSiegaMecanicaIsletasSumQuery() +
-		mockFilters.getWhereClauseFiltersForAgregados(elements[0], true);
+	query = agregadosReportQueries.getSiegaMecanicaIsletasSumQuery()
+		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
+			true);
 	rs = st.executeQuery(query);
-	assertTrue(rs!=null);
+	assertTrue(rs != null);
 
-	query = agregadosReportQueries.getSiegaMecanicaMedianaQuery() +
-		mockFilters.getWhereClauseFiltersForAgregados(elements[0], false);
+	query = agregadosReportQueries.getSiegaMecanicaMedianaQuery()
+		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
+			false);
 	rs = st.executeQuery(query);
-	assertTrue(rs!=null);
+	assertTrue(rs != null);
 
-	query = agregadosReportQueries.getSiegaMecanicaMedianaSumQuery() +
-		mockFilters.getWhereClauseFiltersForAgregados(elements[0], true);
+	query = agregadosReportQueries.getSiegaMecanicaMedianaSumQuery()
+		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
+			true);
 	rs = st.executeQuery(query);
-	assertTrue(rs!=null);
+	assertTrue(rs != null);
 
-	query = agregadosReportQueries.getSiegaTotalSumQuery() +
-		mockFilters.getWhereClauseFiltersForAgregados(elements[0], true);
+	query = agregadosReportQueries.getSiegaTotalSumQuery()
+		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
+			true);
 	rs = st.executeQuery(query);
-	assertTrue(rs!=null);
+	assertTrue(rs != null);
 
-	query = agregadosReportQueries.getVegetacionQuery() +
-		mockFilters.getWhereClauseFiltersForAgregados(elements[0], false);
+	query = agregadosReportQueries.getVegetacionQuery()
+		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
+			false);
 	rs = st.executeQuery(query);
-	assertTrue(rs!=null);
+	assertTrue(rs != null);
 
-	query = agregadosReportQueries.getVegetacionSumQuery() +
-		mockFilters.getWhereClauseFiltersForAgregados(elements[0], true);
+	query = agregadosReportQueries.getVegetacionSumQuery()
+		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
+			true);
 	rs = st.executeQuery(query);
-	assertTrue(rs!=null);
+	assertTrue(rs != null);
     }
 
     @Test
-    public void testTrabajosAgregadosReportsQueriesWithNullValues() throws SQLException {
+    public void testTrabajosAgregadosReportsQueriesWithNullValues()
+	    throws SQLException {
 
 	Date firstDate;
 	try {
 	    firstDate = sdf.parse("01/01/1980");
 	    Date lastDate = sdf.parse("01/07/2013");
 
-	    mockFilters = new ConsultasFilters(
-		    null,
-		    null,
-		    null,
-		    firstDate,
+	    mockFilters = new ConsultasFilters(null, null, null, firstDate,
 		    lastDate);
 
 	    testTrabajosAgregadosReportsQueries();
@@ -262,119 +297,164 @@ public class TestConsultas {
 
     @Test
     public void testReconocimientosReportsQueries() throws SQLException {
-	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
-	    if (SqlUtils.elementHasType(DBFieldNames.Elements.values()[i].toString(), "Inspecciones") &&
-		    !DBFieldNames.Elements.values()[i].toString().equals("Firme")) {
-		Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-		String fields = ConsultasFieldNames.getReconocimientosFieldNames(
-			ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()));
-		if (!ConsultasFieldNames.hasIndiceFieldOnReconocimientos(DBFieldNames.Elements.values()[i].toString())) {
-		    fields = ConsultasFieldNames.getReconocimientosFieldNamesWithoutIndice(
-			    ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()));
+	for (int i = 0; i < DBFieldNames.Elements.values().length; i++) {
+	    if (SqlUtils.elementHasType(
+		    DBFieldNames.Elements.values()[i].toString(),
+		    "Inspecciones")
+		    && !DBFieldNames.Elements.values()[i].toString().equals(
+			    "Firme")) {
+		Statement st = DBSession.getCurrentSession()
+			.getJavaConnection().createStatement();
+		String fields = ConsultasFieldNames
+			.getReconocimientosFieldNames(ConsultasFieldNames
+				.getElementId(DBFieldNames.Elements.values()[i]
+					.toString()));
+		if (!ConsultasFieldNames
+			.hasIndiceFieldOnReconocimientos(DBFieldNames.Elements
+				.values()[i].toString())) {
+		    fields = ConsultasFieldNames
+			    .getReconocimientosFieldNamesWithoutIndice(ConsultasFieldNames
+				    .getElementId(DBFieldNames.Elements
+					    .values()[i].toString()));
 		}
-		String query = "SELECT " + fields +
-			" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
-			"_reconocimientos;";
+		String query = "SELECT " + fields + " FROM " + getSchema()
+			+ "." + DBFieldNames.Elements.values()[i].toString()
+			+ "_reconocimientos;";
 		ResultSet rs = st.executeQuery(query);
-		assertTrue(rs!=null);
+		assertTrue(rs != null);
 	    }
 	}
     }
 
     @Test
-    public void testReconocimientosReportsQueriesWithLocationFilters() throws SQLException {
-	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
-	    if (SqlUtils.elementHasType(DBFieldNames.Elements.values()[i].toString(), "Inspecciones") &&
-		    !DBFieldNames.Elements.values()[i].toString().equals("Firme")) {
-		Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-		String fields = ConsultasFieldNames.getReconocimientosFieldNames(
-			ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()));
-		if (!ConsultasFieldNames.hasIndiceFieldOnReconocimientos(DBFieldNames.Elements.values()[i].toString())) {
-		    fields = ConsultasFieldNames.getReconocimientosFieldNamesWithoutIndice(
-			    ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()));
+    public void testReconocimientosReportsQueriesWithLocationFilters()
+	    throws SQLException {
+	for (int i = 0; i < DBFieldNames.Elements.values().length; i++) {
+	    if (SqlUtils.elementHasType(
+		    DBFieldNames.Elements.values()[i].toString(),
+		    "Inspecciones")
+		    && !DBFieldNames.Elements.values()[i].toString().equals(
+			    "Firme")) {
+		Statement st = DBSession.getCurrentSession()
+			.getJavaConnection().createStatement();
+		String fields = ConsultasFieldNames
+			.getReconocimientosFieldNames(ConsultasFieldNames
+				.getElementId(DBFieldNames.Elements.values()[i]
+					.toString()));
+		if (!ConsultasFieldNames
+			.hasIndiceFieldOnReconocimientos(DBFieldNames.Elements
+				.values()[i].toString())) {
+		    fields = ConsultasFieldNames
+			    .getReconocimientosFieldNamesWithoutIndice(ConsultasFieldNames
+				    .getElementId(DBFieldNames.Elements
+					    .values()[i].toString()));
 		}
-		String query = "SELECT " + fields +
-			" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
-			"_reconocimientos" +
-			" WHERE " + ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()) +
-			" IN (SELECT " +
-			ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()) +
-			" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
-			mockFilters.getWhereClauseByLocationWidgets(false) + ");";
+		String query = "SELECT "
+			+ fields
+			+ " FROM "
+			+ getSchema()
+			+ "."
+			+ DBFieldNames.Elements.values()[i].toString()
+			+ "_reconocimientos"
+			+ " WHERE "
+			+ ConsultasFieldNames
+				.getElementId(DBFieldNames.Elements.values()[i]
+					.toString())
+			+ " IN (SELECT "
+			+ ConsultasFieldNames
+				.getElementId(DBFieldNames.Elements.values()[i]
+					.toString()) + " FROM " + getSchema()
+			+ "." + DBFieldNames.Elements.values()[i].toString()
+			+ mockFilters.getWhereClauseByLocationWidgets(false)
+			+ ");";
 		ResultSet rs = st.executeQuery(query);
-		assertTrue(rs!=null);
+		assertTrue(rs != null);
 	    }
 	}
     }
 
     @Test
     public void testFirmeTrabajosReportQuerie() throws SQLException {
-	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
-	    Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-	    String query = "SELECT " +
-		    ConsultasFieldNames.getFirmeTrabajosFieldNames("id_firme") +
-		    " FROM " + getSchema() + "." + "firme_trabajos;";
+	for (int i = 0; i < DBFieldNames.Elements.values().length; i++) {
+	    Statement st = DBSession.getCurrentSession().getJavaConnection()
+		    .createStatement();
+	    String query = "SELECT "
+		    + ConsultasFieldNames
+			    .getFirmeTrabajosFieldNames("id_firme") + " FROM "
+		    + getSchema() + "." + "firme_trabajos;";
 	    ResultSet rs = st.executeQuery(query);
-	    assertTrue(rs!=null);
+	    assertTrue(rs != null);
 	}
     }
 
     @Test
     public void testFirmeTrabajosReportQuerieWithFilters() throws SQLException {
-	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
-	    Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-	    String query = "SELECT " +
-		    ConsultasFieldNames.getFirmeTrabajosFieldNames("id_firme") +
-		    " FROM " + getSchema() + "." + "firme_trabajos" +
-		    " WHERE id_firme IN (SELECT id_firme FROM " + getSchema() +
-		    ".firme" + mockFilters.getWhereClauseByLocationWidgets(false) +
-		    ");";
+	for (int i = 0; i < DBFieldNames.Elements.values().length; i++) {
+	    Statement st = DBSession.getCurrentSession().getJavaConnection()
+		    .createStatement();
+	    String query = "SELECT "
+		    + ConsultasFieldNames
+			    .getFirmeTrabajosFieldNames("id_firme") + " FROM "
+		    + getSchema() + "." + "firme_trabajos"
+		    + " WHERE id_firme IN (SELECT id_firme FROM " + getSchema()
+		    + ".firme"
+		    + mockFilters.getWhereClauseByLocationWidgets(false) + ");";
 	    ResultSet rs = st.executeQuery(query);
-	    assertTrue(rs!=null);
+	    assertTrue(rs != null);
 	}
     }
 
     @Test
     public void testFirmeReconocimientosReportQuerie() throws SQLException {
-	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
-	    Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-	    String query = "SELECT " +
-		    ConsultasFieldNames.getFirmeReconocimientosFieldNames("id_firme") +
-		    " FROM " + getSchema() + "." + "firme_reconocimientos;";
+	for (int i = 0; i < DBFieldNames.Elements.values().length; i++) {
+	    Statement st = DBSession.getCurrentSession().getJavaConnection()
+		    .createStatement();
+	    String query = "SELECT "
+		    + ConsultasFieldNames
+			    .getFirmeReconocimientosFieldNames("id_firme")
+		    + " FROM " + getSchema() + "." + "firme_reconocimientos;";
 	    ResultSet rs = st.executeQuery(query);
-	    assertTrue(rs!=null);
+	    assertTrue(rs != null);
 	}
     }
 
     @Test
-    public void testFirmeReconocimientosReportQuerieWithFilters() throws SQLException {
-	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
-	    Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-	    String query = "SELECT " +
-		    ConsultasFieldNames.getFirmeReconocimientosFieldNames("id_firme") +
-		    " FROM " + getSchema() + "." + "firme_reconocimientos" +
-		    " WHERE id_firme IN (SELECT id_firme FROM " + getSchema() +
-		    ".firme" + mockFilters.getWhereClauseByLocationWidgets(false) +
-		    ");";
+    public void testFirmeReconocimientosReportQuerieWithFilters()
+	    throws SQLException {
+	for (int i = 0; i < DBFieldNames.Elements.values().length; i++) {
+	    Statement st = DBSession.getCurrentSession().getJavaConnection()
+		    .createStatement();
+	    String query = "SELECT "
+		    + ConsultasFieldNames
+			    .getFirmeReconocimientosFieldNames("id_firme")
+		    + " FROM " + getSchema() + "." + "firme_reconocimientos"
+		    + " WHERE id_firme IN (SELECT id_firme FROM " + getSchema()
+		    + ".firme"
+		    + mockFilters.getWhereClauseByLocationWidgets(false) + ");";
 	    ResultSet rs = st.executeQuery(query);
-	    assertTrue(rs!=null);
+	    assertTrue(rs != null);
 	}
     }
 
     @Test
     public void testCSVCaracteristicas() throws SQLException {
-	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
+	for (int i = 0; i < DBFieldNames.Elements.values().length; i++) {
 	    if (DBFieldNames.Elements.values()[i].toString().equals("Firme")) {
 		return;
-	    }else {
-		if (ConsultasFieldNames.getCSVCaracteristicasFieldNames(
-			DBFieldNames.Elements.values()[i].toString())!=null) {
-		    Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-		    String query = CSVCaracteristicasQueries.getCSVCaracteristicasQuery(
-			    DBFieldNames.Elements.values()[i].toString(), mockFilters);
+	    } else {
+		if (ConsultasFieldNames
+			.getCSVCaracteristicasFieldNames(DBFieldNames.Elements
+				.values()[i].toString()) != null) {
+		    Statement st = DBSession.getCurrentSession()
+			    .getJavaConnection().createStatement();
+		    String query = CSVCaracteristicasQueries
+			    .getCSVCaracteristicasQuery(DBFieldNames.Elements
+				    .values()[i].toString(), mockFilters);
 		    ResultSet rs = st.executeQuery(query);
 		    ResultSetMetaData rsMetaData = rs.getMetaData();
-		    String mockFileDir = "/tmp/test_" + DBFieldNames.Elements.values()[i].toString() + ".csv";
+		    String mockFileDir = "/tmp/test_"
+			    + DBFieldNames.Elements.values()[i].toString()
+			    + ".csv";
 		    new CSVReport(mockFileDir, rsMetaData, rs, mockFilters);
 		    File mockFile = new File(mockFileDir);
 		    assertTrue(mockFile.exists());
@@ -391,15 +471,11 @@ public class TestConsultas {
 	    firstDate = sdf.parse("01/01/1980");
 	    Date lastDate = sdf.parse("01/07/2013");
 
-	    mockFilters = new ConsultasFilters(
-		    null,
-		    null,
-		    null,
-		    firstDate,
+	    mockFilters = new ConsultasFilters(null, null, null, firstDate,
 		    lastDate);
 
 	    testCSVCaracteristicas();
-	}catch (ParseException e) {
+	} catch (ParseException e) {
 	    e.printStackTrace();
 	}
     }
@@ -407,8 +483,10 @@ public class TestConsultas {
     @Test
     public void testCSVCaracteristicasFirme() throws SQLException {
 
-	Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-	String query = CSVCaracteristicasQueries.getCSVCaracteristicasQuery("Firme", mockFilters);
+	Statement st = DBSession.getCurrentSession().getJavaConnection()
+		.createStatement();
+	String query = CSVCaracteristicasQueries.getCSVCaracteristicasQuery(
+		"Firme", mockFilters);
 	ResultSet rs = st.executeQuery(query);
 	ResultSetMetaData rsMetaData = rs.getMetaData();
 	String mockFileDir = "/tmp/test_" + "Firme" + ".csv";
@@ -421,18 +499,25 @@ public class TestConsultas {
 
     @Test
     public void testCSVTrabajos() throws SQLException {
-	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
-	    if (SqlUtils.elementHasType(DBFieldNames.Elements.values()[i].toString(), "Trabajos") &&
-		    !DBFieldNames.Elements.values()[i].toString().equals("Firme")) {
-		Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-		String query = "SELECT " +
-			ConsultasFieldNames.getTrabajosFieldNames(
-				ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString())) +
-				" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
-				"_trabajos;";
+	for (int i = 0; i < DBFieldNames.Elements.values().length; i++) {
+	    if (SqlUtils.elementHasType(
+		    DBFieldNames.Elements.values()[i].toString(), "Trabajos")
+		    && !DBFieldNames.Elements.values()[i].toString().equals(
+			    "Firme")) {
+		Statement st = DBSession.getCurrentSession()
+			.getJavaConnection().createStatement();
+		String query = "SELECT "
+			+ ConsultasFieldNames
+				.getTrabajosFieldNames(ConsultasFieldNames
+					.getElementId(DBFieldNames.Elements
+						.values()[i].toString()))
+			+ " FROM " + getSchema() + "."
+			+ DBFieldNames.Elements.values()[i].toString()
+			+ "_trabajos;";
 		ResultSet rs = st.executeQuery(query);
 		ResultSetMetaData rsMetaData = rs.getMetaData();
-		String mockFileDir = "/tmp/test_" + DBFieldNames.Elements.values()[i].toString() + ".csv";
+		String mockFileDir = "/tmp/test_"
+			+ DBFieldNames.Elements.values()[i].toString() + ".csv";
 		new CSVReport(mockFileDir, rsMetaData, rs, mockFilters);
 		File mockFile = new File(mockFileDir);
 		assertTrue(mockFile.exists());
@@ -443,20 +528,33 @@ public class TestConsultas {
 
     @Test
     public void testCSVReconocimientos() throws SQLException {
-	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
-	    if (SqlUtils.elementHasType(DBFieldNames.Elements.values()[i].toString(), "Inspecciones") &&
-		    !DBFieldNames.Elements.values()[i].toString().equals("Firme")) {
-		Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-		String fields = ConsultasFieldNames.getReconocimientosFieldNames(ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()));
-		if (!ConsultasFieldNames.hasIndiceFieldOnReconocimientos(DBFieldNames.Elements.values()[i].toString())){
-		    fields = ConsultasFieldNames.getReconocimientosFieldNamesWithoutIndice(ConsultasFieldNames.getElementId(DBFieldNames.Elements.values()[i].toString()));
+	for (int i = 0; i < DBFieldNames.Elements.values().length; i++) {
+	    if (SqlUtils.elementHasType(
+		    DBFieldNames.Elements.values()[i].toString(),
+		    "Inspecciones")
+		    && !DBFieldNames.Elements.values()[i].toString().equals(
+			    "Firme")) {
+		Statement st = DBSession.getCurrentSession()
+			.getJavaConnection().createStatement();
+		String fields = ConsultasFieldNames
+			.getReconocimientosFieldNames(ConsultasFieldNames
+				.getElementId(DBFieldNames.Elements.values()[i]
+					.toString()));
+		if (!ConsultasFieldNames
+			.hasIndiceFieldOnReconocimientos(DBFieldNames.Elements
+				.values()[i].toString())) {
+		    fields = ConsultasFieldNames
+			    .getReconocimientosFieldNamesWithoutIndice(ConsultasFieldNames
+				    .getElementId(DBFieldNames.Elements
+					    .values()[i].toString()));
 		}
-		String query = "SELECT " + fields +
-			" FROM " + getSchema() + "." + DBFieldNames.Elements.values()[i].toString() +
-			"_reconocimientos;";
+		String query = "SELECT " + fields + " FROM " + getSchema()
+			+ "." + DBFieldNames.Elements.values()[i].toString()
+			+ "_reconocimientos;";
 		ResultSet rs = st.executeQuery(query);
 		ResultSetMetaData rsMetaData = rs.getMetaData();
-		String mockFileDir = "/tmp/test_" + DBFieldNames.Elements.values()[i].toString() + ".csv";
+		String mockFileDir = "/tmp/test_"
+			+ DBFieldNames.Elements.values()[i].toString() + ".csv";
 		new CSVReport(mockFileDir, rsMetaData, rs, mockFilters);
 		File mockFile = new File(mockFileDir);
 		assertTrue(mockFile.exists());
@@ -467,14 +565,17 @@ public class TestConsultas {
 
     @Test
     public void testCSVTrabajosFirme() throws SQLException {
-	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
-	    Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-	    String query = "SELECT " +
-		    ConsultasFieldNames.getFirmeTrabajosFieldNames("id_firme") +
-		    " FROM " + getSchema() + "." + "firme_trabajos;";
+	for (int i = 0; i < DBFieldNames.Elements.values().length; i++) {
+	    Statement st = DBSession.getCurrentSession().getJavaConnection()
+		    .createStatement();
+	    String query = "SELECT "
+		    + ConsultasFieldNames
+			    .getFirmeTrabajosFieldNames("id_firme") + " FROM "
+		    + getSchema() + "." + "firme_trabajos;";
 	    ResultSet rs = st.executeQuery(query);
 	    ResultSetMetaData rsMetaData = rs.getMetaData();
-	    String mockFileDir = "/tmp/test_" + DBFieldNames.Elements.values()[i].toString() + ".csv";
+	    String mockFileDir = "/tmp/test_"
+		    + DBFieldNames.Elements.values()[i].toString() + ".csv";
 	    new CSVReport(mockFileDir, rsMetaData, rs, mockFilters);
 	    File mockFile = new File(mockFileDir);
 	    assertTrue(mockFile.exists());
@@ -484,14 +585,17 @@ public class TestConsultas {
 
     @Test
     public void testCSVReconocimientosFirme() throws SQLException {
-	for (int i=0; i<DBFieldNames.Elements.values().length; i++) {
-	    Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-	    String query = "SELECT " +
-		    ConsultasFieldNames.getFirmeReconocimientosFieldNames("id_firme") +
-		    " FROM " + getSchema() + "." + "firme_reconocimientos;";
+	for (int i = 0; i < DBFieldNames.Elements.values().length; i++) {
+	    Statement st = DBSession.getCurrentSession().getJavaConnection()
+		    .createStatement();
+	    String query = "SELECT "
+		    + ConsultasFieldNames
+			    .getFirmeReconocimientosFieldNames("id_firme")
+		    + " FROM " + getSchema() + "." + "firme_reconocimientos;";
 	    ResultSet rs = st.executeQuery(query);
 	    ResultSetMetaData rsMetaData = rs.getMetaData();
-	    String mockFileDir = "/tmp/test_" + DBFieldNames.Elements.values()[i].toString() + ".csv";
+	    String mockFileDir = "/tmp/test_"
+		    + DBFieldNames.Elements.values()[i].toString() + ".csv";
 	    new CSVReport(mockFileDir, rsMetaData, rs, mockFilters);
 	    File mockFile = new File(mockFileDir);
 	    assertTrue(mockFile.exists());
@@ -502,27 +606,24 @@ public class TestConsultas {
     @Test
     public void testCaracteristicasPDFReportSenhalizacionVerticalQuery() throws SQLException {
 	Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-	String query = PDFCaracteristicasQueries.getSenhalizacionVerticalQuery(mockFilters);
+	String query = PDFCaracteristicasQueries.getPDFCaracteristicasQuery(DBFieldNames.Elements.Senhalizacion_Vertical.toString(), mockFilters);
 	ResultSet rs = st.executeQuery(query);
 	assertTrue(rs!=null);
     }
 
     @Test
-    public void testCaracteristicasPDFReportSenhalizacionVerticalQueryWithNullValues() throws SQLException {
+    public void testCaracteristicasPDFReportSenhalizacionVerticalQueryWithNullValues()
+	    throws SQLException {
 	Date firstDate;
 	try {
 	    firstDate = sdf.parse("01/01/1980");
 	    Date lastDate = sdf.parse("01/07/2013");
 
-	    mockFilters = new ConsultasFilters(
-		    null,
-		    null,
-		    null,
-		    firstDate,
+	    mockFilters = new ConsultasFilters(null, null, null, firstDate,
 		    lastDate);
 
 	    testCaracteristicasPDFReportSenhalizacionVerticalQuery();
-	}catch (ParseException e) {
+	} catch (ParseException e) {
 	    e.printStackTrace();
 	}
     }

@@ -79,15 +79,6 @@ public class SenhalizacionVerticalCaracteristicasReport extends PDFReport {
     }
 
     @Override
-    protected void writeValues(Document document, ResultSet resultMap,
-	    PdfPTable table, int reportType) throws SQLException, DocumentException {
-	Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-	String query = PDFCaracteristicasQueries.getSenhalizacionVerticalQuery(filters);
-	ResultSet rs = st.executeQuery(query);
-	super.writeValues(document, rs, table, reportType);
-    }
-
-    @Override
     protected void writeDatesRange(Document document, ConsultasFilters filters) {
 
     }
