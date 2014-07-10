@@ -11,20 +11,22 @@ import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 
 public class Utils {
 
+    @Deprecated
     public static String writeValue(String value) {
 	if (value == null) {
 	    return "";
-	}else if (value.equalsIgnoreCase("t")) {
+	} else if (value.equalsIgnoreCase("t")) {
 	    return "Sí";
-	}else if (value.equalsIgnoreCase("f")) {
+	} else if (value.equalsIgnoreCase("f")) {
 	    return "No";
-	}else if (value.contains(".")) {
+	} else if (value.contains(".")) {
 	    return value.replace(".", ",");
-	}else {
+	} else {
 	    return value;
 	}
     }
 
+    @Deprecated
     public static String writeDBValueFormatted(ResultSet rs, int column) {
 	String valueFormatted = null;
 	SimpleDateFormat dateFormat = DateFormatNT.getDateFormat();
@@ -34,18 +36,18 @@ public class Utils {
 	    if (rs.getMetaData().getColumnType(column) == 91) {
 		Date date = rs.getDate(column);
 		valueFormatted = dateFormat.format(date);
-		//This is a little 'hack' because of fecha_puesta_servicio
-		//is Integer on database instead of Date
-	    }else if (rs.getMetaData().getColumnName(column).
-		    equalsIgnoreCase("fecha_puesta_servicio")) {
+		// This is a little 'hack' because of fecha_puesta_servicio
+		// is Integer on database instead of Date
+	    } else if (rs.getMetaData().getColumnName(column)
+		    .equalsIgnoreCase("fecha_puesta_servicio")) {
 		valueFormatted = rs.getString(column);
-	    }else if(rs.getMetaData().getColumnType(column) == 4 ||
-		    rs.getMetaData().getColumnType(column) == 8 ||
-		    rs.getMetaData().getColumnType(column) == 2) {
+	    } else if (rs.getMetaData().getColumnType(column) == 4
+		    || rs.getMetaData().getColumnType(column) == 8
+		    || rs.getMetaData().getColumnType(column) == 2) {
 		valueFormatted = nf.format(rs.getDouble(column));
-	    }else if (rs.getString(column).equals("t")){
+	    } else if (rs.getString(column).equals("t")) {
 		valueFormatted = "Sí";
-	    }else if (rs.getString(column).equals("f")){
+	    } else if (rs.getString(column).equals("f")) {
 		valueFormatted = "No";
 	    } else {
 		valueFormatted = rs.getString(column);

@@ -2,16 +2,24 @@ package es.icarto.gvsig.extgia.consultas;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
-import es.icarto.gvsig.extgia.utils.Utils;
+import javax.swing.table.DefaultTableModel;
+
+import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 
 public class CSVReport {
+    private final static SimpleDateFormat DATE_FORMAT = DateFormatNT
+	    .getDateFormat();
+    private final static NumberFormat NUMBER_FORMAT = NumberFormat
+	    .getInstance(Locale.getDefault());
+
     private static final String CSV_SEPARATOR = "\t";
 
-    public CSVReport(String outputFile, ResultSetMetaData rsMetaData, ResultSet rs,
+    public CSVReport(String outputFile, DefaultTableModel tableModel,
 	    ConsultasFilters filters) {
 	if (outputFile != null) {
 	    try {
@@ -19,24 +27,23 @@ public class CSVReport {
 
 		writeFilters(writer, filters);
 
-		writeColumnNames(rsMetaData, writer);
+		writeColumnNames(tableModel, writer);
 		writer.append("\n");
 
-		writeRows(rs, rsMetaData, writer);
+		writeRows(tableModel, writer);
 
 		writer.flush();
 		writer.close();
 
 	    } catch (IOException e) {
 		e.printStackTrace();
-	    } catch (SQLException e) {
-		e.printStackTrace();
 	    }
 	}
 
     }
 
-    private void writeFilters(FileWriter writer, ConsultasFilters filters) throws IOException {
+    private void writeFilters(FileWriter writer, ConsultasFilters filters)
+	    throws IOException {
 
 	writer.append("Area Mantenimiento");
 	writer.append(CSV_SEPARATOR);
@@ -52,7 +59,6 @@ public class CSVReport {
 	}
 	writer.append("\n");
 
-
 	writer.append("Tramo");
 	writer.append(CSV_SEPARATOR);
 	if (filters.getTramo() != null) {
@@ -63,22 +69,43 @@ public class CSVReport {
 	writer.append("\n");
     }
 
-    private void writeRows(ResultSet rs, ResultSetMetaData rsMetaData,
-	    FileWriter writer) throws SQLException, IOException {
-	rs.beforeFirst();
-	while (rs.next()) {
-	    for (int i=0; i<rsMetaData.getColumnCount(); i++) {
-		writer.append(Utils.writeValue(rs.getString(i+1)));
+    private void writeRows(DefaultTableModel tableModel, FileWriter writer)
+	    throws IOException {
+	for (int row = 0; row < tableModel.getRowCount(); row++) {
+	    for (int column = 0; column < tableModel.getColumnCount(); column++) {
+		Object value = tableModel.getValueAt(row, column);
+		writer.append(formatValue(value));
 		writer.append(CSV_SEPARATOR);
 	    }
 	    writer.append("\n");
 	}
     }
 
-    private void writeColumnNames(ResultSetMetaData rsMetaData,
-	    FileWriter writer) throws SQLException, IOException {
-	for (int i=0; i<rsMetaData.getColumnCount(); i++) {
-	    writer.append(rsMetaData.getColumnName(i+1));
+    private String formatValue(Object o) {
+
+	// TODO
+	// This is a little 'hack' because of fecha_puesta_servicio
+	// is Integer on database instead of Date
+	// }else if (rs.getMetaData().getColumnName(column).
+	// equalsIgnoreCase("fecha_puesta_servicio")) {
+	// valueFormatted = rs.getString(column);
+	// }
+	if (o == null) {
+	    return "";
+	} else if (o instanceof Date) {
+	    return DATE_FORMAT.format(o);
+	} else if (o instanceof Number) {
+	    return NUMBER_FORMAT.format(o);
+	} else if (o instanceof Boolean) {
+	    return ((Boolean) o) ? "Sí" : "No";
+	}
+	return o.toString();
+    }
+
+    private void writeColumnNames(DefaultTableModel tableModel,
+	    FileWriter writer) throws IOException {
+	for (int i = 0; i < tableModel.getColumnCount(); i++) {
+	    writer.append(tableModel.getColumnName(i));
 	    writer.append(CSV_SEPARATOR);
 	}
     }

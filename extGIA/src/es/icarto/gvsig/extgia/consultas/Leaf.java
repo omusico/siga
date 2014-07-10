@@ -120,7 +120,7 @@ public class Leaf implements Component {
 		createPdfReport(tipo, outputFile.getAbsolutePath(), element,
 			consultasFilters, table);
 	    } else {
-		createCsvReport(outputFile.getAbsolutePath(), rs,
+		createCsvReport(outputFile.getAbsolutePath(), table,
 			consultasFilters);
 	    }
 	}
@@ -290,18 +290,9 @@ public class Leaf implements Component {
 	}
     }
 
-    private void createCsvReport(String outputFile, ResultSet rs,
+    private void createCsvReport(String outputFile, DefaultTableModel table,
 	    ConsultasFilters filters) {
-
-	ResultSetMetaData metaData = null;
-	try {
-	    metaData = rs.getMetaData();
-	    new CSVReport(outputFile, metaData, rs, filters);
-	} catch (SQLException e) {
-	    logger.error(e.getStackTrace(), e);
-	    throw new RuntimeException("Problema accediendo a la base de dato");
-	}
-
+	new CSVReport(outputFile, table, filters);
     }
 
     @Override

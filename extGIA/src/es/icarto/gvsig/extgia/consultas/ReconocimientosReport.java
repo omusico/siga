@@ -1,7 +1,5 @@
 package es.icarto.gvsig.extgia.consultas;
 
-import java.sql.ResultSet;
-
 import javax.swing.table.DefaultTableModel;
 
 import com.lowagie.text.PageSize;
