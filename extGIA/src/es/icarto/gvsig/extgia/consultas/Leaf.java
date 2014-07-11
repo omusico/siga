@@ -3,16 +3,9 @@ package es.icarto.gvsig.extgia.consultas;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
-import org.apache.log4j.Logger;
 
 import com.iver.andami.PluginServices;
 
@@ -37,8 +30,6 @@ public class Leaf implements Component {
     private static final int RECONOCIMIENTOS_FIRME = 3;
     private static final int CARACTERISTICAS = 4;
     private static final int TRABAJOS_AGREGADOS = 5;
-
-    private static final Logger logger = Logger.getLogger(Leaf.class);
 
     private final String[] element;
     private final ConsultasFilters consultasFilters;
@@ -102,16 +93,10 @@ public class Leaf implements Component {
 	    String query = getReportQuery(tipo, consultasFilters, element[0],
 		    elementId, fields);
 
-	    ResultSet rs = getRS4Report(query);
-	    if (isEmptyQuery(rs)) {
-		emptyQuery = true;
-		return;
-	    }
-	    DefaultTableModel table = new DefaultTableModel();
-	    try {
-		resultSetToTable(table, rs);
-	    } catch (SQLException e) {
-		logger.error(e.getStackTrace(), e);
+	    ConnectionWrapper con = new ConnectionWrapper(DBSession
+		    .getCurrentSession().getJavaConnection());
+	    DefaultTableModel table = con.execute(query);
+	    if (table.getRowCount() == 0) {
 		emptyQuery = true;
 		return;
 	    }
@@ -219,57 +204,6 @@ public class Leaf implements Component {
 	    query = query + filters.getWhereClauseByDates("fecha_inspeccion");
 	}
 	return query;
-    }
-
-    private ResultSet getRS4Report(String query) {
-	PreparedStatement statement;
-	ResultSet rs = null;
-	try {
-	    Connection connection = DBSession.getCurrentSession()
-		    .getJavaConnection();
-	    statement = connection.prepareStatement(query);
-	    statement.execute();
-	    rs = statement.getResultSet();
-	} catch (SQLException e1) {
-	    e1.printStackTrace();
-	    return null;
-	}
-	return rs;
-    }
-
-    private boolean isEmptyQuery(ResultSet rs) {
-	boolean isEmpty = true;
-	try {
-	    if ((rs != null) && rs.next()) {
-		isEmpty = false;
-	    }
-	} catch (SQLException e) {
-	    logger.error(e.getStackTrace(), e);
-	}
-	return isEmpty;
-    }
-
-    private void resultSetToTable(DefaultTableModel result, ResultSet rs)
-	    throws SQLException {
-	rs.beforeFirst();
-	ResultSetMetaData metaData = rs.getMetaData();
-	int numColumns = metaData.getColumnCount();
-
-	for (int i = 0; i < numColumns; i++) {
-	    result.addColumn(metaData.getColumnName(i + 1));
-	}
-
-	while (rs.next()) {
-
-	    Object rowData[] = new Object[numColumns];
-	    for (int i = 0; i < numColumns; i++) {
-		rowData[i] = rs.getObject(i + 1);
-	    }
-	    result.addRow(rowData);
-	}
-
-	// TODO: Close the resultset and the statement
-
     }
 
     private void createPdfReport(int tipo, String outputFile, String[] element,

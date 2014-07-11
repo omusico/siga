@@ -4,7 +4,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
@@ -445,17 +444,15 @@ public class TestConsultas {
 		if (ConsultasFieldNames
 			.getCSVCaracteristicasFieldNames(DBFieldNames.Elements
 				.values()[i].toString()) != null) {
-		    Statement st = DBSession.getCurrentSession()
-			    .getJavaConnection().createStatement();
 		    String query = CSVCaracteristicasQueries
 			    .getCSVCaracteristicasQuery(DBFieldNames.Elements
 				    .values()[i].toString(), mockFilters);
-		    ResultSet rs = st.executeQuery(query);
-		    ResultSetMetaData rsMetaData = rs.getMetaData();
+		    ConnectionWrapper conW = new ConnectionWrapper(DBSession
+			    .getCurrentSession().getJavaConnection());
 		    String mockFileDir = "/tmp/test_"
 			    + DBFieldNames.Elements.values()[i].toString()
 			    + ".csv";
-		    new CSVReport(mockFileDir, rsMetaData, rs, mockFilters);
+		    new CSVReport(mockFileDir, conW.execute(query), mockFilters);
 		    File mockFile = new File(mockFileDir);
 		    assertTrue(mockFile.exists());
 		    mockFile.delete();
@@ -482,15 +479,12 @@ public class TestConsultas {
 
     @Test
     public void testCSVCaracteristicasFirme() throws SQLException {
-
-	Statement st = DBSession.getCurrentSession().getJavaConnection()
-		.createStatement();
 	String query = CSVCaracteristicasQueries.getCSVCaracteristicasQuery(
 		"Firme", mockFilters);
-	ResultSet rs = st.executeQuery(query);
-	ResultSetMetaData rsMetaData = rs.getMetaData();
 	String mockFileDir = "/tmp/test_" + "Firme" + ".csv";
-	new CSVReport(mockFileDir, rsMetaData, rs, mockFilters);
+	ConnectionWrapper conW = new ConnectionWrapper(DBSession
+		.getCurrentSession().getJavaConnection());
+	new CSVReport(mockFileDir, conW.execute(query), mockFilters);
 	File mockFile = new File(mockFileDir);
 	assertTrue(mockFile.exists());
 	mockFile.delete();
@@ -504,8 +498,6 @@ public class TestConsultas {
 		    DBFieldNames.Elements.values()[i].toString(), "Trabajos")
 		    && !DBFieldNames.Elements.values()[i].toString().equals(
 			    "Firme")) {
-		Statement st = DBSession.getCurrentSession()
-			.getJavaConnection().createStatement();
 		String query = "SELECT "
 			+ ConsultasFieldNames
 				.getTrabajosFieldNames(ConsultasFieldNames
@@ -514,11 +506,13 @@ public class TestConsultas {
 			+ " FROM " + getSchema() + "."
 			+ DBFieldNames.Elements.values()[i].toString()
 			+ "_trabajos;";
-		ResultSet rs = st.executeQuery(query);
-		ResultSetMetaData rsMetaData = rs.getMetaData();
 		String mockFileDir = "/tmp/test_"
 			+ DBFieldNames.Elements.values()[i].toString() + ".csv";
-		new CSVReport(mockFileDir, rsMetaData, rs, mockFilters);
+
+		ConnectionWrapper conW = new ConnectionWrapper(DBSession
+			.getCurrentSession().getJavaConnection());
+
+		new CSVReport(mockFileDir, conW.execute(query), mockFilters);
 		File mockFile = new File(mockFileDir);
 		assertTrue(mockFile.exists());
 		mockFile.delete();
@@ -534,8 +528,6 @@ public class TestConsultas {
 		    "Inspecciones")
 		    && !DBFieldNames.Elements.values()[i].toString().equals(
 			    "Firme")) {
-		Statement st = DBSession.getCurrentSession()
-			.getJavaConnection().createStatement();
 		String fields = ConsultasFieldNames
 			.getReconocimientosFieldNames(ConsultasFieldNames
 				.getElementId(DBFieldNames.Elements.values()[i]
@@ -551,11 +543,11 @@ public class TestConsultas {
 		String query = "SELECT " + fields + " FROM " + getSchema()
 			+ "." + DBFieldNames.Elements.values()[i].toString()
 			+ "_reconocimientos;";
-		ResultSet rs = st.executeQuery(query);
-		ResultSetMetaData rsMetaData = rs.getMetaData();
 		String mockFileDir = "/tmp/test_"
 			+ DBFieldNames.Elements.values()[i].toString() + ".csv";
-		new CSVReport(mockFileDir, rsMetaData, rs, mockFilters);
+		ConnectionWrapper conW = new ConnectionWrapper(DBSession
+			.getCurrentSession().getJavaConnection());
+		new CSVReport(mockFileDir, conW.execute(query), mockFilters);
 		File mockFile = new File(mockFileDir);
 		assertTrue(mockFile.exists());
 		mockFile.delete();
@@ -566,17 +558,15 @@ public class TestConsultas {
     @Test
     public void testCSVTrabajosFirme() throws SQLException {
 	for (int i = 0; i < DBFieldNames.Elements.values().length; i++) {
-	    Statement st = DBSession.getCurrentSession().getJavaConnection()
-		    .createStatement();
 	    String query = "SELECT "
 		    + ConsultasFieldNames
 			    .getFirmeTrabajosFieldNames("id_firme") + " FROM "
 		    + getSchema() + "." + "firme_trabajos;";
-	    ResultSet rs = st.executeQuery(query);
-	    ResultSetMetaData rsMetaData = rs.getMetaData();
 	    String mockFileDir = "/tmp/test_"
 		    + DBFieldNames.Elements.values()[i].toString() + ".csv";
-	    new CSVReport(mockFileDir, rsMetaData, rs, mockFilters);
+	    ConnectionWrapper conW = new ConnectionWrapper(DBSession
+		    .getCurrentSession().getJavaConnection());
+	    new CSVReport(mockFileDir, conW.execute(query), mockFilters);
 	    File mockFile = new File(mockFileDir);
 	    assertTrue(mockFile.exists());
 	    mockFile.delete();
@@ -586,17 +576,15 @@ public class TestConsultas {
     @Test
     public void testCSVReconocimientosFirme() throws SQLException {
 	for (int i = 0; i < DBFieldNames.Elements.values().length; i++) {
-	    Statement st = DBSession.getCurrentSession().getJavaConnection()
-		    .createStatement();
 	    String query = "SELECT "
 		    + ConsultasFieldNames
 			    .getFirmeReconocimientosFieldNames("id_firme")
 		    + " FROM " + getSchema() + "." + "firme_reconocimientos;";
-	    ResultSet rs = st.executeQuery(query);
-	    ResultSetMetaData rsMetaData = rs.getMetaData();
 	    String mockFileDir = "/tmp/test_"
 		    + DBFieldNames.Elements.values()[i].toString() + ".csv";
-	    new CSVReport(mockFileDir, rsMetaData, rs, mockFilters);
+	    ConnectionWrapper conW = new ConnectionWrapper(DBSession
+		    .getCurrentSession().getJavaConnection());
+	    new CSVReport(mockFileDir, conW.execute(query), mockFilters);
 	    File mockFile = new File(mockFileDir);
 	    assertTrue(mockFile.exists());
 	    mockFile.delete();
@@ -604,11 +592,15 @@ public class TestConsultas {
     }
 
     @Test
-    public void testCaracteristicasPDFReportSenhalizacionVerticalQuery() throws SQLException {
-	Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-	String query = PDFCaracteristicasQueries.getPDFCaracteristicasQuery(DBFieldNames.Elements.Senhalizacion_Vertical.toString(), mockFilters);
+    public void testCaracteristicasPDFReportSenhalizacionVerticalQuery()
+	    throws SQLException {
+	Statement st = DBSession.getCurrentSession().getJavaConnection()
+		.createStatement();
+	String query = PDFCaracteristicasQueries.getPDFCaracteristicasQuery(
+		DBFieldNames.Elements.Senhalizacion_Vertical.toString(),
+		mockFilters);
 	ResultSet rs = st.executeQuery(query);
-	assertTrue(rs!=null);
+	assertTrue(rs != null);
     }
 
     @Test
