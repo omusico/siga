@@ -2,25 +2,15 @@ package es.icarto.gvsig.extgia.consultas.firme;
 
 import javax.swing.table.DefaultTableModel;
 
-import com.lowagie.text.PageSize;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.PdfPCell;
-
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
-import es.icarto.gvsig.extgia.consultas.PDFReport;
+import es.icarto.gvsig.extgia.consultas.TrabajosReport;
 
-public class FirmeTrabajosReport extends PDFReport {
+public class FirmeTrabajosReport extends TrabajosReport {
 
     public FirmeTrabajosReport(String[] element, String fileName,
-	    DefaultTableModel tableModel, ConsultasFilters filters,
-	    int reportType) {
-	super(element, fileName, tableModel, filters, reportType);
-	// TODO Auto-generated constructor stub
-    }
+	    DefaultTableModel table, ConsultasFilters filters, int reportType) {
+	super(element, fileName, table, filters, reportType);
 
-    @Override
-    protected String getTitle() {
-	return "Listado de Trabajos";
     }
 
     @Override
@@ -43,29 +33,6 @@ public class FirmeTrabajosReport extends PDFReport {
 	columnsWidth[6] = 70f;
 
 	return columnsWidth;
-    }
-
-    @Override
-    protected Rectangle setPageSize() {
-	return PageSize.A4;
-    }
-
-    @Override
-    protected boolean hasEmbebedTable() {
-	// TODO Auto-generated method stub
-	return false;
-    }
-
-    @Override
-    protected PdfPCell writeAditionalColumnName() {
-	// TODO Auto-generated method stub
-	return null;
-    }
-
-    @Override
-    protected PdfPCell writeAditionalColumnValues(String id) {
-	// TODO Auto-generated method stub
-	return null;
     }
 
 }
