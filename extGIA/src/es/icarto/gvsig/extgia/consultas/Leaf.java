@@ -10,8 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import com.iver.andami.PluginServices;
 
 import es.icarto.gvsig.audasacommons.forms.reports.SaveFileDialog;
-import es.icarto.gvsig.extgia.consultas.agregados.CSVTrabajosAgregadosIsletasReport;
-import es.icarto.gvsig.extgia.consultas.agregados.CSVTrabajosAgregadosTaludesReport;
+import es.icarto.gvsig.extgia.consultas.agregados.CSVTrabajosAgregadosReport;
 import es.icarto.gvsig.extgia.consultas.agregados.TrabajosAgregadosReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.CSVCaracteristicasQueries;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.PDFCaracteristicasQueries;
@@ -88,10 +87,7 @@ public class Leaf implements Component {
 
 	} else {
 	    int tipo = getTipo();
-	    String elementId = ConsultasFieldNames.getElementId(element[0]);
-	    String fields = getFields(tipo, elementId);
-	    String query = getReportQuery(tipo, consultasFilters, element[0],
-		    elementId, fields);
+	    String query = getReportQuery(tipo, consultasFilters, element[0]);
 
 	    ConnectionWrapper con = new ConnectionWrapper(DBSession
 		    .getCurrentSession().getJavaConnection());
@@ -119,11 +115,7 @@ public class Leaf implements Component {
 
     private void createCsvReportAgregados(String outputFile, String[] element,
 	    ConsultasFilters filters) {
-	if (element[0].equals("Taludes")) {
-	    new CSVTrabajosAgregadosTaludesReport(outputFile, consultasFilters);
-	} else if (element[0].equals("Isletas")) {
-	    new CSVTrabajosAgregadosIsletasReport(outputFile, consultasFilters);
-	}
+	new CSVTrabajosAgregadosReport(element[0], outputFile, consultasFilters);
     }
 
     private int getTipo() {
@@ -165,8 +157,11 @@ public class Leaf implements Component {
     }
 
     private String getReportQuery(int tipo, ConsultasFilters filters,
-	    String element, String elementId, String fields) {
+	    String element) {
 	String query;
+
+	String elementId = ConsultasFieldNames.getElementId(element);
+	String fields = getFields(tipo, elementId);
 
 	if (tipo == CARACTERISTICAS) {
 	    if (pdf) {
