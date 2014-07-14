@@ -14,6 +14,7 @@ import com.iver.cit.gvsig.listeners.CADListenerManager;
 import com.iver.cit.gvsig.listeners.EndGeometryListener;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
+import es.icarto.gvsig.extgex.forms.FormExpropiationLine;
 import es.icarto.gvsig.extgex.forms.FormExpropiations;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
@@ -101,7 +102,6 @@ public class FormExpropiationsExtension extends Extension {
 
 	public void endGeometry(FLayer layer, String cadToolKey) {
 	    if (layer.getName().equalsIgnoreCase("Reversiones")) {
-		FLyrVect l = (FLyrVect) layer;
 		CADTool cadTool = CADExtension.getCADTool();
 		IGeometry insertedGeom = null;
 		if (cadTool instanceof PolylineCADTool) {
@@ -124,7 +124,15 @@ public class FormExpropiationsExtension extends Extension {
 		    PluginServices.getMDIManager().addCentredWindow(dialog);
 		    dialog.last();
 		}
-	    }else {
+	    } else if (layer.getName().equalsIgnoreCase(FormExpropiationLine.LAYER_TOC_NAME)) {
+		FormExpropiationLine dialog = new FormExpropiationLine((FLyrVect) layer);
+		if (dialog.init() ) {
+		    PluginServices.getMDIManager().addCentredWindow(dialog);
+		    dialog.last();
+		}
+	    }
+	    
+	    else {
 		LaunchGIAForms.callFormDependingOfLayer(layer.getName(), true);
 	    }
 	}

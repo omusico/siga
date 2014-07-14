@@ -26,6 +26,9 @@
 			</tool-bar>
 			<menu text="SIGA/Expropiaciones/Expediente Reversión" action-command="ReversionsFileExtension" icon="extgex-reversions" position="30050"/>
 		</extension>
+		<extension class-name="es.icarto.gvsig.extgex.FormExpropiationLineExtension" description="FORMS_PANEL" active="true">
+			<menu text="SIGA/Expropiaciones/Línea de Expropiación" action-command="ExpropiationLineFileExtensionv" position="30060"/>
+		</extension>
 
 		<!-- MAPAS EXTENSIONS -->
 		<extension class-name="org.gvsig.mapsheets.print.series.MapSheetsCreationExtension" description="Generar rejilla y mapa" active="true">
