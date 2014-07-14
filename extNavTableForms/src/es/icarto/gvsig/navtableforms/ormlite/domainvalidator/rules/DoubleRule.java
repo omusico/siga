@@ -22,25 +22,24 @@ import java.text.ParseException;
 import es.udc.cartolab.gvsig.navtable.format.DoubleFormatNT;
 
 
-public class DoublePositiveRule extends ValidationRule {
+public class DoubleRule extends ValidationRule {
 
     private NumberFormat format;
 
-    public DoublePositiveRule() {
+    public DoubleRule() {
 	format = DoubleFormatNT.getDisplayingFormat();
     }
 
     @Override
     public boolean validate(String value) {
-	return isEmpty (value) || isDoublePositive(value);
+	return isEmpty (value) || isDouble(value);
     }
 
-    private boolean isDoublePositive(String value) {
+    private boolean isDouble(String value) {
 	try {
 	    value = removeStartingTrailingZeros(value);
 	    Double doubleValue = format.parse(value).doubleValue();
-	    if ((doubleValue.toString().length() == value.length())
-		    && (doubleValue >= 0.0)) {
+	    if ((doubleValue.toString().length() == value.length())) {
 		return true;
 	    }
 	    return false;

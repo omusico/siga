@@ -10,16 +10,16 @@ import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.fmap.layers.FLayers;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.project.documents.view.gui.BaseView;
+import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 public class TOCLayerManager {
 
+    private BaseView view = null;
     private FLayers layersInTOC = null;
     private MapControl mapControl = null;
-    FLyrVect layer;
 
     public TOCLayerManager() {
 	IWindow[] windows = PluginServices.getMDIManager().getOrderedWindows();
-	BaseView view = null;
 	for (IWindow w : windows) {
 	    if (w instanceof BaseView) {
 		view = (BaseView) w;
@@ -28,12 +28,17 @@ public class TOCLayerManager {
 	}
 	if(view != null) {
 	    mapControl = view.getMapControl();
-	    layersInTOC = mapControl.getMapContext().getLayers();
+	    layersInTOC = mapControl.getMapContext().getLayers();	    
 	}
     }
 
+    public TOCLayerManager(MapControl mapControl) {
+	this.mapControl = mapControl;
+	this.layersInTOC = mapControl.getMapContext().getLayers();
+    }
+
     public void setVisibleAllLayers() {
-	if(layersInTOC != null) {
+	if(layersInTOC != null) {	    
 	    layersInTOC.setAllVisibles(true);
 	}
     }
@@ -54,21 +59,26 @@ public class TOCLayerManager {
     }
 
     public FLyrVect getLayerByName(String layerName) {
-	getLayerFromGroup(layerName, layersInTOC);
-	return layer;
-    }
-
-    private void getLayerFromGroup(String layerName, FLayers layersInGroup) {
-	for (int j = 0; j < layersInGroup.getLayersCount(); j++) {
-	    if (layersInGroup.getLayer(j) instanceof FLayers) {
-		FLayers layers = (FLayers) layersInGroup.getLayer(j);
-		getLayerFromGroup(layerName, layers);
-	    }
-	    if (layersInGroup.getLayer(j).getName().equalsIgnoreCase(layerName)) {
-		layer = (FLyrVect) layersInGroup.getLayer(j);
-		break;
+	if(layersInTOC != null) {
+	    layersInTOC.getLayer(layerName);
+	    for (int i = 0; i < layersInTOC.getLayersCount(); i++) {
+		//Checking if layer is a group
+		final FLayer layer = layersInTOC.getLayer(i);
+		if (isFLayers(layer)) {
+		    FLayers layersInGroup = (FLayers) layer;
+		    for (int j = 0; j < layersInGroup.getLayersCount(); j++) {
+			final FLayer innerLayer = layersInGroup.getLayer(j);
+			if (isFLyrVect(innerLayer) && hasName(innerLayer, layerName)) {
+			    return (FLyrVect) innerLayer;
+			}
+		    }
+		}
+		if (isFLyrVect(layer) && hasName(layer, layerName)) {
+		    return (FLyrVect) layer;
+		}
 	    }
 	}
+	return null;
     }
 
     public FLyrVect getActiveLayer() {
@@ -76,7 +86,7 @@ public class TOCLayerManager {
 	    FLayer[] activeLayers = mapControl.getMapContext().getLayers()
 		    .getActives();
 	    for (FLayer layer : activeLayers) {
-		if (layer instanceof FLyrVect) {
+		if (isFLyrVect(layer)) {
 		    return (FLyrVect) layer;
 		}
 	    }
@@ -90,7 +100,21 @@ public class TOCLayerManager {
 	    FLayer[] activeLayers = mapControl.getMapContext().getLayers()
 		    .getActives();
 	    for (FLayer layer : activeLayers) {
-		if (layer instanceof FLyrVect) {
+		if (isFLyrVect(layer)) {
+		    layers.add((FLyrVect) layer);
+		}
+	    }
+	}
+	return layers.toArray(new FLyrVect[0]);
+    }
+
+    public FLyrVect[] getVisibleLayers() {
+	List<FLyrVect> layers = new ArrayList<FLyrVect>();
+	if (mapControl != null) {
+	    FLayer[] activeLayers = mapControl.getMapContext().getLayers()
+		    .getVisibles();
+	    for (FLayer layer : activeLayers) {
+		if (isFLyrVect(layer)) {
 		    layers.add((FLyrVect) layer);
 		}
 	    }
@@ -106,4 +130,66 @@ public class TOCLayerManager {
 	return null;
     }
 
+    public FLyrVect[] getAllLayers() {
+	List<FLyrVect> layers = new ArrayList<FLyrVect>();
+	if (mapControl != null) {
+	    layers.addAll(getInnerLayers(mapControl.getMapContext().getLayers()));
+	}
+	return layers.toArray(new FLyrVect[0]);
+    }
+
+    public View getView() {
+	if (view instanceof View) {
+	    return (View) view;
+	}
+	return null;
+    }
+
+    protected List<FLyrVect> getInnerLayers(FLayers layerGroup) {
+	List<FLyrVect> layers = new ArrayList<FLyrVect>();
+	for (int i = 0, len = layerGroup.getLayersCount(); i < len; i++) {
+	    FLayer layer = layerGroup.getLayer(i);
+	    if (isFLayers(layer)) {
+		layers.addAll(getInnerLayers((FLayers) layer));
+		continue;
+	    }
+	    if (isFLyrVect(layer)) {
+		layers.add((FLyrVect) layer);
+		continue;
+	    }
+	}
+	return layers;
+    }
+
+    public void removeAllLayers() {
+	layersInTOC.setAllVisibles(false);
+	removeAllLayers(layersInTOC);
+    }
+
+    private void removeAllLayers(FLayers layers) {
+	while (layers.getLayersCount() > 0) {
+	    FLayer layer = layers.getLayer(0);
+	    if (isFLayers(layer)) {
+		removeAllLayers((FLayers) layer);
+	    }
+	    layers.removeLayer(0);
+	}
+    }
+
+    public void removeAllOverviewLayer() {
+	FLayers layers = view.getMapOverview().getMapContext().getLayers();
+	removeAllLayers(layers);
+    }
+    
+    public boolean hasName(FLayer layer, String layerName) {
+	return layer.getName().equalsIgnoreCase(layerName);
+    }
+    
+    public boolean isFLyrVect(FLayer layer) {
+ 	return layer instanceof FLyrVect;
+    }
+    
+    public boolean isFLayers(final FLayer layer) {
+   	return layer instanceof FLayers;
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011. iCarto
+ * Copyright (c) 2013. iCarto
  *
  * This file is part of extNavTableForms
  *
@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License along with extNavTableForms.
  * If not, see <http://www.gnu.org/licenses/>.
  */
+
 package es.icarto.gvsig.navtableforms.ormlite.domainvalidator.rules;
 
 import java.text.NumberFormat;
@@ -21,45 +22,29 @@ import java.text.ParseException;
 
 import es.udc.cartolab.gvsig.navtable.format.DoubleFormatNT;
 
-
-public class DoublePositiveRule extends ValidationRule {
+public class PercentageRule extends ValidationRule {
 
     private NumberFormat format;
 
-    public DoublePositiveRule() {
+    public PercentageRule() {
 	format = DoubleFormatNT.getDisplayingFormat();
     }
 
     @Override
     public boolean validate(String value) {
-	return isEmpty (value) || isDoublePositive(value);
+	return isEmpty(value) || isPercentage(value);
     }
 
-    private boolean isDoublePositive(String value) {
+    private boolean isPercentage(String value) {
 	try {
-	    value = removeStartingTrailingZeros(value);
-	    Double doubleValue = format.parse(value).doubleValue();
-	    if ((doubleValue.toString().length() == value.length())
-		    && (doubleValue >= 0.0)) {
+	    double double_value = Math.abs(format.parse(value).doubleValue());
+	    if ((double_value >= 0) && (double_value <= 100)) {
 		return true;
 	    }
 	    return false;
 	} catch (ParseException nfe) {
 	    return false;
 	}
-    }
-
-    private String removeStartingTrailingZeros(String number) {
-	char decimalSeparator = format.format(1.1).charAt(1);
-	String aux = number.replaceAll("^[0]*", "").replaceAll("[0]*$", "")
-		.replaceAll("\\" + decimalSeparator + "$", "");
-	if (!aux.contains("" + decimalSeparator)) {
-	    aux += decimalSeparator + "0";
-	}
-	if (aux.startsWith("" + decimalSeparator)) {
-	    aux = "0" + aux;
-	}
-	return aux;
     }
 
 }

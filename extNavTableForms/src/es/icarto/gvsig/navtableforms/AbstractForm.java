@@ -38,16 +38,19 @@ import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.Launcher;
 import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.WindowInfo;
+import com.iver.cit.gvsig.exceptions.visitors.StopWriterVisitorException;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.panel.FormPanel;
 
 import es.icarto.gvsig.navtableforms.forms.windowproperties.FormWindowProperties;
 import es.icarto.gvsig.navtableforms.forms.windowproperties.FormWindowPropertiesSerializator;
+import es.icarto.gvsig.navtableforms.gui.tables.handler.BaseTableHandler;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.ValidatorForm;
 import es.icarto.gvsig.navtableforms.utils.AbeilleParser;
 import es.udc.cartolab.gvsig.navtable.AbstractNavTable;
 import es.udc.cartolab.gvsig.navtable.dataacces.IController;
+
 
 @SuppressWarnings("serial")
 public abstract class AbstractForm extends AbstractNavTable implements
@@ -56,6 +59,7 @@ public abstract class AbstractForm extends AbstractNavTable implements
     protected FormPanel formBody;
     private boolean isFillingValues;
     private boolean isSavingValues = false;
+    private List<BaseTableHandler> tableHandlers = new ArrayList<BaseTableHandler>();
 
     HashMap<String, JComponent> widgets;
 
@@ -138,7 +142,9 @@ public abstract class AbstractForm extends AbstractNavTable implements
     protected void removeListeners() {
 	validationHandler.removeListeners(widgets);
 	dependencyHandler.removeListeners();
-
+	for (BaseTableHandler tableHandler : tableHandlers) {
+	    tableHandler.removeListeners();
+	}
     }
 
     @Override
@@ -179,6 +185,15 @@ public abstract class AbstractForm extends AbstractNavTable implements
     protected void setListeners() {
 	validationHandler.setListeners(widgets);
 	dependencyHandler.setListeners();
+	for (BaseTableHandler tableHandler : tableHandlers) {
+	    tableHandler.reload();
+	}
+    }
+
+    public void resetListeners() {
+	super.resetListeners();
+	removeListeners();
+	setListeners();
     }
 
     @Override
@@ -189,7 +204,18 @@ public abstract class AbstractForm extends AbstractNavTable implements
 	setFillingValues(false);
     }
 
-    protected abstract void fillSpecificValues();
+    protected void fillSpecificValues() {
+	String key = getPrimaryKeyValue();
+	if (key != null) {
+	    for (BaseTableHandler tableHandler : tableHandlers) {
+		tableHandler.fillValues(key);
+	    }
+	}
+    }
+
+    protected String getPrimaryKeyValue() {
+	return null;
+    }
 
     @Override
     public void fillValues() {
@@ -268,7 +294,7 @@ public abstract class AbstractForm extends AbstractNavTable implements
     }
 
     @Override
-    public boolean saveRecord() {
+    public boolean saveRecord() throws StopWriterVisitorException {
 	if (isSaveable()) {
 	    setSavingValues(true);
 	    try {
@@ -282,6 +308,9 @@ public abstract class AbstractForm extends AbstractNavTable implements
 		setChangedValues(false);
 		setSavingValues(false);
 		return false;
+	    } catch (StopWriterVisitorException e) {
+		setSavingValues(false);
+		throw e;
 	    }
 	}
 	return false;
@@ -366,5 +395,13 @@ public abstract class AbstractForm extends AbstractNavTable implements
     public FillHandler getFillHandler() {
 	return fillHandler;
 
+    }
+
+    protected void addTableHandler(BaseTableHandler tableHandler) {
+	tableHandlers.add(tableHandler);
+    }
+
+    public List<BaseTableHandler> getTableHandlers() {
+	return tableHandlers;
     }
 }
