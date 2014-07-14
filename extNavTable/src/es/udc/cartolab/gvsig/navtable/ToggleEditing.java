@@ -36,7 +36,6 @@ import com.hardcode.gdbms.engine.values.Value;
 import com.hardcode.gdbms.engine.values.ValueFactory;
 import com.iver.andami.PluginServices;
 import com.iver.andami.messages.NotificationManager;
-import com.iver.andami.ui.mdiManager.MDIManager;
 import com.iver.cit.gvsig.EditionUtilities;
 import com.iver.cit.gvsig.ProjectExtension;
 import com.iver.cit.gvsig.exceptions.expansionfile.ExpansionFileReadException;
@@ -148,33 +147,40 @@ public class ToggleEditing {
     }
 
     /**
-     * @param layer - The layer wich edition will be stoped.
-     * @param cancel - false if we want to save the layer, true if we don't.
+     * @param layer
+     *            - The layer wich edition will be stoped.
+     * @param cancel
+     *            - false if we want to save the layer, true if we don't.
+     * @throws StopWriterVisitorException
      */
-    public boolean stopEditing(FLayer layer, boolean cancel) {
+    public boolean stopEditing(FLayer layer, boolean cancel)
+	    throws StopWriterVisitorException {
 
-	try {
-	    if(layer instanceof FLyrVect){
+	if (layer instanceof FLyrVect) {
+	    try {
 		if (cancel) {
 		    cancelEdition(layer);
 		} else {
 		    saveLayer((FLyrVect) layer);
 		}
-		layer.setEditing(false);
-		layer.setActive(true);
-	    return true;
+	    } catch (DriverException e) {
+		logger.error(e.getMessage(), e);
+		return false;
+	    } catch (EditionExceptionOld e) {
+		logger.error(e.getMessage(), e);
+		return false;
+	    } finally {
+		try {
+		    layer.setActive(true);
+		    layer.setEditing(false);
+		} catch (StartEditionLayerException e) {
+		    logger.error(e.getMessage(), e);
+		    return false;
+		}
 	    }
-	    return false;
-	} catch (DriverException e) {
-	    logger.error(e.getMessage(), e);
-	    return false;
-	} catch (StartEditionLayerException e) {
-	    logger.error(e.getMessage(), e);
-	    return false;
-	} catch (EditionExceptionOld e) {
-	    logger.error(e.getMessage(), e);
-	    return false;
+	    return true;
 	}
+	return false;
     }
 
     private void cancelEdition(FLayer layer) {
@@ -226,7 +232,7 @@ public class ToggleEditing {
     }
 
     private void saveLayer(FLyrVect layer) throws DriverException,
-    EditionExceptionOld {
+	    EditionExceptionOld, StopWriterVisitorException {
 	layer.setProperty("stoppingEditing", new Boolean(true));
 	VectorialEditableAdapter vea = (VectorialEditableAdapter) layer
 		.getSource();
@@ -251,8 +257,7 @@ public class ToggleEditing {
 	    for (int i = 0; i < flds.length; i++) {
 		aux = aux + ", " + flds[i].getFieldAlias();
 	    }
-	    // System.err.println("Escribiendo la capa " + lyrDef.getName() +
-	    // " con los campos " + aux);
+
 	    lyrDef.setShapeType(layer.getShapeType());
 	    writer.initialize(lyrDef);
 	    vea.stopEdition(writer, EditionEvent.GRAPHIC);
@@ -261,13 +266,11 @@ public class ToggleEditing {
 	    logger.error(e.getMessage(), e);
 	} catch (InitializeWriterException e) {
 	    logger.error(e.getMessage(), e);
-	} catch (StopWriterVisitorException e) {
-	    logger.error(e.getMessage(), e);
 	}
     }
 
     /**
-     * Modidify a single value of a register. It creates the new value from its
+     * Modify a single value of a register. It creates the new value from its
      * String representation. IMPORTANT: StartEditing and StopEditing is
      * required before and after call this method.
      * 
@@ -413,24 +416,23 @@ public class ToggleEditing {
 	    int[] attIndexes, 
 	    String[] attValues) {
 
-	Value val;
 	int type;
 	try {
 	    FieldDescription[] fieldDesc = source.getTableDefinition().getFieldsDesc();
 	    Value[] attributes = source.getRow(rowPosition).getAttributes();
 	    for (int i = 0; i < attIndexes.length; i++) {
-		if (attValues[i].length() == 0 || attValues[i] == null) {
-		    val = ValueFactoryNT.createNullValue();
+		String att = attValues[i];
+		int idx = attIndexes[i];
+		if (att == null || att.length() == 0) {
+		    attributes[idx] = ValueFactoryNT.createNullValue();
 		} else {
-		    type = fieldDesc[attIndexes[i]].getFieldType();
+		    type = fieldDesc[idx].getFieldType();
 		    try {
-		        val = ValueFactoryNT.createValueByType(
-		            attValues[i], type);
+			attributes[idx] = ValueFactoryNT.createValueByType(att, type);
 		    } catch (ParseException e) {
-		        val = ValueFactory.createNullValue();
+		        logger.warn(e.getStackTrace(), e);
 		    }
 		}
-		attributes[attIndexes[i]] = val;
 	    }
 	    return attributes;
 	} catch (ReadDriverException e) {
@@ -455,10 +457,10 @@ public class ToggleEditing {
 	    }
 	    return val;
 	} catch (ReadDriverException e) {
-	    e.printStackTrace();
+	    logger.error(e.getStackTrace(), e);
 	    return null;
 	} catch (ParseException e) {
-	    e.printStackTrace();
+	    logger.warn(e.getStackTrace(), e);
 	    return null;
 	}
     }

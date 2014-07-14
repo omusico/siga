@@ -49,8 +49,10 @@ import com.iver.cit.gvsig.fmap.edition.IWriteable;
 import com.iver.cit.gvsig.fmap.edition.IWriter;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 
+import es.udc.cartolab.gvsig.navtable.dataacces.TableController;
 import es.udc.cartolab.gvsig.navtable.format.ValueFactoryNT;
-import es.udc.cartolab.gvsig.navtable.listeners.PositionEvent;
+import es.udc.cartolab.gvsig.navtable.utils.EditionListener;
+
 
 /**
  * @author Nacho Varela
@@ -58,6 +60,7 @@ import es.udc.cartolab.gvsig.navtable.listeners.PositionEvent;
  * @author Pablo Sanxiao
  * @author Andres Maneiro
  */
+@SuppressWarnings("serial")
 public class AlphanumericNavTable extends NavTable {
 
     private JButton newB = null;
@@ -70,7 +73,6 @@ public class AlphanumericNavTable extends NavTable {
 	super(null, dataName);
 	this.isAlphanumericNT = true;
 	this.model = model;
-	this.model.addEditionListener(listener);
 	this.indexesOfRowsAdded = new ArrayList<Integer>();
 	this.openEmptyLayers = true;
     }
@@ -81,7 +83,6 @@ public class AlphanumericNavTable extends NavTable {
 	this.isAlphanumericNT = true;
 	this.model = model;
 	this.defaultValues = defaultValues;
-	this.model.addEditionListener(listener);
 	this.openEmptyLayers = true;
     }
 
@@ -109,8 +110,29 @@ public class AlphanumericNavTable extends NavTable {
     
     @Override
     protected boolean initController() {
-	// TODO: Not implemented jet
+	try {
+	    layerController = new TableController(model);
+	    layerController.read(getPosition());
+	} catch (ReadDriverException e) {
+	    logger.error(e.getStackTrace(), e);
+	    return false;
+	}
 	return true;
+    }
+    
+    @Override
+    protected void setLayerListeners() {
+	listener = new EditionListener(this);
+	model.addEditionListener(listener);
+	getRecordset().addSelectionListener(this);
+	addPositionListener(this);
+    }
+
+    @Override
+    protected void removeLayerListeners() {
+	model.removeEditionListener(listener);
+	getRecordset().removeSelectionListener(this);
+	removePositionListener(this);
     }
 
     @Override
@@ -142,6 +164,8 @@ public class AlphanumericNavTable extends NavTable {
     }
 
     @Override
+    @Deprecated
+    //deprecated by fpuga, 28/02/2014
     protected void updateValue(int row, int col, String newValue) {
 	ToggleEditing te = new ToggleEditing();
 	try {
@@ -231,9 +255,9 @@ public class AlphanumericNavTable extends NavTable {
      * Shows a warning to the user if there's unsaved data.
      * 
      */
-    protected void showWarning() {
+    protected boolean showWarning() {
 	if (getPosition() == AbstractNavTable.EMPTY_REGISTER) {
-	    return;
+	    return true;
 	}
 	if (isChangedValues()) {
 	    boolean save = false;
@@ -258,6 +282,7 @@ public class AlphanumericNavTable extends NavTable {
 		saveRecord();
 	    }
 	}
+	return true;
     }
 
     private void deleteAddedRows() {
@@ -323,8 +348,4 @@ public class AlphanumericNavTable extends NavTable {
 	this.model.removeEditionListener(listener);
     }
     
-    @Override
-    public void onPositionChange(PositionEvent e) {
-	//TODO: Not implemented jet
-    }
 }

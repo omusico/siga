@@ -26,6 +26,7 @@ package es.udc.cartolab.gvsig.navtable;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -54,6 +55,7 @@ import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.andami.ui.mdiManager.IWindowListener;
 import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.iver.cit.gvsig.FiltroExtension;
+import com.iver.cit.gvsig.exceptions.visitors.StopWriterVisitorException;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.layers.FBitSet;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
@@ -71,6 +73,7 @@ import es.udc.cartolab.gvsig.navtable.dataacces.LayerController;
 import es.udc.cartolab.gvsig.navtable.listeners.PositionEvent;
 import es.udc.cartolab.gvsig.navtable.listeners.PositionEventSource;
 import es.udc.cartolab.gvsig.navtable.listeners.PositionListener;
+import es.udc.cartolab.gvsig.navtable.preferences.Preferences;
 import es.udc.cartolab.gvsig.navtable.utils.EditionListener;
 
 /**
@@ -92,6 +95,9 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
     protected static final int BUTTON_COPY_PREVIOUS = 4;
     protected static final int BUTTON_COPY_SELECTED = 5;
     private static final long serialVersionUID = 1L;
+    protected String deleteMessageKey = "confirm_delete_register";
+    protected String saveErrorTitleKey = "save_layer_error";
+    protected String saveErrorGenericMessageKey = "errorSavingData";
     protected static Logger logger = Logger.getLogger("NavTable");
     public static final String NAVTABLE_ACTIONS_TOOLBAR = "navtable_extension_point_actions_toolbar";
     public static final String NAVTABLE_CONTEXT_MENU = "navtable_extension_point_context_menu";
@@ -118,7 +124,6 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
     // SOUTH
     // actions buttons
     protected JButton filterB = null;
-    //protected JButton noFilterB = null;
     protected JButton copyPreviousB = null;
     protected JButton copySelectedB = null;
     protected JButton zoomB = null;
@@ -137,7 +142,7 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
     private boolean isSomeNavTableFormOpen = false;
 
     protected EditionListener listener;
-    private final PositionEventSource positionEventSource = new PositionEventSource();
+    private PositionEventSource positionEventSource = new PositionEventSource();
 
     private JPanel actionsToolBar;
     private JPanel optionsPanel;
@@ -170,7 +175,7 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
     public AbstractNavTable(SelectableDataSource recordset, String tableName) {
 	this(tableName);
     }
-
+    
     public AbstractNavTable(String tableName) {
 	super();
 	this.dataName = tableName;
@@ -217,30 +222,30 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
 
 	initGUI();
 	initWidgets();
-
+	
 	refreshGUI();
 	super.repaint();
 	super.setVisible(true);
 	setOpenNavTableForm(true);
 	setFocusCycleRoot(true);
-
+	
 	setLayerListeners();
 	return true;
     }
-
+    
     /**
      * In NavTable it will get the attribute names from the layer and
      * set it on the left column of the table. On AbstractForm it will
      * initialize the widget vector from the Abeille file
      */
     protected abstract void initWidgets();
-
+    
     protected void initGUI() {
-	MigLayout thisLayout = new MigLayout("inset 0, align center", "[grow]","[][grow][]");
-	this.setLayout(thisLayout);
-	this.add(getNorthPanel(), "shrink, wrap, align center");
-	this.add(getCenterPanel(), "shrink, growx, growy, wrap");
-	this.add(getSouthPanel(), "shrink, align center");
+    	MigLayout thisLayout = new MigLayout("inset 0, align center", "[grow]","[][grow][]");
+    	this.setLayout(thisLayout);
+    	this.add(getNorthPanel(), "shrink, wrap, align center");
+    	this.add(getCenterPanel(), "shrink, growx, growy, wrap");
+    	this.add(getSouthPanel(), "shrink, align center");
     }
 
     protected boolean initController() {
@@ -248,10 +253,20 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
 	    layerController = new LayerController(this.layer);
 	    layerController.read(getPosition());
 	} catch (ReadDriverException e) {
-	    e.printStackTrace();
+	    logger.error(e.getStackTrace(), e);
 	    return false;
 	}
 	return true;
+    }
+
+    public void resetListeners() {
+	removeLayerListeners();
+	setLayerListeners();
+    }
+
+    public void reinit() {
+	resetListeners();
+	setOpenNavTableForm(true);
     }
 
     protected void setLayerListeners() {
@@ -307,12 +322,10 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
 	changedValues = bool;
     }
 
-    public abstract boolean saveRecord();
+    public abstract boolean saveRecord() throws StopWriterVisitorException;
 
     protected void enableSaveButton(boolean bool) {
-	if (layer != null && layer.isEditing()) {
-	    saveB.setEnabled(false);
-	} else if (!isChangedValues()) {
+	if (!isChangedValues()) {
 	    saveB.setEnabled(false);
 	} else {
 	    saveB.setEnabled(bool);
@@ -368,8 +381,14 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
      * @return the File of the image.
      */
     protected File getHeaderFile() {
-	return new File(
-		"gvSIG/extensiones/es.udc.cartolab.gvsig.navtable/images/navtable_header.png");
+	File folder = PluginServices.getPluginServices(this).getPluginDirectory();
+	File header = new File (folder.getAbsolutePath() + File.separator + "images" + File.separator + "navtable_header.png");
+	
+	if (!header.exists()) {
+	    header = new File(Preferences.getConfigDir()
+		    + "/navtable_header.png");
+	}
+	return header;
     }
 
     protected JPanel getNorthPanel() {
@@ -460,11 +479,6 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
 	extensionPoints.add(NAVTABLE_ACTIONS_TOOLBAR, "button-enable-filter",
 		filterB);
 
-	//	noFilterB = getNavTableButton(noFilterB, "/nofilter.png",
-	//		"noFilterTooltip");
-	//	extensionPoints.add(NAVTABLE_ACTIONS_TOOLBAR, "button-disable-filter",
-	//		noFilterB);
-
 	copySelectedB = getNavTableButton(copySelectedB, "/copy-selected.png",
 		"copySelectedButtonTooltip");
 	extensionPoints.add(NAVTABLE_ACTIONS_TOOLBAR, "button-copy-selected",
@@ -508,9 +522,9 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
      * Shows a warning to the user if there's unsaved data.
      * 
      */
-    protected void showWarning() {
+    protected boolean showWarning() {
 	if (getPosition() == EMPTY_REGISTER) {
-	    return;
+	    return true;
 	}
 	if (isChangedValues()) {
 	    boolean save = false;
@@ -534,27 +548,29 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
 		// so it's not need to revert the changes done.
 	    }
 	    if (save) {
-		saveRecord();
+		tryToSave();
 	    }
 	}
+	return true;
     }
-
+   
     /**
      * Goes to the next row of the data.
      * 
      */
     public void next() {
-	showWarning();
-	try {
-	    if (onlySelectedCB.isSelected()) {
-		nextSelected();
-	    } else {
-		if (getPosition() < getRecordset().getRowCount()) {
-		    setPosition(getPosition() + 1);
+	if (showWarning()) {
+	    try {
+		if (onlySelectedCB.isSelected()) {
+		    nextSelected();
+		} else {
+		    if (getPosition() < getRecordset().getRowCount()) {
+			setPosition(getPosition() + 1);
+		    }
 		}
+	    } catch (ReadDriverException e) {
+		logger.error(e.getMessage(), e);
 	    }
-	} catch (ReadDriverException e) {
-	    logger.error(e.getMessage(), e);
 	}
     }
 
@@ -575,15 +591,16 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
      * 
      */
     public void last() {
-	showWarning();
-	try {
-	    if (onlySelectedCB.isSelected()) {
-		lastSelected();
-	    } else {
-		setPosition(getRecordset().getRowCount() - 1);
+	if (showWarning()) {
+	    try {
+		if (onlySelectedCB.isSelected()) {
+		    lastSelected();
+		} else {
+		    setPosition(getRecordset().getRowCount() - 1);
+		}
+	    } catch (ReadDriverException e) {
+		logger.error(e.getMessage(), e);
 	    }
-	} catch (ReadDriverException e) {
-	    logger.error(e.getMessage(), e);
 	}
     }
 
@@ -604,11 +621,12 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
      * 
      */
     public void first() {
-	showWarning();
-	if (onlySelectedCB.isSelected()) {
-	    firstSelected();
-	} else {
-	    setPosition(0);
+	if (showWarning()) {
+	    if (onlySelectedCB.isSelected()) {
+		firstSelected();
+	    } else {
+		setPosition(0);
+	    }
 	}
     }
 
@@ -629,12 +647,13 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
      * 
      */
     public void before() {
-	showWarning();
-	if (onlySelectedCB.isSelected()) {
-	    beforeSelected();
-	} else {
-	    if (getPosition() > 0) {
-		setPosition(getPosition() - 1);
+	if (showWarning()) {
+	    if (onlySelectedCB.isSelected()) {
+		beforeSelected();
+	    } else {
+		if (getPosition() > 0) {
+		    setPosition(getPosition() - 1);
+		}
 	    }
 	}
     }
@@ -775,12 +794,7 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
      * 
      */
     public void clearSelection() {
-	FBitSet bitset = null;
-	if (layer instanceof AlphanumericData) {
-	    bitset = getRecordset().getSelection();
-	    bitset.clear();
-	    getRecordset().setSelection(bitset);
-	}
+	getRecordset().clearSelection();
     }
 
     /**
@@ -801,10 +815,10 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
 	if (windowInfo == null) {
 	    windowInfo = new WindowInfo(WindowInfo.MODELESSDIALOG
 		    | WindowInfo.PALETTE | WindowInfo.RESIZABLE);
-
+	    
 	    windowInfo.setTitle("NavTable: " + dataName);
 	    Dimension dim = getPreferredSize();
-	    // To calculate the maximum size of a form we take the size of the
+	    // To calculate the maximum size of a form we take the size of the 
 	    // main frame minus a "magic number" for the menus, toolbar, state bar
 	    // Take into account that in edition mode there is less available space
 	    MDIFrame a = (MDIFrame) PluginServices.getMainFrame();
@@ -823,7 +837,7 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
 	    } else {
 		width = new Double(dim.getWidth()).intValue();
 	    }
-
+	    
 	    // getPreferredSize doesn't take into account the borders and other stuff
 	    // introduced by Andami, neither scroll bars so we must increase the "preferred"
 	    // dimensions
@@ -890,7 +904,7 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
 	    zoomB.setEnabled(navEnabled);
 	    selectionB.setEnabled(navEnabled);
 	    setIconAndPositionBackgroundForSelection();
-	    setIconBackgroundForFilter();
+	    setIconForFiltering();
 	    enableSaveButton(navEnabled);
 	    removeB.setEnabled(navEnabled);
 
@@ -903,6 +917,20 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
 
 	} catch (ReadDriverException e) {
 	    logger.error(e.getMessage(), e);
+	}
+    }
+
+    private void setIconForFiltering() {
+	if (getRecordset().getSelection().isEmpty()) {
+	    ImageIcon imagenFilter = getIcon("/filter.png");
+	    filterB.setIcon(imagenFilter);
+	    filterB.setToolTipText(PluginServices
+		    .getText(this, "filterTooltip"));
+	} else {
+	    ImageIcon imagenRemoveFilter = getIcon("/nofilter.png");
+	    filterB.setIcon(imagenRemoveFilter);
+	    filterB.setToolTipText(PluginServices.getText(this,
+		    "noFilterTooltip"));
 	}
     }
 
@@ -944,20 +972,6 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
 	}
     }
 
-    private void setIconBackgroundForFilter() {
-	try {
-	    if (layer.getRecordset().getSelection().isEmpty()) {
-		ImageIcon imagenFilter = getIcon("/filter.png");
-		filterB.setIcon(imagenFilter);
-	    }else {
-		ImageIcon imagenNoFilter = getIcon("/nofilter.png");
-		filterB.setIcon(imagenNoFilter);
-	    }
-	} catch (ReadDriverException e) {
-	    e.printStackTrace();
-	}
-    }
-
     protected boolean isSomeRowToWorkOn() {
 	if (onlySelectedCB == null) {
 	    return false;
@@ -983,10 +997,12 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
 	    logger.error(e.getMessage(), e);
 	    posNumber = getPosition();
 	} finally {
-	    showWarning();
-	    //user will set a 1-based index to navigate through layer,
-	    // so we need to adapt it to currentPosition (a zero-based index)
-	    setPosition(posNumber-1);
+	    if (showWarning()) {
+		// user will set a 1-based index to navigate through layer,
+		// so we need to adapt it to currentPosition (a zero-based
+		// index)
+		setPosition(posNumber - 1);
+	    }
 	}
     }
 
@@ -1059,7 +1075,7 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
 	}
 
 	if (getRecordset() == null) {
-	    // If there is an error on the recordset of the layer
+	    // If there is an error on the recordset of the layer 
 	    // do nothing.
 	    return;
 	}
@@ -1068,15 +1084,18 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
 		alwaysSelectCB.setSelected(false);
 		getRecordset().addSelectionListener(this);
 	    }
-	    showWarning();
-	    if (onlySelectedCB.isSelected()) {
-		if (getPosition() != EMPTY_REGISTER) {
-		    viewOnlySelected();
+	    if (showWarning()) {
+		if (onlySelectedCB.isSelected()) {
+		    if (getPosition() != EMPTY_REGISTER) {
+			viewOnlySelected();
+		    }
+		} else {
+		    if (getPosition() == EMPTY_REGISTER) {
+			setPosition(0);
+		    }
 		}
 	    } else {
-		if (getPosition() == EMPTY_REGISTER) {
-		    setPosition(0);
-		}
+		onlySelectedCB.setSelected(false);
 	    }
 	    refreshGUI();
 	} else if (e.getSource() == alwaysZoomCB) {
@@ -1094,20 +1113,7 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
 	    }
 	    refreshGUI();
 	} else if (e.getSource() == filterB) {
-	    try {
-		if (layer.getRecordset().getSelection().isEmpty()) {
-		    FiltroExtension fe = new FiltroExtension();
-		    fe.initialize();
-		    fe.setDatasource(getRecordset(), dataName);
-		    fe.execute("FILTER_DATASOURCE");
-		}else {
-		    clearSelection();
-		}
-	    } catch (ReadDriverException e1) {
-		e1.printStackTrace();
-	    }
-	    //	} else if (e.getSource() == noFilterB) {
-	    //	    clearSelection();
+	    filterButtonClicked();
 	} else if (e.getSource() == nextB) {
 	    next();
 	} else if (e.getSource() == lastB) {
@@ -1131,22 +1137,71 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
 	    selectCurrentFeature();
 	    refreshGUI();
 	} else if (e.getSource() == saveB) {
-	    if (saveRecord()) {
-		refreshGUI();
-	    } else {
-		JOptionPane.showMessageDialog(this,
-			PluginServices.getText(this, "errorSavingData"), "",
-			JOptionPane.ERROR_MESSAGE);
-	    }
+	    tryToSave();
 	} else if (e.getSource() == removeB) {
 	    int answer = JOptionPane.showConfirmDialog(null,
-		    PluginServices.getText(null, "confirm_delete_register"),
+		    PluginServices.getText(null, deleteMessageKey),
 		    null, JOptionPane.YES_NO_OPTION);
 	    if (answer == 0) {
+		try {
 		deleteRecord();
+		} catch (StopWriterVisitorException ex) {
+		    ex.printStackTrace();
+		    String errorMessage = (ex.getCause() != null) ? ex
+			    .getCause().getMessage() : ex.getMessage(), auxMessage = errorMessage
+			    .replace("ERROR: ", "").replace(" ", "_")
+			    .replace("\n", ""), auxMessageIntl = PluginServices
+			    .getText(this, auxMessage);
+		    if (auxMessageIntl.compareToIgnoreCase(auxMessage) != 0) {
+			errorMessage = auxMessageIntl;
+		    }
+		    JOptionPane.showMessageDialog(
+			    (Component) PluginServices.getMainFrame(),
+			    errorMessage,
+			    PluginServices.getText(this, saveErrorTitleKey),
+			    JOptionPane.ERROR_MESSAGE);
+		}
 	    }
 	} else if (e.getSource() == undoB) {
 	    undoAction();
+	}
+    }
+
+    private void filterButtonClicked() {
+	if (getRecordset().getSelection().isEmpty()) {
+	    FiltroExtension fe = new FiltroExtension();
+	    fe.initialize();
+	    fe.setDatasource(getRecordset(), dataName);
+	    fe.execute("FILTER_DATASOURCE");
+	} else {
+	    clearSelection();
+	}
+    }
+
+    private void tryToSave() {
+	try {
+	if (saveRecord()) {
+	    refreshGUI();
+	} else {
+	    JOptionPane.showMessageDialog(this,
+		    PluginServices.getText(this, saveErrorGenericMessageKey),
+		    "", JOptionPane.ERROR_MESSAGE);
+	}
+	} catch (StopWriterVisitorException ex) {
+	logger.error(ex.getStackTrace(), ex);
+	String errorMessage = (ex.getCause() != null) ? ex.getCause()
+		.getMessage() : ex.getMessage(), auxMessage = errorMessage
+		.replace("ERROR: ", "").replace(" ", "_")
+		.replace("\n", ""), auxMessageIntl = PluginServices
+		.getText(this, auxMessage);
+	if (auxMessageIntl.compareToIgnoreCase(auxMessage) != 0) {
+	    errorMessage = auxMessageIntl;
+	}
+	JOptionPane.showMessageDialog(
+		(Component) PluginServices.getMainFrame(),
+		errorMessage,
+		PluginServices.getText(this, saveErrorTitleKey),
+		JOptionPane.ERROR_MESSAGE);
 	}
     }
 
@@ -1156,7 +1211,7 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
 	refreshGUI();
     }
 
-    public void deleteRecord() {
+    public void deleteRecord() throws StopWriterVisitorException {
 	try {
 	    long position = getPosition();
 	    layerController.delete(position);
@@ -1165,6 +1220,8 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
 	    if (layerController.getRowCount() <= 0) {
 		showEmptyLayerMessage();
 	    }
+	} catch (StopWriterVisitorException e) {
+	    throw e;
 	} catch (BaseException e) {
 	    logger.error(e.getMessage(), e.getCause());
 	}
@@ -1244,12 +1301,12 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
     public abstract boolean isSavingValues();
 
     public SelectableDataSource getRecordset() {
-	try {
-	    return layer.getSource().getRecordset();
-	} catch (ReadDriverException e) {
-	    e.printStackTrace();
-	    return null;
-	}
+        try {
+            return layer.getSource().getRecordset();
+        } catch (ReadDriverException e) {
+            logger.error(e.getStackTrace(), e);
+            return null;
+        }
     }
 
     @Override
@@ -1258,7 +1315,7 @@ ActionListener, SelectionListener, IWindowListener, PositionListener {
 	    layerController.read(getPosition());
 	    refreshGUI();
 	} catch (ReadDriverException rde) {
-	    rde.printStackTrace();
+	    logger.error(rde.getStackTrace(), rde);
 	    layerController.clearAll();
 	    refreshGUI();
 	}

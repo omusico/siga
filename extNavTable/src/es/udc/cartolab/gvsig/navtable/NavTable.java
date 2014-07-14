@@ -50,6 +50,7 @@ import com.hardcode.gdbms.engine.values.Value;
 import com.hardcode.gdbms.engine.values.ValueWriter;
 import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.WindowInfo;
+import com.iver.cit.gvsig.exceptions.visitors.StopWriterVisitorException;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.ReadableVectorial;
@@ -86,6 +87,7 @@ import es.udc.cartolab.gvsig.navtable.table.NavTableModel;
  * @author Pablo Sanxiao
  * @author Andres Maneiro
  * @author Jorge Lopez
+ * @author Francisco Puga
  */
 public class NavTable extends AbstractNavTable {
 
@@ -101,6 +103,8 @@ public class NavTable extends AbstractNavTable {
     private MyTableModelListener myTableModelListener;
     private MyKeyListener myKeyListener;
     private MyMouseListener myMouseListener;
+    
+    private final ValueFormatNT valueFormatNT = new ValueFormatNT();
 
     // Mouse buttons constants
     public static final int BUTTON_RIGHT = 3;
@@ -192,24 +196,9 @@ public class NavTable extends AbstractNavTable {
     class MyTableModelListener implements TableModelListener {
 	public void tableChanged(TableModelEvent e) {
 	    if (e.getType() == TableModelEvent.UPDATE && !isFillingValues()) {
-		// if layer is on edition, we need to update the recordset
-		// with the values that changed. If not, the values will be
-		// saved in "batch mode" when clicking on saving button
-		if (isEditing()) {
-		    updateValueInRecordset(e);
-		} else {
-		    setChangedValues();
-		    enableSaveButton(isChangedValues());
-		}
+		setChangedValues();
+		enableSaveButton(isChangedValues());
 	    }
-	}
-
-	private void updateValueInRecordset(TableModelEvent e) {
-	    int col = 1; // edition only happens on editing column
-	    int row = e.getFirstRow();
-	    String newValue = ((DefaultTableModel) table.getModel())
-		    .getValueAt(row, col).toString();
-	    updateValue(Long.valueOf(getPosition()).intValue(), row, newValue);
 	}
     }
 
@@ -217,6 +206,8 @@ public class NavTable extends AbstractNavTable {
 	return layer.isEditing();
     }
 
+    @Deprecated
+    //deprecated by fpuga, 28/02/2014
     protected void updateValue(int row, int col, String newValue) {
 	ToggleEditing te = new ToggleEditing();
 	try {
@@ -389,7 +380,7 @@ public class NavTable extends AbstractNavTable {
 	    setFillingValues(true);
 	    DefaultTableModel model = (DefaultTableModel) table.getModel();
 	    for (int i = 0; i < sds.getFieldCount(); i++) {
-		String textoValue = sds.getFieldValue(getPosition(), i).getStringValue(new ValueFormatNT());
+		String textoValue = sds.getFieldValue(getPosition(), i).getStringValue(valueFormatNT);
 		model.setValueAt(textoValue, i, 1);
 	    }
 
@@ -436,17 +427,9 @@ public class NavTable extends AbstractNavTable {
 	    for (int i = 0; i < sds.getFieldCount(); i++) {
 		String tableValue = model.getValueAt(i, 1).toString();
 		Value value = sds.getFieldValue(getPosition(), i);
-		String layerValue = value
-			.getStringValue(ValueWriter.internalValueWriter);
-		layerValue = layerValue.replaceAll("'", "");
-		if (value instanceof NullValue) {
-		    if (tableValue.compareTo("") != 0) {
-			changedValues.add(new Integer(i));
-		    }
-		} else {
-		    if (tableValue.compareTo(layerValue) != 0) {
-			changedValues.add(new Integer(i));
-		    }
+		String layerValue = value.getStringValue(valueFormatNT);
+		if (tableValue.compareTo(layerValue) != 0) {
+		    changedValues.add(new Integer(i));
 		}
 	    }
 	} catch (ReadDriverException e) {
@@ -525,7 +508,7 @@ public class NavTable extends AbstractNavTable {
     }
 
     @Override
-    public boolean saveRecord() {
+    public boolean saveRecord() throws StopWriterVisitorException {
 	if (isSaveable()) {
 	    setSavingValues(true);
 	    int[] attIndexes = getIndexes();
@@ -543,9 +526,9 @@ public class NavTable extends AbstractNavTable {
 		}
 		setChangedValues(false);
 		return true;
-	    } catch (Exception e) {
-		logger.error(e.getMessage(), e);
-		return false;
+	    } catch (StopWriterVisitorException e) {
+		setSavingValues(false);
+		throw e;
 	    } finally {
 		setSavingValues(false);
 	    }
