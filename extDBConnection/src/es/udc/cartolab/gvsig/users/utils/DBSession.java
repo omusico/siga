@@ -52,7 +52,7 @@ import com.iver.cit.gvsig.project.Project;
 
 public class DBSession {
 
-	private static DBSession instance = null;
+	protected static DBSession instance = null;
 	private final String server, username, password;
 	private final int port;
 	private String database;
@@ -705,6 +705,16 @@ public class DBSession {
 	    fakeRequestThread.start();
 	}
 	
+	
+	/* getCompleteTableName and getAlphanumericDriverNames are used from extNavTableForms. 
+	 * To avoid update DBSession in SIGA we copy it here
+	 */
+	public String getCompleteTableName(String name, String schema) {
+		return schema + "." + name;
+	}
+	public String getAlphanumericDriverName() {
+		return "PostgreSQL Alphanumeric";
+	}
 
 
 }
