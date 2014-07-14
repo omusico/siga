@@ -6,7 +6,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="/_fwAndami"/>
 	<classpathentry kind="src" path="/libFMap"/>
-	<classpathentry kind="lib" path="lib/es.icarto.gvsig.navtableforms.jar" sourcepath="/extNavTableForms/src"/>
 	<classpathentry kind="lib" path="/_fwAndami/lib/log4j-1.2.14.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/extNavTable"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
@@ -21,7 +20,8 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/extAudasaCommons"/>
 	<classpathentry kind="lib" path="lib/iText-2.1.5.jar"/>
 	<classpathentry kind="lib" path="lib/iText-rtf-2.1.5.jar"/>
-	<classpathentry kind="lib" path="lib/formsrt.jar"/>
-	<classpathentry kind="lib" path="lib/jcalendar-1.4.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/extNavTableForms"/>
+	<classpathentry kind="lib" path="/extDBConnection/lib/formsrt.jar"/>
+	<classpathentry kind="lib" path="/extDBConnection/lib/jcalendar-1.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

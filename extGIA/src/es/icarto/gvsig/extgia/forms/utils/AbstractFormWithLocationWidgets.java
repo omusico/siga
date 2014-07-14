@@ -21,6 +21,7 @@ import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.Launcher;
 import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.WindowInfo;
+import com.iver.cit.gvsig.exceptions.visitors.StopWriterVisitorException;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.image.ImageComponent;
 import com.jeta.forms.components.panel.FormPanel;
@@ -498,16 +499,21 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 			setChangedValues(false);
 			setSavingValues(false);
 		    }
-		} catch (ReadDriverException exception) {
-		    exception.printStackTrace();
+		} catch (ReadDriverException ex) {
 		    layerController.clearAll();
 		    setChangedValues(false);
 		    setSavingValues(false);
+		    logger.error(ex.getStackTrace(), ex);
+		} catch (StopWriterVisitorException e1) {
+		    layerController.clearAll();
+		    setChangedValues(false);
+		    setSavingValues(false);
+		    logger.error(e1.getStackTrace(), e1);
 		}
 	    }
 	}
 
-	private void saveRecords() throws ReadDriverException {
+	private void saveRecords() throws ReadDriverException, StopWriterVisitorException {
 	    int[] indexesofValuesChanged = layerController.getIndexesOfValuesChanged();
 	    String[] valuesChanged =
 		    layerController.getValuesChanged().values().toArray(new String[0]);
@@ -665,7 +671,7 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     }
 
     @Override
-    public boolean saveRecord() {
+    public boolean saveRecord() throws StopWriterVisitorException {
 	if (nombreViaWidget != null) {
 	    if (nombreViaWidget.getSelectedItem().toString().isEmpty()) {
 		layerController.setValue(nombreViaWidget.getName(), "0");
