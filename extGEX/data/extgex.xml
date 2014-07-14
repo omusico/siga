@@ -10,6 +10,7 @@
         <FIELDNAME>tramo</FIELDNAME>
         <DOMAINREADER>
             <DRTYPE>db</DRTYPE>
+            <DRDBSCHEMA>audasa_expropiaciones</DRDBSCHEMA>
         	<DRDBTABLE>tramos</DRDBTABLE>
         	<DRDBCOLUMNVALUE>id_tramo</DRDBCOLUMNVALUE>
         	<DRDBCOLUMNALIAS>nombre_tramo</DRDBCOLUMNALIAS>
@@ -32,6 +33,7 @@
         <FIELDNAME>tramo</FIELDNAME>
         <DOMAINREADER>
             <DRTYPE>db</DRTYPE>
+            <DRDBSCHEMA>audasa_expropiaciones</DRDBSCHEMA>
         	<DRDBTABLE>tramos</DRDBTABLE>
         	<DRDBCOLUMNVALUE>id_tramo</DRDBCOLUMNVALUE>
         	<DRDBCOLUMNALIAS>nombre_tramo</DRDBCOLUMNALIAS>
@@ -41,6 +43,7 @@
         <FIELDNAME>unidad_constructiva</FIELDNAME>
         <DOMAINREADER>
             <DRTYPE>db</DRTYPE>
+            <DRDBSCHEMA>audasa_expropiaciones</DRDBSCHEMA>
         	<DRDBTABLE>uc</DRDBTABLE>
         	<DRDBCOLUMNVALUE>id_uc</DRDBCOLUMNVALUE>
         	<DRDBCOLUMNALIAS>nombre_uc</DRDBCOLUMNALIAS>
@@ -51,6 +54,7 @@
         <FIELDNAME>ayuntamiento</FIELDNAME>
 		<DOMAINREADER>
 		    <DRTYPE>db</DRTYPE>
+		    <DRDBSCHEMA>audasa_expropiaciones</DRDBSCHEMA>
         	<DRDBTABLE>ayuntamientos</DRDBTABLE>
         	<DRDBCOLUMNVALUE>id_ayuntamiento</DRDBCOLUMNVALUE>
         	<DRDBCOLUMNALIAS>nombre_ayuntamiento</DRDBCOLUMNALIAS>
@@ -61,6 +65,7 @@
         <FIELDNAME>parroquia_subtramo</FIELDNAME>
         <DOMAINREADER>
             <DRTYPE>db</DRTYPE>
+            <DRDBSCHEMA>audasa_expropiaciones</DRDBSCHEMA>
         	<DRDBTABLE>parroquias_subtramos</DRDBTABLE>
         	<DRDBCOLUMNVALUE>id_parroquia</DRDBCOLUMNVALUE>
         	<DRDBCOLUMNALIAS>nombre_parroquia</DRDBCOLUMNALIAS>
@@ -74,6 +79,7 @@
 		<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
 		<DOMAINREADER>
 			<DRTYPE>db</DRTYPE>
+			<DRDBSCHEMA>audasa_expropiaciones</DRDBSCHEMA>
 			<DRDBTABLE>exp_finca</DRDBTABLE>
 			<DRDBCOLUMNVALUE>numero_finca</DRDBCOLUMNVALUE>
 			<DRDBCOLUMNALIAS>numero_finca</DRDBCOLUMNALIAS>
@@ -88,6 +94,7 @@
       	<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
       	<DOMAINREADER>
 			<DRTYPE>db</DRTYPE>
+			<DRDBSCHEMA>audasa_expropiaciones</DRDBSCHEMA>
 			<DRDBTABLE>exp_finca</DRDBTABLE>
 			<DRDBCOLUMNVALUE>seccion</DRDBCOLUMNVALUE>
 			<DRDBCOLUMNALIAS>seccion</DRDBCOLUMNALIAS>

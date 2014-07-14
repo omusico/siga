@@ -33,6 +33,7 @@ import org.apache.log4j.Logger;
 import com.hardcode.gdbms.engine.values.Value;
 import com.hardcode.gdbms.engine.values.ValueFactory;
 import com.iver.andami.PluginServices;
+import com.iver.cit.gvsig.exceptions.visitors.StopWriterVisitorException;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.image.ImageComponent;
@@ -730,7 +731,7 @@ public class FormExpropiations extends AbstractForm implements TableModelListene
     }
 
     @Override
-    public boolean saveRecord() {
+    public boolean saveRecord() throws StopWriterVisitorException {
 	saveReversionsTable();
 	saveExpropiationsTable();
 	return super.saveRecord();
