@@ -3,6 +3,7 @@ package es.icarto.gvsig.audasacommons;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.InputStream;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -11,17 +12,23 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
+
 import com.iver.andami.Launcher;
 import com.iver.andami.PluginServices;
 import com.iver.andami.preferences.AbstractPreferencePage;
 import com.iver.andami.preferences.StoreException;
 import com.iver.utiles.XMLEntity;
 import com.jeta.forms.components.panel.FormPanel;
+import com.jeta.forms.gui.common.FormException;
 
 @SuppressWarnings("serial")
 public class PreferencesPage extends AbstractPreferencePage implements
 ActionListener {
 
+    
+    private static final Logger logger = Logger
+	    .getLogger(PreferencesPage.class);
     private static final String PLUGIN_NAME = "es.icarto.gvsig.audasacommons";
     public static final String AUDASA_ICON = "gvSIG/extensiones/es.icarto.gvsig.audasacommons/images/logo_audasa.png";
     public static final String IMG_UNAVAILABLE = "gvSIG/extensiones/es.icarto.gvsig.audasacommons/images/img_no_disponible.jpg";
@@ -72,19 +79,24 @@ ActionListener {
 	if (!panelStarted) {
 	    panelStarted = true;
 
-	    FormPanel form = new FormPanel("forms/preferences.xml");
-	    form.setFocusTraversalPolicyProvider(true);
+	    try {
+		InputStream stream = getClass().getClassLoader()
+			.getResourceAsStream("forms/preferences.xml");
+		FormPanel form = new FormPanel(stream);
+		form.setFocusTraversalPolicyProvider(true);
 
-	    JLabel legendLabel = form.getLabel("filesLabel");
-	    legendLabel
-	    .setText(PluginServices.getText(this, "files_directory"));
+		JLabel legendLabel = form.getLabel("filesLabel");
+		legendLabel.setText(PluginServices.getText(this,
+			"files_directory"));
 
-	    filesDirField = form.getTextField("filesField");
-	    filesDirButton = (JButton) form.getButton("filesButton");
-	    filesDirButton.addActionListener(this);
+		filesDirField = form.getTextField("filesField");
+		filesDirButton = (JButton) form.getButton("filesButton");
+		filesDirButton.addActionListener(this);
 
-	    addComponent(form);
-
+		addComponent(form);
+	    } catch (FormException e) {
+		logger.error(e.getStackTrace(), e);
+	    }
 	}
 
 	return this;

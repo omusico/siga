@@ -19,6 +19,7 @@ package es.udc.cartolab.gvsig.elle.gui.wizard.load;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Map;
@@ -32,11 +33,14 @@ import javax.swing.JTextArea;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.apache.log4j.Logger;
+
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.addlayer.AddLayerDialog;
 import com.iver.cit.gvsig.fmap.drivers.DBException;
 import com.iver.cit.gvsig.gui.panels.CRSSelectPanel;
 import com.jeta.forms.components.panel.FormPanel;
+import com.jeta.forms.gui.common.FormException;
 
 import es.icarto.gvsig.elle.db.DBStructure;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardComponent;
@@ -47,6 +51,10 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 @SuppressWarnings("serial")
 public class SigaLoadMapWizardComponent extends WizardComponent implements ActionListener {
 
+    
+    private static final Logger logger = Logger
+	    .getLogger(SigaLoadMapWizardComponent.class);
+    
     protected CRSSelectPanel crsPanel = null;
     protected JList mapList;
     private DBSession dbs;
@@ -106,8 +114,11 @@ public class SigaLoadMapWizardComponent extends WizardComponent implements Actio
 	    listPanel = new JPanel();
 
 	    try {
+		FormPanel form = null;
 
-		FormPanel form = new FormPanel("forms/loadMap.jfrm");
+		InputStream stream = getClass().getClassLoader()
+			.getResourceAsStream("forms/loadMap.jfrm");
+		form = new FormPanel(stream);
 		form.setFocusTraversalPolicyProvider(true);
 
 		listPanel.add(form);
@@ -195,6 +206,8 @@ public class SigaLoadMapWizardComponent extends WizardComponent implements Actio
 		}
 		//exception
 		e.printStackTrace();
+	    } catch (FormException e2) {
+		logger.error(e2.getStackTrace(), e2);
 	    }
 	}
 	return listPanel;

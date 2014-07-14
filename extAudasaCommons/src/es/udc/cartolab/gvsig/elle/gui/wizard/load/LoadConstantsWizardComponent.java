@@ -2,6 +2,7 @@ package es.udc.cartolab.gvsig.elle.gui.wizard.load;
 
 import java.awt.BorderLayout;
 import java.awt.geom.Rectangle2D;
+import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,11 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+import org.apache.log4j.Logger;
 
 import com.hardcode.gdbms.driver.exceptions.InitializeDriverException;
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
@@ -31,6 +35,7 @@ import com.iver.cit.gvsig.project.documents.view.ProjectView;
 import com.iver.cit.gvsig.project.documents.view.gui.BaseView;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 import com.jeta.forms.components.panel.FormPanel;
+import com.jeta.forms.gui.common.FormException;
 
 import es.icarto.gvsig.elle.db.DBStructure;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardComponent;
@@ -43,6 +48,10 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 @SuppressWarnings("serial")
 public class LoadConstantsWizardComponent extends WizardComponent {
 
+    
+    private static final Logger logger = Logger
+	    .getLogger(LoadConstantsWizardComponent.class);
+    
     private JPanel listPanel;
     private JList valuesList;
     private DBSession dbs;
@@ -79,7 +88,18 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 
 	if (listPanel == null) {
 	    listPanel = new JPanel();
-	    FormPanel form = new FormPanel("forms/loadConstants.jfrm");
+	    
+	    FormPanel form = null;
+	    try {
+		InputStream stream = getClass().getClassLoader()
+			.getResourceAsStream("forms/loadConstants.jfrm");
+		form = new FormPanel(stream);
+	    } catch (FormException e) {
+		logger.error(e.getStackTrace(), e);
+		return listPanel;
+	    }
+	    
+	    
 	    listPanel.add(form);
 
 	    JLabel constantsLabel = form.getLabel("constantsLabel");
