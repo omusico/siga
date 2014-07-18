@@ -14,6 +14,7 @@ import com.iver.cit.gvsig.listeners.CADListenerManager;
 import com.iver.cit.gvsig.listeners.EndGeometryListener;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
+import es.icarto.gvsig.extgex.cad.GextJoinCADTool;
 import es.icarto.gvsig.extgex.forms.FormExpropiationLine;
 import es.icarto.gvsig.extgex.forms.FormExpropiations;
 import es.icarto.gvsig.extgex.preferences.DBNames;
@@ -59,6 +60,7 @@ public class FormExpropiationsExtension extends Extension {
 
     @Override
     public void postInitialize() {
+	CADExtension.addCADTool("_join", new GextJoinCADTool());
 	PluginServices.getMDIManager().closeAllWindows();
 	// launch dbconnection dialog
 	IExtension dbconnection = PluginServices
