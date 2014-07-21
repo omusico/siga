@@ -65,7 +65,7 @@
       </FIELD>
       <FIELD>
         <FIELDNAME>superficie_complementaria</FIELDNAME>
-        <VALIDATIONRULE>DOUBLE_POSITIVE</VALIDATIONRULE>
+        <VALIDATIONRULE>DOUBLE</VALIDATIONRULE>
       </FIELD>
       <FIELD>
         <FIELDNAME>deposito_previo_consignado_importe</FIELDNAME>
