@@ -33,8 +33,9 @@
 	</target>
 	
 	<target name="copy-data-files">
-		<copy file="data/extgex.xml" todir="${dist}/data" overwrite="yes"/>
-		<copy file="data/linea_expropiacion.xml" todir="${dist}/data" overwrite="yes"/>
+		<copy todir="${dist}/data">
+			<fileset dir="data" includes="*" />
+		</copy>
 		<copy file="config/config.xml" todir="${dist}"/>
 		<copy file="config/text_es.properties" todir="${dist}"/>
 		<copy todir="${dist}/images">

@@ -103,7 +103,7 @@ public class SubFormExpropiationsAddReversions extends JPanel implements IWindow
 	    reversions = new ArrayList<String>();
 
 	    TOCLayerManager tm = new TOCLayerManager();
-	    FLyrVect reversionsLayer = tm.getLayerByName(DBNames.LAYER_REVERSIONES);
+	    FLyrVect reversionsLayer = tm.getLayerByName(FormReversions.TOCNAME);
 	    SelectableDataSource reversionsRecordset = reversionsLayer.getRecordset();
 	    IGeometry fincaGeometry;
 	    if (insertedGeom != null) {
@@ -147,7 +147,7 @@ public class SubFormExpropiationsAddReversions extends JPanel implements IWindow
     public void updateCurrentRowFromFincaID(String idFinca) {
 	PreparedStatement statement;
 	String query = "SELECT " + DBNames.FIELD_GID_FINCAS + " " +
-		"FROM " + DBNames.SCHEMA_DATA + "." + DBNames.TABLE_FINCAS + " " +
+		"FROM " + DBNames.SCHEMA_DATA + "." + FormExpropiations.TABLENAME + " " +
 		"WHERE " + DBNames.FIELD_IDFINCA_FINCAS + " = " +
 		"'" + idFinca + "';";
 	try {

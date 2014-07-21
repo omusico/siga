@@ -2,8 +2,8 @@ package es.icarto.gvsig.extgex.utils.retrievers;
 
 import java.util.ArrayList;
 
+import es.icarto.gvsig.extgex.forms.FormExpropiations;
 import es.icarto.gvsig.extgex.preferences.DBNames;
-import es.icarto.gvsig.extgex.preferences.GEXPreferences;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.DomainValues;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
@@ -20,7 +20,7 @@ public class LocalizacionRetriever {
     private final ORMLite orm;
 
     public LocalizacionRetriever(String idFinca) {
-	orm = new ORMLite(getXMLPath());
+	orm = new ORMLite("data/" + FormExpropiations.TABLENAME + ".xml");
 	decipher(idFinca);
     }
 
@@ -142,9 +142,5 @@ public class LocalizacionRetriever {
 	} else {
 	    return null;
 	}
-    }
-
-    private String getXMLPath() {
-	return GEXPreferences.getPreferences().getXMLFilePath();
     }
 }

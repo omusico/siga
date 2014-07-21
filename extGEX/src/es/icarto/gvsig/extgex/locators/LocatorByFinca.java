@@ -32,6 +32,7 @@ import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
+import es.icarto.gvsig.extgex.forms.FormExpropiations;
 import es.icarto.gvsig.extgex.locators.actions.FormOpener;
 import es.icarto.gvsig.extgex.locators.actions.IPositionRetriever;
 import es.icarto.gvsig.extgex.locators.actions.ZoomToHandler;
@@ -343,7 +344,7 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
 	    try {
 		if ((parroquiaSelected != null) && (!parroquiaSelected.equalsIgnoreCase(DEFAULT_FILTER))) {
 		    query = "SELECT " + DBNames.FIELD_NUMEROFINCA_FINCAS + ", " + DBNames.FIELD_SECCION_FINCAS +
-			    " FROM " + DBNames.EXPROPIATIONS_SCHEMA + "." + DBNames.TABLE_FINCAS +
+			    " FROM " + DBNames.EXPROPIATIONS_SCHEMA + "." + FormExpropiations.TABLENAME +
 			    " WHERE " + DBNames.FIELD_TRAMO_FINCAS + " = " + "'" + getTramoId() +
 			    "' AND " + DBNames.FIELD_UC_FINCAS + " = " + "'" + getUcId() +
 			    "' AND " + DBNames.FIELD_AYUNTAMIENTO_FINCAS + " = " + "'" + getAyuntamientoId() +
@@ -351,7 +352,7 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
 			    "' ORDER BY " + DBNames.FIELD_NUMEROFINCA_FINCAS;
 		}else {
 		    query = "SELECT " + DBNames.FIELD_NUMEROFINCA_FINCAS + ", " + DBNames.FIELD_SECCION_FINCAS +
-			    " FROM " + DBNames.EXPROPIATIONS_SCHEMA + "." + DBNames.TABLE_FINCAS +
+			    " FROM " + DBNames.EXPROPIATIONS_SCHEMA + "." + FormExpropiations.TABLENAME +
 			    " WHERE " + DBNames.FIELD_TRAMO_FINCAS + " = " + "'" + getTramoId() +
 			    "' AND " + DBNames.FIELD_UC_FINCAS + " = " + "'" + getUcId() +
 			    "' AND " + DBNames.FIELD_AYUNTAMIENTO_FINCAS + " = " + "'" + getAyuntamientoId() +

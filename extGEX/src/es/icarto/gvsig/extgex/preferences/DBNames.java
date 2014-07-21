@@ -34,13 +34,7 @@ public class DBNames {
     public static final String TABLE_PARROQUIASSUBTRAMOS = "parroquias_subtramos";
     public static final String FIELD_NOMBREPARROQUIA_PARROQUIASUBTRAMOS = "nombre_parroquia";
 
-    // more widgets for expropiationsform
-    //    public static final String FIELD_IMPORTEPDTEMEJORAS = "importe_pendiente_mejoras";
-    //    public static final String FIELD_IMPORTEPDTETERRENOS = "importe_pendiente_terrenos";
-    //    public static final String FIELD_IMPORTEPDTETOTAL = "importe_pendiente_total";
-
     // table exp_finca
-    public static final String TABLE_FINCAS = "exp_finca";
     public static final String FIELD_IDFINCA_FINCAS = "id_finca";
     public static final String FIELD_NUMEROFINCA_FINCAS = "numero_finca";
     public static final String FIELD_SECCION_FINCAS = "seccion";
@@ -51,12 +45,10 @@ public class DBNames {
     public static final String FIELD_GID_FINCAS = "gid";
 
     // table reversiones
-    public static final String LAYER_REVERSIONES = "Reversiones";
     public static final String FIELD_SUPERFICIE_REVERSIONES = "superficie";
     public static final String FIELD_OCUPACION_REVERSIONES = "ocupacion";
     public static final String FIELD_FECHAACTA_REVERSIONES = "fecha_acta_reversion";
     public static final String FIELD_IDREVERSION_REVERSIONES = "exp_id";
-    public static final String FIELD_NUMEROREVERSION_REVERSIONES = "numero_reversion";
     public static final String FIELD_GID_REVERSIONES = "gid";
 
     //table fincas_reversiones

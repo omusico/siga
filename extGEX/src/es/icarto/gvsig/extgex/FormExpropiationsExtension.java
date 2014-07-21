@@ -126,7 +126,7 @@ public class FormExpropiationsExtension extends Extension {
 		    PluginServices.getMDIManager().addCentredWindow(dialog);
 		    dialog.last();
 		}
-	    } else if (layer.getName().equalsIgnoreCase(FormExpropiationLine.LAYER_TOC_NAME)) {
+	    } else if (layer.getName().equalsIgnoreCase(FormExpropiationLine.TOCNAME)) {
 		FormExpropiationLine dialog = new FormExpropiationLine((FLyrVect) layer);
 		if (dialog.init() ) {
 		    PluginServices.getMDIManager().addCentredWindow(dialog);

@@ -14,6 +14,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 import com.iver.cit.gvsig.project.documents.table.gui.Table;
 
+import es.icarto.gvsig.extgex.forms.FormReversions;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
 import es.icarto.gvsig.extgex.utils.managers.TableLayerManager;
@@ -41,7 +42,7 @@ public class PrintReportsDataSubreportReversions implements JRDataSource {
 
     private FLyrVect getReversionsLayer() {
 	TOCLayerManager toc = new TOCLayerManager();
-	return toc.getLayerByName(DBNames.LAYER_REVERSIONES);
+	return toc.getLayerByName(FormReversions.TOCNAME);
     }
 
     private Table getReversionsTable() {

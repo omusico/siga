@@ -43,7 +43,6 @@ import com.jeta.forms.gui.common.FormException;
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.extgex.navtable.NavTableComponentsFactory;
 import es.icarto.gvsig.extgex.preferences.DBNames;
-import es.icarto.gvsig.extgex.preferences.GEXPreferences;
 import es.icarto.gvsig.extgex.utils.retrievers.LocalizadorFormatter;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
@@ -55,6 +54,7 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 @SuppressWarnings("serial")
 public class FormExpropiations extends AbstractForm implements TableModelListener {
 
+    public static final String TABLENAME = "exp_finca";
     private static final String WIDGET_REVERSIONES = "tabla_reversiones_afectan";
     private static final String WIDGET_EXPROPIACIONES = "tabla_expropiaciones";
     private static final String WIDGET_PM = "tabla_pm_afectan";
@@ -150,7 +150,7 @@ public class FormExpropiations extends AbstractForm implements TableModelListene
     @Override
     public FormPanel getFormBody() {
 	if (form == null) {
-	    InputStream stream = getClass().getClassLoader().getResourceAsStream("expropiaciones.xml");
+	    InputStream stream = getClass().getClassLoader().getResourceAsStream(getBasicName() + ".xml");
 	    FormPanel result = null;
 	    try {
 		result = new FormPanel(stream);
@@ -912,13 +912,14 @@ public class FormExpropiations extends AbstractForm implements TableModelListene
 	return null;
     }
 
-    protected String getAliasInXML() {
-	return "exp_finca";
-    }
-
     @Override
     public String getXMLPath() {
-	return GEXPreferences.getPreferences().getXMLFilePath();
+	return this.getClass().getClassLoader()
+		.getResource("data/" + getBasicName() + ".xml").getPath();
+    }
+
+    public String getBasicName() {
+	return TABLENAME;
     }
 
     @Override
