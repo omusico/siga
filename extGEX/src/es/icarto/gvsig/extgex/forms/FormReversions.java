@@ -33,7 +33,6 @@ import com.jeta.forms.gui.common.FormException;
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.extgex.navtable.NavTableComponentsFactory;
 import es.icarto.gvsig.extgex.preferences.DBNames;
-import es.icarto.gvsig.extgex.preferences.GEXPreferences;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 import es.udc.cartolab.gvsig.navtable.format.DoubleFormatNT;
@@ -42,6 +41,9 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
 public class FormReversions extends AbstractForm implements TableModelListener {
+
+    public static final String TABLENAME = "exp_rv";
+    public static final String TOCNAME = "Reversiones";
 
     private FLyrVect layer = null;
 
@@ -118,7 +120,7 @@ public class FormReversions extends AbstractForm implements TableModelListener {
     @Override
     public FormPanel getFormBody() {
 	if (form == null) {
-	    InputStream stream = getClass().getClassLoader().getResourceAsStream("reversiones.xml");
+	    InputStream stream = getClass().getClassLoader().getResourceAsStream(getBasicName() + ".xml");
 	    FormPanel result = null;
 	    try {
 		result = new FormPanel(stream);
@@ -250,7 +252,12 @@ public class FormReversions extends AbstractForm implements TableModelListener {
 
     @Override
     public String getXMLPath() {
-	return GEXPreferences.getPreferences().getXMLFilePath();
+	return this.getClass().getClassLoader()
+		.getResource("data/" + getBasicName() + ".xml").getPath();
+    }
+
+    public String getBasicName() {
+	return TABLENAME;
     }
 
     @Override

@@ -155,7 +155,7 @@ public class FormReversionsLauncher implements MouseListener {
     private FLyrVect getLayer() {
 	if(layerReversions == null) {
 	    TOCLayerManager toc = new TOCLayerManager();
-	    return toc.getLayerByName(DBNames.LAYER_REVERSIONES);
+	    return toc.getLayerByName(FormReversions.TOCNAME);
 	}
 	return layerReversions;
     }

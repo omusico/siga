@@ -16,22 +16,23 @@ public class FormReversionsExtension extends Extension {
     private FLyrVect layer = null;
     private FormReversions dialog = null;
 
+    @Override
     public void execute(String actionCommand) {
 	DBSession.getCurrentSession().setSchema(DBNames.EXPROPIATIONS_SCHEMA);
-	//	if (AlphanumericTableLoader.loadTables()) {
+	// if (AlphanumericTableLoader.loadTables()) {
 	layer = getLayer();
 	dialog = new FormReversions(layer, null);
 	if (dialog.init()) {
 	    PluginServices.getMDIManager().addWindow(dialog);
 	}
-	//	} else {
-	//	    JOptionPane.showMessageDialog(null, PluginServices.getText(this,
-	//		    "alphanumeric_table_no_loaded"));
-	//	}
+	// } else {
+	// JOptionPane.showMessageDialog(null, PluginServices.getText(this,
+	// "alphanumeric_table_no_loaded"));
+	// }
     }
 
     private FLyrVect getLayer() {
-	String layerName = DBNames.LAYER_REVERSIONES;
+	String layerName = FormReversions.TOCNAME;
 	TOCLayerManager toc = new TOCLayerManager();
 	return toc.getLayerByName(layerName);
     }
@@ -40,23 +41,25 @@ public class FormReversionsExtension extends Extension {
 	PluginServices.getIconTheme().registerDefault(
 		"extgex-reversions",
 		this.getClass().getClassLoader()
-		.getResource("images/extgpeB.png"));
+			.getResource("images/extgpeB.png"));
     }
 
+    @Override
     public void initialize() {
 	registerIcons();
     }
 
+    @Override
     public boolean isEnabled() {
-	if ((DBSession.getCurrentSession() != null) &&
-		hasView() &&
-		isLayerLoaded(DBNames.LAYER_REVERSIONES)) {
+	if ((DBSession.getCurrentSession() != null) && hasView()
+		&& isLayerLoaded(FormReversions.TOCNAME)) {
 	    return true;
 	} else {
 	    return false;
 	}
     }
 
+    @Override
     public boolean isVisible() {
 	return true;
     }
@@ -64,7 +67,7 @@ public class FormReversionsExtension extends Extension {
     private boolean isLayerLoaded(String layerName) {
 	TOCLayerManager toc = new TOCLayerManager();
 	FLyrVect layer = toc.getLayerByName(layerName);
-	if(layer == null) {
+	if (layer == null) {
 	    return false;
 	}
 	return true;
@@ -72,7 +75,7 @@ public class FormReversionsExtension extends Extension {
 
     private boolean hasView() {
 	IWindow window = PluginServices.getMDIManager().getActiveWindow();
-	if(window instanceof View) {
+	if (window instanceof View) {
 	    return true;
 	}
 	return false;

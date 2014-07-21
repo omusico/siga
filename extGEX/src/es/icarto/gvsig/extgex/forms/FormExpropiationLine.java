@@ -20,8 +20,8 @@ public class FormExpropiationLine extends AbstractForm {
     private static final Logger logger = Logger
 	    .getLogger(FormExpropiationLine.class);
 
-    public static final String LAYER_TOC_NAME = "Linea_Expropiacion";
-    public static final String NAME = "linea_expropiacion";
+    public static final String TOCNAME = "Linea_Expropiacion";
+    public static final String TABLENAME = "linea_expropiacion";
 
     public FormExpropiationLine(FLyrVect layer) {
 	super(layer);
@@ -52,7 +52,7 @@ public class FormExpropiationLine extends AbstractForm {
     }
 
     public String getBasicName() {
-	return NAME;
+	return TABLENAME;
     }
 
 }

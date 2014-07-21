@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<METADATA>
+  <LAYER alias="Reversiones">
+    <TABLENAME>exp_rv</TABLENAME>
+    <PRIMARYKEY>
+    	<PKELEMENT>exp_id</PKELEMENT>
+    </PRIMARYKEY>
+    <RECORDSET>
+  </RECORDSET>
+  </LAYER>
+ 
+</METADATA>

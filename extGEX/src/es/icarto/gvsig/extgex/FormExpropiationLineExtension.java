@@ -26,7 +26,7 @@ public class FormExpropiationLineExtension extends Extension {
     }
 
     private FLyrVect getLayer() {
-	String layerName = FormExpropiationLine.LAYER_TOC_NAME;
+	String layerName = FormExpropiationLine.TOCNAME;
 	TOCLayerManager toc = new TOCLayerManager();
 	return toc.getLayerByName(layerName);
     }
@@ -34,7 +34,7 @@ public class FormExpropiationLineExtension extends Extension {
     @Override
     public boolean isEnabled() {
 	if ((DBSession.getCurrentSession() != null) && hasView()
-		&& isLayerLoaded(FormExpropiationLine.LAYER_TOC_NAME)) {
+		&& isLayerLoaded(FormExpropiationLine.TOCNAME)) {
 	    return true;
 	} else {
 	    return false;
