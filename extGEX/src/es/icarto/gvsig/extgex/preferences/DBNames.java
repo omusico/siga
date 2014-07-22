@@ -2,7 +2,7 @@ package es.icarto.gvsig.extgex.preferences;
 
 public class DBNames {
 
-    //schemas
+    // schemas
     public static final String EXPROPIATIONS_SCHEMA = "audasa_expropiaciones";
     public static final String PM_SCHEMA = "audasa_pm";
 
@@ -51,7 +51,7 @@ public class DBNames {
     public static final String FIELD_IDREVERSION_REVERSIONES = "exp_id";
     public static final String FIELD_GID_REVERSIONES = "gid";
 
-    //table fincas_reversiones
+    // table fincas_reversiones
     public static final String TABLE_REVERSIONES = "exp_reversion";
     public static final String FIELD_IDREVERSION_FINCAS_REVERSIONES = "id_reversion";
     public static final String FIELD_IDEXPROPIACION_FINCAS_REVERSIONES = "id_finca";
@@ -65,12 +65,12 @@ public class DBNames {
     public static final String FIELD_IDFINCA_FINCAS_PM = "id_finca";
     public static final String FIELD_NUMPM_FINCAS_PM = "numero_pm";
 
-    //table expropiaciones
+    // table expropiaciones
     public static final String FIELD_ID_FINCA_EXPROPIACIONES = "id_finca";
     public static final String FIELD_IDCULTIVO_EXPROPIACIONES = "id_cultivo";
     public static final String FIELD_SUPERFICIE_EXPROPIACIONES = "superficie_expropiada";
 
-    //table desafecciones
+    // table desafecciones
     public static final String TABLE_DESAFECCIONES = "exp_desafecciones";
     public static final String FIELD_SUPERFICIE_DESAFECCIONES = "superficie";
     public static final String FIELD_OCUPACION_DESAFECCIONES = "ocupacion";
@@ -156,5 +156,9 @@ public class DBNames {
     public static final String FINCAS_PAGOS_VARIOS = "pagos_varios_importe";
     public static final String FINCAS_DEPOSITO_PREVIO_LEVANTADO = "deposito_previo_levantado_importe";
     public static final String FINCAS_IMPORTE_PAGADO_TOTAL_AUTOCALCULADO = "importe_pagado_total_autocalculado";
+    public static final String FINCAS_DEPOSITO_PREVIO_CONSIGNADO_INDEMNIZACION = "deposito_previo_consignado_indemnizacion";
+    public static final String FINCAS_LIMITE_ACUERDO_IMORTE = "limite_acuerdo_importe";
+    public static final String FINCAS_INDEMNIZACION_IMPORTE = "indemnizacion_importe";
+    public static final String FINCAS_JUSTIPRECIO_IMPORTE = "justiprecio_importe";
 
 }

@@ -69,31 +69,47 @@
       </FIELD>
       <FIELD>
         <FIELDNAME>deposito_previo_consignado_importe</FIELDNAME>
-        <VALIDATIONRULE>DOUBLE_POSITIVE</VALIDATIONRULE>
+        <VALIDATIONRULE>DOUBLE</VALIDATIONRULE>
+      </FIELD>
+      <FIELD>
+        <FIELDNAME>deposito_previo_consignado_indemnizacion</FIELDNAME>
+        <VALIDATIONRULE>DOUBLE</VALIDATIONRULE>
+      </FIELD>
+      <FIELD>
+        <FIELDNAME>deposito_previo_pagado_importe</FIELDNAME>
+        <VALIDATIONRULE>DOUBLE</VALIDATIONRULE>
       </FIELD>
       <FIELD>
         <FIELDNAME>anticipo_importe</FIELDNAME>
-        <VALIDATIONRULE>DOUBLE_POSITIVE</VALIDATIONRULE>
+        <VALIDATIONRULE>DOUBLE</VALIDATIONRULE>
+      </FIELD>
+      <FIELD>
+        <FIELDNAME>indemnizacion_importe</FIELDNAME>
+        <VALIDATIONRULE>DOUBLE</VALIDATIONRULE>
+      </FIELD>
+      <FIELD>
+        <FIELDNAME>justiprecio_importe</FIELDNAME>
+        <VALIDATIONRULE>DOUBLE</VALIDATIONRULE>
       </FIELD>
       <FIELD>
         <FIELDNAME>mutuo_acuerdo_parcial_importe</FIELDNAME>
-        <VALIDATIONRULE>DOUBLE_POSITIVE</VALIDATIONRULE>
+        <VALIDATIONRULE>DOUBLE</VALIDATIONRULE>
       </FIELD>
       <FIELD>
         <FIELDNAME>limite_acuerdo_importe</FIELDNAME>
-        <VALIDATIONRULE>DOUBLE_POSITIVE</VALIDATIONRULE>
+        <VALIDATIONRULE>DOUBLE</VALIDATIONRULE>
       </FIELD>
       <FIELD>
         <FIELDNAME>mutuo_acuerdo_importe</FIELDNAME>
-        <VALIDATIONRULE>DOUBLE_POSITIVE</VALIDATIONRULE>
+        <VALIDATIONRULE>DOUBLE</VALIDATIONRULE>
       </FIELD>
       <FIELD>
         <FIELDNAME>pagos_varios_importe</FIELDNAME>
-        <VALIDATIONRULE>DOUBLE_POSITIVE</VALIDATIONRULE>
+        <VALIDATIONRULE>DOUBLE</VALIDATIONRULE>
       </FIELD>
       <FIELD>
         <FIELDNAME>deposito_previo_levantado_importe</FIELDNAME>
-        <VALIDATIONRULE>DOUBLE_POSITIVE</VALIDATIONRULE>
+        <VALIDATIONRULE>DOUBLE</VALIDATIONRULE>
       </FIELD>
       <FIELD>
         <FIELDNAME>importe_mejoras_complementarias</FIELDNAME>
