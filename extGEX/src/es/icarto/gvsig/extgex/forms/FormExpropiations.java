@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -69,9 +69,6 @@ public class FormExpropiations extends AbstractForm implements
     private JTextField finca;
     private JTextField numFinca;
     private JTextField seccion;
-    private JTextField importe_pendiente_mejoras;
-    private JTextField importe_pendiente_terrenos;
-    private JTextField importe_pendiente_total_autocalculado;
 
     private JTable expropiaciones;
     private JTable reversiones;
@@ -94,9 +91,6 @@ public class FormExpropiations extends AbstractForm implements
     private DependentComboboxHandler subtramoDomainHandler;
     private UpdateNroFincaHandler updateNroFincaHandler;
 
-    private UpdateImportePendienteHandler updateImportePendienteHandler;
-
-    // private AlphanumericNavTableLauncher tableExpropiationsLauncher;
     private FormReversionsLauncher formReversionsLauncher;
 
     private FLyrVect layer = null;
@@ -112,19 +106,8 @@ public class FormExpropiations extends AbstractForm implements
 	}
 	addButtonsToActionsToolBar();
 
-	addCalculation(new ImporteTotalPagadoCalculation(this,
-		getWidgetComponents(),
-		DBNames.FINCAS_IMPORTE_PAGADO_TOTAL_AUTOCALCULADO,
-		DBNames.FINCAS_DEPOSITO_PREVIO_LEVANTADO,
-		DBNames.FINCAS_DEPOSITO_PREVIO_CONSIGNADO,
-		DBNames.FINCAS_DEPOSITO_PREVIO_CONSIGNADO_INDEMNIZACION,
-		DBNames.FINCAS_DEPOSITO_PREVIO_PAGADO,
-		DBNames.FINCAS_MUTUO_ACUERDO, DBNames.FINCAS_ANTICIPO,
-		DBNames.FINCAS_MUTUO_ACUERDO_PARCIAL,
-		DBNames.FINCAS_LIMITE_ACUERDO_IMORTE,
-		DBNames.FINCAS_PAGOS_VARIOS,
-		DBNames.FINCAS_INDEMNIZACION_IMPORTE,
-		DBNames.FINCAS_JUSTIPRECIO_IMPORTE));
+	addCalculation(new ImporteTotalPagadoCalculation(this));
+	addCalculation(new ImportePendienteTotalCalculation(this));
     }
 
     private void addButtonsToActionsToolBar() {
@@ -173,7 +156,7 @@ public class FormExpropiations extends AbstractForm implements
 	super.setListeners();
 
 	// RETRIEVE WIDGETS
-	HashMap<String, JComponent> widgets = getWidgetComponents();
+	Map<String, JComponent> widgets = getWidgets();
 
 	ImageComponent image = (ImageComponent) form
 		.getComponentByName("image");
@@ -192,17 +175,6 @@ public class FormExpropiations extends AbstractForm implements
 
 	finca = (JTextField) widgets.get(DBNames.FIELD_IDFINCA);
 	// finca.setEnabled(false);
-
-	updateImportePendienteHandler = new UpdateImportePendienteHandler();
-	importe_pendiente_mejoras = (JTextField) widgets
-		.get(DBNames.FINCAS_IMPORTE_PENDIENTE_MEJORAS);
-	importe_pendiente_mejoras.addKeyListener(updateImportePendienteHandler);
-	importe_pendiente_terrenos = (JTextField) widgets
-		.get(DBNames.FINCAS_IMPORTE_PENDIENTE_TERRENOS);
-	importe_pendiente_terrenos
-		.addKeyListener(updateImportePendienteHandler);
-	importe_pendiente_total_autocalculado = (JTextField) widgets
-		.get(DBNames.FINCAS_IMPORTE_PENDIENTE_TOTAL_AUTOCALCULADO);
 
 	expropiaciones = (JTable) widgets.get(WIDGET_EXPROPIACIONES);
 	reversiones = (JTable) widgets.get(WIDGET_REVERSIONES);
@@ -274,11 +246,6 @@ public class FormExpropiations extends AbstractForm implements
 	subtramo.removeActionListener(updateNroFincaHandler);
 	numFinca.removeKeyListener(updateNroFincaHandler);
 	seccion.removeKeyListener(updateNroFincaHandler);
-
-	importe_pendiente_mejoras
-		.removeKeyListener(updateImportePendienteHandler);
-	importe_pendiente_terrenos
-		.removeKeyListener(updateImportePendienteHandler);
 
 	// expropiaciones.removeMouseListener(tableExpropiationsLauncher);
 	reversiones.removeMouseListener(formReversionsLauncher);
@@ -421,60 +388,6 @@ public class FormExpropiations extends AbstractForm implements
 		setIDFinca();
 	    }
 	}
-    }
-
-    public class UpdateImportePendienteHandler implements KeyListener {
-
-	@Override
-	public void keyPressed(KeyEvent arg0) {
-	}
-
-	@Override
-	public void keyReleased(KeyEvent arg0) {
-	    if (!isFillingValues()) {
-		getFormController().setValue(
-			DBNames.FINCAS_IMPORTE_PENDIENTE_TOTAL_AUTOCALCULADO,
-			setImporteTotalPendiente());
-	    }
-	}
-
-	@Override
-	public void keyTyped(KeyEvent arg0) {
-	}
-    }
-
-    private String setImporteTotalPendiente() {
-	if ((importe_pendiente_mejoras.getText().isEmpty())
-		&& (importe_pendiente_terrenos.getText().isEmpty())) {
-	    importe_pendiente_total_autocalculado.setText("");
-	} else if (!importe_pendiente_mejoras.getText().isEmpty()
-		&& (importe_pendiente_terrenos.getText().isEmpty())) {
-	    importe_pendiente_total_autocalculado
-		    .setText(importe_pendiente_mejoras.getText());
-	} else if (importe_pendiente_mejoras.getText().isEmpty()
-		&& (!importe_pendiente_terrenos.getText().isEmpty())) {
-	    importe_pendiente_total_autocalculado
-		    .setText(importe_pendiente_terrenos.getText());
-	} else {
-	    String importeMejorasText = importe_pendiente_mejoras.getText();
-	    if (importeMejorasText.contains(",")) {
-		importeMejorasText = importeMejorasText.replace(",", ".");
-	    }
-	    double importe_mejoras = Double.parseDouble(importeMejorasText);
-	    String importeTerrenosText = importe_pendiente_terrenos.getText();
-	    if (importeTerrenosText.contains(",")) {
-		importeTerrenosText = importeTerrenosText.replace(",", ".");
-	    }
-	    double importe_terrenos = Double.parseDouble(importeTerrenosText);
-
-	    double importe_total = importe_mejoras + importe_terrenos;
-
-	    BigDecimal importeTotalAsBigDecimal = BigDecimal
-		    .valueOf(importe_total);
-	    importe_pendiente_total_autocalculado.setText(String
-		    .valueOf(importeTotalAsBigDecimal));
-	}
-	return importe_pendiente_total_autocalculado.getText();
     }
 
     @Override
