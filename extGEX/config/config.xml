@@ -14,6 +14,8 @@
 	<extensions>
 
 		<!-- FORMS EXTENSIONS -->
+		<extension class-name="es.icarto.gvsig.extgex.InitializationExtension" active="true">
+		</extension>
 		<extension class-name="es.icarto.gvsig.extgex.FormExpropiationsExtension" description="FORMS_PANEL" active="true">
 			<tool-bar name="Formularios" position="70">
 				<action-tool icon="extgex-expropiations" tooltip="Expediente de expropiaciones" action-command="ExpropiationsFileExtension" position="1"/>
