@@ -56,6 +56,8 @@ public class FormExpropiations extends AbstractForm implements
 	TableModelListener {
 
     public static final String TABLENAME = "exp_finca";
+    public static final Object TOCNAME = "Fincas";
+
     private static final String WIDGET_REVERSIONES = "tabla_reversiones_afectan";
     private static final String WIDGET_EXPROPIACIONES = "tabla_expropiaciones";
     private static final String WIDGET_PM = "tabla_pm_afectan";
@@ -119,6 +121,7 @@ public class FormExpropiations extends AbstractForm implements
 	    actionsToolBar.add(filesLinkB);
 	    actionsToolBar.add(printReportB);
 	}
+	actionsToolBar.add(new JButton(new AddFincaAction(layer, this)));
     }
 
     @Override
