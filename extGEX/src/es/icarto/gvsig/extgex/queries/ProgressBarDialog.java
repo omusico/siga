@@ -31,7 +31,7 @@ import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.IWindowListener;
 import com.iver.andami.ui.mdiManager.WindowInfo;
 
-import es.icarto.gvsig.extgex.utils.gvWindow;
+import es.icarto.gvsig.audasacommons.gui.gvWindow;
 
 public class ProgressBarDialog extends gvWindow implements IWindowListener,
 	PropertyChangeListener {

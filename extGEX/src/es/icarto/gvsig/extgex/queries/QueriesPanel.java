@@ -38,8 +38,8 @@ import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
+import es.icarto.gvsig.audasacommons.gui.gvWindow;
 import es.icarto.gvsig.extgex.preferences.DBNames;
-import es.icarto.gvsig.extgex.utils.gvWindow;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class QueriesPanel extends gvWindow implements TableModelListener,
