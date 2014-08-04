@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="src-test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="src" path="/_fwAndami"/>
 	<classpathentry kind="src" path="/libIverUtiles"/>
@@ -10,6 +11,9 @@
 	<classpathentry kind="lib" path="lib/commons-digester-1.7.jar"/>
 	<classpathentry kind="lib" path="lib/groovy-2.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/jasperreports-4.6.0.jar"/>
+	<classpathentry kind="lib" path="lib-test/powermock-mockito-1.5.5-full.jar"/>
+	<classpathentry kind="lib" path="lib-test/mockito-all-1.9.5.jar"/>
+	<classpathentry kind="lib" path="lib-test/javassist-3.18.2-GA.jar"/>
 	<classpathentry kind="src" path="/extDBConnection"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/appgvSIG"/>
 	<classpathentry kind="src" path="/libGDBMS"/>
@@ -19,5 +23,8 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/libProjection"/>
 	<classpathentry kind="lib" path="/extDBConnection/lib/formsrt.jar"/>
 	<classpathentry kind="lib" path="/_fwAndami/lib/log4j-1.2.14.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="/_fwAndami/lib/castor-0.9.5.3-xml.jar"/>
+	<classpathentry kind="lib" path="/libFMap/lib/jts-1.12.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
