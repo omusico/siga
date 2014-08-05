@@ -236,14 +236,12 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		    pdfRadioButton.isSelected());
 	}
 
-	System.out.println(consultasFilters.getFields());
-	System.out.println(consultasFilters.getOrderBy());
-	// if (!todos.setOutputPath(null)) {
-	// return;
-	// }
+	if (!todos.setOutputPath(null)) {
+	    return;
+	}
 
-	// todos.generateReportFile();
-	// todos.finalActions();
+	todos.generateReportFile();
+	todos.finalActions();
 
     }
 

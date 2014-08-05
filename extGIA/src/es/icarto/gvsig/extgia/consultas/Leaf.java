@@ -160,40 +160,76 @@ public class Leaf implements Component {
 	    String element) {
 	String query;
 
+	if (tipo == CARACTERISTICAS) {
+	    query = getReportQueryForCaracteristicas(filters, element);
+	} else {
+	    query = getReportQueryForNoCaracteristicas(tipo, filters, element);
+	}
+	return query;
+    }
+
+    private String getReportQueryForCaracteristicas(ConsultasFilters filters,
+	    String element) {
+	String query;
+	if (pdf) {
+	    query = PDFCaracteristicasQueries.getPDFCaracteristicasQuery(
+		    element, filters);
+	} else {
+	    query = CSVCaracteristicasQueries.getCSVCaracteristicasQuery(
+		    element, filters);
+	    String subquery = query;
+	    if (filters.getQueryType().equals("CUSTOM")) {
+		if (filters.getFields().size() > 0) {
+		    subquery = query.substring(query.indexOf(" FROM"));
+		    String select = "SELECT ";
+		    for (String field : filters.getFields()) {
+			select = select + "el." + field + ", ";
+		    }
+		    subquery = select.substring(0, select.length() - 2)
+			    + subquery;
+		}
+		if (filters.getOrderBy().size() > 0) {
+
+		    int indexOf = subquery.indexOf("ORDER BY ");
+		    if (indexOf != -1) {
+			subquery = subquery.substring(0, indexOf + 9);
+		    } else {
+			if (subquery.endsWith(";")) {
+			    subquery = subquery.substring(0,
+				    subquery.length() - 1);
+			}
+
+			subquery = subquery + " ORDER BY ";
+		    }
+
+		    for (String field : filters.getOrderBy()) {
+			subquery = subquery + field + ", ";
+		    }
+		    subquery = subquery.substring(0, subquery.length() - 2);
+		}
+
+	    }
+	    query = subquery;
+	}
+
+	return query;
+    }
+
+    private String getReportQueryForNoCaracteristicas(int tipo,
+	    ConsultasFilters filters, String element) {
 	String elementId = ConsultasFieldNames.getElementId(element);
 	String fields = getFields(tipo, elementId);
 
-	if (tipo == CARACTERISTICAS) {
-	    if (pdf) {
-		query = PDFCaracteristicasQueries.getPDFCaracteristicasQuery(
-			element, filters);
-	    } else {
-		query = CSVCaracteristicasQueries.getCSVCaracteristicasQuery(
-			element, filters);
-	    }
-	} else {
-	    query = "SELECT " + fields + " FROM " + DBFieldNames.GIA_SCHEMA
-		    + "." + element + "_" + tipoConsulta.getKey();
-	}
+	String query = "SELECT " + fields + " FROM " + DBFieldNames.GIA_SCHEMA
+		+ "." + element + "_" + tipoConsulta.getKey();
 
 	if (!consultasFilters.getWhereClauseByLocationWidgets(false).isEmpty()) {
-	    if (tipo == CARACTERISTICAS) {
-		// query = query + " WHERE " + elementId + " IN (SELECT " +
-		// elementId +
-		// " FROM " + DBFieldNames.GIA_SCHEMA + "." + element +
-		// consultasFilters.getWhereClauseByLocationWidgets(false) +
-		// ");";
-	    } else {
-		query = query + " WHERE " + elementId + " IN (SELECT "
-			+ elementId + " FROM " + DBFieldNames.GIA_SCHEMA + "."
-			+ element
-			+ filters.getWhereClauseByLocationWidgets(false);
-	    }
+	    query = query + " WHERE " + elementId + " IN (SELECT " + elementId
+		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
+		    + filters.getWhereClauseByLocationWidgets(false);
 	}
 
-	if (tipo == CARACTERISTICAS) {
-	    return query;
-	} else if (tipo == TRABAJOS || tipo == TRABAJOS_FIRME) {
+	if (tipo == TRABAJOS || tipo == TRABAJOS_FIRME) {
 	    query = query + filters.getWhereClauseByDates("fecha_certificado");
 	} else {
 	    query = query + filters.getWhereClauseByDates("fecha_inspeccion");

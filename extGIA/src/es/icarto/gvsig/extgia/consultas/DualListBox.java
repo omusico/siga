@@ -3,13 +3,8 @@ package es.icarto.gvsig.extgia.consultas;
 /*
  * Based on:
  * http://www.java2s.com/Code/Java/Swing-JFC/DualJListwithbuttonsinbetween.htm
- Definitive Guide to Swing for Java 2, Second Edition
- By John Zukowski     
- ISBN: 1-893115-78-X
- Publisher: APress
  */
 
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -30,7 +25,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
 
@@ -38,75 +32,38 @@ import javax.swing.event.ListDataListener;
 public class DualListBox<E> extends JPanel {
 
     private static final Insets EMPTY_INSETS = new Insets(0, 0, 0, 0);
-
+    public static final String prototypeCellValue = "XXXXXXXXXXXXXXX";
     private static final String ADD_BUTTON_LABEL = " >";
     private static final String REMOVE_BUTTON_LABEL = "< ";
     private static final String ADD_ALL_BUTTON_LABEL = ">>";
     private static final String REMOVE_ALL_BUTTON_LABEL = "<<";
 
     private static final String DEFAULT_SOURCE_CHOICE_LABEL = "Campos disponibles";
-
     private static final String DEFAULT_DEST_CHOICE_LABEL = "Campos escogidos";
 
     private JLabel sourceLabel;
-
     private JList sourceList;
-
     private SortedListModel<E> sourceListModel;
 
     private JList destList;
-
     private SortedListModel<E> destListModel;
-
     private JLabel destLabel;
 
     private JButton addButton;
-
     private JButton removeButton;
-
     private JButton addAllButton;
-
     private JButton removeAllButton;
 
     public DualListBox() {
 	initScreen();
     }
 
-    public String getSourceChoicesTitle() {
-	return sourceLabel.getText();
-    }
-
-    public void setSourceChoicesTitle(String newValue) {
-	sourceLabel.setText(newValue);
-    }
-
-    public String getDestinationChoicesTitle() {
-	return destLabel.getText();
-    }
-
-    public void setDestinationChoicesTitle(String newValue) {
-	destLabel.setText(newValue);
-    }
-
-    public void clearSourceListModel() {
+    private void clearSourceListModel() {
 	sourceListModel.clear();
-    }
-
-    public void clearDestinationListModel() {
-	destListModel.clear();
     }
 
     public void addSourceElements(ListModel newValue) {
 	fillListModel(sourceListModel, newValue);
-    }
-
-    public void setSourceElements(ListModel newValue) {
-	clearSourceListModel();
-	addSourceElements(newValue);
-    }
-
-    public void addDestinationElements(ListModel newValue) {
-	fillListModel(destListModel, newValue);
     }
 
     private void fillListModel(SortedListModel<E> model, ListModel newValues) {
@@ -120,68 +77,12 @@ public class DualListBox<E> extends JPanel {
 	fillListModel(sourceListModel, newValue);
     }
 
-    public void setSourceElements(E newValue[]) {
-	clearSourceListModel();
-	addSourceElements(newValue);
-    }
-
-    public void addDestinationElements(E newValue[]) {
+    private void addDestinationElements(E newValue[]) {
 	fillListModel(destListModel, newValue);
     }
 
     private void fillListModel(SortedListModel<E> model, E newValues[]) {
 	model.addAll(newValues);
-    }
-
-    public Iterator<E> sourceIterator() {
-	return sourceListModel.iterator();
-    }
-
-    public Iterator<E> destinationIterator() {
-	return destListModel.iterator();
-    }
-
-    public void setSourceCellRenderer(ListCellRenderer newValue) {
-	sourceList.setCellRenderer(newValue);
-    }
-
-    public ListCellRenderer getSourceCellRenderer() {
-	return sourceList.getCellRenderer();
-    }
-
-    public void setDestinationCellRenderer(ListCellRenderer newValue) {
-	destList.setCellRenderer(newValue);
-    }
-
-    public ListCellRenderer getDestinationCellRenderer() {
-	return destList.getCellRenderer();
-    }
-
-    public void setVisibleRowCount(int newValue) {
-	sourceList.setVisibleRowCount(newValue);
-	destList.setVisibleRowCount(newValue);
-    }
-
-    public int getVisibleRowCount() {
-	return sourceList.getVisibleRowCount();
-    }
-
-    public void setSelectionBackground(Color newValue) {
-	sourceList.setSelectionBackground(newValue);
-	destList.setSelectionBackground(newValue);
-    }
-
-    public Color getSelectionBackground() {
-	return sourceList.getSelectionBackground();
-    }
-
-    public void setSelectionForeground(Color newValue) {
-	sourceList.setSelectionForeground(newValue);
-	destList.setSelectionForeground(newValue);
-    }
-
-    public Color getSelectionForeground() {
-	return sourceList.getSelectionForeground();
     }
 
     private void clearSourceSelected() {
@@ -206,12 +107,15 @@ public class DualListBox<E> extends JPanel {
 	sourceLabel = new JLabel(DEFAULT_SOURCE_CHOICE_LABEL);
 	sourceListModel = new SortedListModel<E>();
 	sourceList = new JList(sourceListModel);
+	sourceList.setPrototypeCellValue(prototypeCellValue);
 	add(sourceLabel, new GridBagConstraints(0, 0, 1, 1, 0, 0,
 		GridBagConstraints.CENTER, GridBagConstraints.NONE,
 		EMPTY_INSETS, 0, 0));
-	add(new JScrollPane(sourceList), new GridBagConstraints(0, 1, 1, 5, .5,
-		1, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-		EMPTY_INSETS, 0, 0));
+	add(new JScrollPane(sourceList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+		JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED),
+		new GridBagConstraints(0, 1, 1, 5, .25, 1,
+			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+			EMPTY_INSETS, 0, 0));
 
 	addButton = new JButton(ADD_BUTTON_LABEL);
 	add(addButton, new GridBagConstraints(1, 1, 1, 1, 0, .25,
@@ -240,12 +144,15 @@ public class DualListBox<E> extends JPanel {
 	destLabel = new JLabel(DEFAULT_DEST_CHOICE_LABEL);
 	destListModel = new SortedListModel<E>();
 	destList = new JList(destListModel);
+	destList.setPrototypeCellValue(prototypeCellValue);
 	add(destLabel, new GridBagConstraints(2, 0, 1, 1, 0, 0,
 		GridBagConstraints.CENTER, GridBagConstraints.NONE,
 		EMPTY_INSETS, 0, 0));
-	add(new JScrollPane(destList), new GridBagConstraints(2, 1, 1, 5, .5,
-		1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-		EMPTY_INSETS, 0, 0));
+	add(new JScrollPane(destList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+		JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED),
+		new GridBagConstraints(2, 1, 1, 5, .25, 1,
+			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+			EMPTY_INSETS, 0, 0));
     }
 
     public void addDestListDataListener(ListDataListener l) {
@@ -309,7 +216,7 @@ public class DualListBox<E> extends JPanel {
 }
 
 @SuppressWarnings("serial")
-class SortedListModel<E> extends AbstractListModel {
+final class SortedListModel<E> extends AbstractListModel {
 
     SortedSet<E> model;
 

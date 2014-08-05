@@ -21,7 +21,7 @@ public class TestCustomiceDialog {
 	dialog.addSourceElements(new String[] { "Nineteen", "Twenty", "Thirty" });
 
 	f.getContentPane().add(dialog, BorderLayout.CENTER);
-	f.setSize(500, 400);
+	f.pack();
 	f.setVisible(true);
     }
 

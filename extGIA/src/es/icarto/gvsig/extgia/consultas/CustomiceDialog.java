@@ -41,7 +41,7 @@ public class CustomiceDialog extends AbstractIWindow implements ActionListener {
 
 	dualListBox = new DualListBox<String>();
 	dualListBox.addDestListDataListener(new UpdateOrderBy());
-	add(dualListBox, BorderLayout.CENTER);
+	add(dualListBox, "growx, growy");
 
 	JPanel southPanel = new JPanel(new MigLayout("insets 10",
 		"[grow][grow][grow][grow]", ""));
@@ -58,6 +58,7 @@ public class CustomiceDialog extends AbstractIWindow implements ActionListener {
 
     private void addOrderCB(JPanel panel) {
 	JComboBox jComboBox = new JComboBox();
+	jComboBox.setPrototypeDisplayValue(DualListBox.prototypeCellValue);
 	order.add(jComboBox);
 	panel.add(jComboBox, "growx");
     }
