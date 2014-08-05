@@ -10,34 +10,25 @@ public class QueriesExtension extends Extension {
 
     @Override
     public void execute(String actionCommand) {
-	QueriesPanel validationPanel = new QueriesPanel(false);
+	QueriesPanel validationPanel = new QueriesPanel();
 	validationPanel.open();
     }
 
     @Override
     public void initialize() {
-	// TODO Auto-generated method stub
-
+	PluginServices.getIconTheme().registerDefault(
+		"extgex-queries",
+		this.getClass().getClassLoader()
+			.getResource("images/queries.png"));
     }
 
     @Override
     public boolean isEnabled() {
-	if (DBSession.getCurrentSession() != null) {
-	    return true;
-	} else {
-	    return false;
-	}
+	return DBSession.isActive();
     }
 
     @Override
     public boolean isVisible() {
 	return true;
-    }
-
-    protected void registerIcons() {
-	PluginServices.getIconTheme().registerDefault(
-		"extgex-queries",
-		this.getClass().getClassLoader().getResource(
-			"images/queries.png"));
     }
 }

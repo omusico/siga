@@ -62,9 +62,9 @@
 		<!-- TOOLS EXTENSIONS -->
 		<extension class-name="es.icarto.gvsig.extgex.QueriesExtension" description="QUERIES_PANEL" active="true">
 			<tool-bar name="SIGA_Tools" position="75">
-				<action-tool icon="images/queries.png" tooltip="Consultas" action-command="QueriesExtension" position="1"/>
+				<action-tool icon="extgex-queries" tooltip="Consultas" action-command="QueriesExtension" position="1"/>
 			</tool-bar>
-			<menu text="SIGA/Consultas e Informes" action-command="QueriesExtension" position="30300"/>
+			<menu text="SIGA/Consultas e Informes" icon="extgex-queries" action-command="QueriesExtension" position="30300"/>
 		</extension>
 		<extension class-name="es.icarto.gvsig.extgex.LocatorByPKExtension" description="PK_LOCATOR" active="true">
 			<menu text="SIGA" position="30699" is_separator="true"/>			

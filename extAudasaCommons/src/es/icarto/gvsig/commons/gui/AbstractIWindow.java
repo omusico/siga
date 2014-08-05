@@ -43,6 +43,14 @@ public abstract class AbstractIWindow extends JPanel implements IWindow {
 	super(new MigLayout("insets 10"));
     }
 
+    public void open() {
+	if (getWindowInfo().isModeless()) {
+	    PluginServices.getMDIManager().addCentredWindow(this);
+	} else {
+	    PluginServices.getMDIManager().addWindow(this);
+	}
+    }
+
     @Override
     public Object getWindowProfile() {
 	return WindowInfo.DIALOG_PROFILE;
