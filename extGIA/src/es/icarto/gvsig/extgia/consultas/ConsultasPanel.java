@@ -68,6 +68,10 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
     private ConsultasFilters consultasFilters;
 
+    private JButton customButton;
+
+    private final ReportTypeListener reportTypeListener;
+
     public ConsultasPanel() {
 	InputStream stream = getClass().getClassLoader().getResourceAsStream(
 		ABEILLE_FILENAME);
@@ -93,6 +97,9 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	this.form = result;
 	ormLite = new ORMLite(getClass().getClassLoader()
 		.getResource("rules/consultas_metadata.xml").getPath());
+
+	reportTypeListener = new ReportTypeListener();
+
 	initWidgets();
     }
 
@@ -109,6 +116,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	elemento.addItem(EMPTY_ITEM);
 	elemento.addItem(ALL_ITEMS);
 	setComboBoxValues(elemento);
+	elemento.addActionListener(reportTypeListener);
 	tipoConsulta = (JComboBox) widgetsVector.get("tipo_consulta");
 	setComboBoxValues(tipoConsulta);
 	areaMantenimiento = (JComboBox) widgetsVector.get("area_mantenimiento");
@@ -132,8 +140,15 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	group.add(pdfRadioButton);
 	group.add(csvRadioButton);
 
+	csvRadioButton.addActionListener(reportTypeListener);
+	pdfRadioButton.addActionListener(reportTypeListener);
+
 	launchButton = (JButton) form.getComponentByName("launch_button");
 	launchButton.addActionListener(this);
+
+	customButton = (JButton) form.getComponentByName("custom_button");
+	customButton.addActionListener(this);
+	customButton.setEnabled(false);
     }
 
     private void setComboBoxValues(JComboBox cb) {
@@ -162,54 +177,74 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-	if (e.getSource() == launchButton) {
 
-	    consultasFilters = new ConsultasFilters(getFilterAreaValue(),
-		    getFilterBaseContratistaValue(), getFilterTramoValue(),
-		    fechaInicio.getDate(), fechaFin.getDate());
+	consultasFilters = new ConsultasFilters(getFilterAreaValue(),
+		getFilterBaseContratistaValue(), getFilterTramoValue(),
+		fechaInicio.getDate(), fechaFin.getDate());
 
 	KeyValue selElement = (KeyValue) elemento.getSelectedItem();
 	KeyValue selTipoConsulta = (KeyValue) tipoConsulta.getSelectedItem();
 
-	    // SelectedOptions options = new SelectedOptions();
-	    // options.setWhereOptions(consultasFilters);
+	// SelectedOptions options = new SelectedOptions();
+	// options.setWhereOptions(consultasFilters);
 
-	    if (!isCheckingOK(selElement, selTipoConsulta)) {
-		JOptionPane.showMessageDialog(null, PluginServices.getText(
-			this, "elementAndTypeUnselected_msg"));
-		return;
-	    }
-
-	    if (!isCheckingTrabajosAgregadosOK(selElement, selTipoConsulta)) {
-		JOptionPane.showMessageDialog(null,
-			PluginServices.getText(this, "unavailableQuery_msg"));
-		return;
-	    }
-
-	    if (allItemsAndNotHasType(selElement, selTipoConsulta)) {
-		JOptionPane.showMessageDialog(null,
-			PluginServices.getText(this, "unavailableQuery_msg"));
-		return;
-	    }
-
-	    Component todos = null;
-	    if (elemento.getSelectedItem().toString().equals("-TODOS-")) {
-		todos = new Composite(consultasFilters, selTipoConsulta,
-			pdfRadioButton.isSelected());
-		((Composite) todos)
-			.add(getElements(selTipoConsulta.toString()));
-	    } else {
-		String[] element = { selElement.getKey(), selElement.getValue() };
-		todos = new Leaf(element, consultasFilters, selTipoConsulta,
-			pdfRadioButton.isSelected());
-	    }
-
-	    if (!todos.setOutputPath(null)) {
-		return;
-	    }
-	    todos.generateReportFile();
-	    todos.finalActions();
+	if (!isCheckingOK(selElement, selTipoConsulta)) {
+	    JOptionPane.showMessageDialog(null, PluginServices.getText(this,
+		    "elementAndTypeUnselected_msg"));
+	    return;
 	}
+
+	if (!isCheckingTrabajosAgregadosOK(selElement, selTipoConsulta)) {
+	    JOptionPane.showMessageDialog(null,
+		    PluginServices.getText(this, "unavailableQuery_msg"));
+	    return;
+	}
+
+	if (allItemsAndNotHasType(selElement, selTipoConsulta)) {
+	    JOptionPane.showMessageDialog(null,
+		    PluginServices.getText(this, "unavailableQuery_msg"));
+	    return;
+	}
+
+	if (e.getSource().equals(customButton)) {
+	    CustomiceDialog customiceDialog = new CustomiceDialog();
+	    try {
+		String[] columns = DBSession.getCurrentSession().getColumns(
+			"audasa_extgia", selElement.getKey().toLowerCase());
+		customiceDialog.addSourceElements(columns);
+	    } catch (SQLException e1) {
+		logger.error(e1.getStackTrace(), e1);
+		return;
+	    }
+	    int status = customiceDialog.open();
+	    if (status == CustomiceDialog.CANCEL) {
+		return;
+	    }
+	    consultasFilters.setQueryType("CUSTOM");
+	    consultasFilters.setFields(customiceDialog.getFields());
+	    consultasFilters.setOrderBy(customiceDialog.getOrderBy());
+	}
+
+	Component todos = null;
+	if (elemento.getSelectedItem().toString().equals("-TODOS-")) {
+	    todos = new Composite(consultasFilters, selTipoConsulta,
+		    pdfRadioButton.isSelected());
+	    ((Composite) todos).add(getElements(selTipoConsulta.toString()));
+	} else {
+	    String[] element = { selElement.getKey(), selElement.getValue() };
+	    todos = new Leaf(element, consultasFilters, selTipoConsulta,
+		    pdfRadioButton.isSelected());
+	}
+
+	System.out.println(consultasFilters.getFields());
+	System.out.println(consultasFilters.getOrderBy());
+	// if (!todos.setOutputPath(null)) {
+	// return;
+	// }
+
+	// todos.generateReportFile();
+	// todos.finalActions();
+
     }
 
     private boolean allItemsAndNotHasType(KeyValue selElement,
@@ -300,6 +335,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+	    reportTypeListener.actionPerformed(null);
 	    if (tipoConsulta.getSelectedItem().toString()
 		    .equals("Características")) {
 		fechaInicio.setEnabled(false);
@@ -308,6 +344,27 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		fechaInicio.setEnabled(true);
 		fechaFin.setEnabled(true);
 	    }
+	}
+    }
+
+    private class ReportTypeListener implements ActionListener {
+
+	private boolean caracSelected() {
+	    Object selectedItem = tipoConsulta.getSelectedItem();
+	    return (selectedItem != null)
+		    && selectedItem.equals("Características");
+	}
+
+	private boolean todosNoSelected() {
+	    Object selectedItem = elemento.getSelectedItem();
+	    return (selectedItem != null) && (!selectedItem.equals(ALL_ITEMS))
+		    && (!selectedItem.equals(EMPTY_ITEM));
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    customButton.setEnabled(caracSelected() && todosNoSelected()
+		    && csvRadioButton.isSelected());
 	}
     }
 
