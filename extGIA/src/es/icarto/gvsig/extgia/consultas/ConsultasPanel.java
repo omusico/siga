@@ -20,6 +20,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import org.apache.log4j.Logger;
+
 import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.andami.ui.mdiManager.WindowInfo;
@@ -39,33 +41,11 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 @SuppressWarnings("serial")
 public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
-    final static private class AdaptedKeyValue extends KeyValue {
-	public AdaptedKeyValue(KeyValue kv) {
-	    super(kv.getKey(), kv.getValue());
-	}
-
-	public AdaptedKeyValue(String k, String v) {
-	    super(k, v);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-	    if (obj instanceof String) {
-		return getValue().equals(obj);
-	    } else if (obj instanceof KeyValue) {
-		KeyValue kvObj = (KeyValue) obj;
-		return getValue().equals(kvObj.getValue())
-			&& getKey().equals(kvObj.getKey());
-	    }
-	    return false;
-	}
-    }
-
+    private static final Logger logger = Logger.getLogger(ConsultasPanel.class);
     public static String ABEILLE_FILENAME = "forms/consultas_inventario.jfrm";
 
-    private static final KeyValue ALL_ITEMS = new AdaptedKeyValue("todos",
-	    "-TODOS-");
-    private static final KeyValue EMPTY_ITEM = new AdaptedKeyValue(" ", " ");
+    private static final KeyValue ALL_ITEMS = new KeyValue("todos", "-TODOS-");
+    private static final KeyValue EMPTY_ITEM = new KeyValue(" ", " ");
 
     private final FormPanel form;
     private final ORMLite ormLite;
@@ -188,10 +168,8 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		    getFilterBaseContratistaValue(), getFilterTramoValue(),
 		    fechaInicio.getDate(), fechaFin.getDate());
 
-	    KeyValue selElement = new AdaptedKeyValue(
-		    (KeyValue) elemento.getSelectedItem());
-	    KeyValue selTipoConsulta = new AdaptedKeyValue(
-		    (KeyValue) tipoConsulta.getSelectedItem());
+	KeyValue selElement = (KeyValue) elemento.getSelectedItem();
+	KeyValue selTipoConsulta = (KeyValue) tipoConsulta.getSelectedItem();
 
 	    // SelectedOptions options = new SelectedOptions();
 	    // options.setWhereOptions(consultasFilters);
