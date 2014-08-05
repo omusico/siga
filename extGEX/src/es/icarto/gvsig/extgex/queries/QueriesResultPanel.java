@@ -32,7 +32,7 @@ import net.miginfocom.swing.MigLayout;
 
 import com.iver.andami.messages.NotificationManager;
 
-import es.icarto.gvsig.audasacommons.gui.gvWindow;
+import es.icarto.gvsig.commons.gui.gvWindow;
 import es.icarto.gvsig.extgex.utils.SaveFileDialog;
 
 public class QueriesResultPanel extends gvWindow implements ActionListener {

@@ -32,7 +32,7 @@ import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
-import es.icarto.gvsig.audasacommons.gui.gvWindow;
+import es.icarto.gvsig.commons.gui.gvWindow;
 import es.icarto.gvsig.extgex.forms.FormExpropiations;
 import es.icarto.gvsig.extgex.locators.actions.FormOpener;
 import es.icarto.gvsig.extgex.locators.actions.IPositionRetriever;

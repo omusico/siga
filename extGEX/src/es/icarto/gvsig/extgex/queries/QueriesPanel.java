@@ -38,7 +38,7 @@ import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
-import es.icarto.gvsig.audasacommons.gui.gvWindow;
+import es.icarto.gvsig.commons.gui.gvWindow;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 

@@ -15,7 +15,7 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-package es.icarto.gvsig.audasacommons.gui;
+package es.icarto.gvsig.commons.gui;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
