@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgia.consultas;
+package es.icarto.gvsig.commons.queries;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import es.icarto.gvsig.commons.queries.ConnectionWrapper;
 
-public class ConnectionWrapperTest {
+public class TestConnectionWrapper {
 
     private ConnectionWrapper conW;
     private Connection con;

@@ -56,7 +56,6 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
     private final int height = 330;
 
     private JComboBox elemento;
-    private JComboBox tipoConsulta;
     private JComboBox areaMantenimiento;
     private JComboBox baseContratista;
     private JComboBox tramo;
@@ -71,6 +70,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
     private JButton customButton;
 
     private final ReportTypeListener reportTypeListener;
+    private QueriesWidgetCombo queriesWidget;
 
     public ConsultasPanel() {
 	InputStream stream = getClass().getClassLoader().getResourceAsStream(
@@ -117,8 +117,8 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	elemento.addItem(ALL_ITEMS);
 	setComboBoxValues(elemento);
 	elemento.addActionListener(reportTypeListener);
-	tipoConsulta = (JComboBox) widgetsVector.get("tipo_consulta");
-	setComboBoxValues(tipoConsulta);
+	queriesWidget = new QueriesWidgetCombo(form, "tipo_consulta", ormLite);
+
 	areaMantenimiento = (JComboBox) widgetsVector.get("area_mantenimiento");
 	setComboBoxValues(areaMantenimiento);
 	baseContratista = (JComboBox) widgetsVector.get("base_contratista");
@@ -126,7 +126,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	tramo = (JComboBox) widgetsVector.get("tramo");
 	setComboBoxValues(tramo);
 
-	tipoConsulta.addActionListener(new TipoConsultaListener());
+	queriesWidget.addActionListener(new TipoConsultaListener());
 	areaMantenimiento
 		.addActionListener(new UpdateBaseContratistaListener());
 	baseContratista.addActionListener(new UpdateTramoListener());
@@ -183,7 +183,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		fechaInicio.getDate(), fechaFin.getDate());
 
 	KeyValue selElement = (KeyValue) elemento.getSelectedItem();
-	KeyValue selTipoConsulta = (KeyValue) tipoConsulta.getSelectedItem();
+	KeyValue selTipoConsulta = queriesWidget.getQuery();
 
 	// SelectedOptions options = new SelectedOptions();
 	// options.setWhereOptions(consultasFilters);
@@ -334,8 +334,8 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    reportTypeListener.actionPerformed(null);
-	    if (tipoConsulta.getSelectedItem().toString()
-		    .equals("Características")) {
+	    if (queriesWidget.getQueryId().equals(
+		    QueriesWidgetCombo.CARACTERISTICAS)) {
 		fechaInicio.setEnabled(false);
 		fechaFin.setEnabled(false);
 	    } else {
@@ -348,9 +348,8 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
     private class ReportTypeListener implements ActionListener {
 
 	private boolean caracSelected() {
-	    Object selectedItem = tipoConsulta.getSelectedItem();
-	    return (selectedItem != null)
-		    && selectedItem.equals("Características");
+	    return queriesWidget
+		    .isQueryIdSelected(QueriesWidgetCombo.CARACTERISTICAS);
 	}
 
 	private boolean todosNoSelected() {

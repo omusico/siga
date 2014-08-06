@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgia.consultas;
+package es.icarto.gvsig.commons.queries;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -37,28 +37,49 @@ public class ConnectionWrapper {
 	this.con = con;
     }
 
+    /**
+     * Creates a new default table model. Executes the query, and insert the
+     * resultset in the table. If the query doesn't get any result the table
+     * will be empty
+     * 
+     * @param query
+     *            to be executed
+     * @return a table model with the results
+     */
     public DefaultTableModel execute(String query) {
+	DefaultTableModel table = new DefaultTableModel();
+	execute(query, table);
+	return table;
+    }
+
+    /**
+     * Appends to the given table as match columns and rows as the columns and
+     * rows that has the resulset of the executed query
+     * 
+     * @param query
+     *            to be executed
+     * @param table
+     *            to append the data
+     */
+    public void execute(String query, DefaultTableModel table) {
 	PreparedStatement statement = null;
 	ResultSet rs = null;
-	DefaultTableModel asTable = null;
 	try {
 	    statement = con.prepareStatement(query);
 	    if (statement.execute()) {
 		rs = statement.getResultSet();
-		asTable = toTable(rs);
+		toTable(rs, table);
 	    }
 	} catch (SQLException e1) {
 	    e1.printStackTrace();
-	    return null;
 	} finally {
 	    close(rs);
 	    close(statement);
 	}
-	return asTable;
     }
 
-    private DefaultTableModel toTable(ResultSet rs) throws SQLException {
-	DefaultTableModel table = new DefaultTableModel();
+    private void toTable(ResultSet rs, DefaultTableModel table)
+	    throws SQLException {
 	ResultSetMetaData metaData = rs.getMetaData();
 	int numColumns = metaData.getColumnCount();
 
@@ -74,7 +95,6 @@ public class ConnectionWrapper {
 	    }
 	    table.addRow(rowData);
 	}
-	return table;
     }
 
     private void close(PreparedStatement statement) {

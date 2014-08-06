@@ -11,7 +11,7 @@ public class QueriesExtension extends Extension {
     @Override
     public void execute(String actionCommand) {
 	QueriesPanel validationPanel = new QueriesPanel();
-	validationPanel.open();
+	validationPanel.openDialog();
     }
 
     @Override

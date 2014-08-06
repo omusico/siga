@@ -1,5 +1,6 @@
 /*
 Copyright (C) 2013-2014  Cartolab. (Universade da Coruña)
+Copyright (C) 2014 iCarto
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,7 +44,7 @@ public abstract class AbstractIWindow extends JPanel implements IWindow {
 	super(new MigLayout("insets 10"));
     }
 
-    public void open() {
+    public void openDialog() {
 	if (getWindowInfo().isModeless()) {
 	    PluginServices.getMDIManager().addCentredWindow(this);
 	} else {

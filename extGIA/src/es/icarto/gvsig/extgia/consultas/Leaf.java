@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import com.iver.andami.PluginServices;
 
 import es.icarto.gvsig.audasacommons.forms.reports.SaveFileDialog;
+import es.icarto.gvsig.commons.queries.ConnectionWrapper;
 import es.icarto.gvsig.extgia.consultas.agregados.CSVTrabajosAgregadosReport;
 import es.icarto.gvsig.extgia.consultas.agregados.TrabajosAgregadosReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.CSVCaracteristicasQueries;
