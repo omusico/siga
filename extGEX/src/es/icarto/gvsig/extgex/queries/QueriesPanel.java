@@ -3,9 +3,7 @@ package es.icarto.gvsig.extgex.queries;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -15,15 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 
 import org.apache.log4j.Logger;
 
@@ -35,12 +25,13 @@ import com.jeta.forms.gui.common.FormException;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.commons.gui.AbstractIWindow;
+import es.icarto.gvsig.commons.queries.ConnectionWrapper;
+import es.icarto.gvsig.commons.queries.QueriesWidget;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
-public class QueriesPanel extends AbstractIWindow implements
-	TableModelListener, ActionListener {
+public class QueriesPanel extends AbstractIWindow implements ActionListener {
 
     private static final String DEFAULT_FILTER = "--TODOS--";
 
@@ -48,9 +39,6 @@ public class QueriesPanel extends AbstractIWindow implements
 
     private final String ID_RUNQUERIES = "runQueriesButton";
     private JButton runQueriesB;
-
-    private final String ID_QUERIESTABLE = "queriesTable";
-    private JTable queriesTable;
 
     private final String ID_TRAMOCB = "tramo";
     private JComboBox tramo;
@@ -66,14 +54,15 @@ public class QueriesPanel extends AbstractIWindow implements
 
     private static final Logger logger = Logger.getLogger(QueriesPanel.class);
 
-    DBSession dbs;
-    String[][] tramos;
+    private final DBSession dbs;
 
     // Filters
     String tramoSelected = DEFAULT_FILTER;
     String ucSelected = DEFAULT_FILTER;
     String ayuntamientoSelected = DEFAULT_FILTER;
     String parroquiaSelected = null;
+
+    private QueriesWidget queriesWidget;
 
     public QueriesPanel() {
 	super();
@@ -91,9 +80,10 @@ public class QueriesPanel extends AbstractIWindow implements
 	dbs = DBSession.getCurrentSession();
 	initWidgets();
 	initListeners();
+
     }
 
-    public void initWidgets() {
+    private void initWidgets() {
 	ImageComponent image = (ImageComponent) formBody
 		.getComponentByName("image");
 	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
@@ -101,8 +91,7 @@ public class QueriesPanel extends AbstractIWindow implements
 	runQueriesB = (JButton) formBody.getComponentByName(ID_RUNQUERIES);
 	runQueriesB.addActionListener(this);
 	initFilterWidgets();
-	initQueriesTable();
-	fillQueriesTable();
+	queriesWidget = new QueriesWidgetTable(formBody, "queriesTable");
     }
 
     private void initFilterWidgets() {
@@ -128,38 +117,6 @@ public class QueriesPanel extends AbstractIWindow implements
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
-    }
-
-    private void initQueriesTable() {
-	queriesTable = (JTable) formBody.getComponentByName(ID_QUERIESTABLE);
-
-	DefaultTableModel model = new QueriesTableModel();
-	queriesTable.setModel(model);
-	String[] columnNames = { "Código", "Descripción" };
-
-	model.setRowCount(0);
-	queriesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-	queriesTable.setRowSelectionAllowed(true);
-	queriesTable.setColumnSelectionAllowed(false);
-
-	TableColumn column01 = new TableColumn();
-	model.addColumn(column01);
-
-	TableColumn column02 = new TableColumn();
-	model.addColumn(column02);
-
-	DefaultTableCellRenderer columnCentered = new DefaultTableCellRenderer();
-	columnCentered.setHorizontalAlignment(SwingConstants.CENTER);
-	queriesTable.getColumnModel().getColumn(0)
-		.setCellRenderer(columnCentered);
-
-	queriesTable.getColumnModel().getColumn(0)
-		.setHeaderValue(columnNames[0]);
-	queriesTable.getColumnModel().getColumn(0).setMinWidth(100);
-	queriesTable.getColumnModel().getColumn(0).setMaxWidth(110);
-	queriesTable.getColumnModel().getColumn(1)
-		.setHeaderValue(columnNames[1]);
-	queriesTable.getColumnModel().getColumn(1).setMaxWidth(500);
     }
 
     private void initListeners() {
@@ -330,33 +287,6 @@ public class QueriesPanel extends AbstractIWindow implements
 	}
     }
 
-    private void fillQueriesTable() {
-	DefaultTableModel model = (DefaultTableModel) queriesTable.getModel();
-	model.setRowCount(0);
-
-	try {
-	    String[] orderBy = new String[1];
-	    orderBy[0] = DBNames.FIELD_CODIGO_QUERIES;
-	    String[][] tableContent = dbs.getTable(DBNames.TABLE_QUERIES,
-		    DBNames.SCHEMA_QUERIES, orderBy, false);
-
-	    for (int i = 0; i < tableContent.length; i++) {
-		Object[] row = new Object[5];
-		// Table Schema: 0-codigo, 1-consulta(SQL), 2-descripcion
-		row[0] = tableContent[i][DBNames.INDEX_CODIGO_QUERIES];
-		row[1] = tableContent[i][DBNames.INDEX_DESCRIPCION_QUERIES];
-		model.addRow(row);
-		model.fireTableRowsInserted(0, model.getRowCount() - 1);
-	    }
-	} catch (SQLException e) {
-	    logger.error(e.getMessage(), e);
-	}
-    }
-
-    @Override
-    public void tableChanged(TableModelEvent e) {
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
 	if (e.getSource() == runQueriesB) {
@@ -369,7 +299,6 @@ public class QueriesPanel extends AbstractIWindow implements
 	QueriesTask qt = new QueriesTask();
 	ProgressBarDialog progressBarDialog = new ProgressBarDialog(qt);
 	progressBarDialog.open();
-
     }
 
     private class QueriesTask extends SwingWorker<String, Void> {
@@ -380,47 +309,31 @@ public class QueriesPanel extends AbstractIWindow implements
 
 	@Override
 	protected String doInBackground() throws Exception {
-	    DBSession dbs = DBSession.getCurrentSession();
-
-	    DefaultTableModel model = (DefaultTableModel) queriesTable
-		    .getModel();
 
 	    setProgress(0);
 
 	    resultsMap = new ArrayList<ResultTableModel>();
-	    Connection con = null;
-	    try {
 
-		int i = queriesTable.getSelectedRow();
+	    String queryCode = queriesWidget.getQueryId();
 
-		String queryCode = (String) model.getValueAt(i, 0);
+	    String[] queryContents = doQuery(queryCode);
 
-		String[] queryContents = doQuery(queryCode);
+	    String queryDescription = queryContents[1];
+	    String queryTitle = queryContents[2];
+	    String querySubtitle = queryContents[3];
 
-		String queryDescription = queryContents[1];
-		String queryTitle = queryContents[2];
-		String querySubtitle = queryContents[3];
+	    setProgress(50);
+	    ConnectionWrapper con = new ConnectionWrapper(DBSession
+		    .getCurrentSession().getJavaConnection());
 
-		setProgress(50);
+	    ResultTableModel result = new ResultTableModel(queryCode,
+		    queryDescription, queryTitle, querySubtitle, getFilters());
+	    con.execute(queryContents[0], result);
 
-		con = dbs.getJavaConnection();
-		PreparedStatement statement = con
-			.prepareStatement(queryContents[0]);
-		statement.execute();
-		ResultSet rs = statement.getResultSet();
+	    setProgress(75);
 
-		setProgress(75);
+	    resultsMap.add(result);
 
-		ResultTableModel result = new ResultTableModel(queryCode,
-			queryDescription, queryTitle, querySubtitle,
-			getFilters());
-		resultSetToTable(result, rs);
-		resultsMap.add(result);
-
-	    } catch (Exception ex) {
-		logger.error(ex.getMessage());
-		con.close();
-	    }
 	    setProgress(99);
 	    String html = showResultsAsHTML(resultsMap);
 	    return html;
@@ -535,30 +448,6 @@ public class QueriesPanel extends AbstractIWindow implements
 	    sf.append("<hr>");
 
 	    return sf.toString();
-	}
-
-	private void resultSetToTable(ResultTableModel result, ResultSet rs)
-		throws SQLException {
-	    // TODO: don't create empty ResultTableModel
-	    ResultSetMetaData metaData = rs.getMetaData();
-	    int numColumns = metaData.getColumnCount();
-
-	    for (int i = 0; i < numColumns; i++) {
-		result.addColumn(metaData.getColumnLabel(i + 1));
-	    }
-
-	    // Getting values of the rows that have failed
-	    // int oldErrors = errorsFound;
-
-	    while (rs.next()) {
-		// errorsFound++;
-		Object rowData[] = new Object[numColumns];
-		for (int i = 0; i < numColumns; i++) {
-		    rowData[i] = rs.getObject(i + 1);
-		}
-		result.addRow(rowData);
-	    }
-
 	}
 
     }// QueriesTask Class
