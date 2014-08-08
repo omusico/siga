@@ -9,7 +9,7 @@ import es.icarto.gvsig.extgia.utils.Utils;
 
 public class CSVReport {
 
-    private static final String CSV_SEPARATOR = "\t";
+    protected static final String CSV_SEPARATOR = "\t";
 
     public CSVReport(String outputFile, DefaultTableModel tableModel,
 	    ConsultasFilters filters) {
@@ -34,7 +34,7 @@ public class CSVReport {
 
     }
 
-    private void writeFilters(FileWriter writer, ConsultasFilters filters)
+    protected void writeFilters(FileWriter writer, ConsultasFilters filters)
 	    throws IOException {
 
 	writer.append("Area Mantenimiento");

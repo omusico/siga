@@ -13,9 +13,10 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.SortedSet;
+import java.util.Set;
 import java.util.TreeSet;
 
 import javax.swing.AbstractListModel;
@@ -25,7 +26,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
 
 @SuppressWarnings("serial")
@@ -62,18 +62,11 @@ public class DualListBox<E> extends JPanel {
 	sourceListModel.clear();
     }
 
-    public void addSourceElements(ListModel newValue) {
+    public void addSourceElements(E newValue[]) {
 	fillListModel(sourceListModel, newValue);
     }
 
-    private void fillListModel(SortedListModel<E> model, ListModel newValues) {
-	int size = newValues.getSize();
-	for (int i = 0; i < size; i++) {
-	    model.add((E) newValues.getElementAt(i));
-	}
-    }
-
-    public void addSourceElements(E newValue[]) {
+    public void addSourceElements(List<E> newValue) {
 	fillListModel(sourceListModel, newValue);
     }
 
@@ -83,6 +76,10 @@ public class DualListBox<E> extends JPanel {
 
     private void fillListModel(SortedListModel<E> model, E newValues[]) {
 	model.addAll(newValues);
+    }
+
+    private void fillListModel(SortedListModel<E> model, List<E> newValues) {
+	model.model.addAll(newValues);
     }
 
     private void clearSourceSelected() {
@@ -218,10 +215,18 @@ public class DualListBox<E> extends JPanel {
 @SuppressWarnings("serial")
 final class SortedListModel<E> extends AbstractListModel {
 
-    SortedSet<E> model;
+    Set<E> model;
 
+    // TODO: fpuga. Instead of use always this constructor it will be better to
+    // use the default constructor that delegates in Comparable, and use this
+    // one only when E does not implement Comparable
     public SortedListModel() {
-	model = new TreeSet<E>();
+	model = new TreeSet<E>(new Comparator<E>() {
+	    @Override
+	    public int compare(E o1, E o2) {
+		return o1.toString().compareTo(o2.toString());
+	    }
+	});
     }
 
     @Override
@@ -242,7 +247,11 @@ final class SortedListModel<E> extends AbstractListModel {
 
     public void addAll(E elements[]) {
 	Collection<E> c = Arrays.asList(elements);
-	model.addAll(c);
+	addAll(c);
+    }
+
+    public void addAll(Collection<E> elements) {
+	model.addAll(elements);
 	fireContentsChanged(this, 0, getSize());
     }
 
@@ -255,16 +264,8 @@ final class SortedListModel<E> extends AbstractListModel {
 	return model.contains(element);
     }
 
-    public E firstElement() {
-	return model.first();
-    }
-
     public Iterator<E> iterator() {
 	return model.iterator();
-    }
-
-    public E lastElement() {
-	return model.last();
     }
 
     public boolean removeElement(E element) {

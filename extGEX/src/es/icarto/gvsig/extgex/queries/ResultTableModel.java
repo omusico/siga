@@ -2,17 +2,13 @@ package es.icarto.gvsig.extgex.queries;
 
 /*
  * Copyright (c) 2010. Cartolab (Universidade da Coruña)
+ * Copyright (c) 2014 iCarto
  *
- * This file is part of extEIELForms
- *
- * extEIELForms is based on the forms application of GisEIEL <http://giseiel.forge.osor.eu/>
- * devoloped by Laboratorio de Bases de Datos (Universidade da Coruña)
- *
- * extEIELForms is free software: you can redistribute it and/or modify it under the terms
+ * This program is free software: you can redistribute it and/or modify it under the terms
  * of the GNU General Public License as published by the Free Software Foundation, either
  * version 3 of the License, or any later version.
  *
- * extEIELForms is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  *
@@ -20,27 +16,19 @@ package es.icarto.gvsig.extgex.queries;
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
 
+@SuppressWarnings("serial")
 public class ResultTableModel extends DefaultTableModel {
-
-    HashSet<String> editableColumns = null;
-    HashSet<String> invisibleColumns = null;
 
     private final String code;
     private final String description;
     private final String title;
     private final String subtitle;
     private final String[] filters;
-    private boolean validationFailure = false;
-    private String tableNameFailure = "";
-    private String errorMessage = "";
-    private boolean error = false;
+
     private List<String> tables;
 
     public ResultTableModel(String code, String description, String title,
@@ -71,83 +59,6 @@ public class ResultTableModel extends DefaultTableModel {
 
     public final String[] getFilters() {
 	return filters;
-    }
-
-    public final boolean getValidationFailure() {
-	return validationFailure;
-    }
-
-    public final void setValidationFailure(boolean validationFailure) {
-	this.validationFailure = validationFailure;
-    }
-
-    public void setTableNameFailure(String tableNameFailure) {
-	this.tableNameFailure = tableNameFailure;
-    }
-
-    public String getTableNameFailure() {
-	return tableNameFailure;
-    }
-
-    public void setErroMessage(String errorMessage) {
-	this.errorMessage = errorMessage;
-    }
-
-    public String getErrorMessage() {
-	return errorMessage;
-    }
-
-    public final boolean getError() {
-	return error;
-    }
-
-    public final void setError(boolean error) {
-	this.error = error;
-    }
-
-    // Setters to define some features of the TableModel
-    /**
-     * define which columns of the table are editable
-     * 
-     * @param editableColumns
-     *            Name that identifies the column. This is the name of the field
-     *            + in the recordset
-     */
-    public void setEditableColumns(String[] editableColumns) {
-	if (editableColumns != null || editableColumns.length > 0) {
-	    this.editableColumns = new HashSet<String>(Arrays
-		    .asList(editableColumns));
-	}
-    }
-
-    public Class<?> getColumnClass(int c) {
-	return getValueAt(0, c).getClass();
-    }
-
-    /**
-     * Define which columns of the table exists in the model but not in the view
-     * 
-     * @param invisibleColumns
-     *            Name that identifies the column. This is the name of the field
-     *            + in the recordset
-     */
-    public void setInvisibleColumns(String[] invisibleColumns) {
-	if (invisibleColumns != null || invisibleColumns.length > 0) {
-	    this.invisibleColumns = new HashSet<String>(Arrays
-		    .asList(invisibleColumns));
-	}
-    }
-
-    // Methods overided of the AbstractTableModel
-    public boolean isCellEditable(int row, int col) {
-	boolean editable = false;
-
-	if (this.editableColumns == null
-		|| this.editableColumns.contains(getColumnName(col))) {
-	    editable = true;
-	}
-
-	return editable;
     }
 
     public void setQueryTables(List<String> tables) {
@@ -188,15 +99,5 @@ public class ResultTableModel extends DefaultTableModel {
 	html = html + "</table>";
 
 	return html;
-    }
-
-    public static void writeResultTableToPdfReport(String filename,
-	    ArrayList<ResultTableModel> resultMap, String[] filters) {
-	new Report(Report.PDF, filename, resultMap, filters);
-    }
-
-    public static void writeResultTableToRtfReport(String filename,
-	    ArrayList<ResultTableModel> resultMap, String[] filters) {
-	new Report(Report.RTF, filename, resultMap, filters);
     }
 }

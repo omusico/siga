@@ -7,13 +7,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
+import java.util.Arrays;
+import java.util.List;
 
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
-import javax.swing.SwingWorker;
+import javax.swing.JRadioButton;
 
 import org.apache.log4j.Logger;
 
@@ -27,11 +28,16 @@ import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.commons.gui.AbstractIWindow;
 import es.icarto.gvsig.commons.queries.ConnectionWrapper;
 import es.icarto.gvsig.commons.queries.QueriesWidget;
+import es.icarto.gvsig.extgex.forms.FormExpropiations;
 import es.icarto.gvsig.extgex.preferences.DBNames;
+import es.icarto.gvsig.extgia.consultas.CustomiceDialog;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
 public class QueriesPanel extends AbstractIWindow implements ActionListener {
+
+    private static final Logger logger = Logger.getLogger(QueriesPanel.class);
 
     private static final String DEFAULT_FILTER = "--TODOS--";
 
@@ -39,6 +45,9 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
 
     private final String ID_RUNQUERIES = "runQueriesButton";
     private JButton runQueriesB;
+
+    private static final String ID_CUSTOMQUERIES = "customQueriesButton";
+    private JButton customQueriesB;
 
     private final String ID_TRAMOCB = "tramo";
     private JComboBox tramo;
@@ -52,7 +61,9 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
     private final String ID_PARROQUIA_SUBTRAMOCB = "parroquia_subtramo";
     private JComboBox parroquia_subtramo;
 
-    private static final Logger logger = Logger.getLogger(QueriesPanel.class);
+    private JRadioButton verRB;
+    private JRadioButton pdfRB;
+    private JRadioButton csvRB;
 
     private final DBSession dbs;
 
@@ -64,10 +75,12 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
 
     private QueriesWidget queriesWidget;
 
+    private ButtonGroup buttonGroup;
+
     public QueriesPanel() {
 	super();
 	setWindowTitle("Consultas");
-	setWindowInfoProperties(WindowInfo.MODALDIALOG);
+	setWindowInfoProperties(WindowInfo.MODELESSDIALOG);
 
 	try {
 	    formBody = new FormPanel(getClass().getClassLoader()
@@ -90,8 +103,25 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
 	image.setIcon(icon);
 	runQueriesB = (JButton) formBody.getComponentByName(ID_RUNQUERIES);
 	runQueriesB.addActionListener(this);
+	customQueriesB = (JButton) formBody
+		.getComponentByName(ID_CUSTOMQUERIES);
+	customQueriesB.addActionListener(this);
+
 	initFilterWidgets();
 	queriesWidget = new QueriesWidgetTable(formBody, "queriesTable");
+
+	verRB = (JRadioButton) formBody.getComponentByName("ver");
+	verRB.setActionCommand(QueriesOuputWidget.SCREEN);
+	pdfRB = (JRadioButton) formBody.getComponentByName("pdf");
+	pdfRB.setActionCommand(QueriesOuputWidget.PDF);
+	pdfRB.setSelected(true);
+	csvRB = (JRadioButton) formBody.getComponentByName("csv");
+	csvRB.setActionCommand(QueriesOuputWidget.CSV);
+
+	buttonGroup = new ButtonGroup();
+	buttonGroup.add(csvRB);
+	buttonGroup.add(pdfRB);
+	buttonGroup.add(verRB);
     }
 
     private void initFilterWidgets() {
@@ -289,167 +319,183 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-	if (e.getSource() == runQueriesB) {
-	    executeValidations();
-	    return;
+	try {
+	    PluginServices.getMDIManager().setWaitCursor();
+	    if (e.getSource() == runQueriesB) {
+		executeValidations(false);
+	    } else if (e.getSource() == customQueriesB) {
+		executeValidations(true);
+	    }
+	} catch (SQLException e1) {
+	    logger.error(e1.getStackTrace(), e1);
+	} finally {
+	    PluginServices.getMDIManager().restoreCursor();
 	}
+
     }
 
-    private void executeValidations() {
-	QueriesTask qt = new QueriesTask();
-	ProgressBarDialog progressBarDialog = new ProgressBarDialog(qt);
-	progressBarDialog.open();
+    private void executeValidations(boolean customized) throws SQLException {
+
+	String queryCode = queriesWidget.getQueryId();
+
+	String[] queryContents = doQuery(queryCode);
+
+	String query = queryContents[0].replace("\n", " ");
+	String queryDescription = queryContents[1];
+	String queryTitle = queryContents[2];
+	String querySubtitle = queryContents[3];
+
+	if (customized) {
+	    CustomiceDialog<KeyValue> customiceDialog = new CustomiceDialog<KeyValue>();
+
+	    String[] tableColumns = DBSession.getCurrentSession().getColumns(
+		    DBNames.SCHEMA_DATA, FormExpropiations.TABLENAME);
+	    List<KeyValue> columns = parseQuery(query, tableColumns);
+	    customiceDialog.addSourceElements(columns);
+
+	    int status = customiceDialog.open();
+	    if (status == CustomiceDialog.CANCEL) {
+		return;
+	    }
+	    // consultasFilters.setQueryType("CUSTOM");
+	    // consultasFilters.setFields(customiceDialog.getFields());
+	    // consultasFilters.setOrderBy(customiceDialog.getOrderBy());
+
+	    query = buildQuery(query, customiceDialog.getFields(),
+		    customiceDialog.getOrderBy());
+	}
+	ConnectionWrapper con = new ConnectionWrapper(DBSession
+		.getCurrentSession().getJavaConnection());
+
+	ResultTableModel result = new ResultTableModel(queryCode,
+		queryDescription, queryTitle, querySubtitle, getFilters());
+	con.execute(query, result);
+
+	QueriesOuputWidget.to(buttonGroup.getSelection().getActionCommand(),
+		result, getFilters());
+
     }
 
-    private class QueriesTask extends SwingWorker<String, Void> {
+    private String[] doQuery(String queryCode) throws SQLException {
+	DBSession dbs = DBSession.getCurrentSession();
 
-	private final boolean sqlError = false;
-	private final String error = "";
-	private ArrayList<ResultTableModel> resultsMap;
+	String whereClause = DBNames.FIELD_CODIGO_QUERIES + " = '" + queryCode
+		+ "'";
+	String[][] tableContent = dbs.getTable(DBNames.TABLE_QUERIES,
+		DBNames.SCHEMA_QUERIES, whereClause);
 
-	@Override
-	protected String doInBackground() throws Exception {
-
-	    setProgress(0);
-
-	    resultsMap = new ArrayList<ResultTableModel>();
-
-	    String queryCode = queriesWidget.getQueryId();
-
-	    String[] queryContents = doQuery(queryCode);
-
-	    String queryDescription = queryContents[1];
-	    String queryTitle = queryContents[2];
-	    String querySubtitle = queryContents[3];
-
-	    setProgress(50);
-	    ConnectionWrapper con = new ConnectionWrapper(DBSession
-		    .getCurrentSession().getJavaConnection());
-
-	    ResultTableModel result = new ResultTableModel(queryCode,
-		    queryDescription, queryTitle, querySubtitle, getFilters());
-	    con.execute(queryContents[0], result);
-
-	    setProgress(75);
-
-	    resultsMap.add(result);
-
-	    setProgress(99);
-	    String html = showResultsAsHTML(resultsMap);
-	    return html;
+	String[] contents = new String[4];
+	String query;
+	query = tableContent[0][1];
+	boolean hasWhere = false;
+	if (tableContent[0][5].compareToIgnoreCase("SI") == 0) {
+	    hasWhere = true;
 	}
+	// query
+	contents[0] = query.replaceAll("\\[\\[WHERE\\]\\]",
+		getWhereClause(hasWhere));
+	// description
+	contents[1] = tableContent[0][2];
+	// title
+	contents[2] = tableContent[0][3];
+	// subtitle
+	contents[3] = tableContent[0][4];
+	return contents;
+    }
 
-	private String[] getFilters() {
-	    String[] filters = new String[4];
-	    filters[0] = tramoSelected;
-	    filters[1] = ucSelected;
-	    filters[2] = ayuntamientoSelected;
-	    filters[3] = parroquiaSelected;
-	    return filters;
+    private String getWhereClause(boolean hasWhere) throws SQLException {
+	String whereC;
+	if (!hasWhere) {
+	    whereC = "WHERE";
+	} else {
+	    whereC = " AND ";
 	}
+	if (tramoSelected.compareToIgnoreCase(DEFAULT_FILTER) != 0) {
+	    whereC = whereC + " " + DBNames.FIELD_TRAMO_FINCAS + " = " + "'"
+		    + getTramoId() + "'";
+	}
+	if (ucSelected.compareToIgnoreCase(DEFAULT_FILTER) != 0) {
+	    whereC = whereC + " AND " + DBNames.FIELD_UC_FINCAS + " = " + "'"
+		    + getUcId() + "'";
+	}
+	if (ayuntamientoSelected.compareToIgnoreCase(DEFAULT_FILTER) != 0) {
+	    whereC = whereC + " AND " + DBNames.FIELD_AYUNTAMIENTO_FINCAS
+		    + " = " + "'" + getAyuntamientoId() + "'";
+	}
+	if (whereC.equalsIgnoreCase("WHERE")) {
+	    whereC = ""; // has no combobox selected
+	}
+	if (whereC.equalsIgnoreCase(" AND ")) {
+	    whereC = "AND 1=1";
+	}
+	return whereC;
+    }
 
-	private String getWhereClause(boolean hasWhere) throws SQLException {
-	    String whereC;
-	    if (!hasWhere) {
-		whereC = "WHERE";
+    private String buildQuery(String query, List<KeyValue> fields,
+	    List<KeyValue> orderBy) {
+	String newQuery = query;
+	if (!fields.isEmpty()) {
+	    newQuery = "SELECT ";
+	    for (KeyValue kv : fields) {
+		newQuery = newQuery + kv.getKey() + " as \"" + kv.getValue()
+			+ "\", ";
+	    }
+	    newQuery = newQuery.substring(0, newQuery.length() - 2)
+		    + query.substring(query.indexOf(" FROM"), query.length());
+	}
+	if (!orderBy.isEmpty()) {
+
+	    int indexOf = newQuery.indexOf("ORDER BY ");
+	    if (indexOf != -1) {
+		newQuery = newQuery.substring(0, indexOf + 9);
 	    } else {
-		whereC = " AND ";
-	    }
-	    if (tramoSelected.compareToIgnoreCase(DEFAULT_FILTER) != 0) {
-		whereC = whereC + " " + DBNames.FIELD_TRAMO_FINCAS + " = "
-			+ "'" + getTramoId() + "'";
-	    }
-	    if (ucSelected.compareToIgnoreCase(DEFAULT_FILTER) != 0) {
-		whereC = whereC + " AND " + DBNames.FIELD_UC_FINCAS + " = "
-			+ "'" + getUcId() + "'";
-	    }
-	    if (ayuntamientoSelected.compareToIgnoreCase(DEFAULT_FILTER) != 0) {
-		whereC = whereC + " AND " + DBNames.FIELD_AYUNTAMIENTO_FINCAS
-			+ " = " + "'" + getAyuntamientoId() + "'";
-	    }
-	    if (whereC.equalsIgnoreCase("WHERE")) {
-		whereC = ""; // has no combobox selected
-	    }
-	    if (whereC.equalsIgnoreCase(" AND ")) {
-		whereC = "AND 1=1";
-	    }
-	    return whereC;
-	}
-
-	private String[] doQuery(String queryCode) throws Exception {
-	    DBSession dbs = DBSession.getCurrentSession();
-
-	    String whereClause = DBNames.FIELD_CODIGO_QUERIES + " = '"
-		    + queryCode + "'";
-	    String[][] tableContent = dbs.getTable(DBNames.TABLE_QUERIES,
-		    DBNames.SCHEMA_QUERIES, whereClause);
-
-	    String[] contents = new String[4];
-	    String query;
-	    query = tableContent[0][1];
-	    boolean hasWhere = false;
-	    if (tableContent[0][5].compareToIgnoreCase("SI") == 0) {
-		hasWhere = true;
-	    }
-	    // query
-	    contents[0] = query.replaceAll("\\[\\[WHERE\\]\\]",
-		    getWhereClause(hasWhere));
-	    // description
-	    contents[1] = tableContent[0][2];
-	    // title
-	    contents[2] = tableContent[0][3];
-	    // subtitle
-	    contents[3] = tableContent[0][4];
-	    return contents;
-	}
-
-	@Override
-	public void done() {
-	    if (!isCancelled() && !sqlError) {
-		try {
-		    String str = get();
-		    QueriesResultPanel resultPanel;
-		    // if (councilCB.getSelectedIndex() > 0) {
-		    // resultPanel = new EIELValidationResultPanel(councilCB
-		    // .getSelectedItem().toString());
-		    // } else {
-		    resultPanel = new QueriesResultPanel();
-		    // }
-		    resultPanel.open();
-		    resultPanel.setResult(str);
-		    resultPanel.setResultMap(resultsMap);
-		    resultPanel.setFilters(getFilters());
-		    PluginServices.getMDIManager().restoreCursor();
-		} catch (InterruptedException e) {
-		    e.printStackTrace();
-		} catch (ExecutionException e) {
-		    e.printStackTrace();
+		if (newQuery.endsWith(";")) {
+		    newQuery = newQuery.substring(0, newQuery.length() - 1);
 		}
-	    } else if (sqlError) {
-		String message = error + "\n"
-			+ PluginServices.getText(this, "checkSchema");
-		JOptionPane.showMessageDialog(null, message,
-			PluginServices.getText(this, "validationError"),
-			JOptionPane.ERROR_MESSAGE);
+
+		newQuery = newQuery + " ORDER BY ";
 	    }
-	}
 
-	private String showResultsAsHTML(ArrayList<ResultTableModel> resultMap) {
-	    StringBuffer sf = new StringBuffer();
-
-	    for (ResultTableModel result : resultMap) {
-		sf.append("<h3 style=\"color: blue\">" + result.getCode()
-			+ "  -  " + result.getDescription() + "</h3>");
-
-		sf.append("<p>" + result.getQueryTables() + "</p>");
-		sf.append(result.getHTML());
+	    for (KeyValue kv : orderBy) {
+		newQuery = newQuery + kv.getKey() + ", ";
 	    }
-	    sf.append("</h2>");
-	    sf.append("<hr>");
-
-	    return sf.toString();
+	    newQuery = newQuery.substring(0, newQuery.length() - 2);
 	}
+	return newQuery;
+    }
 
-    }// QueriesTask Class
+    private List<KeyValue> parseQuery(String query, String[] columns) {
+
+	String fieldsStr = query.substring(query.indexOf("SELECT ") + 7,
+		query.indexOf(" FROM"));
+	String[] fields = fieldsStr.split(",");
+	List<KeyValue> fieldList = new ArrayList<KeyValue>();
+
+	// object returned by Arrays.asList does not implement remove operation
+	List<String> columnList = new ArrayList<String>(Arrays.asList(columns));
+	for (String f : fields) {
+	    String[] split = f.split(" as ");
+	    KeyValue kv = new KeyValue(split[0].trim(), split[1].trim()
+		    .replace("\"", ""));
+	    fieldList.add(kv);
+	    columnList.remove(kv.getKey());
+
+	}
+	for (String f : columnList) {
+	    KeyValue kv = new KeyValue(f, f);
+	    fieldList.add(kv);
+	}
+	return fieldList;
+
+    }
+
+    private String[] getFilters() {
+	String[] filters = new String[4];
+	filters[0] = tramoSelected;
+	filters[1] = ucSelected;
+	filters[2] = ayuntamientoSelected;
+	filters[3] = parroquiaSelected;
+	return filters;
+    }
 
 }

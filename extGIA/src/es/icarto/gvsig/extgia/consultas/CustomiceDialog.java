@@ -22,7 +22,8 @@ import es.icarto.gvsig.commons.gui.AbstractIWindow;
 import es.icarto.gvsig.commons.gui.AcceptCancelPanel;
 
 @SuppressWarnings("serial")
-public class CustomiceDialog extends AbstractIWindow implements ActionListener {
+public class CustomiceDialog<E> extends AbstractIWindow implements
+	ActionListener {
 
     public static final int CANCEL = -1;
     public static final int OK = 1;
@@ -31,7 +32,7 @@ public class CustomiceDialog extends AbstractIWindow implements ActionListener {
 
     private final List<JComboBox> order;
 
-    private final DualListBox<String> dualListBox;;
+    private final DualListBox<E> dualListBox;;
 
     public CustomiceDialog() {
 	super();
@@ -39,7 +40,7 @@ public class CustomiceDialog extends AbstractIWindow implements ActionListener {
 	setWindowInfoProperties(WindowInfo.MODALDIALOG | WindowInfo.NOTCLOSABLE);
 	addAcceptCancelPanel(this, this);
 
-	dualListBox = new DualListBox<String>();
+	dualListBox = new DualListBox<E>();
 	dualListBox.addDestListDataListener(new UpdateOrderBy());
 	add(dualListBox, "growx, growy");
 
@@ -63,7 +64,11 @@ public class CustomiceDialog extends AbstractIWindow implements ActionListener {
 	panel.add(jComboBox, "growx");
     }
 
-    public void addSourceElements(String[] values) {
+    public void addSourceElements(List<E> values) {
+	dualListBox.addSourceElements(values);
+    }
+
+    public void addSourceElements(E[] values) {
 	dualListBox.addSourceElements(values);
     }
 
@@ -111,21 +116,26 @@ public class CustomiceDialog extends AbstractIWindow implements ActionListener {
 	return status;
     }
 
-    public List<String> getFields() {
+    public List<E> getFields() {
 	return dualListBox.getDestList();
     }
 
-    public List<String> getOrderBy() {
-	List<String> list = new ArrayList<String>(4);
+    public List<E> getOrderBy() {
+	List<E> list = new ArrayList<E>(4);
 	for (JComboBox c : order) {
-	    String sel = c.getSelectedItem() == null ? "" : c.getSelectedItem()
-		    .toString().trim();
-	    if (!sel.isEmpty()) {
-		if (list.indexOf(sel) == -1) {
-		    list.add(sel);
-		}
+	    if (c.getSelectedItem() == null) {
+		continue;
 	    }
+	    E sel = (E) c.getSelectedItem();
+	    if (sel.toString().trim().length() == 0) {
+		continue;
+	    }
+	    if (list.indexOf(sel) == -1) {
+		list.add(sel);
+	    }
+
 	}
+
 	return list;
     }
 }

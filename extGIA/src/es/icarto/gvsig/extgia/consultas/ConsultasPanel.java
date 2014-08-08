@@ -207,7 +207,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	}
 
 	if (e.getSource().equals(customButton)) {
-	    CustomiceDialog customiceDialog = new CustomiceDialog();
+	    CustomiceDialog<String> customiceDialog = new CustomiceDialog<String>();
 	    try {
 		String[] columns = DBSession.getCurrentSession().getColumns(
 			"audasa_extgia", selElement.getKey().toLowerCase());
