@@ -25,12 +25,20 @@
         <property key="DefaultDistanceArea" value="1"/>
         <property key="TOC_CURRENT_TOC" value="Default JTree-based TOC"/>
     </xml-tag>
-    
+
+    <xml-tag>
+        <property key="snapperFinalPoint" value="true"/>
+        <property key="snapperNearestPoint" value="true"/>
+        <property key="followGeometry" value="false"/>
+        <property key="isDeleteButton3" value="true"/>
+        <property key="com.iver.andami.pluginName" value="com.iver.cit.gvsig.cad"/>
+    </xml-tag>
+
     <xml-tag>
         <property key="FilesDir" value="../cfg/"/>
         <property key="com.iver.andami.pluginName" value="es.icarto.gvsig.extgex"/>
     </xml-tag>
-    
+
     <xml-tag>
         <property key="host" value="192.168.0.12"/>
         <property key="port" value="5434"/>
@@ -39,7 +47,7 @@
         <property key="schema" value="audasa_expropiaciones"/>
         <property key="com.iver.andami.pluginName" value="es.udc.cartolab.gvsig.users"/>
     </xml-tag>
-    
+
     <xml-tag>
         <property key="general_auto_preview" value="true"/>
         <property key="general_ask_coordinates" value="false"/>
@@ -57,7 +65,7 @@
         <property key="general_ask_projection" value="true"/>
         <property key="com.iver.andami.pluginName" value="org.gvsig.rastertools"/>
     </xml-tag>
-    
+
         <xml-tag>
         <property key="com.iver.andami.pluginName" value="com.iver.cit.gvsig.wms"/>
         <xml-tag>
@@ -67,7 +75,7 @@
             <property key="type" value="WMS"/>
             <property key="subType" value=""/>
         </xml-tag>
-        
+
         <xml-tag>
             <property key="serverURL" value="http://www2.dmsolutions.ca/cgi-bin/mswms_gmap?"/>
             <property key="added" value="2012-05-10 12:35:46.226"/>
