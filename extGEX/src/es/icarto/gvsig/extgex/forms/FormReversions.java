@@ -31,6 +31,7 @@ import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
+import es.icarto.gvsig.commons.gui.NonEditableTableModel;
 import es.icarto.gvsig.extgex.navtable.NavTableComponentsFactory;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.navtableforms.AbstractForm;
@@ -148,12 +149,8 @@ public class FormReversions extends AbstractForm implements TableModelListener {
 	double totalImporte = 0.0;
 
 	try {
-	    DefaultTableModel tableModel = new DefaultTableModel() {
-		@Override
-		public boolean isCellEditable(int row, int column) {
-		    return false;
-		}
-	    };
+	    DefaultTableModel tableModel = new NonEditableTableModel();
+
 	    for (String columnName : columnasFincas) {
 		tableModel.addColumn(columnName);
 	    }
@@ -272,6 +269,12 @@ public class FormReversions extends AbstractForm implements TableModelListener {
     public void tableChanged(TableModelEvent arg0) {
 	super.setChangedValues(true);
 	super.saveB.setEnabled(true);
+    }
+
+    @Override
+    // As this is a non editable form we should never show the warning
+    protected boolean showWarning() {
+	return true;
     }
 
 }
