@@ -57,6 +57,8 @@ public class DBNames {
     public static final String FIELD_IDEXPROPIACION_FINCAS_REVERSIONES = "id_finca";
     public static final String FIELD_SUPERFICIE_FINCAS_REVERSIONES = "superficie";
     public static final String FIELD_IMPORTE_FINCAS_REVERSIONES = "importe";
+    public static final String FIELD_IMPORTE_FINCAS_REVERSIONES_EUROS = "importe_euros";
+    public static final String FIELD_IMPORTE_FINCAS_REVERSIONES_PTAS = "importe_ptas";
     public static final String FIELD_FECHA_FINCAS_REVERSIONES = "fecha_acta";
     public static final String FIELD_AYUNTAMIENTO_REVERSIONES = "ayuntamiento_nombre";
 

@@ -142,11 +142,13 @@ public class FormReversions extends AbstractForm implements TableModelListener {
 	columnasFincas.add("Id_Finca");
 	columnasFincas.add("Expedientes PM");
 	columnasFincas.add("Superficie");
-	columnasFincas.add("Importe");
+	columnasFincas.add("Importe (Euros)");
+	columnasFincas.add("Importe (Ptas)");
 	columnasFincas.add("Fecha");
 
 	double totalSuperficie = 0.0;
-	double totalImporte = 0.0;
+	double totalImporteEuros = 0.0;
+	double totalImportePtas = 0.0;
 
 	try {
 	    DefaultTableModel tableModel = new NonEditableTableModel();
@@ -157,12 +159,12 @@ public class FormReversions extends AbstractForm implements TableModelListener {
 	    fincasAfectadas.setModel(tableModel);
 	    fincasAfectadas.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	    fincasAfectadas.getColumnModel().getColumn(0)
-		    .setPreferredWidth(165);
+		    .setPreferredWidth(150);
 	    fincasAfectadas.getColumnModel().getColumn(1)
-		    .setPreferredWidth(207);
+		    .setPreferredWidth(200);
 	    fincasAfectadas.getColumnModel().getColumn(4).setPreferredWidth(90);
 
-	    Value[] reversionData = new Value[5];
+	    Value[] reversionData = new Value[columnasFincas.size()];
 	    ResultSet rs = getFincasByExpReversion();
 
 	    while (rs.next()) {
@@ -177,17 +179,24 @@ public class FormReversions extends AbstractForm implements TableModelListener {
 		    reversionData[2] = ValueFactory.createNullValue();
 		}
 		if (rs.getObject(3) != null) {
-		    totalImporte = totalImporte + rs.getDouble(3);
+		    totalImporteEuros = totalImporteEuros + rs.getDouble(3);
 		    reversionData[3] = ValueFactory
 			    .createValue(getDoubleFormatted(rs.getDouble(3)));
 		} else {
 		    reversionData[3] = ValueFactory.createNullValue();
 		}
 		if (rs.getObject(4) != null) {
+		    totalImportePtas = totalImportePtas + rs.getDouble(4);
 		    reversionData[4] = ValueFactory
-			    .createValue(getDateFormatted(rs.getDate(4)));
+			    .createValue(getDoubleFormatted(rs.getDouble(4)));
 		} else {
 		    reversionData[4] = ValueFactory.createNullValue();
+		}
+		if (rs.getObject(5) != null) {
+		    reversionData[5] = ValueFactory
+			    .createValue(getDateFormatted(rs.getDate(5)));
+		} else {
+		    reversionData[5] = ValueFactory.createNullValue();
 		}
 		tableModel.addRow(reversionData);
 	    }
@@ -197,8 +206,10 @@ public class FormReversions extends AbstractForm implements TableModelListener {
 	    reversionData[2] = ValueFactory.createValue("<html><b>"
 		    + totalSuperficie + "</b></html>");
 	    reversionData[3] = ValueFactory.createValue("<html><b>"
-		    + totalImporte + "</b></html>");
-	    reversionData[4] = ValueFactory.createNullValue();
+		    + totalImporteEuros + "</b></html>");
+	    reversionData[4] = ValueFactory.createValue("<html><b>"
+		    + totalImportePtas + "</b></html>");
+	    reversionData[5] = ValueFactory.createNullValue();
 	    tableModel.addRow(reversionData);
 	    repaint();
 	    tableModel.addTableModelListener(this);
@@ -222,7 +233,8 @@ public class FormReversions extends AbstractForm implements TableModelListener {
 	String query = "SELECT "
 		+ DBNames.FIELD_IDEXPROPIACION_FINCAS_REVERSIONES + ", "
 		+ DBNames.FIELD_SUPERFICIE_FINCAS_REVERSIONES + ", "
-		+ DBNames.FIELD_IMPORTE_FINCAS_REVERSIONES + ", "
+		+ DBNames.FIELD_IMPORTE_FINCAS_REVERSIONES_EUROS + ", "
+		+ DBNames.FIELD_IMPORTE_FINCAS_REVERSIONES_PTAS + ", "
 		+ DBNames.FIELD_FECHA_FINCAS_REVERSIONES + " " + "FROM "
 		+ DBNames.SCHEMA_DATA + "." + DBNames.TABLE_FINCASREVERSIONES
 		+ " " + "WHERE " + DBNames.FIELD_IDREVERSION_FINCAS_REVERSIONES
