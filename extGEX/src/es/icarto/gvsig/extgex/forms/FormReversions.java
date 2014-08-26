@@ -8,7 +8,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -38,7 +38,6 @@ import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 import es.udc.cartolab.gvsig.navtable.format.DoubleFormatNT;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
-
 @SuppressWarnings("serial")
 public class FormReversions extends AbstractForm implements TableModelListener {
 
@@ -61,8 +60,7 @@ public class FormReversions extends AbstractForm implements TableModelListener {
     private void addNewButtonsToActionsToolBar() {
 	JPanel actionsToolBar = this.getActionsToolBar();
 	NavTableComponentsFactory ntFactory = new NavTableComponentsFactory();
-	JButton filesLinkB = ntFactory.getFilesLinkButton(layer,
-		this);
+	JButton filesLinkB = ntFactory.getFilesLinkButton(layer, this);
 	if (filesLinkB != null) {
 	    actionsToolBar.add(filesLinkB);
 	}
@@ -87,10 +85,11 @@ public class FormReversions extends AbstractForm implements TableModelListener {
     protected void setListeners() {
 	super.setListeners();
 
-	HashMap<String, JComponent> widgets = getWidgetComponents();
+	Map<String, JComponent> widgets = getWidgets();
 
-	ImageComponent image = (ImageComponent) form.getComponentByName("image");
-	ImageIcon icon = new ImageIcon (PreferencesPage.AUDASA_ICON);
+	ImageComponent image = (ImageComponent) form
+		.getComponentByName("image");
+	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
 	image.setIcon(icon);
 
 	expropiationsLauncher = new FormExpropiationsLauncher(this);
@@ -103,8 +102,6 @@ public class FormReversions extends AbstractForm implements TableModelListener {
     private String getExpId() {
 	return expId.getText();
     }
-
-
 
     @Override
     protected void removeListeners() {
@@ -120,7 +117,8 @@ public class FormReversions extends AbstractForm implements TableModelListener {
     @Override
     public FormPanel getFormBody() {
 	if (form == null) {
-	    InputStream stream = getClass().getClassLoader().getResourceAsStream(getBasicName() + ".xml");
+	    InputStream stream = getClass().getClassLoader()
+		    .getResourceAsStream(getBasicName() + ".xml");
 	    FormPanel result = null;
 	    try {
 		result = new FormPanel(stream);
@@ -161,40 +159,48 @@ public class FormReversions extends AbstractForm implements TableModelListener {
 	    }
 	    fincasAfectadas.setModel(tableModel);
 	    fincasAfectadas.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-	    fincasAfectadas.getColumnModel().getColumn(0).setPreferredWidth(165);
-	    fincasAfectadas.getColumnModel().getColumn(1).setPreferredWidth(207);
+	    fincasAfectadas.getColumnModel().getColumn(0)
+		    .setPreferredWidth(165);
+	    fincasAfectadas.getColumnModel().getColumn(1)
+		    .setPreferredWidth(207);
 	    fincasAfectadas.getColumnModel().getColumn(4).setPreferredWidth(90);
-
 
 	    Value[] reversionData = new Value[5];
 	    ResultSet rs = getFincasByExpReversion();
 
 	    while (rs.next()) {
 		reversionData[0] = ValueFactory.createValue(rs.getString(1));
-		reversionData[1] = ValueFactory.createValue(getExpedientesPMByFinca(rs.getString(1)));
+		reversionData[1] = ValueFactory
+			.createValue(getExpedientesPMByFinca(rs.getString(1)));
 		if (rs.getObject(2) != null) {
 		    totalSuperficie = totalSuperficie + rs.getDouble(2);
-		    reversionData[2] = ValueFactory.createValue(getDoubleFormatted(rs.getDouble(2)));
-		}else {
+		    reversionData[2] = ValueFactory
+			    .createValue(getDoubleFormatted(rs.getDouble(2)));
+		} else {
 		    reversionData[2] = ValueFactory.createNullValue();
 		}
 		if (rs.getObject(3) != null) {
 		    totalImporte = totalImporte + rs.getDouble(3);
-		    reversionData[3] = ValueFactory.createValue(getDoubleFormatted(rs.getDouble(3)));
-		}else {
+		    reversionData[3] = ValueFactory
+			    .createValue(getDoubleFormatted(rs.getDouble(3)));
+		} else {
 		    reversionData[3] = ValueFactory.createNullValue();
 		}
 		if (rs.getObject(4) != null) {
-		    reversionData[4] = ValueFactory.createValue(getDateFormatted(rs.getDate(4)));
-		}else {
+		    reversionData[4] = ValueFactory
+			    .createValue(getDateFormatted(rs.getDate(4)));
+		} else {
 		    reversionData[4] = ValueFactory.createNullValue();
 		}
 		tableModel.addRow(reversionData);
 	    }
-	    reversionData[0] = ValueFactory.createValue("<html><b>" + "TOTAL" + "</b></html>");
+	    reversionData[0] = ValueFactory.createValue("<html><b>" + "TOTAL"
+		    + "</b></html>");
 	    reversionData[1] = ValueFactory.createNullValue();
-	    reversionData[2] = ValueFactory.createValue("<html><b>" + totalSuperficie + "</b></html>");
-	    reversionData[3] = ValueFactory.createValue("<html><b>" + totalImporte + "</b></html>");
+	    reversionData[2] = ValueFactory.createValue("<html><b>"
+		    + totalSuperficie + "</b></html>");
+	    reversionData[3] = ValueFactory.createValue("<html><b>"
+		    + totalImporte + "</b></html>");
 	    reversionData[4] = ValueFactory.createNullValue();
 	    tableModel.addRow(reversionData);
 	    repaint();
@@ -216,14 +222,16 @@ public class FormReversions extends AbstractForm implements TableModelListener {
 
     private ResultSet getFincasByExpReversion() throws SQLException {
 	PreparedStatement statement;
-	String query = "SELECT " +
-		DBNames.FIELD_IDEXPROPIACION_FINCAS_REVERSIONES + ", " +
-		DBNames.FIELD_SUPERFICIE_FINCAS_REVERSIONES + ", " +
-		DBNames.FIELD_IMPORTE_FINCAS_REVERSIONES + ", " +
-		DBNames.FIELD_FECHA_FINCAS_REVERSIONES + " " +
-		"FROM " + DBNames.SCHEMA_DATA + "." + DBNames.TABLE_FINCASREVERSIONES + " " +
-		"WHERE " + DBNames.FIELD_IDREVERSION_FINCAS_REVERSIONES + " = '" + getExpId() + "';";
-	statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+	String query = "SELECT "
+		+ DBNames.FIELD_IDEXPROPIACION_FINCAS_REVERSIONES + ", "
+		+ DBNames.FIELD_SUPERFICIE_FINCAS_REVERSIONES + ", "
+		+ DBNames.FIELD_IMPORTE_FINCAS_REVERSIONES + ", "
+		+ DBNames.FIELD_FECHA_FINCAS_REVERSIONES + " " + "FROM "
+		+ DBNames.SCHEMA_DATA + "." + DBNames.TABLE_FINCASREVERSIONES
+		+ " " + "WHERE " + DBNames.FIELD_IDREVERSION_FINCAS_REVERSIONES
+		+ " = '" + getExpId() + "';";
+	statement = DBSession.getCurrentSession().getJavaConnection()
+		.prepareStatement(query);
 	statement.execute();
 	ResultSet rs = statement.getResultSet();
 	return rs;
@@ -232,13 +240,13 @@ public class FormReversions extends AbstractForm implements TableModelListener {
     private String getExpedientesPMByFinca(String idFinca) {
 	String expedientesPM = "";
 	PreparedStatement statement;
-	String query = "SELECT " +
-		DBNames.FIELD_NUMPM_FINCAS_PM + " " +
-		"FROM " + DBNames.PM_SCHEMA + "." + DBNames.TABLE_FINCAS_PM + " " +
-		"WHERE " + DBNames.FIELD_IDFINCA_FINCAS_PM + " = '" + idFinca +
-		"';";
+	String query = "SELECT " + DBNames.FIELD_NUMPM_FINCAS_PM + " "
+		+ "FROM " + DBNames.PM_SCHEMA + "." + DBNames.TABLE_FINCAS_PM
+		+ " " + "WHERE " + DBNames.FIELD_IDFINCA_FINCAS_PM + " = '"
+		+ idFinca + "';";
 	try {
-	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+	    statement = DBSession.getCurrentSession().getJavaConnection()
+		    .prepareStatement(query);
 	    statement.execute();
 	    ResultSet rs = statement.getResultSet();
 	    while (rs.next()) {
