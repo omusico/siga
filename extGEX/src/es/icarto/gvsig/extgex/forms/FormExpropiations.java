@@ -470,7 +470,8 @@ public class FormExpropiations extends AbstractForm implements
 	ArrayList<String> columnasReversiones = new ArrayList<String>();
 	columnasReversiones.add("Exp_Id");
 	columnasReversiones.add("Superficie");
-	columnasReversiones.add("Importe");
+	columnasReversiones.add("Importe (Euros)");
+	columnasReversiones.add("Importe (Pts)");
 	columnasReversiones.add("Fecha");
 
 	try {
@@ -480,12 +481,13 @@ public class FormExpropiations extends AbstractForm implements
 		tableModel.addColumn(columnName);
 	    }
 	    reversiones.setModel(tableModel);
-	    Value[] reversionData = new Value[4];
+	    Value[] reversionData = new Value[columnasReversiones.size()];
 	    PreparedStatement statement;
 	    String query = "SELECT "
 		    + DBNames.FIELD_IDREVERSION_FINCAS_REVERSIONES + ", "
 		    + DBNames.FIELD_SUPERFICIE_FINCAS_REVERSIONES + ", "
-		    + DBNames.FIELD_IMPORTE_FINCAS_REVERSIONES + ", "
+		    + DBNames.FIELD_IMPORTE_FINCAS_REVERSIONES_EUROS + ", "
+		    + DBNames.FIELD_IMPORTE_FINCAS_REVERSIONES_PTAS + ", "
 		    + DBNames.FIELD_FECHA_FINCAS_REVERSIONES + " " + "FROM "
 		    + DBNames.SCHEMA_DATA + "."
 		    + DBNames.TABLE_FINCASREVERSIONES + " " + "WHERE "
@@ -510,10 +512,15 @@ public class FormExpropiations extends AbstractForm implements
 		    reversionData[2] = ValueFactory.createNullValue();
 		}
 		if (rs.getObject(4) != null) {
-		    reversionData[3] = ValueFactory
-			    .createValue(getDateFormatted(rs.getDate(4)));
+		    reversionData[3] = ValueFactory.createValue(rs.getInt(4));
 		} else {
 		    reversionData[3] = ValueFactory.createNullValue();
+		}
+		if (rs.getObject(5) != null) {
+		    reversionData[4] = ValueFactory
+			    .createValue(getDateFormatted(rs.getDate(5)));
+		} else {
+		    reversionData[4] = ValueFactory.createNullValue();
 		}
 		tableModel.addRow(reversionData);
 		// Save current Fincas in order to remove them
@@ -588,7 +595,8 @@ public class FormExpropiations extends AbstractForm implements
 	String query = null;
 	String idReversion = null;
 	String superficie;
-	String importe;
+	String importeEuros;
+	String importePtas;
 
 	// Check if ID reversion exists into reversions table
 	for (int i = 0; i < reversiones.getRowCount(); i++) {
@@ -652,13 +660,19 @@ public class FormExpropiations extends AbstractForm implements
 		    superficie = null;
 		}
 		if (reversiones.getModel().getValueAt(i, 2) != null) {
-		    importe = reversiones.getModel().getValueAt(i, 2)
+		    importeEuros = reversiones.getModel().getValueAt(i, 2)
 			    .toString();
-		    if (importe.contains(",")) {
-			importe = importe.replace(",", ".");
+		    if (importeEuros.contains(",")) {
+			importeEuros = importeEuros.replace(",", ".");
 		    }
 		} else {
-		    importe = null;
+		    importeEuros = null;
+		}
+		if (reversiones.getModel().getValueAt(i, 3) != null) {
+		    importePtas = reversiones.getModel().getValueAt(i, 3)
+			    .toString();
+		} else {
+		    importePtas = null;
 		}
 		query = "INSERT INTO " + DBNames.SCHEMA_DATA + "."
 			+ DBNames.TABLE_FINCASREVERSIONES + " " + "VALUES ('"
@@ -668,8 +682,13 @@ public class FormExpropiations extends AbstractForm implements
 		} else {
 		    query = query + " null,";
 		}
-		if (importe != null) {
-		    query = query + " '" + importe + "');";
+		if (importeEuros != null) {
+		    query = query + " '" + importeEuros + "');";
+		} else {
+		    query = query + " null );";
+		}
+		if (importePtas != null) {
+		    query = query + " '" + importePtas + "');";
 		} else {
 		    query = query + " null );";
 		}

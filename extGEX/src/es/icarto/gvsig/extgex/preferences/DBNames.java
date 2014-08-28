@@ -56,7 +56,6 @@ public class DBNames {
     public static final String FIELD_IDREVERSION_FINCAS_REVERSIONES = "id_reversion";
     public static final String FIELD_IDEXPROPIACION_FINCAS_REVERSIONES = "id_finca";
     public static final String FIELD_SUPERFICIE_FINCAS_REVERSIONES = "superficie";
-    public static final String FIELD_IMPORTE_FINCAS_REVERSIONES = "importe";
     public static final String FIELD_IMPORTE_FINCAS_REVERSIONES_EUROS = "importe_euros";
     public static final String FIELD_IMPORTE_FINCAS_REVERSIONES_PTAS = "importe_ptas";
     public static final String FIELD_FECHA_FINCAS_REVERSIONES = "fecha_acta";
@@ -134,7 +133,8 @@ public class DBNames {
     public static final String SUBFORMEXPROPIATIONS_ADD_REVERSIONS_BUTTON = "add_reversion_button";
     public static final String SUBFORMSEXPROPIATIONS_IDREVERSIONS = "id_reversion";
     public static final String SUBFORMEXPROPIATIONS_SUPERFICIE = "superficie";
-    public static final String SUBFORMEXPROPIATIONS_IMPORTE = "importe";
+    public static final String SUBFORMEXPROPIATIONS_IMPORTE_EUROS = "importe_euros";
+    public static final String SUBFORMEXPROPIATIONS_IMPORTE_PTAS = "importe_pts";
     public static final String SUBFORMEXPROPIATIONS_FECHA = "fecha_acta";
 
     public static final String EXPROPIATIONS_AFECTADO_PM = "afectado_por_policia_margenes";

@@ -143,7 +143,7 @@ public class FormReversions extends AbstractForm implements TableModelListener {
 	columnasFincas.add("Expedientes PM");
 	columnasFincas.add("Superficie");
 	columnasFincas.add("Importe (Euros)");
-	columnasFincas.add("Importe (Ptas)");
+	columnasFincas.add("Importe (Pts)");
 	columnasFincas.add("Fecha");
 
 	double totalSuperficie = 0.0;
@@ -159,9 +159,10 @@ public class FormReversions extends AbstractForm implements TableModelListener {
 	    fincasAfectadas.setModel(tableModel);
 	    fincasAfectadas.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	    fincasAfectadas.getColumnModel().getColumn(0)
-		    .setPreferredWidth(150);
+		    .setPreferredWidth(140);
 	    fincasAfectadas.getColumnModel().getColumn(1)
 		    .setPreferredWidth(200);
+	    fincasAfectadas.getColumnModel().getColumn(1).setPreferredWidth(90);
 	    fincasAfectadas.getColumnModel().getColumn(4).setPreferredWidth(90);
 
 	    Value[] reversionData = new Value[columnasFincas.size()];
