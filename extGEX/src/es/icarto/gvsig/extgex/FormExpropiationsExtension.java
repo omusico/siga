@@ -13,6 +13,7 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class FormExpropiationsExtension extends Extension {
 
+    public static final Object TOOLBAR_NAME = "extgex.formularios";
     private FLyrVect layer;
     private FormExpropiations dialog;
 

@@ -17,13 +17,13 @@
 		<extension class-name="es.icarto.gvsig.extgex.InitializationExtension" active="true">
 		</extension>
 		<extension class-name="es.icarto.gvsig.extgex.FormExpropiationsExtension" description="FORMS_PANEL" active="true">
-			<tool-bar name="Formularios" position="70">
+			<tool-bar name="extgex.formularios" position="70">
 				<action-tool icon="extgex-expropiations" tooltip="Expediente de expropiaciones" action-command="ExpropiationsFileExtension" position="1"/>
 			</tool-bar>
 			<menu text="SIGA/Expropiaciones/Expediente Expropiación" action-command="ExpropiationsFileExtension" icon="extgex-expropiations" position="30000"/>
 		</extension>
 		<extension class-name="es.icarto.gvsig.extgex.FormReversionsExtension" description="FORMS_PANEL" active="true">
-			<tool-bar name="Formularios" position="70">
+			<tool-bar name="extgex.formularios" position="70">
 				<action-tool icon="extgex-reversions" tooltip="Expediente de reversiones" action-command="ReversionsFileExtension" position="2"/>
 			</tool-bar>
 			<menu text="SIGA/Expropiaciones/Expediente Reversión" action-command="ReversionsFileExtension" icon="extgex-reversions" position="30050"/>
