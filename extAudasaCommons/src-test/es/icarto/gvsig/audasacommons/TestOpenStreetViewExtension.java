@@ -6,19 +6,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.geom.Point2D;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.Reader;
 
 import javax.swing.ImageIcon;
 
 import org.cresques.cts.ICoordTrans;
 import org.cresques.cts.IProjection;
-import org.exolab.castor.xml.MarshalException;
-import org.exolab.castor.xml.ValidationException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -45,7 +38,6 @@ import com.iver.andami.ui.mdiManager.MDIManager;
 import com.iver.cit.gvsig.fmap.crs.CRSFactory;
 import com.iver.cit.gvsig.project.documents.table.gui.Table;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
-import com.iver.utiles.xml.XMLEncodingUtils;
 
 @RunWith(PowerMockRunner.class)
 // http://stackoverflow.com/questions/11943703/trying-to-mock-static-system-class-with-powermock-gives-verifyerror
@@ -125,9 +117,9 @@ public class TestOpenStreetViewExtension {
     }
 
     @Test
-    public void testConfigFile() throws MarshalException,
-	    FileNotFoundException, ValidationException {
-	PluginConfig config = getConfig("config/config.xml");
+    public void testConfigFile() throws FileNotFoundException {
+	PluginConfig config = ExtensionTestHelper
+		.getConfig("config/config.xml");
 	assertTrue(config.isValid());
 
 	Extensions extensions = config.getExtensions();
@@ -178,22 +170,6 @@ public class TestOpenStreetViewExtension {
 	ext.initialize();
 	ImageIcon icon = PluginServices.getIconTheme().get("open-street-view");
 	assertNotNull(icon);
-    }
-
-    private PluginConfig getConfig(String path) throws FileNotFoundException,
-	    MarshalException, ValidationException {
-	File xmlFile = new File(path);
-
-	FileInputStream is = new FileInputStream(xmlFile);
-	Reader xml = XMLEncodingUtils.getReader(is);
-	if (xml == null) {
-	    // the encoding was not correctly dPoint2D p = event.getPoint();
-	    xml = new FileReader(xmlFile);
-	} else {
-	    // use a buffered reader to improve performance
-	    xml = new BufferedReader(xml);
-	}
-	return (PluginConfig) PluginConfig.unmarshal(xml);
     }
 
     @Test
