@@ -10,10 +10,10 @@
         <FIELDNAME>municipio</FIELDNAME>
         <DOMAINREADER>
             <DRTYPE>db</DRTYPE>
-            <DRDBSCHEMA>audasa_expropiaciones</DRDBSCHEMA>
-        	<DRDBTABLE>ayuntamientos</DRDBTABLE>
-        	<DRDBCOLUMNVALUE>codigo_ine</DRDBCOLUMNVALUE>
-        	<DRDBCOLUMNALIAS>codigo_ine</DRDBCOLUMNALIAS>
+            <DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+        	<DRDBTABLE>municipio</DRDBTABLE>
+        	<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
+        	<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
         </DOMAINREADER>
       </FIELD>
   </RECORDSET>
