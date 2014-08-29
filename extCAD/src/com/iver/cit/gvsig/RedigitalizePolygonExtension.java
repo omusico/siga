@@ -23,12 +23,8 @@
  */
 package com.iver.cit.gvsig;
 
-import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
-import com.iver.andami.messages.NotificationManager;
-import com.iver.andami.plugins.Extension;
 import com.iver.cit.gvsig.fmap.MapControl;
-import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.gui.cad.tools.RedigitalizePolygonCADTool;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
@@ -39,23 +35,17 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
  * @author Nacho Varela [Cartolab]
  * @author Pablo Sanxiao [CartoLab]
  */
-public class RedigitalizePolygonExtension extends Extension {
-    private final String iconPath = "images/icons/redigit_poligono.png";
-    private final String iconCode = "edition-geometry-redigitalize-polygon";
-    private final String cadToolCode = "_redigitalize_polygon";
-    private View view;
+public class RedigitalizePolygonExtension extends BaseCADExtension {
 
-    private MapControl mapControl;
-    private RedigitalizePolygonCADTool polygon;
+    private final static String CAD_TOOL_KEY = "_redigitalize_polygon";
+    private final static String ICON_KEY = "edition-geometry-redigitalize-polygon";
+    private final static String ICON_PATH = "images/icons/redigit_poligono.png";
 
-    /**
-     * @see com.iver.andami.plugins.IExtension#initialize()
-     */
     @Override
     public void initialize() {
-	polygon = new RedigitalizePolygonCADTool();
-	CADExtension.addCADTool(cadToolCode, polygon);
-	registerIcon();
+	tool = new RedigitalizePolygonCADTool();
+	CADExtension.addCADTool(CAD_TOOL_KEY, tool);
+	registerIcon(ICON_KEY, ICON_PATH);
     }
 
     /**
@@ -64,60 +54,12 @@ public class RedigitalizePolygonExtension extends Extension {
     @Override
     public void execute(String s) {
 	CADExtension.initFocus();
-	if (s.equals(cadToolCode)) {
-	    CADExtension.setCADTool(cadToolCode, true);
+	if (s.equals(CAD_TOOL_KEY)) {
+	    CADExtension.setCADTool(CAD_TOOL_KEY, true);
+	    View view = (View) PluginServices.getMDIManager().getActiveWindow();
+	    MapControl mapControl = view.getMapControl();
 	    CADExtension.getEditionManager().setMapControl(mapControl);
 	}
 	CADExtension.getCADToolAdapter().configureMenu();
-    }
-
-    /**
-     * @see com.iver.andami.plugins.IExtension#isEnabled()
-     */
-    @Override
-    public boolean isEnabled() {
-
-	if (EditionUtilities.getEditionStatus() == EditionUtilities.EDITION_STATUS_ONE_VECTORIAL_LAYER_ACTIVE_AND_EDITABLE) {
-	    view = (View) PluginServices.getMDIManager().getActiveWindow();
-	    mapControl = view.getMapControl();
-	    if (CADExtension.getEditionManager().getActiveLayerEdited() == null) {
-		return false;
-	    }
-	    FLyrVect lv = (FLyrVect) CADExtension.getEditionManager()
-		    .getActiveLayerEdited().getLayer();
-
-	    try {
-		if (polygon.isApplicable(lv.getShapeType())) {
-		    return true;
-		}
-	    } catch (ReadDriverException e) {
-		NotificationManager.addError(e.getMessage(), e);
-	    }
-
-	    // LayerDescriptor ld =
-	    // LayerManager.getLayerDescriptor(lv.getName());
-	    // String tipoGeom = ld.getLayerEditionDescriptor().getTipoGeom();
-	    // if (poligono.newIsApplicable(ld)){
-	    // return true;
-	    // }
-	}
-
-	return false;
-    }
-
-    /**
-     * @see com.iver.andami.plugins.IExtension#isVisible()
-     */
-    @Override
-    public boolean isVisible() {
-	if (EditionUtilities.getEditionStatus() == EditionUtilities.EDITION_STATUS_ONE_VECTORIAL_LAYER_ACTIVE_AND_EDITABLE) {
-	    return true;
-	}
-	return false;
-    }
-
-    private void registerIcon() {
-	PluginServices.getIconTheme().registerDefault(iconCode,
-		this.getClass().getClassLoader().getResource(iconPath));
     }
 }

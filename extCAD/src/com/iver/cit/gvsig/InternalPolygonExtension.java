@@ -45,7 +45,6 @@ import java.util.ArrayList;
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
 import com.iver.andami.messages.NotificationManager;
-import com.iver.andami.plugins.Extension;
 import com.iver.cit.gvsig.fmap.MapControl;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.gui.cad.tools.InternalPolygonCADTool;
@@ -57,29 +56,22 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
  * 
  * @author Vicente Caballero Navarro
  */
-public class InternalPolygonExtension extends Extension {
+public class InternalPolygonExtension extends BaseCADExtension {
+
+    private static final String CAD_TOOL_KEY = "_internalpolygon";
+    private static final String ICON_KEY = "edition-modify-geometry-internalpolygon";
+    private static final String ICON_PATH = "images/InternalPolygon.png";
+
     private View view;
 
     private MapControl mapControl;
     private InternalPolygonCADTool internalpolygon;
 
-    /**
-     * @see com.iver.andami.plugins.IExtension#initialize()
-     */
     @Override
     public void initialize() {
 	internalpolygon = new InternalPolygonCADTool();
-	CADExtension.addCADTool("_internalpolygon", internalpolygon);
-
-	registerIcons();
-    }
-
-    private void registerIcons() {
-	PluginServices.getIconTheme().registerDefault(
-		"edition-modify-geometry-internalpolygon",
-		this.getClass().getClassLoader()
-			.getResource("images/InternalPolygon.png"));
-
+	CADExtension.addCADTool(CAD_TOOL_KEY, internalpolygon);
+	registerIcon(ICON_KEY, ICON_PATH);
     }
 
     /**
@@ -88,8 +80,8 @@ public class InternalPolygonExtension extends Extension {
     @Override
     public void execute(String s) {
 	CADExtension.initFocus();
-	if (s.equals("_internalpolygon")) {
-	    CADExtension.setCADTool(s, true);
+	if (s.equals(CAD_TOOL_KEY)) {
+	    CADExtension.setCADTool(CAD_TOOL_KEY, true);
 	}
 	CADExtension.getEditionManager().setMapControl(mapControl);
 	CADExtension.getCADToolAdapter().configureMenu();
@@ -126,14 +118,4 @@ public class InternalPolygonExtension extends Extension {
 	return false;
     }
 
-    /**
-     * @see com.iver.andami.plugins.IExtension#isVisible()
-     */
-    @Override
-    public boolean isVisible() {
-	if (EditionUtilities.getEditionStatus() == EditionUtilities.EDITION_STATUS_ONE_VECTORIAL_LAYER_ACTIVE_AND_EDITABLE) {
-	    return true;
-	}
-	return false;
-    }
 }

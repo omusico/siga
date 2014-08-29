@@ -40,41 +40,27 @@
  */
 package com.iver.cit.gvsig;
 
-import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
-import com.iver.andami.messages.NotificationManager;
-import com.iver.andami.plugins.Extension;
 import com.iver.cit.gvsig.fmap.MapControl;
-import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.gui.cad.tools.MoveCADTool;
+import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 /**
  * Extensión que gestiona la herramienta de mover.
  * 
  * @author Vicente Caballero Navarro
  */
-public class MoveGeometryExtension extends Extension {
+public class MoveGeometryExtension extends BaseCADExtension {
 
-    protected MapControl mapControl;
-    protected MoveCADTool move;
+    private static final String CAD_TOOL_KEY = "_move";
+    private static final String ICON_KEY = "edition-geometry-tool";
+    private static final String ICON_PATH = "images/Move.png";
 
-    /**
-     * @see com.iver.andami.plugins.IExtension#initialize()
-     */
     @Override
     public void initialize() {
-	move = new MoveCADTool();
-	CADExtension.addCADTool("_move", move);
-
-	registerIcons();
-    }
-
-    private void registerIcons() {
-	PluginServices.getIconTheme()
-		.registerDefault(
-			"edition-geometry-move",
-			this.getClass().getClassLoader()
-				.getResource("images/Move.png"));
+	tool = new MoveCADTool();
+	CADExtension.addCADTool(CAD_TOOL_KEY, tool);
+	registerIcon(ICON_KEY, ICON_PATH);
     }
 
     /**
@@ -83,39 +69,12 @@ public class MoveGeometryExtension extends Extension {
     @Override
     public void execute(String s) {
 	CADExtension.initFocus();
-	if (s.equals("_move")) {
-	    CADExtension.setCADTool("_move", true);
+	if (s.equals(CAD_TOOL_KEY)) {
+	    CADExtension.setCADTool(CAD_TOOL_KEY, true);
 	}
+	View view = (View) PluginServices.getMDIManager().getActiveWindow();
+	MapControl mapControl = view.getMapControl();
 	CADExtension.getEditionManager().setMapControl(mapControl);
 	CADExtension.getCADToolAdapter().configureMenu();
-    }
-
-    /**
-     * @see com.iver.andami.plugins.IExtension#isEnabled()
-     */
-    @Override
-    public boolean isEnabled() {
-	if (CADExtension.getEditionManager().getActiveLayerEdited() == null) {
-	    return false;
-	}
-	FLyrVect lv = (FLyrVect) CADExtension.getEditionManager()
-		.getActiveLayerEdited().getLayer();
-	try {
-	    return move.isApplicable(lv.getShapeType());
-	} catch (ReadDriverException e) {
-	    NotificationManager.addError(e.getMessage(), e);
-	}
-	return false;
-    }
-
-    /**
-     * @see com.iver.andami.plugins.IExtension#isVisible()
-     */
-    @Override
-    public boolean isVisible() {
-	if (EditionUtilities.getEditionStatus() == EditionUtilities.EDITION_STATUS_ONE_VECTORIAL_LAYER_ACTIVE_AND_EDITABLE) {
-	    return true;
-	}
-	return false;
     }
 }

@@ -23,11 +23,8 @@
  */
 package com.iver.cit.gvsig;
 
-import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
-import com.iver.andami.plugins.Extension;
 import com.iver.cit.gvsig.fmap.MapControl;
-import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.gui.cad.tools.AreaCADTool;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
@@ -37,23 +34,17 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
  * @author Isabel Pérez-Urria Lage [LBD]
  * @author Pablo Sanxiao [CartoLab]
  */
-public class InsertAreaExtension extends Extension {
-    private View view;
+public class InsertAreaExtension extends BaseCADExtension {
 
-    private MapControl mapControl;
-    private AreaCADTool area;
+    private static final String CAD_TOOL_KEY = "_area";
+    private static final String ICON_KEY = "insert-area";
+    private static final String ICON_PATH = "images/icons/multipoligono.png";
 
-    /**
-     * @see com.iver.andami.plugins.IExtension#initialize()
-     */
     @Override
     public void initialize() {
-	area = new AreaCADTool();
-	CADExtension.addCADTool("_area", area);
-	PluginServices.getIconTheme().registerDefault(
-		"insert-area",
-		this.getClass().getClassLoader()
-			.getResource("images/icons/multipoligono.png"));
+	tool = new AreaCADTool();
+	CADExtension.addCADTool(CAD_TOOL_KEY, tool);
+	registerIcon(ICON_KEY, ICON_PATH);
     }
 
     /**
@@ -62,54 +53,13 @@ public class InsertAreaExtension extends Extension {
     @Override
     public void execute(String s) {
 	CADExtension.initFocus();
-	if (s.equals("_area")) {
-	    CADExtension.setCADTool(s, true);
+	if (s.equals(CAD_TOOL_KEY)) {
+	    CADExtension.setCADTool(CAD_TOOL_KEY, true);
 	}
+	View view = (View) PluginServices.getMDIManager().getActiveWindow();
+	MapControl mapControl = view.getMapControl();
 	CADExtension.getEditionManager().setMapControl(mapControl);
 	CADExtension.getCADToolAdapter().configureMenu();
     }
 
-    /**
-     * @see com.iver.andami.plugins.IExtension#isEnabled()
-     */
-    @Override
-    public boolean isEnabled() {
-
-	if (EditionUtilities.getEditionStatus() == EditionUtilities.EDITION_STATUS_ONE_VECTORIAL_LAYER_ACTIVE_AND_EDITABLE) {
-	    view = (View) PluginServices.getMDIManager().getActiveWindow();
-	    mapControl = view.getMapControl();
-	    if (CADExtension.getEditionManager().getActiveLayerEdited() == null) {
-		return false;
-	    }
-	    FLyrVect lv = (FLyrVect) CADExtension.getEditionManager()
-		    .getActiveLayerEdited().getLayer();
-	    try {
-		if (area.isApplicable(lv.getShapeType())) {
-		    return true;
-		}
-	    } catch (ReadDriverException e) {
-		e.printStackTrace();
-	    }
-
-	    // LayerDescriptor ld =
-	    // LayerManager.getLayerDescriptor(lv.getName());
-	    // String tipoGeom = ld.getLayerEditionDescriptor().getTipoGeom();
-	    // if (area.newIsApplicable(ld)){
-	    // return true;
-	    // }
-	}
-
-	return false;
-    }
-
-    /**
-     * @see com.iver.andami.plugins.IExtension#isVisible()
-     */
-    @Override
-    public boolean isVisible() {
-	if (EditionUtilities.getEditionStatus() == EditionUtilities.EDITION_STATUS_ONE_VECTORIAL_LAYER_ACTIVE_AND_EDITABLE) {
-	    return true;
-	}
-	return false;
-    }
 }

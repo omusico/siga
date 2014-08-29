@@ -43,7 +43,6 @@ package com.iver.cit.gvsig;
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
 import com.iver.andami.messages.NotificationManager;
-import com.iver.andami.plugins.Extension;
 import com.iver.cit.gvsig.fmap.MapControl;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.gui.cad.tools.ArcCADTool;
@@ -55,34 +54,20 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
  * 
  * @author Vicente Caballero Navarro
  */
-public class InsertLineExtension extends Extension {
+public class InsertLineExtension extends BaseCADExtension {
     protected View view;
     protected LineCADTool line;
     protected MapControl mapControl;
 
-    /**
-     * @see com.iver.andami.plugins.IExtension#initialize()
-     */
     @Override
     public void initialize() {
 	line = new LineCADTool();
 	CADExtension.addCADTool("_line", line);
+	registerIcon("edition-insert-line", "images/icons/linea.png");
+
 	ArcCADTool arc = new ArcCADTool();
 	CADExtension.addCADTool("_arc", arc);
-
-	registerIcons();
-    }
-
-    private void registerIcons() {
-	PluginServices.getIconTheme().registerDefault(
-		"edition-insert-line",
-		this.getClass().getClassLoader()
-			.getResource("images/icons/linea.png"));
-
-	PluginServices.getIconTheme().registerDefault(
-		"edition-insert-arc",
-		this.getClass().getClassLoader()
-			.getResource("images/icons/arco.png"));
+	registerIcon("edition-insert-arc", "images/icons/arco.png");
     }
 
     /**
@@ -119,17 +104,6 @@ public class InsertLineExtension extends Extension {
 	    }
 	} catch (ReadDriverException e) {
 	    NotificationManager.addError(e.getMessage(), e);
-	}
-	return false;
-    }
-
-    /**
-     * @see com.iver.andami.plugins.IExtension#isVisible()
-     */
-    @Override
-    public boolean isVisible() {
-	if (EditionUtilities.getEditionStatus() == EditionUtilities.EDITION_STATUS_ONE_VECTORIAL_LAYER_ACTIVE_AND_EDITABLE) {
-	    return true;
 	}
 	return false;
     }

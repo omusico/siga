@@ -43,7 +43,6 @@ package com.iver.cit.gvsig;
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
 import com.iver.andami.messages.NotificationManager;
-import com.iver.andami.plugins.Extension;
 import com.iver.cit.gvsig.fmap.MapControl;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.gui.cad.tools.EIELPolylineCADTool;
@@ -55,36 +54,22 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
  * 
  * @author Vicente Caballero Navarro
  */
-public class InsertPolyLineExtension extends Extension {
+public class InsertPolyLineExtension extends BaseCADExtension {
     protected View view;
 
     protected MapControl mapControl;
     protected EIELPolylineCADTool polyline;
     protected SplineCADTool spline;
 
-    /**
-     * @see com.iver.andami.plugins.IExtension#initialize()
-     */
     @Override
     public void initialize() {
 	polyline = new EIELPolylineCADTool();
-	spline = new SplineCADTool();
 	CADExtension.addCADTool("_polyline", polyline);
+	registerIcon("edition-insert-polyline", "images/icons/polilinea.png");
+
+	spline = new SplineCADTool();
 	CADExtension.addCADTool("_spline", spline);
-
-	registerIcons();
-    }
-
-    private void registerIcons() {
-	PluginServices.getIconTheme().registerDefault(
-		"edition-insert-polyline",
-		this.getClass().getClassLoader()
-			.getResource("images/icons/polilinea.png"));
-
-	PluginServices.getIconTheme().registerDefault(
-		"edition-insert-geometry-spline",
-		this.getClass().getClassLoader()
-			.getResource("images/Spline.png"));
+	registerIcon("edition-insert-geometry-spline", "images/Spline.png");
     }
 
     /**
@@ -123,17 +108,6 @@ public class InsertPolyLineExtension extends Extension {
 	    }
 	} catch (ReadDriverException e) {
 	    NotificationManager.addError(e.getMessage(), e);
-	}
-	return false;
-    }
-
-    /**
-     * @see com.iver.andami.plugins.IExtension#isVisible()
-     */
-    @Override
-    public boolean isVisible() {
-	if (EditionUtilities.getEditionStatus() == EditionUtilities.EDITION_STATUS_ONE_VECTORIAL_LAYER_ACTIVE_AND_EDITABLE) {
-	    return true;
 	}
 	return false;
     }

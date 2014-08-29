@@ -43,7 +43,6 @@ package com.iver.cit.gvsig;
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
 import com.iver.andami.messages.NotificationManager;
-import com.iver.andami.plugins.Extension;
 import com.iver.cit.gvsig.fmap.MapControl;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.gui.cad.DefaultCADTool;
@@ -59,56 +58,33 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
  * 
  * @author Vicente Caballero Navarro
  */
-public class InsertPolygonExtension extends Extension {
+public class InsertPolygonExtension extends BaseCADExtension {
     protected View view;
 
     protected MapControl mapControl;
     protected PolygonCADTool polygon;
 
-    /**
-     * @see com.iver.andami.plugins.IExtension#initialize()
-     */
     @Override
     public void initialize() {
 	polygon = new PolygonCADTool();
-	DefaultCADTool circle = new CircleCADTool();
-	RectangleCADTool rectangle = new RectangleCADTool();
-	EllipseCADTool ellipse = new EllipseCADTool();
-	EditVertexCADTool editvertex = new EditVertexCADTool();
 	CADExtension.addCADTool("_polygon", polygon);
+	registerIcon("edition-insert-polygon", "images/icons/poligono.png");
+
+	DefaultCADTool circle = new CircleCADTool();
 	CADExtension.addCADTool("_circle", circle);
+	registerIcon("edition-insert-circle", "images/icons/circulo.png");
+
+	RectangleCADTool rectangle = new RectangleCADTool();
 	CADExtension.addCADTool("_rectangle", rectangle);
+	registerIcon("edition-insert-rectangle", "images/icons/rectangulo.png");
+
+	EllipseCADTool ellipse = new EllipseCADTool();
 	CADExtension.addCADTool("_ellipse", ellipse);
+	registerIcon("edition-insert-ellipse", "images/icons/elipse.png");
+
+	EditVertexCADTool editvertex = new EditVertexCADTool();
 	CADExtension.addCADTool("_editvertex", editvertex);
-
-	registerIcons();
-    }
-
-    private void registerIcons() {
-	PluginServices.getIconTheme().registerDefault(
-		"edition-insert-polygon",
-		this.getClass().getClassLoader()
-			.getResource("images/icons/poligono.png"));
-
-	PluginServices.getIconTheme().registerDefault(
-		"edition-insert-rectangle",
-		this.getClass().getClassLoader()
-			.getResource("images/icons/rectangulo.png"));
-
-	PluginServices.getIconTheme().registerDefault(
-		"edition-insert-circle",
-		this.getClass().getClassLoader()
-			.getResource("images/icons/circulo.png"));
-
-	PluginServices.getIconTheme().registerDefault(
-		"edition-insert-ellipse",
-		this.getClass().getClassLoader()
-			.getResource("images/icons/elipse.png"));
-
-	PluginServices.getIconTheme().registerDefault(
-		"edition-geometry-edit-vertex",
-		this.getClass().getClassLoader()
-			.getResource("images/EditVertex.png"));
+	registerIcon("edition-geometry-edit-vertex", "images/EditVertex.png");
     }
 
     /**
@@ -150,14 +126,4 @@ public class InsertPolygonExtension extends Extension {
 	return false;
     }
 
-    /**
-     * @see com.iver.andami.plugins.IExtension#isVisible()
-     */
-    @Override
-    public boolean isVisible() {
-	if (EditionUtilities.getEditionStatus() == EditionUtilities.EDITION_STATUS_ONE_VECTORIAL_LAYER_ACTIVE_AND_EDITABLE) {
-	    return true;
-	}
-	return false;
-    }
 }
