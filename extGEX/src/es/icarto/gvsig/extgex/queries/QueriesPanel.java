@@ -27,11 +27,11 @@ import com.jeta.forms.gui.common.FormException;
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.commons.gui.AbstractIWindow;
 import es.icarto.gvsig.commons.queries.ConnectionWrapper;
+import es.icarto.gvsig.commons.queries.CustomiceDialog;
+import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.commons.queries.QueriesWidget;
 import es.icarto.gvsig.extgex.forms.FormExpropiations;
 import es.icarto.gvsig.extgex.preferences.DBNames;
-import es.icarto.gvsig.extgia.consultas.CustomiceDialog;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
@@ -346,11 +346,11 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
 	String querySubtitle = queryContents[3];
 
 	if (customized) {
-	    CustomiceDialog<KeyValue> customiceDialog = new CustomiceDialog<KeyValue>();
+	    CustomiceDialog<Field> customiceDialog = new CustomiceDialog<Field>();
 
 	    String[] tableColumns = DBSession.getCurrentSession().getColumns(
 		    DBNames.SCHEMA_DATA, FormExpropiations.TABLENAME);
-	    List<KeyValue> columns = parseQuery(query, tableColumns);
+	    List<Field> columns = parseQuery(query, tableColumns);
 	    customiceDialog.addSourceElements(columns);
 
 	    int status = customiceDialog.open();
@@ -431,12 +431,12 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
 	return whereC;
     }
 
-    private String buildQuery(String query, List<KeyValue> fields,
-	    List<KeyValue> orderBy) {
+    private String buildQuery(String query, List<Field> fields,
+	    List<Field> orderBy) {
 	String newQuery = query;
 	if (!fields.isEmpty()) {
 	    newQuery = "SELECT ";
-	    for (KeyValue kv : fields) {
+	    for (Field kv : fields) {
 		newQuery = newQuery + kv.getKey() + " as \"" + kv.getValue()
 			+ "\", ";
 	    }
@@ -456,7 +456,7 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
 		newQuery = newQuery + " ORDER BY ";
 	    }
 
-	    for (KeyValue kv : orderBy) {
+	    for (Field kv : orderBy) {
 		newQuery = newQuery + kv.getKey() + ", ";
 	    }
 	    newQuery = newQuery.substring(0, newQuery.length() - 2);
@@ -464,25 +464,25 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
 	return newQuery;
     }
 
-    private List<KeyValue> parseQuery(String query, String[] columns) {
+    private List<Field> parseQuery(String query, String[] columns) {
 
 	String fieldsStr = query.substring(query.indexOf("SELECT ") + 7,
 		query.indexOf(" FROM"));
 	String[] fields = fieldsStr.split(",");
-	List<KeyValue> fieldList = new ArrayList<KeyValue>();
+	List<Field> fieldList = new ArrayList<Field>();
 
 	// object returned by Arrays.asList does not implement remove operation
 	List<String> columnList = new ArrayList<String>(Arrays.asList(columns));
 	for (String f : fields) {
 	    String[] split = f.split(" as ");
-	    KeyValue kv = new KeyValue(split[0].trim(), split[1].trim()
-		    .replace("\"", ""));
+	    Field kv = new Field(split[0].trim(), split[1].trim().replace("\"",
+		    ""));
 	    fieldList.add(kv);
 	    columnList.remove(kv.getKey());
 
 	}
 	for (String f : columnList) {
-	    KeyValue kv = new KeyValue(f, f);
+	    Field kv = new Field(f, f);
 	    fieldList.add(kv);
 	}
 	return fieldList;
