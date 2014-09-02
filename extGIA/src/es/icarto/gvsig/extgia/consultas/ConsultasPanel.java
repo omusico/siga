@@ -31,6 +31,7 @@ import com.jeta.forms.gui.common.FormException;
 import com.toedter.calendar.JDateChooser;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
+import es.icarto.gvsig.commons.queries.CustomiceDialog;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.DomainValues;

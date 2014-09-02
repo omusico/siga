@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgia.consultas;
+package es.icarto.gvsig.commons.queries;
 
 /*
  * Based on:
@@ -13,7 +13,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -217,16 +216,8 @@ final class SortedListModel<E> extends AbstractListModel {
 
     Set<E> model;
 
-    // TODO: fpuga. Instead of use always this constructor it will be better to
-    // use the default constructor that delegates in Comparable, and use this
-    // one only when E does not implement Comparable
     public SortedListModel() {
-	model = new TreeSet<E>(new Comparator<E>() {
-	    @Override
-	    public int compare(E o1, E o2) {
-		return o1.toString().compareTo(o2.toString());
-	    }
-	});
+	model = new TreeSet<E>();
     }
 
     @Override

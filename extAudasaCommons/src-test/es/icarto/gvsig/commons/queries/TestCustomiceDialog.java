@@ -1,8 +1,10 @@
-package es.icarto.gvsig.extgia.consultas;
+package es.icarto.gvsig.commons.queries;
 
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
+
+import es.icarto.gvsig.commons.queries.CustomiceDialog;
 
 public class TestCustomiceDialog {
 

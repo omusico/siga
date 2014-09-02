@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgia.consultas;
+package es.icarto.gvsig.commons.queries;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
