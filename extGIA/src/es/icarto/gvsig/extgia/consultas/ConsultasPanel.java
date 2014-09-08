@@ -165,7 +165,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
     @Override
     public WindowInfo getWindowInfo() {
-	viewInfo = new WindowInfo(WindowInfo.MODALDIALOG);
+	viewInfo = new WindowInfo(WindowInfo.MODELESSDIALOG);
 	viewInfo.setTitle(title);
 	viewInfo.setWidth(width);
 	viewInfo.setHeight(height);
@@ -241,8 +241,12 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	if (!todos.setOutputPath(null)) {
 	    return;
 	}
-
-	todos.generateReportFile();
+	try {
+	    PluginServices.getMDIManager().setWaitCursor();
+	    todos.generateReportFile();
+	} finally {
+	    PluginServices.getMDIManager().restoreCursor();
+	}
 	todos.finalActions();
 
     }
