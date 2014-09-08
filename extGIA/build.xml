@@ -35,7 +35,7 @@
 	    <copy file="config/config.xml" todir="${dist}" />
 		
 		<copy todir="${dist}">
-			<fileset dir="config" includes="text*.properties" />
+			<fileset dir="config" includes="*.properties" />
 		</copy>
 
 		<copy todir="${dist}/images">

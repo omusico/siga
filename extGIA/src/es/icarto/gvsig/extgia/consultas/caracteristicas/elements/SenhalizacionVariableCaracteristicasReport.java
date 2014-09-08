@@ -1,7 +1,5 @@
 package es.icarto.gvsig.extgia.consultas.caracteristicas.elements;
 
-import java.sql.ResultSet;
-
 import javax.swing.table.DefaultTableModel;
 
 import com.lowagie.text.Document;
@@ -9,13 +7,15 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 
+import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.icarto.gvsig.extgia.consultas.PDFReport;
 
 public class SenhalizacionVariableCaracteristicasReport extends PDFReport {
 
     public SenhalizacionVariableCaracteristicasReport(String[] element,
-	    String fileName, DefaultTableModel tableModel, ConsultasFilters filters, int reportType) {
+	    String fileName, DefaultTableModel tableModel,
+	    ConsultasFilters<Field> filters, int reportType) {
 	super(element, fileName, tableModel, filters, reportType);
 	// TODO Auto-generated constructor stub
     }
@@ -32,24 +32,10 @@ public class SenhalizacionVariableCaracteristicasReport extends PDFReport {
 
     @Override
     protected String[] getColumnNames() {
-	String[] columnNames = {
-		"ID Señal",
-		"Tramo",
-		"Tipo Vía",
-		"Nombre Vía",
-		"PK",
-		"Nº Referencia",
-		"Fecha Instalación",
-		"Tipo",
-		"Tipo Sustentación",
-		"A Coruña",
-		"Ferrol",
-		"Santiago",
-		"Pontevedra",
-		"Vigo",
-		"Tui",
-		"Observaciones"
-	};
+	String[] columnNames = { "ID Señal", "Tramo", "Tipo Vía", "Nombre Vía",
+		"PK", "Nº Referencia", "Fecha Instalación", "Tipo",
+		"Tipo Sustentación", "A Coruña", "Ferrol", "Santiago",
+		"Pontevedra", "Vigo", "Tui", "Observaciones" };
 	return columnNames;
     }
 
@@ -74,12 +60,12 @@ public class SenhalizacionVariableCaracteristicasReport extends PDFReport {
 	columnsWidth[14] = 60f;
 	columnsWidth[15] = 90f;
 
-
 	return columnsWidth;
     }
 
     @Override
-    protected void writeDatesRange(Document document, ConsultasFilters filters) {
+    protected void writeDatesRange(Document document,
+	    ConsultasFilters<Field> filters) {
 
     }
 

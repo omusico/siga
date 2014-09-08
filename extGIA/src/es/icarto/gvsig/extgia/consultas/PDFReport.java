@@ -30,6 +30,7 @@ import com.lowagie.text.pdf.PdfPageEventHelper;
 import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.rtf.style.RtfParagraphStyle;
 
+import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.extgia.utils.Utils;
 
 public abstract class PDFReport {
@@ -46,10 +47,11 @@ public abstract class PDFReport {
     protected Document document;
     private final String elementID;
 
-    protected final ConsultasFilters filters;
+    protected final ConsultasFilters<Field> filters;
 
     public PDFReport(String[] element, String fileName,
-	    DefaultTableModel table, ConsultasFilters filters, int reportType) {
+	    DefaultTableModel table, ConsultasFilters<Field> filters,
+	    int reportType) {
 	this.filters = filters;
 	this.elementID = element[0];
 	writePdfReport(element[1], fileName, table, filters, reportType);
@@ -86,7 +88,7 @@ public abstract class PDFReport {
 	return image;
     }
 
-    private void writeFilters(Document document, ConsultasFilters filters) {
+    private void writeFilters(Document document, ConsultasFilters<Field> filters) {
 	try {
 	    Paragraph amP = null;
 	    if (filters.getArea() == null) {
@@ -122,8 +124,8 @@ public abstract class PDFReport {
 	}
     }
 
-    protected void writeDatesRange(Document document, ConsultasFilters filters)
-	    throws DocumentException {
+    protected void writeDatesRange(Document document,
+	    ConsultasFilters<Field> filters) throws DocumentException {
 	Paragraph mesP = new Paragraph("Desde: "
 		+ filters.getFechaInicioFormatted(), bodyBoldStyle);
 	document.add(mesP);
@@ -183,7 +185,7 @@ public abstract class PDFReport {
     }
 
     private void writePdfReportContent(Document document, String element,
-	    DefaultTableModel tableModel, ConsultasFilters filters,
+	    DefaultTableModel tableModel, ConsultasFilters<Field> filters,
 	    int reportType) {
 	try {
 	    // Header
@@ -292,7 +294,8 @@ public abstract class PDFReport {
     }
 
     public void writePdfReport(String element, String fileName,
-	    DefaultTableModel table, ConsultasFilters filters, int reportType) {
+	    DefaultTableModel table, ConsultasFilters<Field> filters,
+	    int reportType) {
 	document = new Document(setPageSize());
 	try {
 	    PdfWriter writer = PdfWriter.getInstance(document,
@@ -332,7 +335,7 @@ public abstract class PDFReport {
 	}
     }
 
-    protected ConsultasFilters getFilters() {
+    protected ConsultasFilters<Field> getFilters() {
 	return filters;
     }
 

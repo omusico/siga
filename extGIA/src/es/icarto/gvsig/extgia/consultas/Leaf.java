@@ -11,6 +11,7 @@ import com.iver.andami.PluginServices;
 
 import es.icarto.gvsig.audasacommons.forms.reports.SaveFileDialog;
 import es.icarto.gvsig.commons.queries.ConnectionWrapper;
+import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.extgia.consultas.agregados.CSVTrabajosAgregadosReport;
 import es.icarto.gvsig.extgia.consultas.agregados.TrabajosAgregadosReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.CSVCaracteristicasQueries;
@@ -32,14 +33,14 @@ public class Leaf implements Component {
     private static final int TRABAJOS_AGREGADOS = 5;
 
     private final String[] element;
-    private final ConsultasFilters consultasFilters;
+    private final ConsultasFilters<Field> consultasFilters;
     private final KeyValue tipoConsulta;
     private final boolean pdf;
 
     private File outputFile;
     private boolean emptyQuery = false;
 
-    public Leaf(String[] element, ConsultasFilters consultasFilters,
+    public Leaf(String[] element, ConsultasFilters<Field> consultasFilters,
 	    KeyValue tipoConsulta, boolean pdf) {
 	this.element = element;
 	this.consultasFilters = consultasFilters;
@@ -109,13 +110,13 @@ public class Leaf implements Component {
     }
 
     private void createPdfReportAgregados(String outputFile, String[] element,
-	    ConsultasFilters filters) {
+	    ConsultasFilters<Field> filters) {
 	new TrabajosAgregadosReport(element, outputFile, null, filters,
 		TYPE_NOT_SET); // TODO
     }
 
     private void createCsvReportAgregados(String outputFile, String[] element,
-	    ConsultasFilters filters) {
+	    ConsultasFilters<Field> filters) {
 	new CSVTrabajosAgregadosReport(element[0], outputFile, consultasFilters);
     }
 
@@ -157,7 +158,7 @@ public class Leaf implements Component {
 	return "";
     }
 
-    private String getReportQuery(int tipo, ConsultasFilters filters,
+    private String getReportQuery(int tipo, ConsultasFilters<Field> filters,
 	    String element) {
 	String query;
 
@@ -169,8 +170,8 @@ public class Leaf implements Component {
 	return query;
     }
 
-    private String getReportQueryForCaracteristicas(ConsultasFilters filters,
-	    String element) {
+    private String getReportQueryForCaracteristicas(
+	    ConsultasFilters<Field> filters, String element) {
 	String query;
 	if (pdf) {
 	    query = PDFCaracteristicasQueries.getPDFCaracteristicasQuery(
@@ -183,8 +184,12 @@ public class Leaf implements Component {
 		if (filters.getFields().size() > 0) {
 		    subquery = query.substring(query.indexOf(" FROM"));
 		    String select = "SELECT ";
-		    for (String field : filters.getFields()) {
-			select = select + "el." + field + ", ";
+		    for (Field field : filters.getFields()) {
+			select = select
+				+ "el."
+				+ field.getKey()
+				+ String.format(" AS \"%s\"", field.getValue()
+					.replace("\"", "'")) + ", ";
 		    }
 		    subquery = select.substring(0, select.length() - 2)
 			    + subquery;
@@ -203,8 +208,8 @@ public class Leaf implements Component {
 			subquery = subquery + " ORDER BY ";
 		    }
 
-		    for (String field : filters.getOrderBy()) {
-			subquery = subquery + field + ", ";
+		    for (Field field : filters.getOrderBy()) {
+			subquery = subquery + field.getKey() + ", ";
 		    }
 		    subquery = subquery.substring(0, subquery.length() - 2);
 		}
@@ -217,7 +222,7 @@ public class Leaf implements Component {
     }
 
     private String getReportQueryForNoCaracteristicas(int tipo,
-	    ConsultasFilters filters, String element) {
+	    ConsultasFilters<Field> filters, String element) {
 	String elementId = ConsultasFieldNames.getElementId(element);
 	String fields = getFields(tipo, elementId);
 
@@ -239,7 +244,7 @@ public class Leaf implements Component {
     }
 
     private void createPdfReport(int tipo, String outputFile, String[] element,
-	    ConsultasFilters filters, DefaultTableModel table) {
+	    ConsultasFilters<Field> filters, DefaultTableModel table) {
 
 	if (tipo == TRABAJOS) {
 	    new TrabajosReport(element, outputFile, table, filters, tipo);
@@ -257,7 +262,7 @@ public class Leaf implements Component {
     }
 
     private void createCsvReport(String outputFile, DefaultTableModel table,
-	    ConsultasFilters filters) {
+	    ConsultasFilters<Field> filters) {
 	new CSVReport(outputFile, table, filters);
     }
 

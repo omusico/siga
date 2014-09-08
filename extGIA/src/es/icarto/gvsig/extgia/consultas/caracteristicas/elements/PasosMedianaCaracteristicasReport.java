@@ -1,7 +1,5 @@
 package es.icarto.gvsig.extgia.consultas.caracteristicas.elements;
 
-import java.sql.ResultSet;
-
 import javax.swing.table.DefaultTableModel;
 
 import com.lowagie.text.Document;
@@ -9,13 +7,15 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 
+import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.icarto.gvsig.extgia.consultas.PDFReport;
 
 public class PasosMedianaCaracteristicasReport extends PDFReport {
 
     public PasosMedianaCaracteristicasReport(String[] element, String fileName,
-	    DefaultTableModel tableModel, ConsultasFilters filters, int reportType) {
+	    DefaultTableModel tableModel, ConsultasFilters<Field> filters,
+	    int reportType) {
 	super(element, fileName, tableModel, filters, reportType);
 	// TODO Auto-generated constructor stub
     }
@@ -32,19 +32,9 @@ public class PasosMedianaCaracteristicasReport extends PDFReport {
 
     @Override
     protected String[] getColumnNames() {
-	String[] columnNames = {
-		"ID Paso",
-		"Tramo",
-		"Tipo Vía",
-		"Nombre Vía",
-		"PK",
-		"Longitud",
-		"Número Postes",
-		"Cierre",
-		"Longitud Cierre",
-		"Cuneta Entubada",
-		"Observaciones"
-	};
+	String[] columnNames = { "ID Paso", "Tramo", "Tipo Vía", "Nombre Vía",
+		"PK", "Longitud", "Número Postes", "Cierre", "Longitud Cierre",
+		"Cuneta Entubada", "Observaciones" };
 	return columnNames;
     }
 
@@ -68,7 +58,8 @@ public class PasosMedianaCaracteristicasReport extends PDFReport {
     }
 
     @Override
-    protected void writeDatesRange(Document document, ConsultasFilters filters) {
+    protected void writeDatesRange(Document document,
+	    ConsultasFilters<Field> filters) {
 
     }
 

@@ -1,7 +1,5 @@
 package es.icarto.gvsig.extgia.consultas.caracteristicas.elements;
 
-import java.sql.ResultSet;
-
 import javax.swing.table.DefaultTableModel;
 
 import com.lowagie.text.Document;
@@ -9,13 +7,15 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 
+import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.icarto.gvsig.extgia.consultas.PDFReport;
 
 public class FirmeCaracteristicasReport extends PDFReport {
 
     public FirmeCaracteristicasReport(String element[], String fileName,
-	    DefaultTableModel tableModel, ConsultasFilters filters, int reportType) {
+	    DefaultTableModel tableModel, ConsultasFilters<Field> filters,
+	    int reportType) {
 	super(element, fileName, tableModel, filters, reportType);
     }
 
@@ -31,22 +31,11 @@ public class FirmeCaracteristicasReport extends PDFReport {
 
     @Override
     protected String[] getColumnNames() {
-	String[] columnNames = {
-		"ID Firme",
-		"Fecha Inauguración",
-		"Fecha Apertura",
-		"Unidad Constructiva",
-		"PK Inicial",
-		"PK Final",
-		"Explanada (cm)",
-		"Zahorra Artificial (cm)",
-		"Suelo Cemento (cm)",
-		"Grava Cemento (cm)",
-		"MBC Base (cm)",
-		"MBC Intermedia (cm)",
-		"MBC Rodadura (cm)",
-		"Observaciones"
-	};
+	String[] columnNames = { "ID Firme", "Fecha Inauguración",
+		"Fecha Apertura", "Unidad Constructiva", "PK Inicial",
+		"PK Final", "Explanada (cm)", "Zahorra Artificial (cm)",
+		"Suelo Cemento (cm)", "Grava Cemento (cm)", "MBC Base (cm)",
+		"MBC Intermedia (cm)", "MBC Rodadura (cm)", "Observaciones" };
 	return columnNames;
     }
 
@@ -73,7 +62,8 @@ public class FirmeCaracteristicasReport extends PDFReport {
     }
 
     @Override
-    protected void writeDatesRange(Document document, ConsultasFilters filters) {
+    protected void writeDatesRange(Document document,
+	    ConsultasFilters<Field> filters) {
 
     }
 

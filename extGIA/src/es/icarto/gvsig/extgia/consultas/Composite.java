@@ -11,18 +11,19 @@ import javax.swing.JOptionPane;
 
 import com.iver.andami.PluginServices;
 
+import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 
 public class Composite implements Component {
     private final List<Component> childs = new ArrayList<Component>();
-    private final ConsultasFilters consultasFilters;
+    private final ConsultasFilters<Field> consultasFilters;
     private final KeyValue tipoConsulta;
     private final boolean pdf;
 
     private File outputPath;
 
-    public Composite(ConsultasFilters consultasFilters, KeyValue tipoConsulta,
-	    boolean pdf) {
+    public Composite(ConsultasFilters<Field> consultasFilters,
+	    KeyValue tipoConsulta, boolean pdf) {
 	this.consultasFilters = consultasFilters;
 	this.tipoConsulta = tipoConsulta;
 	this.pdf = pdf;

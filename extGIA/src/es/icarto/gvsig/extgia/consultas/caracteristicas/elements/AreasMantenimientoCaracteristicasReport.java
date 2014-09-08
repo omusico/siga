@@ -13,6 +13,7 @@ import com.lowagie.text.Paragraph;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 
+import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.icarto.gvsig.extgia.consultas.PDFReport;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
@@ -20,8 +21,8 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 public class AreasMantenimientoCaracteristicasReport extends PDFReport {
 
     public AreasMantenimientoCaracteristicasReport(String[] element,
-	    String fileName, DefaultTableModel tableModel, ConsultasFilters filters,
-	    int reportType) {
+	    String fileName, DefaultTableModel tableModel,
+	    ConsultasFilters<Field> filters, int reportType) {
 	super(element, fileName, tableModel, filters, reportType);
     }
 
@@ -37,19 +38,10 @@ public class AreasMantenimientoCaracteristicasReport extends PDFReport {
 
     @Override
     protected String[] getColumnNames() {
-	String[] columnNames = {
-		"ID Área",
-		"Nombre",
-		"Tramo",
-		"PK",
-		"Centro de operaciones",
-		"Centro de comunicaciones",
-		"Control de postes de auxilio",
-		"Control de túneles",
-		"Almacén de fundentes",
-		"Alumbrado",
-		"Observaciones"
-	};
+	String[] columnNames = { "ID Área", "Nombre", "Tramo", "PK",
+		"Centro de operaciones", "Centro de comunicaciones",
+		"Control de postes de auxilio", "Control de túneles",
+		"Almacén de fundentes", "Alumbrado", "Observaciones" };
 	return columnNames;
     }
 
@@ -75,7 +67,8 @@ public class AreasMantenimientoCaracteristicasReport extends PDFReport {
     }
 
     @Override
-    protected void writeDatesRange(Document document, ConsultasFilters filters) {
+    protected void writeDatesRange(Document document,
+	    ConsultasFilters<Field> filters) {
 
     }
 
@@ -95,12 +88,14 @@ public class AreasMantenimientoCaracteristicasReport extends PDFReport {
     @Override
     protected PdfPCell writeAditionalColumnValues(String id) {
 	try {
-	    Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-	    String query = "SELECT count(id_ramal) FROM audasa_extgia.areas_mantenimiento_ramales" +
-		    " WHERE id_area_mantenimiento = '" + id + "';";
+	    Statement st = DBSession.getCurrentSession().getJavaConnection()
+		    .createStatement();
+	    String query = "SELECT count(id_ramal) FROM audasa_extgia.areas_mantenimiento_ramales"
+		    + " WHERE id_area_mantenimiento = '" + id + "';";
 	    ResultSet rs = st.executeQuery(query);
 	    rs.next();
-	    PdfPCell aditionalCell = new PdfPCell(new Paragraph(rs.getString(1), cellBoldStyle));
+	    PdfPCell aditionalCell = new PdfPCell(new Paragraph(
+		    rs.getString(1), cellBoldStyle));
 	    aditionalCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 	    return aditionalCell;
 	} catch (SQLException e) {

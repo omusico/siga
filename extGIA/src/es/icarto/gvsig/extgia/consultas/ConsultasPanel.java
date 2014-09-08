@@ -3,6 +3,7 @@ package es.icarto.gvsig.extgia.consultas;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.InputStream;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -32,6 +34,8 @@ import com.toedter.calendar.JDateChooser;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.commons.queries.CustomiceDialog;
+import es.icarto.gvsig.commons.queries.Field;
+import es.icarto.gvsig.commons.queries.Utils;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.DomainValues;
@@ -66,7 +70,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
     private JRadioButton csvRadioButton;
     private JButton launchButton;
 
-    private ConsultasFilters consultasFilters;
+    private ConsultasFilters<Field> consultasFilters;
 
     private JButton customButton;
 
@@ -179,7 +183,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-	consultasFilters = new ConsultasFilters(getFilterAreaValue(),
+	consultasFilters = new ConsultasFilters<Field>(getFilterAreaValue(),
 		getFilterBaseContratistaValue(), getFilterTramoValue(),
 		fechaInicio.getDate(), fechaFin.getDate());
 
@@ -208,15 +212,18 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	}
 
 	if (e.getSource().equals(customButton)) {
-	    CustomiceDialog<String> customiceDialog = new CustomiceDialog<String>();
-	    try {
-		String[] columns = DBSession.getCurrentSession().getColumns(
-			"audasa_extgia", selElement.getKey().toLowerCase());
-		customiceDialog.addSourceElements(columns);
-	    } catch (SQLException e1) {
-		logger.error(e1.getStackTrace(), e1);
-		return;
-	    }
+	    CustomiceDialog<Field> customiceDialog = new CustomiceDialog<Field>();
+
+	    // String[] columns = DBSession.getCurrentSession().getColumns(
+	    // "audasa_extgia", selElement.getKey().toLowerCase());
+
+	    URL resource = getClass().getClassLoader().getResource(
+		    "columns.properties");
+
+	    List<Field> columns = Utils.getFields(resource.getPath(),
+		    "audasa_extgia", selElement.getKey().toLowerCase());
+	    customiceDialog.addSourceElements(columns);
+
 	    int status = customiceDialog.open();
 	    if (status == CustomiceDialog.CANCEL) {
 		return;

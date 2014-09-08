@@ -1,7 +1,5 @@
 package es.icarto.gvsig.extgia.consultas.caracteristicas.elements;
 
-import java.sql.ResultSet;
-
 import javax.swing.table.DefaultTableModel;
 
 import com.lowagie.text.Document;
@@ -9,13 +7,15 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 
+import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.icarto.gvsig.extgia.consultas.PDFReport;
 
 public class ObrasDesagueCaracteristicasReport extends PDFReport {
 
     public ObrasDesagueCaracteristicasReport(String[] element, String fileName,
-	    DefaultTableModel tableModel, ConsultasFilters filters, int reportType) {
+	    DefaultTableModel tableModel, ConsultasFilters<Field> filters,
+	    int reportType) {
 	super(element, fileName, tableModel, filters, reportType);
 	// TODO Auto-generated constructor stub
     }
@@ -32,21 +32,10 @@ public class ObrasDesagueCaracteristicasReport extends PDFReport {
 
     @Override
     protected String[] getColumnNames() {
-	String[] columnNames = {
-		"ID Obra Desague",
-		"Tramo",
-		"Tipo Vía",
-		"Nombre Vía",
-		"PK",
-		"Tipología",
-		"Material",
-		"Objeto",
-		"Fecha construcción",
-		"Nº elementos",
-		"Sección (cm)",
-		"Longitud (m)",
-		"Observaciones"
-	};
+	String[] columnNames = { "ID Obra Desague", "Tramo", "Tipo Vía",
+		"Nombre Vía", "PK", "Tipología", "Material", "Objeto",
+		"Fecha construcción", "Nº elementos", "Sección (cm)",
+		"Longitud (m)", "Observaciones" };
 	return columnNames;
     }
 
@@ -72,7 +61,8 @@ public class ObrasDesagueCaracteristicasReport extends PDFReport {
     }
 
     @Override
-    protected void writeDatesRange(Document document, ConsultasFilters filters) {
+    protected void writeDatesRange(Document document,
+	    ConsultasFilters<Field> filters) {
 
     }
 

@@ -13,14 +13,16 @@ import com.lowagie.text.Paragraph;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 
+import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.icarto.gvsig.extgia.consultas.PDFReport;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class AreasDescansoCaracteristicasReport extends PDFReport {
 
-    public AreasDescansoCaracteristicasReport(String[] element, String fileName,
-	    DefaultTableModel tableModel, ConsultasFilters filters, int reportType) {
+    public AreasDescansoCaracteristicasReport(String[] element,
+	    String fileName, DefaultTableModel tableModel,
+	    ConsultasFilters<Field> filters, int reportType) {
 	super(element, fileName, tableModel, filters, reportType);
     }
 
@@ -31,19 +33,10 @@ public class AreasDescansoCaracteristicasReport extends PDFReport {
 
     @Override
     protected String[] getColumnNames() {
-	String[] columnNames = {
-		"ID Área",
-		"Nombre",
-		"Tramo",
-		"PK",
-		"Puesta en Servicio",
-		"Superficie Total",
-		"Riego",
-		"Aparcamiento",
-		"Area Picnic",
-		"Fuentes Potables",
-		"Observaciones"
-	};
+	String[] columnNames = { "ID Área", "Nombre", "Tramo", "PK",
+		"Puesta en Servicio", "Superficie Total", "Riego",
+		"Aparcamiento", "Area Picnic", "Fuentes Potables",
+		"Observaciones" };
 	return columnNames;
     }
 
@@ -62,7 +55,7 @@ public class AreasDescansoCaracteristicasReport extends PDFReport {
 	columnsWidth[8] = 60f;
 	columnsWidth[9] = 60f;
 	columnsWidth[10] = 90f;
-	//aditionalColumn
+	// aditionalColumn
 	columnsWidth[11] = 60f;
 
 	return columnsWidth;
@@ -74,7 +67,8 @@ public class AreasDescansoCaracteristicasReport extends PDFReport {
     }
 
     @Override
-    protected void writeDatesRange(Document document, ConsultasFilters filters) {
+    protected void writeDatesRange(Document document,
+	    ConsultasFilters<Field> filters) {
 
     }
 
@@ -85,7 +79,8 @@ public class AreasDescansoCaracteristicasReport extends PDFReport {
 
     @Override
     protected PdfPCell writeAditionalColumnName() {
-	PdfPCell aditionalCell = new PdfPCell(new Paragraph("Nº Ramales", bodyBoldStyle));
+	PdfPCell aditionalCell = new PdfPCell(new Paragraph("Nº Ramales",
+		bodyBoldStyle));
 	aditionalCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 	return aditionalCell;
     }
@@ -93,12 +88,14 @@ public class AreasDescansoCaracteristicasReport extends PDFReport {
     @Override
     protected PdfPCell writeAditionalColumnValues(String id) {
 	try {
-	    Statement st = DBSession.getCurrentSession().getJavaConnection().createStatement();
-	    String query = "SELECT count(id_ramal) FROM audasa_extgia.areas_descanso_ramales" +
-		    " WHERE id_area_descanso = '" + id + "';";
+	    Statement st = DBSession.getCurrentSession().getJavaConnection()
+		    .createStatement();
+	    String query = "SELECT count(id_ramal) FROM audasa_extgia.areas_descanso_ramales"
+		    + " WHERE id_area_descanso = '" + id + "';";
 	    ResultSet rs = st.executeQuery(query);
 	    rs.next();
-	    PdfPCell aditionalCell = new PdfPCell(new Paragraph(rs.getString(1), cellBoldStyle));
+	    PdfPCell aditionalCell = new PdfPCell(new Paragraph(
+		    rs.getString(1), cellBoldStyle));
 	    aditionalCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 	    return aditionalCell;
 	} catch (SQLException e) {

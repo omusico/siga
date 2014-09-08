@@ -6,11 +6,13 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 
+import es.icarto.gvsig.commons.queries.Field;
 
 public class TrabajosReport extends PDFReport {
 
-    public TrabajosReport(String[] element, String fileName, DefaultTableModel table,
-	    ConsultasFilters filters, int reportType) {
+    public TrabajosReport(String[] element, String fileName,
+	    DefaultTableModel table, ConsultasFilters<Field> filters,
+	    int reportType) {
 	super(element, fileName, table, filters, reportType);
     }
 
@@ -21,15 +23,9 @@ public class TrabajosReport extends PDFReport {
 
     @Override
     protected String[] getColumnNames() {
-	String[] columnNames = {
-		"ID Elemento",
-		"Fecha",
-		"Unidad",
-		"Medición Contratista",
-		"Medición AUDASA",
-		"Observaciones",
-		"Fecha Certificado"
-	};
+	String[] columnNames = { "ID Elemento", "Fecha", "Unidad",
+		"Medición Contratista", "Medición AUDASA", "Observaciones",
+		"Fecha Certificado" };
 	return columnNames;
     }
 
@@ -70,6 +66,5 @@ public class TrabajosReport extends PDFReport {
 	// TODO Auto-generated method stub
 	return null;
     }
-
 
 }

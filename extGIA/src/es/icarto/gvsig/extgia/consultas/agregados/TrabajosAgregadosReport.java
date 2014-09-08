@@ -18,6 +18,7 @@ import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 
+import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.icarto.gvsig.extgia.consultas.PDFReport;
 import es.icarto.gvsig.extgia.utils.Utils;
@@ -25,11 +26,10 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class TrabajosAgregadosReport extends PDFReport {
 
-
     private TrabajosAgregadosReportQueries agregadosReportQueries = null;
 
     public TrabajosAgregadosReport(String[] element, String fileName,
-	    ResultSet resultMap, ConsultasFilters filters, int reportType) {
+	    ResultSet resultMap, ConsultasFilters<Field> filters, int reportType) {
 	super(element, fileName, null, filters, reportType);
     }
 
@@ -45,16 +45,9 @@ public class TrabajosAgregadosReport extends PDFReport {
 
     @Override
     protected String[] getColumnNames() {
-	String[] columnNames = {
-		"ID Elemento",
-		"Tramo",
-		"Tipo Vía",
-		"Nombre Vía",
-		"PK Inicial",
-		"PK Final",
-		"Sentido",
-		"Medición AUDASA"
-	};
+	String[] columnNames = { "ID Elemento", "Tramo", "Tipo Vía",
+		"Nombre Vía", "PK Inicial", "PK Final", "Sentido",
+		"Medición AUDASA" };
 	return columnNames;
     }
 
@@ -80,8 +73,10 @@ public class TrabajosAgregadosReport extends PDFReport {
     }
 
     @Override
-    protected void writeValues (Document document, DefaultTableModel tableModel, PdfPTable table, int reportType) {
-	agregadosReportQueries = new TrabajosAgregadosReportQueries(getElementID());
+    protected void writeValues(Document document, DefaultTableModel tableModel,
+	    PdfPTable table, int reportType) {
+	agregadosReportQueries = new TrabajosAgregadosReportQueries(
+		getElementID());
 	writeTable("Desbroce con retroaraña\n\n",
 		agregadosReportQueries.getDesbroceRetroaranhaQuery(),
 		agregadosReportQueries.getDesbroceRetroaranhaSumQuery());
@@ -120,25 +115,27 @@ public class TrabajosAgregadosReport extends PDFReport {
     }
 
     private void writeTotal(Document document, String title, String query) {
-	ResultSet rs = getValuesFromQuery(query +
-		getFilters().getWhereClauseFiltersForAgregados(getElementID(), true));
+	ResultSet rs = getValuesFromQuery(query
+		+ getFilters().getWhereClauseFiltersForAgregados(
+			getElementID(), true));
 	try {
 	    rs.next();
-	    if (rs.getString(1)!=null) {
+	    if (rs.getString(1) != null) {
 		PdfPTable totalTable = new PdfPTable(getColumnNames().length);
-		totalTable.setTotalWidth(document.getPageSize().getWidth() -
-			document.leftMargin() - document.rightMargin());
+		totalTable.setTotalWidth(document.getPageSize().getWidth()
+			- document.leftMargin() - document.rightMargin());
 		totalTable.setWidths(getColumnsWidth(getColumnNames().length));
 		totalTable.setWidthPercentage(100);
 
 		document.add(Chunk.NEWLINE);
 
-		PdfPCell totalCell = new PdfPCell(new Paragraph(title, bodyBoldStyle));
+		PdfPCell totalCell = new PdfPCell(new Paragraph(title,
+			bodyBoldStyle));
 		totalCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		totalCell.setBorder(Rectangle.NO_BORDER);
 		totalTable.addCell(totalCell);
 
-		for (int i=0; i<6; i++) {
+		for (int i = 0; i < 6; i++) {
 		    PdfPCell cell = new PdfPCell();
 		    cell.setBorder(Rectangle.NO_BORDER);
 		    totalTable.addCell(cell);
@@ -146,10 +143,12 @@ public class TrabajosAgregadosReport extends PDFReport {
 
 		rs.beforeFirst();
 		while (rs.next()) {
-		    NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
-		    PdfPCell medicionAudasaCell =
-			    new PdfPCell(new Paragraph(nf.format(rs.getDouble(1)), cellBoldStyle));
-		    medicionAudasaCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    NumberFormat nf = NumberFormat.getInstance(Locale
+			    .getDefault());
+		    PdfPCell medicionAudasaCell = new PdfPCell(new Paragraph(
+			    nf.format(rs.getDouble(1)), cellBoldStyle));
+		    medicionAudasaCell
+			    .setHorizontalAlignment(Element.ALIGN_CENTER);
 		    totalTable.addCell(medicionAudasaCell);
 		}
 		document.add(totalTable);
@@ -161,50 +160,58 @@ public class TrabajosAgregadosReport extends PDFReport {
 	}
     }
 
-    private void writeTable (String tableTittle, String contentQuery, String totalQuery) {
+    private void writeTable(String tableTittle, String contentQuery,
+	    String totalQuery) {
 	try {
 	    ResultSet resultMap;
 
-	    resultMap = getValuesFromQuery(contentQuery +
-		    getFilters().getWhereClauseFiltersForAgregados(getElementID(), false));
+	    resultMap = getValuesFromQuery(contentQuery
+		    + getFilters().getWhereClauseFiltersForAgregados(
+			    getElementID(), false));
 	    if (resultMap.next()) {
 		document.add(new Paragraph(tableTittle, bodyBoldStyle));
 		PdfPTable table = super.writeColumnNames(document);
 		writeTableContent(table, resultMap);
 		if (totalQuery != null) {
-		    resultMap = getValuesFromQuery(totalQuery +
-			    getFilters().getWhereClauseFiltersForAgregados(getElementID(), true));
-		    PdfPCell totalCell = new PdfPCell(new Paragraph("TOTAL", bodyBoldStyle));
+		    resultMap = getValuesFromQuery(totalQuery
+			    + getFilters().getWhereClauseFiltersForAgregados(
+				    getElementID(), true));
+		    PdfPCell totalCell = new PdfPCell(new Paragraph("TOTAL",
+			    bodyBoldStyle));
 		    totalCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		    table.addCell(totalCell);
 
-		    for (int i=0; i<6; i++) {
+		    for (int i = 0; i < 6; i++) {
 			PdfPCell cell = new PdfPCell();
 			table.addCell(cell);
 		    }
 
 		    while (resultMap.next()) {
-			NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
-			PdfPCell medicionAudasaCell =
-				new PdfPCell(new Paragraph(nf.format(resultMap.getDouble(1)),
+			NumberFormat nf = NumberFormat.getInstance(Locale
+				.getDefault());
+			PdfPCell medicionAudasaCell = new PdfPCell(
+				new Paragraph(
+					nf.format(resultMap.getDouble(1)),
 					cellBoldStyle));
-			medicionAudasaCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			medicionAudasaCell
+				.setHorizontalAlignment(Element.ALIGN_CENTER);
 			table.addCell(medicionAudasaCell);
 		    }
 		    document.add(table);
 		}
 	    }
-	}catch (DocumentException e) {
+	} catch (DocumentException e) {
 	    e.printStackTrace();
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
     }
 
-    private ResultSet getValuesFromQuery (String query) {
+    private ResultSet getValuesFromQuery(String query) {
 	PreparedStatement statement;
 	try {
-	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+	    statement = DBSession.getCurrentSession().getJavaConnection()
+		    .prepareStatement(query);
 	    statement.execute();
 	    ResultSet rs = statement.getResultSet();
 	    return rs;
@@ -221,8 +228,9 @@ public class TrabajosAgregadosReport extends PDFReport {
 	while (resultMap.next()) {
 	    for (int column = 1; column <= getColumnNames().length; column++) {
 		if (resultMap.getString(column) != null) {
-		    String valueFormatted = Utils.writeDBValueFormatted(resultMap, column);
-		    value = new Paragraph(valueFormatted,cellBoldStyle);
+		    String valueFormatted = Utils.writeDBValueFormatted(
+			    resultMap, column);
+		    value = new Paragraph(valueFormatted, cellBoldStyle);
 		} else {
 		    value = new Paragraph("");
 		}

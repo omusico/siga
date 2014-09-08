@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import javax.swing.table.DefaultTableModel;
 
+import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.extgia.utils.Utils;
 
 public class CSVReport {
@@ -12,7 +13,7 @@ public class CSVReport {
     protected static final String CSV_SEPARATOR = "\t";
 
     public CSVReport(String outputFile, DefaultTableModel tableModel,
-	    ConsultasFilters filters) {
+	    ConsultasFilters<Field> filters) {
 	if (outputFile != null) {
 	    try {
 		FileWriter writer = new FileWriter(outputFile);
@@ -34,8 +35,8 @@ public class CSVReport {
 
     }
 
-    protected void writeFilters(FileWriter writer, ConsultasFilters filters)
-	    throws IOException {
+    protected void writeFilters(FileWriter writer,
+	    ConsultasFilters<Field> filters) throws IOException {
 
 	writer.append("Area Mantenimiento");
 	writer.append(CSV_SEPARATOR);

@@ -2,13 +2,14 @@ package es.icarto.gvsig.extgia.consultas.firme;
 
 import javax.swing.table.DefaultTableModel;
 
+import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.icarto.gvsig.extgia.consultas.ReconocimientosReport;
 
 public class FirmeReconocimientosReport extends ReconocimientosReport {
 
     public FirmeReconocimientosReport(String[] element, String fileName,
-	    DefaultTableModel tableModel, ConsultasFilters filters,
+	    DefaultTableModel tableModel, ConsultasFilters<Field> filters,
 	    int reportType) {
 	super(element, fileName, tableModel, filters, reportType);
     }

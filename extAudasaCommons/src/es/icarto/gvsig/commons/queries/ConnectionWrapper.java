@@ -71,7 +71,8 @@ public class ConnectionWrapper {
 		toTable(rs, table);
 	    }
 	} catch (SQLException e1) {
-	    e1.printStackTrace();
+	    logger.error(e1.getStackTrace(), e1);
+	    logger.error(query);
 	} finally {
 	    close(rs);
 	    close(statement);

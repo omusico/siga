@@ -8,7 +8,7 @@ import java.util.Locale;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 
-public class ConsultasFilters {
+public class ConsultasFilters<E> {
 
     private KeyValue area;
     private KeyValue baseContratista;
@@ -20,8 +20,8 @@ public class ConsultasFilters {
     private final DateFormat dateFormat = DateFormat.getDateInstance(
 	    DateFormat.LONG, loc);
     private String queryType;
-    private List<String> fields;
-    private List<String> orderBy;
+    private List<E> fields;
+    private List<E> orderBy;
 
     public ConsultasFilters(KeyValue area, KeyValue baseContratista,
 	    KeyValue tramo, Date fechaInicio, Date fechaFin) {
@@ -176,19 +176,19 @@ public class ConsultasFilters {
 	return this.queryType;
     }
 
-    public void setFields(List<String> fields) {
+    public void setFields(List<E> fields) {
 	this.fields = fields;
     }
 
-    public List<String> getFields() {
+    public List<E> getFields() {
 	return this.fields;
     }
 
-    public void setOrderBy(List<String> orderBy) {
+    public void setOrderBy(List<E> orderBy) {
 	this.orderBy = orderBy;
     }
 
-    public List<String> getOrderBy() {
+    public List<E> getOrderBy() {
 	return this.orderBy;
     }
 

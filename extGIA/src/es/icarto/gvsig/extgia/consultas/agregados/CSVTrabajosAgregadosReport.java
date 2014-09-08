@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.icarto.gvsig.extgia.utils.Utils;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
@@ -15,11 +16,11 @@ public class CSVTrabajosAgregadosReport {
     private static final CharSequence CSV_SEPARATOR = "\t";
 
     private final String element;
-    private final ConsultasFilters filters;
+    private final ConsultasFilters<Field> filters;
     private final TrabajosAgregadosReportQueries agregadosReportQueries;
 
     public CSVTrabajosAgregadosReport(String element, String outputFile,
-	    ConsultasFilters filters) {
+	    ConsultasFilters<Field> filters) {
 	this.element = element;
 	agregadosReportQueries = new TrabajosAgregadosReportQueries(element);
 	this.filters = filters;
