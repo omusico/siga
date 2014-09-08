@@ -195,11 +195,27 @@ public class Leaf implements Component {
 	    subquery = query.substring(query.indexOf(" FROM"));
 	    String select = "SELECT ";
 	    for (Field field : filters.getFields()) {
-		select = select
-			+ "el."
-			+ field.getKey()
-			+ String.format(" AS \"%s\"", field.getLongName()
-				.replace("\"", "'")) + ", ";
+		if (field.getKey().equals("area_mantenimiento")) {
+		    select += "am.item AS  \"Área Mantenimiento\", ";
+		} else if (field.getKey().equals("base_contratista")) {
+		    select += "bc.item AS  \"Base Contratista\", ";
+		} else if (field.getKey().equals("tramo")) {
+		    select += "tr.item AS  \"Tramo\", ";
+		} else if (field.getKey().equals("tipo_via")) {
+		    select += "tv.item AS  \"Tipo Vía\", ";
+		} else if (field.getKey().equals("nombre_via")) {
+		    select += "nv.item AS  \"Nombre Vía\", ";
+		} else if (field.getKey().equals("municipio")) {
+		    select += "mu.item AS  \"Municipio\", ";
+		} else if (field.getKey().equals("sentido")) {
+		    select += "st.item AS  \"Sentido\", ";
+		} else {
+		    select = select
+			    + "el."
+			    + field.getKey()
+			    + String.format(" AS \"%s\"", field.getLongName()
+				    .replace("\"", "'")) + ", ";
+		}
 	    }
 	    subquery = select.substring(0, select.length() - 2) + subquery;
 	}
