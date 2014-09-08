@@ -172,53 +172,55 @@ public class Leaf implements Component {
 
     private String getReportQueryForCaracteristicas(
 	    ConsultasFilters<Field> filters, String element) {
-	String query;
-	if (pdf) {
-	    query = PDFCaracteristicasQueries.getPDFCaracteristicasQuery(
+
+	if (filters.getQueryType().equals("CUSTOM")) {
+	    return getCustomCaracteristicasQuery(filters, element);
+	} else if (pdf) {
+	    return PDFCaracteristicasQueries.getPDFCaracteristicasQuery(
 		    element, filters);
 	} else {
-	    query = CSVCaracteristicasQueries.getCSVCaracteristicasQuery(
+	    return CSVCaracteristicasQueries.getCSVCaracteristicasQuery(
 		    element, filters);
-	    String subquery = query;
-	    if (filters.getQueryType().equals("CUSTOM")) {
-		if (filters.getFields().size() > 0) {
-		    subquery = query.substring(query.indexOf(" FROM"));
-		    String select = "SELECT ";
-		    for (Field field : filters.getFields()) {
-			select = select
-				+ "el."
-				+ field.getKey()
-				+ String.format(" AS \"%s\"", field.getValue()
-					.replace("\"", "'")) + ", ";
-		    }
-		    subquery = select.substring(0, select.length() - 2)
-			    + subquery;
-		}
-		if (filters.getOrderBy().size() > 0) {
-
-		    int indexOf = subquery.indexOf("ORDER BY ");
-		    if (indexOf != -1) {
-			subquery = subquery.substring(0, indexOf + 9);
-		    } else {
-			if (subquery.endsWith(";")) {
-			    subquery = subquery.substring(0,
-				    subquery.length() - 1);
-			}
-
-			subquery = subquery + " ORDER BY ";
-		    }
-
-		    for (Field field : filters.getOrderBy()) {
-			subquery = subquery + field.getKey() + ", ";
-		    }
-		    subquery = subquery.substring(0, subquery.length() - 2);
-		}
-
-	    }
-	    query = subquery;
 	}
 
-	return query;
+    }
+
+    private String getCustomCaracteristicasQuery(
+	    ConsultasFilters<Field> filters, String element) {
+	String query = CSVCaracteristicasQueries.getCSVCaracteristicasQuery(
+		element, filters);
+	String subquery = query;
+	if (filters.getFields().size() > 0) {
+	    subquery = query.substring(query.indexOf(" FROM"));
+	    String select = "SELECT ";
+	    for (Field field : filters.getFields()) {
+		select = select
+			+ "el."
+			+ field.getKey()
+			+ String.format(" AS \"%s\"",
+				field.getValue().replace("\"", "'")) + ", ";
+	    }
+	    subquery = select.substring(0, select.length() - 2) + subquery;
+	}
+	if (filters.getOrderBy().size() > 0) {
+
+	    int indexOf = subquery.indexOf("ORDER BY ");
+	    if (indexOf != -1) {
+		subquery = subquery.substring(0, indexOf + 9);
+	    } else {
+		if (subquery.endsWith(";")) {
+		    subquery = subquery.substring(0, subquery.length() - 1);
+		}
+
+		subquery = subquery + " ORDER BY ";
+	    }
+
+	    for (Field field : filters.getOrderBy()) {
+		subquery = subquery + field.getKey() + ", ";
+	    }
+	    subquery = subquery.substring(0, subquery.length() - 2);
+	}
+	return subquery;
     }
 
     private String getReportQueryForNoCaracteristicas(int tipo,

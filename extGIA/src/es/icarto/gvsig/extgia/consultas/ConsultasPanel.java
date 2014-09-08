@@ -145,9 +145,6 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	group.add(pdfRadioButton);
 	group.add(csvRadioButton);
 
-	csvRadioButton.addActionListener(reportTypeListener);
-	pdfRadioButton.addActionListener(reportTypeListener);
-
 	launchButton = (JButton) form.getComponentByName("launch_button");
 	launchButton.addActionListener(this);
 
@@ -213,9 +210,6 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
 	if (e.getSource().equals(customButton)) {
 	    CustomiceDialog<Field> customiceDialog = new CustomiceDialog<Field>();
-
-	    // String[] columns = DBSession.getCurrentSession().getColumns(
-	    // "audasa_extgia", selElement.getKey().toLowerCase());
 
 	    URL resource = getClass().getClassLoader().getResource(
 		    "columns.properties");
@@ -368,8 +362,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    customButton.setEnabled(caracSelected() && todosNoSelected()
-		    && csvRadioButton.isSelected());
+	    customButton.setEnabled(caracSelected() && todosNoSelected());
 	}
     }
 

@@ -13,6 +13,7 @@ import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.AreasMantenimie
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.AreasPeajeCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.AreasServicioCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.BarreraRigidaCaracteristicasReport;
+import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.CustomCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.EnlacesCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.FirmeCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.IsletasCaracteristicasReport;
@@ -619,6 +620,13 @@ public class ConsultasFieldNames {
     public static void createCaracteristicasReport(String[] element,
 	    String outputFile, DefaultTableModel tableModel,
 	    ConsultasFilters<Field> filters, int reportType) {
+
+	if (filters.getQueryType().equals("CUSTOM")) {
+	    new CustomCaracteristicasReport(element, outputFile, tableModel,
+		    filters, reportType);
+	    return;
+	}
+
 	switch (DBFieldNames.Elements.valueOf(element[0])) {
 	case Taludes:
 	    new TaludesCaracteristicasReport(element, outputFile, tableModel,

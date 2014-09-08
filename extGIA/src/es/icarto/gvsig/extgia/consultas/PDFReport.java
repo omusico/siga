@@ -174,7 +174,7 @@ public abstract class PDFReport {
 	}
     }
 
-    private void writeNumberOfRows(Document document, int numRows) {
+    protected void writeNumberOfRows(Document document, int numRows) {
 	Paragraph numRowsP = new Paragraph("Número de registros: " + numRows,
 		bodyBoldStyle);
 	try {
