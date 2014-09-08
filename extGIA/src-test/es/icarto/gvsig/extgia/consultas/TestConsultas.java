@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import com.iver.cit.gvsig.fmap.layers.LayerFactory;
 
+import es.icarto.gvsig.commons.queries.CSVReport;
 import es.icarto.gvsig.commons.queries.ConnectionWrapper;
 import es.icarto.gvsig.extgia.consultas.agregados.TrabajosAgregadosReportQueries;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.CSVCaracteristicasQueries;

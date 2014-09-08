@@ -16,9 +16,9 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 
 import es.icarto.gvsig.commons.queries.Field;
+import es.icarto.gvsig.commons.queries.Utils;
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.icarto.gvsig.extgia.consultas.PDFReport;
-import es.icarto.gvsig.extgia.utils.Utils;
 
 public class CustomCaracteristicasReport extends PDFReport {
 
@@ -42,7 +42,7 @@ public class CustomCaracteristicasReport extends PDFReport {
     protected String[] getColumnNames() {
 	String[] columnNames = new String[filters.getFields().size()];
 	for (int i = 0; i < columnNames.length; i++) {
-	    columnNames[i] = filters.getFields().get(i).getValue();
+	    columnNames[i] = filters.getFields().get(i).getLongName();
 	}
 	return columnNames;
     }

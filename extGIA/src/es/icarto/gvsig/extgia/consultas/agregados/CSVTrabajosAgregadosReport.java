@@ -7,8 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import es.icarto.gvsig.commons.queries.Field;
+import es.icarto.gvsig.commons.queries.Utils;
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
-import es.icarto.gvsig.extgia.utils.Utils;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class CSVTrabajosAgregadosReport {

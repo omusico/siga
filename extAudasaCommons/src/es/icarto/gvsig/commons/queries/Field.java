@@ -6,27 +6,28 @@ import java.util.ArrayList;
 public class Field implements Comparable<Field> {
 
     private String column;
-    private String description;
+    private String longName;
+    private Object value;
     private ArrayList<String> foreignKeys = new ArrayList<String>();
 
     public Field() {
     }
 
-    public Field(String key, String value, String fk) {
+    public Field(String key, String longname, String fk) {
 	this.column = key;
-	this.description = value;
+	this.longName = longname;
 	this.foreignKeys.add(fk);
     }
 
-    public Field(String key, String value, ArrayList<String> fk) {
+    public Field(String key, String longname, ArrayList<String> fk) {
 	this.column = key;
-	this.description = value;
+	this.longName = longname;
 	this.foreignKeys = fk;
     }
 
-    public Field(String key, String value) {
+    public Field(String key, String longname) {
 	this.column = key;
-	this.description = value;
+	this.longName = longname;
     }
 
     public String getKey() {
@@ -45,17 +46,25 @@ public class Field implements Comparable<Field> {
 	return this.foreignKeys;
     }
 
-    public String getValue() {
-	return this.description;
+    public String getLongName() {
+	return this.longName;
     }
 
-    public void setValue(String value) {
-	this.description = value;
+    public void setLongName(String longname) {
+	this.longName = longname;
+    }
+
+    public void setValue(Object value) {
+	this.value = value;
+    }
+
+    public Object getValue() {
+	return this.value;
     }
 
     @Override
     public String toString() {
-	return this.description;
+	return this.longName;
     }
 
     /**
@@ -65,10 +74,10 @@ public class Field implements Comparable<Field> {
     @Override
     public boolean equals(Object obj) {
 	if (obj instanceof String) {
-	    return getValue().equals(obj);
+	    return getLongName().equals(obj);
 	} else if (obj instanceof Field) {
 	    Field kvObj = (Field) obj;
-	    return getValue().equals(kvObj.getValue())
+	    return getLongName().equals(kvObj.getLongName())
 		    && getKey().equals(kvObj.getKey());
 	}
 	return false;
@@ -78,7 +87,7 @@ public class Field implements Comparable<Field> {
     public int compareTo(Field o) {
 	Collator usCollator = Collator.getInstance();
 	usCollator.setStrength(Collator.IDENTICAL);
-	return usCollator.compare(description, o.description);
+	return usCollator.compare(longName, o.longName);
     }
 
 }

@@ -67,7 +67,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
     private final JDateChooser fechaInicio;
     private final JDateChooser fechaFin;
     private JRadioButton pdfRadioButton;
-    private JRadioButton csvRadioButton;
+    private JRadioButton xlsRadioButton;
     private JButton launchButton;
 
     private ConsultasFilters<Field> consultasFilters;
@@ -139,11 +139,11 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	pdfRadioButton = (JRadioButton) form.getComponentByName("pdf");
 	pdfRadioButton.setSelected(true);
 
-	csvRadioButton = (JRadioButton) form.getComponentByName("csv");
+	xlsRadioButton = (JRadioButton) form.getComponentByName("excel");
 
 	ButtonGroup group = new ButtonGroup();
 	group.add(pdfRadioButton);
-	group.add(csvRadioButton);
+	group.add(xlsRadioButton);
 
 	launchButton = (JButton) form.getComponentByName("launch_button");
 	launchButton.addActionListener(this);

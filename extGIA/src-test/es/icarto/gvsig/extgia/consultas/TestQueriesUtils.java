@@ -83,7 +83,7 @@ public class TestQueriesUtils {
 		// }
 		assertNotEquals(
 			String.format("Table: %s, column: %s", kv.getKey(), c),
-			c.getKey(), c.getValue());
+			c.getKey(), c.getLongName());
 		assertFalse(c.getKey().equals("the_geom"));
 		assertFalse(c.getKey().equals("gid"));
 

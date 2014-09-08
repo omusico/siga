@@ -1,14 +1,18 @@
 package es.icarto.gvsig.extgia.consultas;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import es.icarto.gvsig.commons.queries.Field;
+import es.icarto.gvsig.commons.queries.QueryFiltersI;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 
-public class ConsultasFilters<E> {
+public class ConsultasFilters<E> implements QueryFiltersI {
 
     private KeyValue area;
     private KeyValue baseContratista;
@@ -19,7 +23,7 @@ public class ConsultasFilters<E> {
     private final Locale loc = new Locale("es");
     private final DateFormat dateFormat = DateFormat.getDateInstance(
 	    DateFormat.LONG, loc);
-    private String queryType;
+    private String queryType = "";
     private List<E> fields;
     private List<E> orderBy;
 
@@ -192,4 +196,20 @@ public class ConsultasFilters<E> {
 	return this.orderBy;
     }
 
+    @Override
+    public Collection<Field> getLocation() {
+	List<Field> location = new ArrayList<Field>();
+	Field areaMantenimientoField = new Field("", "Área Mantenimiento");
+	areaMantenimientoField.setValue(area == null ? "" : area.getValue());
+	Field baseContratistaField = new Field("", "Base contratista");
+	baseContratistaField.setValue(baseContratista == null ? ""
+		: baseContratista.getValue());
+	Field tramoField = new Field("", "Tramo");
+	tramoField.setValue(tramo == null ? "" : tramo.getValue());
+
+	location.add(areaMantenimientoField);
+	location.add(baseContratistaField);
+	location.add(tramoField);
+	return location;
+    }
 }

@@ -12,6 +12,7 @@ import com.iver.andami.PluginServices;
 import es.icarto.gvsig.audasacommons.forms.reports.SaveFileDialog;
 import es.icarto.gvsig.commons.queries.ConnectionWrapper;
 import es.icarto.gvsig.commons.queries.Field;
+import es.icarto.gvsig.commons.queries.XLSReport;
 import es.icarto.gvsig.extgia.consultas.agregados.CSVTrabajosAgregadosReport;
 import es.icarto.gvsig.extgia.consultas.agregados.TrabajosAgregadosReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.CSVCaracteristicasQueries;
@@ -57,8 +58,8 @@ public class Leaf implements Component {
 	    extension = "pdf";
 	    extensionDescription = PluginServices.getText(this, "pdfFiles");
 	} else {
-	    extension = "csv";
-	    extensionDescription = PluginServices.getText(this, "csvFiles");
+	    extension = "xlsx";
+	    extensionDescription = PluginServices.getText(this, "xlsFiles");
 	}
 	if (path == null) {
 	    SaveFileDialog sfd = new SaveFileDialog(extensionDescription,
@@ -197,8 +198,8 @@ public class Leaf implements Component {
 		select = select
 			+ "el."
 			+ field.getKey()
-			+ String.format(" AS \"%s\"",
-				field.getValue().replace("\"", "'")) + ", ";
+			+ String.format(" AS \"%s\"", field.getLongName()
+				.replace("\"", "'")) + ", ";
 	    }
 	    subquery = select.substring(0, select.length() - 2) + subquery;
 	}
@@ -265,7 +266,8 @@ public class Leaf implements Component {
 
     private void createCsvReport(String outputFile, DefaultTableModel table,
 	    ConsultasFilters<Field> filters) {
-	new CSVReport(outputFile, table, filters);
+	new XLSReport(outputFile, table, filters);
+
     }
 
     @Override

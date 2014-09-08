@@ -31,7 +31,7 @@ import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.rtf.style.RtfParagraphStyle;
 
 import es.icarto.gvsig.commons.queries.Field;
-import es.icarto.gvsig.extgia.utils.Utils;
+import es.icarto.gvsig.commons.queries.Utils;
 
 public abstract class PDFReport {
 

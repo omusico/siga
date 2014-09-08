@@ -104,8 +104,9 @@ public class CustomiceDialog<E> extends AbstractIWindow implements
     public void actionPerformed(ActionEvent e) {
 	if (e.getActionCommand().equals(AcceptCancelPanel.OK_ACTION_COMMAND)) {
 	    status = OK;
+	} else {
+	    status = CANCEL;
 	}
-	status = CANCEL;
 	PluginServices.getMDIManager().closeWindow(this);
     }
 
