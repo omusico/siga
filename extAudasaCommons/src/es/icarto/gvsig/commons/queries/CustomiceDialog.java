@@ -28,7 +28,7 @@ public class CustomiceDialog<E> extends AbstractIWindow implements
     public static final int CANCEL = -1;
     public static final int OK = 1;
 
-    private int status;
+    private int status = CANCEL;
 
     private final List<JComboBox> order;
 
@@ -102,12 +102,10 @@ public class CustomiceDialog<E> extends AbstractIWindow implements
 
     @Override
     public void actionPerformed(ActionEvent e) {
-	if (e.getActionCommand()
-		.equals(AcceptCancelPanel.CANCEL_ACTION_COMMAND)) {
-	    status = CANCEL;
-	} else {
+	if (e.getActionCommand().equals(AcceptCancelPanel.OK_ACTION_COMMAND)) {
 	    status = OK;
 	}
+	status = CANCEL;
 	PluginServices.getMDIManager().closeWindow(this);
     }
 

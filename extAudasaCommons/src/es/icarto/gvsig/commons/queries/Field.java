@@ -1,5 +1,6 @@
 package es.icarto.gvsig.commons.queries;
 
+import java.text.Collator;
 import java.util.ArrayList;
 
 public class Field implements Comparable<Field> {
@@ -75,7 +76,9 @@ public class Field implements Comparable<Field> {
 
     @Override
     public int compareTo(Field o) {
-	return this.description.compareTo(o.description);
+	Collator usCollator = Collator.getInstance();
+	usCollator.setStrength(Collator.IDENTICAL);
+	return usCollator.compare(description, o.description);
     }
 
 }
