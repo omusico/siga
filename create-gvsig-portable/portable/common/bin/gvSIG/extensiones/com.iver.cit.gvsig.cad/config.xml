@@ -70,13 +70,10 @@
 				<selectable-tool icon="edition-geometry-scale" action-command="_scale" tooltip="scale"  position="5"/>
 			</tool-bar>
 		</extension>
-		<extension class-name="com.iver.cit.gvsig.ExploitExtension" description="Extensión encargada de simplificar geometrías complejas." active="true">
-			<menu action-command="separator" text="geometry" position="70294" is_separator="true"/>
-			<menu text="geometry/modify/exploit" action-command="_exploit" icon="edition-geometry-exploit" position="70295"/>
-			<tool-bar name="modificar" position="150">
-				<action-tool icon="edition-geometry-exploit" action-command="_exploit" tooltip="exploit" position="16"/>
-			</tool-bar>
-		</extension>
+		
+
+
+
 		<extension class-name="com.iver.cit.gvsig.MoveGeometryExtension" description="Extensión encargada de mover las geometrías." active="true">
 			<menu text="geometry/modify/move" action-command="_move" icon="edition-geometry-move" position="70205"/>
 			<tool-bar name="modificar" position="150">
@@ -217,10 +214,22 @@
 				<selectable-tool icon="edition-geometry-autocompletepolygon" action-command="_autocompletepolygon" tooltip="autocomplete-polygon" position="11"/>
 			</tool-bar>
 		</extension>
+		
+		
+				<extension class-name="com.iver.cit.gvsig.ExploitExtension" description="Extensión encargada de simplificar geometrías complejas." active="true">
+    <menu action-command="separator" text="geometry" position="70294" is_separator="true"/>
+    <menu text="geometry/modify/exploit" action-command="_exploit" icon="edition-geometry-exploit" position="70295"/>
+    <tool-bar name="modificar" position="150">
+        <action-tool icon="edition-geometry-exploit" action-command="_exploit" tooltip="exploit" position="18"/>
+    </tool-bar>
+</extension>
+
+	
+		
 		<extension class-name="com.iver.cit.gvsig.SplitGeometryCADToolExtension" description="herramienta para dividir una geometria con una linea" active="true">
 			<menu text="geometry/modify/split_geometry" action-command="_split_geometry" icon="split-geometry" position="70298"/>
 			<tool-bar name="modificar" position="150">
-				<selectable-tool icon="split-geometry" action-command="_split_geometry" tooltip="split_geometry" enable-text="select_geometry_to_split" last="false" position="17"/>
+				<selectable-tool icon="split-geometry" action-command="_split_geometry" tooltip="split_geometry" enable-text="select_geometry_to_split" last="false" position="19"/>
 			</tool-bar>
 		</extension>
 		<extension class-name="com.iver.cit.gvsig.ShortcutsExtension" description="Extension to activate shortcuts" active="true">
@@ -267,11 +276,19 @@
 		</extension>
 		
 		<extension class-name="com.iver.cit.gvsig.AddPartExtension" active="true">
-			<menu text="geometry/parts/add_part" action-command="_add_part"/>
-		</extension>
+			<menu text="geometry/modify/add_part" action-command="_add_part" icon="geometry-modify-add-part-tool" position="70292"/>
+			<tool-bar name="modificar" position="150">
+				<selectable-tool icon="geometry-modify-add-part-tool" action-command="_add_part" tooltip="add_part_tooltip"  position="16"/>
+			</tool-bar>
+			</extension>
+		
 		<extension class-name="com.iver.cit.gvsig.RemovePartExtension" active="true">
-			<menu text="geometry/parts/remove_part" action-command="remove_part"/>
+			<menu text="geometry/modify/remove_part" action-command="remove_part" icon="geometry-modify-remove-part-tool" position="70293"/>
+			<tool-bar name="modificar" position="150">
+				<selectable-tool icon="geometry-modify-remove-part-tool" action-command="remove_part" tooltip="remove_part_tooltip"  position="17"/>
+			</tool-bar>
 		</extension>
+		
 		
 	</extensions>
 </plugin-config>
