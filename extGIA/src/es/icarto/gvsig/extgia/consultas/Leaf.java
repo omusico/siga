@@ -25,14 +25,6 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class Leaf implements Component {
 
-    private static final int TYPE_NOT_SET = -1;
-    private static final int TRABAJOS = 0;
-    private static final int RECONOCIMIENTOS = 1;
-    private static final int TRABAJOS_FIRME = 2;
-    private static final int RECONOCIMIENTOS_FIRME = 3;
-    private static final int CARACTERISTICAS = 4;
-    private static final int TRABAJOS_AGREGADOS = 5;
-
     private final String[] element;
     private final ConsultasFilters<Field> consultasFilters;
     private final KeyValue tipoConsulta;
@@ -79,7 +71,8 @@ public class Leaf implements Component {
 
     @Override
     public void generateReportFile() {
-	if (tipoConsulta.equals("Trabajos Agrupados")) {
+	QueryType tipo = getTipo();
+	if (tipo == QueryType.TRABAJOS_AGREGADOS) {
 	    if (pdf) {
 		createPdfReportAgregados(outputFile.getAbsolutePath(), element,
 			consultasFilters);
@@ -89,9 +82,8 @@ public class Leaf implements Component {
 	    }
 
 	} else {
-	    int tipo = getTipo();
-	    String query = getReportQuery(tipo, consultasFilters, element[0]);
 
+	    String query = getReportQuery(tipo, consultasFilters, element[0]);
 	    ConnectionWrapper con = new ConnectionWrapper(DBSession
 		    .getCurrentSession().getJavaConnection());
 	    DefaultTableModel table = con.execute(query);
@@ -113,7 +105,7 @@ public class Leaf implements Component {
     private void createPdfReportAgregados(String outputFile, String[] element,
 	    ConsultasFilters<Field> filters) {
 	new TrabajosAgregadosReport(element, outputFile, null, filters,
-		TYPE_NOT_SET); // TODO
+		QueryType.TYPE_NOT_SET); // TODO
     }
 
     private void createCsvReportAgregados(String outputFile, String[] element,
@@ -121,27 +113,27 @@ public class Leaf implements Component {
 	new CSVTrabajosAgregadosReport(element[0], outputFile, consultasFilters);
     }
 
-    private int getTipo() {
-	int tipo = TYPE_NOT_SET;
+    private QueryType getTipo() {
+	QueryType tipo = QueryType.TYPE_NOT_SET;
 	if (tipoConsulta.equals("Trabajos") && element[1].equals("Firme")) {
-	    tipo = TRABAJOS_FIRME;
+	    tipo = QueryType.TRABAJOS_FIRME;
 	} else if (tipoConsulta.equals("Trabajos")) {
-	    tipo = TRABAJOS;
+	    tipo = QueryType.TRABAJOS;
 	} else if (tipoConsulta.equals("Inspecciones")
 		&& element[1].equals("Firme")) {
-	    tipo = RECONOCIMIENTOS_FIRME;
+	    tipo = QueryType.RECONOCIMIENTOS_FIRME;
 	} else if (tipoConsulta.equals("Inspecciones")) {
-	    tipo = RECONOCIMIENTOS;
+	    tipo = QueryType.RECONOCIMIENTOS;
 	} else if (tipoConsulta.equals("Características")) {
-	    tipo = CARACTERISTICAS;
+	    tipo = QueryType.CARACTERISTICAS;
 	} else if (tipoConsulta.equals("Trabajos Agrupados")) {
-	    tipo = TRABAJOS_AGREGADOS;
+	    tipo = QueryType.TRABAJOS_AGREGADOS;
 	}
 
 	return tipo;
     }
 
-    private String getFields(int tipo, String elementId) {
+    private String getFields(QueryType tipo, String elementId) {
 	switch (tipo) {
 	case TRABAJOS_FIRME:
 	    return ConsultasFieldNames.getFirmeTrabajosFieldNames(elementId);
@@ -155,35 +147,55 @@ public class Leaf implements Component {
 	case CARACTERISTICAS:
 	    return ConsultasFieldNames
 		    .getPDFCaracteristicasFieldNames(element[0]);
+	default:
+	    return "";
 	}
-	return "";
     }
 
-    private String getReportQuery(int tipo, ConsultasFilters<Field> filters,
-	    String element) {
+    private String getReportQuery(QueryType tipo,
+	    ConsultasFilters<Field> filters, String element) {
 	String query;
 
-	if (tipo == CARACTERISTICAS) {
-	    query = getReportQueryForCaracteristicas(filters, element);
+	if (tipo == QueryType.CARACTERISTICAS) {
+	    if (filters.getQueryType().equals("CUSTOM")) {
+		query = getCustomCaracteristicasQuery(filters, element);
+	    } else if (pdf) {
+		query = PDFCaracteristicasQueries.getPDFCaracteristicasQuery(
+			element, filters);
+	    } else {
+		query = CSVCaracteristicasQueries.getCSVCaracteristicasQuery(
+			element, filters);
+	    }
 	} else {
-	    query = getReportQueryForNoCaracteristicas(tipo, filters, element);
+	    String elementId = ConsultasFieldNames.getElementId(element);
+	    String fields;
+	    if (filters.getQueryType().equals("CUSTOM")) {
+		fields = buildFields(filters, "");
+	    } else {
+		fields = getFields(tipo, elementId);
+	    }
+
+	    query = "SELECT " + fields + " FROM " + DBFieldNames.GIA_SCHEMA
+		    + "." + element + "_" + tipoConsulta.getKey()
+		    + " AS sub JOIN " + DBFieldNames.GIA_SCHEMA + "." + element
+		    + " AS el ON sub." + elementId + "= el." + elementId
+		    + CSVCaracteristicasQueries.get(element);
+
+	    if (!consultasFilters.getWhereClauseByLocationWidgets(false)
+		    .isEmpty()) {
+		query = query + " WHERE el." + elementId + " IN (SELECT "
+			+ elementId + " FROM " + DBFieldNames.GIA_SCHEMA + "."
+			+ element
+			+ filters.getWhereClauseByLocationWidgets(false);
+	    }
+
+	    if (tipo == QueryType.TRABAJOS || tipo == QueryType.TRABAJOS_FIRME) {
+		query += filters.getWhereClauseByDates("fecha_certificado");
+	    } else {
+		query += filters.getWhereClauseByDates("fecha_inspeccion");
+	    }
 	}
 	return query;
-    }
-
-    private String getReportQueryForCaracteristicas(
-	    ConsultasFilters<Field> filters, String element) {
-
-	if (filters.getQueryType().equals("CUSTOM")) {
-	    return getCustomCaracteristicasQuery(filters, element);
-	} else if (pdf) {
-	    return PDFCaracteristicasQueries.getPDFCaracteristicasQuery(
-		    element, filters);
-	} else {
-	    return CSVCaracteristicasQueries.getCSVCaracteristicasQuery(
-		    element, filters);
-	}
-
     }
 
     private String getCustomCaracteristicasQuery(
@@ -193,31 +205,7 @@ public class Leaf implements Component {
 	String subquery = query;
 	if (filters.getFields().size() > 0) {
 	    subquery = query.substring(query.indexOf(" FROM"));
-	    String select = "SELECT ";
-	    for (Field field : filters.getFields()) {
-		if (field.getKey().equals("area_mantenimiento")) {
-		    select += "am.item AS  \"Área Mantenimiento\", ";
-		} else if (field.getKey().equals("base_contratista")) {
-		    select += "bc.item AS  \"Base Contratista\", ";
-		} else if (field.getKey().equals("tramo")) {
-		    select += "tr.item AS  \"Tramo\", ";
-		} else if (field.getKey().equals("tipo_via")) {
-		    select += "tv.item AS  \"Tipo Vía\", ";
-		} else if (field.getKey().equals("nombre_via")) {
-		    select += "nv.item AS  \"Nombre Vía\", ";
-		} else if (field.getKey().equals("municipio")) {
-		    select += "mu.item AS  \"Municipio\", ";
-		} else if (field.getKey().equals("sentido")) {
-		    select += "st.item AS  \"Sentido\", ";
-		} else {
-		    select = select
-			    + "el."
-			    + field.getKey()
-			    + String.format(" AS \"%s\"", field.getLongName()
-				    .replace("\"", "'")) + ", ";
-		}
-	    }
-	    subquery = select.substring(0, select.length() - 2) + subquery;
+	    subquery = buildFields(filters, "SELECT ") + subquery;
 	}
 	if (filters.getOrderBy().size() > 0) {
 
@@ -240,44 +228,63 @@ public class Leaf implements Component {
 	return subquery;
     }
 
-    private String getReportQueryForNoCaracteristicas(int tipo,
-	    ConsultasFilters<Field> filters, String element) {
-	String elementId = ConsultasFieldNames.getElementId(element);
-	String fields = getFields(tipo, elementId);
-
-	String query = "SELECT " + fields + " FROM " + DBFieldNames.GIA_SCHEMA
-		+ "." + element + "_" + tipoConsulta.getKey();
-
-	if (!consultasFilters.getWhereClauseByLocationWidgets(false).isEmpty()) {
-	    query = query + " WHERE " + elementId + " IN (SELECT " + elementId
-		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
-		    + filters.getWhereClauseByLocationWidgets(false);
+    private String buildFields(ConsultasFilters<Field> filters, String select) {
+	for (Field field : filters.getFields()) {
+	    if (field.getKey().endsWith("area_mantenimiento")) {
+		select += "am.item AS  \"Área Mantenimiento\", ";
+	    } else if (field.getKey().endsWith("base_contratista")) {
+		select += "bc.item AS  \"Base Contratista\", ";
+	    } else if (field.getKey().endsWith("tramo")) {
+		select += "tr.item AS  \"Tramo\", ";
+	    } else if (field.getKey().endsWith("tipo_via")) {
+		select += "tv.item AS  \"Tipo Vía\", ";
+	    } else if (field.getKey().endsWith("nombre_via")) {
+		select += "nv.item AS  \"Nombre Vía\", ";
+	    } else if (field.getKey().endsWith("municipio")) {
+		select += "mu.item AS  \"Municipio\", ";
+	    } else if (field.getKey().endsWith("sentido")) {
+		select += "st.item AS  \"Sentido\", ";
+	    } else {
+		select = select
+			+ field.getKey()
+			+ String.format(" AS \"%s\"", field.getLongName()
+				.replace("\"", "'")) + ", ";
+	    }
 	}
-
-	if (tipo == TRABAJOS || tipo == TRABAJOS_FIRME) {
-	    query = query + filters.getWhereClauseByDates("fecha_certificado");
-	} else {
-	    query = query + filters.getWhereClauseByDates("fecha_inspeccion");
-	}
-	return query;
+	return select.substring(0, select.length() - 2);
     }
 
-    private void createPdfReport(int tipo, String outputFile, String[] element,
-	    ConsultasFilters<Field> filters, DefaultTableModel table) {
+    private void createPdfReport(QueryType tipo, String outputFile,
+	    String[] element, ConsultasFilters<Field> filters,
+	    DefaultTableModel table) {
 
-	if (tipo == TRABAJOS) {
+	if (filters.getQueryType().equals("CUSTOM")) {
+	    new CustomPDFReport(element, outputFile, table, filters, tipo);
+	    return;
+	}
+
+	switch (tipo) {
+	case TRABAJOS:
 	    new TrabajosReport(element, outputFile, table, filters, tipo);
-	} else if (tipo == TRABAJOS_FIRME) {
+	    break;
+	case TRABAJOS_FIRME:
 	    new FirmeTrabajosReport(element, outputFile, table, filters, tipo);
-	} else if (tipo == RECONOCIMIENTOS_FIRME) {
-	    new FirmeReconocimientosReport(element, outputFile, table, filters,
-		    tipo);
-	} else if (tipo == CARACTERISTICAS) {
+	    break;
+	case CARACTERISTICAS:
 	    ConsultasFieldNames.createCaracteristicasReport(element,
 		    outputFile, table, filters, tipo);
-	} else {
+	    break;
+	case RECONOCIMIENTOS_FIRME:
+	    new FirmeReconocimientosReport(element, outputFile, table, filters,
+		    tipo);
+	    break;
+	case RECONOCIMIENTOS:
 	    new ReconocimientosReport(element, outputFile, table, filters, tipo);
+	    break;
+	default:
+	    break;
 	}
+
     }
 
     private void createCsvReport(String outputFile, DefaultTableModel table,

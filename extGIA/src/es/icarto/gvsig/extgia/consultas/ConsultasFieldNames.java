@@ -13,7 +13,6 @@ import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.AreasMantenimie
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.AreasPeajeCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.AreasServicioCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.BarreraRigidaCaracteristicasReport;
-import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.CustomCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.EnlacesCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.FirmeCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.IsletasCaracteristicasReport;
@@ -35,19 +34,22 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 public class ConsultasFieldNames {
 
     public static String getTrabajosFieldNames(String elementId) {
-	return elementId
-		+ ", fecha, unidad, medicion_contratista, medicion_audasa, "
-		+ "observaciones, fecha_certificado";
+	return "sub."
+		+ elementId
+		+ ", sub.fecha, sub.unidad, sub.medicion_contratista, sub.medicion_audasa, "
+		+ "sub.observaciones, sub.fecha_certificado";
     }
 
     public static String getFirmeTrabajosFieldNames(String elementId) {
-	return elementId + ", fecha, pk_inicial, pk_final, sentido, "
-		+ "descripcion, fecha_certificado";
+	return "sub." + elementId
+		+ ", sub.fecha, sub.pk_inicial, sub.pk_final, sub.sentido, "
+		+ "sub.descripcion, sub.fecha_certificado";
     }
 
     public static String getReconocimientosFieldNames(String elementId) {
-	return elementId
-		+ ", nombre_revisor, fecha_inspeccion, indice_estado, observaciones";
+	return "sub."
+		+ elementId
+		+ ", sub.nombre_revisor, sub.fecha_inspeccion, sub.indice_estado, sub.observaciones";
     }
 
     public static String getReconocimientosFieldNamesWithoutIndice(
@@ -56,9 +58,10 @@ public class ConsultasFieldNames {
     }
 
     public static String getFirmeReconocimientosFieldNames(String elementId) {
-	return elementId
-		+ ", tipo_inspeccion, nombre_revisor, aparato_medicion,"
-		+ "fecha_inspeccion, observaciones";
+	return "sub."
+		+ elementId
+		+ ", sub.tipo_inspeccion, sub.nombre_revisor, sub.aparato_medicion,"
+		+ "sub.fecha_inspeccion, sub.observaciones";
     }
 
     public static String getPDFCaracteristicasFieldNames(String element) {
@@ -619,94 +622,88 @@ public class ConsultasFieldNames {
 
     public static void createCaracteristicasReport(String[] element,
 	    String outputFile, DefaultTableModel tableModel,
-	    ConsultasFilters<Field> filters, int reportType) {
-
-	if (filters.getQueryType().equals("CUSTOM")) {
-	    new CustomCaracteristicasReport(element, outputFile, tableModel,
-		    filters, reportType);
-	    return;
-	}
+	    ConsultasFilters<Field> filters, QueryType tipo) {
 
 	switch (DBFieldNames.Elements.valueOf(element[0])) {
 	case Taludes:
 	    new TaludesCaracteristicasReport(element, outputFile, tableModel,
-		    filters, reportType);
+		    filters, tipo);
 	    break;
 	case Isletas:
 	    new IsletasCaracteristicasReport(element, outputFile, tableModel,
-		    filters, reportType);
+		    filters, tipo);
 	    break;
 	case Barrera_Rigida:
 	    new BarreraRigidaCaracteristicasReport(element, outputFile,
-		    tableModel, filters, reportType);
+		    tableModel, filters, tipo);
 	    break;
 	case Areas_Servicio:
 	    new AreasServicioCaracteristicasReport(element, outputFile,
-		    tableModel, filters, reportType);
+		    tableModel, filters, tipo);
 	    break;
 	case Areas_Descanso:
 	    new AreasDescansoCaracteristicasReport(element, outputFile,
-		    tableModel, filters, reportType);
+		    tableModel, filters, tipo);
 	    break;
 	case Areas_Peaje:
 	    new AreasPeajeCaracteristicasReport(element, outputFile,
-		    tableModel, filters, reportType);
+		    tableModel, filters, tipo);
 	    break;
 	case Enlaces:
 	    new EnlacesCaracteristicasReport(element, outputFile, tableModel,
-		    filters, reportType);
+		    filters, tipo);
 	    break;
 	case Juntas:
 	    new JuntasCaracteristicasReport(element, outputFile, tableModel,
-		    filters, reportType);
+		    filters, tipo);
 	    break;
 	case Pasos_Mediana:
 	    new PasosMedianaCaracteristicasReport(element, outputFile,
-		    tableModel, filters, reportType);
+		    tableModel, filters, tipo);
 	    break;
 	case Senhalizacion_Vertical:
 	    new SenhalizacionVerticalCaracteristicasReport(element, outputFile,
-		    tableModel, filters, reportType);
+		    tableModel, filters, tipo);
 	    break;
 	case Valla_Cierre:
 	    new VallaCierreCaracteristicasReport(element, outputFile,
-		    tableModel, filters, reportType);
+		    tableModel, filters, tipo);
 	    break;
 	case Firme:
 	    new FirmeCaracteristicasReport(element, outputFile, tableModel,
-		    filters, reportType);
+		    filters, tipo);
 	    break;
 	case Obras_Paso:
 	    new ObrasPasoCaracteristicasReport(element, outputFile, tableModel,
-		    filters, reportType);
+		    filters, tipo);
 	    break;
 	case Obras_Desague:
 	    new ObrasDesagueCaracteristicasReport(element, outputFile,
-		    tableModel, filters, reportType);
+		    tableModel, filters, tipo);
 	    break;
 	case Muros:
 	    new MurosCaracteristicasReport(element, outputFile, tableModel,
-		    filters, reportType);
+		    filters, tipo);
 	    break;
 	case Senhalizacion_Variable:
 	    new SenhalizacionVariableCaracteristicasReport(element, outputFile,
-		    tableModel, filters, reportType);
+		    tableModel, filters, tipo);
 	    break;
 	case Lecho_Frenado:
 	    new LechoFrenadoCaracteristicasReport(element, outputFile,
-		    tableModel, filters, reportType);
+		    tableModel, filters, tipo);
 	    break;
 	case Areas_Mantenimiento:
 	    new AreasMantenimientoCaracteristicasReport(element, outputFile,
-		    tableModel, filters, reportType);
+		    tableModel, filters, tipo);
 	    break;
 	case Lineas_Suministro:
 	    new LineasSuministroCaracteristicasReport(element, outputFile,
-		    tableModel, filters, reportType);
+		    tableModel, filters, tipo);
 	    break;
 	case Transformadores:
 	    new TransformadoresCaracteristicasReport(element, outputFile,
-		    tableModel, filters, reportType);
+		    tableModel, filters, tipo);
 	    break;
 	}
     }

@@ -16,19 +16,15 @@ import com.lowagie.text.pdf.PdfPCell;
 import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.icarto.gvsig.extgia.consultas.PDFReport;
+import es.icarto.gvsig.extgia.consultas.QueryType;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class AreasMantenimientoCaracteristicasReport extends PDFReport {
 
     public AreasMantenimientoCaracteristicasReport(String[] element,
 	    String fileName, DefaultTableModel tableModel,
-	    ConsultasFilters<Field> filters, int reportType) {
-	super(element, fileName, tableModel, filters, reportType);
-    }
-
-    @Override
-    protected String getTitle() {
-	return "Listado de Características";
+	    ConsultasFilters<Field> filters, QueryType tipo) {
+	super(element, fileName, tableModel, filters, tipo);
     }
 
     @Override

@@ -10,19 +10,14 @@ import com.lowagie.text.pdf.PdfPCell;
 import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.icarto.gvsig.extgia.consultas.PDFReport;
+import es.icarto.gvsig.extgia.consultas.QueryType;
 
 public class VallaCierreCaracteristicasReport extends PDFReport {
 
     public VallaCierreCaracteristicasReport(String[] element, String fileName,
 	    DefaultTableModel tableModel, ConsultasFilters<Field> filters,
-	    int reportType) {
-	super(element, fileName, tableModel, filters, reportType);
-	// TODO Auto-generated constructor stub
-    }
-
-    @Override
-    protected String getTitle() {
-	return "Listado de Características";
+	    QueryType tipo) {
+	super(element, fileName, tableModel, filters, tipo);
     }
 
     @Override

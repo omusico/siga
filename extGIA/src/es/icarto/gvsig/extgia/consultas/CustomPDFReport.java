@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgia.consultas.caracteristicas.elements;
+package es.icarto.gvsig.extgia.consultas;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -17,20 +17,13 @@ import com.lowagie.text.pdf.PdfPTable;
 
 import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.commons.queries.Utils;
-import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
-import es.icarto.gvsig.extgia.consultas.PDFReport;
 
-public class CustomCaracteristicasReport extends PDFReport {
+public class CustomPDFReport extends PDFReport {
 
-    public CustomCaracteristicasReport(String[] element, String fileName,
+    public CustomPDFReport(String[] element, String fileName,
 	    DefaultTableModel table, ConsultasFilters<Field> filters,
-	    int reportType) {
+	    QueryType reportType) {
 	super(element, fileName, table, filters, reportType);
-    }
-
-    @Override
-    protected String getTitle() {
-	return "Listado de Características";
     }
 
     @Override
@@ -72,7 +65,7 @@ public class CustomCaracteristicasReport extends PDFReport {
 
     @Override
     protected void writeValues(Document document, DefaultTableModel tableModel,
-	    PdfPTable table, int reportType) throws SQLException,
+	    PdfPTable table, QueryType reportType) throws SQLException,
 	    DocumentException {
 	Paragraph paragraph;
 
@@ -84,10 +77,6 @@ public class CustomCaracteristicasReport extends PDFReport {
 		PdfPCell valueCell = new PdfPCell(paragraph);
 		valueCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		table.addCell(valueCell);
-	    }
-	    if (hasEmbebedTable()) {
-		table.addCell(writeAditionalColumnValues(tableModel.getValueAt(
-			row, 1).toString()));
 	    }
 	}
 

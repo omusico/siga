@@ -48,16 +48,20 @@ public abstract class PDFReport {
     private final String elementID;
 
     protected final ConsultasFilters<Field> filters;
+    protected final QueryType reportType;
 
     public PDFReport(String[] element, String fileName,
 	    DefaultTableModel table, ConsultasFilters<Field> filters,
-	    int reportType) {
+	    QueryType reportType) {
 	this.filters = filters;
 	this.elementID = element[0];
+	this.reportType = reportType;
 	writePdfReport(element[1], fileName, table, filters, reportType);
     }
 
-    protected abstract String getTitle();
+    protected String getTitle() {
+	return reportType.title();
+    }
 
     protected abstract Rectangle setPageSize();
 
@@ -186,7 +190,7 @@ public abstract class PDFReport {
 
     private void writePdfReportContent(Document document, String element,
 	    DefaultTableModel tableModel, ConsultasFilters<Field> filters,
-	    int reportType) {
+	    QueryType reportType) {
 	try {
 	    // Header
 	    Image image = getHeaderImage();
@@ -228,13 +232,12 @@ public abstract class PDFReport {
     }
 
     protected void writeValues(Document document, DefaultTableModel tableModel,
-	    PdfPTable table, int reportType) throws SQLException,
+	    PdfPTable table, QueryType reportType) throws SQLException,
 	    DocumentException {
 	Paragraph paragraph;
 	int startColumn;
 	int endColumn;
-	// reportType 4 is características
-	if (reportType != 4) {
+	if (reportType != QueryType.CARACTERISTICAS) {
 	    startColumn = 0;
 	    endColumn = getColumnNames().length - 1;
 	} else {
@@ -295,7 +298,7 @@ public abstract class PDFReport {
 
     public void writePdfReport(String element, String fileName,
 	    DefaultTableModel table, ConsultasFilters<Field> filters,
-	    int reportType) {
+	    QueryType reportType) {
 	document = new Document(setPageSize());
 	try {
 	    PdfWriter writer = PdfWriter.getInstance(document,

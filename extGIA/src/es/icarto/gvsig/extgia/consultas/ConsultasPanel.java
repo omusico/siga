@@ -22,8 +22,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
-import org.apache.log4j.Logger;
-
 import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.andami.ui.mdiManager.WindowInfo;
@@ -46,7 +44,6 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 @SuppressWarnings("serial")
 public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
-    private static final Logger logger = Logger.getLogger(ConsultasPanel.class);
     public static String ABEILLE_FILENAME = "forms/consultas_inventario.jfrm";
 
     private static final KeyValue ALL_ITEMS = new KeyValue("todos", "-TODOS-");
@@ -216,6 +213,27 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
 	    List<Field> columns = Utils.getFields(resource.getPath(),
 		    "audasa_extgia", selElement.getKey().toLowerCase());
+	    for (Field f : columns) {
+		f.setKey("el." + f.getKey());
+	    }
+	    if (selTipoConsulta.equals("Trabajos")) {
+		List<Field> columns2 = Utils.getFields(resource.getPath(),
+			"audasa_extgia", selElement.getKey().toLowerCase()
+				+ "_trabajos");
+		for (Field f : columns2) {
+		    f.setKey("sub." + f.getKey());
+		}
+		columns.addAll(columns2);
+	    }
+	    if (selTipoConsulta.equals("Inspecciones")) {
+		List<Field> columns2 = Utils.getFields(resource.getPath(),
+			"audasa_extgia", selElement.getKey().toLowerCase()
+				+ "_reconocimientos");
+		for (Field f : columns2) {
+		    f.setKey("sub." + f.getKey());
+		}
+		columns.addAll(columns2);
+	    }
 	    customiceDialog.addSourceElements(columns);
 
 	    int status = customiceDialog.open();
@@ -354,8 +372,8 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
     private class ReportTypeListener implements ActionListener {
 
 	private boolean caracSelected() {
-	    return queriesWidget
-		    .isQueryIdSelected(QueriesWidgetCombo.CARACTERISTICAS);
+	    return !queriesWidget
+		    .isQueryIdSelected(QueriesWidgetCombo.TRABAJOS_AGRUPADOS);
 	}
 
 	private boolean todosNoSelected() {

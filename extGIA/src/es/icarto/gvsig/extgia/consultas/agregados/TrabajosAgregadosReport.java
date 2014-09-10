@@ -22,6 +22,7 @@ import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.commons.queries.Utils;
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.icarto.gvsig.extgia.consultas.PDFReport;
+import es.icarto.gvsig.extgia.consultas.QueryType;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class TrabajosAgregadosReport extends PDFReport {
@@ -29,13 +30,9 @@ public class TrabajosAgregadosReport extends PDFReport {
     private TrabajosAgregadosReportQueries agregadosReportQueries = null;
 
     public TrabajosAgregadosReport(String[] element, String fileName,
-	    ResultSet resultMap, ConsultasFilters<Field> filters, int reportType) {
+	    ResultSet resultMap, ConsultasFilters<Field> filters,
+	    QueryType reportType) {
 	super(element, fileName, null, filters, reportType);
-    }
-
-    @Override
-    protected String getTitle() {
-	return "Mediciones Vegetación";
     }
 
     @Override
@@ -74,7 +71,7 @@ public class TrabajosAgregadosReport extends PDFReport {
 
     @Override
     protected void writeValues(Document document, DefaultTableModel tableModel,
-	    PdfPTable table, int reportType) {
+	    PdfPTable table, QueryType reportType) {
 	agregadosReportQueries = new TrabajosAgregadosReportQueries(
 		getElementID());
 	writeTable("Desbroce con retroaraña\n\n",

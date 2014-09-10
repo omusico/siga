@@ -14,6 +14,7 @@ import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 public class QueriesWidgetCombo implements QueriesWidget {
 
     public static final String CARACTERISTICAS = "Características";
+    public static final String TRABAJOS_AGRUPADOS = "Trabajos Agrupados";
     private final JComboBox queriesWidget;
 
     public QueriesWidgetCombo(FormPanel formPanel, String name, ORMLite ormLite) {

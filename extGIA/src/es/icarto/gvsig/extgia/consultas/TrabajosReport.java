@@ -12,13 +12,8 @@ public class TrabajosReport extends PDFReport {
 
     public TrabajosReport(String[] element, String fileName,
 	    DefaultTableModel table, ConsultasFilters<Field> filters,
-	    int reportType) {
-	super(element, fileName, table, filters, reportType);
-    }
-
-    @Override
-    protected String getTitle() {
-	return "Listado de Trabajos";
+	    QueryType tipo) {
+	super(element, fileName, table, filters, tipo);
     }
 
     @Override

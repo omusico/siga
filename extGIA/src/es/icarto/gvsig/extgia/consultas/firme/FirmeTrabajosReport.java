@@ -4,14 +4,15 @@ import javax.swing.table.DefaultTableModel;
 
 import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
+import es.icarto.gvsig.extgia.consultas.QueryType;
 import es.icarto.gvsig.extgia.consultas.TrabajosReport;
 
 public class FirmeTrabajosReport extends TrabajosReport {
 
     public FirmeTrabajosReport(String[] element, String fileName,
 	    DefaultTableModel table, ConsultasFilters<Field> filters,
-	    int reportType) {
-	super(element, fileName, table, filters, reportType);
+	    QueryType tipo) {
+	super(element, fileName, table, filters, tipo);
 
     }
 

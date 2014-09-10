@@ -12,13 +12,8 @@ public class ReconocimientosReport extends PDFReport {
 
     public ReconocimientosReport(String[] element, String fileName,
 	    DefaultTableModel tableModel, ConsultasFilters<Field> filters,
-	    int reportType) {
-	super(element, fileName, tableModel, filters, reportType);
-    }
-
-    @Override
-    protected String getTitle() {
-	return "Listado de Reconocimientos de Estado";
+	    QueryType tipo) {
+	super(element, fileName, tableModel, filters, tipo);
     }
 
     @Override
