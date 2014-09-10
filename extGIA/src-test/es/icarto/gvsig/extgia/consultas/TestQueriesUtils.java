@@ -1,8 +1,6 @@
 package es.icarto.gvsig.extgia.consultas;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -73,19 +71,19 @@ public class TestQueriesUtils {
 	    assertTrue(String.format("No columns in table: %s", kv.getKey()),
 		    fields.size() > 0);
 
-	    // System.out.println("");
-	    // System.out.println("");
-	    // System.out.println("");
-	    // System.out.println(kv.getValue());
+	    System.out.println("");
+	    System.out.println("");
+	    System.out.println("");
+	    System.out.println(kv.getValue());
 	    for (Field c : fields) {
-		// if (props.getProperty(c, null) == null) {
-		// System.out.println(String.format("%s=", c));
-		// }
-		assertNotEquals(
-			String.format("Table: %s, column: %s", kv.getKey(), c),
-			c.getKey(), c.getLongName());
-		assertFalse(c.getKey().equals("the_geom"));
-		assertFalse(c.getKey().equals("gid"));
+		if (c.getKey().equals(c.getLongName())) {
+		    System.out.println(String.format("%s=", c));
+		}
+		// assertNotEquals(
+		// String.format("Table: %s, column: %s", kv.getKey(), c),
+		// c.getKey(), c.getLongName());
+		// assertFalse(c.getKey().equals("the_geom"));
+		// assertFalse(c.getKey().equals("gid"));
 
 	    }
 	}

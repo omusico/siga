@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 
 import com.iver.andami.PluginServices;
 
+import es.icarto.gvsig.commons.queries.Component;
 import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 

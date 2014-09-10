@@ -22,30 +22,30 @@ public class QueriesWidgetTable implements QueriesWidget {
 
     private static final Logger logger = Logger
 	    .getLogger(QueriesWidgetTable.class);
-    private final JTable queriesTable;
+    private final JTable widget;
 
     public QueriesWidgetTable(FormPanel formBody, String name) {
-	queriesTable = (JTable) formBody.getComponentByName(name);
-	initQueriesTable();
-	fillQueriesTable();
+	widget = (JTable) formBody.getComponentByName(name);
+	initQueriesWidget();
+	fillQueriesWidget();
     }
 
     @Override
     public String getQueryId() {
-	DefaultTableModel model = (DefaultTableModel) queriesTable.getModel();
-	int i = queriesTable.getSelectedRow();
+	DefaultTableModel model = (DefaultTableModel) widget.getModel();
+	int i = widget.getSelectedRow();
 	return (String) model.getValueAt(i, 0);
     }
 
-    private void initQueriesTable() {
+    private void initQueriesWidget() {
 	DefaultTableModel model = new OnlyOneColumnEditable(0);
-	queriesTable.setModel(model);
+	widget.setModel(model);
 	String[] columnNames = { "Código", "Descripción" };
 
 	model.setRowCount(0);
-	queriesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-	queriesTable.setRowSelectionAllowed(true);
-	queriesTable.setColumnSelectionAllowed(false);
+	widget.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	widget.setRowSelectionAllowed(true);
+	widget.setColumnSelectionAllowed(false);
 
 	TableColumn column01 = new TableColumn();
 	model.addColumn(column01);
@@ -55,20 +55,20 @@ public class QueriesWidgetTable implements QueriesWidget {
 
 	DefaultTableCellRenderer columnCentered = new DefaultTableCellRenderer();
 	columnCentered.setHorizontalAlignment(SwingConstants.CENTER);
-	queriesTable.getColumnModel().getColumn(0)
+	widget.getColumnModel().getColumn(0)
 		.setCellRenderer(columnCentered);
 
-	queriesTable.getColumnModel().getColumn(0)
+	widget.getColumnModel().getColumn(0)
 		.setHeaderValue(columnNames[0]);
-	queriesTable.getColumnModel().getColumn(0).setMinWidth(100);
-	queriesTable.getColumnModel().getColumn(0).setMaxWidth(110);
-	queriesTable.getColumnModel().getColumn(1)
+	widget.getColumnModel().getColumn(0).setMinWidth(100);
+	widget.getColumnModel().getColumn(0).setMaxWidth(110);
+	widget.getColumnModel().getColumn(1)
 		.setHeaderValue(columnNames[1]);
-	queriesTable.getColumnModel().getColumn(1).setMaxWidth(500);
+	widget.getColumnModel().getColumn(1).setMaxWidth(500);
     }
 
-    private void fillQueriesTable() {
-	DefaultTableModel model = (DefaultTableModel) queriesTable.getModel();
+    private void fillQueriesWidget() {
+	DefaultTableModel model = (DefaultTableModel) widget.getModel();
 	model.setRowCount(0);
 	DBSession dbs = DBSession.getCurrentSession();
 

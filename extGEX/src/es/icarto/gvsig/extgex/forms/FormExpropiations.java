@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -596,7 +597,8 @@ public class FormExpropiations extends AbstractForm implements
 	String idReversion = null;
 	String superficie;
 	String importeEuros;
-	String importePtas;
+	String importePtas = null;
+	String fechaActa = null;
 
 	// Check if ID reversion exists into reversions table
 	for (int i = 0; i < reversiones.getRowCount(); i++) {
@@ -668,30 +670,56 @@ public class FormExpropiations extends AbstractForm implements
 		} else {
 		    importeEuros = null;
 		}
-		if (reversiones.getModel().getValueAt(i, 3) != null) {
-		    importePtas = reversiones.getModel().getValueAt(i, 3)
-			    .toString();
-		} else {
-		    importePtas = null;
+
+		if (importeEuros != null) {
+		    try {
+			double parseDouble = Double.parseDouble(importeEuros) * 166.386;
+			importePtas = Long.toString(Math.round(parseDouble));
+		    } catch (NumberFormatException e) {
+			importeEuros = null;
+			importePtas = null;
+		    }
+
 		}
-		query = "INSERT INTO " + DBNames.SCHEMA_DATA + "."
-			+ DBNames.TABLE_FINCASREVERSIONES + " " + "VALUES ('"
-			+ getIDFinca() + "', '" + idReversion + "',";
+
+		if (reversiones.getModel().getValueAt(i, 4) != null) {
+		    fechaActa = reversiones.getModel().getValueAt(i, 4)
+			    .toString();
+		    try {
+			DateFormatNT.getDateFormat().parse(fechaActa);
+		    } catch (ParseException e) {
+			fechaActa = null;
+		    }
+		}
+
+		query = "INSERT INTO "
+			+ DBNames.SCHEMA_DATA
+			+ "."
+			+ DBNames.TABLE_FINCASREVERSIONES
+			+ " (id_finca, id_reversion, superficie, importe_euros, importe_ptas, fecha_acta) "
+			+ "VALUES ('" + getIDFinca() + "', '" + idReversion
+			+ "',";
 		if (superficie != null) {
 		    query = query + " '" + superficie + "',";
 		} else {
 		    query = query + " null,";
 		}
 		if (importeEuros != null) {
-		    query = query + " '" + importeEuros + "');";
+		    query = query + " '" + importeEuros + "',";
 		} else {
 		    query = query + " null );";
 		}
 		if (importePtas != null) {
-		    query = query + " '" + importePtas + "');";
+		    query = query + " '" + importePtas + "',";
 		} else {
 		    query = query + " null );";
 		}
+		if (fechaActa != null) {
+		    query = query + " '" + fechaActa + "');";
+		} else {
+		    query = query + " null );";
+		}
+
 		statement = DBSession.getCurrentSession().getJavaConnection()
 			.prepareStatement(query);
 		statement.execute();
@@ -749,6 +777,7 @@ public class FormExpropiations extends AbstractForm implements
 		}
 		if (cultivo != null) {
 		    String cultivoID = getIDCultivo(cultivo);
+
 		    query = query + " '" + cultivoID + "');";
 		} else {
 		    query = query + " null );";

@@ -157,13 +157,12 @@ public class FormReversions extends AbstractForm implements TableModelListener {
 		tableModel.addColumn(columnName);
 	    }
 	    fincasAfectadas.setModel(tableModel);
-	    fincasAfectadas.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-	    fincasAfectadas.getColumnModel().getColumn(0)
-		    .setPreferredWidth(140);
+	    // fincasAfectadas.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+	    fincasAfectadas.getColumnModel().getColumn(0).setPreferredWidth(80);
 	    fincasAfectadas.getColumnModel().getColumn(1)
 		    .setPreferredWidth(200);
-	    fincasAfectadas.getColumnModel().getColumn(1).setPreferredWidth(90);
-	    fincasAfectadas.getColumnModel().getColumn(4).setPreferredWidth(90);
+	    fincasAfectadas.getColumnModel().getColumn(2).setPreferredWidth(70);
+	    fincasAfectadas.getColumnModel().getColumn(5).setPreferredWidth(70);
 
 	    Value[] reversionData = new Value[columnasFincas.size()];
 	    ResultSet rs = getFincasByExpReversion();

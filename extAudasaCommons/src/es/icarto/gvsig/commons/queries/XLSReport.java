@@ -18,10 +18,11 @@ public class XLSReport {
 
     private Workbook wb;
     private Sheet sheet;
+    private final QueryFiltersI filters;
 
     public XLSReport(String outputFile, DefaultTableModel table,
 	    QueryFiltersI filters) {
-
+	this.filters = filters;
 	if (outputFile != null) {
 	    try {
 		// Workbook wb = new HSSFWorkbook(); // xls
@@ -30,7 +31,7 @@ public class XLSReport {
 		sheet = wb.createSheet(safeName);
 		// sheet.setAutoFilter(CellRangeAddress.valueOf("A5:Q5"));
 
-		writeFilters(filters);
+		writeFilters();
 		writeColumnNames(table);
 		writeRows(table);
 
@@ -41,7 +42,7 @@ public class XLSReport {
 	}
     }
 
-    protected void writeFilters(QueryFiltersI filters) {
+    protected void writeFilters() {
 
 	short rowIdx = 0;
 
@@ -55,7 +56,8 @@ public class XLSReport {
 
     private void writeColumnNames(DefaultTableModel table) {
 
-	Row row0 = sheet.createRow(4);
+	int rowOffset = filters.getLocation().size();
+	Row row0 = sheet.createRow(rowOffset + 2);
 
 	for (int i = 0; i < table.getColumnCount(); i++) {
 	    row0.createCell(i).setCellValue(table.getColumnName(i));
@@ -63,8 +65,10 @@ public class XLSReport {
     }
 
     private void writeRows(DefaultTableModel tableModel) throws IOException {
+	int rowOffset = filters.getLocation().size();
+
 	for (int rowIdx = 0; rowIdx < tableModel.getRowCount(); rowIdx++) {
-	    Row row = sheet.createRow(rowIdx + 5);
+	    Row row = sheet.createRow(rowIdx + rowOffset + 3);
 	    for (int column = 0; column < tableModel.getColumnCount(); column++) {
 		Object value = tableModel.getValueAt(rowIdx, column);
 		createCell(row, column, value);

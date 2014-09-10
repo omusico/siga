@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import com.iver.andami.PluginServices;
 
 import es.icarto.gvsig.audasacommons.forms.reports.SaveFileDialog;
+import es.icarto.gvsig.commons.queries.Component;
 import es.icarto.gvsig.commons.queries.ConnectionWrapper;
 import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.commons.queries.XLSReport;

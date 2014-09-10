@@ -31,6 +31,7 @@ import com.jeta.forms.gui.common.FormException;
 import com.toedter.calendar.JDateChooser;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
+import es.icarto.gvsig.commons.queries.Component;
 import es.icarto.gvsig.commons.queries.CustomiceDialog;
 import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.commons.queries.Utils;
@@ -75,6 +76,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
     private QueriesWidgetCombo queriesWidget;
 
     public ConsultasPanel() {
+
 	InputStream stream = getClass().getClassLoader().getResourceAsStream(
 		ABEILLE_FILENAME);
 	FormPanel result = null;
@@ -176,7 +178,6 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
 	consultasFilters = new ConsultasFilters<Field>(getFilterAreaValue(),
 		getFilterBaseContratistaValue(), getFilterTramoValue(),
 		fechaInicio.getDate(), fechaFin.getDate());
@@ -259,6 +260,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	if (!todos.setOutputPath(null)) {
 	    return;
 	}
+
 	try {
 	    PluginServices.getMDIManager().setWaitCursor();
 	    todos.generateReportFile();

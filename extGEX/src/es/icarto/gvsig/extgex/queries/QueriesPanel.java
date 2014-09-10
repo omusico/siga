@@ -2,6 +2,7 @@ package es.icarto.gvsig.extgex.queries;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,11 +11,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JRadioButton;
 
 import org.apache.log4j.Logger;
 
@@ -30,7 +29,9 @@ import es.icarto.gvsig.commons.queries.ConnectionWrapper;
 import es.icarto.gvsig.commons.queries.CustomiceDialog;
 import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.commons.queries.QueriesWidget;
+import es.icarto.gvsig.commons.queries.Utils;
 import es.icarto.gvsig.extgex.forms.FormExpropiations;
+import es.icarto.gvsig.extgex.forms.FormReversions;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -43,7 +44,7 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
 
     private FormPanel formBody;
 
-    private final String ID_RUNQUERIES = "runQueriesButton";
+    public static final String ID_RUNQUERIES = "runQueriesButton";
     private JButton runQueriesB;
 
     private static final String ID_CUSTOMQUERIES = "customQueriesButton";
@@ -61,10 +62,6 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
     private final String ID_PARROQUIA_SUBTRAMOCB = "parroquia_subtramo";
     private JComboBox parroquia_subtramo;
 
-    private JRadioButton verRB;
-    private JRadioButton pdfRB;
-    private JRadioButton csvRB;
-
     private final DBSession dbs;
 
     // Filters
@@ -74,8 +71,7 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
     String parroquiaSelected = null;
 
     private QueriesWidget queriesWidget;
-
-    private ButtonGroup buttonGroup;
+    private QueriesOuputWidget queriesOuputWidget;
 
     public QueriesPanel() {
 	super();
@@ -108,20 +104,10 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
 	customQueriesB.addActionListener(this);
 
 	initFilterWidgets();
-	queriesWidget = new QueriesWidgetTable(formBody, "queriesTable");
 
-	verRB = (JRadioButton) formBody.getComponentByName("ver");
-	verRB.setActionCommand(QueriesOuputWidget.SCREEN);
-	pdfRB = (JRadioButton) formBody.getComponentByName("pdf");
-	pdfRB.setActionCommand(QueriesOuputWidget.PDF);
-	pdfRB.setSelected(true);
-	csvRB = (JRadioButton) formBody.getComponentByName("csv");
-	csvRB.setActionCommand(QueriesOuputWidget.CSV);
+	queriesOuputWidget = new QueriesOuputWidget(formBody, "pdf", "excel");
+	queriesWidget = new QueriesWidgetCB(formBody, "tipo_consulta");
 
-	buttonGroup = new ButtonGroup();
-	buttonGroup.add(csvRB);
-	buttonGroup.add(pdfRB);
-	buttonGroup.add(verRB);
     }
 
     private void initFilterWidgets() {
@@ -336,30 +322,61 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
 
     private void executeValidations(boolean customized) throws SQLException {
 
+	QueryFilters queryFilters = new QueryFilters(getFilters());
 	String queryCode = queriesWidget.getQueryId();
 
-	String[] queryContents = doQuery(queryCode);
+	String query = null;
+	String queryDescription = null;
+	String queryTitle = null;
+	String querySubtitle = null;
 
-	String query = queryContents[0].replace("\n", " ");
-	String queryDescription = queryContents[1];
-	String queryTitle = queryContents[2];
-	String querySubtitle = queryContents[3];
+	if (!queryCode.startsWith("custom")) {
+	    String[] queryContents = doQuery(queryCode);
+	    query = queryContents[0].replace("\n", " ");
+	    queryDescription = queryContents[1];
+	    queryTitle = queryContents[2];
+	    querySubtitle = queryContents[3];
+	}
 
 	if (customized) {
 	    CustomiceDialog<Field> customiceDialog = new CustomiceDialog<Field>();
+	    URL resource = getClass().getClassLoader().getResource(
+		    "columns.properties");
 
-	    String[] tableColumns = DBSession.getCurrentSession().getColumns(
-		    DBNames.SCHEMA_DATA, FormExpropiations.TABLENAME);
-	    List<Field> columns = parseQuery(query, tableColumns);
+	    List<Field> columns = null;
+	    if (queryCode.equals("custom-exp_finca")) {
+		columns = Utils.getFields(resource.getPath(),
+			DBNames.SCHEMA_DATA, FormExpropiations.TABLENAME);
+		query = "SELECT foo FROM " + DBNames.SCHEMA_DATA + "."
+			+ FormExpropiations.TABLENAME;
+		queryDescription = "Expropiaciones";
+		queryTitle = "Listado de expropiaciones";
+		querySubtitle = "";
+	    } else if (queryCode.equals("custom-exp_rv")) {
+		columns = Utils.getFields(resource.getPath(),
+			DBNames.SCHEMA_DATA, FormReversions.TABLENAME);
+		query = "SELECT foo FROM " + DBNames.SCHEMA_DATA + "."
+			+ FormReversions.TABLENAME;
+		queryDescription = "Reversiones";
+		queryTitle = "Listado de reversiones";
+		querySubtitle = "";
+	    } else {
+		String[] tableColumns = DBSession.getCurrentSession()
+			.getColumns(DBNames.SCHEMA_DATA,
+				FormExpropiations.TABLENAME);
+		columns = parseQuery(query, tableColumns);
+
+	    }
+
 	    customiceDialog.addSourceElements(columns);
 
 	    int status = customiceDialog.open();
 	    if (status == CustomiceDialog.CANCEL) {
 		return;
 	    }
-	    // consultasFilters.setQueryType("CUSTOM");
-	    // consultasFilters.setFields(customiceDialog.getFields());
-	    // consultasFilters.setOrderBy(customiceDialog.getOrderBy());
+
+	    queryFilters.setQueryType("CUSTOM");
+	    queryFilters.setFields(customiceDialog.getFields());
 
 	    query = buildQuery(query, customiceDialog.getFields(),
 		    customiceDialog.getOrderBy());
@@ -369,15 +386,14 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
 
 	ResultTableModel result = new ResultTableModel(queryCode,
 		queryDescription, queryTitle, querySubtitle, getFilters());
+	result.setQueryFilters(queryFilters);
 	con.execute(query, result);
 
-	QueriesOuputWidget.to(buttonGroup.getSelection().getActionCommand(),
-		result, getFilters());
+	queriesOuputWidget.to(result, getFilters());
 
     }
 
     private String[] doQuery(String queryCode) throws SQLException {
-	DBSession dbs = DBSession.getCurrentSession();
 
 	String whereClause = DBNames.FIELD_CODIGO_QUERIES + " = '" + queryCode
 		+ "'";
@@ -437,7 +453,7 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
 	if (!fields.isEmpty()) {
 	    newQuery = "SELECT ";
 	    for (Field kv : fields) {
-		newQuery = newQuery + kv.getKey() + " as \"" + kv.getValue()
+		newQuery = newQuery + kv.getKey() + " as \"" + kv.getLongName()
 			+ "\", ";
 	    }
 	    newQuery = newQuery.substring(0, newQuery.length() - 2)

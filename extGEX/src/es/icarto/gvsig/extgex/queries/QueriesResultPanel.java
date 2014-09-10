@@ -70,8 +70,7 @@ public class QueriesResultPanel extends gvWindow implements ActionListener {
 	if (e.getSource() == exportB) {
 	    String sel = fileTypeCB.getSelectedItem() == null ? "" : fileTypeCB
 		    .getSelectedItem().toString();
-
-	    QueriesOuputWidget.to(sel, table, filters);
+	    new QueriesOuputWidget().to(sel, table, filters);
 	}
     }
 

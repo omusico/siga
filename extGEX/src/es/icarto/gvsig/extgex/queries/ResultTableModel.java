@@ -20,6 +20,8 @@ import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
 
+import es.icarto.gvsig.commons.queries.QueryFiltersI;
+
 @SuppressWarnings("serial")
 public class ResultTableModel extends DefaultTableModel {
 
@@ -30,6 +32,7 @@ public class ResultTableModel extends DefaultTableModel {
     private final String[] filters;
 
     private List<String> tables;
+    private QueryFiltersI queryFilters;
 
     public ResultTableModel(String code, String description, String title,
 	    String subtitle, String[] filters) {
@@ -99,5 +102,13 @@ public class ResultTableModel extends DefaultTableModel {
 	html = html + "</table>";
 
 	return html;
+    }
+
+    public void setQueryFilters(QueryFiltersI queryFilters) {
+	this.queryFilters = queryFilters;
+    }
+
+    public QueryFiltersI getQueryFilters() {
+	return queryFilters;
     }
 }

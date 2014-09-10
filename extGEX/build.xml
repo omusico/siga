@@ -37,7 +37,9 @@
 			<fileset dir="data" includes="*" />
 		</copy>
 		<copy file="config/config.xml" todir="${dist}"/>
-		<copy file="config/text_es.properties" todir="${dist}"/>
+		<copy todir="${dist}">
+			<fileset dir="config" includes="*.properties" />
+		</copy>
 		<copy todir="${dist}/images">
 			<fileset dir="images" includes="*" />
 		</copy>

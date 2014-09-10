@@ -6,8 +6,10 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import com.lowagie.text.BadElementException;
@@ -35,6 +37,8 @@ import com.lowagie.text.rtf.document.RtfDocumentSettings;
 import com.lowagie.text.rtf.style.RtfParagraphStyle;
 import com.lowagie.text.rtf.table.RtfCell;
 
+import es.icarto.gvsig.commons.queries.Field;
+
 public class Report {
 
     protected static final int RTF = 0;
@@ -52,9 +56,11 @@ public class Report {
 
     private String[] tableHeader;
     private boolean startNewReport;
+    private final ResultTableModel resultsMap;
 
     public Report(int reportType, String fileName, ResultTableModel resultsMap,
 	    String[] filters) {
+	this.resultsMap = resultsMap;
 	if (reportType == RTF) {
 	    writeRtfReport(fileName, resultsMap, filters);
 	}
@@ -174,6 +180,12 @@ public class Report {
 
     private float[] getColumnsWidth(PdfPTable table, int columnCount,
 	    float specialWith) {
+	if (resultsMap.getQueryFilters().getFields() != null) {
+	    float[] columnsWidth = new float[columnCount];
+	    float columnWidh = table.getTotalWidth() / columnCount;
+	    Arrays.fill(columnsWidth, columnWidh);
+	    return columnsWidth;
+	}
 	float[] columnsWidth = new float[columnCount];
 	for (int i = 0; i < columnCount; i++) {
 	    if (i == 1) {
@@ -308,12 +320,16 @@ public class Report {
 
 	    // Column names
 	    for (int i = 0; i < columnCount; i++) {
-		Paragraph column = new Paragraph(result.getColumnName(i),
-			bodyBoldStyle);
+		String columnName = result.getColumnName(i);
+		if (result.getQueryFilters().getFields() != null) {
+		    List<Field> list = result.getQueryFilters().getFields();
+		    columnName = list.get(i).getLongName();
+		}
+		Paragraph column = new Paragraph(columnName, bodyBoldStyle);
 		PdfPCell columnCell = new PdfPCell(column);
 		columnCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		table.addCell(columnCell);
-		headerCells[i] = result.getColumnName(i);
+		headerCells[i] = columnName;
 	    }
 
 	    startNewReport = false;

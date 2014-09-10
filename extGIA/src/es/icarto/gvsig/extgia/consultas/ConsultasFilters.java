@@ -184,8 +184,9 @@ public class ConsultasFilters<E> implements QueryFiltersI {
 	this.fields = fields;
     }
 
-    public List<E> getFields() {
-	return this.fields;
+    @Override
+    public List<Field> getFields() {
+	return (List<Field>) this.fields;
     }
 
     public void setOrderBy(List<E> orderBy) {

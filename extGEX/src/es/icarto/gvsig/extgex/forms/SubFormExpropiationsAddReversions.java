@@ -104,15 +104,12 @@ public class SubFormExpropiationsAddReversions extends AbstractIWindow
 	    @Override
 	    public void keyReleased(KeyEvent e) {
 		String eurosStr = importeEuros.getText() == null ? ""
-			: importeEuros.getText().trim();
-		if (eurosStr.isEmpty()) {
-		    return;
-		}
+			: importeEuros.getText().trim().replace(",", ".");
 		try {
 		    double parseDouble = Double.parseDouble(eurosStr) * 166.386;
 		    importePtas.setText(Long.toString(Math.round(parseDouble)));
 		} catch (NumberFormatException e2) {
-		    e2.printStackTrace();
+		    importePtas.setText("");
 		}
 	    }
 

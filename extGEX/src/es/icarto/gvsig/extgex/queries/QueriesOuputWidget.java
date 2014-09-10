@@ -1,12 +1,16 @@
 package es.icarto.gvsig.extgex.queries;
 
 import java.io.File;
-import java.util.Arrays;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JRadioButton;
 
 import com.iver.andami.messages.NotificationManager;
+import com.jeta.forms.components.panel.FormPanel;
 
+import es.icarto.gvsig.commons.queries.CSVReport;
+import es.icarto.gvsig.commons.queries.XLSReport;
 import es.icarto.gvsig.extgex.utils.SaveFileDialog;
-import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 
 public class QueriesOuputWidget {
 
@@ -15,12 +19,30 @@ public class QueriesOuputWidget {
     public static final String SCREEN = "SCREEN";
     public static final String HTML = "HTML";
     public static final String RTF = "RTF";
+    public static final String EXCEL = "EXCEL";
+    private final JRadioButton pdfRB;
+    private final JRadioButton excelRB;
+    private final ButtonGroup buttonGroup;
 
-    private QueriesOuputWidget() {
-	throw new AssertionError("only static methods rigth now");
+    public QueriesOuputWidget(FormPanel formPanel, String... formats) {
+	pdfRB = (JRadioButton) formPanel.getComponentByName("pdf");
+	pdfRB.setActionCommand(QueriesOuputWidget.PDF);
+	pdfRB.setSelected(true);
+	excelRB = (JRadioButton) formPanel.getComponentByName("excel");
+	excelRB.setActionCommand(QueriesOuputWidget.EXCEL);
+
+	buttonGroup = new ButtonGroup();
+	buttonGroup.add(excelRB);
+	buttonGroup.add(pdfRB);
     }
 
-    public static void toPDF(ResultTableModel table, String[] filters) {
+    public QueriesOuputWidget() {
+	pdfRB = null;
+	excelRB = null;
+	buttonGroup = null;
+    }
+
+    public void toPDF(ResultTableModel table, String[] filters) {
 	SaveFileDialog sfd = new SaveFileDialog("PDF files", "pdf");
 	File f = sfd.showDialog();
 	if (f != null) {
@@ -29,29 +51,21 @@ public class QueriesOuputWidget {
 	}
     }
 
-    private static void toCSV(ResultTableModel table, String[] filters) {
-
-	// TODO: fpuga. Workaround. Filters should be a common interfaz between
-	// extGIA and extGEX. Here we are reusing CSVReport and using the
-	// ConsultasFilters object in a inpropper way to set the filter values
-	ConsultasFilters consultasFilters = new ConsultasFilters(null, null,
-		null, null, null);
-	consultasFilters.setFields(Arrays.asList(filters));
+    private void toCSV(ResultTableModel table, final String[] filters) {
 
 	SaveFileDialog sfd = new SaveFileDialog("CSV files", "csv");
 	File f = sfd.showDialog();
 	if (f != null) {
-	    new CSVReportExpropiations(f.getAbsolutePath(), table,
-		    consultasFilters);
+	    new CSVReport(f.getAbsolutePath(), table, table.getQueryFilters());
 	}
     }
 
-    public static void toScreen(ResultTableModel table, String[] filters) {
+    public void toScreen(ResultTableModel table, String[] filters) {
 	QueriesResultPanel resultPanel = new QueriesResultPanel(table, filters);
 	resultPanel.open();
     }
 
-    public static void toHtml(ResultTableModel table, String[] filters) {
+    public void toHtml(ResultTableModel table, String[] filters) {
 	SaveFileDialog sfd = new SaveFileDialog("HTML files", "html", "htm");
 	File f = sfd.showDialog();
 	if (f != null) {
@@ -61,7 +75,7 @@ public class QueriesOuputWidget {
 	}
     }
 
-    public static void toRTF(ResultTableModel table, String[] filters) {
+    public void toRTF(ResultTableModel table, String[] filters) {
 	SaveFileDialog sfd = new SaveFileDialog("RTF files", "rtf");
 	File f = sfd.showDialog();
 	if (f != null) {
@@ -70,7 +84,21 @@ public class QueriesOuputWidget {
 	}
     }
 
-    public static void to(String sel, ResultTableModel table, String[] filters) {
+    public void toXLSX(ResultTableModel table, final String[] filters) {
+	SaveFileDialog sfd = new SaveFileDialog("Excel files", "xlsx");
+	File f = sfd.showDialog();
+	if (f != null) {
+	    String filename = f.getAbsolutePath();
+	    new XLSReport(filename, table, table.getQueryFilters());
+	}
+    }
+
+    public void to(ResultTableModel table, String[] filters) {
+	String sel = buttonGroup.getSelection().getActionCommand();
+	to(sel, table, filters);
+    }
+
+    public void to(String sel, ResultTableModel table, String[] filters) {
 	if (sel.equals(PDF)) {
 	    toPDF(table, filters);
 	} else if (sel.equals(CSV)) {
@@ -81,7 +109,8 @@ public class QueriesOuputWidget {
 	    toHtml(table, filters);
 	} else if (sel.equals(RTF)) {
 	    toRTF(table, filters);
+	} else if (sel.equals(EXCEL)) {
+	    toXLSX(table, filters);
 	}
     }
-
 }
