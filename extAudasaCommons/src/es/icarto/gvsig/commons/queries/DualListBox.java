@@ -10,7 +10,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -26,6 +25,9 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.ListDataListener;
+
+import org.gvsig.gui.beans.controls.dnd.JDnDList;
+import org.gvsig.gui.beans.controls.dnd.JDnDListModel;
 
 @SuppressWarnings("serial")
 public class DualListBox<E> extends JPanel {
@@ -45,7 +47,7 @@ public class DualListBox<E> extends JPanel {
     private SortedListModel<E> sourceListModel;
 
     private JList destList;
-    private SortedListModel<E> destListModel;
+    private JDnDListModel destListModel;
     private JLabel destLabel;
 
     private JButton addButton;
@@ -62,23 +64,17 @@ public class DualListBox<E> extends JPanel {
     }
 
     public void addSourceElements(E newValue[]) {
-	fillListModel(sourceListModel, newValue);
+	sourceListModel.addAll(newValue);
     }
 
     public void addSourceElements(List<E> newValue) {
-	fillListModel(sourceListModel, newValue);
+	sourceListModel.model.addAll(newValue);
     }
 
-    private void addDestinationElements(E newValue[]) {
-	fillListModel(destListModel, newValue);
-    }
-
-    private void fillListModel(SortedListModel<E> model, E newValues[]) {
-	model.addAll(newValues);
-    }
-
-    private void fillListModel(SortedListModel<E> model, List<E> newValues) {
-	model.model.addAll(newValues);
+    private void addDestinationElements(E[] newValues) {
+	for (E v : newValues) {
+	    destListModel.addElement(v);
+	}
     }
 
     private void clearSourceSelected() {
@@ -90,10 +86,8 @@ public class DualListBox<E> extends JPanel {
     }
 
     private void clearDestinationSelected() {
-	E selected[] = (E[]) destList.getSelectedValues();
-	for (int i = selected.length - 1; i >= 0; --i) {
-	    destListModel.removeElement(selected[i]);
-	}
+	List<Object> selected = Arrays.asList(destList.getSelectedValues());
+	destListModel.delElements(selected);
 	destList.getSelectionModel().clearSelection();
     }
 
@@ -138,8 +132,8 @@ public class DualListBox<E> extends JPanel {
 	removeAllButton.addActionListener(new RemoveAllListener());
 
 	destLabel = new JLabel(DEFAULT_DEST_CHOICE_LABEL);
-	destListModel = new SortedListModel<E>();
-	destList = new JList(destListModel);
+	destListModel = new JDnDListModel();
+	destList = new JDnDList(destListModel);
 	destList.setPrototypeCellValue(prototypeCellValue);
 	add(destLabel, new GridBagConstraints(2, 0, 1, 1, 0, 0,
 		GridBagConstraints.CENTER, GridBagConstraints.NONE,
@@ -156,12 +150,7 @@ public class DualListBox<E> extends JPanel {
     }
 
     public List<E> getDestList() {
-	List<E> list = new ArrayList<E>(destListModel.getSize());
-	Iterator<E> iterator = destListModel.iterator();
-	while (iterator.hasNext()) {
-	    list.add(iterator.next());
-	}
-	return list;
+	return destListModel.getElements();
     }
 
     private class AddListener implements ActionListener {
