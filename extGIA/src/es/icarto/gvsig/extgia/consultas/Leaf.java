@@ -51,8 +51,8 @@ public class Leaf implements Component {
 	    extension = "pdf";
 	    extensionDescription = PluginServices.getText(this, "pdfFiles");
 	} else {
-	    extension = "xlsx";
-	    extensionDescription = PluginServices.getText(this, "xlsFiles");
+	    extension = "xls";
+	    extensionDescription = PluginServices.getText(this, "excelFiles");
 	}
 	if (path == null) {
 	    SaveFileDialog sfd = new SaveFileDialog(extensionDescription,

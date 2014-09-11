@@ -43,7 +43,7 @@ public class QueriesOuputWidget {
     }
 
     public void toPDF(ResultTableModel table, String[] filters) {
-	SaveFileDialog sfd = new SaveFileDialog("PDF files", "pdf");
+	SaveFileDialog sfd = new SaveFileDialog("Archivos PDF", "pdf");
 	File f = sfd.showDialog();
 	if (f != null) {
 	    String filename = f.getAbsolutePath();
@@ -85,7 +85,7 @@ public class QueriesOuputWidget {
     }
 
     public void toXLSX(ResultTableModel table, final String[] filters) {
-	SaveFileDialog sfd = new SaveFileDialog("Excel files", "xlsx");
+	SaveFileDialog sfd = new SaveFileDialog("Archivos Excel", "xls");
 	File f = sfd.showDialog();
 	if (f != null) {
 	    String filename = f.getAbsolutePath();
