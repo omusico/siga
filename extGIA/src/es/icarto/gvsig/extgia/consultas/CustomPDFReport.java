@@ -85,4 +85,10 @@ public class CustomPDFReport extends PDFReport {
 	writeNumberOfRows(document, tableModel.getRowCount());
     }
 
+    @Override
+    protected void writeDatesRange(Document document,
+	    ConsultasFilters<Field> filters) throws DocumentException {
+	// nothing to do here
+    }
+
 }
