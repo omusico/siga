@@ -71,7 +71,13 @@ public class DualListBox<E> extends JPanel {
 	sourceListModel.model.addAll(newValue);
     }
 
-    private void addDestinationElements(E[] newValues) {
+    public void addDestinationElements(List<E> newValues) {
+	for (E v : newValues) {
+	    destListModel.addElement(v);
+	}
+    }
+
+    public void addDestinationElements(E[] newValues) {
 	for (E v : newValues) {
 	    destListModel.addElement(v);
 	}

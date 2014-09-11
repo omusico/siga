@@ -72,6 +72,10 @@ public class CustomiceDialog<E> extends AbstractIWindow implements
 	dualListBox.addSourceElements(values);
     }
 
+    public void addDestinationElements(List<E> values) {
+	dualListBox.addDestinationElements(values);
+    }
+
     private class UpdateOrderBy implements ListDataListener {
 
 	@Override

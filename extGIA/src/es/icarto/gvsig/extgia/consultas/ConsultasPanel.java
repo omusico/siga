@@ -217,6 +217,8 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	    for (Field f : columns) {
 		f.setKey("el." + f.getKey());
 	    }
+	    customiceDialog.addSourceElements(columns);
+
 	    if (selTipoConsulta.equals("Trabajos")) {
 		List<Field> columns2 = Utils.getFields(resource.getPath(),
 			"audasa_extgia", selElement.getKey().toLowerCase()
@@ -224,7 +226,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		for (Field f : columns2) {
 		    f.setKey("sub." + f.getKey());
 		}
-		columns.addAll(columns2);
+		customiceDialog.addDestinationElements(columns2);
 	    }
 	    if (selTipoConsulta.equals("Inspecciones")) {
 		List<Field> columns2 = Utils.getFields(resource.getPath(),
@@ -233,9 +235,8 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		for (Field f : columns2) {
 		    f.setKey("sub." + f.getKey());
 		}
-		columns.addAll(columns2);
+		customiceDialog.addDestinationElements(columns2);
 	    }
-	    customiceDialog.addSourceElements(columns);
 
 	    int status = customiceDialog.open();
 	    if (status == CustomiceDialog.CANCEL) {
