@@ -217,6 +217,16 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	    for (Field f : columns) {
 		f.setKey("el." + f.getKey());
 	    }
+
+	    if (selElement.getKey().equalsIgnoreCase("senhalizacion_vertical")) {
+		List<Field> columns2 = Utils.getFields(resource.getPath(),
+			"audasa_extgia", selElement.getKey().toLowerCase()
+				+ "_senhales");
+		for (Field f : columns2) {
+		    f.setKey("se." + f.getKey());
+		}
+		columns.addAll(columns2);
+	    }
 	    customiceDialog.addSourceElements(columns);
 
 	    if (selTipoConsulta.equals("Trabajos")) {

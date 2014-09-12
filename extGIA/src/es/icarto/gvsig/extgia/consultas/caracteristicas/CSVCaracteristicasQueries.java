@@ -86,16 +86,10 @@ public class CSVCaracteristicasQueries {
 	    return "SELECT "
 		    + ConsultasFieldNames
 			    .getCSVCaracteristicasFieldNames(element)
-		    + " FROM "
-		    + DBFieldNames.GIA_SCHEMA
-		    + "."
-		    + element
-		    + " el,"
-		    + " audasa_extgia.senhalizacion_vertical_senhales se "
+		    + " FROM  audasa_extgia.senhalizacion_vertical_senhales se LEFT OUTER JOIN audasa_extgia.senhalizacion_vertical el ON (el.id_elemento_senhalizacion = se.id_elemento_senhalizacion) "
 		    + get(element)
-		    + " AND el.id_elemento_senhalizacion = se.id_elemento_senhalizacion"
 		    + filters.getWhereClauseByLocationWidgets(false)
-		    + " order by el.id_elemento_senhalizacion";
+		    + " ORDER BY el.id_elemento_senhalizacion";
 	case Firme:
 	    return "SELECT "
 		    + ConsultasFieldNames
