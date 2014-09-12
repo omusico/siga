@@ -6,30 +6,35 @@ import java.util.Date;
 
 import javax.swing.table.DefaultTableModel;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.WorkbookUtil;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class XLSReport {
 
     private Workbook wb;
     private Sheet sheet;
     private final QueryFiltersI filters;
+    private final int colNamesRowIdx;
 
     public XLSReport(String outputFile, DefaultTableModel table,
 	    QueryFiltersI filters) {
 	this.filters = filters;
+
+	colNamesRowIdx = filters.getLocation().size() + 2;
 	if (outputFile != null) {
 	    try {
-		// Workbook wb = new HSSFWorkbook(); // xls
-		wb = new XSSFWorkbook();
+		wb = new HSSFWorkbook(); // xls
 		String safeName = WorkbookUtil.createSafeSheetName("Listado");
 		sheet = wb.createSheet(safeName);
-		// sheet.setAutoFilter(CellRangeAddress.valueOf("A5:Q5"));
+
+		sheet.setAutoFilter(new CellRangeAddress(colNamesRowIdx,
+			colNamesRowIdx, 0, table.getColumnCount() - 1));
 
 		writeFilters();
 		writeColumnNames(table);
@@ -55,9 +60,7 @@ public class XLSReport {
     }
 
     private void writeColumnNames(DefaultTableModel table) {
-
-	int rowOffset = filters.getLocation().size();
-	Row row0 = sheet.createRow(rowOffset + 2);
+	Row row0 = sheet.createRow(colNamesRowIdx);
 
 	for (int i = 0; i < table.getColumnCount(); i++) {
 	    row0.createCell(i).setCellValue(table.getColumnName(i));
@@ -65,10 +68,9 @@ public class XLSReport {
     }
 
     private void writeRows(DefaultTableModel tableModel) throws IOException {
-	int rowOffset = filters.getLocation().size();
 
 	for (int rowIdx = 0; rowIdx < tableModel.getRowCount(); rowIdx++) {
-	    Row row = sheet.createRow(rowIdx + rowOffset + 3);
+	    Row row = sheet.createRow(rowIdx + colNamesRowIdx + 1);
 	    for (int column = 0; column < tableModel.getColumnCount(); column++) {
 		Object value = tableModel.getValueAt(rowIdx, column);
 		createCell(row, column, value);
@@ -96,7 +98,7 @@ public class XLSReport {
 	    Number doubleValue = (Number) value;
 	    row.createCell(column).setCellValue(doubleValue.doubleValue());
 	} else if (value instanceof Boolean) {
-	    row.createCell(column).setCellValue((Boolean) value);
+	    row.createCell(column).setCellValue((Boolean) value ? "Sí" : "No");
 	} else {
 	    throw new AssertionError("This should never happen");
 	}
