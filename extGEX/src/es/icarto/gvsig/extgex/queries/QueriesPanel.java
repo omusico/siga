@@ -348,7 +348,7 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
 		columns = Utils.getFields(resource.getPath(),
 			DBNames.SCHEMA_DATA, FormExpropiations.TABLENAME);
 		query = "SELECT foo FROM " + DBNames.SCHEMA_DATA + "."
-			+ FormExpropiations.TABLENAME;
+			+ FormExpropiations.TABLENAME + getWhereClause(false);
 		queryDescription = "Expropiaciones";
 		queryTitle = "Listado de expropiaciones";
 		querySubtitle = "";
@@ -414,7 +414,7 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
     private String getWhereClause(boolean hasWhere) throws SQLException {
 	String whereC;
 	if (!hasWhere) {
-	    whereC = "WHERE";
+	    whereC = " WHERE";
 	} else {
 	    whereC = " AND ";
 	}
