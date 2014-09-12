@@ -47,7 +47,7 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
     public static final String ID_RUNQUERIES = "runQueriesButton";
     private JButton runQueriesB;
 
-    private static final String ID_CUSTOMQUERIES = "customQueriesButton";
+    public static final String ID_CUSTOMQUERIES = "customQueriesButton";
     private JButton customQueriesB;
 
     private final String ID_TRAMOCB = "tramo";
@@ -102,6 +102,7 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
 	customQueriesB = (JButton) formBody
 		.getComponentByName(ID_CUSTOMQUERIES);
 	customQueriesB.addActionListener(this);
+	customQueriesB.setEnabled(false);
 
 	initFilterWidgets();
 

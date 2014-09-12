@@ -21,11 +21,15 @@ public class QueriesWidgetCB implements QueriesWidget {
     private static final Logger logger = Logger
 	    .getLogger(QueriesWidgetCB.class);
     private final JComboBox widget;
-    private final FormPanel formPanel;
+    private final JButton customBt;
+    private final JButton launchBt;
 
     public QueriesWidgetCB(FormPanel formPanel, String name) {
-	this.formPanel = formPanel;
 	widget = (JComboBox) formPanel.getComponentByName(name);
+	customBt = (JButton) formPanel
+		.getComponentByName(QueriesPanel.ID_CUSTOMQUERIES);
+	launchBt = (JButton) formPanel
+		.getComponentByName(QueriesPanel.ID_RUNQUERIES);
 	initQueriesWidget();
 	fillQueriesWidget();
     }
@@ -37,12 +41,13 @@ public class QueriesWidgetCB implements QueriesWidget {
 	    public void actionPerformed(ActionEvent e) {
 		if (widget.getSelectedItem() != null) {
 		    String key = ((KeyValue) widget.getSelectedItem()).getKey();
-		    JButton bt = (JButton) formPanel
-			    .getComponentByName(QueriesPanel.ID_RUNQUERIES);
+
 		    if (key.startsWith("custom")) {
-			bt.setEnabled(false);
+			customBt.setEnabled(true);
+			launchBt.setEnabled(false);
 		    } else {
-			bt.setEnabled(true);
+			customBt.setEnabled(false);
+			launchBt.setEnabled(true);
 		    }
 		}
 	    }
