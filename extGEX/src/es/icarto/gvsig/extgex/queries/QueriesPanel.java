@@ -31,7 +31,6 @@ import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.commons.queries.QueriesWidget;
 import es.icarto.gvsig.commons.queries.Utils;
 import es.icarto.gvsig.extgex.forms.FormExpropiations;
-import es.icarto.gvsig.extgex.forms.FormReversions;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -352,14 +351,6 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
 			+ FormExpropiations.TABLENAME;
 		queryDescription = "Expropiaciones";
 		queryTitle = "Listado de expropiaciones";
-		querySubtitle = "";
-	    } else if (queryCode.equals("custom-exp_rv")) {
-		columns = Utils.getFields(resource.getPath(),
-			DBNames.SCHEMA_DATA, FormReversions.TABLENAME);
-		query = "SELECT foo FROM " + DBNames.SCHEMA_DATA + "."
-			+ FormReversions.TABLENAME;
-		queryDescription = "Reversiones";
-		queryTitle = "Listado de reversiones";
 		querySubtitle = "";
 	    } else {
 		String[] tableColumns = DBSession.getCurrentSession()

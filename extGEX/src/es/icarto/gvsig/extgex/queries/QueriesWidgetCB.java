@@ -69,7 +69,6 @@ public class QueriesWidgetCB implements QueriesWidget {
 		widget.addItem(kv);
 	    }
 	    widget.addItem(new KeyValue("custom-exp_finca", "Expropiaciones"));
-	    widget.addItem(new KeyValue("custom-exp_rv", "Reversiones"));
 	} catch (SQLException e) {
 	    logger.error(e.getMessage(), e);
 	}
