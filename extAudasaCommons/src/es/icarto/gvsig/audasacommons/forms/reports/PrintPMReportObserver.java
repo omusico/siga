@@ -13,6 +13,7 @@ import java.util.HashMap;
 import javax.swing.JOptionPane;
 
 import es.icarto.gvsig.audasacommons.forms.reports.imagefilechooser.ImageFileChooser;
+import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.udc.cartolab.gvsig.navtable.AbstractNavTable;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -27,8 +28,8 @@ public class PrintPMReportObserver implements ActionListener {
     private final String idField;
     private final String idValue;
 
-    public PrintPMReportObserver(AbstractNavTable dialog, String extensionPath, String reportPath,
-	    String tableName, String idField, String idValue) {
+    public PrintPMReportObserver(AbstractNavTable dialog, String extensionPath,
+	    String reportPath, String tableName, String idField, String idValue) {
 	this.extensionPath = extensionPath;
 	this.dialog = dialog;
 	this.reportPath = reportPath;
@@ -64,9 +65,9 @@ public class PrintPMReportObserver implements ActionListener {
 		    null,
 		    "Informe generado con éxito en: \n" + "\""
 			    + outputFile.getAbsolutePath() + "\"", null,
-			    JOptionPane.YES_NO_CANCEL_OPTION,
-			    JOptionPane.INFORMATION_MESSAGE, null,
-			    reportGeneratedOptions, reportGeneratedOptions[1]);
+		    JOptionPane.YES_NO_CANCEL_OPTION,
+		    JOptionPane.INFORMATION_MESSAGE, null,
+		    reportGeneratedOptions, reportGeneratedOptions[1]);
 
 	    if (m == JOptionPane.OK_OPTION) {
 		Desktop d = Desktop.getDesktop();
@@ -80,6 +81,12 @@ public class PrintPMReportObserver implements ActionListener {
     }
 
     private String getReportPath() {
+	AbstractForm form = (AbstractForm) dialog;
+	String empresa = form.getFormController().getValues()
+		.get("ref_empresa");
+	if (empresa.startsWith("AG")) {
+	    return extensionPath + "reports/pm_ag_report.jasper";
+	}
 	return this.reportPath;
     }
 
@@ -98,15 +105,15 @@ public class PrintPMReportObserver implements ActionListener {
 	String postgresIdField;
 	if (tableName.contains("audasa_pm")) {
 	    postgresIdField = "id";
-	}else {
+	} else {
 	    postgresIdField = "gid";
 	}
 	PreparedStatement statement;
-	String query= "SELECT "+ postgresIdField +
-		" FROM " + tableName +
-		" WHERE " + idField + "= '" + idValue + "';";
+	String query = "SELECT " + postgresIdField + " FROM " + tableName
+		+ " WHERE " + idField + "= '" + idValue + "';";
 	try {
-	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+	    statement = DBSession.getCurrentSession().getJavaConnection()
+		    .prepareStatement(query);
 	    statement.execute();
 	    ResultSet rs = statement.getResultSet();
 	    rs.next();
@@ -117,7 +124,7 @@ public class PrintPMReportObserver implements ActionListener {
 	    return -1;
 	}
 
-	//	long currentPosition = dialog.getPosition();
-	//	return Long.valueOf(currentPosition).intValue();
+	// long currentPosition = dialog.getPosition();
+	// return Long.valueOf(currentPosition).intValue();
     }
 }

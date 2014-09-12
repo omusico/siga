@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -15,8 +15,6 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-
-import org.apache.log4j.Logger;
 
 import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.WindowInfo;
@@ -69,22 +67,25 @@ public class FormPM extends AbstractForm {
     private void addNewButtonsToActionsToolBar() {
 	reportPath = this.getClass().getClassLoader()
 		.getResource("reports/pm_report.jasper");
-	extensionPath = reportPath.getPath().replace("reports/pm_report.jasper", "");
+	extensionPath = reportPath.getPath().replace(
+		"reports/pm_report.jasper", "");
 	JPanel actionsToolBar = this.getActionsToolBar();
 	ntFilesLinkButton = new NavTableComponentsFilesLinkButton();
 	ntPrintButton = new NavTableComponentsPrintButton();
-	JButton filesLinkB = ntFilesLinkButton.getFilesLinkButton(layer,
-		this);
+	JButton filesLinkB = ntFilesLinkButton.getFilesLinkButton(layer, this);
 
-	printReportB = ntPrintButton.getPrintButton(this, extensionPath, reportPath.getPath(),
-		Preferences.PM_TABLENAME, Preferences.PM_FIELD_NUMEROPM, numeroPM.getText());
+	printReportB = ntPrintButton.getPrintButton(this, extensionPath,
+		reportPath.getPath(), Preferences.PM_TABLENAME,
+		Preferences.PM_FIELD_NUMEROPM, numeroPM.getText());
 	printReportB.setName("printButton");
 
 	if (printReportB != null) {
-	    for (int i=0; i<this.getActionsToolBar().getComponents().length; i++) {
+	    for (int i = 0; i < this.getActionsToolBar().getComponents().length; i++) {
 		if (getActionsToolBar().getComponents()[i].getName() != null) {
-		    if (getActionsToolBar().getComponents()[i].getName().equalsIgnoreCase("printButton")) {
-			this.getActionsToolBar().remove(getActionsToolBar().getComponents()[i]);
+		    if (getActionsToolBar().getComponents()[i].getName()
+			    .equalsIgnoreCase("printButton")) {
+			this.getActionsToolBar().remove(
+				getActionsToolBar().getComponents()[i]);
 			actionsToolBar.add(printReportB);
 			break;
 		    }
@@ -108,20 +109,26 @@ public class FormPM extends AbstractForm {
     protected void setListeners() {
 	super.setListeners();
 
-	HashMap<String, JComponent> widgets = getWidgetComponents();
+	Map<String, JComponent> widgets = getWidgets();
 
-	ImageComponent image = (ImageComponent) form.getComponentByName("image");
-	ImageIcon icon = new ImageIcon (PreferencesPage.AUDASA_ICON);
+	ImageComponent image = (ImageComponent) form
+		.getComponentByName("image");
+	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
 	image.setIcon(icon);
 
 	numeroPM = (JTextField) widgets.get(Preferences.PM_FIELD_NUMEROPM);
 
-	numParcelaCatastro = (JTextField) widgets.get(Preferences.PM_FORM_WIDGETS_NUM_PARCELA_CATASTRO);
-	numParcelaCatastro.setToolTipText("Si hay varias parcelas separar con guión (-)");
-	poligonoCatastro = (JTextField) widgets.get(Preferences.PM_FORM_WIDGETS_POLIGONO_CATASTRO);
-	poligonoCatastro.setToolTipText("Si hay varios polígonos separar con guión (-)");
+	numParcelaCatastro = (JTextField) widgets
+		.get(Preferences.PM_FORM_WIDGETS_NUM_PARCELA_CATASTRO);
+	numParcelaCatastro
+		.setToolTipText("Si hay varias parcelas separar con guión (-)");
+	poligonoCatastro = (JTextField) widgets
+		.get(Preferences.PM_FORM_WIDGETS_POLIGONO_CATASTRO);
+	poligonoCatastro
+		.setToolTipText("Si hay varios polígonos separar con guión (-)");
 
-	fincasAfectadasTable = (JTable)form.getComponentByName("parcelas_afectadas_table");
+	fincasAfectadasTable = (JTable) form
+		.getComponentByName("parcelas_afectadas_table");
     }
 
     @Override
@@ -142,7 +149,8 @@ public class FormPM extends AbstractForm {
 
 	for (String finca : getFincasAfectadas()) {
 	    String[] fincaValues = getFincaValuesFromID(finca);
-	    ((DefaultTableModel) fincasAfectadasTable.getModel()).addRow(fincaValues);
+	    ((DefaultTableModel) fincasAfectadasTable.getModel())
+		    .addRow(fincaValues);
 	}
 
 	addNewButtonsToActionsToolBar();
@@ -154,12 +162,15 @@ public class FormPM extends AbstractForm {
 	PreparedStatement statement;
 	String[] fincaValues = new String[1];
 	try {
-	    String query = "SELECT " + Preferences.FINCAS_FIELD_IDFINCA +
-		    " FROM " + Preferences.FINCAS_TABLENAME + " a, " +
-		    Preferences.TRAMOS_TABLENAME + " b " +
-		    " WHERE " + Preferences.FINCAS_FIELD_TRAMO + " = " + Preferences.TRAMOS_FIELD_ID +
-		    " AND " + Preferences.FINCAS_FIELD_IDFINCA + "=" + "'" + idFinca + "';";
-	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+	    String query = "SELECT " + Preferences.FINCAS_FIELD_IDFINCA
+		    + " FROM " + Preferences.FINCAS_TABLENAME + " a, "
+		    + Preferences.TRAMOS_TABLENAME + " b " + " WHERE "
+		    + Preferences.FINCAS_FIELD_TRAMO + " = "
+		    + Preferences.TRAMOS_FIELD_ID + " AND "
+		    + Preferences.FINCAS_FIELD_IDFINCA + "=" + "'" + idFinca
+		    + "';";
+	    statement = DBSession.getCurrentSession().getJavaConnection()
+		    .prepareStatement(query);
 	    statement.execute();
 	    ResultSet rs = statement.getResultSet();
 
@@ -186,10 +197,13 @@ public class FormPM extends AbstractForm {
 	ArrayList<String> fincasAfectadas = new ArrayList<String>();
 	PreparedStatement statement;
 	try {
-	    String fincasQuery = "SELECT " + Preferences.FINCAS_PM_FIELD_IDFINCA +
-		    " FROM " + Preferences.FINCAS_PM_TABLENAME +
-		    " WHERE " + Preferences.FINCAS_PM_FIELD_NUMEROPM + " = '" + numeroPM.getText() + "'";
-	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(fincasQuery);
+	    String fincasQuery = "SELECT "
+		    + Preferences.FINCAS_PM_FIELD_IDFINCA + " FROM "
+		    + Preferences.FINCAS_PM_TABLENAME + " WHERE "
+		    + Preferences.FINCAS_PM_FIELD_NUMEROPM + " = '"
+		    + numeroPM.getText() + "'";
+	    statement = DBSession.getCurrentSession().getJavaConnection()
+		    .prepareStatement(fincasQuery);
 	    statement.execute();
 	    ResultSet fincasRs = statement.getResultSet();
 	    while (fincasRs.next()) {
@@ -205,7 +219,8 @@ public class FormPM extends AbstractForm {
     @Override
     public FormPanel getFormBody() {
 	if (form == null) {
-	    InputStream stream = getClass().getClassLoader().getResourceAsStream(Preferences.PM_FORM_FILE);
+	    InputStream stream = getClass().getClassLoader()
+		    .getResourceAsStream(Preferences.PM_FORM_FILE);
 	    FormPanel result = null;
 	    try {
 		result = new FormPanel(stream);
@@ -215,11 +230,5 @@ public class FormPM extends AbstractForm {
 	    form = result;
 	}
 	return form;
-    }
-
-    @Override
-    public Logger getLoggerName() {
-	// TODO Auto-generated method stub
-	return null;
     }
 }

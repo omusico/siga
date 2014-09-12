@@ -8,9 +8,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/libUIComponent"/>
 	<classpathentry kind="src" path="/extNavTable"/>
 	<classpathentry kind="lib" path="lib/asm-4.0.jar"/>
-	<classpathentry kind="lib" path="lib/commons-digester-1.7.jar"/>
-	<classpathentry kind="lib" path="lib/groovy-2.0.0.jar"/>
-	<classpathentry kind="lib" path="lib/jasperreports-4.6.0.jar"/>
 	<classpathentry kind="lib" path="lib-test/powermock-mockito-1.5.5-full.jar"/>
 	<classpathentry kind="lib" path="lib-test/mockito-all-1.9.5.jar"/>
 	<classpathentry kind="lib" path="lib-test/javassist-3.18.2-GA.jar"/>
@@ -29,5 +26,7 @@
 	<classpathentry kind="lib" path="/extNavTable/lib/miglayout-3.7.3.1.jar"/>
 	<classpathentry kind="lib" path="lib/poi-3.10.1-20140818.jar"/>
 	<classpathentry kind="lib" path="lib/poi-ooxml-3.10.1-20140818.jar"/>
+	<classpathentry kind="src" path="/extNavTableForms"/>
+	<classpathentry kind="lib" path="lib/jasperreports-5.6.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
