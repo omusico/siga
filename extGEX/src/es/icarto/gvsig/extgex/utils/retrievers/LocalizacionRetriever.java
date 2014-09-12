@@ -2,6 +2,8 @@ package es.icarto.gvsig.extgex.utils.retrievers;
 
 import java.util.ArrayList;
 
+import com.iver.andami.PluginServices;
+
 import es.icarto.gvsig.extgex.forms.FormExpropiations;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
@@ -20,7 +22,10 @@ public class LocalizacionRetriever {
     private final ORMLite orm;
 
     public LocalizacionRetriever(String idFinca) {
-	orm = new ORMLite("data/" + FormExpropiations.TABLENAME + ".xml");
+	String extPath = PluginServices.getPluginServices(this)
+		.getPluginDirectory().getAbsolutePath();
+	orm = new ORMLite(extPath + "/data/" + FormExpropiations.TABLENAME
+		+ ".xml");
 	decipher(idFinca);
     }
 
@@ -54,7 +59,8 @@ public class LocalizacionRetriever {
     }
 
     private String getTramoValue() {
-	DomainValues dv = orm.getAppDomain().getDomainValuesForComponent(DBNames.FIELD_TRAMO_FINCAS);
+	DomainValues dv = orm.getAppDomain().getDomainValuesForComponent(
+		DBNames.FIELD_TRAMO_FINCAS);
 	ArrayList<KeyValue> kvs = dv.getValues();
 	String value = null;
 	for (KeyValue kv : kvs) {
@@ -66,7 +72,8 @@ public class LocalizacionRetriever {
     }
 
     private String getUCValue() {
-	DomainValues dv = orm.getAppDomain().getDomainValuesForComponent(DBNames.FIELD_UC_FINCAS);
+	DomainValues dv = orm.getAppDomain().getDomainValuesForComponent(
+		DBNames.FIELD_UC_FINCAS);
 	ArrayList<String> foreignKeys = new ArrayList<String>();
 	foreignKeys.add(tramo.getKey());
 	ArrayList<KeyValue> kvs = dv.getValuesFilteredBy(foreignKeys);
@@ -80,7 +87,8 @@ public class LocalizacionRetriever {
     }
 
     private String getAyuntamientoValue() {
-	DomainValues dv = orm.getAppDomain().getDomainValuesForComponent(DBNames.FIELD_AYUNTAMIENTO_FINCAS);
+	DomainValues dv = orm.getAppDomain().getDomainValuesForComponent(
+		DBNames.FIELD_AYUNTAMIENTO_FINCAS);
 	ArrayList<String> foreignKeys = new ArrayList<String>();
 	foreignKeys.add(uc.getKey());
 	ArrayList<KeyValue> kvs = dv.getValuesFilteredBy(foreignKeys);
@@ -94,7 +102,8 @@ public class LocalizacionRetriever {
     }
 
     private String getParroquiaSubtramoValue() {
-	DomainValues dv = orm.getAppDomain().getDomainValuesForComponent(DBNames.FIELD_PARROQUIASUBTRAMO_FINCAS);
+	DomainValues dv = orm.getAppDomain().getDomainValuesForComponent(
+		DBNames.FIELD_PARROQUIASUBTRAMO_FINCAS);
 	ArrayList<String> foreignKeys = new ArrayList<String>();
 	foreignKeys.add(uc.getKey());
 	foreignKeys.add(ayuntamiento.getKey());
@@ -113,9 +122,11 @@ public class LocalizacionRetriever {
 	    return tramo.getValue();
 	} else if (component.equalsIgnoreCase(DBNames.FIELD_UC_FINCAS)) {
 	    return uc.getValue();
-	} else if (component.equalsIgnoreCase(DBNames.FIELD_AYUNTAMIENTO_FINCAS)) {
+	} else if (component
+		.equalsIgnoreCase(DBNames.FIELD_AYUNTAMIENTO_FINCAS)) {
 	    return ayuntamiento.getValue();
-	} else if (component.equalsIgnoreCase(DBNames.FIELD_PARROQUIASUBTRAMO_FINCAS)) {
+	} else if (component
+		.equalsIgnoreCase(DBNames.FIELD_PARROQUIASUBTRAMO_FINCAS)) {
 	    return parroquia_subtramo.getValue();
 	} else if (component.equalsIgnoreCase(DBNames.FIELD_NUMEROFINCA_FINCAS)) {
 	    return nro_finca.getValue();
@@ -131,9 +142,11 @@ public class LocalizacionRetriever {
 	    return tramo.getKey();
 	} else if (component.equalsIgnoreCase(DBNames.FIELD_UC_FINCAS)) {
 	    return uc.getKey();
-	} else if (component.equalsIgnoreCase(DBNames.FIELD_AYUNTAMIENTO_FINCAS)) {
+	} else if (component
+		.equalsIgnoreCase(DBNames.FIELD_AYUNTAMIENTO_FINCAS)) {
 	    return ayuntamiento.getKey();
-	} else if (component.equalsIgnoreCase(DBNames.FIELD_PARROQUIASUBTRAMO_FINCAS)) {
+	} else if (component
+		.equalsIgnoreCase(DBNames.FIELD_PARROQUIASUBTRAMO_FINCAS)) {
 	    return parroquia_subtramo.getKey();
 	} else if (component.equalsIgnoreCase(DBNames.FIELD_NUMEROFINCA_FINCAS)) {
 	    return nro_finca.getKey();
