@@ -2,6 +2,7 @@ package es.icarto.gvsig.commons.queries;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 
 import javax.swing.table.DefaultTableModel;
@@ -21,11 +22,13 @@ public class XLSReport {
     private Sheet sheet;
     private final QueryFiltersI filters;
     private final int colNamesRowIdx;
+    private final boolean[] columnsStyles;
 
     public XLSReport(String outputFile, DefaultTableModel table,
 	    QueryFiltersI filters) {
 	this.filters = filters;
-
+	columnsStyles = new boolean[table.getColumnCount()];
+	Arrays.fill(columnsStyles, false);
 	colNamesRowIdx = filters.getLocation().size() + 2;
 	if (outputFile != null) {
 	    try {
@@ -88,11 +91,14 @@ public class XLSReport {
 	} else if (value instanceof String) {
 	    row.createCell(column).setCellValue((String) value);
 	} else if (value instanceof Date) {
-	    CellStyle cellStyle = wb.createCellStyle();
-	    CreationHelper creationHelper = wb.getCreationHelper();
-	    cellStyle.setDataFormat(creationHelper.createDataFormat()
-		    .getFormat("d/m/yyyy"));
-	    sheet.setDefaultColumnStyle(column, cellStyle);
+	    if (!columnsStyles[column]) {
+		columnsStyles[column] = true;
+		CellStyle cellStyle = wb.createCellStyle();
+		CreationHelper creationHelper = wb.getCreationHelper();
+		cellStyle.setDataFormat(creationHelper.createDataFormat()
+			.getFormat("d/m/yyyy"));
+		sheet.setDefaultColumnStyle(column, cellStyle);
+	    }
 	    row.createCell(column).setCellValue((Date) value);
 	} else if (value instanceof Number) {
 	    Number doubleValue = (Number) value;
