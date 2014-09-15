@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
@@ -23,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import com.iver.andami.PluginServices;
+import com.iver.andami.messages.NotificationManager;
 import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.jeta.forms.components.image.ImageComponent;
@@ -185,9 +187,6 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	KeyValue selElement = (KeyValue) elemento.getSelectedItem();
 	KeyValue selTipoConsulta = queriesWidget.getQuery();
 
-	// SelectedOptions options = new SelectedOptions();
-	// options.setWhereOptions(consultasFilters);
-
 	if (!isCheckingOK(selElement, selTipoConsulta)) {
 	    JOptionPane.showMessageDialog(null, PluginServices.getText(this,
 		    "elementAndTypeUnselected_msg"));
@@ -200,7 +199,14 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	    return;
 	}
 
-	if (allItemsAndNotHasType(selElement, selTipoConsulta)) {
+	if (selElement.equals(ALL_ITEMS)
+		&& !selTipoConsulta.toString().equals("Características")) {
+	    JOptionPane.showMessageDialog(null,
+		    PluginServices.getText(this, "unavailableQuery_msg"));
+	    return;
+	}
+
+	if (notAvaliableType(selElement, selTipoConsulta)) {
 	    JOptionPane.showMessageDialog(null,
 		    PluginServices.getText(this, "unavailableQuery_msg"));
 	    return;
@@ -225,26 +231,31 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 		for (Field f : columns2) {
 		    f.setKey("se." + f.getKey());
 		}
+		popToDestination(columns2, "se.id_senhal_vertical",
+			customiceDialog);
 		columns.addAll(columns2);
+	    } else {
+		String elementId = ConsultasFieldNames.getElementId(selElement
+			.getKey());
+		popToDestination(columns, "el." + elementId, customiceDialog);
 	    }
+
 	    customiceDialog.addSourceElements(columns);
 
 	    if (selTipoConsulta.equals("Trabajos")) {
 		List<Field> columns2 = Utils.getFields(resource.getPath(),
 			"audasa_extgia", selElement.getKey().toLowerCase()
 				+ "_trabajos");
-		for (Field f : columns2) {
-		    f.setKey("sub." + f.getKey());
-		}
+		setAsFirstItem(columns2, "id_trabajo");
+
 		customiceDialog.addDestinationElements(columns2);
 	    }
 	    if (selTipoConsulta.equals("Inspecciones")) {
 		List<Field> columns2 = Utils.getFields(resource.getPath(),
 			"audasa_extgia", selElement.getKey().toLowerCase()
 				+ "_reconocimientos");
-		for (Field f : columns2) {
-		    f.setKey("sub." + f.getKey());
-		}
+
+		setAsFirstItem(columns2, "n_inspeccion");
 		customiceDialog.addDestinationElements(columns2);
 	    }
 
@@ -282,11 +293,55 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
     }
 
-    private boolean allItemsAndNotHasType(KeyValue selElement,
+    private void popToDestination(List<Field> fields, String key,
+	    CustomiceDialog<Field> customiceDialog) {
+	Iterator<Field> iterator = fields.iterator();
+	Field firstItem = null;
+	while (iterator.hasNext()) {
+	    Field next = iterator.next();
+	    if (next.getKey().equals(key)) {
+		firstItem = new Field(key, next.getLongName());
+		iterator.remove();
+		break;
+	    }
+	}
+	if (firstItem == null) {
+	    NotificationManager.addWarning("La tabla no tiene el campo:" + key);
+	    return;
+	}
+
+	fields.remove(0);
+	ArrayList<Field> destist = new ArrayList<Field>();
+	destist.add(firstItem);
+	customiceDialog.addDestinationElements(destist);
+
+    }
+
+    private Field setAsFirstItem(List<Field> columns2, String key) {
+	Iterator<Field> iterator = columns2.iterator();
+	Field firstField = null;
+	while (iterator.hasNext()) {
+	    Field next = iterator.next();
+	    if (next.getKey().equals(key)) {
+		firstField = new Field("sub." + key, next.getLongName());
+		iterator.remove();
+	    } else {
+		next.setKey("sub." + next.getKey());
+	    }
+	}
+	if (firstField == null) {
+	    NotificationManager
+		    .addWarning("La tabla no tiene el campo n_inspeccion");
+	    return firstField;
+	}
+	columns2.add(0, firstField);
+	return firstField;
+    }
+
+    private boolean notAvaliableType(KeyValue selElement,
 	    KeyValue selTipoConsulta) {
-	return selElement.equals(ALL_ITEMS)
-		&& !SqlUtils.elementHasType(selElement.getKey(),
-			selTipoConsulta.toString());
+	return !SqlUtils.elementHasType(selElement.getKey(),
+		selTipoConsulta.toString());
     }
 
     private boolean isCheckingOK(KeyValue selElemento, KeyValue selTipoConsulta) {
