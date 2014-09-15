@@ -33,6 +33,9 @@ public class Composite implements Component {
 	    fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 	    fileChooser.showSaveDialog(null);
 	    outputPath = fileChooser.getSelectedFile();
+	    if (outputPath == null) {
+		return false;
+	    }
 	} else {
 	    outputPath = path;
 	}
