@@ -349,8 +349,15 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
 	    if (queryCode.equals("custom-exp_finca")) {
 		columns = Utils.getFields(resource.getPath(),
 			DBNames.SCHEMA_DATA, FormExpropiations.TABLENAME);
-		query = "SELECT foo FROM " + DBNames.SCHEMA_DATA + "."
-			+ FormExpropiations.TABLENAME + getWhereClause(false);
+		for (Field f : columns) {
+		    f.setKey("el." + f.getKey());
+		}
+		query = "SELECT foo FROM "
+			+ DBNames.SCHEMA_DATA
+			+ "."
+			+ FormExpropiations.TABLENAME
+			+ " AS el LEFT OUTER JOIN audasa_expropiaciones.tramos tr ON tr.id_tramo = el.tramo LEFT OUTER JOIN audasa_expropiaciones.uc uc ON uc.id_uc = el.unidad_constructiva LEFT OUTER JOIN audasa_expropiaciones.ayuntamientos ay ON (ay.id_ayuntamiento = el.ayuntamiento AND ay.id_uc = el.unidad_constructiva) LEFT OUTER JOIN audasa_expropiaciones.parroquias_subtramos pa ON (pa.id_parroquia = el.parroquia_subtramo AND pa.id_ayuntamiento = el.ayuntamiento AND pa.id_uc = el.unidad_constructiva) "
+			+ getWhereClause(false);
 		queryDescription = "Expropiaciones";
 		queryTitle = "Listado de expropiaciones";
 		querySubtitle = "";
@@ -445,37 +452,55 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
 	return whereC;
     }
 
+    private String buildFields(List<Field> fields, String select) {
+	for (Field field : fields) {
+	    if (field.getKey().equals("el.tramo")) {
+		select += "tr.nombre_tramo AS  \"Tramo\", ";
+	    } else if (field.getKey().equals("el.unidad_constructiva")) {
+		select += "uc.nombre_uc AS  \"Unidad constructiva\", ";
+	    } else if (field.getKey().equals("el.ayuntamiento")) {
+		select += "ay.nombre_ayuntamiento AS  \"Ayuntamiento\", ";
+	    } else if (field.getKey().equals("el.parroquia_subtramo")) {
+		select += "pa.nombre_parroquia AS  \"Parroquia / Subtramo\", ";
+	    } else {
+		select = select
+			+ field.getKey()
+			+ String.format(" AS \"%s\"", field.getLongName()
+				.replace("\"", "'")) + ", ";
+	    }
+	}
+	return select.substring(0, select.length() - 2);
+    }
+
     private String buildQuery(String query, List<Field> fields,
 	    List<Field> orderBy) {
-	String newQuery = query;
-	if (!fields.isEmpty()) {
-	    newQuery = "SELECT ";
-	    for (Field kv : fields) {
-		newQuery = newQuery + kv.getKey() + " as \"" + kv.getLongName()
-			+ "\", ";
-	    }
-	    newQuery = newQuery.substring(0, newQuery.length() - 2)
+
+	String subquery = query;
+
+	if (fields.size() > 0) {
+	    subquery = buildFields(fields, "SELECT   ")
 		    + query.substring(query.indexOf(" FROM"), query.length());
 	}
+
 	if (!orderBy.isEmpty()) {
 
-	    int indexOf = newQuery.indexOf("ORDER BY ");
+	    int indexOf = subquery.indexOf("ORDER BY ");
 	    if (indexOf != -1) {
-		newQuery = newQuery.substring(0, indexOf + 9);
+		subquery = subquery.substring(0, indexOf + 9);
 	    } else {
-		if (newQuery.endsWith(";")) {
-		    newQuery = newQuery.substring(0, newQuery.length() - 1);
+		if (subquery.endsWith(";")) {
+		    subquery = subquery.substring(0, subquery.length() - 1);
 		}
 
-		newQuery = newQuery + " ORDER BY ";
+		subquery = subquery + " ORDER BY ";
 	    }
 
 	    for (Field kv : orderBy) {
-		newQuery = newQuery + kv.getKey() + ", ";
+		subquery = subquery + kv.getKey() + ", ";
 	    }
-	    newQuery = newQuery.substring(0, newQuery.length() - 2);
+	    subquery = subquery.substring(0, subquery.length() - 2);
 	}
-	return newQuery;
+	return subquery;
     }
 
     private List<Field> parseQuery(String query, String[] columns) {
