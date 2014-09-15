@@ -28,24 +28,23 @@ public class Utils {
 	    .asList(new String[] { "gid", "the_geom", "geom" });
 
     public static List<Field> getFields(String filePath, String schema,
-	    String tablename) {
+	    String table) {
 	List<Field> fields = new ArrayList<Field>();
 	try {
 	    DBSession session = DBSession.getCurrentSession();
 	    InputStream input = new FileInputStream(filePath);
 	    Properties props = new Properties();
 	    props.load(input);
-	    String[] columns = session.getColumns(schema, tablename);
+	    String[] columns = session.getColumns(schema, table);
 	    List<String> asList = Arrays.asList(columns);
-	    // List<String> l = new ArrayList<String>(asList);
-	    // l.remove("gid");
-	    // l.remove("the_geom");
 
 	    for (String c : asList) {
 		if (reservedColumns.contains(c)) {
 		    continue;
 		}
-		fields.add(new Field(c, props.getProperty(c, c)));
+		String longname = props.getProperty(schema + "." + table + "."
+			+ c, c);
+		fields.add(new Field(c, longname));
 	    }
 	} catch (FileNotFoundException e) {
 	    logger.error(e.getStackTrace(), e);
