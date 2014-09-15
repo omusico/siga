@@ -400,8 +400,7 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
 		DBNames.SCHEMA_QUERIES, whereClause);
 
 	String[] contents = new String[4];
-	String query;
-	query = tableContent[0][1];
+	String query = tableContent[0][1];
 	boolean hasWhere = false;
 	if (tableContent[0][5].compareToIgnoreCase("SI") == 0) {
 	    hasWhere = true;
@@ -421,12 +420,12 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
     private String getWhereClause(boolean hasWhere) throws SQLException {
 	String whereC;
 	if (!hasWhere) {
-	    whereC = " WHERE";
+	    whereC = " WHERE ";
 	} else {
 	    whereC = " AND ";
 	}
 	if (tramoSelected.compareToIgnoreCase(DEFAULT_FILTER) != 0) {
-	    whereC = whereC + " " + DBNames.FIELD_TRAMO_FINCAS + " = " + "'"
+	    whereC = whereC + DBNames.FIELD_TRAMO_FINCAS + " = " + "'"
 		    + getTramoId() + "'";
 	}
 	if (ucSelected.compareToIgnoreCase(DEFAULT_FILTER) != 0) {
@@ -437,7 +436,7 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
 	    whereC = whereC + " AND " + DBNames.FIELD_AYUNTAMIENTO_FINCAS
 		    + " = " + "'" + getAyuntamientoId() + "'";
 	}
-	if (whereC.equalsIgnoreCase("WHERE")) {
+	if (whereC.equalsIgnoreCase(" WHERE ")) {
 	    whereC = ""; // has no combobox selected
 	}
 	if (whereC.equalsIgnoreCase(" AND ")) {
