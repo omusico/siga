@@ -1,18 +1,14 @@
 package es.icarto.gvsig.extgia.consultas;
 
-import java.awt.Desktop;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-
-import com.iver.andami.PluginServices;
 
 import es.icarto.gvsig.commons.queries.Component;
 import es.icarto.gvsig.commons.queries.Field;
+import es.icarto.gvsig.commons.queries.FinalActions;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 
 public class Composite implements Component {
@@ -56,24 +52,8 @@ public class Composite implements Component {
 
     @Override
     public void finalActions() {
-	Object[] reportGeneratedOptions = {
-		PluginServices.getText(this, "reportGeneratedOptions_open"),
-		PluginServices.getText(this, "reportGeneratedOptions_close") };
-	int m = JOptionPane.showOptionDialog(null,
-		PluginServices.getText(this, "filesGenerated_msg") + "\""
-			+ outputPath.getAbsolutePath() + "\"", null,
-		JOptionPane.YES_NO_CANCEL_OPTION,
-		JOptionPane.INFORMATION_MESSAGE, null, reportGeneratedOptions,
-		reportGeneratedOptions[1]);
-
-	if (m == JOptionPane.OK_OPTION) {
-	    Desktop d = Desktop.getDesktop();
-	    try {
-		d.open(outputPath);
-	    } catch (IOException e1) {
-		e1.printStackTrace();
-	    }
-	}
+	FinalActions finalActions = new FinalActions(false, outputPath);
+	finalActions.openFolder();
     }
 
     public void add(List<String[]> list) {

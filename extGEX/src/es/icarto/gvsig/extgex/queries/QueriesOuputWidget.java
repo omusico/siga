@@ -42,22 +42,24 @@ public class QueriesOuputWidget {
 	buttonGroup = null;
     }
 
-    public void toPDF(ResultTableModel table, String[] filters) {
+    public File toPDF(ResultTableModel table, String[] filters) {
 	SaveFileDialog sfd = new SaveFileDialog("Archivos PDF", "pdf");
 	File f = sfd.showDialog();
-	if (f != null) {
+	if (f != null && table.getRowCount() > 0) {
 	    String filename = f.getAbsolutePath();
 	    new Report(Report.PDF, filename, table, filters);
 	}
+	return f;
     }
 
-    private void toCSV(ResultTableModel table, final String[] filters) {
+    private File toCSV(ResultTableModel table, final String[] filters) {
 
 	SaveFileDialog sfd = new SaveFileDialog("CSV files", "csv");
 	File f = sfd.showDialog();
-	if (f != null) {
+	if (f != null && table.getRowCount() > 0) {
 	    new CSVReport(f.getAbsolutePath(), table, table.getQueryFilters());
 	}
+	return f;
     }
 
     public void toScreen(ResultTableModel table, String[] filters) {
@@ -65,52 +67,57 @@ public class QueriesOuputWidget {
 	resultPanel.open();
     }
 
-    public void toHtml(ResultTableModel table, String[] filters) {
+    public File toHtml(ResultTableModel table, String[] filters) {
 	SaveFileDialog sfd = new SaveFileDialog("HTML files", "html", "htm");
 	File f = sfd.showDialog();
-	if (f != null) {
+	if (f != null && table.getRowCount() > 0) {
 	    if (sfd.writeFileToDisk(table.getHTML(), f)) {
 		NotificationManager.showMessageError("error_saving_file", null);
 	    }
 	}
+	return f;
     }
 
-    public void toRTF(ResultTableModel table, String[] filters) {
+    public File toRTF(ResultTableModel table, String[] filters) {
 	SaveFileDialog sfd = new SaveFileDialog("RTF files", "rtf");
 	File f = sfd.showDialog();
-	if (f != null) {
+	if (f != null && table.getRowCount() > 0) {
 	    String filename = f.getAbsolutePath();
 	    new Report(Report.RTF, filename, table, filters);
 	}
+	return f;
     }
 
-    public void toXLSX(ResultTableModel table, final String[] filters) {
+    public File toXLSX(ResultTableModel table, final String[] filters) {
 	SaveFileDialog sfd = new SaveFileDialog("Archivos Excel", "xls");
 	File f = sfd.showDialog();
-	if (f != null) {
+	if (f != null && table.getRowCount() > 0) {
 	    String filename = f.getAbsolutePath();
 	    new XLSReport(filename, table, table.getQueryFilters());
 	}
+	return f;
     }
 
-    public void to(ResultTableModel table, String[] filters) {
+    public File to(ResultTableModel table, String[] filters) {
 	String sel = buttonGroup.getSelection().getActionCommand();
-	to(sel, table, filters);
+	return to(sel, table, filters);
     }
 
-    public void to(String sel, ResultTableModel table, String[] filters) {
+    public File to(String sel, ResultTableModel table, String[] filters) {
+	File file = null;
 	if (sel.equals(PDF)) {
-	    toPDF(table, filters);
+	    file = toPDF(table, filters);
 	} else if (sel.equals(CSV)) {
-	    toCSV(table, filters);
+	    file = toCSV(table, filters);
 	} else if (sel.equals(SCREEN)) {
 	    toScreen(table, filters);
 	} else if (sel.equals(HTML)) {
-	    toHtml(table, filters);
+	    file = toHtml(table, filters);
 	} else if (sel.equals(RTF)) {
-	    toRTF(table, filters);
+	    file = toRTF(table, filters);
 	} else if (sel.equals(EXCEL)) {
-	    toXLSX(table, filters);
+	    file = toXLSX(table, filters);
 	}
+	return file;
     }
 }

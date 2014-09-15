@@ -2,6 +2,7 @@ package es.icarto.gvsig.extgex.queries;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -28,6 +29,7 @@ import es.icarto.gvsig.commons.gui.AbstractIWindow;
 import es.icarto.gvsig.commons.queries.ConnectionWrapper;
 import es.icarto.gvsig.commons.queries.CustomiceDialog;
 import es.icarto.gvsig.commons.queries.Field;
+import es.icarto.gvsig.commons.queries.FinalActions;
 import es.icarto.gvsig.commons.queries.QueriesWidget;
 import es.icarto.gvsig.commons.queries.Utils;
 import es.icarto.gvsig.extgex.forms.FormExpropiations;
@@ -381,7 +383,12 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
 	result.setQueryFilters(queryFilters);
 	con.execute(query, result);
 
-	queriesOuputWidget.to(result, getFilters());
+	File file = queriesOuputWidget.to(result, getFilters());
+	if (file != null) {
+	    FinalActions finalActions = new FinalActions(
+		    result.getRowCount() == 0, file);
+	    finalActions.openReport();
+	}
 
     }
 

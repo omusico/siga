@@ -1,10 +1,7 @@
 package es.icarto.gvsig.extgia.consultas;
 
-import java.awt.Desktop;
 import java.io.File;
-import java.io.IOException;
 
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import com.iver.andami.PluginServices;
@@ -13,6 +10,7 @@ import es.icarto.gvsig.audasacommons.forms.reports.SaveFileDialog;
 import es.icarto.gvsig.commons.queries.Component;
 import es.icarto.gvsig.commons.queries.ConnectionWrapper;
 import es.icarto.gvsig.commons.queries.Field;
+import es.icarto.gvsig.commons.queries.FinalActions;
 import es.icarto.gvsig.commons.queries.XLSReport;
 import es.icarto.gvsig.extgia.consultas.agregados.CSVTrabajosAgregadosReport;
 import es.icarto.gvsig.extgia.consultas.agregados.TrabajosAgregadosReport;
@@ -296,43 +294,8 @@ public class Leaf implements Component {
 
     @Override
     public void finalActions() {
-
-	if (emptyQuery) {
-	    JOptionPane.showMessageDialog(null,
-		    PluginServices.getText(this, "queryWithoutResults_msg"));
-	} else {
-
-	    if (pdf) {
-		showOpenSingleReportDialog(outputFile.toString());
-	    } else {
-		JOptionPane.showMessageDialog(null,
-			PluginServices.getText(this, "csvReportGenerated_msg")
-				+ outputFile);
-	    }
-	}
-    }
-
-    private void showOpenSingleReportDialog(String outputFile) {
-	Object[] reportGeneratedOptions = {
-		PluginServices.getText(this,
-			"singleReportGeneratedOptions_open"),
-		PluginServices.getText(this,
-			"singleReportGeneratedOptions_close") };
-	int m = JOptionPane.showOptionDialog(null,
-		PluginServices.getText(this, "reportGenerated_msg") + "\""
-			+ outputFile + "\"", null,
-		JOptionPane.YES_NO_CANCEL_OPTION,
-		JOptionPane.INFORMATION_MESSAGE, null, reportGeneratedOptions,
-		reportGeneratedOptions[1]);
-
-	if (m == JOptionPane.OK_OPTION) {
-	    Desktop d = Desktop.getDesktop();
-	    try {
-		d.open(new File(outputFile));
-	    } catch (IOException e1) {
-		e1.printStackTrace();
-	    }
-	}
+	FinalActions finalActions = new FinalActions(emptyQuery, outputFile);
+	finalActions.openReport();
     }
 
 }
