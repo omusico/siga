@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -19,6 +20,7 @@ import javax.swing.JComboBox;
 import org.apache.log4j.Logger;
 
 import com.iver.andami.PluginServices;
+import com.iver.andami.messages.NotificationManager;
 import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.jeta.forms.components.image.ImageComponent;
 import com.jeta.forms.components.panel.FormPanel;
@@ -364,7 +366,7 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
 		columns.add(new Field(
 			"(select count(numero_pm) from audasa_pm.fincas_pm sub where sub.id_finca = el.id_finca)",
 			"Policía de Márgenes - conteo"));
-
+		popToDestination(columns, "el.id_finca", customiceDialog);
 		query = "SELECT foo FROM "
 			+ DBNames.SCHEMA_DATA
 			+ "."
@@ -409,6 +411,30 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
 		    result.getRowCount() == 0, file);
 	    finalActions.openReport();
 	}
+
+    }
+
+    private void popToDestination(List<Field> fields, String key,
+	    CustomiceDialog<Field> customiceDialog) {
+	Iterator<Field> iterator = fields.iterator();
+	Field firstItem = null;
+	while (iterator.hasNext()) {
+	    Field next = iterator.next();
+	    if (next.getKey().equals(key)) {
+		firstItem = new Field(key, next.getLongName());
+		iterator.remove();
+		break;
+	    }
+	}
+	if (firstItem == null) {
+	    NotificationManager.addWarning("La tabla no tiene el campo:" + key);
+	    return;
+	}
+
+	fields.remove(0);
+	ArrayList<Field> destist = new ArrayList<Field>();
+	destist.add(firstItem);
+	customiceDialog.addDestinationElements(destist);
 
     }
 
