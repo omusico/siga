@@ -61,16 +61,18 @@
 
 		<!-- TOOLS EXTENSIONS -->
 		<extension class-name="es.icarto.gvsig.extgex.QueriesExtension" description="QUERIES_PANEL" active="true">
+		<!--
 			<tool-bar name="SIGA_Tools" position="75">
 				<action-tool icon="extgex-queries" tooltip="Consultas" action-command="QueriesExtension" position="1"/>
 			</tool-bar>
-			<menu text="SIGA/Consultas e Informes" icon="extgex-queries" action-command="QueriesExtension" position="30300"/>
+		-->
+			<menu text="SIGA/Consultas Expropiaciones" action-command="QueriesExtension" position="30100"/>
 		</extension>
 		<extension class-name="es.icarto.gvsig.extgex.LocatorByPKExtension" description="PK_LOCATOR" active="true">
 			<menu text="SIGA" position="30699" is_separator="true"/>			
 			<menu text="SIGA/Localización/PK" action-command="LocatorByPKExtension" icon="images/pk_locator.png" position="30700"/>
 			<tool-bar name="SIGA_Tools" position="75">
-				<action-tool icon="images/pk_locator.png" tooltip="Localizador de PK" action-command="LocatorByPKExtension" position="2"/>
+				<action-tool icon="images/pk_locator.png" tooltip="Localizador de PK" action-command="LocatorByPKExtension" position="1"/>
 			</tool-bar>
 		</extension>
 		<extension class-name="es.icarto.gvsig.extgex.LocatorByFincaExtension" description="FINCA_LOCATOR" active="true">
@@ -85,7 +87,7 @@
 			<menu text="SIGA" position="30799" is_separator="true"/>			
 			<menu text="SIGA/WMS/Planos Expropiaciones" icon="images/planos_wms.png" position="30800"/>
 			<tool-bar name="SIGA_Tools" position="75">
-				<action-tool icon="images/planos_wms.png" action-command="LoadFincasExtension" tooltip="Cargar Planos Expropiaciones" position="4"/>
+				<action-tool icon="images/planos_wms.png" action-command="LoadFincasExtension" tooltip="Cargar Planos Expropiaciones" position="2"/>
 			</tool-bar>
 		</extension>
 		
@@ -96,7 +98,7 @@
 		<extension class-name="es.icarto.gvsig.extgex.WMSLoadPNOALocalExtension" description="LOAD_PNOA_WMS" active="true">
 			<menu text="SIGA/WMS/Ortofotos PNOA (Local)" icon="images/wms.png" action-command="LoadPNOAExtension" position="30820"/>
 			<tool-bar name="SIGA_Tools" position="75">
-				<action-tool icon="images/wms.png" action-command="LoadPNOAExtension" tooltip="Cargar WMS PNOA (Local)" position="5"/>
+				<action-tool icon="images/wms.png" action-command="LoadPNOAExtension" tooltip="Cargar WMS PNOA (Local)" position="3"/>
 			</tool-bar>
 		</extension>
 		

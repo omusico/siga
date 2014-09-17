@@ -11,11 +11,13 @@
 		
 		<extension class-name="es.icarto.gvsig.audasacommons.SIGAConfigExtension" active="true">
 		</extension>
+		<!-- 
 		<extension class-name="es.icarto.gvsig.audasacommons.OpenStreetViewExtension" active="true">
 			<tool-bar name="SIGA_Tools" position="75">
 				<action-tool icon="open-street-view" position="100" tooltip="Abrir Street View"></action-tool>
 			</tool-bar>
 		</extension>
+		 -->
 		
 		<extension
             class-name="es.udc.cartolab.gvsig.elle.SigaLoadMapExtension"
