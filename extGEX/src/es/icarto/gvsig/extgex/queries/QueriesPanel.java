@@ -352,6 +352,19 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
 		for (Field f : columns) {
 		    f.setKey("el." + f.getKey());
 		}
+		columns.add(new Field(
+			"(select array_to_string(array_agg(id_reversion), ' / ') from audasa_expropiaciones.finca_reversion fr where fr.id_finca = el.id_finca)",
+			"Reversiones"));
+		columns.add(new Field(
+			"(select count(id_reversion) from audasa_expropiaciones.finca_reversion fr where fr.id_finca = el.id_finca)",
+			"Reversiones - conteo"));
+		columns.add(new Field(
+			"(select array_to_string(array_agg(numero_pm), ' / ') from audasa_pm.fincas_pm sub where sub.id_finca = el.id_finca)",
+			"Policía de Márgenes"));
+		columns.add(new Field(
+			"(select count(numero_pm) from audasa_pm.fincas_pm sub where sub.id_finca = el.id_finca)",
+			"Policía de Márgenes - conteo"));
+
 		query = "SELECT foo FROM "
 			+ DBNames.SCHEMA_DATA
 			+ "."
