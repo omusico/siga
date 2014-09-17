@@ -152,7 +152,9 @@ public class FormPM extends AbstractForm {
 	    ((DefaultTableModel) fincasAfectadasTable.getModel())
 		    .addRow(fincaValues);
 	}
-
+	for (JComponent c : getWidgets().values()) {
+	    c.setEnabled(false);
+	}
 	addNewButtonsToActionsToolBar();
 	revalidate();
 	repaint();
@@ -230,5 +232,11 @@ public class FormPM extends AbstractForm {
 	    form = result;
 	}
 	return form;
+    }
+
+    @Override
+    // As this is a non editable form we should never show the warning
+    protected boolean showWarning() {
+	return true;
     }
 }

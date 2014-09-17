@@ -133,6 +133,10 @@ public class FormReversions extends AbstractForm implements TableModelListener {
 
     @Override
     protected void fillSpecificValues() {
+	for (JComponent c : getWidgets().values()) {
+	    c.setEnabled(false);
+	}
+	fincasAfectadas.setEnabled(true);
 	updateJTableFincasAfectadas();
     }
 
