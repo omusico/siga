@@ -469,11 +469,11 @@ public class FormExpropiations extends AbstractForm implements
 
     private void updateReversionsTable() {
 	ArrayList<String> columnasReversiones = new ArrayList<String>();
-	columnasReversiones.add("Exp_Id");
-	columnasReversiones.add("Superficie");
-	columnasReversiones.add("Importe (Euros)");
-	columnasReversiones.add("Importe (Pts)");
-	columnasReversiones.add("Fecha");
+	columnasReversiones.add("<html>Reversión</html>");
+	columnasReversiones.add("<html>Superficie (m<sup>2</sup>)</html>");
+	columnasReversiones.add("<html>Importe (&euro;)</html>");
+	columnasReversiones.add("<html>Importe (Ptas)</html>");
+	columnasReversiones.add("<html>Fecha</html>");
 
 	try {
 	    DefaultTableModel tableModel;

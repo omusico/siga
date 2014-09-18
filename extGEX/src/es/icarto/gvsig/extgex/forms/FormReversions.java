@@ -143,12 +143,12 @@ public class FormReversions extends AbstractForm implements TableModelListener {
     private void updateJTableFincasAfectadas() {
 
 	ArrayList<String> columnasFincas = new ArrayList<String>();
-	columnasFincas.add("Id_Finca");
-	columnasFincas.add("Expedientes PM");
-	columnasFincas.add("Superficie");
-	columnasFincas.add("Importe (Euros)");
-	columnasFincas.add("Importe (Pts)");
-	columnasFincas.add("Fecha");
+	columnasFincas.add("<html>Finca</html>");
+	columnasFincas.add("<html>Expedientes PM</html>");
+	columnasFincas.add("<html>Superficie (m<sup>2</sup>)</html>");
+	columnasFincas.add("<html>Importe (&euro;)</html>");
+	columnasFincas.add("<html>Importe (Pts)</html>");
+	columnasFincas.add("<html>Fecha</html>");
 
 	double totalSuperficie = 0.0;
 	double totalImporteEuros = 0.0;
@@ -164,9 +164,10 @@ public class FormReversions extends AbstractForm implements TableModelListener {
 	    // fincasAfectadas.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	    fincasAfectadas.getColumnModel().getColumn(0).setPreferredWidth(80);
 	    fincasAfectadas.getColumnModel().getColumn(1)
-		    .setPreferredWidth(200);
-	    fincasAfectadas.getColumnModel().getColumn(2).setPreferredWidth(70);
-	    fincasAfectadas.getColumnModel().getColumn(5).setPreferredWidth(70);
+		    .setPreferredWidth(185);
+	    fincasAfectadas.getColumnModel().getColumn(2)
+		    .setPreferredWidth(100);
+	    fincasAfectadas.getColumnModel().getColumn(5).setPreferredWidth(60);
 
 	    Value[] reversionData = new Value[columnasFincas.size()];
 	    ResultSet rs = getFincasByExpReversion();
