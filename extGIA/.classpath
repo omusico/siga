@@ -24,5 +24,6 @@
 	<classpathentry kind="lib" path="/extDBConnection/lib/formsrt.jar"/>
 	<classpathentry kind="lib" path="/extDBConnection/lib/jcalendar-1.4.jar"/>
 	<classpathentry kind="lib" path="/extNavTable/lib/miglayout-3.7.3.1.jar"/>
+	<classpathentry kind="lib" path="/extAudasaCommons/lib/poi-3.10.1-20140818.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

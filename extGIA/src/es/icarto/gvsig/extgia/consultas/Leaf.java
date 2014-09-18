@@ -12,8 +12,8 @@ import es.icarto.gvsig.commons.queries.ConnectionWrapper;
 import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.commons.queries.FinalActions;
 import es.icarto.gvsig.commons.queries.XLSReport;
-import es.icarto.gvsig.extgia.consultas.agregados.CSVTrabajosAgregadosReport;
 import es.icarto.gvsig.extgia.consultas.agregados.TrabajosAgregadosReport;
+import es.icarto.gvsig.extgia.consultas.agregados.XLSTrabajosAgregadosReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.CSVCaracteristicasQueries;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.PDFCaracteristicasQueries;
 import es.icarto.gvsig.extgia.consultas.firme.FirmeReconocimientosReport;
@@ -109,7 +109,7 @@ public class Leaf implements Component {
 
     private void createCsvReportAgregados(String outputFile, String[] element,
 	    ConsultasFilters<Field> filters) {
-	new CSVTrabajosAgregadosReport(element[0], outputFile, consultasFilters);
+	new XLSTrabajosAgregadosReport(element[0], outputFile, consultasFilters);
     }
 
     private QueryType getTipo() {

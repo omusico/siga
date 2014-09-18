@@ -24,7 +24,7 @@
     </at>
     <at name="componentclass">com.jeta.forms.gui.form.FormComponent</at>
    </super>
-   <at name="id">C:\APLICACIONES\gvSIG_AUDASA_V3\bin\gvSIG\extensiones\es.icarto.gvsig.extgex\consultas.xml</at>
+   <at name="id">C:\APLICACIONES\gvSIG_AUDASA_V2\bin\gvSIG\extensiones\es.icarto.gvsig.extgex\consultas.xml</at>
    <at name="rowspecs">CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:20PX:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE,CENTER:5PX:NONE</at>
    <at name="colspecs">FILL:5PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:15PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE,FILL:5PX:NONE</at>
    <at name="components">
@@ -276,7 +276,7 @@
            <at name="rowspan">5</at>
            <at name="halign">default</at>
            <at name="valign">default</at>
-           <at name="insets" object="insets">0,0,0,0</at>
+           <at name="insets" object="insets">1,0,0,0</at>
           </object>
          </at>
          <at name="componentclass">com.jeta.forms.gui.form.StandardComponent</at>
@@ -289,9 +289,9 @@
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="orientation">1</at>
-            <at name="height">51</at>
+            <at name="height">50</at>
+            <at name="name"/>
             <at name="width">6</at>
-            <at name="name"></at>
             <at name="border">
              <object classname="com.jeta.forms.store.properties.CompoundBorderProperty">
               <super classname="com.jeta.forms.store.properties.BorderProperty">
@@ -532,7 +532,7 @@
            <at name="rowspan">5</at>
            <at name="halign">default</at>
            <at name="valign">default</at>
-           <at name="insets" object="insets">0,0,0,0</at>
+           <at name="insets" object="insets">1,0,0,0</at>
           </object>
          </at>
          <at name="componentclass">com.jeta.forms.gui.form.StandardComponent</at>
@@ -544,9 +544,9 @@
           <at name="classname">com.jeta.forms.components.border.TitledBorderSide</at>
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
-            <at name="height">51</at>
+            <at name="height">50</at>
+            <at name="name"/>
             <at name="width">6</at>
-            <at name="name"></at>
             <at name="border">
              <object classname="com.jeta.forms.store.properties.CompoundBorderProperty">
               <super classname="com.jeta.forms.store.properties.BorderProperty">
@@ -586,7 +586,7 @@
            <at name="rowspan">11</at>
            <at name="halign">default</at>
            <at name="valign">default</at>
-           <at name="insets" object="insets">0,0,0,0</at>
+           <at name="insets" object="insets">1,0,0,0</at>
           </object>
          </at>
          <at name="componentclass">com.jeta.forms.gui.form.StandardComponent</at>
@@ -598,9 +598,9 @@
           <at name="classname">com.jeta.forms.components.border.TitledBorderSide</at>
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
-            <at name="height">126</at>
+            <at name="height">125</at>
+            <at name="name"/>
             <at name="width">6</at>
-            <at name="name"></at>
             <at name="border">
              <object classname="com.jeta.forms.store.properties.CompoundBorderProperty">
               <super classname="com.jeta.forms.store.properties.BorderProperty">
@@ -652,7 +652,7 @@
           <at name="classname">com.jeta.forms.components.border.TitledBorderLabel</at>
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
-            <at name="text">Localización</at>
+            <at name="text">Localización:</at>
             <at name="height">16</at>
             <at name="font">
              <object classname="com.jeta.forms.store.properties.FontProperty">
@@ -704,7 +704,7 @@
            <at name="rowspan">11</at>
            <at name="halign">default</at>
            <at name="valign">default</at>
-           <at name="insets" object="insets">0,0,0,0</at>
+           <at name="insets" object="insets">1,0,0,0</at>
           </object>
          </at>
          <at name="componentclass">com.jeta.forms.gui.form.StandardComponent</at>
@@ -717,9 +717,9 @@
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="orientation">1</at>
-            <at name="height">126</at>
+            <at name="height">125</at>
+            <at name="name"/>
             <at name="width">6</at>
-            <at name="name"></at>
             <at name="border">
              <object classname="com.jeta.forms.store.properties.CompoundBorderProperty">
               <super classname="com.jeta.forms.store.properties.BorderProperty">
@@ -780,8 +780,8 @@
               <at name="size">11</at>
              </object>
             </at>
+            <at name="name"/>
             <at name="width">176</at>
-            <at name="name"></at>
             <at name="fill">
              <object classname="com.jeta.forms.store.properties.effects.PaintProperty">
               <at name="name">fill</at>
@@ -847,8 +847,8 @@
               <at name="size">11</at>
              </object>
             </at>
+            <at name="name"/>
             <at name="width">176</at>
-            <at name="name"></at>
             <at name="fill">
              <object classname="com.jeta.forms.store.properties.effects.PaintProperty">
               <at name="name">fill</at>
@@ -914,8 +914,8 @@
               <at name="size">11</at>
              </object>
             </at>
+            <at name="name"/>
             <at name="width">176</at>
-            <at name="name"></at>
             <at name="fill">
              <object classname="com.jeta.forms.store.properties.effects.PaintProperty">
               <at name="name">fill</at>
@@ -981,8 +981,8 @@
               <at name="size">11</at>
              </object>
             </at>
+            <at name="name"/>
             <at name="width">176</at>
-            <at name="name"></at>
             <at name="fill">
              <object classname="com.jeta.forms.store.properties.effects.PaintProperty">
               <at name="name">fill</at>
@@ -1264,8 +1264,8 @@
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="height">1</at>
+            <at name="name"/>
             <at name="width">416</at>
-            <at name="name"></at>
             <at name="border">
              <object classname="com.jeta.forms.store.properties.CompoundBorderProperty">
               <super classname="com.jeta.forms.store.properties.BorderProperty">
@@ -1372,8 +1372,8 @@
           <at name="properties">
            <object classname="com.jeta.forms.store.support.PropertyMap">
             <at name="height">66</at>
+            <at name="name"/>
             <at name="width">6</at>
-            <at name="name"></at>
             <at name="border">
              <object classname="com.jeta.forms.store.properties.CompoundBorderProperty">
               <super classname="com.jeta.forms.store.properties.BorderProperty">

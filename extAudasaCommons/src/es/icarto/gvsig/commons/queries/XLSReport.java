@@ -30,24 +30,25 @@ public class XLSReport {
 	columnsStyles = new boolean[table.getColumnCount()];
 	Arrays.fill(columnsStyles, false);
 	colNamesRowIdx = filters.getLocation().size() + 2;
-	if (outputFile != null) {
-	    try {
-		wb = new HSSFWorkbook(); // xls
-		String safeName = WorkbookUtil.createSafeSheetName("Listado");
-		sheet = wb.createSheet(safeName);
-
-		sheet.setAutoFilter(new CellRangeAddress(colNamesRowIdx,
-			colNamesRowIdx, 0, table.getColumnCount() - 1));
-
-		writeFilters();
-		writeColumnNames(table);
-		writeRows(table);
-
-		writeToDisk(outputFile);
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
+	if (outputFile == null) {
+	    return;
 	}
+	wb = new HSSFWorkbook(); // xls
+	String safeName = WorkbookUtil.createSafeSheetName("Listado");
+	sheet = wb.createSheet(safeName);
+
+	sheet.setAutoFilter(new CellRangeAddress(colNamesRowIdx,
+		colNamesRowIdx, 0, table.getColumnCount() - 1));
+
+	writeFilters();
+	writeTable(table);
+
+	try {
+	    writeToDisk(outputFile);
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+
     }
 
     protected void writeFilters() {
@@ -62,6 +63,11 @@ public class XLSReport {
 
     }
 
+    private void writeTable(DefaultTableModel table) {
+	writeColumnNames(table);
+	writeRows(table);
+    }
+
     private void writeColumnNames(DefaultTableModel table) {
 	Row row0 = sheet.createRow(colNamesRowIdx);
 
@@ -70,7 +76,7 @@ public class XLSReport {
 	}
     }
 
-    private void writeRows(DefaultTableModel tableModel) throws IOException {
+    private void writeRows(DefaultTableModel tableModel) {
 
 	for (int rowIdx = 0; rowIdx < tableModel.getRowCount(); rowIdx++) {
 	    Row row = sheet.createRow(rowIdx + colNamesRowIdx + 1);
