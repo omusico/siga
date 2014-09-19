@@ -352,7 +352,11 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
 		columns = Utils.getFields(resource.getPath(),
 			DBNames.SCHEMA_DATA, FormExpropiations.TABLENAME);
 		for (Field f : columns) {
-		    f.setKey("el." + f.getKey());
+		    if (f.getKey().equals("afectado_por_policia_margenes")) {
+			f.setKey("(select count(numero_pm) > 0 from audasa_pm.fincas_pm sub where sub.id_finca = el.id_finca)");
+		    } else {
+			f.setKey("el." + f.getKey());
+		    }
 		}
 		columns.add(new Field(
 			"(select array_to_string(array_agg(id_reversion), ' / ') from audasa_expropiaciones.finca_reversion fr where fr.id_finca = el.id_finca)",
