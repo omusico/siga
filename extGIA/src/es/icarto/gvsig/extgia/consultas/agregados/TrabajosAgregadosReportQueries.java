@@ -53,7 +53,7 @@ public class TrabajosAgregadosReportQueries {
     }
 
     public String getBaseSumQuery() {
-	return getBaseSumQuery("Total");
+	return getBaseSumQuery("TOTAL");
     }
 
     public String getBaseSumQuery(String firstField) {

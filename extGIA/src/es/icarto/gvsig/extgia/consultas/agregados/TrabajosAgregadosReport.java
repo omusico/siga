@@ -188,7 +188,7 @@ public class TrabajosAgregadosReport extends PDFReport {
 				.getDefault());
 			PdfPCell medicionAudasaCell = new PdfPCell(
 				new Paragraph(
-					nf.format(resultMap.getDouble(1)),
+					nf.format(resultMap.getDouble(8)),
 					cellBoldStyle));
 			medicionAudasaCell
 				.setHorizontalAlignment(Element.ALIGN_CENTER);
