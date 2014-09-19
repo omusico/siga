@@ -248,6 +248,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 				+ "_trabajos");
 		setAsFirstItem(columns2, "id_trabajo");
 
+		customiceDialog.clearDestinationListModel();
 		customiceDialog.addDestinationElements(columns2);
 	    }
 	    if (selTipoConsulta.equals("Inspecciones")) {
@@ -256,6 +257,7 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 				+ "_reconocimientos");
 
 		setAsFirstItem(columns2, "n_inspeccion");
+		customiceDialog.clearDestinationListModel();
 		customiceDialog.addDestinationElements(columns2);
 	    }
 
