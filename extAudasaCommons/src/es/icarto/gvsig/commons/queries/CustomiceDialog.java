@@ -1,12 +1,10 @@
 package es.icarto.gvsig.commons.queries;
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.ListModel;
@@ -20,6 +18,7 @@ import com.iver.andami.ui.mdiManager.WindowInfo;
 
 import es.icarto.gvsig.commons.gui.AbstractIWindow;
 import es.icarto.gvsig.commons.gui.AcceptCancelPanel;
+import es.icarto.gvsig.commons.gui.WidgetFactory;
 
 @SuppressWarnings("serial")
 public class CustomiceDialog<E> extends AbstractIWindow implements
@@ -35,9 +34,9 @@ public class CustomiceDialog<E> extends AbstractIWindow implements
     private final DualListBox<E> dualListBox;;
 
     public CustomiceDialog() {
-	super();
+	super(new MigLayout("wrap 1, insets 10", "[center]", ""));
 	setWindowTitle("Personalizar consulta");
-	setWindowInfoProperties(WindowInfo.MODALDIALOG | WindowInfo.NOTCLOSABLE);
+	setWindowInfoProperties(WindowInfo.MODALDIALOG);
 	addAcceptCancelPanel(this, this);
 
 	dualListBox = new DualListBox<E>();
@@ -45,16 +44,15 @@ public class CustomiceDialog<E> extends AbstractIWindow implements
 	add(dualListBox, "growx, growy");
 
 	JPanel southPanel = new JPanel(new MigLayout("insets 10",
-		"[grow][grow][grow][grow]", ""));
-	southPanel.setBorder(BorderFactory
-		.createTitledBorder("Seleccione Orden"));
+		"[grow][grow][grow][grow]"));
+	southPanel.setBorder(WidgetFactory.borderTitled("Seleccione Orden"));
 
 	order = new ArrayList<JComboBox>(4);
 	addOrderCB(southPanel);
 	addOrderCB(southPanel);
 	addOrderCB(southPanel);
 	addOrderCB(southPanel);
-	add(southPanel, BorderLayout.SOUTH);
+	add(southPanel);
     }
 
     private void addOrderCB(JPanel panel) {
@@ -74,6 +72,10 @@ public class CustomiceDialog<E> extends AbstractIWindow implements
 
     public void addDestinationElements(List<E> values) {
 	dualListBox.addDestinationElements(values);
+    }
+
+    public void clearDestinationListModel() {
+	dualListBox.clearDestinationListModel();
     }
 
     private class UpdateOrderBy implements ListDataListener {

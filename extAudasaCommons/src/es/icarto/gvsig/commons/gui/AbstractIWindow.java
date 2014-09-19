@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package es.icarto.gvsig.commons.gui;
 
 import java.awt.Dimension;
+import java.awt.LayoutManager;
 import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
@@ -42,6 +43,10 @@ public abstract class AbstractIWindow extends JPanel implements IWindow {
 
     public AbstractIWindow() {
 	super(new MigLayout("insets 10"));
+    }
+
+    public AbstractIWindow(LayoutManager layout) {
+	super(layout);
     }
 
     public void openDialog() {
@@ -86,13 +91,16 @@ public abstract class AbstractIWindow extends JPanel implements IWindow {
 		width = new Double(dim.getWidth()).intValue();
 	    }
 
-	    // getPreferredSize doesn't take into account the borders and other
-	    // stuff
-	    // introduced by Andami, neither scroll bars so we must increase the
-	    // "preferred"
-	    // dimensions
-	    windowInfo.setWidth(width + 25);
-	    windowInfo.setHeight(heigth + 15);
+	    // Si hay que tocar esto, porque las ventanas son demasiado grandes
+	    // y quedan por debajo de andami, hay que tocar más arriba no aquí
+	    windowInfo.setWidth(width);
+	    if (windowInfo.isModal()) {
+		// andami adds 30 for modal windows. If modal look at
+		// NewSkin.addJDialog, if not FrameWindowSupport.
+		windowInfo.setHeight(heigth - 30);
+	    } else {
+		windowInfo.setHeight(heigth);
+	    }
 	}
 	return windowInfo;
     }
@@ -109,6 +117,10 @@ public abstract class AbstractIWindow extends JPanel implements IWindow {
 	    ActionListener cancel) {
 	AcceptCancelPanel acceptCancelPanel = new AcceptCancelPanel(accept,
 		cancel);
-	add(acceptCancelPanel, "dock south");
+	// TODO Al usar dock el componente se sale del flujo normal, e ignora
+	// los insets especificados. En lugar de poner 10 directamente,
+	// deberíamos extraer el valor de los insets. Si no usamos el gap, el
+	// botón de cancelar queda más a la derecha que el resto de componentes
+	add(acceptCancelPanel, "gapright 10, gapleft 10, dock south");
     }
 }

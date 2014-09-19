@@ -39,7 +39,7 @@ public class AcceptCancelPanel extends JPanel {
 
     public AcceptCancelPanel(ActionListener okAction,
 	    ActionListener cancelAction) {
-	super(new FlowLayout());
+	super(new FlowLayout(FlowLayout.TRAILING));
 	addOkButton(okAction);
 	addCancelButton(cancelAction);
     }

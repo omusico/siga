@@ -29,10 +29,13 @@ import javax.swing.event.ListDataListener;
 import org.gvsig.gui.beans.controls.dnd.JDnDList;
 import org.gvsig.gui.beans.controls.dnd.JDnDListModel;
 
+import es.icarto.gvsig.commons.gui.WidgetFactory;
+
 @SuppressWarnings("serial")
 public class DualListBox<E> extends JPanel {
 
     private static final Insets EMPTY_INSETS = new Insets(0, 0, 0, 0);
+    private static final Insets BT_INSETS = new Insets(0, 10, 0, 10);
     public static final String prototypeCellValue = "XXXXXXXXXXXXXXX";
     private static final String ADD_BUTTON_LABEL = " >";
     private static final String REMOVE_BUTTON_LABEL = "< ";
@@ -61,6 +64,10 @@ public class DualListBox<E> extends JPanel {
 
     private void clearSourceListModel() {
 	sourceListModel.clear();
+    }
+
+    public void clearDestinationListModel() {
+	destListModel.clear();
     }
 
     public void addSourceElements(E newValue[]) {
@@ -100,7 +107,7 @@ public class DualListBox<E> extends JPanel {
     private void initScreen() {
 	setBorder(BorderFactory.createEtchedBorder());
 	setLayout(new GridBagLayout());
-	sourceLabel = new JLabel(DEFAULT_SOURCE_CHOICE_LABEL);
+	sourceLabel = WidgetFactory.labelTitled(DEFAULT_SOURCE_CHOICE_LABEL);
 	sourceListModel = new SortedListModel<E>();
 	sourceList = new JList(sourceListModel);
 	sourceList.setPrototypeCellValue(prototypeCellValue);
@@ -116,28 +123,28 @@ public class DualListBox<E> extends JPanel {
 	addButton = new JButton(ADD_BUTTON_LABEL);
 	add(addButton, new GridBagConstraints(1, 1, 1, 1, 0, .25,
 		GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
-		EMPTY_INSETS, 0, 0));
+		BT_INSETS, 0, 0));
 	addButton.addActionListener(new AddListener());
 
 	addAllButton = new JButton(ADD_ALL_BUTTON_LABEL);
 	add(addAllButton, new GridBagConstraints(1, 2, 1, 1, 0, .25,
 		GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
-		EMPTY_INSETS, 0, 0));
+		BT_INSETS, 0, 0));
 	addAllButton.addActionListener(new AddAllListener());
 
 	removeButton = new JButton(REMOVE_BUTTON_LABEL);
 	add(removeButton, new GridBagConstraints(1, 3, 1, 1, 0, .25,
 		GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
-		EMPTY_INSETS, 0, 0));
+		BT_INSETS, 0, 0));
 	removeButton.addActionListener(new RemoveListener());
 
 	removeAllButton = new JButton(REMOVE_ALL_BUTTON_LABEL);
 	add(removeAllButton, new GridBagConstraints(1, 4, 1, 1, 0, .25,
 		GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
-		EMPTY_INSETS, 0, 0));
+		BT_INSETS, 0, 0));
 	removeAllButton.addActionListener(new RemoveAllListener());
 
-	destLabel = new JLabel(DEFAULT_DEST_CHOICE_LABEL);
+	destLabel = WidgetFactory.labelTitled(DEFAULT_DEST_CHOICE_LABEL);
 	destListModel = new JDnDListModel();
 	destList = new JDnDList(destListModel);
 	destList.setPrototypeCellValue(prototypeCellValue);
