@@ -95,8 +95,14 @@ public class Leaf implements Component {
 		createPdfReport(tipo, outputFile.getAbsolutePath(), element,
 			consultasFilters, table);
 	    } else {
-		createCsvReport(outputFile.getAbsolutePath(), table,
-			consultasFilters);
+		if (tipo == QueryType.CARACTERISTICAS) {
+		    new XLSReport(outputFile.getAbsolutePath(), table,
+			    consultasFilters);
+		} else {
+		    new XLSDatedReport(outputFile.getAbsolutePath(), table,
+			    consultasFilters);
+		}
+
 	    }
 	}
     }
@@ -193,6 +199,10 @@ public class Leaf implements Component {
 	    } else {
 		query += filters.getWhereClauseByDates("fecha_inspeccion");
 	    }
+	    if (filters.getQueryType().equals("CUSTOM")) {
+		query = buildOrderBy(filters, query);
+	    }
+
 	}
 	return query;
     }
@@ -206,6 +216,11 @@ public class Leaf implements Component {
 	    subquery = query.substring(query.indexOf(" FROM"));
 	    subquery = buildFields(filters, "SELECT ") + subquery;
 	}
+	subquery = buildOrderBy(filters, subquery);
+	return subquery;
+    }
+
+    private String buildOrderBy(ConsultasFilters<Field> filters, String subquery) {
 	if (filters.getOrderBy().size() > 0) {
 
 	    int indexOf = subquery.indexOf("ORDER BY ");
@@ -283,12 +298,6 @@ public class Leaf implements Component {
 	default:
 	    break;
 	}
-
-    }
-
-    private void createCsvReport(String outputFile, DefaultTableModel table,
-	    ConsultasFilters<Field> filters) {
-	new XLSReport(outputFile, table, filters);
 
     }
 

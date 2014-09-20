@@ -56,7 +56,21 @@ public class XLSTrabajosAgregadosReport {
     }
 
     private void writeFilters() {
-	// nothing to do here
+	short rowIdx = 0;
+
+	for (Field l : filters.getLocation()) {
+	    Row row = sheet.createRow(rowIdx++);
+	    row.createCell(0).setCellValue(l.getLongName());
+	    row.createCell(1).setCellValue(l.getValue().toString());
+	}
+
+	Row row = sheet.createRow(rowIdx++);
+	row.createCell(0).setCellValue("Desde: ");
+	row.createCell(1).setCellValue(filters.getFechaInicioFormatted());
+
+	row = sheet.createRow(rowIdx++);
+	row.createCell(0).setCellValue("Hasta: ");
+	row.createCell(1).setCellValue(filters.getFechaFinFormatted());
     }
 
     private int writeTable(String title, String query, String totalQuery,

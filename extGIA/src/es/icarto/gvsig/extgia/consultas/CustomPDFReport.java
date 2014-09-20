@@ -88,7 +88,9 @@ public class CustomPDFReport extends PDFReport {
     @Override
     protected void writeDatesRange(Document document,
 	    ConsultasFilters<Field> filters) throws DocumentException {
-	// nothing to do here
+	if (reportType != QueryType.CARACTERISTICAS) {
+	    super.writeDatesRange(document, filters);
+	}
     }
 
 }
