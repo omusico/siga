@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
@@ -42,10 +43,12 @@ import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
+import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.extgex.navtable.NavTableComponentsFactory;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.utils.retrievers.LocalizadorFormatter;
 import es.icarto.gvsig.navtableforms.AbstractForm;
+import es.icarto.gvsig.navtableforms.gui.CustomTableModel;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
@@ -468,21 +471,10 @@ public class FormExpropiations extends AbstractForm implements
     }
 
     private void updateReversionsTable() {
-	ArrayList<String> columnasReversiones = new ArrayList<String>();
-	columnasReversiones.add("<html>Reversión</html>");
-	columnasReversiones.add("<html>Superficie (m<sup>2</sup>)</html>");
-	columnasReversiones.add("<html>Importe (&euro;)</html>");
-	columnasReversiones.add("<html>Importe (Ptas)</html>");
-	columnasReversiones.add("<html>Fecha</html>");
-
+	DefaultTableModel tableModel = setTableHeader();
 	try {
-	    DefaultTableModel tableModel;
-	    tableModel = new DefaultTableModel();
-	    for (String columnName : columnasReversiones) {
-		tableModel.addColumn(columnName);
-	    }
 	    reversiones.setModel(tableModel);
-	    Value[] reversionData = new Value[columnasReversiones.size()];
+	    Value[] reversionData = new Value[tableModel.getColumnCount()];
 	    PreparedStatement statement;
 	    String query = "SELECT "
 		    + DBNames.FIELD_IDREVERSION_FINCAS_REVERSIONES + ", "
@@ -533,6 +525,25 @@ public class FormExpropiations extends AbstractForm implements
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
+    }
+
+    private DefaultTableModel setTableHeader() {
+	CustomTableModel tableModel = new CustomTableModel();
+	List<Field> columnasReversiones = new ArrayList<Field>();
+	columnasReversiones.add(new Field("exp_id", "<html>Reversión</html>"));
+	columnasReversiones.add(new Field("superficie",
+		"<html>Superficie (m<sup>2</sup>)</html>"));
+	columnasReversiones.add(new Field("importe_euros",
+		"<html>Importe (&euro;)</html>"));
+	columnasReversiones.add(new Field("importe_ptas",
+		"<html>Importe (Ptas)</html>"));
+	columnasReversiones.add(new Field("fecha_acta", "<html>Fecha</html>"));
+
+	for (Field columnName : columnasReversiones) {
+	    tableModel.addColumn(columnName);
+	}
+
+	return tableModel;
     }
 
     private String getDateFormatted(Date date) {

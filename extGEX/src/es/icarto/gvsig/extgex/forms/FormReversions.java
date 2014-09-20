@@ -20,8 +20,6 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
-import org.apache.log4j.Logger;
-
 import com.hardcode.gdbms.engine.values.Value;
 import com.hardcode.gdbms.engine.values.ValueFactory;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
@@ -31,10 +29,11 @@ import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
-import es.icarto.gvsig.commons.gui.NonEditableTableModel;
+import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.extgex.navtable.NavTableComponentsFactory;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.navtableforms.AbstractForm;
+import es.icarto.gvsig.navtableforms.gui.CustomTableModel;
 import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 import es.udc.cartolab.gvsig.navtable.format.DoubleFormatNT;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
@@ -111,11 +110,6 @@ public class FormReversions extends AbstractForm implements TableModelListener {
     }
 
     @Override
-    public Logger getLoggerName() {
-	return Logger.getLogger("ReversionsFileForm");
-    }
-
-    @Override
     public FormPanel getFormBody() {
 	if (form == null) {
 	    InputStream stream = getClass().getClassLoader()
@@ -134,32 +128,23 @@ public class FormReversions extends AbstractForm implements TableModelListener {
     @Override
     protected void fillSpecificValues() {
 	for (JComponent c : getWidgets().values()) {
-	    c.setEnabled(false);
+	    if (c != fincasAfectadas) {
+		c.setEnabled(false);
+	    }
 	}
-	fincasAfectadas.setEnabled(true);
 	updateJTableFincasAfectadas();
     }
 
     private void updateJTableFincasAfectadas() {
 
-	ArrayList<String> columnasFincas = new ArrayList<String>();
-	columnasFincas.add("<html>Finca</html>");
-	columnasFincas.add("<html>Expedientes PM</html>");
-	columnasFincas.add("<html>Superficie (m<sup>2</sup>)</html>");
-	columnasFincas.add("<html>Importe (&euro;)</html>");
-	columnasFincas.add("<html>Importe (Pts)</html>");
-	columnasFincas.add("<html>Fecha</html>");
+	DefaultTableModel tableModel = setTableHeader();
 
 	double totalSuperficie = 0.0;
 	double totalImporteEuros = 0.0;
 	double totalImportePtas = 0.0;
 
 	try {
-	    DefaultTableModel tableModel = new NonEditableTableModel();
 
-	    for (String columnName : columnasFincas) {
-		tableModel.addColumn(columnName);
-	    }
 	    fincasAfectadas.setModel(tableModel);
 	    // fincasAfectadas.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	    fincasAfectadas.getColumnModel().getColumn(0).setPreferredWidth(80);
@@ -169,7 +154,7 @@ public class FormReversions extends AbstractForm implements TableModelListener {
 		    .setPreferredWidth(100);
 	    fincasAfectadas.getColumnModel().getColumn(5).setPreferredWidth(60);
 
-	    Value[] reversionData = new Value[columnasFincas.size()];
+	    Value[] reversionData = new Value[tableModel.getColumnCount()];
 	    ResultSet rs = getFincasByExpReversion();
 
 	    while (rs.next()) {
@@ -221,6 +206,26 @@ public class FormReversions extends AbstractForm implements TableModelListener {
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
+    }
+
+    private DefaultTableModel setTableHeader() {
+	CustomTableModel tableModel = new CustomTableModel();
+	ArrayList<Field> columnasFincas = new ArrayList<Field>();
+	columnasFincas.add(new Field("id_finca", "<html>Finca</html>"));
+	columnasFincas.add(new Field("expedientes_pm",
+		"<html>Expedientes PM</html>"));
+	columnasFincas.add(new Field("superficie",
+		"<html>Superficie (m<sup>2</sup>)</html>"));
+	columnasFincas.add(new Field("importe_euros",
+		"<html>Importe (&euro;)</html>"));
+	columnasFincas.add(new Field("importe_ptas",
+		"<html>Importe (Pts)</html>"));
+	columnasFincas.add(new Field("fecha_acta", "<html>Fecha</html>"));
+
+	for (Field columnName : columnasFincas) {
+	    tableModel.addColumn(columnName);
+	}
+	return tableModel;
     }
 
     private String getDateFormatted(Date date) {

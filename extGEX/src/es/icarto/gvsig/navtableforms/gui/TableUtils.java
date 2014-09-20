@@ -143,9 +143,16 @@ public class TableUtils {
     public static int getColumnIndex(JTable table, String columnName) {
 	TableModel model = table.getModel();
 	for(int i=0; i<model.getColumnCount(); i++) {
-	    if(columnName.equalsIgnoreCase(model.getColumnName(i))) {
-		return i;
+	    if (model instanceof CustomTableModel) {
+		if(columnName.equalsIgnoreCase(((CustomTableModel)model).getColumnKey(i))) {
+		    return i;
+		}
+	    } else {
+		if(columnName.equalsIgnoreCase(model.getColumnName(i))) {
+		    return i;
+		}		
 	    }
+	    
 	}
 	return NO_COLUMN;
     }
@@ -191,7 +198,12 @@ public class TableUtils {
 	HashMap<String, String> rowSelected = new HashMap<String, String>();
 	value = ((Value) model.getValueAt(rowIndex, colIndex)).getStringValue(
 		new ValueFormatNT());
-	key = model.getColumnName(colIndex);
+	
+	 if (model instanceof CustomTableModel) {
+	     key = ((CustomTableModel) model).getColumnKey(colIndex);
+	 } else {
+	     key = model.getColumnName(colIndex);		
+	 }
 	rowSelected.put(key, value);
 	return rowSelected;
     }
@@ -202,7 +214,11 @@ public class TableUtils {
 	for (int colIndex = 0; colIndex < model.getColumnCount(); colIndex++) {
 	    value = ((Value) model.getValueAt(rowIndex, colIndex)).getStringValue(
 		    new ValueFormatNT());
-	    key = model.getColumnName(colIndex);
+	    if (model instanceof CustomTableModel) {
+		key = ((CustomTableModel) model).getColumnKey(colIndex);
+	    } else {
+		key = model.getColumnName(colIndex);		
+	    }
 	    rowSelected.put(key, value);
 	}
 	return rowSelected;
