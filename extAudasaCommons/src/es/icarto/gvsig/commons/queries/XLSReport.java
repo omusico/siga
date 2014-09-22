@@ -19,8 +19,8 @@ import org.apache.poi.ss.util.WorkbookUtil;
 public class XLSReport {
 
     private Workbook wb;
-    private Sheet sheet;
-    private final QueryFiltersI filters;
+    protected Sheet sheet;
+    protected final QueryFiltersI filters;
     private final int colNamesRowIdx;
     private final boolean[] columnsStyles;
 
@@ -29,7 +29,7 @@ public class XLSReport {
 	this.filters = filters;
 	columnsStyles = new boolean[table.getColumnCount()];
 	Arrays.fill(columnsStyles, false);
-	colNamesRowIdx = filters.getLocation().size() + 2;
+	colNamesRowIdx = filters.getLocation().size() + 4;
 	if (outputFile == null) {
 	    return;
 	}
@@ -48,11 +48,9 @@ public class XLSReport {
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
-
     }
 
     protected void writeFilters() {
-
 	short rowIdx = 0;
 
 	for (Field l : filters.getLocation()) {
@@ -60,7 +58,6 @@ public class XLSReport {
 	    row.createCell(0).setCellValue(l.getLongName());
 	    row.createCell(1).setCellValue(l.getValue().toString());
 	}
-
     }
 
     private void writeTable(DefaultTableModel table) {
