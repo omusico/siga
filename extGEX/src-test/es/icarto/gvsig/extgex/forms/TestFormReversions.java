@@ -12,6 +12,7 @@ import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.navtableforms.AbstractForm;
+import es.icarto.gvsig.navtableforms.CommonMethodsForTestDBForms;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class TestFormReversions extends CommonMethodsForTestDBForms {
@@ -27,20 +28,13 @@ public class TestFormReversions extends CommonMethodsForTestDBForms {
     }
 
     @Test
-    public void testOpenExpropiationsForm() {
-	FLayer layer;
-	try {
-	    layer = DBSession.getCurrentSession().getLayer(
-		    getSchema() + "." + getTableName(),
-		    CRSFactory.getCRS("EPSG:23029"));
-	    AbstractForm dialog = new FormReversions((FLyrVect) layer, null);
-	    assertTrue(dialog != null);
-	    assertTrue(dialog.init());
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	} catch (DBException e) {
-	    e.printStackTrace();
-	}
+    public void testOpenExpropiationsForm() throws SQLException, DBException {
+	DBSession session = DBSession.getCurrentSession();
+	FLayer layer = session.getLayer(getTableName(), getTableName(),
+		getSchema(), null, CRSFactory.getCRS("EPSG:23029"));
+	AbstractForm dialog = new FormReversions((FLyrVect) layer, null);
+	assertTrue(dialog != null);
+	assertTrue(dialog.init());
     }
 
 }

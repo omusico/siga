@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,8 +29,6 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
-import org.apache.log4j.Logger;
-
 import com.hardcode.gdbms.engine.values.Value;
 import com.hardcode.gdbms.engine.values.ValueFactory;
 import com.iver.andami.PluginServices;
@@ -39,15 +36,13 @@ import com.iver.cit.gvsig.exceptions.visitors.StopWriterVisitorException;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.image.ImageComponent;
-import com.jeta.forms.components.panel.FormPanel;
-import com.jeta.forms.gui.common.FormException;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.extgex.navtable.NavTableComponentsFactory;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.utils.retrievers.LocalizadorFormatter;
-import es.icarto.gvsig.navtableforms.AbstractForm;
+import es.icarto.gvsig.navtableforms.BasicAbstractForm;
 import es.icarto.gvsig.navtableforms.gui.CustomTableModel;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
@@ -56,7 +51,7 @@ import es.udc.cartolab.gvsig.navtable.format.DoubleFormatNT;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
-public class FormExpropiations extends AbstractForm implements
+public class FormExpropiations extends BasicAbstractForm implements
 	TableModelListener {
 
     public static final String TABLENAME = "exp_finca";
@@ -131,27 +126,6 @@ public class FormExpropiations extends AbstractForm implements
 	} else {
 	    saveB.setEnabled(bool);
 	}
-    }
-
-    @Override
-    public Logger getLoggerName() {
-	return Logger.getLogger("ExpropiationsFileForm");
-    }
-
-    @Override
-    public FormPanel getFormBody() {
-	if (formBody == null) {
-	    InputStream stream = getClass().getClassLoader()
-		    .getResourceAsStream(getBasicName() + ".xml");
-	    FormPanel result = null;
-	    try {
-		result = new FormPanel(stream);
-	    } catch (FormException e) {
-		e.printStackTrace();
-	    }
-	    formBody = result;
-	}
-	return formBody;
     }
 
     @Override
@@ -834,11 +808,6 @@ public class FormExpropiations extends AbstractForm implements
     }
 
     @Override
-    public String getXMLPath() {
-	return this.getClass().getClassLoader()
-		.getResource("data/" + getBasicName() + ".xml").getPath();
-    }
-
     public String getBasicName() {
 	return TABLENAME;
     }

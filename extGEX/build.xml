@@ -67,7 +67,7 @@
 		<copy todir="${dist}/reports">
 			<fileset dir="reports" includes="*" />
 		</copy>
-		<copy todir="${dist}">
+		<copy todir="${dist}/forms">
 			<fileset dir="forms" includes="*" />
 		</copy>
 	</target>

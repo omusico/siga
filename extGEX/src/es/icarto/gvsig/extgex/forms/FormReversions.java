@@ -1,6 +1,5 @@
 package es.icarto.gvsig.extgex.forms;
 
-import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,21 +24,20 @@ import com.hardcode.gdbms.engine.values.ValueFactory;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.image.ImageComponent;
-import com.jeta.forms.components.panel.FormPanel;
-import com.jeta.forms.gui.common.FormException;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.extgex.navtable.NavTableComponentsFactory;
 import es.icarto.gvsig.extgex.preferences.DBNames;
-import es.icarto.gvsig.navtableforms.AbstractForm;
+import es.icarto.gvsig.navtableforms.BasicAbstractForm;
 import es.icarto.gvsig.navtableforms.gui.CustomTableModel;
 import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 import es.udc.cartolab.gvsig.navtable.format.DoubleFormatNT;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
-public class FormReversions extends AbstractForm implements TableModelListener {
+public class FormReversions extends BasicAbstractForm implements
+	TableModelListener {
 
     public static final String TABLENAME = "exp_rv";
     public static final String TOCNAME = "Reversiones";
@@ -103,22 +101,6 @@ public class FormReversions extends AbstractForm implements TableModelListener {
     protected void removeListeners() {
 	super.removeListeners();
 	fincasAfectadas.removeMouseListener(expropiationsLauncher);
-    }
-
-    @Override
-    public FormPanel getFormBody() {
-	if (formBody == null) {
-	    InputStream stream = getClass().getClassLoader()
-		    .getResourceAsStream(getBasicName() + ".xml");
-	    FormPanel result = null;
-	    try {
-		result = new FormPanel(stream);
-	    } catch (FormException e) {
-		e.printStackTrace();
-	    }
-	    formBody = result;
-	}
-	return formBody;
     }
 
     @Override
@@ -274,11 +256,6 @@ public class FormReversions extends AbstractForm implements TableModelListener {
     }
 
     @Override
-    public String getXMLPath() {
-	return this.getClass().getClassLoader()
-		.getResource("data/" + getBasicName() + ".xml").getPath();
-    }
-
     public String getBasicName() {
 	return TABLENAME;
     }

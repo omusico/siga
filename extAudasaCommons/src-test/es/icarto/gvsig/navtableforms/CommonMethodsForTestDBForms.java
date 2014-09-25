@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgex.forms;
+package es.icarto.gvsig.navtableforms;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.swing.JComboBox;
@@ -28,7 +29,6 @@ import org.xml.sax.SAXException;
 import com.iver.cit.gvsig.fmap.drivers.DBException;
 import com.jeta.forms.components.panel.FormPanel;
 
-import es.icarto.gvsig.navtableforms.IValidatableForm;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLiteAppDomain;
 import es.icarto.gvsig.navtableforms.ormlite.XMLSAXParser;
@@ -51,7 +51,7 @@ public abstract class CommonMethodsForTestDBForms {
     public static void doSetupBeforeClass() {
 	Drivers.initgvSIGDrivers(TestProperties.driversPath);
 	try {
-	    DBSessionPostGIS.createConnection("localhost", 5432, "audasa_test",
+	    DBSessionPostGIS.createConnection("localhost", 5434, "audasa_test",
 		    null, "postgres", "postgres");
 	} catch (DBException e) {
 	    e.printStackTrace();
@@ -152,6 +152,14 @@ public abstract class CommonMethodsForTestDBForms {
 			columnsSet.contains(widget.getName()));
 	    }
 	}
+    }
+
+    @Test
+    public void tableNameIsInProperties() throws IOException {
+	InputStream input = new FileInputStream("config/text_es.properties");
+	Properties props = new Properties();
+	props.load(input);
+	assertNotNull(props.getProperty(getTableName()));
     }
 
     private Set<String> getColums() throws SQLException {

@@ -33,7 +33,7 @@
 	</target>
 	
 	<target name="copy-data-files">
-		<copy file="data/extpm.xml" todir="${dist}/data" overwrite="yes"/>
+		<copy file="data/exp_pm.xml" todir="${dist}/data" overwrite="yes"/>
 		<copy file="config/config.xml" todir="${dist}"/>
 		<copy file="config/text_es.properties" todir="${dist}"/>
 		<copy todir="${dist}/images">
@@ -48,7 +48,7 @@
 			<fileset dir="reports" includes="*" />
 		</copy>
 	
-		<copy todir="${dist}">
+		<copy todir="${dist}/forms">
 			<fileset dir="forms" includes="*" />
 		</copy>
 	</target>

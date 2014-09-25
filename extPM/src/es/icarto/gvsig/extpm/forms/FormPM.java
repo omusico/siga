@@ -1,6 +1,5 @@
 package es.icarto.gvsig.extpm.forms;
 
-import java.io.InputStream;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,22 +15,18 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import com.iver.andami.PluginServices;
-import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.image.ImageComponent;
-import com.jeta.forms.components.panel.FormPanel;
-import com.jeta.forms.gui.common.FormException;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.audasacommons.forms.reports.NavTableComponentsPrintButton;
 import es.icarto.gvsig.extpm.forms.filesLink.NavTableComponentsFilesLinkButton;
 import es.icarto.gvsig.extpm.preferences.Preferences;
-import es.icarto.gvsig.navtableforms.AbstractForm;
+import es.icarto.gvsig.navtableforms.BasicAbstractForm;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
-public class FormPM extends AbstractForm {
+public class FormPM extends BasicAbstractForm {
 
     // WIDGETS
     private JTextField numParcelaCatastro;
@@ -48,15 +43,6 @@ public class FormPM extends AbstractForm {
 
     public FormPM(FLyrVect layer, boolean newRegister, int insertedRow) {
 	super(layer);
-    }
-
-    @Override
-    public WindowInfo getWindowInfo() {
-	if (windowInfo == null) {
-	    super.getWindowInfo();
-	    windowInfo.setTitle("Policía de Márgenes");
-	}
-	return windowInfo;
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -129,13 +115,6 @@ public class FormPM extends AbstractForm {
     @Override
     protected void removeListeners() {
 	super.removeListeners();
-    }
-
-    @Override
-    public String getXMLPath() {
-	return PluginServices.getPluginServices("es.icarto.gvsig.extpm")
-		.getClassLoader()
-		.getResource(Preferences.XML_ORMLITE_RELATIVE_PATH).getPath();
     }
 
     @Override
@@ -214,24 +193,13 @@ public class FormPM extends AbstractForm {
     }
 
     @Override
-    public FormPanel getFormBody() {
-	if (formBody == null) {
-	    InputStream stream = getClass().getClassLoader()
-		    .getResourceAsStream(Preferences.PM_FORM_FILE);
-	    FormPanel result = null;
-	    try {
-		result = new FormPanel(stream);
-	    } catch (FormException e) {
-		e.printStackTrace();
-	    }
-	    formBody = result;
-	}
-	return formBody;
-    }
-
-    @Override
     // As this is a non editable form we should never show the warning
     protected boolean showWarning() {
 	return true;
+    }
+
+    @Override
+    protected String getBasicName() {
+	return "exp_pm";
     }
 }
