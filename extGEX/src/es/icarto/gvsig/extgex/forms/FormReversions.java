@@ -44,16 +44,12 @@ public class FormReversions extends AbstractForm implements TableModelListener {
     public static final String TABLENAME = "exp_rv";
     public static final String TOCNAME = "Reversiones";
 
-    private FLyrVect layer = null;
-
-    private FormPanel form;
     private JTable fincasAfectadas;
     private JTextField expId;
     private FormExpropiationsLauncher expropiationsLauncher;
 
     public FormReversions(FLyrVect layer, IGeometry insertedGeom) {
 	super(layer);
-	this.layer = layer;
 	addNewButtonsToActionsToolBar();
     }
 
@@ -87,7 +83,7 @@ public class FormReversions extends AbstractForm implements TableModelListener {
 
 	Map<String, JComponent> widgets = getWidgets();
 
-	ImageComponent image = (ImageComponent) form
+	ImageComponent image = (ImageComponent) formBody
 		.getComponentByName("image");
 	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
 	image.setIcon(icon);
@@ -111,7 +107,7 @@ public class FormReversions extends AbstractForm implements TableModelListener {
 
     @Override
     public FormPanel getFormBody() {
-	if (form == null) {
+	if (formBody == null) {
 	    InputStream stream = getClass().getClassLoader()
 		    .getResourceAsStream(getBasicName() + ".xml");
 	    FormPanel result = null;
@@ -120,9 +116,9 @@ public class FormReversions extends AbstractForm implements TableModelListener {
 	    } catch (FormException e) {
 		e.printStackTrace();
 	    }
-	    form = result;
+	    formBody = result;
 	}
-	return form;
+	return formBody;
     }
 
     @Override

@@ -33,9 +33,6 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 @SuppressWarnings("serial")
 public class FormPM extends AbstractForm {
 
-    private FormPanel form;
-    private final FLyrVect layer;
-
     // WIDGETS
     private JTextField numParcelaCatastro;
     private JTextField poligonoCatastro;
@@ -51,8 +48,6 @@ public class FormPM extends AbstractForm {
 
     public FormPM(FLyrVect layer, boolean newRegister, int insertedRow) {
 	super(layer);
-	this.layer = layer;
-	initWidgets();
     }
 
     @Override
@@ -111,7 +106,7 @@ public class FormPM extends AbstractForm {
 
 	Map<String, JComponent> widgets = getWidgets();
 
-	ImageComponent image = (ImageComponent) form
+	ImageComponent image = (ImageComponent) formBody
 		.getComponentByName("image");
 	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
 	image.setIcon(icon);
@@ -127,7 +122,7 @@ public class FormPM extends AbstractForm {
 	poligonoCatastro
 		.setToolTipText("Si hay varios polígonos separar con guión (-)");
 
-	fincasAfectadasTable = (JTable) form
+	fincasAfectadasTable = (JTable) formBody
 		.getComponentByName("parcelas_afectadas_table");
     }
 
@@ -220,7 +215,7 @@ public class FormPM extends AbstractForm {
 
     @Override
     public FormPanel getFormBody() {
-	if (form == null) {
+	if (formBody == null) {
 	    InputStream stream = getClass().getClassLoader()
 		    .getResourceAsStream(Preferences.PM_FORM_FILE);
 	    FormPanel result = null;
@@ -229,9 +224,9 @@ public class FormPM extends AbstractForm {
 	    } catch (FormException e) {
 		e.printStackTrace();
 	    }
-	    form = result;
+	    formBody = result;
 	}
-	return form;
+	return formBody;
     }
 
     @Override

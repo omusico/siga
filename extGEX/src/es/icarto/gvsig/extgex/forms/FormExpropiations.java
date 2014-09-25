@@ -66,8 +66,6 @@ public class FormExpropiations extends AbstractForm implements
     private static final String WIDGET_EXPROPIACIONES = "tabla_expropiaciones";
     private static final String WIDGET_PM = "tabla_pm_afectan";
 
-    private FormPanel form;
-
     private JComboBox tramo;
     private JComboBox uc;
     private JComboBox ayuntamiento;
@@ -99,14 +97,12 @@ public class FormExpropiations extends AbstractForm implements
 
     private FormReversionsLauncher formReversionsLauncher;
 
-    private FLyrVect layer = null;
     private IGeometry insertedGeom;
 
     private ArrayList<String> oldReversions;
 
     public FormExpropiations(FLyrVect layer, IGeometry insertedGeom) {
 	super(layer);
-	this.layer = layer;
 	if (insertedGeom != null) {
 	    this.insertedGeom = insertedGeom;
 	}
@@ -144,7 +140,7 @@ public class FormExpropiations extends AbstractForm implements
 
     @Override
     public FormPanel getFormBody() {
-	if (form == null) {
+	if (formBody == null) {
 	    InputStream stream = getClass().getClassLoader()
 		    .getResourceAsStream(getBasicName() + ".xml");
 	    FormPanel result = null;
@@ -153,9 +149,9 @@ public class FormExpropiations extends AbstractForm implements
 	    } catch (FormException e) {
 		e.printStackTrace();
 	    }
-	    form = result;
+	    formBody = result;
 	}
-	return form;
+	return formBody;
     }
 
     @Override
@@ -165,7 +161,7 @@ public class FormExpropiations extends AbstractForm implements
 	// RETRIEVE WIDGETS
 	Map<String, JComponent> widgets = getWidgets();
 
-	ImageComponent image = (ImageComponent) form
+	ImageComponent image = (ImageComponent) formBody
 		.getComponentByName("image");
 	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
 	image.setIcon(icon);
@@ -191,22 +187,22 @@ public class FormExpropiations extends AbstractForm implements
 		.get(DBNames.EXPROPIATIONS_AFECTADO_PM);
 
 	addReversionsListener = new AddReversionsListener();
-	addReversionsButton = (JButton) form
+	addReversionsButton = (JButton) formBody
 		.getComponentByName(DBNames.EXPROPIATIONS_ADD_REVERSIONS_BUTTON);
 	addReversionsButton.addActionListener(addReversionsListener);
 
 	deleteReversionsListener = new DeleteReversionsListener();
-	deleteReversionsButton = (JButton) form
+	deleteReversionsButton = (JButton) formBody
 		.getComponentByName(DBNames.EXPROPIATIONS_DELETE_REVERSIONS_BUTTON);
 	deleteReversionsButton.addActionListener(deleteReversionsListener);
 
 	addExpropiationListener = new AddExpropiationListener();
-	addExpropiationButton = (JButton) form
+	addExpropiationButton = (JButton) formBody
 		.getComponentByName(DBNames.EXPROPIATIONS_ADD_EXPROPIATION_BUTTON);
 	addExpropiationButton.addActionListener(addExpropiationListener);
 
 	deleteExpropiationListener = new DeleteExpropiationListener();
-	deleteExpropiationButton = (JButton) form
+	deleteExpropiationButton = (JButton) formBody
 		.getComponentByName(DBNames.EXPROPIATIONS_DELETE_EXPROPIATION_BUTTON);
 	deleteExpropiationButton.addActionListener(deleteExpropiationListener);
 
