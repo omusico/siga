@@ -58,6 +58,7 @@ public class FormReversions extends BasicAbstractForm implements
 	if (filesLinkB != null) {
 	    actionsToolBar.add(filesLinkB);
 	}
+	actionsToolBar.add(new JButton(new OpenWebForm(this, "rv")));
 
 	this.getActionsToolBar().remove(saveB);
 	this.getActionsToolBar().remove(removeB);

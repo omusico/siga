@@ -20,6 +20,7 @@ import com.jeta.forms.components.image.ImageComponent;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.audasacommons.forms.reports.NavTableComponentsPrintButton;
+import es.icarto.gvsig.extgex.forms.OpenWebForm;
 import es.icarto.gvsig.extpm.forms.filesLink.NavTableComponentsFilesLinkButton;
 import es.icarto.gvsig.extpm.preferences.Preferences;
 import es.icarto.gvsig.navtableforms.BasicAbstractForm;
@@ -78,6 +79,8 @@ public class FormPM extends BasicAbstractForm {
 	if (filesLinkB != null && ntFilesLinkButton == null) {
 	    actionsToolBar.add(filesLinkB);
 	}
+
+	actionsToolBar.add(new JButton(new OpenWebForm(this, "pm")));
 
 	this.getActionsToolBar().remove(saveB);
 	this.getActionsToolBar().remove(removeB);
