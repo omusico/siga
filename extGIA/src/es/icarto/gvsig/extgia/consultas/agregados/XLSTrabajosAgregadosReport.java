@@ -90,35 +90,13 @@ public class XLSTrabajosAgregadosReport {
 	}
 
 	return (row + 3 + table.getRowCount() + 2);
-	// PreparedStatement statement;
-	// try {
-	//
-	// ResultSet rs = statement.executeQuery(totalQuery
-	// + filters.getWhereClauseFiltersForAgregados(element,
-	// true));
-	// writer.append("TOTAL");
-	// for (int i = 0; i <= 6; i++) {
-	// writer.append(CSV_SEPARATOR);
-	// }
-	// if (rs.next()) {
-	// for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
-	// writer.append(Utils.writeValue(rs.getString(i + 1)));
-	// writer.append(CSV_SEPARATOR);
-	// }
-	// }
-	// writer.append("\n");
-	// }
-	// } catch (SQLException e) {
-	// e.printStackTrace();
-	// } catch (IOException e) {
-	// e.printStackTrace();
     }
 
     private void writeTables() {
 
 	int lastRow = writeTable("Desbroce con retroaraña",
 		agregadosReportQueries.getDesbroceRetroaranhaQuery(),
-		agregadosReportQueries.getDesbroceRetroaranhaSumQuery(), 0);
+		agregadosReportQueries.getDesbroceRetroaranhaSumQuery(), 7);
 	lastRow = writeTable("Desbroce mecánico",
 		agregadosReportQueries.getDesbroceMecanicoQuery(),
 		agregadosReportQueries.getDesbroceMecanicoSumQuery(), lastRow);

@@ -1,5 +1,7 @@
 package es.icarto.gvsig.extgia.consultas.agregados;
 
+import es.icarto.gvsig.extgia.consultas.ConsultasFieldNames;
+
 public class TrabajosAgregadosReportQueries {
 
     private final String element;
@@ -10,16 +12,11 @@ public class TrabajosAgregadosReportQueries {
     }
 
     public String getBaseQuery() {
-	if (element.equalsIgnoreCase("isletas")) {
-	    return getIsletasBaseQuery();
-	} else if (element.equalsIgnoreCase("taludes")) {
-	    return getTaludesBaseQuery();
-	}
-	return null;
-    }
+	String elementId = ConsultasFieldNames.getElementId(element);
 
-    public String getTaludesBaseQuery() {
-	return "SELECT distinct(a.id_talud), tr.item, tv.item, nv.item, pk_inicial, pk_final, c.item, "
+	return "SELECT distinct(a."
+		+ elementId
+		+ "), tr.item, tv.item, nv.item, pk_inicial, pk_final, c.item, "
 		+ "medicion_audasa "
 		+ "FROM audasa_extgia."
 		+ element
@@ -30,24 +27,11 @@ public class TrabajosAgregadosReportQueries {
 		+ "audasa_extgia_dominios.tramo tr, "
 		+ "audasa_extgia_dominios.tipo_via tv, "
 		+ "audasa_extgia_dominios.nombre_via nv "
-		+ "WHERE a.id_talud = b.id_talud AND b.sentido = c.id AND b.tramo = tr.id "
-		+ "AND b.tipo_via = tv.id AND b.nombre_via = cast (nv.id as text) "
-		+ "AND unidad = '";
-    }
-
-    public String getIsletasBaseQuery() {
-	return "SELECT distinct(a.id_isleta), tr.item, tv.item, nv.item, pk_inicial, pk_final, c.item, "
-		+ "medicion_audasa "
-		+ "FROM audasa_extgia."
-		+ element
-		+ "_trabajos a, audasa_extgia."
-		+ element
-		+ " b, "
-		+ "audasa_extgia_dominios.sentido c, "
-		+ "audasa_extgia_dominios.tramo tr, "
-		+ "audasa_extgia_dominios.tipo_via tv, "
-		+ "audasa_extgia_dominios.nombre_via nv "
-		+ "WHERE a.id_isleta = b.id_isleta AND b.sentido = c.id AND b.tramo = tr.id "
+		+ "WHERE a."
+		+ elementId
+		+ " = b."
+		+ elementId
+		+ " AND b.sentido = c.id AND b.tramo = tr.id "
 		+ "AND b.tipo_via = tv.id AND b.nombre_via = cast (nv.id as text) "
 		+ "AND unidad = '";
     }
