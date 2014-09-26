@@ -2,7 +2,7 @@ package es.icarto.gvsig.extgia.forms.firme;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -26,6 +26,7 @@ import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 
 @SuppressWarnings("serial")
 public class FirmeForm extends AbstractFormWithLocationWidgets {
@@ -55,13 +56,11 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 
     @Override
     protected void fillSpecificValues() {
-	updateBaseContratistaCombo();
-	selectBaseContratistaOption();
-	updateTramoCombo();
-	selectTramoOption();
+	baseContratistaDomainHandler.updateComboBoxValues();
+	tramoDomainHandler.updateComboBoxValues();
 
 	if (firmeIDWidget.getText().isEmpty()) {
-	    firmeid = new FirmeCalculateIDValue(this, getWidgetComponents(),
+	    firmeid = new FirmeCalculateIDValue(this, getWidgets(),
 		    DBFieldNames.ID_FIRME, DBFieldNames.ID_FIRME);
 	    firmeid.setValue(true);
 	}
@@ -79,19 +78,19 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 	}
 
 	// Element image
-	new ShowImageAction(imageComponent, addImageButton, getImagesDBTableName(), getElementID(),
-		getElementIDValue());
+	new ShowImageAction(imageComponent, addImageButton,
+		getImagesDBTableName(), getElementID(), getElementIDValue());
 
 	// Embebed Tables
-	int[] trabajoColumnsSize = {1, 1, 1, 1, 30, 250};
+	int[] trabajoColumnsSize = { 1, 1, 1, 1, 30, 250 };
 	SqlUtils.createEmbebedTableFromDB(reconocimientoEstado,
 		"audasa_extgia", getReconocimientosDBTableName(),
 		DBFieldNames.firmeReconocimientoEstadoFields, null, "id_firme",
 		firmeIDWidget.getText(), "n_inspeccion");
-	SqlUtils.createEmbebedTableFromDB(trabajos,
-		"audasa_extgia", getTrabajosDBTableName(),
-		DBFieldNames.firmeTrabajoFields, trabajoColumnsSize, "id_firme",
-		firmeIDWidget.getText(), "id_trabajo");
+	SqlUtils.createEmbebedTableFromDB(trabajos, "audasa_extgia",
+		getTrabajosDBTableName(), DBFieldNames.firmeTrabajoFields,
+		trabajoColumnsSize, "id_firme", firmeIDWidget.getText(),
+		"id_trabajo");
 	repaint();
     }
 
@@ -99,51 +98,63 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
     protected void setListeners() {
 	super.setListeners();
 
-	ImageComponent image = (ImageComponent) form.getComponentByName("image");
-	ImageIcon icon = new ImageIcon (PreferencesPage.AUDASA_ICON);
+	ImageComponent image = (ImageComponent) form
+		.getComponentByName("image");
+	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
 	image.setIcon(icon);
 
-	HashMap<String, JComponent> widgets = getWidgetComponents();
+	Map<String, JComponent> widgets = getWidgets();
 
-	imageComponent = (ImageComponent) form.getComponentByName("element_image");
+	imageComponent = (ImageComponent) form
+		.getComponentByName("element_image");
 	addImageButton = (JButton) form.getComponentByName("add_image_button");
-	deleteImageButton = (JButton) form.getComponentByName("delete_image_button");
+	deleteImageButton = (JButton) form
+		.getComponentByName("delete_image_button");
 
 	areaMantenimientoWidget = (JComboBox) widgets.get(AREA_MANTENIMIENTO);
 	baseContratistaWidget = (JComboBox) widgets.get(BASE_CONTRATISTA);
 	tramoWidget = (JComboBox) widgets.get(TRAMO);
 
-	updateBaseContratistaListener = new UpdateBaseContratistaListener();
-	updateTramoListener = new UpdateTramoListener();
+	baseContratistaDomainHandler = new DependentComboboxHandler(this,
+		areaMantenimientoWidget, baseContratistaWidget);
+	areaMantenimientoWidget.addActionListener(baseContratistaDomainHandler);
 
-	areaMantenimientoWidget.addActionListener(updateBaseContratistaListener);
-	baseContratistaWidget.addActionListener(updateTramoListener);
+	tramoDomainHandler = new DependentComboboxHandler(this,
+		baseContratistaWidget, tramoWidget);
+	baseContratistaWidget.addActionListener(tramoDomainHandler);
 
-	reconocimientoEstado = (JTable) widgets.get("reconocimiento_estado_firme");
+	reconocimientoEstado = (JTable) widgets
+		.get("reconocimiento_estado_firme");
 	trabajos = (JTable) widgets.get("trabajos_firme");
-	addReconocimientoButton = (JButton) form.getComponentByName("add_reconocimiento_button");
-	editReconocimientoButton = (JButton) form.getComponentByName("edit_reconocimiento_button");
-	addTrabajoButton = (JButton) form.getComponentByName("add_trabajo_button");
-	editTrabajoButton = (JButton) form.getComponentByName("edit_trabajo_button");
-	deleteReconocimientoButton = (JButton) form.getComponentByName("delete_reconocimiento_button");
-	deleteTrabajoButton = (JButton) form.getComponentByName("delete_trabajo_button");
+	addReconocimientoButton = (JButton) form
+		.getComponentByName("add_reconocimiento_button");
+	editReconocimientoButton = (JButton) form
+		.getComponentByName("edit_reconocimiento_button");
+	addTrabajoButton = (JButton) form
+		.getComponentByName("add_trabajo_button");
+	editTrabajoButton = (JButton) form
+		.getComponentByName("edit_trabajo_button");
+	deleteReconocimientoButton = (JButton) form
+		.getComponentByName("delete_reconocimiento_button");
+	deleteTrabajoButton = (JButton) form
+		.getComponentByName("delete_trabajo_button");
 
 	if (addImageListener == null) {
-	    addImageListener = new AddImageListener(imageComponent, addImageButton,
-		    getImagesDBTableName(), getElementID());
+	    addImageListener = new AddImageListener(imageComponent,
+		    addImageButton, getImagesDBTableName(), getElementID());
 	    addImageButton.addActionListener(addImageListener);
 	}
 
 	if (deleteImageListener == null) {
-	    deleteImageListener = new DeleteImageListener(imageComponent, addImageButton,
-		    getImagesDBTableName(), getElementID());
+	    deleteImageListener = new DeleteImageListener(imageComponent,
+		    addImageButton, getImagesDBTableName(), getElementID());
 	    deleteImageButton.addActionListener(deleteImageListener);
 	}
     }
 
     protected void initListeners() {
 
-	HashMap<String, JComponent> widgets = getWidgetComponents();
+	Map<String, JComponent> widgets = getWidgets();
 
 	firmeIDWidget = (JTextField) widgets.get(DBFieldNames.ID_FIRME);
 
@@ -156,37 +167,35 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 	editTrabajoListener = new EditTrabajoListener();
 	editTrabajoButton.addActionListener(editTrabajoListener);
 	deleteReconocimientoListener = new DeleteReconocimientoListener();
-	deleteReconocimientoButton.addActionListener(deleteReconocimientoListener);
+	deleteReconocimientoButton
+		.addActionListener(deleteReconocimientoListener);
 	deleteTrabajoListener = new DeleteTrabajoListener();
 	deleteTrabajoButton.addActionListener(deleteTrabajoListener);
     }
 
     @Override
     protected void removeListeners() {
-	areaMantenimientoWidget.removeActionListener(updateBaseContratistaListener);
-	baseContratistaWidget.removeActionListener(updateTramoListener);
+	areaMantenimientoWidget
+		.removeActionListener(baseContratistaDomainHandler);
+	baseContratistaWidget.removeActionListener(tramoDomainHandler);
 
 	addReconocimientoButton.removeActionListener(addReconocimientoListener);
-	editReconocimientoButton.removeActionListener(editReconocimientoListener);
+	editReconocimientoButton
+		.removeActionListener(editReconocimientoListener);
 	addTrabajoButton.removeActionListener(addTrabajoListener);
 	editTrabajoButton.removeActionListener(editTrabajoListener);
-	deleteReconocimientoButton.removeActionListener(deleteReconocimientoListener);
+	deleteReconocimientoButton
+		.removeActionListener(deleteReconocimientoListener);
 	deleteTrabajoButton.removeActionListener(deleteTrabajoListener);
     }
 
     public class AddReconocimientoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    FirmeReconocimientosSubForm subForm =
-		    new FirmeReconocimientosSubForm(
-			    ABEILLE_RECONOCIMIENTOS_FILENAME,
-			    getReconocimientosDBTableName(),
-			    reconocimientoEstado,
-			    "id_firme",
-			    firmeIDWidget.getText(),
-			    null,
-			    null,
-			    false);
+	    FirmeReconocimientosSubForm subForm = new FirmeReconocimientosSubForm(
+		    ABEILLE_RECONOCIMIENTOS_FILENAME,
+		    getReconocimientosDBTableName(), reconocimientoEstado,
+		    "id_firme", firmeIDWidget.getText(), null, null, false);
 	    PluginServices.getMDIManager().addWindow(subForm);
 	}
     }
@@ -195,13 +204,8 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    FirmeTrabajosSubForm subForm = new FirmeTrabajosSubForm(
-		    ABEILLE_TRABAJOS_FILENAME,
-		    getTrabajosDBTableName(),
-		    trabajos,
-		    "id_firme",
-		    firmeIDWidget.getText(),
-		    null,
-		    null,
+		    ABEILLE_TRABAJOS_FILENAME, getTrabajosDBTableName(),
+		    trabajos, "id_firme", firmeIDWidget.getText(), null, null,
 		    false);
 	    PluginServices.getMDIManager().addWindow(subForm);
 	}
@@ -212,18 +216,14 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    if (reconocimientoEstado.getSelectedRowCount() != 0) {
 		int row = reconocimientoEstado.getSelectedRow();
-		FirmeReconocimientosSubForm subForm =
-			new FirmeReconocimientosSubForm(
-				ABEILLE_RECONOCIMIENTOS_FILENAME,
-				getReconocimientosDBTableName(),
-				reconocimientoEstado,
-				"id_firme",
-				firmeIDWidget.getText(),
-				"n_inspeccion",
-				reconocimientoEstado.getValueAt(row, 0).toString(),
-				true);
+		FirmeReconocimientosSubForm subForm = new FirmeReconocimientosSubForm(
+			ABEILLE_RECONOCIMIENTOS_FILENAME,
+			getReconocimientosDBTableName(), reconocimientoEstado,
+			"id_firme", firmeIDWidget.getText(), "n_inspeccion",
+			reconocimientoEstado.getValueAt(row, 0).toString(),
+			true);
 		PluginServices.getMDIManager().addWindow(subForm);
-	    }else {
+	    } else {
 		JOptionPane.showMessageDialog(null,
 			"Debe seleccionar una fila para editar los datos.",
 			"Ninguna fila seleccionada",
@@ -238,16 +238,12 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 	    if (trabajos.getSelectedRowCount() != 0) {
 		int row = trabajos.getSelectedRow();
 		FirmeTrabajosSubForm subForm = new FirmeTrabajosSubForm(
-			ABEILLE_TRABAJOS_FILENAME,
-			getTrabajosDBTableName(),
-			trabajos,
-			"id_firme",
-			firmeIDWidget.getText(),
-			"id_trabajo",
-			trabajos.getValueAt(row, 0).toString(),
+			ABEILLE_TRABAJOS_FILENAME, getTrabajosDBTableName(),
+			trabajos, "id_firme", firmeIDWidget.getText(),
+			"id_trabajo", trabajos.getValueAt(row, 0).toString(),
 			true);
 		PluginServices.getMDIManager().addWindow(subForm);
-	    }else {
+	    } else {
 		JOptionPane.showMessageDialog(null,
 			"Debe seleccionar una fila para editar los datos.",
 			"Ninguna fila seleccionada",
@@ -259,7 +255,8 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
     public class DeleteReconocimientoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    deleteElement(reconocimientoEstado, getReconocimientosDBTableName(),
+	    deleteElement(reconocimientoEstado,
+		    getReconocimientosDBTableName(),
 		    getReconocimientosIDField());
 	}
     }
@@ -267,7 +264,8 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
     public class DeleteTrabajoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    deleteElement(trabajos, getTrabajosDBTableName(), getTrabajosIDField());
+	    deleteElement(trabajos, getTrabajosDBTableName(),
+		    getTrabajosIDField());
 	}
     }
 
@@ -284,8 +282,7 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
     @Override
     public String getXMLPath() {
 	return this.getClass().getClassLoader()
-		.getResource("rules/firme_metadata.xml")
-		.getPath();
+		.getResource("rules/firme_metadata.xml").getPath();
     }
 
     @Override

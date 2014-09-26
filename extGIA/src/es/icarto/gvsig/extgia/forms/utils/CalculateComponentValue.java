@@ -9,6 +9,7 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -25,10 +26,10 @@ public abstract class CalculateComponentValue {
 
     protected JTextField resultComponent;
     protected String resultComponentName;
-    protected HashMap<String, JComponent> operatorComponents;
+    protected Map<String, JComponent> operatorComponents;
     protected ArrayList<ValidatorComponent> operatorValidators;
     protected OperatorComponentsListener handler;
-    private final HashMap<String, JComponent> allFormWidgets;
+    private final Map<String, JComponent> allFormWidgets;
     protected AbstractForm form;
 
     /**
@@ -40,8 +41,8 @@ public abstract class CalculateComponentValue {
     // fillSpecificValues and have the listeners registered in the form, so we
     // don't have to make specific calls
     public CalculateComponentValue(AbstractForm form,
-	    HashMap<String, JComponent> allFormWidgets,
-	    String resultComponentName, String... operatorComponentsNames) {
+	    Map<String, JComponent> allFormWidgets, String resultComponentName,
+	    String... operatorComponentsNames) {
 	this.form = form;
 	this.resultComponentName = resultComponentName;
 	this.allFormWidgets = allFormWidgets;
@@ -126,7 +127,7 @@ public abstract class CalculateComponentValue {
     }
 
     public class OperatorComponentsListener implements KeyListener,
-    ActionListener {
+	    ActionListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -157,15 +158,18 @@ public abstract class CalculateComponentValue {
     protected String getPkFormatted(JTextField pkWidget) {
 	String pkValueFormatted = "";
 
-	NumberFormat format=DecimalFormat.getInstance();
-	DecimalFormatSymbols symbols=((DecimalFormat) format).getDecimalFormatSymbols();
-	char decimalSeparator=symbols.getDecimalSeparator();
+	NumberFormat format = DecimalFormat.getInstance();
+	DecimalFormatSymbols symbols = ((DecimalFormat) format)
+		.getDecimalFormatSymbols();
+	char decimalSeparator = symbols.getDecimalSeparator();
 
 	String pkValue = pkWidget.getText();
 
 	// pkValue has only natural part
-	if (!pkValue.isEmpty() && !pkValue.contains(String.valueOf(decimalSeparator))) {
-	    pkValueFormatted =  String.format("%03d", Integer.valueOf(pkValue)) + "000";
+	if (!pkValue.isEmpty()
+		&& !pkValue.contains(String.valueOf(decimalSeparator))) {
+	    pkValueFormatted = String.format("%03d", Integer.valueOf(pkValue))
+		    + "000";
 	}
 
 	String[] pkValues = null;
@@ -175,26 +179,29 @@ public abstract class CalculateComponentValue {
 	}
 
 	// Cheking that pkValue is natural + decimal separator + decimal
-	if (pkValues != null && pkValues.length>1) {
-	    if (pkValues[0].length()>3) {
-		pkValues[0]=pkValues[0].substring(pkValues[0].length()-3);
+	if (pkValues != null && pkValues.length > 1) {
+	    if (pkValues[0].length() > 3) {
+		pkValues[0] = pkValues[0].substring(pkValues[0].length() - 3);
 	    }
-	    if (pkValues[1].length()>3) {
-		pkValues[1]=pkValues[1].substring(0,3);
+	    if (pkValues[1].length() > 3) {
+		pkValues[1] = pkValues[1].substring(0, 3);
 	    }
 	    if (!pkValues[0].isEmpty() && !pkValues[1].isEmpty()) {
 		// pkValue has one decimal
 		if (pkValues[1].length() == 1) {
-		    pkValueFormatted = String.format("%03d", Integer.valueOf(pkValues[0])) +
-			    pkValues[1] + "00";
+		    pkValueFormatted = String.format("%03d",
+			    Integer.valueOf(pkValues[0]))
+			    + pkValues[1] + "00";
 		    // pkValue has two decimals
-		}else if (pkValues[1].length() == 2) {
-		    pkValueFormatted = String.format("%03d", Integer.valueOf(pkValues[0])) +
-			    pkValues[1] + "0";
+		} else if (pkValues[1].length() == 2) {
+		    pkValueFormatted = String.format("%03d",
+			    Integer.valueOf(pkValues[0]))
+			    + pkValues[1] + "0";
 		    // pkValue has three decimals
-		}else {
-		    pkValueFormatted = String.format("%03d", Integer.valueOf(pkValues[0])) +
-			    pkValues[1];
+		} else {
+		    pkValueFormatted = String.format("%03d",
+			    Integer.valueOf(pkValues[0]))
+			    + pkValues[1];
 		}
 	    }
 	}

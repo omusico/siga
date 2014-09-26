@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.InputStream;
-import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -38,6 +38,7 @@ import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkButton;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkData;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 import es.udc.cartolab.gvsig.navtable.ToggleEditing;
 
@@ -52,7 +53,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     private static final String TIPO_VIA_PF = "tipo_via_pf";
     private static final String NOMBRE_VIA = "nombre_via";
     private static final String NOMBRE_VIA_PF = "nombre_via_pf";
-
     private static final String SENTIDO = "sentido";
 
     protected FormPanel form;
@@ -63,31 +63,25 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     protected JComboBox tramoWidget;
     private JComboBox tipoViaWidget;
     private JComboBox nombreViaWidget;
-
     private JComboBox tipoViaPFWidget;
     private JComboBox nombreViaPFWidget;
-
     private JComboBox sentidoWidget;
 
-    protected UpdateBaseContratistaListener updateBaseContratistaListener;
-    protected UpdateTramoListener updateTramoListener;
     private UpdateTipoViaListener updateTipoViaListener;
     private UpdateNombreViaListener updateNombreViaListener;
-
     private UpdateNombreViaPFListener updateNombreViaPFListener;
 
     protected JTable reconocimientoEstado;
     protected JTable trabajos;
+
     protected JButton addReconocimientoButton;
     protected JButton editReconocimientoButton;
     protected JButton deleteReconocimientoButton;
     protected JButton addTrabajoButton;
     protected JButton editTrabajoButton;
     protected JButton deleteTrabajoButton;
-
     protected JButton addTrabajosBatchButton;
     protected JButton addReconocimientosBatchButton;
-
     protected JButton saveRecordsBatchButton;
 
     protected ImageComponent imageComponent;
@@ -96,13 +90,15 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 
     AddTrabajosBatchListener addTrabajosBatchListener;
     AddReconocimientosBatchListener addReconocimientosBatchListener;
-
     SaveRecordsBatchListener saveRecordsBatchListener;
 
     protected AddImageListener addImageListener;
     protected DeleteImageListener deleteImageListener;
 
-    public AbstractFormWithLocationWidgets (FLyrVect layer) {
+    protected DependentComboboxHandler baseContratistaDomainHandler;
+    protected DependentComboboxHandler tramoDomainHandler;
+
+    public AbstractFormWithLocationWidgets(FLyrVect layer) {
 	super(layer);
 	layerName = layer.getName();
 	initWidgets();
@@ -133,29 +129,38 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	super.setListeners();
 
 	if (!isSpecialCase()) {
-	    ImageComponent image = (ImageComponent) form.getComponentByName("image");
-	    ImageIcon icon = new ImageIcon (PreferencesPage.AUDASA_ICON);
+	    ImageComponent image = (ImageComponent) form
+		    .getComponentByName("image");
+	    ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
 	    image.setIcon(icon);
 
-	    imageComponent = (ImageComponent) form.getComponentByName("element_image");
-	    addImageButton = (JButton) form.getComponentByName("add_image_button");
-	    deleteImageButton = (JButton) form.getComponentByName("delete_image_button");
+	    imageComponent = (ImageComponent) form
+		    .getComponentByName("element_image");
+	    addImageButton = (JButton) form
+		    .getComponentByName("add_image_button");
+	    deleteImageButton = (JButton) form
+		    .getComponentByName("delete_image_button");
 
-	    HashMap<String, JComponent> widgets = getWidgetComponents();
+	    Map<String, JComponent> widgets = getWidgets();
 
-	    areaMantenimientoWidget = (JComboBox) widgets.get(AREA_MANTENIMIENTO);
+	    areaMantenimientoWidget = (JComboBox) widgets
+		    .get(AREA_MANTENIMIENTO);
 	    baseContratistaWidget = (JComboBox) widgets.get(BASE_CONTRATISTA);
 	    tramoWidget = (JComboBox) widgets.get(TRAMO);
 	    tipoViaWidget = (JComboBox) widgets.get(TIPO_VIA);
 	    nombreViaWidget = (JComboBox) widgets.get(NOMBRE_VIA);
 
-	    updateBaseContratistaListener = new UpdateBaseContratistaListener();
-	    updateTramoListener = new UpdateTramoListener();
+	    baseContratistaDomainHandler = new DependentComboboxHandler(this,
+		    areaMantenimientoWidget, baseContratistaWidget);
+	    areaMantenimientoWidget
+		    .addActionListener(baseContratistaDomainHandler);
+	    tramoDomainHandler = new DependentComboboxHandler(this,
+		    baseContratistaWidget, tramoWidget);
+
 	    updateTipoViaListener = new UpdateTipoViaListener();
 	    updateNombreViaListener = new UpdateNombreViaListener();
 
-	    areaMantenimientoWidget.addActionListener(updateBaseContratistaListener);
-	    baseContratistaWidget.addActionListener(updateTramoListener);
+	    baseContratistaWidget.addActionListener(tramoDomainHandler);
 	    tramoWidget.addActionListener(updateTipoViaListener);
 	    tipoViaWidget.addActionListener(updateNombreViaListener);
 
@@ -170,24 +175,31 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 		sentidoWidget = (JComboBox) widgets.get(SENTIDO);
 	    }
 
-	    reconocimientoEstado = (JTable) widgets.get("reconocimiento_estado");
+	    reconocimientoEstado = (JTable) widgets
+		    .get("reconocimiento_estado");
 	    trabajos = (JTable) widgets.get("trabajos");
-	    addReconocimientoButton = (JButton) form.getComponentByName("add_reconocimiento_button");
-	    editReconocimientoButton = (JButton) form.getComponentByName("edit_reconocimiento_button");
-	    addTrabajoButton = (JButton) form.getComponentByName("add_trabajo_button");
-	    editTrabajoButton = (JButton) form.getComponentByName("edit_trabajo_button");
-	    deleteReconocimientoButton = (JButton) form.getComponentByName("delete_reconocimiento_button");
-	    deleteTrabajoButton = (JButton) form.getComponentByName("delete_trabajo_button");
+	    addReconocimientoButton = (JButton) form
+		    .getComponentByName("add_reconocimiento_button");
+	    editReconocimientoButton = (JButton) form
+		    .getComponentByName("edit_reconocimiento_button");
+	    addTrabajoButton = (JButton) form
+		    .getComponentByName("add_trabajo_button");
+	    editTrabajoButton = (JButton) form
+		    .getComponentByName("edit_trabajo_button");
+	    deleteReconocimientoButton = (JButton) form
+		    .getComponentByName("delete_reconocimiento_button");
+	    deleteTrabajoButton = (JButton) form
+		    .getComponentByName("delete_trabajo_button");
 
 	    if (addImageListener == null) {
-		addImageListener = new AddImageListener(imageComponent, addImageButton,
-			getImagesDBTableName(), getElementID());
+		addImageListener = new AddImageListener(imageComponent,
+			addImageButton, getImagesDBTableName(), getElementID());
 		addImageButton.addActionListener(addImageListener);
 	    }
 
 	    if (deleteImageListener == null) {
-		deleteImageListener = new DeleteImageListener(imageComponent, addImageButton,
-			getImagesDBTableName(), getElementID());
+		deleteImageListener = new DeleteImageListener(imageComponent,
+			addImageButton, getImagesDBTableName(), getElementID());
 		deleteImageButton.addActionListener(deleteImageListener);
 	    }
 	}
@@ -195,10 +207,12 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	if (SqlUtils.elementHasType(layerName, "inspecciones")) {
 	    if (addReconocimientosBatchButton == null) {
 		addReconocimientosBatchButton = new JButton();
-		java.net.URL imgURL = getClass().getResource("/batch_reconocimiento.png");
-		ImageIcon batchReconocimientoIcon = new ImageIcon (imgURL);
+		java.net.URL imgURL = getClass().getResource(
+			"/batch_reconocimiento.png");
+		ImageIcon batchReconocimientoIcon = new ImageIcon(imgURL);
 		addReconocimientosBatchButton.setIcon(batchReconocimientoIcon);
-		addReconocimientosBatchButton.setToolTipText(PluginServices.getText(this, "addBatchReconocimientos_tooltip"));
+		addReconocimientosBatchButton.setToolTipText(PluginServices
+			.getText(this, "addBatchReconocimientos_tooltip"));
 		getActionsToolBar().add(addReconocimientosBatchButton);
 	    }
 	}
@@ -206,32 +220,39 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	if (SqlUtils.elementHasType(layerName, "trabajos")) {
 	    if (addTrabajosBatchButton == null) {
 		addTrabajosBatchButton = new JButton();
-		java.net.URL imgURL = getClass().getResource("/batch_trabajo.png");
-		ImageIcon trabajosBatchIcon = new ImageIcon (imgURL);
+		java.net.URL imgURL = getClass().getResource(
+			"/batch_trabajo.png");
+		ImageIcon trabajosBatchIcon = new ImageIcon(imgURL);
 		addTrabajosBatchButton.setIcon(trabajosBatchIcon);
-		addTrabajosBatchButton.setToolTipText(PluginServices.getText(this, "addBatchTrabajos_tooltip"));
+		addTrabajosBatchButton.setToolTipText(PluginServices.getText(
+			this, "addBatchTrabajos_tooltip"));
 		getActionsToolBar().add(addTrabajosBatchButton);
 	    }
 	}
 
 	if (addTrabajosBatchListener == null && addTrabajosBatchButton != null) {
-	    addTrabajosBatchListener = new AddTrabajosBatchListener(getElement(),
-		    getTrabajosFormFileName(), getTrabajosDBTableName());
+	    addTrabajosBatchListener = new AddTrabajosBatchListener(
+		    getElement(), getTrabajosFormFileName(),
+		    getTrabajosDBTableName());
 	    addTrabajosBatchButton.addActionListener(addTrabajosBatchListener);
 	}
 
-	if (addReconocimientosBatchListener == null && addReconocimientosBatchButton != null) {
-	    addReconocimientosBatchListener = new AddReconocimientosBatchListener(getElement(),
-		    getReconocimientosFormFileName(), getReconocimientosDBTableName());
-	    addReconocimientosBatchButton.addActionListener(addReconocimientosBatchListener);
+	if (addReconocimientosBatchListener == null
+		&& addReconocimientosBatchButton != null) {
+	    addReconocimientosBatchListener = new AddReconocimientosBatchListener(
+		    getElement(), getReconocimientosFormFileName(),
+		    getReconocimientosDBTableName());
+	    addReconocimientosBatchButton
+		    .addActionListener(addReconocimientosBatchListener);
 	}
 
 	if (saveRecordsBatchButton == null) {
 	    saveRecordsBatchButton = new JButton();
 	    java.net.URL imgURL = getClass().getResource("/saveSelected.png");
-	    ImageIcon saveBatchIcon = new ImageIcon (imgURL);
+	    ImageIcon saveBatchIcon = new ImageIcon(imgURL);
 	    saveRecordsBatchButton.setIcon(saveBatchIcon);
-	    saveRecordsBatchButton.setToolTipText(PluginServices.getText(this, "saveRecordsBatch_tooltip"));
+	    saveRecordsBatchButton.setToolTipText(PluginServices.getText(this,
+		    "saveRecordsBatch_tooltip"));
 	    getActionsToolBar().add(saveRecordsBatchButton);
 	}
 
@@ -242,20 +263,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 
     }
 
-    protected void updateBaseContratistaCombo() {
-	String id = ((KeyValue)areaMantenimientoWidget.getSelectedItem()).getKey();
-	String getBaseContratistaQuery =
-		"SELECT id, item FROM audasa_extgia_dominios.base_contratista" +
-			" WHERE id_am = " + id + ";";
-	baseContratistaWidget.removeAllItems();
-	baseContratistaWidget.addItem(new KeyValue("", ""));
-	if (!id.isEmpty()) {
-	    for (KeyValue value: SqlUtils.getKeyValueListFromSql(getBaseContratistaQuery)) {
-		baseContratistaWidget.addItem(value);
-	    }
-	}
-    }
-
     protected void selectBaseContratistaOption() {
 	String baseContratista = this.getFormController().getValue(
 		BASE_CONTRATISTA);
@@ -264,21 +271,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 		    .equalsIgnoreCase(((KeyValue) baseContratistaWidget
 			    .getItemAt(i)).getKey())) {
 		baseContratistaWidget.setSelectedIndex(i);
-	    }
-	}
-    }
-
-    protected void updateTramoCombo() {
-	String id = ((KeyValue) baseContratistaWidget.getSelectedItem())
-		.getKey();
-	String getTramoQuery = "SELECT id, item FROM audasa_extgia_dominios.tramo"
-		+ " WHERE id_bc = " + id + ";";
-	tramoWidget.removeAllItems();
-	tramoWidget.addItem(new KeyValue("", ""));
-	if (!id.isEmpty()) {
-	    for (KeyValue value : SqlUtils
-		    .getKeyValueListFromSql(getTramoQuery)) {
-		tramoWidget.addItem(value);
 	    }
 	}
     }
@@ -403,31 +395,11 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	}
     }
 
-    public class UpdateBaseContratistaListener implements ActionListener {
-
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-	    if (!isFillingValues()) {
-		updateBaseContratistaCombo();
-	    }
-	}
-    }
-
-    public class UpdateTramoListener implements ActionListener {
-
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-	    if (!isFillingValues() && baseContratistaWidget.getItemCount() != 0) {
-		updateTramoCombo();
-	    }
-	}
-    }
-
     public class UpdateTipoViaListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-	    if (!isFillingValues() && tramoWidget.getItemCount()!=0) {
+	    if (!isFillingValues() && tramoWidget.getItemCount() != 0) {
 		updateTipoViaCombo();
 	    }
 	}
@@ -437,7 +409,7 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-	    if (!isFillingValues() && tipoViaWidget.getItemCount()!=0) {
+	    if (!isFillingValues() && tipoViaWidget.getItemCount() != 0) {
 		updateNombreViaCombo();
 	    }
 	}
@@ -447,7 +419,7 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-	    if (!isFillingValues() && tipoViaPFWidget.getItemCount()!=0) {
+	    if (!isFillingValues() && tipoViaPFWidget.getItemCount() != 0) {
 		updateNombreViaPFCombo();
 	    }
 	}
@@ -461,41 +433,52 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 		setSavingValues(true);
 		try {
 		    if (layer.getRecordset().getSelection().isEmpty()) {
-			JOptionPane.showMessageDialog(null,
-				PluginServices.getText(this, "unselectedElements_msg"),
+			JOptionPane.showMessageDialog(null, PluginServices
+				.getText(this, "unselectedElements_msg"),
 				PluginServices.getText(this, "warning"),
 				JOptionPane.WARNING_MESSAGE);
 			return;
 		    }
 
-		    if (layerController.getValuesChanged().containsKey(getElementID())) {
-			JOptionPane.showMessageDialog(null,
-				"La actualización masiva no funciona en campos que forman parte del ID.",
-				"Cambios en el ID",
-				JOptionPane.WARNING_MESSAGE);
+		    if (layerController.getValuesChanged().containsKey(
+			    getElementID())) {
+			JOptionPane
+				.showMessageDialog(
+					null,
+					"La actualización masiva no funciona en campos que forman parte del ID.",
+					"Cambios en el ID",
+					JOptionPane.WARNING_MESSAGE);
 			layerController.clearAll();
 			setChangedValues(false);
 			setSavingValues(false);
 			return;
 		    }
 
-		    Object[] options = {PluginServices.getText(this, "optionPane_yes"),
-			    PluginServices.getText(this, "optionPane_no")};
+		    Object[] options = {
+			    PluginServices.getText(this, "optionPane_yes"),
+			    PluginServices.getText(this, "optionPane_no") };
 		    int m = JOptionPane.showOptionDialog(
 			    null,
-			    PluginServices.getText(this, "updateInfo_msg_I" ) +
-			    layer.getRecordset().getSelection().cardinality() + " " +
-			    PluginServices.getText(this, "updateInfo_msg_II") ,
-			    null,
+			    PluginServices.getText(this, "updateInfo_msg_I")
+				    + layer.getRecordset().getSelection()
+					    .cardinality()
+				    + " "
+				    + PluginServices.getText(this,
+					    "updateInfo_msg_II"), null,
 			    JOptionPane.YES_NO_CANCEL_OPTION,
-			    JOptionPane.INFORMATION_MESSAGE, null,
-			    options, options[1]);
+			    JOptionPane.INFORMATION_MESSAGE, null, options,
+			    options[1]);
 		    if (m == JOptionPane.OK_OPTION) {
 			saveRecords();
-			JOptionPane.showMessageDialog(null,
-				PluginServices.getText(this, "updatedInfo_msg_I")
-				+ layer.getRecordset().getSelection().cardinality() + " "
-				+ PluginServices.getText(this, "updatedInfo_msg_II"));
+			JOptionPane.showMessageDialog(
+				null,
+				PluginServices.getText(this,
+					"updatedInfo_msg_I")
+					+ layer.getRecordset().getSelection()
+						.cardinality()
+					+ " "
+					+ PluginServices.getText(this,
+						"updatedInfo_msg_II"));
 			setChangedValues(false);
 			setSavingValues(false);
 		    }
@@ -513,20 +496,21 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	    }
 	}
 
-	private void saveRecords() throws ReadDriverException, StopWriterVisitorException {
-	    int[] indexesofValuesChanged = layerController.getIndexesOfValuesChanged();
-	    String[] valuesChanged =
-		    layerController.getValuesChanged().values().toArray(new String[0]);
+	private void saveRecords() throws ReadDriverException,
+		StopWriterVisitorException {
+	    int[] indexesofValuesChanged = layerController
+		    .getIndexesOfValuesChanged();
+	    String[] valuesChanged = layerController.getValuesChanged()
+		    .values().toArray(new String[0]);
 
 	    ToggleEditing te = new ToggleEditing();
 	    boolean wasEditing = layer.isEditing();
 	    if (!wasEditing) {
 		te.startEditing(layer);
 	    }
-	    for (int i=0; i<layer.getRecordset().getRowCount(); i++) {
+	    for (int i = 0; i < layer.getRecordset().getRowCount(); i++) {
 		if (layer.getRecordset().isSelected(i)) {
-		    te.modifyValues(layer, i,
-			    indexesofValuesChanged,
+		    te.modifyValues(layer, i, indexesofValuesChanged,
 			    valuesChanged);
 		}
 	    }
@@ -540,8 +524,9 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 
     @Override
     protected void removeListeners() {
-	areaMantenimientoWidget.removeActionListener(updateBaseContratistaListener);
-	baseContratistaWidget.removeActionListener(updateTramoListener);
+	areaMantenimientoWidget
+		.removeActionListener(baseContratistaDomainHandler);
+	baseContratistaWidget.removeActionListener(tramoDomainHandler);
 	tramoWidget.removeActionListener(updateTipoViaListener);
 	tipoViaWidget.removeActionListener(updateNombreViaListener);
 
@@ -550,10 +535,12 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	}
 
 	if (addTrabajosBatchButton != null) {
-	    addTrabajosBatchButton.removeActionListener(addTrabajosBatchListener);
+	    addTrabajosBatchButton
+		    .removeActionListener(addTrabajosBatchListener);
 	}
 	if (addReconocimientosBatchButton != null) {
-	    addReconocimientosBatchButton.removeActionListener(addReconocimientosBatchListener);
+	    addReconocimientosBatchButton
+		    .removeActionListener(addReconocimientosBatchListener);
 	}
 
 	saveRecordsBatchButton.removeActionListener(saveRecordsBatchListener);
@@ -590,7 +577,7 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 		|| (layer.getName().equalsIgnoreCase("muros"))
 		|| (layer.getName().equalsIgnoreCase("lineas_suministro"))) {
 	    return true;
-	}else {
+	} else {
 	    return false;
 	}
     }
@@ -598,7 +585,8 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     @Override
     public FormPanel getFormBody() {
 	if (this.form == null) {
-	    InputStream stream = getClass().getClassLoader().getResourceAsStream(getFormBodyPath());
+	    InputStream stream = getClass().getClassLoader()
+		    .getResourceAsStream(getFormBodyPath());
 	    try {
 		this.form = new FormPanel(stream);
 	    } catch (FormException e) {
@@ -612,25 +600,30 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	    String pkField) {
 
 	if (embebedTable.getSelectedRowCount() != 0) {
-	    Object[] options = {"Eliminar", "Cancelar"};
-	    int response = JOptionPane.showOptionDialog(null,
-		    "Los datos seleccionados se eliminarán de forma permanente.",
-		    "Eliminar",
-		    JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
-		    null, // do not use a custom Icon
-		    options, // the titles of buttons
-		    options[0]); // default button title
+	    Object[] options = { "Eliminar", "Cancelar" };
+	    int response = JOptionPane
+		    .showOptionDialog(
+			    null,
+			    "Los datos seleccionados se eliminarán de forma permanente.",
+			    "Eliminar", JOptionPane.YES_NO_OPTION,
+			    JOptionPane.WARNING_MESSAGE, null, // do not use a
+							       // custom Icon
+			    options, // the titles of buttons
+			    options[0]); // default button title
 	    if (response == JOptionPane.YES_OPTION) {
 		int selectedRow = embebedTable.getSelectedRow();
-		String pkValue = embebedTable.getValueAt(selectedRow, 0).toString();
-		DefaultTableModel model = (DefaultTableModel) embebedTable.getModel();
+		String pkValue = embebedTable.getValueAt(selectedRow, 0)
+			.toString();
+		DefaultTableModel model = (DefaultTableModel) embebedTable
+			.getModel();
 		model.removeRow(selectedRow);
-		SqlUtils.delete(DBFieldNames.GIA_SCHEMA, dbTableName, pkField, pkValue);
+		SqlUtils.delete(DBFieldNames.GIA_SCHEMA, dbTableName, pkField,
+			pkValue);
 		repaint();
 	    } else {
 		// Nothing to do
 	    }
-	}else {
+	} else {
 	    JOptionPane.showMessageDialog(null,
 		    "Debe seleccionar una fila para editar los datos.",
 		    "Ninguna fila seleccionada",
@@ -638,7 +631,8 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	}
     }
 
-    protected void addNewButtonsToActionsToolBar(final DBFieldNames.Elements element) {
+    protected void addNewButtonsToActionsToolBar(
+	    final DBFieldNames.Elements element) {
 	JPanel actionsToolBar = this.getActionsToolBar();
 
 	filesLinkButton = new FilesLinkButton(this, new FilesLinkData() {
@@ -692,10 +686,8 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 
     @Override
     protected void fillSpecificValues() {
-	updateBaseContratistaCombo();
-	selectBaseContratistaOption();
-	updateTramoCombo();
-	selectTramoOption();
+	baseContratistaDomainHandler.updateComboBoxValues();
+	tramoDomainHandler.updateComboBoxValues();
 	updateTipoViaCombo();
 	selectTipoViaOption();
 	updateNombreViaCombo();
@@ -714,8 +706,8 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	}
 
 	// Element image
-	new ShowImageAction(imageComponent, addImageButton, getImagesDBTableName(), getElementID(),
-		getElementIDValue());
+	new ShowImageAction(imageComponent, addImageButton,
+		getImagesDBTableName(), getElementID(), getElementIDValue());
     }
 
     public abstract String getElement();
