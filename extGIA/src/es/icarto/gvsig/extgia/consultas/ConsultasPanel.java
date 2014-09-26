@@ -2,7 +2,6 @@ package es.icarto.gvsig.extgia.consultas;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.InputStream;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,26 +9,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import com.iver.andami.PluginServices;
 import com.iver.andami.messages.NotificationManager;
-import com.iver.andami.ui.mdiManager.IWindow;
-import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.jeta.forms.components.image.ImageComponent;
-import com.jeta.forms.components.panel.FormPanel;
-import com.jeta.forms.gui.common.FormException;
 import com.toedter.calendar.JDateChooser;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
@@ -38,27 +31,15 @@ import es.icarto.gvsig.commons.queries.CustomiceDialog;
 import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.commons.queries.Utils;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
-import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalues.DomainValues;
+import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
-import es.icarto.gvsig.navtableforms.utils.AbeilleParser;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
-public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
-
-    public static String ABEILLE_FILENAME = "forms/consultas_inventario.jfrm";
+public class ConsultasPanel extends ValidatableForm implements ActionListener {
 
     private static final KeyValue ALL_ITEMS = new KeyValue("todos", "-TODOS-");
     private static final KeyValue EMPTY_ITEM = new KeyValue(" ", " ");
-
-    private final FormPanel form;
-    private final ORMLite ormLite;
-
-    protected WindowInfo viewInfo = null;
-    private String title;
-    private final int width = 430;
-    private final int height = 330;
 
     private JComboBox elemento;
     private JComboBox areaMantenimiento;
@@ -79,30 +60,17 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 
     public ConsultasPanel() {
 
-	InputStream stream = getClass().getClassLoader().getResourceAsStream(
-		ABEILLE_FILENAME);
-	FormPanel result = null;
-
-	try {
-	    result = new FormPanel(stream);
-	} catch (FormException e) {
-	    e.printStackTrace();
-	}
-	this.add(result);
-
+	super();
 	Calendar calendar = Calendar.getInstance();
 	// Setting name of JTextFieldDateEditors since NTForms gets an error if
 	// it is null
-	fechaInicio = (JDateChooser) result.getComponentByName("fecha_inicio");
+	fechaInicio = (JDateChooser) formPanel
+		.getComponentByName("fecha_inicio");
 	fechaInicio.getDateEditor().getUiComponent().setName("fecha_inicio_TF");
-	fechaFin = (JDateChooser) result.getComponentByName("fecha_fin");
+	fechaFin = (JDateChooser) formPanel.getComponentByName("fecha_fin");
 	fechaFin.getDateEditor().getUiComponent().setName("fecha_fin_TF");
 	fechaInicio.setDate(calendar.getTime());
 	fechaFin.setDate(calendar.getTime());
-
-	this.form = result;
-	ormLite = new ORMLite(getClass().getClassLoader()
-		.getResource("rules/consultas_metadata.xml").getPath());
 
 	reportTypeListener = new ReportTypeListener();
 
@@ -110,72 +78,45 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
     }
 
     private void initWidgets() {
-	ImageComponent image = (ImageComponent) form
+	ImageComponent image = (ImageComponent) formPanel
 		.getComponentByName("image");
 	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
 	image.setIcon(icon);
 
-	HashMap<String, JComponent> widgetsVector = AbeilleParser
-		.getWidgetsFromContainer(form);
-
-	elemento = (JComboBox) widgetsVector.get("elemento");
-	elemento.addItem(EMPTY_ITEM);
-	elemento.addItem(ALL_ITEMS);
-	setComboBoxValues(elemento);
+	elemento = (JComboBox) getWidgets().get("elemento");
+	DefaultComboBoxModel model = (DefaultComboBoxModel) elemento.getModel();
+	model.insertElementAt(EMPTY_ITEM, 0);
+	model.insertElementAt(ALL_ITEMS, 1);
+	elemento.setSelectedItem(EMPTY_ITEM);
 	elemento.addActionListener(reportTypeListener);
-	queriesWidget = new QueriesWidgetCombo(form, "tipo_consulta", ormLite);
 
-	areaMantenimiento = (JComboBox) widgetsVector.get("area_mantenimiento");
-	setComboBoxValues(areaMantenimiento);
-	baseContratista = (JComboBox) widgetsVector.get("base_contratista");
-	setComboBoxValues(baseContratista);
-	tramo = (JComboBox) widgetsVector.get("tramo");
-	setComboBoxValues(tramo);
-
+	queriesWidget = new QueriesWidgetCombo(formPanel, "tipo_consulta");
 	queriesWidget.addActionListener(new TipoConsultaListener());
-	areaMantenimiento
-		.addActionListener(new UpdateBaseContratistaListener());
-	baseContratista.addActionListener(new UpdateTramoListener());
 
-	pdfRadioButton = (JRadioButton) form.getComponentByName("pdf");
+	areaMantenimiento = (JComboBox) getWidgets().get("area_mantenimiento");
+	baseContratista = (JComboBox) getWidgets().get("base_contratista");
+	tramo = (JComboBox) getWidgets().get("tramo");
+
+	areaMantenimiento.addActionListener(new DependentComboboxHandler(this,
+		areaMantenimiento, baseContratista));
+	baseContratista.addActionListener(new DependentComboboxHandler(this,
+		baseContratista, tramo));
+
+	pdfRadioButton = (JRadioButton) formPanel.getComponentByName("pdf");
 	pdfRadioButton.setSelected(true);
 
-	xlsRadioButton = (JRadioButton) form.getComponentByName("excel");
+	xlsRadioButton = (JRadioButton) formPanel.getComponentByName("excel");
 
 	ButtonGroup group = new ButtonGroup();
 	group.add(pdfRadioButton);
 	group.add(xlsRadioButton);
 
-	launchButton = (JButton) form.getComponentByName("launch_button");
+	launchButton = (JButton) formPanel.getComponentByName("launch_button");
 	launchButton.addActionListener(this);
 
-	customButton = (JButton) form.getComponentByName("custom_button");
+	customButton = (JButton) formPanel.getComponentByName("custom_button");
 	customButton.addActionListener(this);
 	customButton.setEnabled(false);
-    }
-
-    private void setComboBoxValues(JComboBox cb) {
-	String comboBoxName = cb.getName();
-	DomainValues dv = ormLite.getAppDomain().getDomainValuesForComponent(
-		comboBoxName);
-
-	for (KeyValue kv : dv.getValues()) {
-	    cb.addItem(kv);
-	}
-    }
-
-    @Override
-    public WindowInfo getWindowInfo() {
-	viewInfo = new WindowInfo(WindowInfo.MODELESSDIALOG);
-	viewInfo.setTitle(title);
-	viewInfo.setWidth(width);
-	viewInfo.setHeight(height);
-	return viewInfo;
-    }
-
-    @Override
-    public Object getWindowProfile() {
-	return WindowInfo.DIALOG_PROFILE;
     }
 
     @Override
@@ -359,7 +300,8 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	    KeyValue selTipoConsulta) {
 	if (selTipoConsulta.toString().equals("Trabajos Agrupados")) {
 	    if (selElemento.toString().equals("Taludes")
-		    || selElemento.toString().equals("Isletas")) {
+		    || selElemento.toString().equals("Isletas")
+		    || selElemento.toString().equals("Barrera Rígida")) {
 		return true;
 	    } else {
 		return false;
@@ -458,45 +400,8 @@ public class ConsultasPanel extends JPanel implements IWindow, ActionListener {
 	}
     }
 
-    public class UpdateBaseContratistaListener implements ActionListener {
-
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-	    String id = ((KeyValue) areaMantenimiento.getSelectedItem())
-		    .getKey();
-	    String getBaseContratistaQuery = "SELECT id, item FROM audasa_extgia_dominios.base_contratista"
-		    + " WHERE id_am = " + id + ";";
-	    baseContratista.removeAllItems();
-	    baseContratista.addItem(new KeyValue(" ", " "));
-	    if (!id.isEmpty()) {
-		for (KeyValue value : SqlUtils
-			.getKeyValueListFromSql(getBaseContratistaQuery)) {
-		    baseContratista.addItem(value);
-		}
-	    }
-	}
-    }
-
-    public class UpdateTramoListener implements ActionListener {
-
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-	    if (baseContratista.getSelectedItem() != null
-		    && !baseContratista.getSelectedItem().toString()
-			    .equals(" ")) {
-		String id = ((KeyValue) baseContratista.getSelectedItem())
-			.getKey();
-		String getTramoQuery = "SELECT id, item FROM audasa_extgia_dominios.tramo"
-			+ " WHERE id_bc = " + id + ";";
-		tramo.removeAllItems();
-		tramo.addItem(new KeyValue(" ", " "));
-		if (!id.isEmpty()) {
-		    for (KeyValue value : SqlUtils
-			    .getKeyValueListFromSql(getTramoQuery)) {
-			tramo.addItem(value);
-		    }
-		}
-	    }
-	}
+    @Override
+    protected String getBasicName() {
+	return "consultas_inventario";
     }
 }

@@ -7,8 +7,6 @@ import javax.swing.JComboBox;
 import com.jeta.forms.components.panel.FormPanel;
 
 import es.icarto.gvsig.commons.queries.QueriesWidget;
-import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalues.DomainValues;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 
 public class QueriesWidgetCombo implements QueriesWidget {
@@ -17,14 +15,8 @@ public class QueriesWidgetCombo implements QueriesWidget {
     public static final String TRABAJOS_AGRUPADOS = "Trabajos Agrupados";
     private final JComboBox queriesWidget;
 
-    public QueriesWidgetCombo(FormPanel formPanel, String name, ORMLite ormLite) {
+    public QueriesWidgetCombo(FormPanel formPanel, String name) {
 	queriesWidget = (JComboBox) formPanel.getComponentByName(name);
-	DomainValues dv = ormLite.getAppDomain().getDomainValuesForComponent(
-		name);
-	queriesWidget.removeAllItems();
-	for (KeyValue kv : dv.getValues()) {
-	    queriesWidget.addItem(kv);
-	}
     }
 
     @Override
