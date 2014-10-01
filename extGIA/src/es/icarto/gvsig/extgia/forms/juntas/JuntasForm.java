@@ -3,6 +3,7 @@ package es.icarto.gvsig.extgia.forms.juntas;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -43,7 +44,6 @@ public class JuntasForm extends AbstractFormWithLocationWidgets {
 
     public JuntasForm(FLyrVect layer) {
 	super(layer);
-	initListeners();
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -81,15 +81,14 @@ public class JuntasForm extends AbstractFormWithLocationWidgets {
 	repaint();
     }
 
-    protected void initListeners() {
-
-	HashMap<String, JComponent> widgets = getWidgetComponents();
+    protected void setListeners() {
+	super.setListeners();
+	Map<String, JComponent> widgets = getWidgets();
 
 	juntaIDWidget = (JTextField) widgets.get(DBFieldNames.ID_JUNTA);
 
-	JComboBox direccion = (JComboBox) getWidgetComponents().get(
-		"direccion");
-	tipoVia = (JComboBox) getWidgetComponents().get("tipo_via");
+	JComboBox direccion = (JComboBox) widgets.get("direccion");
+	tipoVia = (JComboBox) widgets.get("tipo_via");
 	direccionDomainHandler = new DependentComboboxHandler(this,
 		tipoVia, direccion);
 	tipoVia.addActionListener(direccionDomainHandler);

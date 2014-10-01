@@ -3,6 +3,7 @@ package es.icarto.gvsig.extgia.forms.valla_cierre;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -45,7 +46,6 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
 
     public VallaCierreForm(FLyrVect layer) {
 	super(layer);
-	initListeners();
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -82,22 +82,21 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
 	repaint();
     }
 
-    protected void initListeners() {
-
-	HashMap<String, JComponent> widgets = getWidgetComponents();
+    protected void setListeners() {
+	super.setListeners();
+	Map<String, JComponent> widgets = getWidgets();
 
 	vallaCierreIDWidget = (JTextField) widgets.get(DBFieldNames.ID_VALLA_CIERRE);
 
-	JComboBox direccionPI = (JComboBox) getWidgetComponents().get(
-		"direccion_pi");
-	tipoViaPI = (JComboBox) getWidgetComponents().get("tipo_via");
+	JComboBox direccionPI = (JComboBox) widgets.get("direccion_pi");
+	tipoViaPI = (JComboBox) widgets.get("tipo_via");
 	direccionPIDomainHandler = new DependentComboboxHandler(this,
 		tipoViaPI, direccionPI);
 	tipoViaPI.addActionListener(direccionPIDomainHandler);
 
-	JComboBox direccionPF = (JComboBox) getWidgetComponents().get(
+	JComboBox direccionPF = (JComboBox) getWidgets().get(
 		"direccion_pf");
-	tipoViaPF = (JComboBox) getWidgetComponents().get("tipo_via_pf");
+	tipoViaPF = (JComboBox) getWidgets().get("tipo_via_pf");
 	direccionPFDomainHandler = new DependentComboboxHandler(this,
 		tipoViaPF, direccionPF);
 	tipoViaPF.addActionListener(direccionPFDomainHandler);

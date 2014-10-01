@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -69,7 +70,6 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 
     public TaludesForm(FLyrVect layer) {
 	super(layer);
-	initListeners();
     }
 
     @Override
@@ -181,9 +181,9 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	repaint();
     }
 
-    protected void initListeners() {
-
-	HashMap<String, JComponent> widgets = getWidgetComponents();
+    protected void setListeners() {
+	super.setListeners();
+	Map<String, JComponent> widgets = getWidgets();
 
 	taludIDWidget = (JTextField) widgets.get(DBFieldNames.ID_TALUD);
 
@@ -235,7 +235,6 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	deleteReconocimientoButton.addActionListener(deleteReconocimientoListener);
 	deleteTrabajoListener = new DeleteTrabajoListener();
 	deleteTrabajoButton.addActionListener(deleteTrabajoListener);
-
     }
 
     @Override

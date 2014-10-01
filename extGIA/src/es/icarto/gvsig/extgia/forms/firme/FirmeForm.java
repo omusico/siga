@@ -47,7 +47,6 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 
     public FirmeForm(FLyrVect layer) {
 	super(layer);
-	initListeners();
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -98,17 +97,17 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
     protected void setListeners() {
 	super.setListeners();
 
-	ImageComponent image = (ImageComponent) form
+	ImageComponent image = (ImageComponent) formBody
 		.getComponentByName("image");
 	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
 	image.setIcon(icon);
 
 	Map<String, JComponent> widgets = getWidgets();
 
-	imageComponent = (ImageComponent) form
+	imageComponent = (ImageComponent) formBody
 		.getComponentByName("element_image");
-	addImageButton = (JButton) form.getComponentByName("add_image_button");
-	deleteImageButton = (JButton) form
+	addImageButton = (JButton) formBody.getComponentByName("add_image_button");
+	deleteImageButton = (JButton) formBody
 		.getComponentByName("delete_image_button");
 
 	areaMantenimientoWidget = (JComboBox) widgets.get(AREA_MANTENIMIENTO);
@@ -126,17 +125,17 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 	reconocimientoEstado = (JTable) widgets
 		.get("reconocimiento_estado_firme");
 	trabajos = (JTable) widgets.get("trabajos_firme");
-	addReconocimientoButton = (JButton) form
+	addReconocimientoButton = (JButton) formBody
 		.getComponentByName("add_reconocimiento_button");
-	editReconocimientoButton = (JButton) form
+	editReconocimientoButton = (JButton) formBody
 		.getComponentByName("edit_reconocimiento_button");
-	addTrabajoButton = (JButton) form
+	addTrabajoButton = (JButton) formBody
 		.getComponentByName("add_trabajo_button");
-	editTrabajoButton = (JButton) form
+	editTrabajoButton = (JButton) formBody
 		.getComponentByName("edit_trabajo_button");
-	deleteReconocimientoButton = (JButton) form
+	deleteReconocimientoButton = (JButton) formBody
 		.getComponentByName("delete_reconocimiento_button");
-	deleteTrabajoButton = (JButton) form
+	deleteTrabajoButton = (JButton) formBody
 		.getComponentByName("delete_trabajo_button");
 
 	if (addImageListener == null) {
@@ -150,12 +149,6 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 		    addImageButton, getImagesDBTableName(), getElementID());
 	    deleteImageButton.addActionListener(deleteImageListener);
 	}
-    }
-
-    protected void initListeners() {
-
-	Map<String, JComponent> widgets = getWidgets();
-
 	firmeIDWidget = (JTextField) widgets.get(DBFieldNames.ID_FIRME);
 
 	addReconocimientoListener = new AddReconocimientoListener();
@@ -172,6 +165,7 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 	deleteTrabajoListener = new DeleteTrabajoListener();
 	deleteTrabajoButton.addActionListener(deleteTrabajoListener);
     }
+
 
     @Override
     protected void removeListeners() {

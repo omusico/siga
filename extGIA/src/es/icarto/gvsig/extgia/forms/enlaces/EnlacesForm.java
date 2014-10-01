@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -62,7 +63,6 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 
     public EnlacesForm(FLyrVect layer) {
 	super(layer);
-	initListeners();
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -93,9 +93,9 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 	repaint();
     }
 
-    protected void initListeners() {
-
-	HashMap<String, JComponent> widgets = getWidgetComponents();
+    protected void setListeners() {
+	super.setListeners();
+	Map<String, JComponent> widgets = getWidgets();
 
 	enlaceIDWidget = (JTextField) widgets.get(DBFieldNames.ID_ENLACE);
 
@@ -133,7 +133,6 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 	deleteCarreteraButton.addActionListener(deleteCarreteraListener);
 	deleteRamalListener = new DeleteRamalListener();
 	deleteRamalButton.addActionListener(deleteRamalListener);
-
     }
 
     @Override

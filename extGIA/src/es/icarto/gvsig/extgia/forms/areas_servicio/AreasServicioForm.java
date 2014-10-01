@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -56,7 +57,6 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 
     public AreasServicioForm(FLyrVect layer) {
 	super(layer);
-	initListeners();
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -87,9 +87,9 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 	repaint();
     }
 
-    protected void initListeners() {
-
-	HashMap<String, JComponent> widgets = getWidgetComponents();
+    protected void setListeners() {
+	super.setListeners();
+	Map<String, JComponent> widgets = getWidgets();
 
 	areaServicioIDWidget = (JTextField) widgets.get(DBFieldNames.ID_AREA_SERVICIO);
 
@@ -124,7 +124,6 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 	deleteTrabajoButton.addActionListener(deleteTrabajoListener);
 	deleteRamalListener = new DeleteRamalListener();
 	deleteRamalButton.addActionListener(deleteRamalListener);
-
     }
 
     @Override

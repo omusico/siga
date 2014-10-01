@@ -15,8 +15,6 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import org.apache.log4j.Logger;
-
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.Launcher;
 import com.iver.andami.PluginServices;
@@ -44,7 +42,6 @@ import es.udc.cartolab.gvsig.navtable.ToggleEditing;
 
 @SuppressWarnings("serial")
 public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
-    protected String layerName;
 
     protected static final String AREA_MANTENIMIENTO = "area_mantenimiento";
     protected static final String BASE_CONTRATISTA = "base_contratista";
@@ -55,7 +52,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     private static final String NOMBRE_VIA_PF = "nombre_via_pf";
     private static final String SENTIDO = "sentido";
 
-    protected FormPanel form;
     protected FilesLinkButton filesLinkButton;
 
     protected JComboBox areaMantenimientoWidget;
@@ -100,9 +96,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 
     public AbstractFormWithLocationWidgets(FLyrVect layer) {
 	super(layer);
-	layerName = layer.getName();
-	initWidgets();
-	setListeners();
     }
 
     @Override
@@ -115,30 +108,20 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     }
 
     @Override
-    protected void enableSaveButton(boolean bool) {
-	// overwrite method to enable save button on layers being in edition
-	if (!isChangedValues()) {
-	    saveB.setEnabled(false);
-	} else {
-	    saveB.setEnabled(bool);
-	}
-    }
-
-    @Override
     protected void setListeners() {
 	super.setListeners();
 
 	if (!isSpecialCase()) {
-	    ImageComponent image = (ImageComponent) form
+	    ImageComponent image = (ImageComponent) formBody
 		    .getComponentByName("image");
 	    ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
 	    image.setIcon(icon);
 
-	    imageComponent = (ImageComponent) form
+	    imageComponent = (ImageComponent) formBody
 		    .getComponentByName("element_image");
-	    addImageButton = (JButton) form
+	    addImageButton = (JButton) formBody
 		    .getComponentByName("add_image_button");
-	    deleteImageButton = (JButton) form
+	    deleteImageButton = (JButton) formBody
 		    .getComponentByName("delete_image_button");
 
 	    Map<String, JComponent> widgets = getWidgets();
@@ -178,17 +161,17 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	    reconocimientoEstado = (JTable) widgets
 		    .get("reconocimiento_estado");
 	    trabajos = (JTable) widgets.get("trabajos");
-	    addReconocimientoButton = (JButton) form
+	    addReconocimientoButton = (JButton) formBody
 		    .getComponentByName("add_reconocimiento_button");
-	    editReconocimientoButton = (JButton) form
+	    editReconocimientoButton = (JButton) formBody
 		    .getComponentByName("edit_reconocimiento_button");
-	    addTrabajoButton = (JButton) form
+	    addTrabajoButton = (JButton) formBody
 		    .getComponentByName("add_trabajo_button");
-	    editTrabajoButton = (JButton) form
+	    editTrabajoButton = (JButton) formBody
 		    .getComponentByName("edit_trabajo_button");
-	    deleteReconocimientoButton = (JButton) form
+	    deleteReconocimientoButton = (JButton) formBody
 		    .getComponentByName("delete_reconocimiento_button");
-	    deleteTrabajoButton = (JButton) form
+	    deleteTrabajoButton = (JButton) formBody
 		    .getComponentByName("delete_trabajo_button");
 
 	    if (addImageListener == null) {
@@ -204,7 +187,7 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	    }
 	}
 
-	if (SqlUtils.elementHasType(layerName, "inspecciones")) {
+	if (SqlUtils.elementHasType(dataName, "inspecciones")) {
 	    if (addReconocimientosBatchButton == null) {
 		addReconocimientosBatchButton = new JButton();
 		java.net.URL imgURL = getClass().getResource(
@@ -217,7 +200,7 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	    }
 	}
 
-	if (SqlUtils.elementHasType(layerName, "trabajos")) {
+	if (SqlUtils.elementHasType(dataName, "trabajos")) {
 	    if (addTrabajosBatchButton == null) {
 		addTrabajosBatchButton = new JButton();
 		java.net.URL imgURL = getClass().getResource(
@@ -584,16 +567,16 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 
     @Override
     public FormPanel getFormBody() {
-	if (this.form == null) {
+	if (formBody == null) {
 	    InputStream stream = getClass().getClassLoader()
 		    .getResourceAsStream(getFormBodyPath());
 	    try {
-		this.form = new FormPanel(stream);
+		formBody = new FormPanel(stream);
 	    } catch (FormException e) {
 		e.printStackTrace();
 	    }
 	}
-	return this.form;
+	return formBody;
     }
 
     protected void deleteElement(JTable embebedTable, String dbTableName,
@@ -717,12 +700,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     public abstract String getElementIDValue();
 
     public abstract String getFormBodyPath();
-
-    @Override
-    public abstract Logger getLoggerName();
-
-    @Override
-    public abstract String getXMLPath();
 
     public abstract JTable getReconocimientosJTable();
 

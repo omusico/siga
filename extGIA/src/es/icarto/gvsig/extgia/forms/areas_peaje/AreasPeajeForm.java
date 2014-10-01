@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -56,7 +57,6 @@ public class AreasPeajeForm extends AbstractFormWithLocationWidgets {
 
     public AreasPeajeForm(FLyrVect layer) {
 	super(layer);
-	initListeners();
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -122,9 +122,11 @@ public class AreasPeajeForm extends AbstractFormWithLocationWidgets {
 	return super.validationHasErrors();
     }
 
-    private void initListeners() {
-
-	HashMap<String, JComponent> widgets = getWidgetComponents();
+    @Override
+    protected void setListeners() {
+	super.setListeners();
+	Map<String, JComponent> widgets = getWidgets();
+	reconocimientoEstado = (JTable) widgets.get("reconocimiento_estado_sin_indice");
 
 	areaPeajeIDWidget = (JTextField) widgets.get(getElementID());
 
@@ -154,13 +156,6 @@ public class AreasPeajeForm extends AbstractFormWithLocationWidgets {
 	deleteTrabajoButton.addActionListener(deleteTrabajoListener);
 	deleteViaListener = new DeleteViaListener();
 	deleteViaButton.addActionListener(deleteViaListener);
-    }
-
-    @Override
-    protected void setListeners() {
-	super.setListeners();
-	HashMap<String, JComponent> widgets = getWidgetComponents();
-	reconocimientoEstado = (JTable) widgets.get("reconocimiento_estado_sin_indice");
     }
 
     @Override

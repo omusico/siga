@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -49,7 +50,6 @@ public class LineasSuministroForm extends AbstractFormWithLocationWidgets {
 
     public LineasSuministroForm(FLyrVect layer) {
 	super(layer);
-	initListeners();
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -85,26 +85,25 @@ public class LineasSuministroForm extends AbstractFormWithLocationWidgets {
 	repaint();
     }
 
-    protected void initListeners() {
-
-	HashMap<String, JComponent> widgets = getWidgetComponents();
-
+    @Override
+    protected void setListeners() {
+	super.setListeners();
+	Map<String, JComponent> widgets = getWidgets();
+	reconocimientoEstado = (JTable) widgets.get("reconocimiento_estado_sin_indice");
 	lineaSuministroIDWidget = (JTextField) widgets.get(DBFieldNames.ID_LINEAS_SUMINISTRO);
 
 	lineaSuministroid = new LineasSuministroCalculateIDValue(this, getWidgetComponents(),
 		getElementID(), getElementID());
 	lineaSuministroid.setListeners();
 
-	JComboBox direccionPI = (JComboBox) getWidgetComponents().get(
-		"direccion_pi");
-	tipoViaPI = (JComboBox) getWidgetComponents().get("tipo_via");
+	JComboBox direccionPI = (JComboBox) widgets.get("direccion_pi");
+	tipoViaPI = (JComboBox) widgets.get("tipo_via");
 	direccionPIDomainHandler = new DependentComboboxHandler(this,
 		tipoViaPI, direccionPI);
 	tipoViaPI.addActionListener(direccionPIDomainHandler);
 
-	JComboBox direccionPF = (JComboBox) getWidgetComponents().get(
-		"direccion_pf");
-	tipoViaPF = (JComboBox) getWidgetComponents().get("tipo_via_pf");
+	JComboBox direccionPF = (JComboBox) widgets.get("direccion_pf");
+	tipoViaPF = (JComboBox) widgets.get("tipo_via_pf");
 	direccionPFDomainHandler = new DependentComboboxHandler(this,
 		tipoViaPF, direccionPF);
 	tipoViaPF.addActionListener(direccionPFDomainHandler);
@@ -121,14 +120,6 @@ public class LineasSuministroForm extends AbstractFormWithLocationWidgets {
 	deleteReconocimientoButton.addActionListener(deleteReconocimientoListener);
 	deleteTrabajoListener = new DeleteTrabajoListener();
 	deleteTrabajoButton.addActionListener(deleteTrabajoListener);
-
-    }
-
-    @Override
-    protected void setListeners() {
-	super.setListeners();
-	HashMap<String, JComponent> widgets = getWidgetComponents();
-	reconocimientoEstado = (JTable) widgets.get("reconocimiento_estado_sin_indice");
     }
 
     @Override

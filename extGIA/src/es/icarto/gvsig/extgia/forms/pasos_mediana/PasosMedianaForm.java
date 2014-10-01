@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -43,7 +44,6 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
 
     public PasosMedianaForm(FLyrVect layer) {
 	super(layer);
-	initListeners();
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -73,9 +73,9 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
 	repaint();
     }
 
-    protected void initListeners() {
-
-	HashMap<String, JComponent> widgets = getWidgetComponents();
+    protected void setListeners() {
+	super.setListeners();
+	Map<String, JComponent> widgets = getWidgets();
 
 	pasoMedianaIDWidget = (JTextField) widgets.get(DBFieldNames.ID_PASO_MEDIANA);
 

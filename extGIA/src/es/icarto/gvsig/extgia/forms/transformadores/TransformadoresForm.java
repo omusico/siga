@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -47,7 +48,6 @@ public class TransformadoresForm extends AbstractFormWithLocationWidgets {
 
     public TransformadoresForm(FLyrVect layer) {
 	super(layer);
-	initListeners();
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -83,9 +83,11 @@ public class TransformadoresForm extends AbstractFormWithLocationWidgets {
 	repaint();
     }
 
-    protected void initListeners() {
-
-	HashMap<String, JComponent> widgets = getWidgetComponents();
+    @Override
+    protected void setListeners() {
+	super.setListeners();
+	Map<String, JComponent> widgets = getWidgets();
+	reconocimientoEstado = (JTable) widgets.get("reconocimiento_estado_sin_indice");
 
 	transformadorIDWidget = (JTextField) widgets.get(DBFieldNames.ID_TRANSFORMADORES);
 
@@ -93,9 +95,8 @@ public class TransformadoresForm extends AbstractFormWithLocationWidgets {
 		getElementID(), getElementID());
 	transformadorid.setListeners();
 
-	JComboBox direccion = (JComboBox) getWidgetComponents().get(
-		"direccion");
-	tipoVia = (JComboBox) getWidgetComponents().get("tipo_via");
+	JComboBox direccion = (JComboBox) widgets.get("direccion");
+	tipoVia = (JComboBox) widgets.get("tipo_via");
 	direccionDomainHandler = new DependentComboboxHandler(this,
 		tipoVia, direccion);
 	tipoVia.addActionListener(direccionDomainHandler);
@@ -112,13 +113,6 @@ public class TransformadoresForm extends AbstractFormWithLocationWidgets {
 	deleteReconocimientoButton.addActionListener(deleteReconocimientoListener);
 	deleteTrabajoListener = new DeleteTrabajoListener();
 	deleteTrabajoButton.addActionListener(deleteTrabajoListener);
-    }
-
-    @Override
-    protected void setListeners() {
-	super.setListeners();
-	HashMap<String, JComponent> widgets = getWidgetComponents();
-	reconocimientoEstado = (JTable) widgets.get("reconocimiento_estado_sin_indice");
     }
 
     @Override

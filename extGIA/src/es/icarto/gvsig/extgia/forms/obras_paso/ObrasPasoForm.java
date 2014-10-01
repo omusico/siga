@@ -3,6 +3,7 @@ package es.icarto.gvsig.extgia.forms.obras_paso;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -38,7 +39,6 @@ public class ObrasPasoForm extends AbstractFormWithLocationWidgets {
 
     public ObrasPasoForm(FLyrVect layer) {
 	super(layer);
-	initListeners();
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -71,15 +71,14 @@ public class ObrasPasoForm extends AbstractFormWithLocationWidgets {
 	repaint();
     }
 
-    protected void initListeners() {
-
-	HashMap<String, JComponent> widgets = getWidgetComponents();
+    protected void setListeners() {
+	super.setListeners();
+	Map<String, JComponent> widgets = getWidgets();
 
 	obraPasoIDWidget = (JTextField) widgets.get(DBFieldNames.ID_OBRA_PASO);
 
-	JComboBox direccion = (JComboBox) getWidgetComponents().get(
-		"direccion");
-	tipoVia = (JComboBox) getWidgetComponents().get("tipo_via");
+	JComboBox direccion = (JComboBox) getWidgets().get("direccion");
+	tipoVia = (JComboBox) getWidgets().get("tipo_via");
 	direccionDomainHandler = new DependentComboboxHandler(this,
 		tipoVia, direccion);
 	tipoVia.addActionListener(direccionDomainHandler);

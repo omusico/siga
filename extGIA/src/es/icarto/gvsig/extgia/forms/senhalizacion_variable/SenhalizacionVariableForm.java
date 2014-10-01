@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -44,7 +45,6 @@ public class SenhalizacionVariableForm extends AbstractFormWithLocationWidgets {
 
     public SenhalizacionVariableForm(FLyrVect layer) {
 	super(layer);
-	initListeners();
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -106,10 +106,11 @@ public class SenhalizacionVariableForm extends AbstractFormWithLocationWidgets {
 	return super.validationHasErrors();
     }
 
-    private void initListeners() {
-
-	HashMap<String, JComponent> widgets = getWidgetComponents();
-
+    @Override
+    protected void setListeners() {
+	super.setListeners();
+	Map<String, JComponent> widgets = getWidgets();
+	reconocimientoEstado = (JTable) widgets.get("reconocimiento_estado_sin_indice");
 	senhalizacionVariableIDWidget = (JTextField) widgets.get(getElementID());
 
 	addReconocimientoListener = new AddReconocimientoListener();
@@ -126,13 +127,6 @@ public class SenhalizacionVariableForm extends AbstractFormWithLocationWidgets {
 	deleteReconocimientoButton.addActionListener(deleteReconocimientoListener);
 	deleteTrabajoListener = new DeleteTrabajoListener();
 	deleteTrabajoButton.addActionListener(deleteTrabajoListener);
-    }
-
-    @Override
-    protected void setListeners() {
-	super.setListeners();
-	HashMap<String, JComponent> widgets = getWidgetComponents();
-	reconocimientoEstado = (JTable) widgets.get("reconocimiento_estado_sin_indice");
     }
 
     @Override

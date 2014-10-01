@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -44,7 +44,6 @@ public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
 
     public LechoFrenadoForm(FLyrVect layer) {
 	super(layer);
-	initListeners();
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -56,8 +55,8 @@ public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
 	super.fillSpecificValues();
 
 	if (lechoFrenadoIDWidget.getText().isEmpty()) {
-	    lechoFrenadoid = new LechoFrenadoCalculateIDValue(this, getWidgetComponents(),
-		    getElementID(), getElementID());
+	    lechoFrenadoid = new LechoFrenadoCalculateIDValue(this,
+		    getWidgetComponents(), getElementID(), getElementID());
 	    lechoFrenadoid.setValue(true);
 	}
 
@@ -71,19 +70,22 @@ public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
 		DBFieldNames.reconocimientoEstadoFields, null, getElementID(),
 		getElementIDValue(), "n_inspeccion");
 
-	int[] trabajoColumnsSize = {1, 30, 90, 70, 200};
+	int[] trabajoColumnsSize = { 1, 30, 90, 70, 200 };
 	SqlUtils.createEmbebedTableFromDB(trabajos, DBFieldNames.GIA_SCHEMA,
 		getTrabajosDBTableName(), DBFieldNames.trabajoFields,
-		trabajoColumnsSize, getElementID(), getElementIDValue(), "id_trabajo");
+		trabajoColumnsSize, getElementID(), getElementIDValue(),
+		"id_trabajo");
 	repaint();
     }
 
     @Override
     protected boolean validationHasErrors() {
-	if (this.getFormController().getValuesChanged().containsKey(getElementID())) {
+	if (this.getFormController().getValuesChanged()
+		.containsKey(getElementID())) {
 	    if (getElementIDValue() != "") {
 		String query = "SELECT id_lecho_frenado FROM audasa_extgia.lecho_frenado "
-			+ " WHERE id_lecho_frenado = '" + getElementIDValue()
+			+ " WHERE id_lecho_frenado = '"
+			+ getElementIDValue()
 			+ "';";
 		PreparedStatement statement = null;
 		Connection connection = DBSession.getCurrentSession()
@@ -106,9 +108,10 @@ public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
 	return super.validationHasErrors();
     }
 
-    private void initListeners() {
-
-	HashMap<String, JComponent> widgets = getWidgetComponents();
+    @Override
+    protected void setListeners() {
+	super.setListeners();
+	Map<String, JComponent> widgets = getWidgets();
 
 	lechoFrenadoIDWidget = (JTextField) widgets.get(getElementID());
 
@@ -123,7 +126,8 @@ public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
 	editTrabajoButton.addActionListener(editTrabajoListener);
 
 	deleteReconocimientoListener = new DeleteReconocimientoListener();
-	deleteReconocimientoButton.addActionListener(deleteReconocimientoListener);
+	deleteReconocimientoButton
+		.addActionListener(deleteReconocimientoListener);
 	deleteTrabajoListener = new DeleteTrabajoListener();
 	deleteTrabajoButton.addActionListener(deleteTrabajoListener);
     }
@@ -131,8 +135,10 @@ public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
     @Override
     protected void removeListeners() {
 	addReconocimientoButton.removeActionListener(addReconocimientoListener);
-	editReconocimientoButton.removeActionListener(editReconocimientoListener);
-	deleteReconocimientoButton.removeActionListener(deleteReconocimientoListener);
+	editReconocimientoButton
+		.removeActionListener(editReconocimientoListener);
+	deleteReconocimientoButton
+		.removeActionListener(deleteReconocimientoListener);
 
 	addTrabajoButton.removeActionListener(addTrabajoListener);
 	editTrabajoButton.removeActionListener(editTrabajoListener);
@@ -144,16 +150,10 @@ public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
     public class AddReconocimientoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    LechoFrenadoReconocimientosSubForm subForm =
-		    new LechoFrenadoReconocimientosSubForm(
-			    ABEILLE_RECONOCIMIENTOS_FILENAME,
-			    getReconocimientosDBTableName(),
-			    reconocimientoEstado,
-			    getElementID(),
-			    getElementIDValue(),
-			    null,
-			    null,
-			    false);
+	    LechoFrenadoReconocimientosSubForm subForm = new LechoFrenadoReconocimientosSubForm(
+		    ABEILLE_RECONOCIMIENTOS_FILENAME,
+		    getReconocimientosDBTableName(), reconocimientoEstado,
+		    getElementID(), getElementIDValue(), null, null, false);
 	    PluginServices.getMDIManager().addWindow(subForm);
 	}
     }
@@ -161,39 +161,27 @@ public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
     public class AddTrabajoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    LechoFrenadoTrabajosSubForm subForm =
-		    new LechoFrenadoTrabajosSubForm(
-			    ABEILLE_TRABAJOS_FILENAME,
-			    getTrabajosDBTableName(),
-			    trabajos,
-			    getElementID(),
-			    getElementIDValue(),
-			    null,
-			    null,
-			    false);
+	    LechoFrenadoTrabajosSubForm subForm = new LechoFrenadoTrabajosSubForm(
+		    ABEILLE_TRABAJOS_FILENAME, getTrabajosDBTableName(),
+		    trabajos, getElementID(), getElementIDValue(), null, null,
+		    false);
 	    PluginServices.getMDIManager().addWindow(subForm);
 	}
     }
-
-
 
     public class EditReconocimientoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    if (reconocimientoEstado.getSelectedRowCount() != 0) {
 		int row = reconocimientoEstado.getSelectedRow();
-		LechoFrenadoReconocimientosSubForm subForm =
-			new LechoFrenadoReconocimientosSubForm(
-				ABEILLE_RECONOCIMIENTOS_FILENAME,
-				getReconocimientosDBTableName(),
-				reconocimientoEstado,
-				getElementID(),
-				getElementIDValue(),
-				"n_inspeccion",
-				reconocimientoEstado.getValueAt(row, 0).toString(),
-				true);
+		LechoFrenadoReconocimientosSubForm subForm = new LechoFrenadoReconocimientosSubForm(
+			ABEILLE_RECONOCIMIENTOS_FILENAME,
+			getReconocimientosDBTableName(), reconocimientoEstado,
+			getElementID(), getElementIDValue(), "n_inspeccion",
+			reconocimientoEstado.getValueAt(row, 0).toString(),
+			true);
 		PluginServices.getMDIManager().addWindow(subForm);
-	    }else {
+	    } else {
 		JOptionPane.showMessageDialog(null,
 			"Debe seleccionar una fila para editar los datos.",
 			"Ninguna fila seleccionada",
@@ -207,18 +195,13 @@ public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    if (trabajos.getSelectedRowCount() != 0) {
 		int row = trabajos.getSelectedRow();
-		LechoFrenadoTrabajosSubForm subForm =
-			new LechoFrenadoTrabajosSubForm(
-				ABEILLE_TRABAJOS_FILENAME,
-				getTrabajosDBTableName(),
-				trabajos,
-				getElementID(),
-				getElementIDValue(),
-				"id_trabajo",
-				trabajos.getValueAt(row, 0).toString(),
-				true);
+		LechoFrenadoTrabajosSubForm subForm = new LechoFrenadoTrabajosSubForm(
+			ABEILLE_TRABAJOS_FILENAME, getTrabajosDBTableName(),
+			trabajos, getElementID(), getElementIDValue(),
+			"id_trabajo", trabajos.getValueAt(row, 0).toString(),
+			true);
 		PluginServices.getMDIManager().addWindow(subForm);
-	    }else {
+	    } else {
 		JOptionPane.showMessageDialog(null,
 			"Debe seleccionar una fila para editar los datos.",
 			"Ninguna fila seleccionada",
@@ -227,11 +210,11 @@ public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
 	}
     }
 
-
     public class DeleteReconocimientoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    deleteElement(reconocimientoEstado, getReconocimientosDBTableName(),
+	    deleteElement(reconocimientoEstado,
+		    getReconocimientosDBTableName(),
 		    getReconocimientosIDField());
 	}
     }
@@ -272,8 +255,7 @@ public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
     @Override
     public String getXMLPath() {
 	return this.getClass().getClassLoader()
-		.getResource("rules/lecho_frenado_metadata.xml")
-		.getPath();
+		.getResource("rules/lecho_frenado_metadata.xml").getPath();
     }
 
     @Override

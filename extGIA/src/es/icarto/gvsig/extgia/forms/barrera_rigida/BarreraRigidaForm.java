@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -48,7 +49,6 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 
     public BarreraRigidaForm(FLyrVect layer) {
 	super(layer);
-	initListeners();
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -78,9 +78,9 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 	repaint();
     }
 
-    protected void initListeners() {
-
-	HashMap<String, JComponent> widgets = getWidgetComponents();
+    protected void setListeners() {
+	super.setListeners();
+	Map<String, JComponent> widgets = getWidgets();
 
 	barreraRigidaIDWidget = (JTextField) widgets.get(DBFieldNames.ID_BARRERA_RIGIDA);
 
@@ -94,9 +94,8 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 		DBFieldNames.PERFIL);
 	barreraRigidaCodigo.setListeners();
 
-	JComboBox direccion = (JComboBox) getWidgetComponents().get(
-		"direccion");
-	tipoVia = (JComboBox) getWidgetComponents().get("tipo_via");
+	JComboBox direccion = (JComboBox) widgets.get("direccion");
+	tipoVia = (JComboBox) widgets.get("tipo_via");
 	direccionDomainHandler = new DependentComboboxHandler(this,
 		tipoVia, direccion);
 	tipoVia.addActionListener(direccionDomainHandler);
