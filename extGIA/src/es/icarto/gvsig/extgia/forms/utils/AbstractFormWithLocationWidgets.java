@@ -36,7 +36,6 @@ import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkButton;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkData;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 import es.udc.cartolab.gvsig.navtable.ToggleEditing;
 
@@ -63,7 +62,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     private JComboBox nombreViaPFWidget;
     private JComboBox sentidoWidget;
 
-    private UpdateTipoViaListener updateTipoViaListener;
     private UpdateNombreViaListener updateNombreViaListener;
     private UpdateNombreViaPFListener updateNombreViaPFListener;
 
@@ -91,11 +89,13 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     protected AddImageListener addImageListener;
     protected DeleteImageListener deleteImageListener;
 
-    protected DependentComboboxHandler baseContratistaDomainHandler;
-    protected DependentComboboxHandler tramoDomainHandler;
-
     public AbstractFormWithLocationWidgets(FLyrVect layer) {
 	super(layer);
+	addChained(BASE_CONTRATISTA, AREA_MANTENIMIENTO);
+	addChained(TRAMO, BASE_CONTRATISTA);
+	if (getWidgets().get(TIPO_VIA) != null) {
+	    addChained(TIPO_VIA, BASE_CONTRATISTA, TRAMO);
+	}
     }
 
     @Override
@@ -133,18 +133,8 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	    tipoViaWidget = (JComboBox) widgets.get(TIPO_VIA);
 	    nombreViaWidget = (JComboBox) widgets.get(NOMBRE_VIA);
 
-	    baseContratistaDomainHandler = new DependentComboboxHandler(this,
-		    areaMantenimientoWidget, baseContratistaWidget);
-	    areaMantenimientoWidget
-		    .addActionListener(baseContratistaDomainHandler);
-	    tramoDomainHandler = new DependentComboboxHandler(this,
-		    baseContratistaWidget, tramoWidget);
-
-	    updateTipoViaListener = new UpdateTipoViaListener();
 	    updateNombreViaListener = new UpdateNombreViaListener();
 
-	    baseContratistaWidget.addActionListener(tramoDomainHandler);
-	    tramoWidget.addActionListener(updateTipoViaListener);
 	    tipoViaWidget.addActionListener(updateNombreViaListener);
 
 	    if (elementHasIPandFP()) {
@@ -268,34 +258,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	}
     }
 
-    private void updateTipoViaCombo() {
-	String id_tramo = ((KeyValue) tramoWidget.getSelectedItem()).getKey();
-	String id_bc = ((KeyValue) baseContratistaWidget.getSelectedItem())
-		.getKey();
-	String getTipoViaQuery = "SELECT id, item  FROM audasa_extgia_dominios.tipo_via"
-		+ " WHERE id_tramo = "
-		+ id_tramo
-		+ " AND id_bc = "
-		+ id_bc
-		+ ";";
-	tipoViaWidget.removeAllItems();
-	tipoViaWidget.addItem(new KeyValue("", ""));
-	if (!id_tramo.isEmpty() && !id_bc.isEmpty()) {
-	    for (KeyValue value : SqlUtils
-		    .getKeyValueListFromSql(getTipoViaQuery)) {
-		tipoViaWidget.addItem(value);
-	    }
-	    if (elementHasIPandFP()) {
-		tipoViaPFWidget.removeAllItems();
-		tipoViaPFWidget.addItem(new KeyValue("", ""));
-		for (KeyValue value : SqlUtils
-			.getKeyValueListFromSql(getTipoViaQuery)) {
-		    tipoViaPFWidget.addItem(value);
-		}
-	    }
-	}
-    }
-
     private void selectTipoViaOption() {
 	String tipoVia = this.getFormController().getValue(TIPO_VIA);
 	for (int i = 0; i < tipoViaWidget.getItemCount(); i++) {
@@ -374,16 +336,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	    if (nombreViaPF.equalsIgnoreCase(((KeyValue) nombreViaPFWidget
 		    .getItemAt(i)).getKey())) {
 		nombreViaPFWidget.setSelectedIndex(i);
-	    }
-	}
-    }
-
-    public class UpdateTipoViaListener implements ActionListener {
-
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-	    if (!isFillingValues() && tramoWidget.getItemCount() != 0) {
-		updateTipoViaCombo();
 	    }
 	}
     }
@@ -507,10 +459,7 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 
     @Override
     protected void removeListeners() {
-	areaMantenimientoWidget
-		.removeActionListener(baseContratistaDomainHandler);
-	baseContratistaWidget.removeActionListener(tramoDomainHandler);
-	tramoWidget.removeActionListener(updateTipoViaListener);
+	// tramoWidget.removeActionListener(updateTipoViaListener);
 	tipoViaWidget.removeActionListener(updateNombreViaListener);
 
 	if (elementHasIPandFP()) {
@@ -669,9 +618,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 
     @Override
     protected void fillSpecificValues() {
-	baseContratistaDomainHandler.updateComboBoxValues();
-	tramoDomainHandler.updateComboBoxValues();
-	updateTipoViaCombo();
 	selectTipoViaOption();
 	updateNombreViaCombo();
 	selectNombreViaOption();

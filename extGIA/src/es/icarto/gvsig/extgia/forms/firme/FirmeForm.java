@@ -26,7 +26,6 @@ import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 
 @SuppressWarnings("serial")
 public class FirmeForm extends AbstractFormWithLocationWidgets {
@@ -55,9 +54,6 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 
     @Override
     protected void fillSpecificValues() {
-	baseContratistaDomainHandler.updateComboBoxValues();
-	tramoDomainHandler.updateComboBoxValues();
-
 	if (firmeIDWidget.getText().isEmpty()) {
 	    firmeid = new FirmeCalculateIDValue(this, getWidgets(),
 		    DBFieldNames.ID_FIRME, DBFieldNames.ID_FIRME);
@@ -114,14 +110,6 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 	baseContratistaWidget = (JComboBox) widgets.get(BASE_CONTRATISTA);
 	tramoWidget = (JComboBox) widgets.get(TRAMO);
 
-	baseContratistaDomainHandler = new DependentComboboxHandler(this,
-		areaMantenimientoWidget, baseContratistaWidget);
-	areaMantenimientoWidget.addActionListener(baseContratistaDomainHandler);
-
-	tramoDomainHandler = new DependentComboboxHandler(this,
-		baseContratistaWidget, tramoWidget);
-	baseContratistaWidget.addActionListener(tramoDomainHandler);
-
 	reconocimientoEstado = (JTable) widgets
 		.get("reconocimiento_estado_firme");
 	trabajos = (JTable) widgets.get("trabajos_firme");
@@ -169,10 +157,6 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 
     @Override
     protected void removeListeners() {
-	areaMantenimientoWidget
-		.removeActionListener(baseContratistaDomainHandler);
-	baseContratistaWidget.removeActionListener(tramoDomainHandler);
-
 	addReconocimientoButton.removeActionListener(addReconocimientoListener);
 	editReconocimientoButton
 		.removeActionListener(editReconocimientoListener);
