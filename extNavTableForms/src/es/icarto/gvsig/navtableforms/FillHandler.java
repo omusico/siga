@@ -1,7 +1,7 @@
 package es.icarto.gvsig.navtableforms;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.JCheckBox;
@@ -21,9 +21,9 @@ import es.udc.cartolab.gvsig.navtable.dataacces.IController;
 public class FillHandler {
 
     // TODO: make as much methods as possible private
-    private Map<String, JComponent> widgetsVector;
-    private IController iController;
-    private ORMLiteAppDomain appDomain;
+    private final Map<String, JComponent> widgetsVector;
+    private final IController iController;
+    private final ORMLiteAppDomain appDomain;
 
     public FillHandler(Map<String, JComponent> widgetsVector,
 	    IController layerController, ORMLiteAppDomain appDomain) {
@@ -71,10 +71,28 @@ public class FillHandler {
 	}
     }
 
-    protected void fillJTextField(JTextField field) {
+    public void fillJTextField(JTextField field) {
 	String colName = field.getName();
 	String fieldValue = iController.getValue(colName);
 	field.setText(fieldValue);
+    }
+
+    public void fillJTextField(JTextField field, List<String> foreignKeys) {
+	String colName = field.getName();
+	String fieldValue = iController.getValue(colName);
+	DomainValues dv = appDomain.getDomainValuesForComponent(colName);
+	if (dv != null) { // the component has domain values defined
+	    List<KeyValue> valuesFiltered = dv.getValuesFilteredBy(foreignKeys);
+	    // If the xml uses addvoidvalue this will not work, we will have two
+	    // values here
+	    if (valuesFiltered.size() == 1) {
+		fieldValue = valuesFiltered.get(0).getValue();
+	    } else {
+		fieldValue = "";
+	    }
+	}
+	field.setText(fieldValue);
+	iController.setValue(colName, fieldValue);
     }
 
     protected void fillJFormattedTextField(JFormattedTextField field) {
@@ -159,7 +177,7 @@ public class FillHandler {
 	}
     }
 
-    public void fillJComboBox(JComboBox combobox, ArrayList<String> foreignKeys) {
+    public void fillJComboBox(JComboBox combobox, List<String> foreignKeys) {
 	String colName = combobox.getName();
 	String fieldValue = iController.getValue(colName);
 	DomainValues dv = appDomain.getDomainValuesForComponent(colName);
