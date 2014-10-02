@@ -58,11 +58,7 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     protected JComboBox tramoWidget;
     private JComboBox tipoViaWidget;
     private JComboBox nombreViaWidget;
-    private JComboBox tipoViaPFWidget;
-    private JComboBox nombreViaPFWidget;
     private JComboBox sentidoWidget;
-
-    private UpdateNombreViaPFListener updateNombreViaPFListener;
 
     protected JTable reconocimientoEstado;
     protected JTable trabajos;
@@ -95,8 +91,14 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	if (getWidgets().get(TIPO_VIA) != null) {
 	    addChained(TIPO_VIA, BASE_CONTRATISTA, TRAMO);
 	}
+	if (getWidgets().get(TIPO_VIA_PF) != null) {
+	    addChained(TIPO_VIA_PF, BASE_CONTRATISTA, TRAMO);
+	}
 	if (getWidgets().get(NOMBRE_VIA) != null) {
 	    addChained(NOMBRE_VIA, BASE_CONTRATISTA, TRAMO, TIPO_VIA);
+	}
+	if (getWidgets().get(NOMBRE_VIA_PF) != null) {
+	    addChained(NOMBRE_VIA_PF, BASE_CONTRATISTA, TRAMO, TIPO_VIA_PF);
 	}
     }
 
@@ -134,13 +136,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	    tramoWidget = (JComboBox) widgets.get(TRAMO);
 	    tipoViaWidget = (JComboBox) widgets.get(TIPO_VIA);
 	    nombreViaWidget = (JComboBox) widgets.get(NOMBRE_VIA);
-
-	    if (elementHasIPandFP()) {
-		tipoViaPFWidget = (JComboBox) widgets.get(TIPO_VIA_PF);
-		updateNombreViaPFListener = new UpdateNombreViaPFListener();
-		tipoViaPFWidget.addActionListener(updateNombreViaPFListener);
-		nombreViaPFWidget = (JComboBox) widgets.get(NOMBRE_VIA_PF);
-	    }
 
 	    if (hasSentido()) {
 		sentidoWidget = (JComboBox) widgets.get(SENTIDO);
@@ -256,69 +251,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	}
     }
 
-    private void selectTipoViaOption() {
-	if (elementHasIPandFP()) {
-	    String tipoViaPF = this.getFormController().getValue(TIPO_VIA_PF);
-	    for (int i = 0; i < tipoViaPFWidget.getItemCount(); i++) {
-		if (tipoViaPF.equalsIgnoreCase(((KeyValue) tipoViaPFWidget
-			.getItemAt(i)).getKey())) {
-		    tipoViaPFWidget.setSelectedIndex(i);
-		}
-	    }
-	}
-    }
-
-    private void selectNombreViaOption() {
-	String nombreVia = this.getFormController().getValue(NOMBRE_VIA);
-	for (int i = 0; i < nombreViaWidget.getItemCount(); i++) {
-	    if (nombreVia.equalsIgnoreCase(((KeyValue) nombreViaWidget
-		    .getItemAt(i)).getKey())) {
-		nombreViaWidget.setSelectedIndex(i);
-	    }
-	}
-    }
-
-    private void updateNombreViaPFCombo() {
-	String id_tv = ((KeyValue) tipoViaPFWidget.getSelectedItem()).getKey();
-	String id_tramo = ((KeyValue) tramoWidget.getSelectedItem()).getKey();
-	String id_bc = ((KeyValue) baseContratistaWidget.getSelectedItem())
-		.getKey();
-	String getNombreViaQuery = "SELECT id, item FROM audasa_extgia_dominios.nombre_via"
-		+ " WHERE id_tv = "
-		+ id_tv
-		+ " AND id_tramo = "
-		+ id_tramo
-		+ " AND id_bc = " + id_bc + ";";
-	nombreViaPFWidget.removeAllItems();
-	nombreViaPFWidget.addItem(new KeyValue("", ""));
-	if (!id_tv.isEmpty() && !id_tramo.isEmpty() && !id_bc.isEmpty()) {
-	    for (KeyValue value : SqlUtils
-		    .getKeyValueListFromSql(getNombreViaQuery)) {
-		nombreViaPFWidget.addItem(value);
-	    }
-	}
-    }
-
-    private void selectNombreViaPFOption() {
-	String nombreViaPF = this.getFormController().getValue(NOMBRE_VIA_PF);
-	for (int i = 0; i < nombreViaPFWidget.getItemCount(); i++) {
-	    if (nombreViaPF.equalsIgnoreCase(((KeyValue) nombreViaPFWidget
-		    .getItemAt(i)).getKey())) {
-		nombreViaPFWidget.setSelectedIndex(i);
-	    }
-	}
-    }
-
-    public class UpdateNombreViaPFListener implements ActionListener {
-
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-	    if (!isFillingValues() && tipoViaPFWidget.getItemCount() != 0) {
-		updateNombreViaPFCombo();
-	    }
-	}
-    }
-
     public class SaveRecordsBatchListener implements ActionListener {
 
 	@Override
@@ -418,10 +350,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 
     @Override
     protected void removeListeners() {
-
-	if (elementHasIPandFP()) {
-	    tipoViaPFWidget.removeActionListener(updateNombreViaPFListener);
-	}
 
 	if (addTrabajosBatchButton != null) {
 	    addTrabajosBatchButton
@@ -561,6 +489,8 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	    }
 	}
 	if (elementHasIPandFP()) {
+	    JComboBox nombreViaPFWidget = (JComboBox) getWidgets().get(
+		    NOMBRE_VIA_PF);
 	    if (nombreViaPFWidget.getSelectedItem().toString().isEmpty()) {
 		layerController.setValue(nombreViaPFWidget.getName(), "0");
 	    }
@@ -575,13 +505,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 
     @Override
     protected void fillSpecificValues() {
-	selectTipoViaOption();
-	selectNombreViaOption();
-	if (elementHasIPandFP()) {
-	    updateNombreViaPFCombo();
-	    selectNombreViaPFOption();
-	}
-
 	if (addImageListener != null) {
 	    addImageListener.setPkValue(getElementIDValue());
 	}
