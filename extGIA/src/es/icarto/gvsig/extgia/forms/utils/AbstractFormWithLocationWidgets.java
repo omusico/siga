@@ -62,7 +62,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     private JComboBox nombreViaPFWidget;
     private JComboBox sentidoWidget;
 
-    private UpdateNombreViaListener updateNombreViaListener;
     private UpdateNombreViaPFListener updateNombreViaPFListener;
 
     protected JTable reconocimientoEstado;
@@ -95,6 +94,9 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	addChained(TRAMO, BASE_CONTRATISTA);
 	if (getWidgets().get(TIPO_VIA) != null) {
 	    addChained(TIPO_VIA, BASE_CONTRATISTA, TRAMO);
+	}
+	if (getWidgets().get(NOMBRE_VIA) != null) {
+	    addChained(NOMBRE_VIA, BASE_CONTRATISTA, TRAMO, TIPO_VIA);
 	}
     }
 
@@ -132,10 +134,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	    tramoWidget = (JComboBox) widgets.get(TRAMO);
 	    tipoViaWidget = (JComboBox) widgets.get(TIPO_VIA);
 	    nombreViaWidget = (JComboBox) widgets.get(NOMBRE_VIA);
-
-	    updateNombreViaListener = new UpdateNombreViaListener();
-
-	    tipoViaWidget.addActionListener(updateNombreViaListener);
 
 	    if (elementHasIPandFP()) {
 		tipoViaPFWidget = (JComboBox) widgets.get(TIPO_VIA_PF);
@@ -259,14 +257,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     }
 
     private void selectTipoViaOption() {
-	String tipoVia = this.getFormController().getValue(TIPO_VIA);
-	for (int i = 0; i < tipoViaWidget.getItemCount(); i++) {
-	    if (tipoVia
-		    .equalsIgnoreCase(((KeyValue) tipoViaWidget.getItemAt(i))
-			    .getKey())) {
-		tipoViaWidget.setSelectedIndex(i);
-	    }
-	}
 	if (elementHasIPandFP()) {
 	    String tipoViaPF = this.getFormController().getValue(TIPO_VIA_PF);
 	    for (int i = 0; i < tipoViaPFWidget.getItemCount(); i++) {
@@ -274,27 +264,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 			.getItemAt(i)).getKey())) {
 		    tipoViaPFWidget.setSelectedIndex(i);
 		}
-	    }
-	}
-    }
-
-    private void updateNombreViaCombo() {
-	String id_tv = ((KeyValue) tipoViaWidget.getSelectedItem()).getKey();
-	String id_tramo = ((KeyValue) tramoWidget.getSelectedItem()).getKey();
-	String id_bc = ((KeyValue) baseContratistaWidget.getSelectedItem())
-		.getKey();
-	String getNombreViaQuery = "SELECT id, item FROM audasa_extgia_dominios.nombre_via"
-		+ " WHERE id_tv = "
-		+ id_tv
-		+ " AND id_tramo = "
-		+ id_tramo
-		+ " AND id_bc = " + id_bc + ";";
-	nombreViaWidget.removeAllItems();
-	nombreViaWidget.addItem(new KeyValue("", ""));
-	if (!id_tv.isEmpty() && !id_tramo.isEmpty() && !id_bc.isEmpty()) {
-	    for (KeyValue value : SqlUtils
-		    .getKeyValueListFromSql(getNombreViaQuery)) {
-		nombreViaWidget.addItem(value);
 	    }
 	}
     }
@@ -336,16 +305,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	    if (nombreViaPF.equalsIgnoreCase(((KeyValue) nombreViaPFWidget
 		    .getItemAt(i)).getKey())) {
 		nombreViaPFWidget.setSelectedIndex(i);
-	    }
-	}
-    }
-
-    public class UpdateNombreViaListener implements ActionListener {
-
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-	    if (!isFillingValues() && tipoViaWidget.getItemCount() != 0) {
-		updateNombreViaCombo();
 	    }
 	}
     }
@@ -459,8 +418,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 
     @Override
     protected void removeListeners() {
-	// tramoWidget.removeActionListener(updateTipoViaListener);
-	tipoViaWidget.removeActionListener(updateNombreViaListener);
 
 	if (elementHasIPandFP()) {
 	    tipoViaPFWidget.removeActionListener(updateNombreViaPFListener);
@@ -619,7 +576,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     @Override
     protected void fillSpecificValues() {
 	selectTipoViaOption();
-	updateNombreViaCombo();
 	selectNombreViaOption();
 	if (elementHasIPandFP()) {
 	    updateNombreViaPFCombo();
