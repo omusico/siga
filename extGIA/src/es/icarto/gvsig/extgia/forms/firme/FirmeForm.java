@@ -6,13 +6,10 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-
-import org.apache.log4j.Logger;
 
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
@@ -102,13 +99,10 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 
 	imageComponent = (ImageComponent) formBody
 		.getComponentByName("element_image");
-	addImageButton = (JButton) formBody.getComponentByName("add_image_button");
+	addImageButton = (JButton) formBody
+		.getComponentByName("add_image_button");
 	deleteImageButton = (JButton) formBody
 		.getComponentByName("delete_image_button");
-
-	areaMantenimientoWidget = (JComboBox) widgets.get(AREA_MANTENIMIENTO);
-	baseContratistaWidget = (JComboBox) widgets.get(BASE_CONTRATISTA);
-	tramoWidget = (JComboBox) widgets.get(TRAMO);
 
 	reconocimientoEstado = (JTable) widgets
 		.get("reconocimiento_estado_firme");
@@ -153,7 +147,6 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 	deleteTrabajoListener = new DeleteTrabajoListener();
 	deleteTrabajoButton.addActionListener(deleteTrabajoListener);
     }
-
 
     @Override
     protected void removeListeners() {
@@ -250,11 +243,6 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
     @Override
     public String getFormBodyPath() {
 	return ABEILLE_FILENAME;
-    }
-
-    @Override
-    public Logger getLoggerName() {
-	return Logger.getLogger(this.getClass().getName());
     }
 
     @Override

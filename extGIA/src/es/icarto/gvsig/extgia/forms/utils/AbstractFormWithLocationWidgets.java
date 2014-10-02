@@ -36,7 +36,6 @@ import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkButton;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkData;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 import es.udc.cartolab.gvsig.navtable.ToggleEditing;
 
 @SuppressWarnings("serial")
@@ -53,11 +52,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 
     protected FilesLinkButton filesLinkButton;
 
-    protected JComboBox areaMantenimientoWidget;
-    protected JComboBox baseContratistaWidget;
-    protected JComboBox tramoWidget;
-    private JComboBox tipoViaWidget;
-    private JComboBox nombreViaWidget;
     private JComboBox sentidoWidget;
 
     protected JTable reconocimientoEstado;
@@ -129,13 +123,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 		    .getComponentByName("delete_image_button");
 
 	    Map<String, JComponent> widgets = getWidgets();
-
-	    areaMantenimientoWidget = (JComboBox) widgets
-		    .get(AREA_MANTENIMIENTO);
-	    baseContratistaWidget = (JComboBox) widgets.get(BASE_CONTRATISTA);
-	    tramoWidget = (JComboBox) widgets.get(TRAMO);
-	    tipoViaWidget = (JComboBox) widgets.get(TIPO_VIA);
-	    nombreViaWidget = (JComboBox) widgets.get(NOMBRE_VIA);
 
 	    if (hasSentido()) {
 		sentidoWidget = (JComboBox) widgets.get(SENTIDO);
@@ -227,28 +214,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	    saveRecordsBatchButton.addActionListener(saveRecordsBatchListener);
 	}
 
-    }
-
-    protected void selectBaseContratistaOption() {
-	String baseContratista = this.getFormController().getValue(
-		BASE_CONTRATISTA);
-	for (int i = 0; i < baseContratistaWidget.getItemCount(); i++) {
-	    if (baseContratista
-		    .equalsIgnoreCase(((KeyValue) baseContratistaWidget
-			    .getItemAt(i)).getKey())) {
-		baseContratistaWidget.setSelectedIndex(i);
-	    }
-	}
-    }
-
-    protected void selectTramoOption() {
-	String tramo = this.getFormController().getValue(TRAMO);
-	for (int i = 0; i < tramoWidget.getItemCount(); i++) {
-	    if (tramo.equalsIgnoreCase(((KeyValue) tramoWidget.getItemAt(i))
-		    .getKey())) {
-		tramoWidget.setSelectedIndex(i);
-	    }
-	}
     }
 
     public class SaveRecordsBatchListener implements ActionListener {
@@ -368,37 +333,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	super.removeListeners();
     }
 
-    public JComboBox getAreaMantenimientoWidget() {
-	return areaMantenimientoWidget;
-    }
-
-    public JComboBox getBaseContratistaWidget() {
-	return baseContratistaWidget;
-    }
-
-    public JComboBox getTramoWidget() {
-	return tramoWidget;
-    }
-
-    public JComboBox getTipoViaWidget() {
-	return tipoViaWidget;
-    }
-
-    public JComboBox getNombreViaWidget() {
-	return nombreViaWidget;
-    }
-
-    private boolean elementHasIPandFP() {
-	if (layer.getName().equalsIgnoreCase("taludes")
-		|| (layer.getName().equalsIgnoreCase("valla_cierre"))
-		|| (layer.getName().equalsIgnoreCase("muros"))
-		|| (layer.getName().equalsIgnoreCase("lineas_suministro"))) {
-	    return true;
-	} else {
-	    return false;
-	}
-    }
-
     @Override
     public FormPanel getFormBody() {
 	if (formBody == null) {
@@ -483,18 +417,23 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 
     @Override
     public boolean saveRecord() throws StopWriterVisitorException {
+
+	JComboBox nombreViaWidget = (JComboBox) getWidgets().get(NOMBRE_VIA);
 	if (nombreViaWidget != null) {
 	    if (nombreViaWidget.getSelectedItem().toString().isEmpty()) {
 		layerController.setValue(nombreViaWidget.getName(), "0");
 	    }
 	}
-	if (elementHasIPandFP()) {
-	    JComboBox nombreViaPFWidget = (JComboBox) getWidgets().get(
-		    NOMBRE_VIA_PF);
+
+	// taludes, valla cierre, muros, lineas suministro
+	JComboBox nombreViaPFWidget = (JComboBox) getWidgets().get(
+		NOMBRE_VIA_PF);
+	if (nombreViaPFWidget != null) {
 	    if (nombreViaPFWidget.getSelectedItem().toString().isEmpty()) {
 		layerController.setValue(nombreViaPFWidget.getName(), "0");
 	    }
 	}
+
 	if (hasSentido()) {
 	    if (sentidoWidget.getSelectedItem().toString().isEmpty()) {
 		layerController.setValue(sentidoWidget.getName(), "0");
