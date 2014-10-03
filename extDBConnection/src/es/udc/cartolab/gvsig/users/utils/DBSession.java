@@ -32,6 +32,7 @@ import org.cresques.cts.IProjection;
 
 import com.hardcode.driverManager.Driver;
 import com.hardcode.driverManager.DriverLoadException;
+import com.hardcode.gdbms.engine.values.ValueWriter;
 import com.iver.andami.Launcher;
 import com.iver.andami.Launcher.TerminationProcess;
 import com.iver.andami.PluginServices;
@@ -53,6 +54,7 @@ import com.iver.cit.gvsig.project.Project;
 public class DBSession {
 
 	protected static DBSession instance = null;
+	private IFormatter formatter = new Formatter();
 	private final String server, username, password;
 	private final int port;
 	private String database;
@@ -195,6 +197,10 @@ public class DBSession {
 
 	public DBUser getDBUser() {
 		return user;
+	}
+	
+	public void setFormatter(IFormatter formatter) {
+	    this.formatter = formatter; 
 	}
 
 	/* GET LAYER */
@@ -422,11 +428,7 @@ public class DBSession {
 		while (rs.next()) {
 			String[] row = new String[fieldNames.length];
 			for (int i=0; i<fieldNames.length; i++) {
-				String val = rs.getString(fieldNames[i]);
-				if (val == null) {
-					val = "";
-				}
-				row[i] = val;
+				row[i] = formatter.toString(rs.getObject(fieldNames[i]));
 			}
 			rows.add(row);
 		}
