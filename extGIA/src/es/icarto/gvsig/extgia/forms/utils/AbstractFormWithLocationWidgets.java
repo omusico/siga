@@ -37,6 +37,8 @@ import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkButton;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkData;
 import es.udc.cartolab.gvsig.navtable.ToggleEditing;
+import es.udc.cartolab.gvsig.users.utils.DBSession;
+import es.udc.cartolab.gvsig.users.utils.Formatter;
 
 @SuppressWarnings("serial")
 public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
@@ -48,6 +50,9 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     private static final String TIPO_VIA_PF = "tipo_via_pf";
     private static final String NOMBRE_VIA = "nombre_via";
     private static final String NOMBRE_VIA_PF = "nombre_via_pf";
+    private static final String PK = "pk";
+    private static final String PK_INICIAL = "pk_inicial";
+    private static final String PK_FINAL = "pk_final";
     private static final String SENTIDO = "sentido";
 
     protected FilesLinkButton filesLinkButton;
@@ -94,6 +99,36 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	if (getWidgets().get(NOMBRE_VIA_PF) != null) {
 	    addChained(NOMBRE_VIA_PF, BASE_CONTRATISTA, TRAMO, TIPO_VIA_PF);
 	}
+	if (getWidgets().get(PK) != null) {
+	    addChained(PK, TIPO_VIA, NOMBRE_VIA);
+	}
+	if (getWidgets().get(PK_INICIAL) != null) {
+	    addChained(PK_INICIAL, TIPO_VIA, NOMBRE_VIA);
+	}
+	if (getWidgets().get(PK_FINAL) != null) {
+	    if (getWidgets().get(NOMBRE_VIA_PF) != null) {
+		addChained(PK_FINAL, TIPO_VIA_PF, NOMBRE_VIA_PF);
+	    } else {
+		addChained(PK_FINAL, TIPO_VIA, NOMBRE_VIA);
+	    }
+	}
+    }
+
+    /**
+     * TODO Take care. This is a kind of experiment used to retrieve
+     * audasa_extgia_dominios.pk.item values from the database in the number
+     * displayed format choose for the forms. The first time
+     * ormListe.getAppDomains is called is in initWidgets, and that method take
+     * the values from the table with DBSession.getTable method. Here, we are
+     * injecting a custom formatting. All this stuff MUST be removed when we fix
+     * how formats all used across all the application.
+     */
+    @Override
+    protected void initWidgets() {
+	DBSession session = DBSession.getCurrentSession();
+	session.setFormatter(new GIAFormatter());
+	super.initWidgets();
+	session.setFormatter(new Formatter());
     }
 
     @Override
