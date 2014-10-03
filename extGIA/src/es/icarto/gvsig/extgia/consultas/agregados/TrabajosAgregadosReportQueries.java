@@ -133,11 +133,13 @@ public class TrabajosAgregadosReportQueries {
     }
 
     public String getVegetacionQuery() {
-	return getBaseQuery() + "Vegetación mediana de hormigón'";
+	return getBaseQuery()
+		+ "Eliminación veg. mediana de HG y transp. a vertedero'";
     }
 
     public String getVegetacionSumQuery() {
-	return getBaseSumQuery() + "Vegetación mediana de hormigón')";
+	return getBaseSumQuery()
+		+ "Eliminación veg. mediana de HG y transp. a vertedero')";
     }
 
 }

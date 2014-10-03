@@ -68,7 +68,9 @@ public class CSVTrabajosAgregadosReport {
 		writeTable(writer, "\nHerbicida\n\n",
 			agregadosReportQueries.getHerbicidadQuery(),
 			agregadosReportQueries.getHerbicidaSumQuery());
-		writeTable(writer, "\nVegetación mediana de hormigón\n\n",
+		writeTable(
+			writer,
+			"\nEliminación veg. mediana de HG y transp. a vertedero\n\n",
 			agregadosReportQueries.getVegetacionQuery(),
 			agregadosReportQueries.getVegetacionSumQuery());
 

@@ -126,7 +126,8 @@ public class XLSTrabajosAgregadosReport {
 	lastRow = writeTable("Herbicida",
 		agregadosReportQueries.getHerbicidadQuery(),
 		agregadosReportQueries.getHerbicidaSumQuery(), lastRow + 2);
-	lastRow = writeTable("Vegetación mediana de hormigón",
+	lastRow = writeTable(
+		"Eliminación veg. mediana de HG y transp. a vertedero",
 		agregadosReportQueries.getVegetacionQuery(),
 		agregadosReportQueries.getVegetacionSumQuery(), lastRow);
 

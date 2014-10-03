@@ -106,7 +106,8 @@ public class TrabajosAgregadosReport extends PDFReport {
 		agregadosReportQueries.getHerbicidadQuery(),
 		agregadosReportQueries.getHerbicidaSumQuery());
 
-	writeTable("\nVegetación mediana de hormigón\n\n",
+	writeTable(
+		"\nEliminación veg. mediana de HG y transp. a vertedero\n\n",
 		agregadosReportQueries.getVegetacionQuery(),
 		agregadosReportQueries.getVegetacionSumQuery());
     }
