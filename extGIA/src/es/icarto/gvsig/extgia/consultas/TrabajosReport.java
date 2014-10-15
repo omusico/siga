@@ -6,7 +6,7 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 
-import es.icarto.gvsig.commons.queries.Field;
+import es.icarto.gvsig.commons.utils.Field;
 
 public class TrabajosReport extends PDFReport {
 

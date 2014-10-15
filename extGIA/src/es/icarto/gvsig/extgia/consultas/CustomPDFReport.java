@@ -15,8 +15,8 @@ import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 
-import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.commons.queries.Utils;
+import es.icarto.gvsig.commons.utils.Field;
 
 public class CustomPDFReport extends PDFReport {
 

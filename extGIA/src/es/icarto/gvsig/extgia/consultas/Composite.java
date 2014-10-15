@@ -7,8 +7,8 @@ import java.util.List;
 import javax.swing.JFileChooser;
 
 import es.icarto.gvsig.commons.queries.Component;
-import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.commons.queries.FinalActions;
+import es.icarto.gvsig.commons.utils.Field;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 
 public class Composite implements Component {

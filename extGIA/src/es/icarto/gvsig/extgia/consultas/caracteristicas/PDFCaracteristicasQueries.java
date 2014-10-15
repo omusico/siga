@@ -1,6 +1,6 @@
 package es.icarto.gvsig.extgia.consultas.caracteristicas;
 
-import es.icarto.gvsig.commons.queries.Field;
+import es.icarto.gvsig.commons.utils.Field;
 import es.icarto.gvsig.extgia.consultas.ConsultasFieldNames;
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;

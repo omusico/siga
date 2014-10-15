@@ -6,8 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.commons.queries.Utils;
+import es.icarto.gvsig.commons.utils.Field;
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 

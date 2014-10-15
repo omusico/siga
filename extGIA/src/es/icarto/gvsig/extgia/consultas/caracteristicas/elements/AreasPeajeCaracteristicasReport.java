@@ -7,7 +7,7 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 
-import es.icarto.gvsig.commons.queries.Field;
+import es.icarto.gvsig.commons.utils.Field;
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.icarto.gvsig.extgia.consultas.PDFReport;
 import es.icarto.gvsig.extgia.consultas.QueryType;

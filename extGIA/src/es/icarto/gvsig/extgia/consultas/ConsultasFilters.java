@@ -7,8 +7,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.commons.queries.QueryFiltersI;
+import es.icarto.gvsig.commons.utils.Field;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 

@@ -4,9 +4,9 @@ import javax.swing.table.DefaultTableModel;
 
 import org.apache.poi.ss.usermodel.Row;
 
-import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.commons.queries.QueryFiltersI;
 import es.icarto.gvsig.commons.queries.XLSReport;
+import es.icarto.gvsig.commons.utils.Field;
 
 public class XLSDatedReport extends XLSReport {
 

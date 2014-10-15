@@ -19,8 +19,8 @@ import org.junit.Test;
 
 import com.iver.cit.gvsig.fmap.drivers.DBException;
 
-import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.commons.queries.Utils;
+import es.icarto.gvsig.commons.utils.Field;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.DomainValues;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;

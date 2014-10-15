@@ -2,7 +2,7 @@ package es.icarto.gvsig.extgia.consultas.firme;
 
 import javax.swing.table.DefaultTableModel;
 
-import es.icarto.gvsig.commons.queries.Field;
+import es.icarto.gvsig.commons.utils.Field;
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 import es.icarto.gvsig.extgia.consultas.QueryType;
 import es.icarto.gvsig.extgia.consultas.TrabajosReport;
