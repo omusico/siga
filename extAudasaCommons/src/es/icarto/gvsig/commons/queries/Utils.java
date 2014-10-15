@@ -17,6 +17,7 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
+import es.icarto.gvsig.commons.utils.Field;
 import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 

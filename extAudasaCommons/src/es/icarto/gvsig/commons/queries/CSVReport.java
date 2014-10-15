@@ -5,6 +5,8 @@ import java.io.IOException;
 
 import javax.swing.table.DefaultTableModel;
 
+import es.icarto.gvsig.commons.utils.Field;
+
 public class CSVReport {
 
     protected static final String CSV_SEPARATOR = "\t";

@@ -16,6 +16,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.WorkbookUtil;
 
+import es.icarto.gvsig.commons.utils.Field;
+
 public class XLSReport {
 
     private Workbook wb;

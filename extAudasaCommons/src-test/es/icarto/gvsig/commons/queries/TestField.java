@@ -7,6 +7,8 @@ import java.util.TreeSet;
 
 import org.junit.Test;
 
+import es.icarto.gvsig.commons.utils.Field;
+
 public class TestField {
 
     @Test

@@ -17,7 +17,7 @@ import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.WindowInfo;
 
 import es.icarto.gvsig.commons.gui.AbstractIWindow;
-import es.icarto.gvsig.commons.gui.AcceptCancelPanel;
+import es.icarto.gvsig.commons.gui.OkCancelPanel;
 import es.icarto.gvsig.commons.gui.WidgetFactory;
 
 @SuppressWarnings("serial")
@@ -37,7 +37,7 @@ public class CustomiceDialog<E> extends AbstractIWindow implements
 	super(new MigLayout("wrap 1, insets 10", "[center]", ""));
 	setWindowTitle("Personalizar consulta");
 	setWindowInfoProperties(WindowInfo.MODALDIALOG);
-	addAcceptCancelPanel(this, this);
+	WidgetFactory.okCancelPanel(this, this, this);
 
 	dualListBox = new DualListBox<E>();
 	dualListBox.addDestListDataListener(new UpdateOrderBy());
@@ -108,7 +108,7 @@ public class CustomiceDialog<E> extends AbstractIWindow implements
 
     @Override
     public void actionPerformed(ActionEvent e) {
-	if (e.getActionCommand().equals(AcceptCancelPanel.OK_ACTION_COMMAND)) {
+	if (e.getActionCommand().equals(OkCancelPanel.OK_ACTION_COMMAND)) {
 	    status = OK;
 	} else {
 	    status = CANCEL;
