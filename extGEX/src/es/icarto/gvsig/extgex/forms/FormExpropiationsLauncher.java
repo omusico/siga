@@ -86,7 +86,7 @@ public class FormExpropiationsLauncher implements MouseListener {
     }
 
     private void selectFeaturesInForm(int rowIndex) {
-	formExpropiations.clearSelectedFeatures();
+	formExpropiations.clearSelection();
 	formExpropiations.selectFeature(rowIndex);
 	formExpropiations.setOnlySelected(true);
     }

@@ -6,38 +6,29 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-import javax.swing.JInternalFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
-import javax.swing.event.InternalFrameListener;
 
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
-import com.iver.cit.gvsig.fmap.edition.IEditableSource;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
-import es.icarto.gvsig.extgex.utils.managers.TableLayerManager;
 import es.icarto.gvsig.navtableforms.gui.TableUtils;
 import es.udc.cartolab.gvsig.navtable.AbstractNavTable;
-import es.udc.cartolab.gvsig.navtable.AlphanumericNavTable;
 
 public class FormReversionsLauncher implements MouseListener {
 
     private static final int BUTTON_RIGHT = 3;
 
-    private final FormExpropiations formExpropiations;
     private FormReversions formReversions;
     private JTable table;
     private final FLyrVect layerReversions;
-    private IEditableSource tableFincasReversions;
 
     public FormReversionsLauncher(FormExpropiations form) {
-	this.formExpropiations = form;
 	this.layerReversions = getLayer();
-	//	this.tableFincasReversions = getSource();
     }
 
     @Override
@@ -58,15 +49,6 @@ public class FormReversionsLauncher implements MouseListener {
 		}
 	    });
 	    popup.add(menuOpenForm);
-
-	    //	    JMenuItem menuOpenANT = new JMenuItem("Editar reversiones");
-	    //	    menuOpenANT.addActionListener(new ActionListener() {
-	    //		public void actionPerformed(ActionEvent arg0) {
-	    //		    openANT();
-	    //		}
-	    //	    });
-	    //	    popup.add(menuOpenANT);
-
 	    popup.show(e.getComponent(), e.getX(), e.getY());
 	}
     }
@@ -98,32 +80,6 @@ public class FormReversionsLauncher implements MouseListener {
 		    formReversions.setPosition(index);
 		    selectFeaturesInForm();
 		    PluginServices.getMDIManager().addWindow(formReversions);
-		    // Listening closing actions of formExpropiations
-		    //		    JInternalFrame parent = (JInternalFrame) formReversions
-		    //			    .getRootPane().getParent();
-		    //		    parent.addInternalFrameListener((InternalFrameListener) formExpropiations);
-		}
-	    }
-	} catch (ReadDriverException e) {
-	    e.printStackTrace();
-	}
-    }
-
-    private void openANT() {
-	try {
-	    int index = (int) TableUtils.getFeatureIndexFromJTable(table,
-		    tableFincasReversions.getRecordset());
-	    if(index != AbstractNavTable.EMPTY_REGISTER) {
-		AlphanumericNavTable ant = new AlphanumericNavTable(
-			tableFincasReversions,
-			"Enlace fincas-reversiones");
-		if(ant.init()) {
-		    ant.setPosition(index);
-		    PluginServices.getMDIManager().addWindow(ant);
-		    // Listening closing actions of formExpropiations
-		    JInternalFrame parent = (JInternalFrame) ant
-			    .getRootPane().getParent();
-		    parent.addInternalFrameListener((InternalFrameListener) formExpropiations);
 		}
 	    }
 	} catch (ReadDriverException e) {
@@ -137,7 +93,7 @@ public class FormReversionsLauncher implements MouseListener {
 		    table,
 		    layerReversions.getRecordset(),
 		    DBNames.FIELD_IDREVERSION_FINCAS_REVERSIONES);
-	    formReversions.clearSelectedFeatures();
+	    formReversions.clearSelection();
 	    formReversions.setOnlySelected(false);
 	    if(rowIndexes.size() > 0) {
 		for (long rowIndex : rowIndexes) {
@@ -147,7 +103,7 @@ public class FormReversionsLauncher implements MouseListener {
 	    }
 	} catch (ReadDriverException e) {
 	    e.printStackTrace();
-	    formReversions.clearSelectedFeatures();
+	    formReversions.clearSelection();
 	    formReversions.setOnlySelected(false);
 	}
     }
@@ -158,15 +114,6 @@ public class FormReversionsLauncher implements MouseListener {
 	    return toc.getLayerByName(FormReversions.TOCNAME);
 	}
 	return layerReversions;
-    }
-
-    private IEditableSource getSource() {
-	if(tableFincasReversions == null) {
-	    TableLayerManager tableManager = new TableLayerManager();
-	    return tableManager.getTableByName(
-		    DBNames.TABLE_FINCASREVERSIONES).getModel().getModelo();
-	}
-	return tableFincasReversions;
     }
 
 }
