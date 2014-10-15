@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import es.icarto.gvsig.commons.queries.Field;
 import es.icarto.gvsig.commons.queries.QueryFiltersI;
+import es.icarto.gvsig.commons.utils.Field;
 
 public class QueryFilters implements QueryFiltersI {
 
