@@ -129,4 +129,9 @@ public class AddFincaAction extends AbstractAction implements PositionListener {
 
     }
 
+    @Override
+    public void beforePositionChange(PositionEvent e) {
+	//nothing to do here
+    }
+
 }
