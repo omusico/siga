@@ -1,6 +1,7 @@
 package org.gvsig.remoteClient;
 
-import junit.framework.Test;
+
+import org.gvsig.remoteClient.Tests.Test;
 import junit.framework.TestSuite;
 
 import org.gvsig.remoteClient.wcs.wcs_1_0_0.WCSProtocolHandler_1_0_0Test;
@@ -11,7 +12,7 @@ import org.gvsig.remoteClient.wms.wms_1_1_1.WMSProtocolHandler_1_1_1Test;
 
 public class AllTests {
 
-	public static Test suite() {
+	public static junit.framework.Test suite() {
 		TestSuite suite = new TestSuite("Test for org.gvsig.remoteClient");
 		//$JUnit-BEGIN$
 		suite.addTestSuite(Test.class);
