@@ -122,17 +122,15 @@ public class AlphanumericNavTable extends NavTable {
     
     @Override
     protected void setLayerListeners() {
+	super.setLayerListeners();
 	listener = new EditionListener(this);
 	model.addEditionListener(listener);
-	getRecordset().addSelectionListener(this);
-	addPositionListener(this);
     }
 
     @Override
     protected void removeLayerListeners() {
+	super.removeLayerListeners();
 	model.removeEditionListener(listener);
-	getRecordset().removeSelectionListener(this);
-	removePositionListener(this);
     }
 
     @Override
@@ -207,8 +205,8 @@ public class AlphanumericNavTable extends NavTable {
     public void addRecord() {
 	// Create a new empty record
 	// showWarning();
-	if (onlySelectedCB.isSelected()) {
-	    onlySelectedCB.setSelected(false);
+	if (isOnlySelected()) {
+	    setOnlySelected(false);
 	}
 	try {
 	    ToggleEditing te = new ToggleEditing();
@@ -255,7 +253,7 @@ public class AlphanumericNavTable extends NavTable {
      * Shows a warning to the user if there's unsaved data.
      * 
      */
-    protected boolean showWarning() {
+    public boolean showWarning() {
 	if (getPosition() == AbstractNavTable.EMPTY_REGISTER) {
 	    return true;
 	}

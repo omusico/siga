@@ -45,9 +45,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
-import com.hardcode.gdbms.engine.values.NullValue;
 import com.hardcode.gdbms.engine.values.Value;
-import com.hardcode.gdbms.engine.values.ValueWriter;
 import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.iver.cit.gvsig.exceptions.visitors.StopWriterVisitorException;
@@ -65,6 +63,7 @@ import com.vividsolutions.jts.geom.Geometry;
 
 import es.udc.cartolab.gvsig.navtable.format.ValueFormatNT;
 import es.udc.cartolab.gvsig.navtable.listeners.MyMouseListener;
+import es.udc.cartolab.gvsig.navtable.listeners.PositionEvent;
 import es.udc.cartolab.gvsig.navtable.preferences.Preferences;
 import es.udc.cartolab.gvsig.navtable.table.AttribTableCellRenderer;
 import es.udc.cartolab.gvsig.navtable.table.NavTableModel;
@@ -92,7 +91,6 @@ import es.udc.cartolab.gvsig.navtable.table.NavTableModel;
 public class NavTable extends AbstractNavTable {
 
     private static final long serialVersionUID = 1L;
-    protected WindowInfo viewInfo = null;
 
     private boolean isFillingValues = false;
     private boolean isSavingValues = false;
@@ -294,9 +292,10 @@ public class NavTable extends AbstractNavTable {
 	    return fieldName;
 	}
 
+	BufferedReader fileReader = null;
 	try {
 	    String line;
-	    BufferedReader fileReader = new BufferedReader(new FileReader(
+	    fileReader = new BufferedReader(new FileReader(
 		    fileAlias));
 	    while ((line = fileReader.readLine()) != null) {
 		String tokens[] = line.split("=");
@@ -312,6 +311,14 @@ public class NavTable extends AbstractNavTable {
 	    logger.error(e.getMessage(), e);
 	} catch (IOException e) {
 	    logger.error(e.getMessage(), e);
+	} finally {
+	    try {
+		if (fileReader != null) {
+		    fileReader.close();
+		}
+	    } catch (IOException e) {
+		logger.error(e.getStackTrace(), e);
+	    }
 	}
 	return alias;
     }
@@ -549,27 +556,9 @@ public class NavTable extends AbstractNavTable {
     }
 
     @Override
-    public void next() {
+    public void beforePositionChange(PositionEvent e) {
 	stopCellEdition();
-	super.next();
-    }
-
-    @Override
-    public void before() {
-	stopCellEdition();
-	super.before();
-    }
-
-    @Override
-    public void last() {
-	stopCellEdition();
-	super.last();
-    }
-
-    @Override
-    public void first() {
-	stopCellEdition();
-	super.first();
+	super.beforePositionChange(e);
     }
 
     @Override
