@@ -32,7 +32,7 @@ public abstract class BasicAbstractForm extends AbstractForm {
     @Override
     public String getXMLPath() {
 	return this.getClass().getClassLoader()
-		.getResource("data/" + getBasicName() + ".xml").getPath();
+		.getResource("rules/" + getBasicName() + ".xml").getPath();
     }
 
     protected abstract String getBasicName();

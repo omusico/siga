@@ -19,6 +19,7 @@ import java.util.Set;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.junit.Before;
@@ -107,7 +108,9 @@ public abstract class CommonMethodsForTestDBForms {
 	for (final String domainValue : domainValues.keySet()) {
 	    JComponent cb = this.widgets.get(domainValue);
 	    if (!(cb instanceof JComboBox)) {
-		fail(domainValue);
+		// if (!(cb instanceof JTextField)) { // only for pk fields
+		    fail(domainValue);
+		// }
 	    }
 	}
 	assertTrue(true);
@@ -176,7 +179,7 @@ public abstract class CommonMethodsForTestDBForms {
     }
 
     protected String getMetadataFile() {
-	return "data/" + getTableName() + ".xml";
+	return "rules/" + getTableName() + ".xml";
     }
 
     protected abstract String getSchema();
