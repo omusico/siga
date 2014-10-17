@@ -6,15 +6,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-
-import org.apache.log4j.Logger;
 
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
@@ -28,9 +25,9 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 @SuppressWarnings("serial")
 public class SenhalizacionVariableForm extends AbstractFormWithLocationWidgets {
 
-    public static String ABEILLE_FILENAME = "forms/senhalizacion_variable.xml";
     public static final String ABEILLE_RECONOCIMIENTOS_FILENAME = "forms/senhalizacion_variable_reconocimiento_estado.xml";
     public static final String ABEILLE_TRABAJOS_FILENAME = "forms/senhalizacion_variable_trabajos.xml";
+    public static final String TABLENAME = "senhalizacion_variable";
 
     JTextField senhalizacionVariableIDWidget;
     CalculateComponentValue senhalizacionVariableid;
@@ -261,23 +258,6 @@ public class SenhalizacionVariableForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getFormBodyPath() {
-	return ABEILLE_FILENAME;
-    }
-
-    @Override
-    public Logger getLoggerName() {
-	return Logger.getLogger(this.getClass().getName());
-    }
-
-    @Override
-    public String getXMLPath() {
-	return this.getClass().getClassLoader()
-		.getResource("rules/senhalizacion_variable_metadata.xml")
-		.getPath();
-    }
-
-    @Override
     public JTable getReconocimientosJTable() {
 	// TODO Auto-generated method stub
 	return null;
@@ -322,7 +302,7 @@ public class SenhalizacionVariableForm extends AbstractFormWithLocationWidgets {
 
     @Override
     protected String getBasicName() {
-	return "Señalización Variable";
+	return TABLENAME;
     }
 
     @Override

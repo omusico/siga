@@ -2,7 +2,6 @@ package es.icarto.gvsig.extgia.forms.obras_desague;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JComboBox;
@@ -10,8 +9,6 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-
-import org.apache.log4j.Logger;
 
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
@@ -25,8 +22,8 @@ import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.Dependent
 @SuppressWarnings("serial")
 public class ObrasDesagueForm extends AbstractFormWithLocationWidgets {
 
-    public static final String ABEILLE_FILENAME = "forms/obras_desague_transversal.xml";
-    public static final String ABEILLE_TRABAJOS_FILENAME = "forms/obras_desague_transversal_trabajos.xml";
+    public static final String ABEILLE_TRABAJOS_FILENAME = "forms/obras_desague_trabajos.xml";
+    public static final String TABLENAME = "obras_desague";
 
     JTextField obraDesagueIDWidget;
     CalculateComponentValue obraDesagueid;
@@ -153,23 +150,6 @@ public class ObrasDesagueForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getFormBodyPath() {
-	return ABEILLE_FILENAME;
-    }
-
-    @Override
-    public Logger getLoggerName() {
-	return Logger.getLogger(this.getClass().getName());
-    }
-
-    @Override
-    public String getXMLPath() {
-	return this.getClass().getClassLoader()
-		.getResource("rules/obras_desague_metadata.xml")
-		.getPath();
-    }
-
-    @Override
     public JTable getReconocimientosJTable() {
 	// TODO Auto-generated method stub
 	return null;
@@ -211,7 +191,7 @@ public class ObrasDesagueForm extends AbstractFormWithLocationWidgets {
 
     @Override
     protected String getBasicName() {
-	return "Obras Desague";
+	return TABLENAME;
     }
 
     @Override

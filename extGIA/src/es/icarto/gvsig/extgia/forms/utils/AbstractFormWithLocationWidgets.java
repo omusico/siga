@@ -3,7 +3,6 @@ package es.icarto.gvsig.extgia.forms.utils;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.InputStream;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
@@ -18,12 +17,9 @@ import javax.swing.table.DefaultTableModel;
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.Launcher;
 import com.iver.andami.PluginServices;
-import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.iver.cit.gvsig.exceptions.visitors.StopWriterVisitorException;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.image.ImageComponent;
-import com.jeta.forms.components.panel.FormPanel;
-import com.jeta.forms.gui.common.FormException;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.extgia.batch.AddReconocimientosBatchListener;
@@ -33,7 +29,7 @@ import es.icarto.gvsig.extgia.forms.images.DeleteImageListener;
 import es.icarto.gvsig.extgia.forms.images.ShowImageAction;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
-import es.icarto.gvsig.navtableforms.AbstractForm;
+import es.icarto.gvsig.navtableforms.BasicAbstractForm;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkButton;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkData;
 import es.udc.cartolab.gvsig.navtable.ToggleEditing;
@@ -41,7 +37,7 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 import es.udc.cartolab.gvsig.users.utils.Formatter;
 
 @SuppressWarnings("serial")
-public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
+public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm {
 
     protected static final String AREA_MANTENIMIENTO = "area_mantenimiento";
     protected static final String BASE_CONTRATISTA = "base_contratista";
@@ -129,15 +125,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	session.setFormatter(new GIAFormatter());
 	super.initWidgets();
 	session.setFormatter(new Formatter());
-    }
-
-    @Override
-    public WindowInfo getWindowInfo() {
-	if (windowInfo == null) {
-	    super.getWindowInfo();
-	    windowInfo.setTitle(getBasicName());
-	}
-	return windowInfo;
     }
 
     @Override
@@ -368,20 +355,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
 	super.removeListeners();
     }
 
-    @Override
-    public FormPanel getFormBody() {
-	if (formBody == null) {
-	    InputStream stream = getClass().getClassLoader()
-		    .getResourceAsStream(getFormBodyPath());
-	    try {
-		formBody = new FormPanel(stream);
-	    } catch (FormException e) {
-		e.printStackTrace();
-	    }
-	}
-	return formBody;
-    }
-
     protected void deleteElement(JTable embebedTable, String dbTableName,
 	    String pkField) {
 
@@ -497,8 +470,6 @@ public abstract class AbstractFormWithLocationWidgets extends AbstractForm {
     public abstract String getElementID();
 
     public abstract String getElementIDValue();
-
-    public abstract String getFormBodyPath();
 
     public abstract JTable getReconocimientosJTable();
 

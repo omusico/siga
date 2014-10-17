@@ -1,23 +1,19 @@
 package es.icarto.gvsig.extgia.forms;
 
 import es.icarto.gvsig.extgia.forms.firme.FirmeForm;
-import es.icarto.gvsig.extgia.navtableforms.CommonMethodsForTestDBForms;
+import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.navtableforms.CommonMethodsForTestDBForms;
 
 public class TestFirmeForm extends CommonMethodsForTestDBForms {
 
     @Override
-    protected String getAbeilleForm() {
-	return FirmeForm.ABEILLE_FILENAME;
+    protected String getSchema() {
+	return DBFieldNames.GIA_SCHEMA;
     }
 
     @Override
-    protected String getXmlFile() {
-	return "rules/firme_metadata.xml";
-    }
-
-    @Override
-    protected String getTable() {
-	return "firme";
+    protected String getTableName() {
+	return FirmeForm.TABLENAME;
     }
 
 }

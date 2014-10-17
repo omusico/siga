@@ -1,23 +1,19 @@
 package es.icarto.gvsig.extgia.forms;
 
 import es.icarto.gvsig.extgia.forms.obras_desague.ObrasDesagueForm;
-import es.icarto.gvsig.extgia.navtableforms.CommonMethodsForTestDBForms;
+import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.navtableforms.CommonMethodsForTestDBForms;
 
 public class TestObrasDesagueForm extends CommonMethodsForTestDBForms {
 
     @Override
-    protected String getAbeilleForm() {
-	return ObrasDesagueForm.ABEILLE_FILENAME;
+    protected String getSchema() {
+	return DBFieldNames.GIA_SCHEMA;
     }
 
     @Override
-    protected String getXmlFile() {
-	return "rules/obras_desague_metadata.xml";
-    }
-
-    @Override
-    protected String getTable() {
-	return "obras_desague";
+    protected String getTableName() {
+	return ObrasDesagueForm.TABLENAME;
     }
 
 }

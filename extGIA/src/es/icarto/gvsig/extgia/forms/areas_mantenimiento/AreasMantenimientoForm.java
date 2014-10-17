@@ -6,7 +6,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JButton;
@@ -14,8 +13,6 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-
-import org.apache.log4j.Logger;
 
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
@@ -29,8 +26,8 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 @SuppressWarnings("serial")
 public class AreasMantenimientoForm extends AbstractFormWithLocationWidgets {
 
-    public static String ABEILLE_FILENAME = "forms/areas_mantenimiento.xml";
     public static final String ABEILLE_RAMALES_FILENAME = "forms/areas_mantenimiento_ramales.xml";
+    public static final String TABLENAME = "areas_mantenimiento";
 
     JTextField areaMantenimientoIDWidget;
     CalculateComponentValue areaMantenimientoid;
@@ -197,23 +194,6 @@ public class AreasMantenimientoForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getFormBodyPath() {
-	return ABEILLE_FILENAME;
-    }
-
-    @Override
-    public Logger getLoggerName() {
-	return Logger.getLogger(this.getClass().getName());
-    }
-
-    @Override
-    public String getXMLPath() {
-	return this.getClass().getClassLoader()
-		.getResource("rules/areas_mantenimiento_metadata.xml")
-		.getPath();
-    }
-
-    @Override
     public JTable getReconocimientosJTable() {
 	return null;
     }
@@ -255,7 +235,7 @@ public class AreasMantenimientoForm extends AbstractFormWithLocationWidgets {
 
     @Override
     protected String getBasicName() {
-	return "Áreas Mantenimiento";
+	return TABLENAME;
     }
 
     @Override

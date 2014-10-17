@@ -1,23 +1,19 @@
 package es.icarto.gvsig.extgia.forms;
 
 import es.icarto.gvsig.extgia.forms.juntas.JuntasForm;
-import es.icarto.gvsig.extgia.navtableforms.CommonMethodsForTestDBForms;
+import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.navtableforms.CommonMethodsForTestDBForms;
 
 public class TestJuntasForm extends CommonMethodsForTestDBForms {
 
     @Override
-    protected String getAbeilleForm() {
-	return JuntasForm.ABEILLE_FILENAME;
+    protected String getSchema() {
+	return DBFieldNames.GIA_SCHEMA;
     }
 
     @Override
-    protected String getXmlFile() {
-	return "rules/juntas_metadata.xml";
-    }
-
-    @Override
-    protected String getTable() {
-	return "juntas";
+    protected String getTableName() {
+	return JuntasForm.TABLENAME;
     }
 
 }

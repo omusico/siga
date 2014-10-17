@@ -1,23 +1,19 @@
 package es.icarto.gvsig.extgia.forms;
 
 import es.icarto.gvsig.extgia.forms.pasos_mediana.PasosMedianaForm;
-import es.icarto.gvsig.extgia.navtableforms.CommonMethodsForTestDBForms;
+import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.navtableforms.CommonMethodsForTestDBForms;
 
 public class TestPasosMedianaForm extends CommonMethodsForTestDBForms {
 
     @Override
-    protected String getAbeilleForm() {
-	return PasosMedianaForm.ABEILLE_FILENAME;
+    protected String getSchema() {
+	return DBFieldNames.GIA_SCHEMA;
     }
 
     @Override
-    protected String getXmlFile() {
-	return "rules/pasos_mediana_metadata.xml";
-    }
-
-    @Override
-    protected String getTable() {
-	return "pasos_mediana";
+    protected String getTableName() {
+	return PasosMedianaForm.TABLENAME;
     }
 
 }

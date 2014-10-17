@@ -6,7 +6,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JButton;
@@ -14,8 +13,6 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-
-import org.apache.log4j.Logger;
 
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
@@ -29,10 +26,10 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 @SuppressWarnings("serial")
 public class AreasPeajeForm extends AbstractFormWithLocationWidgets {
 
-    public static String ABEILLE_FILENAME = "forms/areas_peaje.xml";
     public static final String ABEILLE_RECONOCIMIENTOS_FILENAME = "forms/areas_peaje_reconocimiento_estado.xml";
     public static final String ABEILLE_TRABAJOS_FILENAME = "forms/areas_peaje_trabajos.xml";
     public static final String ABEILLE_VIAS_FILENAME = "forms/areas_peaje_vias.xml";
+    public static final String TABLENAME = "areas_peaje";
 
     JTextField areaPeajeIDWidget;
     CalculateComponentValue areaPeajeid;
@@ -341,23 +338,6 @@ public class AreasPeajeForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getFormBodyPath() {
-	return ABEILLE_FILENAME;
-    }
-
-    @Override
-    public Logger getLoggerName() {
-	return Logger.getLogger(this.getClass().getName());
-    }
-
-    @Override
-    public String getXMLPath() {
-	return this.getClass().getClassLoader()
-		.getResource("rules/areas_peaje_metadata.xml")
-		.getPath();
-    }
-
-    @Override
     public JTable getReconocimientosJTable() {
 	// TODO Auto-generated method stub
 	return null;
@@ -402,7 +382,7 @@ public class AreasPeajeForm extends AbstractFormWithLocationWidgets {
 
     @Override
     protected String getBasicName() {
-	return "Áreas Peaje";
+	return TABLENAME;
     }
 
     @Override

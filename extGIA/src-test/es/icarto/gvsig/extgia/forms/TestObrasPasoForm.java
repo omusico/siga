@@ -1,23 +1,19 @@
 package es.icarto.gvsig.extgia.forms;
 
 import es.icarto.gvsig.extgia.forms.obras_paso.ObrasPasoForm;
-import es.icarto.gvsig.extgia.navtableforms.CommonMethodsForTestDBForms;
+import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.navtableforms.CommonMethodsForTestDBForms;
 
 public class TestObrasPasoForm extends CommonMethodsForTestDBForms {
 
     @Override
-    protected String getAbeilleForm() {
-	return ObrasPasoForm.ABEILLE_FILENAME;
+    protected String getSchema() {
+	return DBFieldNames.GIA_SCHEMA;
     }
 
     @Override
-    protected String getXmlFile() {
-	return "rules/obras_paso_metadata.xml";
-    }
-
-    @Override
-    protected String getTable() {
-	return "obras_paso";
+    protected String getTableName() {
+	return ObrasPasoForm.TABLENAME;
     }
 
 }

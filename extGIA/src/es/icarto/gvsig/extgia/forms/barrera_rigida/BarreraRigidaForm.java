@@ -6,7 +6,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JComboBox;
@@ -14,8 +13,6 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-
-import org.apache.log4j.Logger;
 
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
@@ -30,9 +27,9 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 @SuppressWarnings("serial")
 public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 
-    public static final String ABEILLE_FILENAME = "forms/barrera_rigida.xml";
     public static final String ABEILLE_RECONOCIMIENTOS_FILENAME = "forms/barrera_rigida_reconocimiento_estado.xml";
     public static final String ABEILLE_TRABAJOS_FILENAME = "forms/barrera_rigida_trabajos.xml";
+    public static final String TABLENAME = "barrera_rigida";
 
     JTextField barreraRigidaIDWidget;
     CalculateComponentValue barreraRigidaid;
@@ -253,23 +250,6 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getFormBodyPath() {
-	return ABEILLE_FILENAME;
-    }
-
-    @Override
-    public Logger getLoggerName() {
-	return Logger.getLogger(this.getClass().getName());
-    }
-
-    @Override
-    public String getXMLPath() {
-	return this.getClass().getClassLoader()
-		.getResource("rules/barrera_rigida_metadata.xml")
-		.getPath();
-    }
-
-    @Override
     public JTable getReconocimientosJTable() {
 	// TODO Auto-generated method stub
 	return null;
@@ -299,7 +279,7 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 
     @Override
     protected String getBasicName() {
-	return "Barrera Rígida";
+	return TABLENAME;
     }
 
     @Override

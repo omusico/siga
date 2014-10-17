@@ -1,23 +1,19 @@
 package es.icarto.gvsig.extgia.forms;
 
 import es.icarto.gvsig.extgia.forms.areas_mantenimiento.AreasMantenimientoForm;
-import es.icarto.gvsig.extgia.navtableforms.CommonMethodsForTestDBForms;
+import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.navtableforms.CommonMethodsForTestDBForms;
 
 public class TestAreasMantenimientoForm extends CommonMethodsForTestDBForms {
 
     @Override
-    protected String getAbeilleForm() {
-	return AreasMantenimientoForm.ABEILLE_FILENAME;
+    protected String getSchema() {
+	return DBFieldNames.GIA_SCHEMA;
     }
 
     @Override
-    protected String getXmlFile() {
-	return "rules/areas_mantenimiento_metadata.xml";
-    }
-
-    @Override
-    protected String getTable() {
-	return "areas_mantenimiento";
+    protected String getTableName() {
+	return AreasMantenimientoForm.TABLENAME;
     }
 
 }

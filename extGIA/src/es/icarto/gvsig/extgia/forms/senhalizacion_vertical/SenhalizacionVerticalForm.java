@@ -2,7 +2,6 @@ package es.icarto.gvsig.extgia.forms.senhalizacion_vertical;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JButton;
@@ -11,8 +10,6 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-
-import org.apache.log4j.Logger;
 
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
@@ -26,10 +23,10 @@ import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.Dependent
 @SuppressWarnings("serial")
 public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 
-    public static final String ABEILLE_FILENAME = "forms/senhalizacion_vertical.xml";
     public static final String ABEILLE_RECONOCIMIENTOS_FILENAME = "forms/senhalizacion_vertical_reconocimiento_estado.xml";
     public static final String ABEILLE_TRABAJOS_FILENAME = "forms/senhalizacion_vertical_trabajos.xml";
     public static final String ABEILLE_SENHALES_FILENAME = "forms/senhalizacion_vertical_senhales.xml";
+    public static final String TABLENAME = "senhalizacion_vertical";
 
     JTextField elementoSenhalizacionIDWidget;
     CalculateComponentValue elementoSenhalizacionid;
@@ -305,23 +302,6 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getFormBodyPath() {
-	return ABEILLE_FILENAME;
-    }
-
-    @Override
-    public Logger getLoggerName() {
-	return Logger.getLogger(this.getClass().getName());
-    }
-
-    @Override
-    public String getXMLPath() {
-	return this.getClass().getClassLoader()
-		.getResource("rules/senhalizacion_vertical_metadata.xml")
-		.getPath();
-    }
-
-    @Override
     public JTable getReconocimientosJTable() {
 	// TODO Auto-generated method stub
 	return null;
@@ -351,7 +331,7 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 
     @Override
     protected String getBasicName() {
-	return "Señalización Vertical";
+	return TABLENAME;
     }
 
     @Override

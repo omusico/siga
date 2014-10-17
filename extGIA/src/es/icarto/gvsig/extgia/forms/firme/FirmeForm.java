@@ -27,9 +27,9 @@ import es.icarto.gvsig.extgia.utils.SqlUtils;
 @SuppressWarnings("serial")
 public class FirmeForm extends AbstractFormWithLocationWidgets {
 
-    public static final String ABEILLE_FILENAME = "forms/firme.xml";
     public static final String ABEILLE_RECONOCIMIENTOS_FILENAME = "forms/firme_reconocimiento_estado.xml";
     public static final String ABEILLE_TRABAJOS_FILENAME = "forms/firme_trabajos.xml";
+    public static final String TABLENAME = "firme";
 
     JTextField firmeIDWidget;
     CalculateComponentValue firmeid;
@@ -241,17 +241,6 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getFormBodyPath() {
-	return ABEILLE_FILENAME;
-    }
-
-    @Override
-    public String getXMLPath() {
-	return this.getClass().getClassLoader()
-		.getResource("rules/firme_metadata.xml").getPath();
-    }
-
-    @Override
     public JTable getReconocimientosJTable() {
 	// TODO Auto-generated method stub
 	return null;
@@ -280,7 +269,7 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 
     @Override
     protected String getBasicName() {
-	return "Firme";
+	return TABLENAME;
     }
 
     @Override

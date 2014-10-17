@@ -6,15 +6,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-
-import org.apache.log4j.Logger;
 
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
@@ -28,9 +25,9 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 @SuppressWarnings("serial")
 public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
 
-    public static final String ABEILLE_FILENAME = "forms/pasos_mediana.xml";
     public static final String ABEILLE_RECONOCIMIENTOS_FILENAME = "forms/pasos_mediana_reconocimiento_estado.xml";
     public static final String ABEILLE_TRABAJOS_FILENAME = "forms/pasos_mediana_trabajos.xml";
+    public static final String TABLENAME = "pasos_mediana";
 
     JTextField pasoMedianaIDWidget;
     CalculateComponentValue pasoMedianaid;
@@ -233,21 +230,6 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
 	}
     }
 
-
-    @Override
-    public String getFormBodyPath() {
-	return ABEILLE_FILENAME;
-    }
-    @Override
-    public Logger getLoggerName() {
-	return Logger.getLogger(this.getClass().getName());
-    }
-    @Override
-    public String getXMLPath() {
-	return this.getClass().getClassLoader()
-		.getResource("rules/pasos_mediana_metadata.xml")
-		.getPath();
-    }
     @Override
     public JTable getReconocimientosJTable() {
 	// TODO Auto-generated method stub
@@ -275,7 +257,7 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
 
     @Override
     protected String getBasicName() {
-	return "Pasos Mediana";
+	return TABLENAME;
     }
 
     @Override

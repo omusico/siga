@@ -2,7 +2,6 @@ package es.icarto.gvsig.extgia.forms.valla_cierre;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JComboBox;
@@ -10,8 +9,6 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-
-import org.apache.log4j.Logger;
 
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
@@ -25,9 +22,9 @@ import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.Dependent
 @SuppressWarnings("serial")
 public class VallaCierreForm extends AbstractFormWithLocationWidgets {
 
-    public static final String ABEILLE_FILENAME = "forms/valla_cierre.xml";
     public static final String ABEILLE_RECONOCIMIENTOS_FILENAME = "forms/valla_cierre_reconocimiento_estado.xml";
     public static final String ABEILLE_TRABAJOS_FILENAME = "forms/valla_cierre_trabajos.xml";
+    public static final String TABLENAME = "valla_cierre";
 
     JTextField vallaCierreIDWidget;
     CalculateComponentValue vallaCierreid;
@@ -226,23 +223,6 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getFormBodyPath() {
-	return ABEILLE_FILENAME;
-    }
-
-    @Override
-    public Logger getLoggerName() {
-	return Logger.getLogger(this.getClass().getName());
-    }
-
-    @Override
-    public String getXMLPath() {
-	return this.getClass().getClassLoader()
-		.getResource("rules/valla_cierre_metadata.xml")
-		.getPath();
-    }
-
-    @Override
     public JTable getReconocimientosJTable() {
 	// TODO Auto-generated method stub
 	return null;
@@ -272,7 +252,7 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
 
     @Override
     protected String getBasicName() {
-	return "Valla Cierre";
+	return TABLENAME;
     }
 
     @Override

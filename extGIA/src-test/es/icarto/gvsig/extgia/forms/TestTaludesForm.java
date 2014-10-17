@@ -1,22 +1,18 @@
 package es.icarto.gvsig.extgia.forms;
 
 import es.icarto.gvsig.extgia.forms.taludes.TaludesForm;
-import es.icarto.gvsig.extgia.navtableforms.CommonMethodsForTestDBForms;
+import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.navtableforms.CommonMethodsForTestDBForms;
 
 public class TestTaludesForm extends CommonMethodsForTestDBForms {
 
     @Override
-    protected String getAbeilleForm() {
-	return TaludesForm.ABEILLE_FILENAME;
+    protected String getSchema() {
+	return DBFieldNames.GIA_SCHEMA;
     }
 
     @Override
-    protected String getTable() {
-	return "taludes";
-    }
-
-    @Override
-    protected String getXmlFile() {
-	return "rules/taludes_metadata.xml";
+    protected String getTableName() {
+	return TaludesForm.TABLENAME;
     }
 }

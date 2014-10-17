@@ -7,7 +7,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JCheckBox;
@@ -17,8 +16,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-
-import org.apache.log4j.Logger;
 
 import com.iver.andami.Launcher;
 import com.iver.andami.PluginServices;
@@ -39,9 +36,9 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 @SuppressWarnings("serial")
 public class TaludesForm extends AbstractFormWithLocationWidgets {
 
-    public static String ABEILLE_FILENAME = "forms/taludes.xml";
     public static final String ABEILLE_RECONOCIMIENTOS_FILENAME = "forms/taludes_reconocimiento_estado.xml";
     public static final String ABEILLE_TRABAJOS_FILENAME = "forms/taludes_trabajos.xml";
+    public static final String TABLENAME = "taludes";
 
     JComboBox tipoTaludWidget;
     JTextField numeroTaludWidget;
@@ -70,11 +67,6 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 
     public TaludesForm(FLyrVect layer) {
 	super(layer);
-    }
-
-    @Override
-    public String getFormBodyPath() {
-	return ABEILLE_FILENAME;
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -139,18 +131,6 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	//	if (printReportB != null) {
 	//	    actionsToolBar.add(printReportB);
 	//	}
-    }
-
-    @Override
-    public String getXMLPath() {
-	return this.getClass().getClassLoader()
-		.getResource("rules/taludes_metadata.xml")
-		.getPath();
-    }
-
-    @Override
-    public Logger getLoggerName() {
-	return Logger.getLogger(this.getClass().getName());
     }
 
     @Override
@@ -407,7 +387,7 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 
     @Override
     protected String getBasicName() {
-	return "Taludes";
+	return TABLENAME;
     }
 
     @Override

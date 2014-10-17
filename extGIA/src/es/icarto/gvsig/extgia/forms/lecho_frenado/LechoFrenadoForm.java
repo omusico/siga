@@ -13,8 +13,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
-
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
@@ -27,9 +25,9 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 @SuppressWarnings("serial")
 public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
 
-    public static String ABEILLE_FILENAME = "forms/lecho_frenado.xml";
     public static final String ABEILLE_RECONOCIMIENTOS_FILENAME = "forms/lecho_frenado_reconocimiento_estado.xml";
     public static final String ABEILLE_TRABAJOS_FILENAME = "forms/lecho_frenado_trabajos.xml";
+    public static final String TABLENAME = "lecho_frenado";
 
     JTextField lechoFrenadoIDWidget;
     CalculateComponentValue lechoFrenadoid;
@@ -243,22 +241,6 @@ public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getFormBodyPath() {
-	return ABEILLE_FILENAME;
-    }
-
-    @Override
-    public Logger getLoggerName() {
-	return Logger.getLogger(this.getClass().getName());
-    }
-
-    @Override
-    public String getXMLPath() {
-	return this.getClass().getClassLoader()
-		.getResource("rules/lecho_frenado_metadata.xml").getPath();
-    }
-
-    @Override
     public JTable getReconocimientosJTable() {
 	// TODO Auto-generated method stub
 	return null;
@@ -303,7 +285,7 @@ public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
 
     @Override
     protected String getBasicName() {
-	return "Lecho Frenado";
+	return TABLENAME;
     }
 
     @Override
