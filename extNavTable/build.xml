@@ -11,7 +11,6 @@
 		<tstamp />
 		<mkdir dir="${build}" />
 		<mkdir dir="${dist}" />
-		<mkdir dir="${dist}/lib" />
 	</target>
 	
 	<target name="generate-without-source" depends="init, create-jar, copy-data-files, move-to-andami">
