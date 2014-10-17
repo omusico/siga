@@ -19,7 +19,7 @@
 	    <mkdir dir="${build}"/>
 	    <mkdir dir="${dist}"/>
 	  	<mkdir dir="${dist}/lib"/>
-  		<mkdir dir="${dist}/data"/>
+  		<mkdir dir="${dist}/rules"/>
   	</target>
 	
 	<target name="compile" depends="init">
@@ -33,8 +33,8 @@
 	</target>
 	
 	<target name="copy-data-files">
-		<copy todir="${dist}/data">
-			<fileset dir="data" includes="*" />
+		<copy todir="${dist}/rules">
+			<fileset dir="rules" includes="*" />
 		</copy>
 		<copy file="config/config.xml" todir="${dist}"/>
 		<copy todir="${dist}">

@@ -811,6 +811,11 @@ public class FormExpropiations extends BasicAbstractForm implements
     public String getBasicName() {
 	return TABLENAME;
     }
+    
+    @Override
+    protected String getSchema() {
+	return DBNames.SCHEMA_DATA;
+    }
 
     @Override
     public void tableChanged(TableModelEvent e) {

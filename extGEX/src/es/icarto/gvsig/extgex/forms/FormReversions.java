@@ -260,6 +260,11 @@ public class FormReversions extends BasicAbstractForm implements
     public String getBasicName() {
 	return TABLENAME;
     }
+    
+    @Override
+    protected String getSchema() {
+	return DBNames.SCHEMA_DATA;
+    }
 
     @Override
     public void tableChanged(TableModelEvent arg0) {
@@ -272,5 +277,7 @@ public class FormReversions extends BasicAbstractForm implements
     protected boolean showWarning() {
 	return true;
     }
+
+
 
 }

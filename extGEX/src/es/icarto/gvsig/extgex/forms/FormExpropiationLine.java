@@ -6,6 +6,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.image.ImageComponent;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
+import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.navtableforms.BasicAbstractForm;
 
 @SuppressWarnings("serial")
@@ -30,6 +31,11 @@ public class FormExpropiationLine extends BasicAbstractForm {
     @Override
     public String getBasicName() {
 	return TABLENAME;
+    }
+    
+    @Override
+    protected String getSchema() {
+	return DBNames.SCHEMA_DATA;
     }
 
 }
