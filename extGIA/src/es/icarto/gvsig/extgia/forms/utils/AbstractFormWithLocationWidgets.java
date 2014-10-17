@@ -464,6 +464,11 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 	new ShowImageAction(imageComponent, addImageButton,
 		getImagesDBTableName(), getElementID(), getElementIDValue());
     }
+    
+    @Override
+    protected String getSchema() {
+        return DBFieldNames.GIA_SCHEMA;
+    }
 
     public abstract String getElement();
 
