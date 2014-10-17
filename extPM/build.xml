@@ -19,7 +19,7 @@
 		<mkdir dir="${build}"/>
 		<mkdir dir="${dist}"/>
 		<mkdir dir="${dist}/lib"/>
-		<mkdir dir="${dist}/data"/>
+		<mkdir dir="${dist}/rules"/>
 	</target>
 	
 	<target name="compile" depends="init">
@@ -33,9 +33,11 @@
 	</target>
 	
 	<target name="copy-data-files">
-		<copy file="data/exp_pm.xml" todir="${dist}/data" overwrite="yes"/>
+		<copy file="rules/exp_pm.xml" todir="${dist}/rules" overwrite="yes"/>
 		<copy file="config/config.xml" todir="${dist}"/>
-		<copy file="config/text_es.properties" todir="${dist}"/>
+		<copy todir="${dist}">
+			<fileset dir="config" includes="*.properties" />
+		</copy>
 		<copy todir="${dist}/images">
 			<fileset dir="images" includes="*" />
 		</copy>

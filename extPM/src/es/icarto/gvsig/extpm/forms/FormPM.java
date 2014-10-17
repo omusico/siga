@@ -41,6 +41,7 @@ public class FormPM extends BasicAbstractForm {
 
     NavTableComponentsFilesLinkButton ntFilesLinkButton;
     NavTableComponentsPrintButton ntPrintButton;
+    private JButton openWebBt;
 
     public FormPM(FLyrVect layer, boolean newRegister, int insertedRow) {
 	super(layer);
@@ -61,6 +62,11 @@ public class FormPM extends BasicAbstractForm {
 		Preferences.PM_FIELD_NUMEROPM, numeroPM.getText());
 	printReportB.setName("printButton");
 
+	if (openWebBt == null) {
+	    openWebBt = new JButton(new OpenWebForm(this, "pm"));
+	    actionsToolBar.add(openWebBt);	    
+	}
+	
 	if (printReportB != null) {
 	    for (int i = 0; i < this.getActionsToolBar().getComponents().length; i++) {
 		if (getActionsToolBar().getComponents()[i].getName() != null) {
@@ -79,8 +85,7 @@ public class FormPM extends BasicAbstractForm {
 	if (filesLinkB != null && ntFilesLinkButton == null) {
 	    actionsToolBar.add(filesLinkB);
 	}
-
-	actionsToolBar.add(new JButton(new OpenWebForm(this, "pm")));
+	
 
 	this.getActionsToolBar().remove(saveB);
 	this.getActionsToolBar().remove(removeB);
@@ -204,5 +209,10 @@ public class FormPM extends BasicAbstractForm {
     @Override
     protected String getBasicName() {
 	return "exp_pm";
+    }
+    
+    @Override
+    protected String getSchema() {
+	return Preferences.PM_SCHEMA;
     }
 }
