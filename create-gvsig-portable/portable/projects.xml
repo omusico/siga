@@ -48,13 +48,10 @@
 		extTableImport,
 		org.gvsig.installer.app.extension
 	"/>
-	
-	
-	<property name="gvSIG_dist_projects_on_other_svn" value="
-		extNavTable
-	"/>
-	
+		
 	<property name="custom-projects" value="
+		es.icarto.gvsig.commons,
+		extNavTable,
 		extMapSheets,
 		extDBConnection,
 		extELLE,
@@ -67,7 +64,6 @@
 		
 	<property name="gvSIG_dist" value="
 		${gvSIG_dist_projects_on_main_svn},
-		${gvSIG_dist_projects_on_other_svn},
 		${custom-projects}
 	"/>
 
