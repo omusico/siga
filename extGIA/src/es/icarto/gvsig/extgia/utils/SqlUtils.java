@@ -20,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
 import com.hardcode.gdbms.engine.values.Value;
 import com.hardcode.gdbms.engine.values.ValueFactory;
 
+import es.icarto.gvsig.commons.gui.tables.NotEditableTableModel;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 import es.udc.cartolab.gvsig.navtable.format.DoubleFormatNT;
@@ -139,13 +140,7 @@ public class SqlUtils {
     public static void createEmbebedTableFromDB (JTable embebedTableWidget, String schema,
 	    String tablename, String[] fields, int[] columnsSize, String idField, String idValue, String orderBy) {
 	ArrayList<String> columnsName = new ArrayList<String>();
-	@SuppressWarnings("serial")
-	DefaultTableModel tableModel = new DefaultTableModel() {
-	    @Override
-	    public boolean isCellEditable(int row, int column) {
-		return false;
-	    }
-	};
+	DefaultTableModel tableModel = new NotEditableTableModel();
 	PreparedStatement statement;
 	String query = "SELECT ";
 	for (int i=0; i<fields.length-1; i++) {
