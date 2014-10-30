@@ -127,7 +127,7 @@ public class LaunchGIAForms {
 	    }
 	    break;
 	case Areas_Peaje:
-	    final AreasPeajeForm areasPeajeForm = new AreasPeajeForm(layer);
+	    final AbstractFormWithLocationWidgets areasPeajeForm = new AreasPeajeForm(layer);
 	    if (areasPeajeForm.init()) {
 		PluginServices.getMDIManager().addWindow(areasPeajeForm);
 	    }

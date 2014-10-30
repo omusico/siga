@@ -153,17 +153,6 @@ public class ObrasPasoForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getReconocimientosDBTableName() {
-	// TODO Auto-generated method stub
-	return null;
-    }
-
-    @Override
-    public String getTrabajosDBTableName() {
-	return "obras_paso_trabajos";
-    }
-
-    @Override
     public boolean isSpecialCase() {
 	// TODO Auto-generated method stub
 	return false;

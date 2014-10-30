@@ -353,16 +353,6 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getReconocimientosDBTableName() {
-	return "taludes_reconocimientos";
-    }
-
-    @Override
-    public String getTrabajosDBTableName() {
-	return "taludes_trabajos";
-    }
-
-    @Override
     public boolean isSpecialCase() {
 	// TODO Auto-generated method stub
 	return false;

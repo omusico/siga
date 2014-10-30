@@ -234,16 +234,6 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getReconocimientosDBTableName() {
-	return "firme_reconocimientos";
-    }
-
-    @Override
-    public String getTrabajosDBTableName() {
-	return "firme_trabajos";
-    }
-
-    @Override
     public boolean isSpecialCase() {
 	return true;
     }

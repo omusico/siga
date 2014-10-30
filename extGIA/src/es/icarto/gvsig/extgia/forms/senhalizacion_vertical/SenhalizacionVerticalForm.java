@@ -297,16 +297,6 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getReconocimientosDBTableName() {
-	return "senhalizacion_vertical_reconocimientos";
-    }
-
-    @Override
-    public String getTrabajosDBTableName() {
-	return "senhalizacion_vertical_trabajos";
-    }
-
-    @Override
     public boolean isSpecialCase() {
 	// TODO Auto-generated method stub
 	return false;

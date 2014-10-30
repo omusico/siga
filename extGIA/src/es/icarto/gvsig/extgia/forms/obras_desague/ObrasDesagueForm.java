@@ -153,17 +153,6 @@ public class ObrasDesagueForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getReconocimientosDBTableName() {
-	// TODO Auto-generated method stub
-	return null;
-    }
-
-    @Override
-    public String getTrabajosDBTableName() {
-	return "obras_desague_trabajos";
-    }
-
-    @Override
     public boolean isSpecialCase() {
 	// TODO Auto-generated method stub
 	return false;

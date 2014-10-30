@@ -269,16 +269,6 @@ public class LineasSuministroForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getReconocimientosDBTableName() {
-	return "lineas_suministro_reconocimientos";
-    }
-
-    @Override
-    public String getTrabajosDBTableName() {
-	return "lineas_suministro_trabajos";
-    }
-
-    @Override
     public String getImagesDBTableName() {
 	return "lineas_suministro_imagenes";
     }

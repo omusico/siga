@@ -477,7 +477,14 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
     protected String getTrabajosFormFileName() {
 	return "forms/" + getBasicName() + "_trabajos.jfrm";
     }
+    
+    public String getReconocimientosDBTableName() {
+        return getBasicName() + "_reconocimientos";
+    }
 
+    public String getTrabajosDBTableName() {
+        return getBasicName() + "_trabajos";
+    }
 
     public abstract String getElement();
 
@@ -488,10 +495,6 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
     public abstract JTable getReconocimientosJTable();
 
     public abstract JTable getTrabajosJTable();
-
-    public abstract String getReconocimientosDBTableName();
-
-    public abstract String getTrabajosDBTableName();
 
     public abstract String getImagesDBTableName();
 
@@ -508,7 +511,7 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
     protected abstract String getBasicName();
 
     protected abstract boolean hasSentido();
-    
+
     public class DeleteReconocimientoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {

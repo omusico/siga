@@ -218,16 +218,6 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getReconocimientosDBTableName() {
-	return "valla_cierre_reconocimientos";
-    }
-
-    @Override
-    public String getTrabajosDBTableName() {
-	return "valla_cierre_trabajos";
-    }
-
-    @Override
     public boolean isSpecialCase() {
 	// TODO Auto-generated method stub
 	return false;

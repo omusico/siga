@@ -224,15 +224,6 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
 	return null;
     }
     @Override
-    public String getReconocimientosDBTableName() {
-	return "pasos_mediana_reconocimientos";
-    }
-    @Override
-    public String getTrabajosDBTableName() {
-	return "pasos_mediana_trabajos";
-    }
-
-    @Override
     public boolean isSpecialCase() {
 	// TODO Auto-generated method stub
 	return false;

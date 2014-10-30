@@ -234,16 +234,6 @@ public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getReconocimientosDBTableName() {
-	return "lecho_frenado_reconocimientos";
-    }
-
-    @Override
-    public String getTrabajosDBTableName() {
-	return "lecho_frenado_trabajos";
-    }
-
-    @Override
     public String getImagesDBTableName() {
 	return "lecho_frenado_imagenes";
     }

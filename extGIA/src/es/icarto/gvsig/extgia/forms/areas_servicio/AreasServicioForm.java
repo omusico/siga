@@ -313,17 +313,6 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getReconocimientosDBTableName() {
-	return "areas_servicio_reconocimientos";
-    }
-
-    @Override
-    public String getTrabajosDBTableName() {
-	return "areas_servicio_trabajos";
-
-    }
-
-    @Override
     public boolean isSpecialCase() {
 	// TODO Auto-generated method stub
 	return false;

@@ -245,16 +245,6 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getReconocimientosDBTableName() {
-	return "barrera_rigida_reconocimientos";
-    }
-
-    @Override
-    public String getTrabajosDBTableName() {
-	return "barrera_rigida_trabajos";
-    }
-
-    @Override
     public boolean isSpecialCase() {
 	// TODO Auto-generated method stub
 	return false;

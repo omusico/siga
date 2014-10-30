@@ -332,16 +332,6 @@ public class AreasPeajeForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getReconocimientosDBTableName() {
-	return "areas_peaje_reconocimientos";
-    }
-
-    @Override
-    public String getTrabajosDBTableName() {
-	return "areas_peaje_trabajos";
-    }
-
-    @Override
     public String getImagesDBTableName() {
 	return "areas_peaje_imagenes";
     }

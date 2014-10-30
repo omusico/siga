@@ -314,17 +314,6 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getReconocimientosDBTableName() {
-	return "areas_descanso_reconocimientos";
-    }
-
-    @Override
-    public String getTrabajosDBTableName() {
-	return "areas_descanso_trabajos";
-
-    }
-
-    @Override
     public boolean isSpecialCase() {
 	return false;
     }

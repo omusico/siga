@@ -333,17 +333,6 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getReconocimientosDBTableName() {
-	return "enlaces_reconocimientos";
-    }
-
-    @Override
-    public String getTrabajosDBTableName() {
-	// TODO Auto-generated method stub
-	return null;
-    }
-
-    @Override
     public boolean isSpecialCase() {
 	// TODO Auto-generated method stub
 	return false;

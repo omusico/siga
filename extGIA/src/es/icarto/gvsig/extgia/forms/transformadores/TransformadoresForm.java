@@ -261,16 +261,6 @@ public class TransformadoresForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getReconocimientosDBTableName() {
-	return "transformadores_reconocimientos";
-    }
-
-    @Override
-    public String getTrabajosDBTableName() {
-	return "transformadores_trabajos";
-    }
-
-    @Override
     public String getImagesDBTableName() {
 	return "transformadores_imagenes";
     }

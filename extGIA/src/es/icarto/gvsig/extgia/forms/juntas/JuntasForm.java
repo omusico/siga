@@ -209,16 +209,6 @@ public class JuntasForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getReconocimientosDBTableName() {
-	return "juntas_reconocimientos";
-    }
-
-    @Override
-    public String getTrabajosDBTableName() {
-	return "juntas_trabajos";
-    }
-
-    @Override
     public boolean isSpecialCase() {
 	// TODO Auto-generated method stub
 	return false;

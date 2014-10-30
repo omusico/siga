@@ -240,16 +240,6 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getReconocimientosDBTableName() {
-	return "isletas_reconocimientos";
-    }
-
-    @Override
-    public String getTrabajosDBTableName() {
-	return "isletas_trabajos";
-    }
-
-    @Override
     public boolean isSpecialCase() {
 	// TODO Auto-generated method stub
 	return false;
