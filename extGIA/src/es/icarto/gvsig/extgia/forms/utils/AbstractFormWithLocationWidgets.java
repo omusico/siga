@@ -469,6 +469,15 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
     protected String getSchema() {
         return DBFieldNames.GIA_SCHEMA;
     }
+    
+    protected String getReconocimientosFormFileName() {
+	return "forms/" + getBasicName() + "_reconocimientos.jfrm";
+    }
+
+    protected String getTrabajosFormFileName() {
+	return "forms/" + getBasicName() + "_trabajos.jfrm";
+    }
+
 
     public abstract String getElement();
 
@@ -485,10 +494,6 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
     public abstract String getTrabajosDBTableName();
 
     public abstract String getImagesDBTableName();
-
-    public abstract String getReconocimientosFormFileName();
-
-    public abstract String getTrabajosFormFileName();
 
     public String getReconocimientosIDField() {
 	return "n_inspeccion";

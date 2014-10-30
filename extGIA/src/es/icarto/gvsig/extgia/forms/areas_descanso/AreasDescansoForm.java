@@ -26,8 +26,6 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 @SuppressWarnings("serial")
 public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 
-    public static final String ABEILLE_RECONOCIMIENTOS_FILENAME = "forms/areas_descanso_reconocimiento_estado.xml";
-    public static final String ABEILLE_TRABAJOS_FILENAME = "forms/areas_descanso_trabajos.xml";
     public static final String ABEILLE_RAMALES_FILENAME = "forms/areas_descanso_ramales.xml";
     public static final String TABLENAME = "areas_descanso";
 
@@ -190,7 +188,7 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    AreasDescansoReconocimientosSubForm subForm = new AreasDescansoReconocimientosSubForm(
-		    ABEILLE_RECONOCIMIENTOS_FILENAME,
+		    getReconocimientosFormFileName(),
 		    getReconocimientosDBTableName(), reconocimientoEstado,
 		    "id_area_descanso", areaDescansoIDWidget.getText(), null,
 		    null, false);
@@ -202,7 +200,7 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    AreasDescansoTrabajosSubForm subForm = new AreasDescansoTrabajosSubForm(
-		    ABEILLE_TRABAJOS_FILENAME, getTrabajosDBTableName(),
+		    getTrabajosFormFileName(), getTrabajosDBTableName(),
 		    trabajos, "id_area_descanso",
 		    areaDescansoIDWidget.getText(), null, null, false);
 	    PluginServices.getMDIManager().addWindow(subForm);
@@ -226,7 +224,7 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 	    if (reconocimientoEstado.getSelectedRowCount() != 0) {
 		int row = reconocimientoEstado.getSelectedRow();
 		AreasDescansoReconocimientosSubForm subForm = new AreasDescansoReconocimientosSubForm(
-			ABEILLE_RECONOCIMIENTOS_FILENAME,
+			getReconocimientosFormFileName(),
 			getReconocimientosDBTableName(), reconocimientoEstado,
 			"id_area_descanso", areaDescansoIDWidget.getText(),
 			"n_inspeccion", reconocimientoEstado.getValueAt(row, 0)
@@ -247,7 +245,7 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 	    if (trabajos.getSelectedRowCount() != 0) {
 		int row = trabajos.getSelectedRow();
 		AreasDescansoTrabajosSubForm subForm = new AreasDescansoTrabajosSubForm(
-			ABEILLE_TRABAJOS_FILENAME, getTrabajosDBTableName(),
+			getTrabajosFormFileName(), getTrabajosDBTableName(),
 			trabajos, "id_area_descanso",
 			areaDescansoIDWidget.getText(), "id_trabajo", trabajos
 				.getValueAt(row, 0).toString(), true);
@@ -339,16 +337,6 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
     @Override
     public String getElement() {
 	return DBFieldNames.Elements.Areas_Descanso.name();
-    }
-
-    @Override
-    public String getReconocimientosFormFileName() {
-	return ABEILLE_RECONOCIMIENTOS_FILENAME;
-    }
-
-    @Override
-    public String getTrabajosFormFileName() {
-	return ABEILLE_TRABAJOS_FILENAME;
     }
 
     @Override

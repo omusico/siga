@@ -22,7 +22,6 @@ import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.Dependent
 @SuppressWarnings("serial")
 public class ObrasDesagueForm extends AbstractFormWithLocationWidgets {
 
-    public static final String ABEILLE_TRABAJOS_FILENAME = "forms/obras_desague_trabajos.xml";
     public static final String TABLENAME = "obras_desague";
 
     JTextField obraDesagueIDWidget;
@@ -100,7 +99,7 @@ public class ObrasDesagueForm extends AbstractFormWithLocationWidgets {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    ObrasDesagueTrabajosSubForm subForm = new ObrasDesagueTrabajosSubForm(
-		    ABEILLE_TRABAJOS_FILENAME,
+		    getTrabajosFormFileName(),
 		    getTrabajosDBTableName(),
 		    trabajos,
 		    "id_obra_desague",
@@ -118,7 +117,7 @@ public class ObrasDesagueForm extends AbstractFormWithLocationWidgets {
 	    if (trabajos.getSelectedRowCount() != 0) {
 		int row = trabajos.getSelectedRow();
 		ObrasDesagueTrabajosSubForm subForm = new ObrasDesagueTrabajosSubForm(
-			ABEILLE_TRABAJOS_FILENAME,
+			getTrabajosFormFileName(),
 			getTrabajosDBTableName(),
 			trabajos,
 			"id_obra_desague",
@@ -170,17 +169,6 @@ public class ObrasDesagueForm extends AbstractFormWithLocationWidgets {
     @Override
     public String getTrabajosDBTableName() {
 	return "obras_desague_trabajos";
-    }
-
-    @Override
-    public String getReconocimientosFormFileName() {
-	// TODO Auto-generated method stub
-	return null;
-    }
-
-    @Override
-    public String getTrabajosFormFileName() {
-	return ABEILLE_TRABAJOS_FILENAME;
     }
 
     @Override

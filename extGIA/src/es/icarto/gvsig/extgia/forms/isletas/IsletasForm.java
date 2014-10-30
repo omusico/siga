@@ -27,8 +27,6 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 @SuppressWarnings("serial")
 public class IsletasForm extends AbstractFormWithLocationWidgets {
 
-    public static final String ABEILLE_RECONOCIMIENTOS_FILENAME = "forms/isletas_reconocimiento_estado.xml";
-    public static final String ABEILLE_TRABAJOS_FILENAME = "forms/isletas_trabajos.xml";
     public static final String TABLENAME = "isletas";
 
     JComboBox tipoIsletaWidget;
@@ -152,7 +150,7 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    IsletasReconocimientosSubForm subForm =
 		    new IsletasReconocimientosSubForm(
-			    ABEILLE_RECONOCIMIENTOS_FILENAME,
+			    getReconocimientosFormFileName(),
 			    getReconocimientosDBTableName(),
 			    reconocimientoEstado,
 			    "id_isleta",
@@ -168,7 +166,7 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    IsletasTrabajosSubForm subForm = new IsletasTrabajosSubForm(
-		    ABEILLE_TRABAJOS_FILENAME,
+		    getTrabajosFormFileName(),
 		    getTrabajosDBTableName(),
 		    trabajos,
 		    "id_isleta",
@@ -187,7 +185,7 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 		int row = reconocimientoEstado.getSelectedRow();
 		IsletasReconocimientosSubForm subForm =
 			new IsletasReconocimientosSubForm(
-				ABEILLE_RECONOCIMIENTOS_FILENAME,
+				getReconocimientosFormFileName(),
 				getReconocimientosDBTableName(),
 				reconocimientoEstado,
 				"id_isleta",
@@ -211,7 +209,7 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 	    if (trabajos.getSelectedRowCount() != 0) {
 		int row = trabajos.getSelectedRow();
 		IsletasTrabajosSubForm subForm = new IsletasTrabajosSubForm(
-			ABEILLE_TRABAJOS_FILENAME,
+			getTrabajosFormFileName(),
 			getTrabajosDBTableName(),
 			trabajos,
 			"id_isleta",
@@ -280,16 +278,6 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
     @Override
     public String getElement() {
 	return DBFieldNames.Elements.Isletas.name();
-    }
-
-    @Override
-    public String getReconocimientosFormFileName() {
-	return ABEILLE_RECONOCIMIENTOS_FILENAME;
-    }
-
-    @Override
-    public String getTrabajosFormFileName() {
-	return ABEILLE_TRABAJOS_FILENAME;
     }
 
     @Override

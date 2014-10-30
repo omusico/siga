@@ -25,8 +25,6 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 @SuppressWarnings("serial")
 public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
 
-    public static final String ABEILLE_RECONOCIMIENTOS_FILENAME = "forms/pasos_mediana_reconocimiento_estado.xml";
-    public static final String ABEILLE_TRABAJOS_FILENAME = "forms/pasos_mediana_trabajos.xml";
     public static final String TABLENAME = "pasos_mediana";
 
     JTextField pasoMedianaIDWidget;
@@ -138,7 +136,7 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    PasosMedianaReconocimientosSubForm subForm =
 		    new PasosMedianaReconocimientosSubForm(
-			    ABEILLE_RECONOCIMIENTOS_FILENAME,
+			    getReconocimientosFormFileName(),
 			    getReconocimientosDBTableName(),
 			    reconocimientoEstado,
 			    "id_paso_mediana",
@@ -154,7 +152,7 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    PasosMedianaTrabajosSubForm subForm = new PasosMedianaTrabajosSubForm(
-		    ABEILLE_TRABAJOS_FILENAME,
+		    getTrabajosFormFileName(),
 		    getTrabajosDBTableName(),
 		    trabajos,
 		    "id_paso_mediana",
@@ -173,7 +171,7 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
 		int row = reconocimientoEstado.getSelectedRow();
 		PasosMedianaReconocimientosSubForm subForm =
 			new PasosMedianaReconocimientosSubForm(
-				ABEILLE_RECONOCIMIENTOS_FILENAME,
+				getReconocimientosFormFileName(),
 				getReconocimientosDBTableName(),
 				reconocimientoEstado,
 				"id_paso_mediana",
@@ -197,7 +195,7 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
 	    if (trabajos.getSelectedRowCount() != 0) {
 		int row = trabajos.getSelectedRow();
 		PasosMedianaTrabajosSubForm subForm = new PasosMedianaTrabajosSubForm(
-			ABEILLE_TRABAJOS_FILENAME,
+			getTrabajosFormFileName(),
 			getTrabajosDBTableName(),
 			trabajos,
 			"id_paso_mediana",
@@ -263,16 +261,6 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
     @Override
     public String getElement() {
 	return DBFieldNames.Elements.Pasos_Mediana.name();
-    }
-
-    @Override
-    public String getReconocimientosFormFileName() {
-	return ABEILLE_RECONOCIMIENTOS_FILENAME;
-    }
-
-    @Override
-    public String getTrabajosFormFileName() {
-	return ABEILLE_TRABAJOS_FILENAME;
     }
 
     @Override

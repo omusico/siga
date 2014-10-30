@@ -25,8 +25,6 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 @SuppressWarnings("serial")
 public class SenhalizacionVariableForm extends AbstractFormWithLocationWidgets {
 
-    public static final String ABEILLE_RECONOCIMIENTOS_FILENAME = "forms/senhalizacion_variable_reconocimiento_estado.xml";
-    public static final String ABEILLE_TRABAJOS_FILENAME = "forms/senhalizacion_variable_trabajos.xml";
     public static final String TABLENAME = "senhalizacion_variable";
 
     JTextField senhalizacionVariableIDWidget;
@@ -144,7 +142,7 @@ public class SenhalizacionVariableForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    SenhalizacionVariableReconocimientosSubForm subForm =
 		    new SenhalizacionVariableReconocimientosSubForm(
-			    ABEILLE_RECONOCIMIENTOS_FILENAME,
+			    getReconocimientosFormFileName(),
 			    getReconocimientosDBTableName(),
 			    reconocimientoEstado,
 			    getElementID(),
@@ -161,7 +159,7 @@ public class SenhalizacionVariableForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    SenhalizacionVariableTrabajosSubForm subForm =
 		    new SenhalizacionVariableTrabajosSubForm(
-			    ABEILLE_TRABAJOS_FILENAME,
+			    getTrabajosFormFileName(),
 			    getTrabajosDBTableName(),
 			    trabajos,
 			    getElementID(),
@@ -182,7 +180,7 @@ public class SenhalizacionVariableForm extends AbstractFormWithLocationWidgets {
 		int row = reconocimientoEstado.getSelectedRow();
 		SenhalizacionVariableReconocimientosSubForm subForm =
 			new SenhalizacionVariableReconocimientosSubForm(
-				ABEILLE_RECONOCIMIENTOS_FILENAME,
+				getReconocimientosFormFileName(),
 				getReconocimientosDBTableName(),
 				reconocimientoEstado,
 				getElementID(),
@@ -207,7 +205,7 @@ public class SenhalizacionVariableForm extends AbstractFormWithLocationWidgets {
 		int row = trabajos.getSelectedRow();
 		SenhalizacionVariableTrabajosSubForm subForm =
 			new SenhalizacionVariableTrabajosSubForm(
-				ABEILLE_TRABAJOS_FILENAME,
+				getTrabajosFormFileName(),
 				getTrabajosDBTableName(),
 				trabajos,
 				getElementID(),
@@ -282,16 +280,6 @@ public class SenhalizacionVariableForm extends AbstractFormWithLocationWidgets {
     @Override
     public String getImagesDBTableName() {
 	return "senhalizacion_variable_imagenes";
-    }
-
-    @Override
-    public String getReconocimientosFormFileName() {
-	return ABEILLE_RECONOCIMIENTOS_FILENAME;
-    }
-
-    @Override
-    public String getTrabajosFormFileName() {
-	return ABEILLE_TRABAJOS_FILENAME;
     }
 
     @Override

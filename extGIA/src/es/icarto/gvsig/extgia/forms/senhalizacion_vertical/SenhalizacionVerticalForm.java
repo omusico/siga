@@ -23,8 +23,6 @@ import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.Dependent
 @SuppressWarnings("serial")
 public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 
-    public static final String ABEILLE_RECONOCIMIENTOS_FILENAME = "forms/senhalizacion_vertical_reconocimiento_estado.xml";
-    public static final String ABEILLE_TRABAJOS_FILENAME = "forms/senhalizacion_vertical_trabajos.xml";
     public static final String ABEILLE_SENHALES_FILENAME = "forms/senhalizacion_vertical_senhales.xml";
     public static final String TABLENAME = "senhalizacion_vertical";
 
@@ -162,7 +160,7 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    SenhalizacionVerticalReconocimientosSubForm subForm =
 		    new SenhalizacionVerticalReconocimientosSubForm(
-			    ABEILLE_RECONOCIMIENTOS_FILENAME,
+			    getReconocimientosFormFileName(),
 			    getReconocimientosDBTableName(),
 			    reconocimientoEstado,
 			    "id_elemento_senhalizacion",
@@ -178,7 +176,7 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    SenhalizacionVerticalTrabajosSubForm subForm = new SenhalizacionVerticalTrabajosSubForm(
-		    ABEILLE_TRABAJOS_FILENAME,
+		    getTrabajosFormFileName(),
 		    getTrabajosDBTableName(),
 		    trabajos,
 		    "id_elemento_senhalizacion",
@@ -213,7 +211,7 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 		int row = reconocimientoEstado.getSelectedRow();
 		SenhalizacionVerticalReconocimientosSubForm subForm =
 			new SenhalizacionVerticalReconocimientosSubForm(
-				ABEILLE_RECONOCIMIENTOS_FILENAME,
+				getReconocimientosFormFileName(),
 				getReconocimientosDBTableName(),
 				reconocimientoEstado,
 				"id_elemento_senhalizacion",
@@ -237,7 +235,7 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 	    if (trabajos.getSelectedRowCount() != 0) {
 		int row = trabajos.getSelectedRow();
 		SenhalizacionVerticalTrabajosSubForm subForm = new SenhalizacionVerticalTrabajosSubForm(
-			ABEILLE_TRABAJOS_FILENAME,
+			getTrabajosFormFileName(),
 			getTrabajosDBTableName(),
 			trabajos,
 			"id_elemento_senhalizacion",
@@ -337,16 +335,6 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
     @Override
     public String getElement() {
 	return DBFieldNames.Elements.Senhalizacion_Vertical.name();
-    }
-
-    @Override
-    public String getReconocimientosFormFileName() {
-	return ABEILLE_RECONOCIMIENTOS_FILENAME;
-    }
-
-    @Override
-    public String getTrabajosFormFileName() {
-	return ABEILLE_TRABAJOS_FILENAME;
     }
 
     @Override

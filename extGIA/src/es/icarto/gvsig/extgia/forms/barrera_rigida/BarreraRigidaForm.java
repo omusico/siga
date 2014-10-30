@@ -27,8 +27,6 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 @SuppressWarnings("serial")
 public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 
-    public static final String ABEILLE_RECONOCIMIENTOS_FILENAME = "forms/barrera_rigida_reconocimiento_estado.xml";
-    public static final String ABEILLE_TRABAJOS_FILENAME = "forms/barrera_rigida_trabajos.xml";
     public static final String TABLENAME = "barrera_rigida";
 
     JTextField barreraRigidaIDWidget;
@@ -157,7 +155,7 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    BarreraRigidaReconocimientosSubForm subForm =
 		    new BarreraRigidaReconocimientosSubForm(
-			    ABEILLE_RECONOCIMIENTOS_FILENAME,
+			    getReconocimientosFormFileName(),
 			    getReconocimientosDBTableName(),
 			    reconocimientoEstado,
 			    "id_barrera_rigida",
@@ -173,7 +171,7 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    BarreraRigidaTrabajosSubForm subForm = new BarreraRigidaTrabajosSubForm(
-		    ABEILLE_TRABAJOS_FILENAME,
+		    getTrabajosFormFileName(),
 		    getTrabajosDBTableName(),
 		    trabajos,
 		    "id_barrera_rigida",
@@ -192,7 +190,7 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 		int row = reconocimientoEstado.getSelectedRow();
 		BarreraRigidaReconocimientosSubForm subForm =
 			new BarreraRigidaReconocimientosSubForm(
-				ABEILLE_RECONOCIMIENTOS_FILENAME,
+				getReconocimientosFormFileName(),
 				getReconocimientosDBTableName(),
 				reconocimientoEstado,
 				"id_barrera_rigida",
@@ -216,7 +214,7 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 	    if (trabajos.getSelectedRowCount() != 0) {
 		int row = trabajos.getSelectedRow();
 		BarreraRigidaTrabajosSubForm subForm = new BarreraRigidaTrabajosSubForm(
-			ABEILLE_TRABAJOS_FILENAME,
+			getTrabajosFormFileName(),
 			getTrabajosDBTableName(),
 			trabajos,
 			"id_barrera_rigida",
@@ -285,16 +283,6 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
     @Override
     public String getElement() {
 	return DBFieldNames.Elements.Barrera_Rigida.name();
-    }
-
-    @Override
-    public String getReconocimientosFormFileName() {
-	return ABEILLE_RECONOCIMIENTOS_FILENAME;
-    }
-
-    @Override
-    public String getTrabajosFormFileName() {
-	return ABEILLE_TRABAJOS_FILENAME;
     }
 
     @Override

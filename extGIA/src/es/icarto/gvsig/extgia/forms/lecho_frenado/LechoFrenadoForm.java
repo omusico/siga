@@ -25,8 +25,6 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 @SuppressWarnings("serial")
 public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
 
-    public static final String ABEILLE_RECONOCIMIENTOS_FILENAME = "forms/lecho_frenado_reconocimiento_estado.xml";
-    public static final String ABEILLE_TRABAJOS_FILENAME = "forms/lecho_frenado_trabajos.xml";
     public static final String TABLENAME = "lecho_frenado";
 
     JTextField lechoFrenadoIDWidget;
@@ -149,7 +147,7 @@ public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    LechoFrenadoReconocimientosSubForm subForm = new LechoFrenadoReconocimientosSubForm(
-		    ABEILLE_RECONOCIMIENTOS_FILENAME,
+		    getReconocimientosFormFileName(),
 		    getReconocimientosDBTableName(), reconocimientoEstado,
 		    getElementID(), getElementIDValue(), null, null, false);
 	    PluginServices.getMDIManager().addWindow(subForm);
@@ -160,7 +158,7 @@ public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    LechoFrenadoTrabajosSubForm subForm = new LechoFrenadoTrabajosSubForm(
-		    ABEILLE_TRABAJOS_FILENAME, getTrabajosDBTableName(),
+		    getTrabajosFormFileName(), getTrabajosDBTableName(),
 		    trabajos, getElementID(), getElementIDValue(), null, null,
 		    false);
 	    PluginServices.getMDIManager().addWindow(subForm);
@@ -173,7 +171,7 @@ public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
 	    if (reconocimientoEstado.getSelectedRowCount() != 0) {
 		int row = reconocimientoEstado.getSelectedRow();
 		LechoFrenadoReconocimientosSubForm subForm = new LechoFrenadoReconocimientosSubForm(
-			ABEILLE_RECONOCIMIENTOS_FILENAME,
+			getReconocimientosFormFileName(),
 			getReconocimientosDBTableName(), reconocimientoEstado,
 			getElementID(), getElementIDValue(), "n_inspeccion",
 			reconocimientoEstado.getValueAt(row, 0).toString(),
@@ -194,7 +192,7 @@ public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
 	    if (trabajos.getSelectedRowCount() != 0) {
 		int row = trabajos.getSelectedRow();
 		LechoFrenadoTrabajosSubForm subForm = new LechoFrenadoTrabajosSubForm(
-			ABEILLE_TRABAJOS_FILENAME, getTrabajosDBTableName(),
+			getTrabajosFormFileName(), getTrabajosDBTableName(),
 			trabajos, getElementID(), getElementIDValue(),
 			"id_trabajo", trabajos.getValueAt(row, 0).toString(),
 			true);
@@ -265,16 +263,6 @@ public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
     @Override
     public String getImagesDBTableName() {
 	return "lecho_frenado_imagenes";
-    }
-
-    @Override
-    public String getReconocimientosFormFileName() {
-	return ABEILLE_RECONOCIMIENTOS_FILENAME;
-    }
-
-    @Override
-    public String getTrabajosFormFileName() {
-	return ABEILLE_TRABAJOS_FILENAME;
     }
 
     @Override

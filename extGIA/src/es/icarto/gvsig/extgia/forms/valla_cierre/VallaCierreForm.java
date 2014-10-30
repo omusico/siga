@@ -22,8 +22,6 @@ import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.Dependent
 @SuppressWarnings("serial")
 public class VallaCierreForm extends AbstractFormWithLocationWidgets {
 
-    public static final String ABEILLE_RECONOCIMIENTOS_FILENAME = "forms/valla_cierre_reconocimiento_estado.xml";
-    public static final String ABEILLE_TRABAJOS_FILENAME = "forms/valla_cierre_trabajos.xml";
     public static final String TABLENAME = "valla_cierre";
 
     JTextField vallaCierreIDWidget;
@@ -130,7 +128,7 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    VallaCierreReconocimientosSubForm subForm =
 		    new VallaCierreReconocimientosSubForm(
-			    ABEILLE_RECONOCIMIENTOS_FILENAME,
+			    getReconocimientosFormFileName(),
 			    getReconocimientosDBTableName(),
 			    reconocimientoEstado,
 			    "id_valla",
@@ -146,7 +144,7 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    VallaCierreTrabajosSubForm subForm = new VallaCierreTrabajosSubForm(
-		    ABEILLE_TRABAJOS_FILENAME,
+		    getTrabajosFormFileName(),
 		    getTrabajosDBTableName(),
 		    trabajos,
 		    "id_valla",
@@ -165,7 +163,7 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
 		int row = reconocimientoEstado.getSelectedRow();
 		VallaCierreReconocimientosSubForm subForm =
 			new VallaCierreReconocimientosSubForm(
-				ABEILLE_RECONOCIMIENTOS_FILENAME,
+				getReconocimientosFormFileName(),
 				getReconocimientosDBTableName(),
 				reconocimientoEstado,
 				"id_valla",
@@ -189,7 +187,7 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
 	    if (trabajos.getSelectedRowCount() != 0) {
 		int row = trabajos.getSelectedRow();
 		VallaCierreTrabajosSubForm subForm = new VallaCierreTrabajosSubForm(
-			ABEILLE_TRABAJOS_FILENAME,
+			getTrabajosFormFileName(),
 			getTrabajosDBTableName(),
 			trabajos,
 			"id_valla",
@@ -258,16 +256,6 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
     @Override
     public String getElement() {
 	return DBFieldNames.Elements.Valla_Cierre.name();
-    }
-
-    @Override
-    public String getReconocimientosFormFileName() {
-	return ABEILLE_RECONOCIMIENTOS_FILENAME;
-    }
-
-    @Override
-    public String getTrabajosFormFileName() {
-	return ABEILLE_TRABAJOS_FILENAME;
     }
 
     @Override

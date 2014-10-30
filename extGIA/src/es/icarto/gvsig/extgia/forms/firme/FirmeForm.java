@@ -27,8 +27,6 @@ import es.icarto.gvsig.extgia.utils.SqlUtils;
 @SuppressWarnings("serial")
 public class FirmeForm extends AbstractFormWithLocationWidgets {
 
-    public static final String ABEILLE_RECONOCIMIENTOS_FILENAME = "forms/firme_reconocimiento_estado.xml";
-    public static final String ABEILLE_TRABAJOS_FILENAME = "forms/firme_trabajos.xml";
     public static final String TABLENAME = "firme";
 
     JTextField firmeIDWidget;
@@ -164,7 +162,7 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    FirmeReconocimientosSubForm subForm = new FirmeReconocimientosSubForm(
-		    ABEILLE_RECONOCIMIENTOS_FILENAME,
+		    getReconocimientosFormFileName(),
 		    getReconocimientosDBTableName(), reconocimientoEstado,
 		    "id_firme", firmeIDWidget.getText(), null, null, false);
 	    PluginServices.getMDIManager().addWindow(subForm);
@@ -175,7 +173,7 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    FirmeTrabajosSubForm subForm = new FirmeTrabajosSubForm(
-		    ABEILLE_TRABAJOS_FILENAME, getTrabajosDBTableName(),
+		    getTrabajosFormFileName(), getTrabajosDBTableName(),
 		    trabajos, "id_firme", firmeIDWidget.getText(), null, null,
 		    false);
 	    PluginServices.getMDIManager().addWindow(subForm);
@@ -188,7 +186,7 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 	    if (reconocimientoEstado.getSelectedRowCount() != 0) {
 		int row = reconocimientoEstado.getSelectedRow();
 		FirmeReconocimientosSubForm subForm = new FirmeReconocimientosSubForm(
-			ABEILLE_RECONOCIMIENTOS_FILENAME,
+			getReconocimientosFormFileName(),
 			getReconocimientosDBTableName(), reconocimientoEstado,
 			"id_firme", firmeIDWidget.getText(), "n_inspeccion",
 			reconocimientoEstado.getValueAt(row, 0).toString(),
@@ -209,7 +207,7 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 	    if (trabajos.getSelectedRowCount() != 0) {
 		int row = trabajos.getSelectedRow();
 		FirmeTrabajosSubForm subForm = new FirmeTrabajosSubForm(
-			ABEILLE_TRABAJOS_FILENAME, getTrabajosDBTableName(),
+			getTrabajosFormFileName(), getTrabajosDBTableName(),
 			trabajos, "id_firme", firmeIDWidget.getText(),
 			"id_trabajo", trabajos.getValueAt(row, 0).toString(),
 			true);
@@ -275,16 +273,6 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
     @Override
     public String getElement() {
 	return DBFieldNames.Elements.Firme.name();
-    }
-
-    @Override
-    public String getReconocimientosFormFileName() {
-	return ABEILLE_RECONOCIMIENTOS_FILENAME;
-    }
-
-    @Override
-    public String getTrabajosFormFileName() {
-	return ABEILLE_TRABAJOS_FILENAME;
     }
 
     @Override

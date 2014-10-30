@@ -22,8 +22,6 @@ import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.Dependent
 @SuppressWarnings("serial")
 public class MurosForm extends AbstractFormWithLocationWidgets {
 
-    public static final String ABEILLE_RECONOCIMIENTOS_FILENAME = "forms/muros_reconocimiento_estado.xml";
-    public static final String ABEILLE_TRABAJOS_FILENAME = "forms/muros_trabajos.xml";
     public static final String TABLENAME = "muros";
 
     JTextField murosIDWidget;
@@ -130,7 +128,7 @@ public class MurosForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    MurosReconocimientosSubForm subForm =
 		    new MurosReconocimientosSubForm(
-			    ABEILLE_RECONOCIMIENTOS_FILENAME,
+			    getReconocimientosFormFileName(),
 			    getReconocimientosDBTableName(),
 			    reconocimientoEstado,
 			    getElementID(),
@@ -146,7 +144,7 @@ public class MurosForm extends AbstractFormWithLocationWidgets {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    MurosTrabajosSubForm subForm = new MurosTrabajosSubForm(
-		    ABEILLE_TRABAJOS_FILENAME,
+		    getTrabajosFormFileName(),
 		    getTrabajosDBTableName(),
 		    trabajos,
 		    getElementID(),
@@ -165,7 +163,7 @@ public class MurosForm extends AbstractFormWithLocationWidgets {
 		int row = reconocimientoEstado.getSelectedRow();
 		MurosReconocimientosSubForm subForm =
 			new MurosReconocimientosSubForm(
-				ABEILLE_RECONOCIMIENTOS_FILENAME,
+				getReconocimientosFormFileName(),
 				getReconocimientosDBTableName(),
 				reconocimientoEstado,
 				getElementID(),
@@ -189,7 +187,7 @@ public class MurosForm extends AbstractFormWithLocationWidgets {
 	    if (trabajos.getSelectedRowCount() != 0) {
 		int row = trabajos.getSelectedRow();
 		MurosTrabajosSubForm subForm = new MurosTrabajosSubForm(
-			ABEILLE_TRABAJOS_FILENAME,
+			getTrabajosFormFileName(),
 			getTrabajosDBTableName(),
 			trabajos,
 			getElementID(),
@@ -262,16 +260,6 @@ public class MurosForm extends AbstractFormWithLocationWidgets {
     @Override
     public String getImagesDBTableName() {
 	return "muros_imagenes";
-    }
-
-    @Override
-    public String getReconocimientosFormFileName() {
-	return ABEILLE_RECONOCIMIENTOS_FILENAME;
-    }
-
-    @Override
-    public String getTrabajosFormFileName() {
-	return ABEILLE_TRABAJOS_FILENAME;
     }
 
     @Override

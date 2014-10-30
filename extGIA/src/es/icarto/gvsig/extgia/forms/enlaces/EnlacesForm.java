@@ -26,7 +26,6 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 @SuppressWarnings("serial")
 public class EnlacesForm extends AbstractFormWithLocationWidgets {
 
-    public static final String ABEILLE_RECONOCIMIENTOS_FILENAME = "forms/enlaces_reconocimiento_estado.xml";
     public static final String ABEILLE_CARRETERAS_FILENAME = "forms/enlaces_carreteras.xml";
     public static final String ABEILLE_RAMALES_FILENAME = "forms/enlaces_ramales.xml";
     public static final String TABLENAME = "enlaces";
@@ -184,7 +183,7 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    EnlacesReconocimientosSubForm subForm =
 		    new EnlacesReconocimientosSubForm(
-			    ABEILLE_RECONOCIMIENTOS_FILENAME,
+			    getReconocimientosFormFileName(),
 			    getReconocimientosDBTableName(),
 			    reconocimientoEstado,
 			    "id_enlace",
@@ -237,7 +236,7 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 		int row = reconocimientoEstado.getSelectedRow();
 		EnlacesReconocimientosSubForm subForm =
 			new EnlacesReconocimientosSubForm(
-				ABEILLE_RECONOCIMIENTOS_FILENAME,
+				getReconocimientosFormFileName(),
 				getReconocimientosDBTableName(),
 				reconocimientoEstado,
 				"id_enlace",
@@ -366,17 +365,6 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
     @Override
     public String getElement() {
 	return DBFieldNames.Elements.Enlaces.name();
-    }
-
-    @Override
-    public String getReconocimientosFormFileName() {
-	return ABEILLE_RECONOCIMIENTOS_FILENAME;
-    }
-
-    @Override
-    public String getTrabajosFormFileName() {
-	// TODO Auto-generated method stub
-	return null;
     }
 
     @Override

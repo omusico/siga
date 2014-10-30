@@ -26,8 +26,6 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 @SuppressWarnings("serial")
 public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 
-    public static final String ABEILLE_RECONOCIMIENTOS_FILENAME = "forms/areas_servicio_reconocimiento_estado.xml";
-    public static final String ABEILLE_TRABAJOS_FILENAME = "forms/areas_servicio_trabajos.xml";
     public static final String ABEILLE_RAMALES_FILENAME = "forms/areas_servicio_ramales.xml";
     public static final String TABLENAME = "areas_servicio";
 
@@ -173,7 +171,7 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    AreasServicioReconocimientosSubForm subForm =
 		    new AreasServicioReconocimientosSubForm(
-			    ABEILLE_RECONOCIMIENTOS_FILENAME,
+			    getReconocimientosFormFileName(),
 			    getReconocimientosDBTableName(),
 			    reconocimientoEstado,
 			    "id_area_servicio",
@@ -190,7 +188,7 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    AreasServicioTrabajosSubForm subForm =
 		    new AreasServicioTrabajosSubForm(
-			    ABEILLE_TRABAJOS_FILENAME,
+			    getTrabajosFormFileName(),
 			    getTrabajosDBTableName(),
 			    trabajos,
 			    "id_area_servicio",
@@ -226,7 +224,7 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 		int row = reconocimientoEstado.getSelectedRow();
 		AreasServicioReconocimientosSubForm subForm =
 			new AreasServicioReconocimientosSubForm(
-				ABEILLE_RECONOCIMIENTOS_FILENAME,
+				getReconocimientosFormFileName(),
 				getReconocimientosDBTableName(),
 				reconocimientoEstado,
 				"id_area_servicio",
@@ -251,7 +249,7 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 		int row = trabajos.getSelectedRow();
 		AreasServicioTrabajosSubForm subForm =
 			new AreasServicioTrabajosSubForm(
-				ABEILLE_TRABAJOS_FILENAME,
+				getTrabajosFormFileName(),
 				getTrabajosDBTableName(),
 				trabajos,
 				"id_area_servicio",
@@ -355,16 +353,6 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
     @Override
     public String getElement() {
 	return DBFieldNames.Elements.Areas_Servicio.name();
-    }
-
-    @Override
-    public String getReconocimientosFormFileName() {
-	return ABEILLE_RECONOCIMIENTOS_FILENAME;
-    }
-
-    @Override
-    public String getTrabajosFormFileName() {
-	return ABEILLE_TRABAJOS_FILENAME;
     }
 
     @Override

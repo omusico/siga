@@ -145,7 +145,7 @@ public class LaunchGIAForms {
 	    }
 	    break;
 	case Pasos_Mediana:
-	    final PasosMedianaForm pasosMedianaForm = new PasosMedianaForm(layer);
+	    final AbstractFormWithLocationWidgets pasosMedianaForm = new PasosMedianaForm(layer);
 	    if (pasosMedianaForm.init()) {
 		PluginServices.getMDIManager().addWindow(pasosMedianaForm);
 	    }

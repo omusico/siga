@@ -219,16 +219,6 @@ public class AreasMantenimientoForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getReconocimientosFormFileName() {
-	return null;
-    }
-
-    @Override
-    public String getTrabajosFormFileName() {
-	return null;
-    }
-
-    @Override
     public boolean isSpecialCase() {
 	return false;
     }

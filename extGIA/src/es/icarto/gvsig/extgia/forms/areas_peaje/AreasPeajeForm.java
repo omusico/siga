@@ -26,8 +26,6 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 @SuppressWarnings("serial")
 public class AreasPeajeForm extends AbstractFormWithLocationWidgets {
 
-    public static final String ABEILLE_RECONOCIMIENTOS_FILENAME = "forms/areas_peaje_reconocimiento_estado.xml";
-    public static final String ABEILLE_TRABAJOS_FILENAME = "forms/areas_peaje_trabajos.xml";
     public static final String ABEILLE_VIAS_FILENAME = "forms/areas_peaje_vias.xml";
     public static final String TABLENAME = "areas_peaje";
 
@@ -177,7 +175,7 @@ public class AreasPeajeForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    AreasPeajeReconocimientosSubForm subForm =
 		    new AreasPeajeReconocimientosSubForm(
-			    ABEILLE_RECONOCIMIENTOS_FILENAME,
+			    getReconocimientosFormFileName(),
 			    getReconocimientosDBTableName(),
 			    reconocimientoEstado,
 			    getElementID(),
@@ -194,7 +192,7 @@ public class AreasPeajeForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    AreasPeajeTrabajosSubForm subForm =
 		    new AreasPeajeTrabajosSubForm(
-			    ABEILLE_TRABAJOS_FILENAME,
+			    getTrabajosFormFileName(),
 			    getTrabajosDBTableName(),
 			    trabajos,
 			    getElementID(),
@@ -230,7 +228,7 @@ public class AreasPeajeForm extends AbstractFormWithLocationWidgets {
 		int row = reconocimientoEstado.getSelectedRow();
 		AreasPeajeReconocimientosSubForm subForm =
 			new AreasPeajeReconocimientosSubForm(
-				ABEILLE_RECONOCIMIENTOS_FILENAME,
+				getReconocimientosFormFileName(),
 				getReconocimientosDBTableName(),
 				reconocimientoEstado,
 				getElementID(),
@@ -255,7 +253,7 @@ public class AreasPeajeForm extends AbstractFormWithLocationWidgets {
 		int row = trabajos.getSelectedRow();
 		AreasPeajeTrabajosSubForm subForm =
 			new AreasPeajeTrabajosSubForm(
-				ABEILLE_TRABAJOS_FILENAME,
+				getTrabajosFormFileName(),
 				getTrabajosDBTableName(),
 				trabajos,
 				getElementID(),
@@ -362,16 +360,6 @@ public class AreasPeajeForm extends AbstractFormWithLocationWidgets {
     @Override
     public String getImagesDBTableName() {
 	return "areas_peaje_imagenes";
-    }
-
-    @Override
-    public String getReconocimientosFormFileName() {
-	return ABEILLE_RECONOCIMIENTOS_FILENAME;
-    }
-
-    @Override
-    public String getTrabajosFormFileName() {
-	return ABEILLE_TRABAJOS_FILENAME;
     }
 
     @Override

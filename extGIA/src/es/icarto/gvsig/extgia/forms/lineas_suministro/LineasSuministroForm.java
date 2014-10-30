@@ -27,8 +27,6 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 @SuppressWarnings("serial")
 public class LineasSuministroForm extends AbstractFormWithLocationWidgets {
 
-    public static final String ABEILLE_RECONOCIMIENTOS_FILENAME = "forms/lineas_suministro_reconocimiento_estado.xml";
-    public static final String ABEILLE_TRABAJOS_FILENAME = "forms/lineas_suministro_trabajos.xml";
     public static final String TABLENAME = "lineas_suministro";
 
     JTextField lineaSuministroIDWidget;
@@ -166,7 +164,7 @@ public class LineasSuministroForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    LineasSuministroReconocimientosSubForm subForm =
 		    new LineasSuministroReconocimientosSubForm(
-			    ABEILLE_RECONOCIMIENTOS_FILENAME,
+			    getReconocimientosFormFileName(),
 			    getReconocimientosDBTableName(),
 			    reconocimientoEstado,
 			    getElementID(),
@@ -182,7 +180,7 @@ public class LineasSuministroForm extends AbstractFormWithLocationWidgets {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    LineasSuministroTrabajosSubForm subForm = new LineasSuministroTrabajosSubForm(
-		    ABEILLE_TRABAJOS_FILENAME,
+		    getTrabajosFormFileName(),
 		    getTrabajosDBTableName(),
 		    trabajos,
 		    getElementID(),
@@ -201,7 +199,7 @@ public class LineasSuministroForm extends AbstractFormWithLocationWidgets {
 		int row = reconocimientoEstado.getSelectedRow();
 		LineasSuministroReconocimientosSubForm subForm =
 			new LineasSuministroReconocimientosSubForm(
-				ABEILLE_RECONOCIMIENTOS_FILENAME,
+				getReconocimientosFormFileName(),
 				getReconocimientosDBTableName(),
 				reconocimientoEstado,
 				getElementID(),
@@ -225,7 +223,7 @@ public class LineasSuministroForm extends AbstractFormWithLocationWidgets {
 	    if (trabajos.getSelectedRowCount() != 0) {
 		int row = trabajos.getSelectedRow();
 		LineasSuministroTrabajosSubForm subForm = new LineasSuministroTrabajosSubForm(
-			ABEILLE_TRABAJOS_FILENAME,
+			getTrabajosFormFileName(),
 			getTrabajosDBTableName(),
 			trabajos,
 			getElementID(),
@@ -298,16 +296,6 @@ public class LineasSuministroForm extends AbstractFormWithLocationWidgets {
     @Override
     public String getImagesDBTableName() {
 	return "lineas_suministro_imagenes";
-    }
-
-    @Override
-    public String getReconocimientosFormFileName() {
-	return ABEILLE_RECONOCIMIENTOS_FILENAME;
-    }
-
-    @Override
-    public String getTrabajosFormFileName() {
-	return ABEILLE_TRABAJOS_FILENAME;
     }
 
     @Override
