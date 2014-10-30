@@ -292,22 +292,6 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 	}
     }
 
-    public class DeleteReconocimientoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    deleteElement(reconocimientoEstado, getReconocimientosDBTableName(),
-		    getReconocimientosIDField());
-	}
-    }
-
-    public class DeleteTrabajoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    deleteElement(trabajos, getTrabajosDBTableName(),
-		    getTrabajosIDField());
-	}
-    }
-
     public class DeleteRamalListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {

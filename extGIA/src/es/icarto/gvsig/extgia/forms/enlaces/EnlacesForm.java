@@ -304,14 +304,6 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 	}
     }
 
-    public class DeleteReconocimientoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    deleteElement(reconocimientoEstado, getReconocimientosDBTableName(),
-		    getReconocimientosIDField());
-	}
-    }
-
     public class DeleteCarreteraListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {

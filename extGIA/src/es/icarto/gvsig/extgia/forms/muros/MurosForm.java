@@ -205,21 +205,6 @@ public class MurosForm extends AbstractFormWithLocationWidgets {
 	}
     }
 
-    public class DeleteReconocimientoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    deleteElement(reconocimientoEstado, getReconocimientosDBTableName(),
-		    getReconocimientosIDField());
-	}
-    }
-
-    public class DeleteTrabajoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    deleteElement(trabajos, getTrabajosDBTableName(), getTrabajosIDField());
-	}
-    }
-
     @Override
     public String getElement() {
 	return DBFieldNames.Elements.Muros.name();

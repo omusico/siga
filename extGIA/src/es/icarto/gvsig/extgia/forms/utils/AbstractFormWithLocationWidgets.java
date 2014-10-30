@@ -508,4 +508,20 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
     protected abstract String getBasicName();
 
     protected abstract boolean hasSentido();
+    
+    public class DeleteReconocimientoListener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    deleteElement(reconocimientoEstado, getReconocimientosDBTableName(),
+		    getReconocimientosIDField());
+	}
+    }
+
+    public class DeleteTrabajoListener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    deleteElement(trabajos, getTrabajosDBTableName(),
+		    getTrabajosIDField());
+	}
+    }
 }

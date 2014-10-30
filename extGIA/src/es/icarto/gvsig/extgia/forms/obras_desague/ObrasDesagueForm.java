@@ -135,14 +135,6 @@ public class ObrasDesagueForm extends AbstractFormWithLocationWidgets {
 	}
     }
 
-    public class DeleteTrabajoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    deleteElement(trabajos, getTrabajosDBTableName(), getTrabajosIDField());
-	}
-    }
-
-
     @Override
     public String getElement() {
 	return DBFieldNames.Elements.Obras_Desague.name();
