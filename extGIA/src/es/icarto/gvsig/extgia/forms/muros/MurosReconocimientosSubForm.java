@@ -4,11 +4,11 @@ import javax.swing.JTable;
 
 import com.iver.andami.ui.mdiManager.WindowInfo;
 
-import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 
 @SuppressWarnings("serial")
-public class MurosReconocimientosSubForm extends AbstractSubForm {
+public class MurosReconocimientosSubForm extends BasicAbstractSubForm {
 
     public MurosReconocimientosSubForm(String formFile, String dbTableName,
 	    JTable embebedTable, String idElementField, String idElementValue,

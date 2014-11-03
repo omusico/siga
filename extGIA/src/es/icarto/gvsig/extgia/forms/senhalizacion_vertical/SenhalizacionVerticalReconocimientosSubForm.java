@@ -2,11 +2,11 @@ package es.icarto.gvsig.extgia.forms.senhalizacion_vertical;
 
 import javax.swing.JTable;
 
-import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 
 @SuppressWarnings("serial")
-public class SenhalizacionVerticalReconocimientosSubForm extends AbstractSubForm {
+public class SenhalizacionVerticalReconocimientosSubForm extends BasicAbstractSubForm {
 
     public SenhalizacionVerticalReconocimientosSubForm(String formFile,
 	    String dbTableName, JTable embebedTable, String idElementField,

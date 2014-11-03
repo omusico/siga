@@ -1,25 +1,19 @@
 package es.icarto.gvsig.extgia.forms.areas_descanso;
 
-import javax.swing.JTable;
-
-import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
 
 @SuppressWarnings("serial")
-public class AreasDescansoTrabajosSubForm extends AbstractSubForm {
+public class AreasDescansoTrabajosSubForm extends BasicAbstractSubForm {
 
-    public AreasDescansoTrabajosSubForm(String formFile, String dbTableName,
-	    JTable embebedTable, String idElementField, String idElementValue,
-	    String idField, String idValue, boolean edit) {
-	super(formFile, dbTableName, embebedTable, idElementField, idElementValue,
-		idField, idValue, edit);
-	// TODO Auto-generated constructor stub
-    }
+    public static String[] colNames = { "id_trabajo", "fecha_certificado",
+	    "unidad", "medicion_audasa", "observaciones" };
+
+    public static String[] colAlias = { "ID", "Fecha cert", "Unidad",
+	    "Medición AUDASA", "Observaciones" };
 
     @Override
-    public String getXMLPath() {
-	return this.getClass().getClassLoader()
-		.getResource("rules/areas_descanso_trabajos_metadata.xml")
-		.getPath();
+    protected String getBasicName() {
+	return "areas_descanso_trabajos";
     }
 
 }

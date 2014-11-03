@@ -2,11 +2,11 @@ package es.icarto.gvsig.extgia.forms.areas_descanso;
 
 import javax.swing.JTable;
 
-import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 
 @SuppressWarnings("serial")
-public class AreasDescansoReconocimientosSubForm extends AbstractSubForm {
+public class AreasDescansoReconocimientosSubForm extends BasicAbstractSubForm {
 
     public AreasDescansoReconocimientosSubForm(String formFile,
 	    String dbTableName, JTable embebedTable, String idElementField,

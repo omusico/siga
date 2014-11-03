@@ -2,10 +2,10 @@ package es.icarto.gvsig.extgia.forms.areas_servicio;
 
 import javax.swing.JTable;
 
-import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
 
 @SuppressWarnings("serial")
-public class AreasServicioTrabajosSubForm extends AbstractSubForm {
+public class AreasServicioTrabajosSubForm extends BasicAbstractSubForm {
 
     public AreasServicioTrabajosSubForm(String formFile, String dbTableName,
 	    JTable embebedTable, String idElementField, String idElementValue,

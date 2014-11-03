@@ -5,7 +5,7 @@ import java.util.HashMap;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 
-import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
 import es.icarto.gvsig.extgia.forms.utils.CalculateReconocimientoIndexValue;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
@@ -13,7 +13,7 @@ import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 public class MurosCalculateIndiceEstado extends
 CalculateReconocimientoIndexValue {
 
-    public MurosCalculateIndiceEstado(AbstractSubForm form,
+    public MurosCalculateIndiceEstado(BasicAbstractSubForm form,
 	    HashMap<String, JComponent> allFormWidgets,
 	    String resultComponentName, String... operatorComponentsNames) {
 	super(form, allFormWidgets, resultComponentName, operatorComponentsNames);

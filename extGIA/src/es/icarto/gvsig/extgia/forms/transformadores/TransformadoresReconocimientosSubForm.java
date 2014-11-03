@@ -2,10 +2,10 @@ package es.icarto.gvsig.extgia.forms.transformadores;
 
 import javax.swing.JTable;
 
-import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
 
 @SuppressWarnings("serial")
-public class TransformadoresReconocimientosSubForm extends AbstractSubForm {
+public class TransformadoresReconocimientosSubForm extends BasicAbstractSubForm {
 
     public TransformadoresReconocimientosSubForm(String formFile,
 	    String dbTableName, JTable embebedTable, String idElementField,

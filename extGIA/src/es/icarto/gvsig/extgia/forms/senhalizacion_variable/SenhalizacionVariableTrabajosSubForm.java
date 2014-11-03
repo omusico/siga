@@ -2,10 +2,10 @@ package es.icarto.gvsig.extgia.forms.senhalizacion_variable;
 
 import javax.swing.JTable;
 
-import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
 
 @SuppressWarnings("serial")
-public class SenhalizacionVariableTrabajosSubForm extends AbstractSubForm {
+public class SenhalizacionVariableTrabajosSubForm extends BasicAbstractSubForm {
 
     public SenhalizacionVariableTrabajosSubForm(String formFile,
 	    String dbTableName, JTable embebedTable, String idElementField,

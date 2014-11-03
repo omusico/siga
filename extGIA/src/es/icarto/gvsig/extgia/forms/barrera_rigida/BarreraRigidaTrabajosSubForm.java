@@ -2,10 +2,10 @@ package es.icarto.gvsig.extgia.forms.barrera_rigida;
 
 import javax.swing.JTable;
 
-import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
 
 @SuppressWarnings("serial")
-public class BarreraRigidaTrabajosSubForm extends AbstractSubForm {
+public class BarreraRigidaTrabajosSubForm extends BasicAbstractSubForm {
 
     public BarreraRigidaTrabajosSubForm(String formFile, String dbTableName,
 	    JTable embebedTable, String idElementField, String idElementValue,

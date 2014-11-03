@@ -2,10 +2,10 @@ package es.icarto.gvsig.extgia.forms.muros;
 
 import javax.swing.JTable;
 
-import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
 
 @SuppressWarnings("serial")
-public class MurosTrabajosSubForm extends AbstractSubForm {
+public class MurosTrabajosSubForm extends BasicAbstractSubForm {
 
     public MurosTrabajosSubForm(String formFile, String dbTableName,
 	    JTable embebedTable, String idElementField, String idElementValue,

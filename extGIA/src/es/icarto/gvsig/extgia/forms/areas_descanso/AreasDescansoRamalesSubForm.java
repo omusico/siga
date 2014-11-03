@@ -2,10 +2,10 @@ package es.icarto.gvsig.extgia.forms.areas_descanso;
 
 import javax.swing.JTable;
 
-import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
 
 @SuppressWarnings("serial")
-public class AreasDescansoRamalesSubForm extends AbstractSubForm {
+public class AreasDescansoRamalesSubForm extends BasicAbstractSubForm {
 
     public AreasDescansoRamalesSubForm(String formFile, String dbTableName,
 	    JTable embebedTable, String idElementField, String idElementValue,

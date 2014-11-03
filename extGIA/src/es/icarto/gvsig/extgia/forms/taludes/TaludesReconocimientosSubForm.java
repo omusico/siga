@@ -2,11 +2,11 @@ package es.icarto.gvsig.extgia.forms.taludes;
 
 import javax.swing.JTable;
 
-import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 
 @SuppressWarnings("serial")
-public class TaludesReconocimientosSubForm extends AbstractSubForm {
+public class TaludesReconocimientosSubForm extends BasicAbstractSubForm {
 
     public TaludesReconocimientosSubForm(
 	    String formFile,

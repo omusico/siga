@@ -2,11 +2,11 @@ package es.icarto.gvsig.extgia.forms.lecho_frenado;
 
 import javax.swing.JTable;
 
-import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 
 @SuppressWarnings("serial")
-public class LechoFrenadoReconocimientosSubForm extends AbstractSubForm {
+public class LechoFrenadoReconocimientosSubForm extends BasicAbstractSubForm {
 
     public LechoFrenadoReconocimientosSubForm(String formFile,
 	    String dbTableName, JTable embebedTable, String idElementField,

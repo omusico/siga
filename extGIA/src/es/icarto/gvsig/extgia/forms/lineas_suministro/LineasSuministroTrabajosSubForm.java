@@ -2,10 +2,10 @@ package es.icarto.gvsig.extgia.forms.lineas_suministro;
 
 import javax.swing.JTable;
 
-import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
 
 @SuppressWarnings("serial")
-public class LineasSuministroTrabajosSubForm extends AbstractSubForm {
+public class LineasSuministroTrabajosSubForm extends BasicAbstractSubForm {
 
     public LineasSuministroTrabajosSubForm(String formFile, String dbTableName,
 	    JTable embebedTable, String idElementField, String idElementValue,

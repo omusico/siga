@@ -16,14 +16,14 @@ import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 import com.jeta.forms.components.image.ImageComponent;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
-import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.utils.AbeilleParser;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 
 @SuppressWarnings("serial")
-public abstract class BatchAbstractSubForm extends AbstractSubForm implements ActionListener {
+public abstract class BatchAbstractSubForm extends BasicAbstractSubForm implements ActionListener {
 
     public BatchAbstractSubForm(String formFile, String dbTableName) {
 	super(formFile, dbTableName, null, null, null, null, null, false);

@@ -19,9 +19,9 @@ public abstract class CalculateReconocimientoIndexValue {
     protected HashMap<String, JComponent> operatorComponents;
     protected OperatorComponentsListener handler;
     private final HashMap<String, JComponent> allFormWidgets;
-    protected AbstractSubForm form;
+    protected BasicAbstractSubForm form;
 
-    public CalculateReconocimientoIndexValue(AbstractSubForm form,
+    public CalculateReconocimientoIndexValue(BasicAbstractSubForm form,
 	    HashMap<String, JComponent> allFormWidgets,
 	    String resultComponentName, String... operatorComponentsNames) {
 	this.form = form;

@@ -452,6 +452,7 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 
     @Override
     protected void fillSpecificValues() {
+	super.fillSpecificValues();
 	if (addImageListener != null) {
 	    addImageListener.setPkValue(getElementIDValue());
 	}

@@ -4,10 +4,10 @@ import javax.swing.JTable;
 
 import com.iver.andami.ui.mdiManager.WindowInfo;
 
-import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
 
 @SuppressWarnings("serial")
-public class SenhalizacionVerticalSenhalesSubForm extends AbstractSubForm {
+public class SenhalizacionVerticalSenhalesSubForm extends BasicAbstractSubForm {
 
     public SenhalizacionVerticalSenhalesSubForm(String formFile,
 	    String dbTableName, JTable embebedTable, String idElementField,

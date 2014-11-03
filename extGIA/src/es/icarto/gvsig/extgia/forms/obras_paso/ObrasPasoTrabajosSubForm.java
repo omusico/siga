@@ -2,10 +2,10 @@ package es.icarto.gvsig.extgia.forms.obras_paso;
 
 import javax.swing.JTable;
 
-import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
 
 @SuppressWarnings("serial")
-public class ObrasPasoTrabajosSubForm extends AbstractSubForm {
+public class ObrasPasoTrabajosSubForm extends BasicAbstractSubForm {
 
     public ObrasPasoTrabajosSubForm(String formFile, String dbTableName,
 	    JTable embebedTable, String idElementField, String idElementValue,

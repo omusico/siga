@@ -2,11 +2,11 @@ package es.icarto.gvsig.extgia.forms.isletas;
 
 import javax.swing.JTable;
 
-import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 
 @SuppressWarnings("serial")
-public class IsletasReconocimientosSubForm extends AbstractSubForm {
+public class IsletasReconocimientosSubForm extends BasicAbstractSubForm {
 
     public IsletasReconocimientosSubForm(String formFile, String dbTableName,
 	    JTable embebedTable, String idElementField, String idElementValue,

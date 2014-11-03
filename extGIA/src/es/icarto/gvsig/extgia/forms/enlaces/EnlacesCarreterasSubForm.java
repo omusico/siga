@@ -2,10 +2,10 @@ package es.icarto.gvsig.extgia.forms.enlaces;
 
 import javax.swing.JTable;
 
-import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
 
 @SuppressWarnings("serial")
-public class EnlacesCarreterasSubForm extends AbstractSubForm {
+public class EnlacesCarreterasSubForm extends BasicAbstractSubForm {
 
     public EnlacesCarreterasSubForm(String formFile, String dbTableName,
 	    JTable embebedTable, String idElementField, String idElementValue,

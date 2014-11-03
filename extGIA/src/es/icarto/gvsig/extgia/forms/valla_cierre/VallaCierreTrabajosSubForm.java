@@ -2,10 +2,10 @@ package es.icarto.gvsig.extgia.forms.valla_cierre;
 
 import javax.swing.JTable;
 
-import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
 
 @SuppressWarnings("serial")
-public class VallaCierreTrabajosSubForm extends AbstractSubForm {
+public class VallaCierreTrabajosSubForm extends BasicAbstractSubForm {
 
     public VallaCierreTrabajosSubForm(String formFile, String dbTableName,
 	    JTable embebedTable, String idElementField, String idElementValue,

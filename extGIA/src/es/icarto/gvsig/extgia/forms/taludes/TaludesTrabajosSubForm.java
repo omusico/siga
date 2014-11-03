@@ -2,10 +2,10 @@ package es.icarto.gvsig.extgia.forms.taludes;
 
 import javax.swing.JTable;
 
-import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
 
 @SuppressWarnings("serial")
-public class TaludesTrabajosSubForm extends AbstractSubForm {
+public class TaludesTrabajosSubForm extends BasicAbstractSubForm {
 
     public TaludesTrabajosSubForm(
 	    String formFile,

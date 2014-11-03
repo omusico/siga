@@ -2,10 +2,10 @@ package es.icarto.gvsig.extgia.forms.areas_peaje;
 
 import javax.swing.JTable;
 
-import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
 
 @SuppressWarnings("serial")
-public class AreasPeajeTrabajosSubForm extends AbstractSubForm {
+public class AreasPeajeTrabajosSubForm extends BasicAbstractSubForm {
 
     public AreasPeajeTrabajosSubForm(String formFile, String dbTableName,
 	    JTable embebedTable, String idElementField, String idElementValue,

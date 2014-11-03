@@ -2,11 +2,11 @@ package es.icarto.gvsig.extgia.forms.pasos_mediana;
 
 import javax.swing.JTable;
 
-import es.icarto.gvsig.extgia.forms.utils.AbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 
 @SuppressWarnings("serial")
-public class PasosMedianaReconocimientosSubForm extends AbstractSubForm {
+public class PasosMedianaReconocimientosSubForm extends BasicAbstractSubForm {
 
     public PasosMedianaReconocimientosSubForm(String formFile,
 	    String dbTableName, JTable embebedTable, String idElementField,
