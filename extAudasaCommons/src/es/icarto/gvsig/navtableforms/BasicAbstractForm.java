@@ -33,14 +33,15 @@ public abstract class BasicAbstractForm extends AbstractForm {
     }
 
     private void addSorterButton() {
-	java.net.URL imgURL = getClass().getClassLoader().getResource("sort.png");
+	java.net.URL imgURL = getClass().getClassLoader().getResource(
+		"sort.png");
 	JButton jButton = new JButton(new ImageIcon(imgURL));
-	
+
 	jButton.addActionListener(new ActionListener() {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-		URL resource = BasicAbstractForm.this.getClass().getClassLoader().getResource(
-			"columns.properties");
+		URL resource = BasicAbstractForm.this.getClass()
+			.getClassLoader().getResource("columns.properties");
 		List<Field> fields = Utils.getFields(resource.getPath(),
 			getSchema(), getBasicName());
 
@@ -71,7 +72,11 @@ public abstract class BasicAbstractForm extends AbstractForm {
     public FormPanel getFormBody() {
 	if (formBody == null) {
 	    InputStream stream = getClass().getClassLoader()
-		    .getResourceAsStream("/forms/" + getBasicName() + ".xml");
+		    .getResourceAsStream("/forms/" + getBasicName() + ".jfrm");
+	    if (stream == null) {
+		stream = getClass().getClassLoader().getResourceAsStream(
+			"/forms/" + getBasicName() + ".xml");
+	    }
 	    try {
 		formBody = new FormPanel(stream);
 	    } catch (FormException e) {
