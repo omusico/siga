@@ -1,110 +1,85 @@
 package es.icarto.gvsig.extgia.preferences;
 
-
 public class DBFieldNames {
 
     public enum Elements {
-	Taludes, Isletas, Enlaces, Barrera_Rigida, Areas_Servicio, Areas_Descanso, Areas_Peaje,
-	Juntas, Pasos_Mediana, Senhalizacion_Vertical, Valla_Cierre, Firme, Obras_Paso,
-	Obras_Desague, Muros, Senhalizacion_Variable, Lecho_Frenado, Areas_Mantenimiento,
-	Lineas_Suministro, Transformadores;
+	Taludes, Isletas, Enlaces, Barrera_Rigida, Areas_Servicio, Areas_Descanso, Areas_Peaje, Juntas, Pasos_Mediana, Senhalizacion_Vertical, Valla_Cierre, Firme, Obras_Paso, Obras_Desague, Muros, Senhalizacion_Variable, Lecho_Frenado, Areas_Mantenimiento, Lineas_Suministro, Transformadores;
     }
 
-    public static String[] genericReconocimientoEstadoFields = {"n_inspeccion as \"Nº Inspección\"",
-	"nombre_revisor as \"Revisor\"",
-	"fecha_inspeccion as \"Fecha Inspección\"",
-    "indice_estado as \"Índice Estado\""};
+    public static String[] genericReconocimientoEstadoFields = {
+	    "n_inspeccion as \"Nº Inspección\"",
+	    "nombre_revisor as \"Revisor\"",
+	    "fecha_inspeccion as \"Fecha Inspección\"",
+	    "indice_estado as \"Índice Estado\"" };
 
-    public static String[] enlacesReconocimientoEstadoFields = {"n_inspeccion as \"Nº Inspección\"",
-	"nombre_revisor as \"Revisor\"",
-    "fecha_inspeccion as \"Fecha Inspección\""};
+    public static String[] enlacesReconocimientoEstadoFields = {
+	    "n_inspeccion as \"Nº Inspección\"",
+	    "nombre_revisor as \"Revisor\"",
+	    "fecha_inspeccion as \"Fecha Inspección\"" };
 
-    public static String[] reconocimientoEstadoFields = {"n_inspeccion as \"Nº Inspección\"",
-	"nombre_revisor as \"Revisor\"",
-	"fecha_inspeccion as \"Fecha Inspección\"",
-    "indice_estado as \"Índice Estado\""};
+    public static String[] reconocimientoEstadoFields = {
+	    "n_inspeccion as \"Nº Inspección\"",
+	    "nombre_revisor as \"Revisor\"",
+	    "fecha_inspeccion as \"Fecha Inspección\"",
+	    "indice_estado as \"Índice Estado\"" };
 
-    public static String[] reconocimientoEstadoWhitoutIndexFields = {"n_inspeccion as \"Nº Inspección\"",
-	"nombre_revisor as \"Revisor\"",
-    "fecha_inspeccion as \"Fecha Inspección\""};
+    public static String[] reconocimientoEstadoWhitoutIndexFields = {
+	    "n_inspeccion as \"Nº Inspección\"",
+	    "nombre_revisor as \"Revisor\"",
+	    "fecha_inspeccion as \"Fecha Inspección\"" };
 
-    public static String[] genericTrabajoFields = {"id_trabajo as \"ID\"",
-	"fecha_certificado as \"Fecha cert\"",
-	"unidad as \"Unidad\"",
-	"medicion_audasa as \"Medición AUDASA\"",
-    "observaciones as \"Observaciones\""};
+    public static String[] genericTrabajoFields = { "id_trabajo as \"ID\"",
+	    "fecha_certificado as \"Fecha cert\"", "unidad as \"Unidad\"",
+	    "medicion_audasa as \"Medición AUDASA\"",
+	    "observaciones as \"Observaciones\"" };
 
-    public static String[] senhalizacionVerticalTrabajoFields = {"id_trabajo as \"ID\"",
-	"fecha_certificado as \"Fecha cert\"",
-	"unidad as \"Unidad\"",
-	"medicion_audasa as \"Medición AUDASA\"",
-    "observaciones as \"Observaciones\""};
+    public static String[] senhalizacionVerticalTrabajoFields = {
+	    "id_trabajo as \"ID\"", "fecha_certificado as \"Fecha cert\"",
+	    "unidad as \"Unidad\"", "medicion_audasa as \"Medición AUDASA\"",
+	    "observaciones as \"Observaciones\"" };
 
-    public static String[] trabajoFields = {"id_trabajo as \"ID\"",
-	"fecha_certificado as \"Fecha cert\"",
-	"unidad as \"Unidad\"",
-	"medicion_audasa as \"Medición AUDASA\"",
-    "observaciones as \"Observaciones\""};
+    public static String[] trabajoFields = { "id_trabajo as \"ID\"",
+	    "fecha_certificado as \"Fecha cert\"", "unidad as \"Unidad\"",
+	    "medicion_audasa as \"Medición AUDASA\"",
+	    "observaciones as \"Observaciones\"" };
 
-    public static String[] carreteras_enlazadas = {"id_carretera_enlazada as \"ID Carretera\"",
-	"clave_carretera as \"Clave\"",
-	"pk as \"PK\"",
-	"titular as \"Titular\"",
-    "tipo_cruce as \"Tipo Cruce\""};
+    public static String[] carreteras_enlazadas = {
+	    "id_carretera_enlazada as \"ID Carretera\"",
+	    "clave_carretera as \"Clave\"", "pk as \"PK\"",
+	    "titular as \"Titular\"", "tipo_cruce as \"Tipo Cruce\"" };
 
-    public static String[] generic_ramales = {"id_ramal as \"ID Ramal\"",
-	"ramal as \"Nombre Ramal\"",
-	"sentido_ramal as \"Sentido\"",
-	"direccion_ramal as \"Dirección\"",
-	"longitud as \"Longitud\""
-    };
+    public static String[] generic_ramales = { "id_ramal as \"ID Ramal\"",
+	    "ramal as \"Nombre Ramal\"", "sentido_ramal as \"Sentido\"",
+	    "direccion_ramal as \"Dirección\"", "longitud as \"Longitud\"" };
 
-    public static String[] ramales = {"id_ramal as \"ID Ramal\"",
-	"ramal as \"Nombre Ramal\"",
-	"sentido_ramal as \"Sentido\"",
-	"direccion_ramal as \"Dirección\"",
-	"longitud as \"Longitud\""
-    };
+    public static String[] ramales = { "id_ramal as \"ID Ramal\"",
+	    "ramal as \"Nombre Ramal\"", "sentido_ramal as \"Sentido\"",
+	    "direccion_ramal as \"Dirección\"", "longitud as \"Longitud\"" };
 
-    public static String[] ramales_area_descanso = {"id_ramal as \"ID Ramal\"",
-	"ramal as \"Nombre Ramal\"",
-	"sentido_ramal as \"Sentido\"",
-	"longitud as \"Longitud\""
-    };
+    public static String[] ramales_area_mantenimiento = {
+	    "id_ramal as \"ID Ramal\"", "ramal as \"Nombre Ramal\"",
+	    "sentido as \"Sentido\"", "direccion as \"Dirección\"",
+	    "longitud as \"Longitud\"" };
 
-    public static String[] ramales_area_mantenimiento = {"id_ramal as \"ID Ramal\"",
-	"ramal as \"Nombre Ramal\"",
-	"sentido as \"Sentido\"",
-	"direccion as \"Dirección\"",
-	"longitud as \"Longitud\""
-    };
+    public static String[] senhales = { "id_senhal_vertical as \"ID Señal\"",
+	    "tipo_senhal as \"Tipo Señal\"",
+	    "codigo_senhal as \"Código Señal\"", "leyenda as \"Leyenda\"",
+	    "fecha_fabricacion as \"Fabricación\"",
+	    "fecha_reposicion as \"Reposición\"" };
 
-    public static String[] senhales = {"id_senhal_vertical as \"ID Señal\"",
-	"tipo_senhal as \"Tipo Señal\"",
-	"codigo_senhal as \"Código Señal\"",
-	"leyenda as \"Leyenda\"",
-	"fecha_fabricacion as \"Fabricación\"",
-	"fecha_reposicion as \"Reposición\""
-    };
+    public static String[] firmeReconocimientoEstadoFields = {
+	    "n_inspeccion as \"Nº Inspección\"", "tipo_inspeccion as \"Tipo\"",
+	    "nombre_revisor as \"Revisor\"", "aparato_medicion as \"Aparato\"",
+	    "fecha_inspeccion as \"Fecha Inspección\"" };
 
-    public static String[] firmeReconocimientoEstadoFields = {"n_inspeccion as \"Nº Inspección\"",
-	"tipo_inspeccion as \"Tipo\"",
-	"nombre_revisor as \"Revisor\"",
-	"aparato_medicion as \"Aparato\"",
-    "fecha_inspeccion as \"Fecha Inspección\""};
+    public static String[] firmeTrabajoFields = { "id_trabajo as \"ID\"",
+	    "fecha_certificado as \"Fecha cert\"",
+	    "pk_inicial as \"PK inicio\"", "pk_final as \"PK fin\"",
+	    "sentido as \"Sentido\"", "descripcion as \"Descripción\"" };
 
-    public static String[] firmeTrabajoFields = {"id_trabajo as \"ID\"",
-	"fecha_certificado as \"Fecha cert\"",
-	"pk_inicial as \"PK inicio\"",
-	"pk_final as \"PK fin\"",
-	"sentido as \"Sentido\"",
-    "descripcion as \"Descripción\""};
-
-    public static String[] viasFields = {"id_via as \"ID\"",
-	"via as \"Nª Vía\"",
-	"via_tipo as \"Tipo Vía\"",
-	"reversible as \"Reversible\"",
-    "cabinas as \"Nº Cabinas\""};
+    public static String[] viasFields = { "id_via as \"ID\"",
+	    "via as \"Nª Vía\"", "via_tipo as \"Tipo Vía\"",
+	    "reversible as \"Reversible\"", "cabinas as \"Nº Cabinas\"" };
 
     public static final String GIA_SCHEMA = "audasa_extgia";
 

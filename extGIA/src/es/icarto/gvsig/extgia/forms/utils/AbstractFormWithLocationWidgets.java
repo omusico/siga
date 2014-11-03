@@ -486,6 +486,10 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
     public String getTrabajosDBTableName() {
         return getBasicName() + "_trabajos";
     }
+    
+    public String getRamalesDBTableName() {
+        return getBasicName() + "_ramales";
+    }
 
     public abstract String getElement();
 

@@ -18,7 +18,7 @@ public abstract class BasicAbstractSubForm extends AbstractSubForm {
 
     protected void initGUIPost() {
 
-	ImageComponent image = (ImageComponent) getFormPanel(null)
+	ImageComponent image = (ImageComponent) getFormPanel()
 		.getComponentByName("image");
 	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
 	image.setIcon(icon);
