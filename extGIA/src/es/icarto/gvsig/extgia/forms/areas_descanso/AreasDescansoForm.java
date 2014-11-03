@@ -19,6 +19,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
+import es.icarto.gvsig.extgia.forms.utils.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
@@ -42,16 +43,23 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
     EditReconocimientoListener editReconocimientoListener;
     DeleteReconocimientoListener deleteReconocimientoListener;
 
-    AddTrabajoListener addTrabajoListener;
-    EditTrabajoListener editTrabajoListener;
     DeleteTrabajoListener deleteTrabajoListener;
 
     AddRamalListener addRamalListener;
     EditRamalListener editRamalListener;
     DeleteRamalListener deleteRamalListener;
+    private final GIAAlphanumericTableHandler trabajosTableHandler;
 
     public AreasDescansoForm(FLyrVect layer) {
 	super(layer);
+
+	// int[] trabajoColumnsSize = { 1, 1, 110, 70, 60 };
+	trabajosTableHandler = new GIAAlphanumericTableHandler(
+		getTrabajosDBTableName(), getWidgetComponents(),
+		getElementID(), AreasDescansoTrabajosSubForm.colNames,
+		AreasDescansoTrabajosSubForm.colNames,
+		AreasDescansoTrabajosSubForm.class);
+	addTableHandler(trabajosTableHandler);
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -72,12 +80,6 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 		DBFieldNames.reconocimientoEstadoFields, null,
 		"id_area_descanso", areaDescansoIDWidget.getText(),
 		"n_inspeccion");
-
-	int[] trabajoColumnsSize = { 1, 1, 110, 70, 60 };
-	SqlUtils.createEmbebedTableFromDB(trabajos, DBFieldNames.GIA_SCHEMA,
-		getTrabajosDBTableName(), DBFieldNames.trabajoFields,
-		trabajoColumnsSize, "id_area_descanso",
-		areaDescansoIDWidget.getText(), "id_trabajo");
 
 	DBFieldNames.setRamalesFields(DBFieldNames.ramales_area_descanso);
 	SqlUtils.createEmbebedTableFromDB(ramales, DBFieldNames.GIA_SCHEMA,
@@ -113,23 +115,27 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 
 	addReconocimientoListener = new AddReconocimientoListener();
 	addReconocimientoButton.addActionListener(addReconocimientoListener);
-	addTrabajoListener = new AddTrabajoListener();
-	addTrabajoButton.addActionListener(addTrabajoListener);
+
+	addTrabajoButton.setAction(trabajosTableHandler.getListener()
+		.getCreateAction());
+	editTrabajoButton.setAction(trabajosTableHandler.getListener()
+		.getUpdateAction());
+	deleteTrabajoButton.setAction(trabajosTableHandler.getListener()
+		.getDeleteAction());
+
 	addRamalListener = new AddRamalListener();
 	addRamalButton.addActionListener(addRamalListener);
 
 	editReconocimientoListener = new EditReconocimientoListener();
 	editReconocimientoButton.addActionListener(editReconocimientoListener);
-	editTrabajoListener = new EditTrabajoListener();
-	editTrabajoButton.addActionListener(editTrabajoListener);
+
 	editRamalListener = new EditRamalListener();
 	editRamalButton.addActionListener(editRamalListener);
 
 	deleteReconocimientoListener = new DeleteReconocimientoListener();
 	deleteReconocimientoButton
 		.addActionListener(deleteReconocimientoListener);
-	deleteTrabajoListener = new DeleteTrabajoListener();
-	deleteTrabajoButton.addActionListener(deleteTrabajoListener);
+
 	deleteRamalListener = new DeleteRamalListener();
 	deleteRamalButton.addActionListener(deleteRamalListener);
     }
@@ -142,9 +148,9 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 	deleteReconocimientoButton
 		.removeActionListener(deleteReconocimientoListener);
 
-	addTrabajoButton.removeActionListener(addTrabajoListener);
-	editTrabajoButton.removeActionListener(editTrabajoListener);
-	deleteTrabajoButton.removeActionListener(deleteTrabajoListener);
+	addTrabajoButton.setAction(null);
+	editTrabajoButton.setAction(null);
+	deleteTrabajoButton.setAction(null);
 
 	addRamalButton.removeActionListener(addRamalListener);
 	editRamalButton.removeActionListener(editRamalListener);
@@ -177,7 +183,7 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 			return true;
 		    }
 		} catch (SQLException e) {
-		    e.printStackTrace();
+		    logger.error(e.getStackTrace(), e);
 		}
 	    }
 	}
@@ -192,17 +198,6 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 		    getReconocimientosDBTableName(), reconocimientoEstado,
 		    "id_area_descanso", areaDescansoIDWidget.getText(), null,
 		    null, false);
-	    PluginServices.getMDIManager().addWindow(subForm);
-	}
-    }
-
-    public class AddTrabajoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    AreasDescansoTrabajosSubForm subForm = new AreasDescansoTrabajosSubForm(
-		    getTrabajosFormFileName(), getTrabajosDBTableName(),
-		    trabajos, "id_area_descanso",
-		    areaDescansoIDWidget.getText(), null, null, false);
 	    PluginServices.getMDIManager().addWindow(subForm);
 	}
     }
@@ -229,26 +224,6 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 			"id_area_descanso", areaDescansoIDWidget.getText(),
 			"n_inspeccion", reconocimientoEstado.getValueAt(row, 0)
 				.toString(), true);
-		PluginServices.getMDIManager().addWindow(subForm);
-	    } else {
-		JOptionPane.showMessageDialog(null,
-			"Debe seleccionar una fila para editar los datos.",
-			"Ninguna fila seleccionada",
-			JOptionPane.INFORMATION_MESSAGE);
-	    }
-	}
-    }
-
-    public class EditTrabajoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    if (trabajos.getSelectedRowCount() != 0) {
-		int row = trabajos.getSelectedRow();
-		AreasDescansoTrabajosSubForm subForm = new AreasDescansoTrabajosSubForm(
-			getTrabajosFormFileName(), getTrabajosDBTableName(),
-			trabajos, "id_area_descanso",
-			areaDescansoIDWidget.getText(), "id_trabajo", trabajos
-				.getValueAt(row, 0).toString(), true);
 		PluginServices.getMDIManager().addWindow(subForm);
 	    } else {
 		JOptionPane.showMessageDialog(null,
@@ -288,19 +263,16 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 	}
     }
 
-    public class DeleteTrabajoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    deleteElement(trabajos, getTrabajosDBTableName(),
-		    getTrabajosIDField());
-	}
-    }
-
     public class DeleteRamalListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    deleteElement(ramales, "areas_descanso_ramales", "id_ramal");
 	}
+    }
+
+    @Override
+    protected String getPrimaryKeyValue() {
+	return getFormController().getValue(getElementID());
     }
 
     @Override
