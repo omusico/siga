@@ -1,18 +1,17 @@
 package es.icarto.gvsig.navtableforms.gui.tables;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -21,12 +20,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import net.miginfocom.swing.MigLayout;
+
 import org.apache.log4j.Logger;
 
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
 import com.iver.andami.messages.NotificationManager;
-import com.iver.andami.ui.mdiFrame.MDIFrame;
 import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.andami.ui.mdiManager.IWindowListener;
 import com.iver.andami.ui.mdiManager.WindowInfo;
@@ -34,11 +34,14 @@ import com.iver.cit.gvsig.exceptions.visitors.StopWriterVisitorException;
 import com.iver.cit.gvsig.fmap.edition.IEditableSource;
 import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
+import com.toedter.calendar.JDateChooser;
 
+import es.icarto.gvsig.commons.gui.AbstractIWindow;
 import es.icarto.gvsig.navtableforms.DependencyHandler;
 import es.icarto.gvsig.navtableforms.FillHandler;
 import es.icarto.gvsig.navtableforms.IValidatableForm;
 import es.icarto.gvsig.navtableforms.ValidationHandler;
+import es.icarto.gvsig.navtableforms.calculation.Calculation;
 import es.icarto.gvsig.navtableforms.calculation.CalculationHandler;
 import es.icarto.gvsig.navtableforms.chained.ChainedHandler;
 import es.icarto.gvsig.navtableforms.gui.tables.handler.BaseTableHandler;
@@ -48,10 +51,15 @@ import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.ValidatorForm;
 import es.icarto.gvsig.navtableforms.utils.AbeilleParser;
 import es.udc.cartolab.gvsig.navtable.dataacces.IController;
 import es.udc.cartolab.gvsig.navtable.dataacces.TableController;
+import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 
 @SuppressWarnings("serial")
-public abstract class AbstractSubForm extends JPanel implements IForm,
-	IValidatableForm, IWindow, IWindowListener {
+public abstract class AbstractSubForm extends AbstractIWindow implements IForm,
+	IValidatableForm, IWindowListener {
+
+    private static final Logger logger = Logger
+	    .getLogger(AbstractSubForm.class);
+
     private FormPanel formPanel;
     private HashMap<String, JComponent> widgets;
     private final ValidationHandler validationHandler;
@@ -63,22 +71,34 @@ public abstract class AbstractSubForm extends JPanel implements IForm,
     private final ChainedHandler chainedHandler;
     private boolean isFillingValues;
     private boolean changedValues;
-    private final Logger logger;
     private JPanel southPanel;
     private JButton saveButton;
     private Map<String, String> foreingKey;
     private final List<BaseTableHandler> tableHandlers = new ArrayList<BaseTableHandler>();
 
-    private WindowInfo windowInfo;
-    private final static int windowInfoCode = WindowInfo.MODELESSDIALOG
-	    | WindowInfo.PALETTE | WindowInfo.RESIZABLE;
     private long position;
     private ActionListener action;
     private AlphanumericTableModel model;
 
+    private String basicName;
+
+    public AbstractSubForm(String basicName) {
+	this.basicName = basicName;
+	setWindowInfoProperties(WindowInfo.MODELESSDIALOG | WindowInfo.PALETTE
+		| WindowInfo.RESIZABLE);
+	setWindowTitle(PluginServices.getText(this, getBasicName()));
+	initGUI();
+	ormlite = new ORMLite(getMetadataPath());
+	validationHandler = new ValidationHandler(ormlite, this);
+	dependencyHandler = new DependencyHandler(ormlite, widgets, this);
+	calculationHandler = new CalculationHandler();
+	chainedHandler = new ChainedHandler();
+    }
+
     public AbstractSubForm() {
-	super();
-	logger = Logger.getLogger(getClass());
+	setWindowInfoProperties(WindowInfo.MODELESSDIALOG | WindowInfo.PALETTE
+		| WindowInfo.RESIZABLE);
+	setWindowTitle(PluginServices.getText(this, getBasicName()));
 	initGUI();
 	ormlite = new ORMLite(getMetadataPath());
 	validationHandler = new ValidationHandler(ormlite, this);
@@ -88,15 +108,28 @@ public abstract class AbstractSubForm extends JPanel implements IForm,
     }
 
     private void initGUI() {
-	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-	getFormPanel("ui/" + getBasicName() + ".xml");
+	// setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+	setLayout(new MigLayout("inset 0, align center", "[grow]", "[grow][]"));
+	// this.add(getNorthPanel(), "shrink, wrap, align center");
+	// this.add(getCenterPanel(), "shrink, growx, growy, wrap");
+	// this.add(getSouthPanel(), "shrink, align center");
+
+	getFormPanel();
 	JScrollPane scrollPane = new JScrollPane(formPanel);
 	widgets = AbeilleParser.getWidgetsFromContainer(formPanel);
+	for (JComponent c : getWidgets().values()) {
+	    if (c instanceof JDateChooser) {
+		SimpleDateFormat dateFormat = DateFormatNT.getDateFormat();
+		((JDateChooser) c).setDateFormatString(dateFormat.toPattern());
+		((JDateChooser) c).getDateEditor().setEnabled(false);
+	    }
+	}
 	// AbeilleUtils au = new AbeilleUtils();
 	// au.formatLabels(formPanel);
 	// au.formatTextArea(formPanel);
-	add(scrollPane);
-	add(getSouthPanel());
+	add(scrollPane, "shrink, growx, growy, wrap");
+	add(getSouthPanel(), "dock south");
 	setFocusCycleRoot(true);
     }
 
@@ -182,7 +215,16 @@ public abstract class AbstractSubForm extends JPanel implements IForm,
 	return null;
     }
 
-    protected abstract String getBasicName();
+    /*
+     * TODO call a method in a constructor (getBasicName) that can be override
+     * for subclasses is no considered a good programming practice, in the
+     * medium term this should be changed override for subclasses is no
+     * considered a good programming practice, in the medium term this should be
+     * changed
+     */
+    protected String getBasicName() {
+	return this.basicName;
+    }
 
     public void fillValues() {
 	setFillingValues(true);
@@ -199,14 +241,18 @@ public abstract class AbstractSubForm extends JPanel implements IForm,
 	validationHandler.validate();
     }
 
-    protected FormPanel getFormPanel(String resourcePath) {
+    protected FormPanel getFormPanel() {
 	if (formPanel == null) {
 	    InputStream stream = getClass().getClassLoader()
-		    .getResourceAsStream(resourcePath);
+		    .getResourceAsStream("/forms/" + getBasicName() + ".jfrm");
+	    if (stream == null) {
+		stream = getClass().getClassLoader().getResourceAsStream(
+			"/forms/" + getBasicName() + ".xml");
+	    }
 	    try {
 		formPanel = new FormPanel(stream);
 	    } catch (FormException e) {
-		logger.error(e.getStackTrace());
+		e.printStackTrace();
 	    }
 	}
 	return formPanel;
@@ -214,14 +260,15 @@ public abstract class AbstractSubForm extends JPanel implements IForm,
 
     private String getMetadataPath() {
 	return this.getClass().getClassLoader()
-		.getResource("metadata/" + getBasicName() + ".xml").getPath();
+		.getResource("rules/" + getBasicName() + "_metadata.xml")
+		.getPath();
     }
 
     @Deprecated
     public HashMap<String, JComponent> getWidgetComponents() {
 	return widgets;
     }
-    
+
     @Override
     public Map<String, JComponent> getWidgets() {
 	return widgets;
@@ -286,49 +333,6 @@ public abstract class AbstractSubForm extends JPanel implements IForm,
     }
 
     @Override
-    public WindowInfo getWindowInfo() {
-	if (windowInfo == null) {
-	    windowInfo = new WindowInfo(windowInfoCode);
-	    windowInfo.setTitle(PluginServices.getText(this, getBasicName()));
-	    Dimension dim = getPreferredSize();
-	    // To calculate the maximum size of a form we take the size of the
-	    // main frame minus a "magic number" for the menus, toolbar, state
-	    // bar
-	    // Take into account that in edition mode there is less available
-	    // space
-	    MDIFrame a = (MDIFrame) PluginServices.getMainFrame();
-	    int maxHeight = a.getHeight() - 205;
-	    int maxWidth = a.getWidth() - 15;
-
-	    int width, heigth = 0;
-	    if (dim.getHeight() > maxHeight) {
-		heigth = maxHeight;
-	    } else {
-		heigth = new Double(dim.getHeight()).intValue();
-	    }
-	    if (dim.getWidth() > maxWidth) {
-		width = maxWidth;
-	    } else {
-		width = new Double(dim.getWidth()).intValue();
-	    }
-
-	    // getPreferredSize doesn't take into account the borders and other
-	    // stuff
-	    // introduced by Andami, neither scroll bars so we must increase the
-	    // "preferred"
-	    // dimensions
-	    windowInfo.setWidth(width + 25);
-	    windowInfo.setHeight(heigth + 15);
-	}
-	return windowInfo;
-    }
-
-    @Override
-    public Object getWindowProfile() {
-	return WindowInfo.DIALOG_PROFILE;
-    }
-
-    @Override
     public void windowClosed() {
 	removeListeners();
     }
@@ -389,7 +393,11 @@ public abstract class AbstractSubForm extends JPanel implements IForm,
     public List<BaseTableHandler> getTableHandlers() {
 	return tableHandlers;
     }
-    
+
+    protected void addCalculation(Calculation calculation) {
+	calculationHandler.add(calculation);
+    }
+
     protected void addChained(JComponent chained, JComponent parent) {
 	chainedHandler.add(this, chained, parent);
     }
