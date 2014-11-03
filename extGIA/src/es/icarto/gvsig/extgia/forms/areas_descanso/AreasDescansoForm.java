@@ -1,7 +1,5 @@
 package es.icarto.gvsig.extgia.forms.areas_descanso;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,14 +12,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.utils.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
@@ -32,12 +28,9 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
     JTextField areaDescansoIDWidget;
     CalculateComponentValue areaDescansoid;
 
-    AddReconocimientoListener addReconocimientoListener;
-    EditReconocimientoListener editReconocimientoListener;
-    DeleteReconocimientoListener deleteReconocimientoListener;
-
     private final GIAAlphanumericTableHandler trabajosTableHandler;
     private final GIAAlphanumericTableHandler ramalesTableHandler;
+    private final GIAAlphanumericTableHandler reconocimientosTableHandler;
 
     private JButton addRamalButton;
     private JButton editRamalButton;
@@ -60,6 +53,13 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 		AreasDescansoRamalesSubForm.colAlias,
 		AreasDescansoRamalesSubForm.class);
 	addTableHandler(ramalesTableHandler);
+
+	reconocimientosTableHandler = new GIAAlphanumericTableHandler(
+		getReconocimientosDBTableName(), getWidgetComponents(),
+		getElementID(), AreasDescansoReconocimientosSubForm.colNames,
+		AreasDescansoReconocimientosSubForm.colAlias,
+		AreasDescansoReconocimientosSubForm.class);
+	addTableHandler(reconocimientosTableHandler);
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -73,15 +73,6 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 	if (filesLinkButton == null) {
 	    addNewButtonsToActionsToolBar();
 	}
-
-	// Embebed Tables
-	SqlUtils.createEmbebedTableFromDB(reconocimientoEstado,
-		DBFieldNames.GIA_SCHEMA, getReconocimientosDBTableName(),
-		DBFieldNames.reconocimientoEstadoFields, null,
-		"id_area_descanso", areaDescansoIDWidget.getText(),
-		"n_inspeccion");
-
-	repaint();
     }
 
     @Override
@@ -112,8 +103,12 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 	deleteRamalButton.setAction(ramalesTableHandler.getListener()
 		.getDeleteAction());
 
-	addReconocimientoListener = new AddReconocimientoListener();
-	addReconocimientoButton.addActionListener(addReconocimientoListener);
+	addReconocimientoButton.setAction(reconocimientosTableHandler
+		.getListener().getCreateAction());
+	editReconocimientoButton.setAction(reconocimientosTableHandler
+		.getListener().getUpdateAction());
+	deleteReconocimientoButton.setAction(reconocimientosTableHandler
+		.getListener().getDeleteAction());
 
 	addTrabajoButton.setAction(trabajosTableHandler.getListener()
 		.getCreateAction());
@@ -121,23 +116,13 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 		.getUpdateAction());
 	deleteTrabajoButton.setAction(trabajosTableHandler.getListener()
 		.getDeleteAction());
-
-	editReconocimientoListener = new EditReconocimientoListener();
-	editReconocimientoButton.addActionListener(editReconocimientoListener);
-
-	deleteReconocimientoListener = new DeleteReconocimientoListener();
-	deleteReconocimientoButton
-		.addActionListener(deleteReconocimientoListener);
-
     }
 
     @Override
     protected void removeListeners() {
-	addReconocimientoButton.removeActionListener(addReconocimientoListener);
-	editReconocimientoButton
-		.removeActionListener(editReconocimientoListener);
-	deleteReconocimientoButton
-		.removeActionListener(deleteReconocimientoListener);
+	addReconocimientoButton.setAction(null);
+	editReconocimientoButton.setAction(null);
+	deleteReconocimientoButton.setAction(null);
 
 	addTrabajoButton.setAction(null);
 	editTrabajoButton.setAction(null);
@@ -178,48 +163,6 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 	    }
 	}
 	return super.validationHasErrors();
-    }
-
-    public class AddReconocimientoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    AreasDescansoReconocimientosSubForm subForm = new AreasDescansoReconocimientosSubForm(
-		    getReconocimientosFormFileName(),
-		    getReconocimientosDBTableName(), reconocimientoEstado,
-		    "id_area_descanso", areaDescansoIDWidget.getText(), null,
-		    null, false);
-	    PluginServices.getMDIManager().addWindow(subForm);
-	}
-    }
-
-    public class EditReconocimientoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    if (reconocimientoEstado.getSelectedRowCount() != 0) {
-		int row = reconocimientoEstado.getSelectedRow();
-		AreasDescansoReconocimientosSubForm subForm = new AreasDescansoReconocimientosSubForm(
-			getReconocimientosFormFileName(),
-			getReconocimientosDBTableName(), reconocimientoEstado,
-			"id_area_descanso", areaDescansoIDWidget.getText(),
-			"n_inspeccion", reconocimientoEstado.getValueAt(row, 0)
-				.toString(), true);
-		PluginServices.getMDIManager().addWindow(subForm);
-	    } else {
-		JOptionPane.showMessageDialog(null,
-			"Debe seleccionar una fila para editar los datos.",
-			"Ninguna fila seleccionada",
-			JOptionPane.INFORMATION_MESSAGE);
-	    }
-	}
-    }
-
-    public class DeleteReconocimientoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    deleteElement(reconocimientoEstado,
-		    getReconocimientosDBTableName(),
-		    getReconocimientosIDField());
-	}
     }
 
     @Override

@@ -1,43 +1,42 @@
 package es.icarto.gvsig.extgia.forms.areas_descanso;
 
-import java.util.HashMap;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.AREA_DESCANSO_A;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.AREA_DESCANSO_B;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.AREA_DESCANSO_C;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.AREA_DESCANSO_INDEX;
 
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
+import java.math.BigDecimal;
 
-import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
-import es.icarto.gvsig.extgia.forms.utils.CalculateReconocimientoIndexValue;
-import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
+import es.icarto.gvsig.navtableforms.IValidatableForm;
+import es.icarto.gvsig.navtableforms.calculation.Calculation;
 
-public class AreasDescansoCalculateIndiceEstado extends CalculateReconocimientoIndexValue {
+public class AreasDescansoCalculateIndiceEstado extends Calculation {
 
-    public AreasDescansoCalculateIndiceEstado(BasicAbstractSubForm form,
-	    HashMap<String, JComponent> allFormWidgets,
-	    String resultComponentName, String... operatorComponentsNames) {
-	super(form, allFormWidgets, resultComponentName, operatorComponentsNames);
-	// TODO Auto-generated constructor stub
+    private static final BigDecimal weigth = new BigDecimal("0.33");
+
+    public AreasDescansoCalculateIndiceEstado(IValidatableForm form) {
+	super(form);
     }
 
     @Override
-    public void setValue(boolean validate) {
-	float value = 0;
+    protected String resultName() {
+	return AREA_DESCANSO_INDEX;
+    }
 
-	String strA = ((KeyValue) ((JComboBox) operatorComponents
-		.get(DBFieldNames.AREA_DESCANSO_A)).getSelectedItem())
-		.getKey();
-	String strB = ((KeyValue) ((JComboBox) operatorComponents
-		.get(DBFieldNames.AREA_DESCANSO_B)).getSelectedItem()).getKey();
-	String strC = ((KeyValue) ((JComboBox) operatorComponents
-		.get(DBFieldNames.AREA_DESCANSO_C)).getSelectedItem()).getKey();
+    @Override
+    protected String[] operandNames() {
+	return new String[] { AREA_DESCANSO_A, AREA_DESCANSO_B, AREA_DESCANSO_C };
+    }
 
-	value += Integer.parseInt(strA) * 0.33;
-	value += Integer.parseInt(strB) * 0.33;
-	value += Integer.parseInt(strC) * 0.33;
+    @Override
+    protected String calculate() {
+	BigDecimal value = new BigDecimal(0);
 
-	String strValue = Float.toString(value);
-	resultComponent.setText(strValue);
+	value = value.add(operandValue(AREA_DESCANSO_A).multiply(weigth));
+	value = value.add(operandValue(AREA_DESCANSO_B).multiply(weigth));
+	value = value.add(operandValue(AREA_DESCANSO_C).multiply(weigth));
 
+	return formatter.format(value);
     }
 
 }
