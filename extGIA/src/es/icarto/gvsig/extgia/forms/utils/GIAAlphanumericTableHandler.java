@@ -26,6 +26,18 @@ public class GIAAlphanumericTableHandler extends BaseTableHandler {
     public GIAAlphanumericTableHandler(String tableName,
 	    HashMap<String, JComponent> widgets, String foreignKeyId,
 	    String[] colNames, String[] colAliases,
+	    BasicAbstractSubForm subFormClass) {
+	super(tableName, widgets, foreignKeyId, colNames, colAliases);
+
+	// TODO
+	GIAFormFactory.registerFormFactory();
+	FormFactory.checkAndLoadTableRegistered(tableName);
+	form = subFormClass;
+    }
+
+    public GIAAlphanumericTableHandler(String tableName,
+	    HashMap<String, JComponent> widgets, String foreignKeyId,
+	    String[] colNames, String[] colAliases,
 	    Class<? extends AbstractSubForm> subFormClass) {
 	super(tableName, widgets, foreignKeyId, colNames, colAliases);
 

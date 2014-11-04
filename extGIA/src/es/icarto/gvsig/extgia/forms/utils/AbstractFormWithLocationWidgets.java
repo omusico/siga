@@ -465,12 +465,12 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 	new ShowImageAction(imageComponent, addImageButton,
 		getImagesDBTableName(), getElementID(), getElementIDValue());
     }
-    
+
     @Override
     protected String getSchema() {
-        return DBFieldNames.GIA_SCHEMA;
+	return DBFieldNames.GIA_SCHEMA;
     }
-    
+
     protected String getReconocimientosFormFileName() {
 	return "forms/" + getBasicName() + "_reconocimientos.jfrm";
     }
@@ -478,17 +478,22 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
     protected String getTrabajosFormFileName() {
 	return "forms/" + getBasicName() + "_trabajos.jfrm";
     }
-    
+
     public String getReconocimientosDBTableName() {
-        return getBasicName() + "_reconocimientos";
+	return getBasicName() + "_reconocimientos";
     }
 
     public String getTrabajosDBTableName() {
-        return getBasicName() + "_trabajos";
+	return getBasicName() + "_trabajos";
     }
-    
+
     public String getRamalesDBTableName() {
-        return getBasicName() + "_ramales";
+	return getBasicName() + "_ramales";
+    }
+
+    @Override
+    protected String getPrimaryKeyValue() {
+	return getFormController().getValue(getElementID());
     }
 
     public abstract String getElement();
@@ -513,6 +518,7 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 
     public abstract boolean isSpecialCase();
 
+    @Override
     protected abstract String getBasicName();
 
     protected abstract boolean hasSentido();
@@ -520,7 +526,8 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
     public class DeleteReconocimientoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    deleteElement(reconocimientoEstado, getReconocimientosDBTableName(),
+	    deleteElement(reconocimientoEstado,
+		    getReconocimientosDBTableName(),
 		    getReconocimientosIDField());
 	}
     }

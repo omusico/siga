@@ -19,6 +19,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
+import es.icarto.gvsig.extgia.forms.utils.RamalesHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
@@ -27,22 +28,16 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 public class EnlacesForm extends AbstractFormWithLocationWidgets {
 
     public static final String ABEILLE_CARRETERAS_FILENAME = "forms/enlaces_carreteras.xml";
-    public static final String ABEILLE_RAMALES_FILENAME = "forms/enlaces_ramales.xml";
     public static final String TABLENAME = "enlaces";
 
     JTextField enlaceIDWidget;
     CalculateComponentValue enlaceid;
 
     JTable carreteras;
-    JTable ramales;
 
     JButton addCarreteraButton;
     JButton editCarreteraButton;
     JButton deleteCarreteraButton;
-
-    JButton addRamalButton;
-    JButton editRamalButton;
-    JButton deleteRamalButton;
 
     AddReconocimientoListener addReconocimientoListener;
     EditReconocimientoListener editReconocimientoListener;
@@ -52,13 +47,12 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
     EditCarreteraListener editCarreteraListener;
     DeleteCarreteraListener deleteCarreteraListener;
 
-    AddRamalListener addRamalListener;
-    EditRamalListener editRamalListener;
-    DeleteRamalListener deleteRamalListener;
-
-
     public EnlacesForm(FLyrVect layer) {
 	super(layer);
+	addTableHandler(new RamalesHandler(getRamalesDBTableName(),
+		getWidgetComponents(), getElementID(),
+		DBFieldNames.ramalesDireccionColNames,
+		DBFieldNames.ramalesDireccionColAlias, this));
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -74,21 +68,22 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 	}
 
 	// Embebed Tables
-	DBFieldNames.setReconocimientoEstadoFields(DBFieldNames.enlacesReconocimientoEstadoFields);
+	DBFieldNames
+		.setReconocimientoEstadoFields(DBFieldNames.enlacesReconocimientoEstadoFields);
 	SqlUtils.createEmbebedTableFromDB(reconocimientoEstado,
 		"audasa_extgia", getReconocimientosDBTableName(),
-		DBFieldNames.reconocimientoEstadoFields, null, "id_enlace", enlaceIDWidget.getText(), "n_inspeccion");
+		DBFieldNames.reconocimientoEstadoFields, null, "id_enlace",
+		enlaceIDWidget.getText(), "n_inspeccion");
 
 	SqlUtils.createEmbebedTableFromDB(carreteras, DBFieldNames.GIA_SCHEMA,
-		"enlaces_carreteras_enlazadas", DBFieldNames.carreteras_enlazadas,
-		null, "id_enlace", enlaceIDWidget.getText(), "id_carretera_enlazada");
+		"enlaces_carreteras_enlazadas",
+		DBFieldNames.carreteras_enlazadas, null, "id_enlace",
+		enlaceIDWidget.getText(), "id_carretera_enlazada");
 
-	SqlUtils.createEmbebedTableFromDB(ramales, DBFieldNames.GIA_SCHEMA,
-		"enlaces_ramales", DBFieldNames.ramales,
-		null, "id_enlace", enlaceIDWidget.getText(), "id_ramal");
 	repaint();
     }
 
+    @Override
     protected void setListeners() {
 	super.setListeners();
 	Map<String, JComponent> widgets = getWidgets();
@@ -96,63 +91,58 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 	enlaceIDWidget = (JTextField) widgets.get(DBFieldNames.ID_ENLACE);
 
 	enlaceid = new EnlacesCalculateIDValue(this, getWidgetComponents(),
-		DBFieldNames.ID_ENLACE, DBFieldNames.AREA_MANTENIMIENTO, DBFieldNames.BASE_CONTRATISTA,
-		DBFieldNames.TRAMO, DBFieldNames.TIPO_VIA, DBFieldNames.MUNICIPIO, DBFieldNames.PK);
+		DBFieldNames.ID_ENLACE, DBFieldNames.AREA_MANTENIMIENTO,
+		DBFieldNames.BASE_CONTRATISTA, DBFieldNames.TRAMO,
+		DBFieldNames.TIPO_VIA, DBFieldNames.MUNICIPIO, DBFieldNames.PK);
 	enlaceid.setListeners();
 
-	carreteras = (JTable) super.getFormBody().getComponentByName("tabla_carreteras");
-	ramales = (JTable) super.getFormBody().getComponentByName("tabla_ramales");
+	carreteras = (JTable) super.getFormBody().getComponentByName(
+		"tabla_carreteras");
 
-	addCarreteraButton = (JButton) super.getFormBody().getComponentByName("add_carretera_button");
-	editCarreteraButton = (JButton) super.getFormBody().getComponentByName("edit_carretera_button");
-	deleteCarreteraButton = (JButton) super.getFormBody().getComponentByName("delete_carretera_button");
-
-	addRamalButton = (JButton) super.getFormBody().getComponentByName("add_ramal_button");
-	editRamalButton = (JButton) super.getFormBody().getComponentByName("edit_ramal_button");
-	deleteRamalButton = (JButton) super.getFormBody().getComponentByName("delete_ramal_button");
+	addCarreteraButton = (JButton) super.getFormBody().getComponentByName(
+		"add_carretera_button");
+	editCarreteraButton = (JButton) super.getFormBody().getComponentByName(
+		"edit_carretera_button");
+	deleteCarreteraButton = (JButton) super.getFormBody()
+		.getComponentByName("delete_carretera_button");
 
 	addReconocimientoListener = new AddReconocimientoListener();
 	addReconocimientoButton.addActionListener(addReconocimientoListener);
 	addCarreteraListener = new AddCarreteraListener();
 	addCarreteraButton.addActionListener(addCarreteraListener);
-	addRamalListener = new AddRamalListener();
-	addRamalButton.addActionListener(addRamalListener);
 	editReconocimientoListener = new EditReconocimientoListener();
 	editReconocimientoButton.addActionListener(editReconocimientoListener);
 	editCarreteraListener = new EditCarreteraListener();
 	editCarreteraButton.addActionListener(editCarreteraListener);
-	editRamalListener = new EditRamalListener();
-	editRamalButton.addActionListener(editRamalListener);
 	deleteReconocimientoListener = new DeleteReconocimientoListener();
-	deleteReconocimientoButton.addActionListener(deleteReconocimientoListener);
+	deleteReconocimientoButton
+		.addActionListener(deleteReconocimientoListener);
 	deleteCarreteraListener = new DeleteCarreteraListener();
 	deleteCarreteraButton.addActionListener(deleteCarreteraListener);
-	deleteRamalListener = new DeleteRamalListener();
-	deleteRamalButton.addActionListener(deleteRamalListener);
     }
 
     @Override
     protected void removeListeners() {
 	addReconocimientoButton.removeActionListener(addReconocimientoListener);
-	editReconocimientoButton.removeActionListener(editReconocimientoListener);
-	deleteReconocimientoButton.removeActionListener(deleteReconocimientoListener);
+	editReconocimientoButton
+		.removeActionListener(editReconocimientoListener);
+	deleteReconocimientoButton
+		.removeActionListener(deleteReconocimientoListener);
 
 	addCarreteraButton.removeActionListener(addCarreteraListener);
 	editCarreteraButton.removeActionListener(editCarreteraListener);
 	deleteCarreteraButton.removeActionListener(deleteCarreteraListener);
 
-	addRamalButton.removeActionListener(addRamalListener);
-	editRamalButton.removeActionListener(editRamalListener);
-	deleteRamalButton.removeActionListener(deleteRamalListener);
-
 	super.removeListeners();
 
-	DBFieldNames.setReconocimientoEstadoFields(DBFieldNames.genericReconocimientoEstadoFields);
+	DBFieldNames
+		.setReconocimientoEstadoFields(DBFieldNames.genericReconocimientoEstadoFields);
     }
 
     @Override
     protected boolean validationHasErrors() {
-	if (this.getFormController().getValuesChanged().containsKey("id_enlace")) {
+	if (this.getFormController().getValuesChanged()
+		.containsKey("id_enlace")) {
 	    if (enlaceIDWidget.getText() != "") {
 		String query = "SELECT id_enlace FROM audasa_extgia.enlaces "
 			+ " WHERE id_enlace = '" + enlaceIDWidget.getText()
@@ -181,16 +171,10 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
     public class AddReconocimientoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    EnlacesReconocimientosSubForm subForm =
-		    new EnlacesReconocimientosSubForm(
-			    getReconocimientosFormFileName(),
-			    getReconocimientosDBTableName(),
-			    reconocimientoEstado,
-			    "id_enlace",
-			    enlaceIDWidget.getText(),
-			    null,
-			    null,
-			    false);
+	    EnlacesReconocimientosSubForm subForm = new EnlacesReconocimientosSubForm(
+		    getReconocimientosFormFileName(),
+		    getReconocimientosDBTableName(), reconocimientoEstado,
+		    "id_enlace", enlaceIDWidget.getText(), null, null, false);
 	    PluginServices.getMDIManager().addWindow(subForm);
 	}
     }
@@ -198,33 +182,10 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
     public class AddCarreteraListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    EnlacesCarreterasSubForm subForm =
-		    new EnlacesCarreterasSubForm(
-			    ABEILLE_CARRETERAS_FILENAME,
-			    "enlaces_carreteras_enlazadas",
-			    carreteras,
-			    "id_enlace",
-			    enlaceIDWidget.getText(),
-			    null,
-			    null,
-			    false);
-	    PluginServices.getMDIManager().addWindow(subForm);
-	}
-    }
-
-    public class AddRamalListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    EnlacesRamalesSubForm subForm =
-		    new EnlacesRamalesSubForm(
-			    ABEILLE_RAMALES_FILENAME,
-			    "enlaces_ramales",
-			    ramales,
-			    "id_enlace",
-			    enlaceIDWidget.getText(),
-			    null,
-			    null,
-			    false);
+	    EnlacesCarreterasSubForm subForm = new EnlacesCarreterasSubForm(
+		    ABEILLE_CARRETERAS_FILENAME,
+		    "enlaces_carreteras_enlazadas", carreteras, "id_enlace",
+		    enlaceIDWidget.getText(), null, null, false);
 	    PluginServices.getMDIManager().addWindow(subForm);
 	}
     }
@@ -234,18 +195,14 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    if (reconocimientoEstado.getSelectedRowCount() != 0) {
 		int row = reconocimientoEstado.getSelectedRow();
-		EnlacesReconocimientosSubForm subForm =
-			new EnlacesReconocimientosSubForm(
-				getReconocimientosFormFileName(),
-				getReconocimientosDBTableName(),
-				reconocimientoEstado,
-				"id_enlace",
-				enlaceIDWidget.getText(),
-				"n_inspeccion",
-				reconocimientoEstado.getValueAt(row, 0).toString(),
-				true);
+		EnlacesReconocimientosSubForm subForm = new EnlacesReconocimientosSubForm(
+			getReconocimientosFormFileName(),
+			getReconocimientosDBTableName(), reconocimientoEstado,
+			"id_enlace", enlaceIDWidget.getText(), "n_inspeccion",
+			reconocimientoEstado.getValueAt(row, 0).toString(),
+			true);
 		PluginServices.getMDIManager().addWindow(subForm);
-	    }else {
+	    } else {
 		JOptionPane.showMessageDialog(null,
 			"Debe seleccionar una fila para editar los datos.",
 			"Ninguna fila seleccionada",
@@ -259,43 +216,14 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    if (carreteras.getSelectedRowCount() != 0) {
 		int row = carreteras.getSelectedRow();
-		EnlacesCarreterasSubForm subForm =
-			new EnlacesCarreterasSubForm(
-				ABEILLE_CARRETERAS_FILENAME,
-				"enlaces_carreteras_enlazadas",
-				carreteras,
-				"id_enlace",
-				enlaceIDWidget.getText(),
-				"id_carretera_enlazada",
-				carreteras.getValueAt(row, 0).toString(),
-				true);
+		EnlacesCarreterasSubForm subForm = new EnlacesCarreterasSubForm(
+			ABEILLE_CARRETERAS_FILENAME,
+			"enlaces_carreteras_enlazadas", carreteras,
+			"id_enlace", enlaceIDWidget.getText(),
+			"id_carretera_enlazada", carreteras.getValueAt(row, 0)
+				.toString(), true);
 		PluginServices.getMDIManager().addWindow(subForm);
-	    }else {
-		JOptionPane.showMessageDialog(null,
-			"Debe seleccionar una fila para editar los datos.",
-			"Ninguna fila seleccionada",
-			JOptionPane.INFORMATION_MESSAGE);
-	    }
-	}
-    }
-
-    public class EditRamalListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    if (ramales.getSelectedRowCount() != 0) {
-		int row = ramales.getSelectedRow();
-		EnlacesRamalesSubForm subForm =
-			new EnlacesRamalesSubForm(
-				ABEILLE_RAMALES_FILENAME,
-				"enlaces_ramales",
-				ramales,
-				"id_enlace",
-				enlaceIDWidget.getText(),
-				"id_ramal",
-				ramales.getValueAt(row, 0).toString(),
-				true);
-		PluginServices.getMDIManager().addWindow(subForm);
-	    }else {
+	    } else {
 		JOptionPane.showMessageDialog(null,
 			"Debe seleccionar una fila para editar los datos.",
 			"Ninguna fila seleccionada",
@@ -309,14 +237,6 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    deleteElement(carreteras, "enlaces_carreteras_enlazadas",
 		    "id_carretera_enlazada");
-	}
-    }
-
-    public class DeleteRamalListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    deleteElement(ramales, "enlaces_ramales",
-		    "id_ramal");
 	}
     }
 

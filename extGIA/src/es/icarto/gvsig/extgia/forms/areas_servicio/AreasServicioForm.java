@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -19,6 +18,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
+import es.icarto.gvsig.extgia.forms.utils.RamalesHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
@@ -26,17 +26,10 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 @SuppressWarnings("serial")
 public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 
-    public static final String ABEILLE_RAMALES_FILENAME = "forms/areas_servicio_ramales.xml";
     public static final String TABLENAME = "areas_servicio";
 
     JTextField areaServicioIDWidget;
     CalculateComponentValue areaServicioid;
-
-    JTable ramales;
-
-    JButton addRamalButton;
-    JButton editRamalButton;
-    JButton deleteRamalButton;
 
     AddReconocimientoListener addReconocimientoListener;
     EditReconocimientoListener editReconocimientoListener;
@@ -46,12 +39,12 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
     EditTrabajoListener editTrabajoListener;
     DeleteTrabajoListener deleteTrabajoListener;
 
-    AddRamalListener addRamalListener;
-    EditRamalListener editRamalListener;
-    DeleteRamalListener deleteRamalListener;
-
     public AreasServicioForm(FLyrVect layer) {
 	super(layer);
+	addTableHandler(new RamalesHandler(getRamalesDBTableName(),
+		getWidgetComponents(), getElementID(),
+		DBFieldNames.ramalesColNames, DBFieldNames.ramalesColAlias,
+		this));
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -69,82 +62,74 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 	// Embebed Tables
 	SqlUtils.createEmbebedTableFromDB(reconocimientoEstado,
 		DBFieldNames.GIA_SCHEMA, getReconocimientosDBTableName(),
-		DBFieldNames.reconocimientoEstadoFields, null, "id_area_servicio", areaServicioIDWidget.getText(), "n_inspeccion");
+		DBFieldNames.reconocimientoEstadoFields, null,
+		"id_area_servicio", areaServicioIDWidget.getText(),
+		"n_inspeccion");
 
-	int[] trabajoColumnsSize = {1, 30, 90, 70, 200};
+	int[] trabajoColumnsSize = { 1, 30, 90, 70, 200 };
 	SqlUtils.createEmbebedTableFromDB(trabajos, DBFieldNames.GIA_SCHEMA,
 		getTrabajosDBTableName(), DBFieldNames.trabajoFields,
-		trabajoColumnsSize, "id_area_servicio", areaServicioIDWidget.getText(), "id_trabajo");
+		trabajoColumnsSize, "id_area_servicio",
+		areaServicioIDWidget.getText(), "id_trabajo");
 
-	SqlUtils.createEmbebedTableFromDB(ramales, DBFieldNames.GIA_SCHEMA,
-		"areas_servicio_ramales", DBFieldNames.ramales,
-		null, "id_area_servicio", areaServicioIDWidget.getText(), "id_ramal");
 	repaint();
     }
 
+    @Override
     protected void setListeners() {
 	super.setListeners();
 	Map<String, JComponent> widgets = getWidgets();
 
-	areaServicioIDWidget = (JTextField) widgets.get(DBFieldNames.ID_AREA_SERVICIO);
+	areaServicioIDWidget = (JTextField) widgets
+		.get(DBFieldNames.ID_AREA_SERVICIO);
 
-	areaServicioid = new AreasServicioCalculateIDValue(this, getWidgetComponents(),
-		DBFieldNames.ID_AREA_SERVICIO, DBFieldNames.AREA_MANTENIMIENTO, DBFieldNames.BASE_CONTRATISTA,
-		DBFieldNames.TRAMO, DBFieldNames.TIPO_VIA, DBFieldNames.MUNICIPIO, DBFieldNames.SENTIDO);
+	areaServicioid = new AreasServicioCalculateIDValue(this,
+		getWidgetComponents(), DBFieldNames.ID_AREA_SERVICIO,
+		DBFieldNames.AREA_MANTENIMIENTO, DBFieldNames.BASE_CONTRATISTA,
+		DBFieldNames.TRAMO, DBFieldNames.TIPO_VIA,
+		DBFieldNames.MUNICIPIO, DBFieldNames.SENTIDO);
 	areaServicioid.setListeners();
-
-	ramales = (JTable) super.getFormBody().getComponentByName("tabla_ramales");
-
-	addRamalButton = (JButton) super.getFormBody().getComponentByName("add_ramal_button");
-	editRamalButton = (JButton) super.getFormBody().getComponentByName("edit_ramal_button");
-	deleteRamalButton = (JButton) super.getFormBody().getComponentByName("delete_ramal_button");
 
 	addReconocimientoListener = new AddReconocimientoListener();
 	addReconocimientoButton.addActionListener(addReconocimientoListener);
 	addTrabajoListener = new AddTrabajoListener();
 	addTrabajoButton.addActionListener(addTrabajoListener);
-	addRamalListener = new AddRamalListener();
-	addRamalButton.addActionListener(addRamalListener);
 
 	editReconocimientoListener = new EditReconocimientoListener();
 	editReconocimientoButton.addActionListener(editReconocimientoListener);
 	editTrabajoListener = new EditTrabajoListener();
 	editTrabajoButton.addActionListener(editTrabajoListener);
-	editRamalListener = new EditRamalListener();
-	editRamalButton.addActionListener(editRamalListener);
 
 	deleteReconocimientoListener = new DeleteReconocimientoListener();
-	deleteReconocimientoButton.addActionListener(deleteReconocimientoListener);
+	deleteReconocimientoButton
+		.addActionListener(deleteReconocimientoListener);
 	deleteTrabajoListener = new DeleteTrabajoListener();
 	deleteTrabajoButton.addActionListener(deleteTrabajoListener);
-	deleteRamalListener = new DeleteRamalListener();
-	deleteRamalButton.addActionListener(deleteRamalListener);
     }
 
     @Override
     protected void removeListeners() {
 	addReconocimientoButton.removeActionListener(addReconocimientoListener);
-	editReconocimientoButton.removeActionListener(editReconocimientoListener);
-	deleteReconocimientoButton.removeActionListener(deleteReconocimientoListener);
+	editReconocimientoButton
+		.removeActionListener(editReconocimientoListener);
+	deleteReconocimientoButton
+		.removeActionListener(deleteReconocimientoListener);
 
 	addTrabajoButton.removeActionListener(addTrabajoListener);
 	editTrabajoButton.removeActionListener(editTrabajoListener);
 	deleteTrabajoButton.removeActionListener(deleteTrabajoListener);
-
-	addRamalButton.removeActionListener(addRamalListener);
-	editRamalButton.removeActionListener(editRamalListener);
-	deleteRamalButton.removeActionListener(deleteRamalListener);
 
 	super.removeListeners();
     }
 
     @Override
     protected boolean validationHasErrors() {
-	if (this.getFormController().getValuesChanged().containsKey("id_area_servicio")) {
+	if (this.getFormController().getValuesChanged()
+		.containsKey("id_area_servicio")) {
 	    if (areaServicioIDWidget.getText() != "") {
 		String query = "SELECT id_area_servicio FROM audasa_extgia.areas_servicio "
-			+ " WHERE id_area_servicio = '" + areaServicioIDWidget.getText()
-			+ "';";
+			+ " WHERE id_area_servicio = '"
+			+ areaServicioIDWidget.getText() + "';";
 		PreparedStatement statement = null;
 		Connection connection = DBSession.getCurrentSession()
 			.getJavaConnection();
@@ -169,16 +154,11 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
     public class AddReconocimientoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    AreasServicioReconocimientosSubForm subForm =
-		    new AreasServicioReconocimientosSubForm(
-			    getReconocimientosFormFileName(),
-			    getReconocimientosDBTableName(),
-			    reconocimientoEstado,
-			    "id_area_servicio",
-			    areaServicioIDWidget.getText(),
-			    null,
-			    null,
-			    false);
+	    AreasServicioReconocimientosSubForm subForm = new AreasServicioReconocimientosSubForm(
+		    getReconocimientosFormFileName(),
+		    getReconocimientosDBTableName(), reconocimientoEstado,
+		    "id_area_servicio", areaServicioIDWidget.getText(), null,
+		    null, false);
 	    PluginServices.getMDIManager().addWindow(subForm);
 	}
     }
@@ -186,33 +166,10 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
     public class AddTrabajoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    AreasServicioTrabajosSubForm subForm =
-		    new AreasServicioTrabajosSubForm(
-			    getTrabajosFormFileName(),
-			    getTrabajosDBTableName(),
-			    trabajos,
-			    "id_area_servicio",
-			    areaServicioIDWidget.getText(),
-			    null,
-			    null,
-			    false);
-	    PluginServices.getMDIManager().addWindow(subForm);
-	}
-    }
-
-    public class AddRamalListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    AreasServicioRamalesSubForm subForm =
-		    new AreasServicioRamalesSubForm(
-			    ABEILLE_RAMALES_FILENAME,
-			    "areas_servicio_ramales",
-			    ramales,
-			    "id_area_servicio",
-			    areaServicioIDWidget.getText(),
-			    null,
-			    null,
-			    false);
+	    AreasServicioTrabajosSubForm subForm = new AreasServicioTrabajosSubForm(
+		    getTrabajosFormFileName(), getTrabajosDBTableName(),
+		    trabajos, "id_area_servicio",
+		    areaServicioIDWidget.getText(), null, null, false);
 	    PluginServices.getMDIManager().addWindow(subForm);
 	}
     }
@@ -222,18 +179,14 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    if (reconocimientoEstado.getSelectedRowCount() != 0) {
 		int row = reconocimientoEstado.getSelectedRow();
-		AreasServicioReconocimientosSubForm subForm =
-			new AreasServicioReconocimientosSubForm(
-				getReconocimientosFormFileName(),
-				getReconocimientosDBTableName(),
-				reconocimientoEstado,
-				"id_area_servicio",
-				areaServicioIDWidget.getText(),
-				"n_inspeccion",
-				reconocimientoEstado.getValueAt(row, 0).toString(),
-				true);
+		AreasServicioReconocimientosSubForm subForm = new AreasServicioReconocimientosSubForm(
+			getReconocimientosFormFileName(),
+			getReconocimientosDBTableName(), reconocimientoEstado,
+			"id_area_servicio", areaServicioIDWidget.getText(),
+			"n_inspeccion", reconocimientoEstado.getValueAt(row, 0)
+				.toString(), true);
 		PluginServices.getMDIManager().addWindow(subForm);
-	    }else {
+	    } else {
 		JOptionPane.showMessageDialog(null,
 			"Debe seleccionar una fila para editar los datos.",
 			"Ninguna fila seleccionada",
@@ -247,56 +200,18 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    if (trabajos.getSelectedRowCount() != 0) {
 		int row = trabajos.getSelectedRow();
-		AreasServicioTrabajosSubForm subForm =
-			new AreasServicioTrabajosSubForm(
-				getTrabajosFormFileName(),
-				getTrabajosDBTableName(),
-				trabajos,
-				"id_area_servicio",
-				areaServicioIDWidget.getText(),
-				"id_trabajo",
-				trabajos.getValueAt(row, 0).toString(),
-				true);
+		AreasServicioTrabajosSubForm subForm = new AreasServicioTrabajosSubForm(
+			getTrabajosFormFileName(), getTrabajosDBTableName(),
+			trabajos, "id_area_servicio",
+			areaServicioIDWidget.getText(), "id_trabajo", trabajos
+				.getValueAt(row, 0).toString(), true);
 		PluginServices.getMDIManager().addWindow(subForm);
-	    }else {
+	    } else {
 		JOptionPane.showMessageDialog(null,
 			"Debe seleccionar una fila para editar los datos.",
 			"Ninguna fila seleccionada",
 			JOptionPane.INFORMATION_MESSAGE);
 	    }
-	}
-    }
-
-    public class EditRamalListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    if (ramales.getSelectedRowCount() != 0) {
-		int row = ramales.getSelectedRow();
-		AreasServicioRamalesSubForm subForm =
-			new AreasServicioRamalesSubForm(
-				ABEILLE_RAMALES_FILENAME,
-				"areas_servicio_ramales",
-				ramales,
-				"id_area_servicio",
-				areaServicioIDWidget.getText(),
-				"id_ramal",
-				ramales.getValueAt(row, 0).toString(),
-				true);
-		PluginServices.getMDIManager().addWindow(subForm);
-	    }else {
-		JOptionPane.showMessageDialog(null,
-			"Debe seleccionar una fila para editar los datos.",
-			"Ninguna fila seleccionada",
-			JOptionPane.INFORMATION_MESSAGE);
-	    }
-	}
-    }
-
-    public class DeleteRamalListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    deleteElement(ramales, "areas_servicio_ramales",
-		    "id_ramal");
 	}
     }
 

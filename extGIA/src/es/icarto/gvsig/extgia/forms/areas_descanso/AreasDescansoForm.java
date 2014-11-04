@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -17,6 +16,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.utils.GIAAlphanumericTableHandler;
+import es.icarto.gvsig.extgia.forms.utils.RamalesHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -29,12 +29,7 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
     CalculateComponentValue areaDescansoid;
 
     private final GIAAlphanumericTableHandler trabajosTableHandler;
-    private final GIAAlphanumericTableHandler ramalesTableHandler;
     private final GIAAlphanumericTableHandler reconocimientosTableHandler;
-
-    private JButton addRamalButton;
-    private JButton editRamalButton;
-    private JButton deleteRamalButton;
 
     public AreasDescansoForm(FLyrVect layer) {
 	super(layer);
@@ -47,12 +42,10 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 		AreasDescansoTrabajosSubForm.class);
 	addTableHandler(trabajosTableHandler);
 
-	ramalesTableHandler = new GIAAlphanumericTableHandler(
-		getRamalesDBTableName(), getWidgetComponents(), getElementID(),
-		AreasDescansoRamalesSubForm.colNames,
-		AreasDescansoRamalesSubForm.colAlias,
-		AreasDescansoRamalesSubForm.class);
-	addTableHandler(ramalesTableHandler);
+	addTableHandler(new RamalesHandler(getRamalesDBTableName(),
+		getWidgetComponents(), getElementID(),
+		DBFieldNames.ramalesColNames, DBFieldNames.ramalesColAlias,
+		this));
 
 	reconocimientosTableHandler = new GIAAlphanumericTableHandler(
 		getReconocimientosDBTableName(), getWidgetComponents(),
@@ -90,25 +83,14 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 		DBFieldNames.SENTIDO);
 	areaDescansoid.setListeners();
 
-	addRamalButton = (JButton) super.getFormBody().getComponentByName(
-		"add_ramal_button");
-	editRamalButton = (JButton) super.getFormBody().getComponentByName(
-		"edit_ramal_button");
-	deleteRamalButton = (JButton) super.getFormBody().getComponentByName(
-		"delete_ramal_button");
-	addRamalButton.setAction(ramalesTableHandler.getListener()
-		.getCreateAction());
-	editRamalButton.setAction(ramalesTableHandler.getListener()
-		.getUpdateAction());
-	deleteRamalButton.setAction(ramalesTableHandler.getListener()
-		.getDeleteAction());
-
 	addReconocimientoButton.setAction(reconocimientosTableHandler
 		.getListener().getCreateAction());
 	editReconocimientoButton.setAction(reconocimientosTableHandler
 		.getListener().getUpdateAction());
 	deleteReconocimientoButton.setAction(reconocimientosTableHandler
 		.getListener().getDeleteAction());
+
+	//
 
 	addTrabajoButton.setAction(trabajosTableHandler.getListener()
 		.getCreateAction());
@@ -128,9 +110,7 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 	editTrabajoButton.setAction(null);
 	deleteTrabajoButton.setAction(null);
 
-	addRamalButton.setAction(null);
-	editRamalButton.setAction(null);
-	deleteRamalButton.setAction(null);
+	//
 
 	super.removeListeners();
 
@@ -163,11 +143,6 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 	    }
 	}
 	return super.validationHasErrors();
-    }
-
-    @Override
-    protected String getPrimaryKeyValue() {
-	return getFormController().getValue(getElementID());
     }
 
     @Override

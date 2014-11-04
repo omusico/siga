@@ -9,7 +9,12 @@ import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.navtableforms.gui.tables.AbstractSubForm;
 
 @SuppressWarnings("serial")
-public abstract class BasicAbstractSubForm extends AbstractSubForm {
+public class BasicAbstractSubForm extends AbstractSubForm {
+
+    public BasicAbstractSubForm(String basicName) {
+	super(basicName);
+	initGUIPost();
+    }
 
     public BasicAbstractSubForm() {
 	super();

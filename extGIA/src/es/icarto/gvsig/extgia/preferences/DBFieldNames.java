@@ -52,15 +52,6 @@ public class DBFieldNames {
 	    "ramal as \"Nombre Ramal\"", "sentido_ramal as \"Sentido\"",
 	    "direccion_ramal as \"Dirección\"", "longitud as \"Longitud\"" };
 
-    public static String[] ramales = { "id_ramal as \"ID Ramal\"",
-	    "ramal as \"Nombre Ramal\"", "sentido_ramal as \"Sentido\"",
-	    "direccion_ramal as \"Dirección\"", "longitud as \"Longitud\"" };
-
-    public static String[] ramales_area_mantenimiento = {
-	    "id_ramal as \"ID Ramal\"", "ramal as \"Nombre Ramal\"",
-	    "sentido as \"Sentido\"", "direccion as \"Dirección\"",
-	    "longitud as \"Longitud\"" };
-
     public static String[] senhales = { "id_senhal_vertical as \"ID Señal\"",
 	    "tipo_senhal as \"Tipo Señal\"",
 	    "codigo_senhal as \"Código Señal\"", "leyenda as \"Leyenda\"",
@@ -80,6 +71,16 @@ public class DBFieldNames {
     public static String[] viasFields = { "id_via as \"ID\"",
 	    "via as \"Nª Vía\"", "via_tipo as \"Tipo Vía\"",
 	    "reversible as \"Reversible\"", "cabinas as \"Nº Cabinas\"" };
+
+    public static String[] ramalesColNames = { "id_ramal", "ramal",
+	    "sentido_ramal", "longitud" };
+    public static String[] ramalesColAlias = { "ID Ramal", "Nombre Ramal",
+	    "Sentido", "Longitud" };
+
+    public static String[] ramalesDireccionColNames = { "id_ramal", "ramal",
+	    "sentido_ramal", "direccion_ramal", "longitud" };
+    public static String[] ramalesDireccionColAlias = { "ID Ramal",
+	    "Nombre Ramal", "Sentido", "Dirección", "Longitud" };
 
     public static final String GIA_SCHEMA = "audasa_extgia";
 
@@ -263,10 +264,6 @@ public class DBFieldNames {
 
     public static void setTrabajosFields(String[] fields) {
 	trabajoFields = fields;
-    }
-
-    public static void setRamalesFields(String[] fields) {
-	ramales = fields;
     }
 
     public static String getPrimaryKey(Elements element) {
