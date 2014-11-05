@@ -18,6 +18,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
+import es.icarto.gvsig.extgia.forms.utils.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
@@ -32,13 +33,16 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
 
     AddReconocimientoListener addReconocimientoListener;
     EditReconocimientoListener editReconocimientoListener;
-    AddTrabajoListener addTrabajoListener;
-    EditTrabajoListener editTrabajoListener;
     DeleteReconocimientoListener deleteReconocimientoListener;
-    DeleteTrabajoListener deleteTrabajoListener;
 
     public PasosMedianaForm(FLyrVect layer) {
 	super(layer);
+
+	// int[] trabajoColumnsSize = { 1, 30, 90, 70, 200 };
+	addTableHandler(new GIAAlphanumericTableHandler(
+		getTrabajosDBTableName(), getWidgetComponents(),
+		getElementID(), DBFieldNames.trabajosColNames,
+		DBFieldNames.trabajosColAlias, this));
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -54,62 +58,56 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
 	}
 
 	// Embebed Tables
-	int[] trabajoColumnsSize = {1, 30, 90, 70, 200};
 	SqlUtils.createEmbebedTableFromDB(reconocimientoEstado,
 		"audasa_extgia", getReconocimientosDBTableName(),
-		DBFieldNames.reconocimientoEstadoFields, null, "id_paso_mediana",
-		pasoMedianaIDWidget.getText(),
+		DBFieldNames.reconocimientoEstadoFields, null,
+		"id_paso_mediana", pasoMedianaIDWidget.getText(),
 		"n_inspeccion");
-	SqlUtils.createEmbebedTableFromDB(trabajos,
-		"audasa_extgia", getTrabajosDBTableName(),
-		DBFieldNames.trabajoFields, trabajoColumnsSize, "id_paso_mediana",
-		pasoMedianaIDWidget.getText(),
-		"id_trabajo");
+
 	repaint();
     }
 
+    @Override
     protected void setListeners() {
 	super.setListeners();
 	Map<String, JComponent> widgets = getWidgets();
 
-	pasoMedianaIDWidget = (JTextField) widgets.get(DBFieldNames.ID_PASO_MEDIANA);
+	pasoMedianaIDWidget = (JTextField) widgets
+		.get(DBFieldNames.ID_PASO_MEDIANA);
 
-	pasoMedianaid = new PasosMedianaCalculateIDValue(this, getWidgetComponents(),
-		DBFieldNames.ID_PASO_MEDIANA, DBFieldNames.TRAMO, DBFieldNames.PK);
+	pasoMedianaid = new PasosMedianaCalculateIDValue(this,
+		getWidgetComponents(), DBFieldNames.ID_PASO_MEDIANA,
+		DBFieldNames.TRAMO, DBFieldNames.PK);
 	pasoMedianaid.setListeners();
 
 	addReconocimientoListener = new AddReconocimientoListener();
 	addReconocimientoButton.addActionListener(addReconocimientoListener);
 	editReconocimientoListener = new EditReconocimientoListener();
 	editReconocimientoButton.addActionListener(editReconocimientoListener);
-	addTrabajoListener = new AddTrabajoListener();
-	addTrabajoButton.addActionListener(addTrabajoListener);
-	editTrabajoListener = new EditTrabajoListener();
-	editTrabajoButton.addActionListener(editTrabajoListener);
 	deleteReconocimientoListener = new DeleteReconocimientoListener();
-	deleteReconocimientoButton.addActionListener(deleteReconocimientoListener);
-	deleteTrabajoListener = new DeleteTrabajoListener();
-	deleteTrabajoButton.addActionListener(deleteTrabajoListener);
+	deleteReconocimientoButton
+		.addActionListener(deleteReconocimientoListener);
     }
 
     @Override
     protected void removeListeners() {
 	addReconocimientoButton.removeActionListener(addReconocimientoListener);
-	editReconocimientoButton.removeActionListener(editReconocimientoListener);
-	addTrabajoButton.removeActionListener(addTrabajoListener);
-	editTrabajoButton.removeActionListener(editTrabajoListener);
-	deleteReconocimientoButton.removeActionListener(deleteReconocimientoListener);
-	deleteTrabajoButton.removeActionListener(deleteTrabajoListener);
+	editReconocimientoButton
+		.removeActionListener(editReconocimientoListener);
+	deleteReconocimientoButton
+		.removeActionListener(deleteReconocimientoListener);
+
 	super.removeListeners();
     }
 
     @Override
     protected boolean validationHasErrors() {
-	if (this.getFormController().getValuesChanged().containsKey("id_paso_mediana")) {
+	if (this.getFormController().getValuesChanged()
+		.containsKey("id_paso_mediana")) {
 	    if (pasoMedianaIDWidget.getText() != "") {
 		String query = "SELECT id_paso_mediana FROM audasa_extgia.pasos_mediana "
-			+ " WHERE id_paso_mediana = '" + pasoMedianaIDWidget.getText()
-			+ "';";
+			+ " WHERE id_paso_mediana = '"
+			+ pasoMedianaIDWidget.getText() + "';";
 		PreparedStatement statement = null;
 		Connection connection = DBSession.getCurrentSession()
 			.getJavaConnection();
@@ -134,32 +132,11 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
     public class AddReconocimientoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    PasosMedianaReconocimientosSubForm subForm =
-		    new PasosMedianaReconocimientosSubForm(
-			    getReconocimientosFormFileName(),
-			    getReconocimientosDBTableName(),
-			    reconocimientoEstado,
-			    "id_paso_mediana",
-			    pasoMedianaIDWidget.getText(),
-			    null,
-			    null,
-			    false);
-	    PluginServices.getMDIManager().addWindow(subForm);
-	}
-    }
-
-    public class AddTrabajoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    PasosMedianaTrabajosSubForm subForm = new PasosMedianaTrabajosSubForm(
-		    getTrabajosFormFileName(),
-		    getTrabajosDBTableName(),
-		    trabajos,
-		    "id_paso_mediana",
-		    pasoMedianaIDWidget.getText(),
-		    null,
-		    null,
-		    false);
+	    PasosMedianaReconocimientosSubForm subForm = new PasosMedianaReconocimientosSubForm(
+		    getReconocimientosFormFileName(),
+		    getReconocimientosDBTableName(), reconocimientoEstado,
+		    "id_paso_mediana", pasoMedianaIDWidget.getText(), null,
+		    null, false);
 	    PluginServices.getMDIManager().addWindow(subForm);
 	}
     }
@@ -169,42 +146,14 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    if (reconocimientoEstado.getSelectedRowCount() != 0) {
 		int row = reconocimientoEstado.getSelectedRow();
-		PasosMedianaReconocimientosSubForm subForm =
-			new PasosMedianaReconocimientosSubForm(
-				getReconocimientosFormFileName(),
-				getReconocimientosDBTableName(),
-				reconocimientoEstado,
-				"id_paso_mediana",
-				pasoMedianaIDWidget.getText(),
-				"n_inspeccion",
-				reconocimientoEstado.getValueAt(row, 0).toString(),
-				true);
+		PasosMedianaReconocimientosSubForm subForm = new PasosMedianaReconocimientosSubForm(
+			getReconocimientosFormFileName(),
+			getReconocimientosDBTableName(), reconocimientoEstado,
+			"id_paso_mediana", pasoMedianaIDWidget.getText(),
+			"n_inspeccion", reconocimientoEstado.getValueAt(row, 0)
+				.toString(), true);
 		PluginServices.getMDIManager().addWindow(subForm);
-	    }else {
-		JOptionPane.showMessageDialog(null,
-			"Debe seleccionar una fila para editar los datos.",
-			"Ninguna fila seleccionada",
-			JOptionPane.INFORMATION_MESSAGE);
-	    }
-	}
-    }
-
-    public class EditTrabajoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    if (trabajos.getSelectedRowCount() != 0) {
-		int row = trabajos.getSelectedRow();
-		PasosMedianaTrabajosSubForm subForm = new PasosMedianaTrabajosSubForm(
-			getTrabajosFormFileName(),
-			getTrabajosDBTableName(),
-			trabajos,
-			"id_paso_mediana",
-			pasoMedianaIDWidget.getText(),
-			"id_trabajo",
-			trabajos.getValueAt(row, 0).toString(),
-			true);
-		PluginServices.getMDIManager().addWindow(subForm);
-	    }else {
+	    } else {
 		JOptionPane.showMessageDialog(null,
 			"Debe seleccionar una fila para editar los datos.",
 			"Ninguna fila seleccionada",
@@ -218,11 +167,13 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
 	// TODO Auto-generated method stub
 	return null;
     }
+
     @Override
     public JTable getTrabajosJTable() {
 	// TODO Auto-generated method stub
 	return null;
     }
+
     @Override
     public boolean isSpecialCase() {
 	// TODO Auto-generated method stub

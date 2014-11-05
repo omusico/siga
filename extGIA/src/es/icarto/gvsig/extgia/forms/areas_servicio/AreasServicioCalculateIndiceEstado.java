@@ -1,49 +1,47 @@
 package es.icarto.gvsig.extgia.forms.areas_servicio;
 
-import java.util.HashMap;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.AREA_SERVICIO_A;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.AREA_SERVICIO_B;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.AREA_SERVICIO_C;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.AREA_SERVICIO_D;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.AREA_SERVICIO_E;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.AREA_SERVICIO_INDEX;
 
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
+import java.math.BigDecimal;
 
-import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
-import es.icarto.gvsig.extgia.forms.utils.CalculateReconocimientoIndexValue;
-import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
+import es.icarto.gvsig.navtableforms.IValidatableForm;
+import es.icarto.gvsig.navtableforms.calculation.Calculation;
 
-public class AreasServicioCalculateIndiceEstado extends CalculateReconocimientoIndexValue {
+public class AreasServicioCalculateIndiceEstado extends Calculation {
+    private static final BigDecimal weigth = new BigDecimal("0.2");
 
-    public AreasServicioCalculateIndiceEstado(BasicAbstractSubForm form,
-	    HashMap<String, JComponent> allFormWidgets,
-	    String resultComponentName, String... operatorComponentsNames) {
-	super(form, allFormWidgets, resultComponentName, operatorComponentsNames);
-	// TODO Auto-generated constructor stub
+    public AreasServicioCalculateIndiceEstado(IValidatableForm form) {
+	super(form);
     }
 
     @Override
-    public void setValue(boolean validate) {
-	float value = 0;
+    protected String resultName() {
+	return AREA_SERVICIO_INDEX;
+    }
 
-	String strA = ((KeyValue) ((JComboBox) operatorComponents
-		.get(DBFieldNames.AREA_SERVICIO_A)).getSelectedItem())
-		.getKey();
-	String strB = ((KeyValue) ((JComboBox) operatorComponents
-		.get(DBFieldNames.AREA_SERVICIO_B)).getSelectedItem()).getKey();
-	String strC = ((KeyValue) ((JComboBox) operatorComponents
-		.get(DBFieldNames.AREA_SERVICIO_C)).getSelectedItem()).getKey();
-	String strD = ((KeyValue) ((JComboBox) operatorComponents
-		.get(DBFieldNames.AREA_SERVICIO_D)).getSelectedItem()).getKey();
-	String stre = ((KeyValue) ((JComboBox) operatorComponents
-		.get(DBFieldNames.AREA_SERVICIO_E)).getSelectedItem()).getKey();
+    @Override
+    protected String[] operandNames() {
+	return new String[] { AREA_SERVICIO_A, AREA_SERVICIO_B,
+		AREA_SERVICIO_C, AREA_SERVICIO_D, AREA_SERVICIO_E };
+    }
 
-	value += Integer.parseInt(strA) * 0.2;
-	value += Integer.parseInt(strB) * 0.2;
-	value += Integer.parseInt(strC) * 0.2;
-	value += Integer.parseInt(strD) * 0.2;
-	value += Integer.parseInt(stre) * 0.2;
+    @Override
+    protected String calculate() {
 
-	String strValue = Float.toString(value);
-	resultComponent.setText(strValue);
+	BigDecimal value = new BigDecimal(0);
 
+	value = value.add(operandValue(AREA_SERVICIO_A).multiply(weigth));
+	value = value.add(operandValue(AREA_SERVICIO_B).multiply(weigth));
+	value = value.add(operandValue(AREA_SERVICIO_C).multiply(weigth));
+	value = value.add(operandValue(AREA_SERVICIO_D).multiply(weigth));
+	value = value.add(operandValue(AREA_SERVICIO_E).multiply(weigth));
+
+	return formatter.format(value);
     }
 
 }

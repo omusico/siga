@@ -15,7 +15,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
-import es.icarto.gvsig.extgia.forms.utils.RamalesHandler;
+import es.icarto.gvsig.extgia.forms.utils.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -30,8 +30,8 @@ public class AreasMantenimientoForm extends AbstractFormWithLocationWidgets {
     public AreasMantenimientoForm(FLyrVect layer) {
 	super(layer);
 
-	addTableHandler(new RamalesHandler(getRamalesDBTableName(),
-		getWidgetComponents(), getElementID(),
+	addTableHandler(new GIAAlphanumericTableHandler(
+		getRamalesDBTableName(), getWidgetComponents(), getElementID(),
 		DBFieldNames.ramalesDireccionColNames,
 		DBFieldNames.ramalesDireccionColAlias, this));
     }

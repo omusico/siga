@@ -15,8 +15,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
-import es.icarto.gvsig.extgia.forms.utils.ReconocimientosHandler;
-import es.icarto.gvsig.extgia.forms.utils.TrabajosHandler;
+import es.icarto.gvsig.extgia.forms.utils.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -32,12 +31,12 @@ public class SenhalizacionVariableForm extends AbstractFormWithLocationWidgets {
 	super(layer);
 
 	// int[] trabajoColumnsSize = { 1, 30, 90, 70, 200 };
-	addTableHandler(new TrabajosHandler(getTrabajosDBTableName(),
-		getWidgetComponents(), getElementID(),
-		DBFieldNames.trabajosColNames, DBFieldNames.trabajosColAlias,
-		this));
+	addTableHandler(new GIAAlphanumericTableHandler(
+		getTrabajosDBTableName(), getWidgetComponents(),
+		getElementID(), DBFieldNames.trabajosColNames,
+		DBFieldNames.trabajosColAlias, this));
 
-	addTableHandler(new ReconocimientosHandler(
+	addTableHandler(new GIAAlphanumericTableHandler(
 		getReconocimientosDBTableName(), getWidgetComponents(),
 		getElementID(),
 		DBFieldNames.reconocimientosWhitoutIndexFieldsNames,

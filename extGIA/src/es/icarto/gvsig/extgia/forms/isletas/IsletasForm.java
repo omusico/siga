@@ -19,6 +19,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
+import es.icarto.gvsig.extgia.forms.utils.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
@@ -39,13 +40,16 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 
     AddReconocimientoListener addReconocimientoListener;
     EditReconocimientoListener editReconocimientoListener;
-    AddTrabajoListener addTrabajoListener;
-    EditTrabajoListener editTrabajoListener;
     DeleteReconocimientoListener deleteReconocimientoListener;
-    DeleteTrabajoListener deleteTrabajoListener;
 
     public IsletasForm(FLyrVect layer) {
 	super(layer);
+
+	// int[] trabajoColumnsSize = { 1, 30, 90, 70, 200 };
+	addTableHandler(new GIAAlphanumericTableHandler(
+		getTrabajosDBTableName(), getWidgetComponents(),
+		getElementID(), DBFieldNames.trabajosColNames,
+		DBFieldNames.trabajosColAlias, this));
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -63,16 +67,15 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 	}
 
 	// Embebed Tables
-	int[] trabajoColumnsSize = {1, 30, 90, 70, 200};
+	int[] trabajoColumnsSize = { 1, 30, 90, 70, 200 };
 	SqlUtils.createEmbebedTableFromDB(reconocimientoEstado,
 		"audasa_extgia", getReconocimientosDBTableName(),
-		DBFieldNames.reconocimientoEstadoFields, null, "id_isleta", isletaIDWidget.getText(), "n_inspeccion");
-	SqlUtils.createEmbebedTableFromDB(trabajos,
-		"audasa_extgia", getTrabajosDBTableName(),
-		DBFieldNames.trabajoFields, trabajoColumnsSize, "id_isleta", isletaIDWidget.getText(), "id_trabajo");
+		DBFieldNames.reconocimientoEstadoFields, null, "id_isleta",
+		isletaIDWidget.getText(), "n_inspeccion");
 	repaint();
     }
 
+    @Override
     protected void setListeners() {
 	super.setListeners();
 	Map<String, JComponent> widgets = getWidgets();
@@ -86,22 +89,18 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 
 	JComboBox direccion = (JComboBox) getWidgets().get("direccion");
 	tipoVia = (JComboBox) getWidgets().get("tipo_via");
-	direccionDomainHandler = new DependentComboboxHandler(this,
-		tipoVia, direccion);
+	direccionDomainHandler = new DependentComboboxHandler(this, tipoVia,
+		direccion);
 	tipoVia.addActionListener(direccionDomainHandler);
 
 	addReconocimientoListener = new AddReconocimientoListener();
 	addReconocimientoButton.addActionListener(addReconocimientoListener);
 	editReconocimientoListener = new EditReconocimientoListener();
 	editReconocimientoButton.addActionListener(editReconocimientoListener);
-	addTrabajoListener = new AddTrabajoListener();
-	addTrabajoButton.addActionListener(addTrabajoListener);
-	editTrabajoListener = new EditTrabajoListener();
-	editTrabajoButton.addActionListener(editTrabajoListener);
 	deleteReconocimientoListener = new DeleteReconocimientoListener();
-	deleteReconocimientoButton.addActionListener(deleteReconocimientoListener);
-	deleteTrabajoListener = new DeleteTrabajoListener();
-	deleteTrabajoButton.addActionListener(deleteTrabajoListener);
+	deleteReconocimientoButton
+		.addActionListener(deleteReconocimientoListener);
+
     }
 
     @Override
@@ -109,11 +108,11 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 	isletaid.removeListeners();
 	tipoVia.removeActionListener(direccionDomainHandler);
 	addReconocimientoButton.removeActionListener(addReconocimientoListener);
-	editReconocimientoButton.removeActionListener(editReconocimientoListener);
-	addTrabajoButton.removeActionListener(addTrabajoListener);
-	editTrabajoButton.removeActionListener(editTrabajoListener);
-	deleteReconocimientoButton.removeActionListener(deleteReconocimientoListener);
-	deleteTrabajoButton.removeActionListener(deleteTrabajoListener);
+	editReconocimientoButton
+		.removeActionListener(editReconocimientoListener);
+	deleteReconocimientoButton
+		.removeActionListener(deleteReconocimientoListener);
+
 	super.removeListeners();
     }
 
@@ -123,7 +122,8 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 		.containsKey("id_isleta")) {
 	    if (isletaIDWidget.getText() != "") {
 		String query = "SELECT id_isleta FROM audasa_extgia.isletas "
-			+ " WHERE id_isleta = '" + isletaIDWidget.getText() + "';";
+			+ " WHERE id_isleta = '" + isletaIDWidget.getText()
+			+ "';";
 		PreparedStatement statement = null;
 		Connection connection = DBSession.getCurrentSession()
 			.getJavaConnection();
@@ -148,32 +148,10 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
     public class AddReconocimientoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    IsletasReconocimientosSubForm subForm =
-		    new IsletasReconocimientosSubForm(
-			    getReconocimientosFormFileName(),
-			    getReconocimientosDBTableName(),
-			    reconocimientoEstado,
-			    "id_isleta",
-			    isletaIDWidget.getText(),
-			    null,
-			    null,
-			    false);
-	    PluginServices.getMDIManager().addWindow(subForm);
-	}
-    }
-
-    public class AddTrabajoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    IsletasTrabajosSubForm subForm = new IsletasTrabajosSubForm(
-		    getTrabajosFormFileName(),
-		    getTrabajosDBTableName(),
-		    trabajos,
-		    "id_isleta",
-		    isletaIDWidget.getText(),
-		    null,
-		    null,
-		    false);
+	    IsletasReconocimientosSubForm subForm = new IsletasReconocimientosSubForm(
+		    getReconocimientosFormFileName(),
+		    getReconocimientosDBTableName(), reconocimientoEstado,
+		    "id_isleta", isletaIDWidget.getText(), null, null, false);
 	    PluginServices.getMDIManager().addWindow(subForm);
 	}
     }
@@ -183,42 +161,14 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 	public void actionPerformed(ActionEvent e) {
 	    if (reconocimientoEstado.getSelectedRowCount() != 0) {
 		int row = reconocimientoEstado.getSelectedRow();
-		IsletasReconocimientosSubForm subForm =
-			new IsletasReconocimientosSubForm(
-				getReconocimientosFormFileName(),
-				getReconocimientosDBTableName(),
-				reconocimientoEstado,
-				"id_isleta",
-				isletaIDWidget.getText(),
-				"n_inspeccion",
-				reconocimientoEstado.getValueAt(row, 0).toString(),
-				true);
-		PluginServices.getMDIManager().addWindow(subForm);
-	    }else {
-		JOptionPane.showMessageDialog(null,
-			"Debe seleccionar una fila para editar los datos.",
-			"Ninguna fila seleccionada",
-			JOptionPane.INFORMATION_MESSAGE);
-	    }
-	}
-    }
-
-    public class EditTrabajoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    if (trabajos.getSelectedRowCount() != 0) {
-		int row = trabajos.getSelectedRow();
-		IsletasTrabajosSubForm subForm = new IsletasTrabajosSubForm(
-			getTrabajosFormFileName(),
-			getTrabajosDBTableName(),
-			trabajos,
-			"id_isleta",
-			isletaIDWidget.getText(),
-			"id_trabajo",
-			trabajos.getValueAt(row, 0).toString(),
+		IsletasReconocimientosSubForm subForm = new IsletasReconocimientosSubForm(
+			getReconocimientosFormFileName(),
+			getReconocimientosDBTableName(), reconocimientoEstado,
+			"id_isleta", isletaIDWidget.getText(), "n_inspeccion",
+			reconocimientoEstado.getValueAt(row, 0).toString(),
 			true);
 		PluginServices.getMDIManager().addWindow(subForm);
-	    }else {
+	    } else {
 		JOptionPane.showMessageDialog(null,
 			"Debe seleccionar una fila para editar los datos.",
 			"Ninguna fila seleccionada",

@@ -16,7 +16,6 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.utils.GIAAlphanumericTableHandler;
-import es.icarto.gvsig.extgia.forms.utils.RamalesHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -28,24 +27,22 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
     JTextField areaDescansoIDWidget;
     CalculateComponentValue areaDescansoid;
 
-    private final GIAAlphanumericTableHandler trabajosTableHandler;
     private final GIAAlphanumericTableHandler reconocimientosTableHandler;
 
     public AreasDescansoForm(FLyrVect layer) {
 	super(layer);
 
 	// int[] trabajoColumnsSize = { 1, 1, 110, 70, 60 };
-	trabajosTableHandler = new GIAAlphanumericTableHandler(
+	addTableHandler(new GIAAlphanumericTableHandler(
 		getTrabajosDBTableName(), getWidgetComponents(),
-		getElementID(), AreasDescansoTrabajosSubForm.colNames,
-		AreasDescansoTrabajosSubForm.colAlias,
-		AreasDescansoTrabajosSubForm.class);
-	addTableHandler(trabajosTableHandler);
+		getElementID(), DBFieldNames.trabajosColNames,
+		DBFieldNames.trabajosColAlias, this));
 
-	addTableHandler(new RamalesHandler(getRamalesDBTableName(),
-		getWidgetComponents(), getElementID(),
+	addTableHandler(new GIAAlphanumericTableHandler(
+		getRamalesDBTableName(), getWidgetComponents(), getElementID(),
 		DBFieldNames.ramalesColNames, DBFieldNames.ramalesColAlias,
 		this));
+	s
 
 	reconocimientosTableHandler = new GIAAlphanumericTableHandler(
 		getReconocimientosDBTableName(), getWidgetComponents(),
@@ -90,14 +87,6 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 	deleteReconocimientoButton.setAction(reconocimientosTableHandler
 		.getListener().getDeleteAction());
 
-	//
-
-	addTrabajoButton.setAction(trabajosTableHandler.getListener()
-		.getCreateAction());
-	editTrabajoButton.setAction(trabajosTableHandler.getListener()
-		.getUpdateAction());
-	deleteTrabajoButton.setAction(trabajosTableHandler.getListener()
-		.getDeleteAction());
     }
 
     @Override
@@ -106,14 +95,7 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 	editReconocimientoButton.setAction(null);
 	deleteReconocimientoButton.setAction(null);
 
-	addTrabajoButton.setAction(null);
-	editTrabajoButton.setAction(null);
-	deleteTrabajoButton.setAction(null);
-
-	//
-
 	super.removeListeners();
-
     }
 
     @Override

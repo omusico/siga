@@ -11,7 +11,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
-import es.icarto.gvsig.extgia.forms.utils.TrabajosHandler;
+import es.icarto.gvsig.extgia.forms.utils.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 
@@ -29,10 +29,10 @@ public class ObrasDesagueForm extends AbstractFormWithLocationWidgets {
 	super(layer);
 
 	// int[] trabajoColumnsSize = { 1, 30, 90, 70, 200 };
-	addTableHandler(new TrabajosHandler(getTrabajosDBTableName(),
-		getWidgetComponents(), getElementID(),
-		DBFieldNames.trabajosColNames, DBFieldNames.trabajosColAlias,
-		this));
+	addTableHandler(new GIAAlphanumericTableHandler(
+		getTrabajosDBTableName(), getWidgetComponents(),
+		getElementID(), DBFieldNames.trabajosColNames,
+		DBFieldNames.trabajosColAlias, this));
     }
 
     private void addNewButtonsToActionsToolBar() {

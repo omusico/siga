@@ -18,6 +18,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
+import es.icarto.gvsig.extgia.forms.utils.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
@@ -34,12 +35,14 @@ public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
     EditReconocimientoListener editReconocimientoListener;
     DeleteReconocimientoListener deleteReconocimientoListener;
 
-    AddTrabajoListener addTrabajoListener;
-    EditTrabajoListener editTrabajoListener;
-    DeleteTrabajoListener deleteTrabajoListener;
-
     public LechoFrenadoForm(FLyrVect layer) {
 	super(layer);
+
+	// int[] trabajoColumnsSize = { 1, 30, 90, 70, 200 };
+	addTableHandler(new GIAAlphanumericTableHandler(
+		getTrabajosDBTableName(), getWidgetComponents(),
+		getElementID(), DBFieldNames.trabajosColNames,
+		DBFieldNames.trabajosColAlias, this));
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -65,12 +68,6 @@ public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
 		DBFieldNames.GIA_SCHEMA, getReconocimientosDBTableName(),
 		DBFieldNames.reconocimientoEstadoFields, null, getElementID(),
 		getElementIDValue(), "n_inspeccion");
-
-	int[] trabajoColumnsSize = { 1, 30, 90, 70, 200 };
-	SqlUtils.createEmbebedTableFromDB(trabajos, DBFieldNames.GIA_SCHEMA,
-		getTrabajosDBTableName(), DBFieldNames.trabajoFields,
-		trabajoColumnsSize, getElementID(), getElementIDValue(),
-		"id_trabajo");
 	repaint();
     }
 
@@ -113,19 +110,11 @@ public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
 
 	addReconocimientoListener = new AddReconocimientoListener();
 	addReconocimientoButton.addActionListener(addReconocimientoListener);
-	addTrabajoListener = new AddTrabajoListener();
-	addTrabajoButton.addActionListener(addTrabajoListener);
-
 	editReconocimientoListener = new EditReconocimientoListener();
 	editReconocimientoButton.addActionListener(editReconocimientoListener);
-	editTrabajoListener = new EditTrabajoListener();
-	editTrabajoButton.addActionListener(editTrabajoListener);
-
 	deleteReconocimientoListener = new DeleteReconocimientoListener();
 	deleteReconocimientoButton
 		.addActionListener(deleteReconocimientoListener);
-	deleteTrabajoListener = new DeleteTrabajoListener();
-	deleteTrabajoButton.addActionListener(deleteTrabajoListener);
     }
 
     @Override
@@ -135,10 +124,6 @@ public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
 		.removeActionListener(editReconocimientoListener);
 	deleteReconocimientoButton
 		.removeActionListener(deleteReconocimientoListener);
-
-	addTrabajoButton.removeActionListener(addTrabajoListener);
-	editTrabajoButton.removeActionListener(editTrabajoListener);
-	deleteTrabajoButton.removeActionListener(deleteTrabajoListener);
 
 	super.removeListeners();
     }
@@ -154,17 +139,6 @@ public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
 	}
     }
 
-    public class AddTrabajoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    LechoFrenadoTrabajosSubForm subForm = new LechoFrenadoTrabajosSubForm(
-		    getTrabajosFormFileName(), getTrabajosDBTableName(),
-		    trabajos, getElementID(), getElementIDValue(), null, null,
-		    false);
-	    PluginServices.getMDIManager().addWindow(subForm);
-	}
-    }
-
     public class EditReconocimientoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -175,26 +149,6 @@ public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
 			getReconocimientosDBTableName(), reconocimientoEstado,
 			getElementID(), getElementIDValue(), "n_inspeccion",
 			reconocimientoEstado.getValueAt(row, 0).toString(),
-			true);
-		PluginServices.getMDIManager().addWindow(subForm);
-	    } else {
-		JOptionPane.showMessageDialog(null,
-			"Debe seleccionar una fila para editar los datos.",
-			"Ninguna fila seleccionada",
-			JOptionPane.INFORMATION_MESSAGE);
-	    }
-	}
-    }
-
-    public class EditTrabajoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    if (trabajos.getSelectedRowCount() != 0) {
-		int row = trabajos.getSelectedRow();
-		LechoFrenadoTrabajosSubForm subForm = new LechoFrenadoTrabajosSubForm(
-			getTrabajosFormFileName(), getTrabajosDBTableName(),
-			trabajos, getElementID(), getElementIDValue(),
-			"id_trabajo", trabajos.getValueAt(row, 0).toString(),
 			true);
 		PluginServices.getMDIManager().addWindow(subForm);
 	    } else {

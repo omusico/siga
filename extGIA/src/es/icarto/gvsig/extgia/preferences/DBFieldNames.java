@@ -28,11 +28,6 @@ public class DBFieldNames {
 	    "unidad as \"Unidad\"", "medicion_audasa as \"Medición AUDASA\"",
 	    "observaciones as \"Observaciones\"" };
 
-    public static String[] carreteras_enlazadas = {
-	    "id_carretera_enlazada as \"ID Carretera\"",
-	    "clave_carretera as \"Clave\"", "pk as \"PK\"",
-	    "titular as \"Titular\"", "tipo_cruce as \"Tipo Cruce\"" };
-
     public static String[] generic_ramales = { "id_ramal as \"ID Ramal\"",
 	    "ramal as \"Nombre Ramal\"", "sentido_ramal as \"Sentido\"",
 	    "direccion_ramal as \"Dirección\"", "longitud as \"Longitud\"" };

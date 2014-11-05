@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 import com.iver.andami.plugins.Extension;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
+import es.icarto.gvsig.extgia.forms.utils.GIAFormFactory;
 import es.icarto.gvsig.extgia.forms.utils.LaunchGIAForms;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 
@@ -41,8 +42,7 @@ public class FormLauncherExtension extends Extension {
 
     @Override
     public void initialize() {
-	// TODO Auto-generated method stub
-
+	GIAFormFactory.registerFormFactory();
     }
 
 }

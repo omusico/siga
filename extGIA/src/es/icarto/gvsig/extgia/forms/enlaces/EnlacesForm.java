@@ -15,9 +15,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
-import es.icarto.gvsig.extgia.forms.utils.GenericHandler;
-import es.icarto.gvsig.extgia.forms.utils.RamalesHandler;
-import es.icarto.gvsig.extgia.forms.utils.ReconocimientosHandler;
+import es.icarto.gvsig.extgia.forms.utils.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -37,20 +35,20 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 
     public EnlacesForm(FLyrVect layer) {
 	super(layer);
-	addTableHandler(new RamalesHandler(getRamalesDBTableName(),
-		getWidgetComponents(), getElementID(),
+	addTableHandler(new GIAAlphanumericTableHandler(
+		getRamalesDBTableName(), getWidgetComponents(), getElementID(),
 		DBFieldNames.ramalesDireccionColNames,
 		DBFieldNames.ramalesDireccionColAlias, this));
 
-	addTableHandler(new ReconocimientosHandler(
+	addTableHandler(new GIAAlphanumericTableHandler(
 		getReconocimientosDBTableName(), getWidgetComponents(),
 		getElementID(),
 		DBFieldNames.reconocimientosWhitoutIndexFieldsNames,
 		DBFieldNames.reconocimientosWhitoutIndexFieldsAlias, this));
 
-	addTableHandler(new GenericHandler("enlaces_carreteras_enlazadas",
-		getWidgetComponents(), getElementID(), carreterasColNames,
-		carreterasColAlias, this));
+	addTableHandler(new GIAAlphanumericTableHandler(
+		"enlaces_carreteras_enlazadas", getWidgetComponents(),
+		getElementID(), carreterasColNames, carreterasColAlias, this));
     }
 
     private void addNewButtonsToActionsToolBar() {

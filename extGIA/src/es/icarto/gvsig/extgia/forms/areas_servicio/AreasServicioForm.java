@@ -18,7 +18,9 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
+import es.icarto.gvsig.extgia.forms.utils.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.forms.utils.RamalesHandler;
+import es.icarto.gvsig.extgia.forms.utils.TrabajosHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
@@ -31,17 +33,17 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
     JTextField areaServicioIDWidget;
     CalculateComponentValue areaServicioid;
 
-    AddReconocimientoListener addReconocimientoListener;
-    EditReconocimientoListener editReconocimientoListener;
-    DeleteReconocimientoListener deleteReconocimientoListener;
-
-    AddTrabajoListener addTrabajoListener;
-    EditTrabajoListener editTrabajoListener;
-    DeleteTrabajoListener deleteTrabajoListener;
-
+    DBFieldNames.reconocimientoEstadoFields
     public AreasServicioForm(FLyrVect layer) {
 	super(layer);
-	addTableHandler(new RamalesHandler(getRamalesDBTableName(),
+
+	// int[] trabajoColumnsSize = { 1, 30, 90, 70, 200 };
+	addTableHandler(new GIAAlphanumericTableHandler(getTrabajosDBTableName(),
+		getWidgetComponents(), getElementID(),
+		DBFieldNames.trabajosColNames, DBFieldNames.trabajosColAlias,
+		this));
+
+	addTableHandler(new GIAAlphanumericTableHandler(getRamalesDBTableName(),
 		getWidgetComponents(), getElementID(),
 		DBFieldNames.ramalesColNames, DBFieldNames.ramalesColAlias,
 		this));
@@ -58,21 +60,6 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 	if (filesLinkButton == null) {
 	    addNewButtonsToActionsToolBar();
 	}
-
-	// Embebed Tables
-	SqlUtils.createEmbebedTableFromDB(reconocimientoEstado,
-		DBFieldNames.GIA_SCHEMA, getReconocimientosDBTableName(),
-		DBFieldNames.reconocimientoEstadoFields, null,
-		"id_area_servicio", areaServicioIDWidget.getText(),
-		"n_inspeccion");
-
-	int[] trabajoColumnsSize = { 1, 30, 90, 70, 200 };
-	SqlUtils.createEmbebedTableFromDB(trabajos, DBFieldNames.GIA_SCHEMA,
-		getTrabajosDBTableName(), DBFieldNames.trabajoFields,
-		trabajoColumnsSize, "id_area_servicio",
-		areaServicioIDWidget.getText(), "id_trabajo");
-
-	repaint();
     }
 
     @Override
@@ -89,38 +76,8 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 		DBFieldNames.TRAMO, DBFieldNames.TIPO_VIA,
 		DBFieldNames.MUNICIPIO, DBFieldNames.SENTIDO);
 	areaServicioid.setListeners();
-
-	addReconocimientoListener = new AddReconocimientoListener();
-	addReconocimientoButton.addActionListener(addReconocimientoListener);
-	addTrabajoListener = new AddTrabajoListener();
-	addTrabajoButton.addActionListener(addTrabajoListener);
-
-	editReconocimientoListener = new EditReconocimientoListener();
-	editReconocimientoButton.addActionListener(editReconocimientoListener);
-	editTrabajoListener = new EditTrabajoListener();
-	editTrabajoButton.addActionListener(editTrabajoListener);
-
-	deleteReconocimientoListener = new DeleteReconocimientoListener();
-	deleteReconocimientoButton
-		.addActionListener(deleteReconocimientoListener);
-	deleteTrabajoListener = new DeleteTrabajoListener();
-	deleteTrabajoButton.addActionListener(deleteTrabajoListener);
     }
 
-    @Override
-    protected void removeListeners() {
-	addReconocimientoButton.removeActionListener(addReconocimientoListener);
-	editReconocimientoButton
-		.removeActionListener(editReconocimientoListener);
-	deleteReconocimientoButton
-		.removeActionListener(deleteReconocimientoListener);
-
-	addTrabajoButton.removeActionListener(addTrabajoListener);
-	editTrabajoButton.removeActionListener(editTrabajoListener);
-	deleteTrabajoButton.removeActionListener(deleteTrabajoListener);
-
-	super.removeListeners();
-    }
 
     @Override
     protected boolean validationHasErrors() {
@@ -149,70 +106,6 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 	    }
 	}
 	return super.validationHasErrors();
-    }
-
-    public class AddReconocimientoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    AreasServicioReconocimientosSubForm subForm = new AreasServicioReconocimientosSubForm(
-		    getReconocimientosFormFileName(),
-		    getReconocimientosDBTableName(), reconocimientoEstado,
-		    "id_area_servicio", areaServicioIDWidget.getText(), null,
-		    null, false);
-	    PluginServices.getMDIManager().addWindow(subForm);
-	}
-    }
-
-    public class AddTrabajoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    AreasServicioTrabajosSubForm subForm = new AreasServicioTrabajosSubForm(
-		    getTrabajosFormFileName(), getTrabajosDBTableName(),
-		    trabajos, "id_area_servicio",
-		    areaServicioIDWidget.getText(), null, null, false);
-	    PluginServices.getMDIManager().addWindow(subForm);
-	}
-    }
-
-    public class EditReconocimientoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    if (reconocimientoEstado.getSelectedRowCount() != 0) {
-		int row = reconocimientoEstado.getSelectedRow();
-		AreasServicioReconocimientosSubForm subForm = new AreasServicioReconocimientosSubForm(
-			getReconocimientosFormFileName(),
-			getReconocimientosDBTableName(), reconocimientoEstado,
-			"id_area_servicio", areaServicioIDWidget.getText(),
-			"n_inspeccion", reconocimientoEstado.getValueAt(row, 0)
-				.toString(), true);
-		PluginServices.getMDIManager().addWindow(subForm);
-	    } else {
-		JOptionPane.showMessageDialog(null,
-			"Debe seleccionar una fila para editar los datos.",
-			"Ninguna fila seleccionada",
-			JOptionPane.INFORMATION_MESSAGE);
-	    }
-	}
-    }
-
-    public class EditTrabajoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    if (trabajos.getSelectedRowCount() != 0) {
-		int row = trabajos.getSelectedRow();
-		AreasServicioTrabajosSubForm subForm = new AreasServicioTrabajosSubForm(
-			getTrabajosFormFileName(), getTrabajosDBTableName(),
-			trabajos, "id_area_servicio",
-			areaServicioIDWidget.getText(), "id_trabajo", trabajos
-				.getValueAt(row, 0).toString(), true);
-		PluginServices.getMDIManager().addWindow(subForm);
-	    } else {
-		JOptionPane.showMessageDialog(null,
-			"Debe seleccionar una fila para editar los datos.",
-			"Ninguna fila seleccionada",
-			JOptionPane.INFORMATION_MESSAGE);
-	    }
-	}
     }
 
     @Override

@@ -17,8 +17,7 @@ import es.icarto.gvsig.extgia.forms.images.DeleteImageListener;
 import es.icarto.gvsig.extgia.forms.images.ShowImageAction;
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
-import es.icarto.gvsig.extgia.forms.utils.ReconocimientosHandler;
-import es.icarto.gvsig.extgia.forms.utils.TrabajosHandler;
+import es.icarto.gvsig.extgia.forms.utils.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 
 @SuppressWarnings("serial")
@@ -45,15 +44,16 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
     public FirmeForm(FLyrVect layer) {
 	super(layer);
 
-	addTableHandler(new ReconocimientosHandler(
+	addTableHandler(new GIAAlphanumericTableHandler(
 		getReconocimientosDBTableName(), getWidgetComponents(),
 		getElementID(), firmeReconocimientoColNames,
 		firmeReconocimientoColAlias, this));
 
 	// int[] trabajoColumnsSize = { 1, 1, 1, 1, 30, 250 };
-	addTableHandler(new TrabajosHandler(getTrabajosDBTableName(),
-		getWidgetComponents(), getElementID(), firmeTrabajoColNames,
-		firmeTrabajoColAlias, this));
+	addTableHandler(new GIAAlphanumericTableHandler(
+		getTrabajosDBTableName(), getWidgetComponents(),
+		getElementID(), firmeTrabajoColNames, firmeTrabajoColAlias,
+		this));
     }
 
     private void addNewButtonsToActionsToolBar() {

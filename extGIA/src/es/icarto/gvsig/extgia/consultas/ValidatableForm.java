@@ -1,12 +1,14 @@
 package es.icarto.gvsig.extgia.consultas;
 
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.Map;
 
 import javax.swing.JComponent;
 
 import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
+import com.toedter.calendar.JDateChooser;
 
 import es.icarto.gvsig.commons.gui.AbstractIWindow;
 import es.icarto.gvsig.navtableforms.FillHandler;
@@ -15,6 +17,7 @@ import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.ValidatorForm;
 import es.icarto.gvsig.navtableforms.utils.AbeilleParser;
 import es.udc.cartolab.gvsig.navtable.dataacces.IController;
+import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 
 @SuppressWarnings("serial")
 public abstract class ValidatableForm extends AbstractIWindow implements
@@ -33,6 +36,13 @@ public abstract class ValidatableForm extends AbstractIWindow implements
 	formPanel = getFormPanel();
 	this.add(formPanel);
 	widgets = AbeilleParser.getWidgetsFromContainer(formPanel);
+	for (JComponent c : getWidgets().values()) {
+	    if (c instanceof JDateChooser) {
+		SimpleDateFormat dateFormat = DateFormatNT.getDateFormat();
+		((JDateChooser) c).setDateFormatString(dateFormat.toPattern());
+		((JDateChooser) c).getDateEditor().setEnabled(false);
+	    }
+	}
 	mockController = new MockController();
 	fillHandler = new FillHandler(widgets, mockController,
 		ormlite.getAppDomain());
