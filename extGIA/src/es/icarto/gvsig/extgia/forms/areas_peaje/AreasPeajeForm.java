@@ -1,57 +1,58 @@
 package es.icarto.gvsig.extgia.forms.areas_peaje;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
+import es.icarto.gvsig.extgia.forms.utils.GenericHandler;
+import es.icarto.gvsig.extgia.forms.utils.ReconocimientosHandler;
+import es.icarto.gvsig.extgia.forms.utils.TrabajosHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
 public class AreasPeajeForm extends AbstractFormWithLocationWidgets {
 
-    public static final String ABEILLE_VIAS_FILENAME = "forms/areas_peaje_vias.xml";
     public static final String TABLENAME = "areas_peaje";
 
     JTextField areaPeajeIDWidget;
     CalculateComponentValue areaPeajeid;
 
-    JButton addViaButton;
-    JButton editViaButton;
-    JButton deleteViaButton;
+    public static String[] viasColNames = { "id_via", "via", "via_tipo",
+	    "reversible", "cabinas" };
 
-    JTable vias;
-
-    AddReconocimientoListener addReconocimientoListener;
-    EditReconocimientoListener editReconocimientoListener;
-    DeleteReconocimientoListener deleteReconocimientoListener;
-
-    AddTrabajoListener addTrabajoListener;
-    EditTrabajoListener editTrabajoListener;
-    DeleteTrabajoListener deleteTrabajoListener;
-
-    AddViaListener addViaListener;
-    EditViaListener editViaListener;
-    DeleteViaListener deleteViaListener;
+    public static String[] viasColAlias = { "ID", "Nª Vía", "Tipo Vía",
+	    "Reversible", "Nº Cabinas" };
 
     public AreasPeajeForm(FLyrVect layer) {
 	super(layer);
+
+	// int[] trabajoColumnsSize = { 1, 30, 90, 70, 200 };
+	addTableHandler(new TrabajosHandler(getTrabajosDBTableName(),
+		getWidgetComponents(), getElementID(),
+		DBFieldNames.trabajosColNames, DBFieldNames.trabajosColAlias,
+		this));
+
+	addTableHandler(new ReconocimientosHandler(
+		getReconocimientosDBTableName(), getWidgetComponents(),
+		getElementID(),
+		DBFieldNames.reconocimientosWhitoutIndexFieldsNames,
+		DBFieldNames.reconocimientosWhitoutIndexFieldsAlias, this));
+
+	addTableHandler(new GenericHandler("areas_peaje_vias",
+		getWidgetComponents(), getElementID(), viasColNames,
+		viasColAlias, this));
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -63,39 +64,24 @@ public class AreasPeajeForm extends AbstractFormWithLocationWidgets {
 	super.fillSpecificValues();
 
 	if (areaPeajeIDWidget.getText().isEmpty()) {
-	    areaPeajeid = new AreasPeajeCalculateIDValue(this, getWidgetComponents(),
-		    getElementID(), getElementID());
+	    areaPeajeid = new AreasPeajeCalculateIDValue(this,
+		    getWidgetComponents(), getElementID(), getElementID());
 	    areaPeajeid.setValue(true);
 	}
 
 	if (filesLinkButton == null) {
 	    addNewButtonsToActionsToolBar();
 	}
-
-	// Embebed Tables
-	SqlUtils.createEmbebedTableFromDB(reconocimientoEstado,
-		DBFieldNames.GIA_SCHEMA, getReconocimientosDBTableName(),
-		DBFieldNames.reconocimientoEstadoWhitoutIndexFields, null, getElementID(),
-		areaPeajeIDWidget.getText(), "n_inspeccion");
-
-	int[] trabajoColumnsSize = {1, 30, 90, 70, 200};
-	SqlUtils.createEmbebedTableFromDB(trabajos, DBFieldNames.GIA_SCHEMA,
-		getTrabajosDBTableName(), DBFieldNames.trabajoFields,
-		trabajoColumnsSize, getElementID(), areaPeajeIDWidget.getText(), "id_trabajo");
-
-	SqlUtils.createEmbebedTableFromDB(vias, DBFieldNames.GIA_SCHEMA,
-		"areas_peaje_vias", DBFieldNames.viasFields,
-		null, getElementID(), areaPeajeIDWidget.getText(), "via");
-	repaint();
     }
 
     @Override
     protected boolean validationHasErrors() {
-	if (this.getFormController().getValuesChanged().containsKey(getElementID())) {
+	if (this.getFormController().getValuesChanged()
+		.containsKey(getElementID())) {
 	    if (areaPeajeIDWidget.getText() != "") {
 		String query = "SELECT id_area_peaje FROM audasa_extgia.areas_peaje "
-			+ " WHERE id_area_peaje = '" + areaPeajeIDWidget.getText()
-			+ "';";
+			+ " WHERE id_area_peaje = '"
+			+ areaPeajeIDWidget.getText() + "';";
 		PreparedStatement statement = null;
 		Connection connection = DBSession.getCurrentSession()
 			.getJavaConnection();
@@ -121,187 +107,8 @@ public class AreasPeajeForm extends AbstractFormWithLocationWidgets {
     protected void setListeners() {
 	super.setListeners();
 	Map<String, JComponent> widgets = getWidgets();
-	reconocimientoEstado = (JTable) widgets.get("reconocimiento_estado_sin_indice");
 
 	areaPeajeIDWidget = (JTextField) widgets.get(getElementID());
-
-	vias = (JTable) super.getFormBody().getComponentByName("tabla_vias");
-
-	addViaButton = (JButton) super.getFormBody().getComponentByName("add_via_button");
-	editViaButton = (JButton) super.getFormBody().getComponentByName("edit_via_button");
-	deleteViaButton = (JButton) super.getFormBody().getComponentByName("delete_via_button");
-
-	addReconocimientoListener = new AddReconocimientoListener();
-	addReconocimientoButton.addActionListener(addReconocimientoListener);
-	addTrabajoListener = new AddTrabajoListener();
-	addTrabajoButton.addActionListener(addTrabajoListener);
-	addViaListener = new AddViaListener();
-	addViaButton.addActionListener(addViaListener);
-
-	editReconocimientoListener = new EditReconocimientoListener();
-	editReconocimientoButton.addActionListener(editReconocimientoListener);
-	editTrabajoListener = new EditTrabajoListener();
-	editTrabajoButton.addActionListener(editTrabajoListener);
-	editViaListener = new EditViaListener();
-	editViaButton.addActionListener(editViaListener);
-
-	deleteReconocimientoListener = new DeleteReconocimientoListener();
-	deleteReconocimientoButton.addActionListener(deleteReconocimientoListener);
-	deleteTrabajoListener = new DeleteTrabajoListener();
-	deleteTrabajoButton.addActionListener(deleteTrabajoListener);
-	deleteViaListener = new DeleteViaListener();
-	deleteViaButton.addActionListener(deleteViaListener);
-    }
-
-    @Override
-    protected void removeListeners() {
-	addReconocimientoButton.removeActionListener(addReconocimientoListener);
-	editReconocimientoButton.removeActionListener(editReconocimientoListener);
-	deleteReconocimientoButton.removeActionListener(deleteReconocimientoListener);
-
-	addTrabajoButton.removeActionListener(addTrabajoListener);
-	editTrabajoButton.removeActionListener(editTrabajoListener);
-	deleteTrabajoButton.removeActionListener(deleteTrabajoListener);
-
-	addViaButton.removeActionListener(addViaListener);
-	editViaButton.removeActionListener(editViaListener);
-	deleteViaButton.removeActionListener(deleteViaListener);
-
-	super.removeListeners();
-    }
-
-    public class AddReconocimientoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    AreasPeajeReconocimientosSubForm subForm =
-		    new AreasPeajeReconocimientosSubForm(
-			    getReconocimientosFormFileName(),
-			    getReconocimientosDBTableName(),
-			    reconocimientoEstado,
-			    getElementID(),
-			    areaPeajeIDWidget.getText(),
-			    null,
-			    null,
-			    false);
-	    PluginServices.getMDIManager().addWindow(subForm);
-	}
-    }
-
-    public class AddTrabajoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    AreasPeajeTrabajosSubForm subForm =
-		    new AreasPeajeTrabajosSubForm(
-			    getTrabajosFormFileName(),
-			    getTrabajosDBTableName(),
-			    trabajos,
-			    getElementID(),
-			    areaPeajeIDWidget.getText(),
-			    null,
-			    null,
-			    false);
-	    PluginServices.getMDIManager().addWindow(subForm);
-	}
-    }
-
-    public class AddViaListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    AreasPeajeViasSubForm subForm =
-		    new AreasPeajeViasSubForm(
-			    ABEILLE_VIAS_FILENAME,
-			    "areas_peaje_vias",
-			    vias,
-			    getElementID(),
-			    areaPeajeIDWidget.getText(),
-			    null,
-			    null,
-			    false);
-	    PluginServices.getMDIManager().addWindow(subForm);
-	}
-    }
-
-    public class EditReconocimientoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    if (reconocimientoEstado.getSelectedRowCount() != 0) {
-		int row = reconocimientoEstado.getSelectedRow();
-		AreasPeajeReconocimientosSubForm subForm =
-			new AreasPeajeReconocimientosSubForm(
-				getReconocimientosFormFileName(),
-				getReconocimientosDBTableName(),
-				reconocimientoEstado,
-				getElementID(),
-				areaPeajeIDWidget.getText(),
-				"n_inspeccion",
-				reconocimientoEstado.getValueAt(row, 0).toString(),
-				true);
-		PluginServices.getMDIManager().addWindow(subForm);
-	    }else {
-		JOptionPane.showMessageDialog(null,
-			"Debe seleccionar una fila para editar los datos.",
-			"Ninguna fila seleccionada",
-			JOptionPane.INFORMATION_MESSAGE);
-	    }
-	}
-    }
-
-    public class EditTrabajoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    if (trabajos.getSelectedRowCount() != 0) {
-		int row = trabajos.getSelectedRow();
-		AreasPeajeTrabajosSubForm subForm =
-			new AreasPeajeTrabajosSubForm(
-				getTrabajosFormFileName(),
-				getTrabajosDBTableName(),
-				trabajos,
-				getElementID(),
-				areaPeajeIDWidget.getText(),
-				"id_trabajo",
-				trabajos.getValueAt(row, 0).toString(),
-				true);
-		PluginServices.getMDIManager().addWindow(subForm);
-	    }else {
-		JOptionPane.showMessageDialog(null,
-			"Debe seleccionar una fila para editar los datos.",
-			"Ninguna fila seleccionada",
-			JOptionPane.INFORMATION_MESSAGE);
-	    }
-	}
-    }
-
-    public class EditViaListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    if (vias.getSelectedRowCount() != 0) {
-		int row = vias.getSelectedRow();
-		AreasPeajeViasSubForm subForm =
-			new AreasPeajeViasSubForm(
-				ABEILLE_VIAS_FILENAME,
-				"areas_peaje_vias",
-				vias,
-				getElementID(),
-				areaPeajeIDWidget.getText(),
-				"id_via",
-				vias.getValueAt(row, 0).toString(),
-				true);
-		PluginServices.getMDIManager().addWindow(subForm);
-	    }else {
-		JOptionPane.showMessageDialog(null,
-			"Debe seleccionar una fila para editar los datos.",
-			"Ninguna fila seleccionada",
-			JOptionPane.INFORMATION_MESSAGE);
-	    }
-	}
-    }
-
-    public class DeleteViaListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    deleteElement(vias, "areas_peaje_vias",
-		    "id_via");
-	}
     }
 
     @Override

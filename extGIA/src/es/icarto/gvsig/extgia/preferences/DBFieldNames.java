@@ -43,10 +43,6 @@ public class DBFieldNames {
 	    "fecha_fabricacion as \"Fabricación\"",
 	    "fecha_reposicion as \"Reposición\"" };
 
-    public static String[] viasFields = { "id_via as \"ID\"",
-	    "via as \"Nª Vía\"", "via_tipo as \"Tipo Vía\"",
-	    "reversible as \"Reversible\"", "cabinas as \"Nº Cabinas\"" };
-
     public static String[] ramalesColNames = { "id_ramal", "ramal",
 	    "sentido_ramal", "longitud" };
     public static String[] ramalesColAlias = { "ID Ramal", "Nombre Ramal",
