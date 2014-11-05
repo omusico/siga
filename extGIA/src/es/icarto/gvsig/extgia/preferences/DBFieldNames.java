@@ -6,20 +6,6 @@ public class DBFieldNames {
 	Taludes, Isletas, Enlaces, Barrera_Rigida, Areas_Servicio, Areas_Descanso, Areas_Peaje, Juntas, Pasos_Mediana, Senhalizacion_Vertical, Valla_Cierre, Firme, Obras_Paso, Obras_Desague, Muros, Senhalizacion_Variable, Lecho_Frenado, Areas_Mantenimiento, Lineas_Suministro, Transformadores;
     }
 
-    public static String[] genericTrabajoFields = { "id_trabajo as \"ID\"",
-	    "fecha_certificado as \"Fecha cert\"", "unidad as \"Unidad\"",
-	    "medicion_audasa as \"Medición AUDASA\"",
-	    "observaciones as \"Observaciones\"" };
-
-    public static String[] senhalizacionVerticalTrabajoFields = {
-	    "id_trabajo as \"ID\"", "fecha_certificado as \"Fecha cert\"",
-	    "unidad as \"Unidad\"", "medicion_audasa as \"Medición AUDASA\"",
-	    "observaciones as \"Observaciones\"" };
-
-    public static String[] generic_ramales = { "id_ramal as \"ID Ramal\"",
-	    "ramal as \"Nombre Ramal\"", "sentido_ramal as \"Sentido\"",
-	    "direccion_ramal as \"Dirección\"", "longitud as \"Longitud\"" };
-
     public static String[] ramalesColNames = { "id_ramal", "ramal",
 	    "sentido_ramal", "longitud" };
     public static String[] ramalesColAlias = { "ID Ramal", "Nombre Ramal",
@@ -53,10 +39,6 @@ public class DBFieldNames {
     public static final String BASE_CONTRATISTA = "base_contratista";
     public static final String TRAMO = "tramo";
     public static final String TIPO_VIA = "tipo_via";
-
-    // TABLE NAMES
-    public static final String TALUDES_TABLENAME = "audasa_extgia.taludes";
-    public static final String ISLETAS_TABLENAME = "audasa_extgia.isletas";
 
     // TALUDES
     public static final String TALUDES_LAYERNAME = "Taludes";
