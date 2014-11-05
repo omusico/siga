@@ -1,69 +1,70 @@
 package es.icarto.gvsig.extgia.forms.muros;
 
-import java.util.HashMap;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.MUROS_A;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.MUROS_B;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.MUROS_C;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.MUROS_D;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.MUROS_E;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.MUROS_F;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.MUROS_G;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.MUROS_H;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.MUROS_I;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.MUROS_INDEX;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.MUROS_J;
 
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
+import java.math.BigDecimal;
 
-import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
-import es.icarto.gvsig.extgia.forms.utils.CalculateReconocimientoIndexValue;
-import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
+import es.icarto.gvsig.navtableforms.IValidatableForm;
+import es.icarto.gvsig.navtableforms.calculation.Calculation;
 
-public class MurosCalculateIndiceEstado extends
-CalculateReconocimientoIndexValue {
+public class MurosCalculateIndiceEstado extends Calculation {
 
-    public MurosCalculateIndiceEstado(BasicAbstractSubForm form,
-	    HashMap<String, JComponent> allFormWidgets,
-	    String resultComponentName, String... operatorComponentsNames) {
-	super(form, allFormWidgets, resultComponentName, operatorComponentsNames);
-	// TODO Auto-generated constructor stub
+    private static final BigDecimal weigthA = new BigDecimal("0.2");
+    private static final BigDecimal weigthB = new BigDecimal("0.2");
+    private static final BigDecimal weigthC = new BigDecimal("0.05");
+    private static final BigDecimal weigthD = new BigDecimal("0.35");
+    private static final BigDecimal weigthE = new BigDecimal("0.08");
+    private static final BigDecimal weigthF = new BigDecimal("0.07");
+    private static final BigDecimal weigthG = new BigDecimal("0.04");
+    private static final BigDecimal weigthH = new BigDecimal("0.04");
+    private static final BigDecimal weigthI = new BigDecimal("0.10");
+    private static final BigDecimal weigthJ = new BigDecimal("0.07");
+
+    public MurosCalculateIndiceEstado(IValidatableForm form) {
+	super(form);
     }
 
     @Override
-    public void setValue(boolean validate) {
-	float value = 0;
+    protected String resultName() {
+	return MUROS_INDEX;
+    }
 
-	String strA = ((KeyValue) ((JComboBox) operatorComponents
-		.get(DBFieldNames.MUROS_A)).getSelectedItem())
-		.getKey();
-	String strB = ((KeyValue) ((JComboBox) operatorComponents
-		.get(DBFieldNames.MUROS_B)).getSelectedItem()).getKey();
-	String strC = ((KeyValue) ((JComboBox) operatorComponents
-		.get(DBFieldNames.MUROS_C)).getSelectedItem()).getKey();
-	String strD = ((KeyValue) ((JComboBox) operatorComponents
-		.get(DBFieldNames.MUROS_D)).getSelectedItem()).getKey();
-	String strE = ((KeyValue) ((JComboBox) operatorComponents
-		.get(DBFieldNames.MUROS_E)).getSelectedItem()).getKey();
-	String strF = ((KeyValue) ((JComboBox) operatorComponents
-		.get(DBFieldNames.MUROS_F)).getSelectedItem()).getKey();
-	String strG = ((KeyValue) ((JComboBox) operatorComponents
-		.get(DBFieldNames.MUROS_G)).getSelectedItem()).getKey();
-	String strH = ((KeyValue) ((JComboBox) operatorComponents
-		.get(DBFieldNames.MUROS_H)).getSelectedItem()).getKey();
-	String strI = ((KeyValue) ((JComboBox) operatorComponents
-		.get(DBFieldNames.MUROS_I)).getSelectedItem()).getKey();
-	String strJ = ((KeyValue) ((JComboBox) operatorComponents
-		.get(DBFieldNames.MUROS_J)).getSelectedItem()).getKey();
+    @Override
+    protected String[] operandNames() {
+	return new String[] { MUROS_A, MUROS_B, MUROS_C, MUROS_D, MUROS_E,
+		MUROS_F, MUROS_G, MUROS_H, MUROS_I, MUROS_J };
+    }
 
-	if (Integer.parseInt(strA) > Integer.parseInt(strB)) {
-	    value += Integer.parseInt(strA) * 0.20;
-	}else {
-	    value += Integer.parseInt(strB) * 0.20;
+    @Override
+    protected String calculate() {
+
+	BigDecimal value = new BigDecimal(0);
+
+	if (operandValue(MUROS_A).compareTo(operandValue(MUROS_B)) > 0) {
+	    value = value.add(operandValue(MUROS_A).multiply(weigthA));
+	} else {
+	    value = value.add(operandValue(MUROS_B).multiply(weigthB));
 	}
-	value += Integer.parseInt(strC) * 0.05;
-	value += Integer.parseInt(strD) * 0.35;
-	value += Integer.parseInt(strE) * 0.08;
-	value += Integer.parseInt(strF) * 0.07;
-	value += Integer.parseInt(strG) * 0.04;
-	value += Integer.parseInt(strH) * 0.04;
-	value += Integer.parseInt(strI) * 0.10;
-	value += Integer.parseInt(strJ) * 0.07;
+	value = value.add(operandValue(MUROS_C).multiply(weigthC));
+	value = value.add(operandValue(MUROS_D).multiply(weigthD));
+	value = value.add(operandValue(MUROS_E).multiply(weigthE));
+	value = value.add(operandValue(MUROS_F).multiply(weigthF));
+	value = value.add(operandValue(MUROS_G).multiply(weigthG));
+	value = value.add(operandValue(MUROS_H).multiply(weigthH));
+	value = value.add(operandValue(MUROS_I).multiply(weigthI));
+	value = value.add(operandValue(MUROS_J).multiply(weigthJ));
 
-	double valueFormatted = Math.rint(value*1000)/1000;
-
-	String strValue = Double.toString(valueFormatted);
-	resultComponent.setText(strValue);
+	return formatter.format(value);
     }
 
 }

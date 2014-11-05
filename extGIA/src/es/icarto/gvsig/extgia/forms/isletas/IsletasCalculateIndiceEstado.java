@@ -1,31 +1,28 @@
 package es.icarto.gvsig.extgia.forms.isletas;
 
-import java.util.HashMap;
+import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.navtableforms.IValidatableForm;
+import es.icarto.gvsig.navtableforms.calculation.Calculation;
 
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
+public class IsletasCalculateIndiceEstado extends Calculation {
 
-import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
-import es.icarto.gvsig.extgia.forms.utils.CalculateReconocimientoIndexValue;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
-
-public class IsletasCalculateIndiceEstado extends CalculateReconocimientoIndexValue {
-
-    public IsletasCalculateIndiceEstado(BasicAbstractSubForm form,
-	    HashMap<String, JComponent> allFormWidgets,
-	    String resultComponentName, String... operatorComponentsNames) {
-	super(form, allFormWidgets, resultComponentName, operatorComponentsNames);
-	// TODO Auto-generated constructor stub
+    public IsletasCalculateIndiceEstado(IValidatableForm form) {
+	super(form);
     }
 
     @Override
-    public void setValue(boolean validate) {
+    protected String resultName() {
+	return DBFieldNames.ISLETAS_INDEX;
+    }
 
-	String strA = ((KeyValue) ((JComboBox) operatorComponents
-		.get("estado_siega")).getSelectedItem())
-		.getKey();
+    @Override
+    protected String[] operandNames() {
+	return new String[] { DBFieldNames.ISLETAS_A };
+    }
 
-	resultComponent.setText(strA);
+    @Override
+    protected String calculate() {
+	return formatter.format(operandValue(DBFieldNames.ISLETAS_A));
     }
 
 }

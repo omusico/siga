@@ -1,44 +1,47 @@
 package es.icarto.gvsig.extgia.forms.taludes;
 
-import java.util.HashMap;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TALUDES_A;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TALUDES_B;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TALUDES_C;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TALUDES_D;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TALUDES_INDEX;
 
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
+import java.math.BigDecimal;
 
-import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
-import es.icarto.gvsig.extgia.forms.utils.CalculateReconocimientoIndexValue;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
+import es.icarto.gvsig.navtableforms.IValidatableForm;
+import es.icarto.gvsig.navtableforms.calculation.Calculation;
 
-public class TaludesCalculateIndiceEstado extends CalculateReconocimientoIndexValue {
+public class TaludesCalculateIndiceEstado extends Calculation {
 
-    public TaludesCalculateIndiceEstado(BasicAbstractSubForm form,
-	    HashMap<String, JComponent> allFormWidgets,
-	    String resultComponentName, String... operatorComponentsNames) {
-	super(form, allFormWidgets, resultComponentName,
-		operatorComponentsNames);
+    private static final BigDecimal weigthA = new BigDecimal("0.3");
+    private static final BigDecimal weigthB = new BigDecimal("0.25");
+    private static final BigDecimal weigthC = new BigDecimal("0.2");
+    private static final BigDecimal weigthD = new BigDecimal("0.25");
+
+    public TaludesCalculateIndiceEstado(IValidatableForm form) {
+	super(form);
     }
 
     @Override
-    public void setValue(boolean validate) {
+    protected String resultName() {
+	return TALUDES_INDEX;
+    }
 
-	float value = 0;
+    @Override
+    protected String[] operandNames() {
+	return new String[] { TALUDES_A, TALUDES_B, TALUDES_C, TALUDES_D };
+    }
 
-	String strA = ((KeyValue) ((JComboBox) operatorComponents
-		.get("existencia_deformaciones_o_grietas")).getSelectedItem())
-		.getKey();
-	String strB = ((KeyValue) ((JComboBox) operatorComponents
-		.get("peligro_caida_materiales")).getSelectedItem()).getKey();
-	String strC = ((KeyValue) ((JComboBox) operatorComponents
-		.get("bajante_deteriorada")).getSelectedItem()).getKey();
-	String strD = ((KeyValue) ((JComboBox) operatorComponents
-		.get("elementos_proteccion_talud")).getSelectedItem()).getKey();
+    @Override
+    protected String calculate() {
 
-	value += Integer.parseInt(strA) * 0.3;
-	value += Integer.parseInt(strB) * 0.25;
-	value += Integer.parseInt(strC) * 0.2;
-	value += Integer.parseInt(strD) * 0.25;
+	BigDecimal value = new BigDecimal(0);
 
-	String strValue = Float.toString(value);
-	resultComponent.setText(strValue);
+	value = value.add(operandValue(TALUDES_A).multiply(weigthA));
+	value = value.add(operandValue(TALUDES_B).multiply(weigthB));
+	value = value.add(operandValue(TALUDES_C).multiply(weigthC));
+	value = value.add(operandValue(TALUDES_D).multiply(weigthD));
+
+	return formatter.format(value);
     }
 }

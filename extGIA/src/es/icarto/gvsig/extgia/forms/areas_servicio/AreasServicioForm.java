@@ -1,7 +1,5 @@
 package es.icarto.gvsig.extgia.forms.areas_servicio;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,16 +11,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.utils.GIAAlphanumericTableHandler;
-import es.icarto.gvsig.extgia.forms.utils.RamalesHandler;
-import es.icarto.gvsig.extgia.forms.utils.TrabajosHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
@@ -33,20 +27,25 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
     JTextField areaServicioIDWidget;
     CalculateComponentValue areaServicioid;
 
-    DBFieldNames.reconocimientoEstadoFields
     public AreasServicioForm(FLyrVect layer) {
 	super(layer);
 
 	// int[] trabajoColumnsSize = { 1, 30, 90, 70, 200 };
-	addTableHandler(new GIAAlphanumericTableHandler(getTrabajosDBTableName(),
-		getWidgetComponents(), getElementID(),
-		DBFieldNames.trabajosColNames, DBFieldNames.trabajosColAlias,
-		this));
+	addTableHandler(new GIAAlphanumericTableHandler(
+		getTrabajosDBTableName(), getWidgetComponents(),
+		getElementID(), DBFieldNames.trabajosColNames,
+		DBFieldNames.trabajosColAlias, this));
 
-	addTableHandler(new GIAAlphanumericTableHandler(getRamalesDBTableName(),
-		getWidgetComponents(), getElementID(),
+	addTableHandler(new GIAAlphanumericTableHandler(
+		getRamalesDBTableName(), getWidgetComponents(), getElementID(),
 		DBFieldNames.ramalesColNames, DBFieldNames.ramalesColAlias,
 		this));
+
+	addTableHandler(new GIAAlphanumericTableHandler(
+		getReconocimientosDBTableName(), getWidgetComponents(),
+		getElementID(), DBFieldNames.reconocimientosColNames,
+		DBFieldNames.reconocimientosColAlias, this,
+		AreasServicioReconocimientosSubForm.class));
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -77,7 +76,6 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 		DBFieldNames.MUNICIPIO, DBFieldNames.SENTIDO);
 	areaServicioid.setListeners();
     }
-
 
     @Override
     protected boolean validationHasErrors() {

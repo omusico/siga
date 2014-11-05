@@ -1,7 +1,5 @@
 package es.icarto.gvsig.extgia.forms.taludes;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,17 +16,16 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import com.iver.andami.Launcher;
-import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.audasacommons.forms.reports.NavTableComponentsPrintButton;
+import es.icarto.gvsig.extgia.forms.areas_servicio.AreasServicioReconocimientosSubForm;
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.utils.EnableComponentBasedOnCheckBox;
 import es.icarto.gvsig.extgia.forms.utils.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkButton;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkData;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
@@ -55,10 +52,6 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     FilesLinkButton filesLinkButton;
     NavTableComponentsPrintButton ntPrintButton;
 
-    AddReconocimientoListener addReconocimientoListener;
-    EditReconocimientoListener editReconocimientoListener;
-    DeleteReconocimientoListener deleteReconocimientoListener;
-
     boolean hasJustOpened = true;
 
     public TaludesForm(FLyrVect layer) {
@@ -69,6 +62,12 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 		getTrabajosDBTableName(), getWidgetComponents(),
 		getElementID(), DBFieldNames.trabajosColNames,
 		DBFieldNames.trabajosColAlias, this));
+
+	addTableHandler(new GIAAlphanumericTableHandler(
+		getReconocimientosDBTableName(), getWidgetComponents(),
+		getElementID(), DBFieldNames.reconocimientosColNames,
+		DBFieldNames.reconocimientosColAlias, this,
+		AreasServicioReconocimientosSubForm.class));
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -158,14 +157,6 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 
 	addNewButtonsToActionsToolBar();
 
-	// Embebed Tables
-	SqlUtils.createEmbebedTableFromDB(reconocimientoEstado,
-		"audasa_extgia", getReconocimientosDBTableName(),
-		DBFieldNames.reconocimientoEstadoFields, null, "id_talud",
-		taludIDWidget.getText(), "n_inspeccion");
-
-	revalidate();
-	repaint();
     }
 
     @Override
@@ -211,14 +202,6 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 		tipoViaPF, direccionPF);
 	tipoViaPF.addActionListener(direccionPFDomainHandler);
 
-	addReconocimientoListener = new AddReconocimientoListener();
-	addReconocimientoButton.addActionListener(addReconocimientoListener);
-	editReconocimientoListener = new EditReconocimientoListener();
-	editReconocimientoButton.addActionListener(editReconocimientoListener);
-	deleteReconocimientoListener = new DeleteReconocimientoListener();
-	deleteReconocimientoButton
-		.addActionListener(deleteReconocimientoListener);
-
     }
 
     @Override
@@ -229,11 +212,6 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	cunetaPie.removeListeners();
 	tipoViaPI.removeActionListener(direccionPIDomainHandler);
 	tipoViaPF.removeActionListener(direccionPFDomainHandler);
-	addReconocimientoButton.removeActionListener(addReconocimientoListener);
-	editReconocimientoButton
-		.removeActionListener(editReconocimientoListener);
-	deleteReconocimientoButton
-		.removeActionListener(deleteReconocimientoListener);
 
 	super.removeListeners();
     }
@@ -266,41 +244,9 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	return super.validationHasErrors();
     }
 
-    public class AddReconocimientoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    TaludesReconocimientosSubForm subForm = new TaludesReconocimientosSubForm(
-		    getReconocimientosFormFileName(),
-		    getReconocimientosDBTableName(), reconocimientoEstado,
-		    "id_talud", taludIDWidget.getText(), null, null, false);
-	    PluginServices.getMDIManager().addWindow(subForm);
-	}
-    }
-
-    public class EditReconocimientoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    if (reconocimientoEstado.getSelectedRowCount() != 0) {
-		int row = reconocimientoEstado.getSelectedRow();
-		TaludesReconocimientosSubForm subForm = new TaludesReconocimientosSubForm(
-			getReconocimientosFormFileName(),
-			getReconocimientosDBTableName(), reconocimientoEstado,
-			"id_talud", taludIDWidget.getText(), "n_inspeccion",
-			reconocimientoEstado.getValueAt(row, 0).toString(),
-			true);
-		PluginServices.getMDIManager().addWindow(subForm);
-	    } else {
-		JOptionPane.showMessageDialog(null,
-			"Debe seleccionar una fila para editar los datos.",
-			"Ninguna fila seleccionada",
-			JOptionPane.INFORMATION_MESSAGE);
-	    }
-	}
-    }
-
     @Override
     public JTable getReconocimientosJTable() {
-	return reconocimientoEstado;
+	return null;
     }
 
     @Override

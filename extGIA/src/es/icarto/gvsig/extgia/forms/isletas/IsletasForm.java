@@ -1,7 +1,5 @@
 package es.icarto.gvsig.extgia.forms.isletas;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,14 +12,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.utils.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -38,10 +34,6 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
     private JComboBox tipoVia;
     private DependentComboboxHandler direccionDomainHandler;
 
-    AddReconocimientoListener addReconocimientoListener;
-    EditReconocimientoListener editReconocimientoListener;
-    DeleteReconocimientoListener deleteReconocimientoListener;
-
     public IsletasForm(FLyrVect layer) {
 	super(layer);
 
@@ -50,6 +42,12 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 		getTrabajosDBTableName(), getWidgetComponents(),
 		getElementID(), DBFieldNames.trabajosColNames,
 		DBFieldNames.trabajosColAlias, this));
+
+	addTableHandler(new GIAAlphanumericTableHandler(
+		getReconocimientosDBTableName(), getWidgetComponents(),
+		getElementID(), DBFieldNames.reconocimientosColNames,
+		DBFieldNames.reconocimientosColAlias, this,
+		IsletasReconocimientosSubForm.class));
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -65,14 +63,6 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 	if (filesLinkButton == null) {
 	    addNewButtonsToActionsToolBar();
 	}
-
-	// Embebed Tables
-	int[] trabajoColumnsSize = { 1, 30, 90, 70, 200 };
-	SqlUtils.createEmbebedTableFromDB(reconocimientoEstado,
-		"audasa_extgia", getReconocimientosDBTableName(),
-		DBFieldNames.reconocimientoEstadoFields, null, "id_isleta",
-		isletaIDWidget.getText(), "n_inspeccion");
-	repaint();
     }
 
     @Override
@@ -93,25 +83,12 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 		direccion);
 	tipoVia.addActionListener(direccionDomainHandler);
 
-	addReconocimientoListener = new AddReconocimientoListener();
-	addReconocimientoButton.addActionListener(addReconocimientoListener);
-	editReconocimientoListener = new EditReconocimientoListener();
-	editReconocimientoButton.addActionListener(editReconocimientoListener);
-	deleteReconocimientoListener = new DeleteReconocimientoListener();
-	deleteReconocimientoButton
-		.addActionListener(deleteReconocimientoListener);
-
     }
 
     @Override
     protected void removeListeners() {
 	isletaid.removeListeners();
 	tipoVia.removeActionListener(direccionDomainHandler);
-	addReconocimientoButton.removeActionListener(addReconocimientoListener);
-	editReconocimientoButton
-		.removeActionListener(editReconocimientoListener);
-	deleteReconocimientoButton
-		.removeActionListener(deleteReconocimientoListener);
 
 	super.removeListeners();
     }
@@ -143,38 +120,6 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 	    }
 	}
 	return super.validationHasErrors();
-    }
-
-    public class AddReconocimientoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    IsletasReconocimientosSubForm subForm = new IsletasReconocimientosSubForm(
-		    getReconocimientosFormFileName(),
-		    getReconocimientosDBTableName(), reconocimientoEstado,
-		    "id_isleta", isletaIDWidget.getText(), null, null, false);
-	    PluginServices.getMDIManager().addWindow(subForm);
-	}
-    }
-
-    public class EditReconocimientoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    if (reconocimientoEstado.getSelectedRowCount() != 0) {
-		int row = reconocimientoEstado.getSelectedRow();
-		IsletasReconocimientosSubForm subForm = new IsletasReconocimientosSubForm(
-			getReconocimientosFormFileName(),
-			getReconocimientosDBTableName(), reconocimientoEstado,
-			"id_isleta", isletaIDWidget.getText(), "n_inspeccion",
-			reconocimientoEstado.getValueAt(row, 0).toString(),
-			true);
-		PluginServices.getMDIManager().addWindow(subForm);
-	    } else {
-		JOptionPane.showMessageDialog(null,
-			"Debe seleccionar una fila para editar los datos.",
-			"Ninguna fila seleccionada",
-			JOptionPane.INFORMATION_MESSAGE);
-	    }
-	}
     }
 
     @Override

@@ -1,23 +1,19 @@
 package es.icarto.gvsig.extgia.forms.valla_cierre;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Map;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
+import es.icarto.gvsig.extgia.forms.areas_servicio.AreasServicioReconocimientosSubForm;
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.utils.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 
 @SuppressWarnings("serial")
@@ -33,10 +29,6 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
     private DependentComboboxHandler direccionPIDomainHandler;
     private DependentComboboxHandler direccionPFDomainHandler;
 
-    AddReconocimientoListener addReconocimientoListener;
-    EditReconocimientoListener editReconocimientoListener;
-    DeleteReconocimientoListener deleteReconocimientoListener;
-
     public VallaCierreForm(FLyrVect layer) {
 	super(layer);
 
@@ -45,6 +37,12 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
 		getTrabajosDBTableName(), getWidgetComponents(),
 		getElementID(), DBFieldNames.trabajosColNames,
 		DBFieldNames.trabajosColAlias, this));
+
+	addTableHandler(new GIAAlphanumericTableHandler(
+		getReconocimientosDBTableName(), getWidgetComponents(),
+		getElementID(), DBFieldNames.reconocimientosColNames,
+		DBFieldNames.reconocimientosColAlias, this,
+		AreasServicioReconocimientosSubForm.class));
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -68,14 +66,6 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
 	if (filesLinkButton == null) {
 	    addNewButtonsToActionsToolBar();
 	}
-
-	// Embebed Tables
-	SqlUtils.createEmbebedTableFromDB(reconocimientoEstado,
-		"audasa_extgia", getReconocimientosDBTableName(),
-		DBFieldNames.reconocimientoEstadoFields, null, "id_valla",
-		vallaCierreIDWidget.getText(), "n_inspeccion");
-
-	repaint();
     }
 
     @Override
@@ -98,60 +88,14 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
 		tipoViaPF, direccionPF);
 	tipoViaPF.addActionListener(direccionPFDomainHandler);
 
-	addReconocimientoListener = new AddReconocimientoListener();
-	addReconocimientoButton.addActionListener(addReconocimientoListener);
-	editReconocimientoListener = new EditReconocimientoListener();
-	editReconocimientoButton.addActionListener(editReconocimientoListener);
-	deleteReconocimientoListener = new DeleteReconocimientoListener();
-	deleteReconocimientoButton
-		.addActionListener(deleteReconocimientoListener);
-
     }
 
     @Override
     protected void removeListeners() {
 	tipoViaPI.removeActionListener(direccionPIDomainHandler);
 	tipoViaPF.removeActionListener(direccionPFDomainHandler);
-	addReconocimientoButton.removeActionListener(addReconocimientoListener);
-	editReconocimientoButton
-		.removeActionListener(editReconocimientoListener);
-	deleteReconocimientoButton
-		.removeActionListener(deleteReconocimientoListener);
 
 	super.removeListeners();
-    }
-
-    public class AddReconocimientoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    VallaCierreReconocimientosSubForm subForm = new VallaCierreReconocimientosSubForm(
-		    getReconocimientosFormFileName(),
-		    getReconocimientosDBTableName(), reconocimientoEstado,
-		    "id_valla", vallaCierreIDWidget.getText(), null, null,
-		    false);
-	    PluginServices.getMDIManager().addWindow(subForm);
-	}
-    }
-
-    public class EditReconocimientoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    if (reconocimientoEstado.getSelectedRowCount() != 0) {
-		int row = reconocimientoEstado.getSelectedRow();
-		VallaCierreReconocimientosSubForm subForm = new VallaCierreReconocimientosSubForm(
-			getReconocimientosFormFileName(),
-			getReconocimientosDBTableName(), reconocimientoEstado,
-			"id_valla", vallaCierreIDWidget.getText(),
-			"n_inspeccion", reconocimientoEstado.getValueAt(row, 0)
-				.toString(), true);
-		PluginServices.getMDIManager().addWindow(subForm);
-	    } else {
-		JOptionPane.showMessageDialog(null,
-			"Debe seleccionar una fila para editar los datos.",
-			"Ninguna fila seleccionada",
-			JOptionPane.INFORMATION_MESSAGE);
-	    }
-	}
     }
 
     @Override

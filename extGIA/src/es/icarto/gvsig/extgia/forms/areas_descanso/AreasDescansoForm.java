@@ -27,8 +27,6 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
     JTextField areaDescansoIDWidget;
     CalculateComponentValue areaDescansoid;
 
-    private final GIAAlphanumericTableHandler reconocimientosTableHandler;
-
     public AreasDescansoForm(FLyrVect layer) {
 	super(layer);
 
@@ -42,14 +40,13 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 		getRamalesDBTableName(), getWidgetComponents(), getElementID(),
 		DBFieldNames.ramalesColNames, DBFieldNames.ramalesColAlias,
 		this));
-	s
 
-	reconocimientosTableHandler = new GIAAlphanumericTableHandler(
+	addTableHandler(new GIAAlphanumericTableHandler(
 		getReconocimientosDBTableName(), getWidgetComponents(),
-		getElementID(), AreasDescansoReconocimientosSubForm.colNames,
-		AreasDescansoReconocimientosSubForm.colAlias,
-		AreasDescansoReconocimientosSubForm.class);
-	addTableHandler(reconocimientosTableHandler);
+		getElementID(),
+		DBFieldNames.reconocimientosWhitoutIndexColNames,
+		DBFieldNames.reconocimientosWhitoutIndexColAlias, this,
+		AreasDescansoReconocimientosSubForm.class));
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -79,23 +76,6 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 		DBFieldNames.TIPO_VIA, DBFieldNames.MUNICIPIO,
 		DBFieldNames.SENTIDO);
 	areaDescansoid.setListeners();
-
-	addReconocimientoButton.setAction(reconocimientosTableHandler
-		.getListener().getCreateAction());
-	editReconocimientoButton.setAction(reconocimientosTableHandler
-		.getListener().getUpdateAction());
-	deleteReconocimientoButton.setAction(reconocimientosTableHandler
-		.getListener().getDeleteAction());
-
-    }
-
-    @Override
-    protected void removeListeners() {
-	addReconocimientoButton.setAction(null);
-	editReconocimientoButton.setAction(null);
-	deleteReconocimientoButton.setAction(null);
-
-	super.removeListeners();
     }
 
     @Override

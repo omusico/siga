@@ -1,41 +1,12 @@
 package es.icarto.gvsig.extgia.forms.taludes;
 
-import javax.swing.JTable;
-
 import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
-import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 
 @SuppressWarnings("serial")
 public class TaludesReconocimientosSubForm extends BasicAbstractSubForm {
 
-    public TaludesReconocimientosSubForm(
-	    String formFile,
-	    String dbTableName,
-	    JTable embebedTable,
-	    String idElementField,
-	    String idElementValue,
-	    String idField,
-	    String idValue,
-	    boolean edit) {
-	super(formFile, dbTableName, embebedTable, idElementField, idElementValue, idField, idValue,
-		edit);
-
-	TaludesCalculateIndiceEstado index = new TaludesCalculateIndiceEstado(
-		this,
-		this.getWidgetsVector(),
-		DBFieldNames.TALUDES_INDEX,
-		DBFieldNames.TALUDES_A,
-		DBFieldNames.TALUDES_B,
-		DBFieldNames.TALUDES_C,
-		DBFieldNames.TALUDES_D);
-	index.setListeners();
-    }
-
-    @Override
-    public String getXMLPath() {
-	return this.getClass().getClassLoader()
-		.getResource("rules/taludes_reconocimientos_metadata.xml")
-		.getPath();
-
+    public TaludesReconocimientosSubForm() {
+	super("taludes_reconocimientos");
+	addCalculation(new TaludesCalculateIndiceEstado(this));
     }
 }

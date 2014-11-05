@@ -6,18 +6,6 @@ public class DBFieldNames {
 	Taludes, Isletas, Enlaces, Barrera_Rigida, Areas_Servicio, Areas_Descanso, Areas_Peaje, Juntas, Pasos_Mediana, Senhalizacion_Vertical, Valla_Cierre, Firme, Obras_Paso, Obras_Desague, Muros, Senhalizacion_Variable, Lecho_Frenado, Areas_Mantenimiento, Lineas_Suministro, Transformadores;
     }
 
-    public static String[] genericReconocimientoEstadoFields = {
-	    "n_inspeccion as \"Nº Inspección\"",
-	    "nombre_revisor as \"Revisor\"",
-	    "fecha_inspeccion as \"Fecha Inspección\"",
-	    "indice_estado as \"Índice Estado\"" };
-
-    public static String[] reconocimientoEstadoFields = {
-	    "n_inspeccion as \"Nº Inspección\"",
-	    "nombre_revisor as \"Revisor\"",
-	    "fecha_inspeccion as \"Fecha Inspección\"",
-	    "indice_estado as \"Índice Estado\"" };
-
     public static String[] genericTrabajoFields = { "id_trabajo as \"ID\"",
 	    "fecha_certificado as \"Fecha cert\"", "unidad as \"Unidad\"",
 	    "medicion_audasa as \"Medición AUDASA\"",
@@ -32,12 +20,6 @@ public class DBFieldNames {
 	    "ramal as \"Nombre Ramal\"", "sentido_ramal as \"Sentido\"",
 	    "direccion_ramal as \"Dirección\"", "longitud as \"Longitud\"" };
 
-    public static String[] senhales = { "id_senhal_vertical as \"ID Señal\"",
-	    "tipo_senhal as \"Tipo Señal\"",
-	    "codigo_senhal as \"Código Señal\"", "leyenda as \"Leyenda\"",
-	    "fecha_fabricacion as \"Fabricación\"",
-	    "fecha_reposicion as \"Reposición\"" };
-
     public static String[] ramalesColNames = { "id_ramal", "ramal",
 	    "sentido_ramal", "longitud" };
     public static String[] ramalesColAlias = { "ID Ramal", "Nombre Ramal",
@@ -48,10 +30,15 @@ public class DBFieldNames {
     public static String[] ramalesDireccionColAlias = { "ID Ramal",
 	    "Nombre Ramal", "Sentido", "Dirección", "Longitud" };
 
-    public static String[] reconocimientosWhitoutIndexFieldsNames = {
+    public static String[] reconocimientosWhitoutIndexColNames = {
 	    "n_inspeccion", "nombre_revisor", "fecha_inspeccion" };
-    public static String[] reconocimientosWhitoutIndexFieldsAlias = {
+    public static String[] reconocimientosWhitoutIndexColAlias = {
 	    "Nº Inspección", "Revisor", "Fecha Inspección" };
+
+    public static final String[] reconocimientosColNames = { "n_inspeccion",
+	    "nombre_revisor", "fecha_inspeccion", "indice_estado" };
+    public static final String[] reconocimientosColAlias = { "Nº Inspección",
+	    "Revisor", "Fecha Inspección", "Índice Estado" };
 
     public static String[] trabajosColNames = { "id_trabajo",
 	    "fecha_certificado", "unidad", "medicion_audasa", "observaciones" };
@@ -158,11 +145,11 @@ public class DBFieldNames {
     public static final String ID_PASO_MEDIANA = "id_paso_mediana";
 
     // PASOS MEDIANA RECONOCIMIENTO ESTADO
-    public static final String PASO_MEDIANA_INDEX = "indice_estado";
-    public static final String PASO_MEDIANA_A = "aterramientos_vegetacion";
-    public static final String PASO_MEDIANA_B = "baches_zonas_cuarteadas";
-    public static final String PASO_MEDIANA_C = "deficiencias_sistema_drenaje";
-    public static final String PASO_MEDIANA_D = "elementos_contencion_cierre";
+    public static final String PASOS_MEDIANA_INDEX = "indice_estado";
+    public static final String PASOS_MEDIANA_A = "aterramientos_vegetacion";
+    public static final String PASOS_MEDIANA_B = "baches_zonas_cuarteadas";
+    public static final String PASOS_MEDIANA_C = "deficiencias_sistema_drenaje";
+    public static final String PASOS_MEDIANA_D = "elementos_contencion_cierre";
 
     // SENHALIZACION VERTICAL
     public static final String SENHALIZACION_VERTICAL_LAYERNAME = "Senhalizacion_Vertical";

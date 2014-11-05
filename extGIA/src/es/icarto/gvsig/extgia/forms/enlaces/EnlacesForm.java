@@ -43,8 +43,8 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getReconocimientosDBTableName(), getWidgetComponents(),
 		getElementID(),
-		DBFieldNames.reconocimientosWhitoutIndexFieldsNames,
-		DBFieldNames.reconocimientosWhitoutIndexFieldsAlias, this));
+		DBFieldNames.reconocimientosWhitoutIndexColNames,
+		DBFieldNames.reconocimientosWhitoutIndexColAlias, this));
 
 	addTableHandler(new GIAAlphanumericTableHandler(
 		"enlaces_carreteras_enlazadas", getWidgetComponents(),

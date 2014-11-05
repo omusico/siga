@@ -13,7 +13,7 @@
 	</FIELD>
 
 	<FIELD>
-		<FIELDNAME>sentido</FIELDNAME>
+		<FIELDNAME>sentido_ramal</FIELDNAME>
 		<DOMAINREADER>
 			<DRTYPE>db</DRTYPE>
 			<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
@@ -24,7 +24,7 @@
 	</FIELD>
 
 	<FIELD>
-		<FIELDNAME>direccion</FIELDNAME>
+		<FIELDNAME>direccion_ramal</FIELDNAME>
 		<DOMAINREADER>
 			<DRTYPE>db</DRTYPE>
 			<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>

@@ -1,44 +1,48 @@
 package es.icarto.gvsig.extgia.forms.pasos_mediana;
 
-import java.util.HashMap;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.PASOS_MEDIANA_A;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.PASOS_MEDIANA_B;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.PASOS_MEDIANA_C;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.PASOS_MEDIANA_D;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.PASOS_MEDIANA_INDEX;
 
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
+import java.math.BigDecimal;
 
-import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
-import es.icarto.gvsig.extgia.forms.utils.CalculateReconocimientoIndexValue;
-import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
+import es.icarto.gvsig.navtableforms.IValidatableForm;
+import es.icarto.gvsig.navtableforms.calculation.Calculation;
 
-public class PasosMedianaCalculateIndiceEstado extends CalculateReconocimientoIndexValue {
+public class PasosMedianaCalculateIndiceEstado extends Calculation {
 
-    public PasosMedianaCalculateIndiceEstado(BasicAbstractSubForm form,
-	    HashMap<String, JComponent> allFormWidgets,
-	    String resultComponentName, String... operatorComponentsNames) {
-	super(form, allFormWidgets, resultComponentName, operatorComponentsNames);
-	// TODO Auto-generated constructor stub
+    private static final BigDecimal weigthA = new BigDecimal("0.2");
+    private static final BigDecimal weigthB = new BigDecimal("0.35");
+    private static final BigDecimal weigthC = new BigDecimal("0.1");
+    private static final BigDecimal weigthD = new BigDecimal("0.35");
+
+    public PasosMedianaCalculateIndiceEstado(IValidatableForm form) {
+	super(form);
     }
 
     @Override
-    public void setValue(boolean validate) {
-	float value = 0;
+    protected String resultName() {
+	return PASOS_MEDIANA_INDEX;
+    }
 
-	String strA = ((KeyValue) ((JComboBox) operatorComponents
-		.get(DBFieldNames.PASO_MEDIANA_A)).getSelectedItem())
-		.getKey();
-	String strB = ((KeyValue) ((JComboBox) operatorComponents
-		.get(DBFieldNames.PASO_MEDIANA_B)).getSelectedItem()).getKey();
-	String strC = ((KeyValue) ((JComboBox) operatorComponents
-		.get(DBFieldNames.PASO_MEDIANA_C)).getSelectedItem()).getKey();
-	String strD = ((KeyValue) ((JComboBox) operatorComponents
-		.get(DBFieldNames.PASO_MEDIANA_D)).getSelectedItem()).getKey();
+    @Override
+    protected String[] operandNames() {
+	return new String[] { PASOS_MEDIANA_A, PASOS_MEDIANA_B,
+		PASOS_MEDIANA_C, PASOS_MEDIANA_D };
+    }
 
-	value += Integer.parseInt(strA) * 0.2;
-	value += Integer.parseInt(strB) * 0.35;
-	value += Integer.parseInt(strC) * 0.1;
-	value += Integer.parseInt(strD) * 0.35;
+    @Override
+    protected String calculate() {
 
-	String strValue = Float.toString(value);
-	resultComponent.setText(strValue);
+	BigDecimal value = new BigDecimal(0);
+
+	value = value.add(operandValue(PASOS_MEDIANA_A).multiply(weigthA));
+	value = value.add(operandValue(PASOS_MEDIANA_B).multiply(weigthB));
+	value = value.add(operandValue(PASOS_MEDIANA_C).multiply(weigthC));
+	value = value.add(operandValue(PASOS_MEDIANA_D).multiply(weigthD));
+
+	return formatter.format(value);
     }
 }

@@ -1,44 +1,49 @@
 package es.icarto.gvsig.extgia.forms.barrera_rigida;
 
-import java.util.HashMap;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.BARRERA_RIGIDA_A;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.BARRERA_RIGIDA_B;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.BARRERA_RIGIDA_C;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.BARRERA_RIGIDA_D;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.BARRERA_RIGIDA_INDEX;
 
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
+import java.math.BigDecimal;
 
-import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
-import es.icarto.gvsig.extgia.forms.utils.CalculateReconocimientoIndexValue;
-import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
+import es.icarto.gvsig.navtableforms.IValidatableForm;
+import es.icarto.gvsig.navtableforms.calculation.Calculation;
 
-public class BarreraRigidaCalculateIndiceEstado extends CalculateReconocimientoIndexValue {
+public class BarreraRigidaCalculateIndiceEstado extends Calculation {
 
-    public BarreraRigidaCalculateIndiceEstado(BasicAbstractSubForm form,
-	    HashMap<String, JComponent> allFormWidgets,
-	    String resultComponentName, String... operatorComponentsNames) {
-	super(form, allFormWidgets, resultComponentName, operatorComponentsNames);
-	// TODO Auto-generated constructor stub
+    private static final BigDecimal weigthA = new BigDecimal("0.3");
+    private static final BigDecimal weigthB = new BigDecimal("0.2");
+    private static final BigDecimal weigthC = new BigDecimal("0.25");
+    private static final BigDecimal weigthD = new BigDecimal("0.25");
+
+    public BarreraRigidaCalculateIndiceEstado(IValidatableForm form) {
+	super(form);
     }
 
     @Override
-    public void setValue(boolean validate) {
-	float value = 0;
-
-	String strA = ((KeyValue) ((JComboBox) operatorComponents
-		.get(DBFieldNames.BARRERA_RIGIDA_A)).getSelectedItem())
-		.getKey();
-	String strB = ((KeyValue) ((JComboBox) operatorComponents
-		.get(DBFieldNames.BARRERA_RIGIDA_B)).getSelectedItem()).getKey();
-	String strC = ((KeyValue) ((JComboBox) operatorComponents
-		.get(DBFieldNames.BARRERA_RIGIDA_C)).getSelectedItem()).getKey();
-	String strD = ((KeyValue) ((JComboBox) operatorComponents
-		.get(DBFieldNames.BARRERA_RIGIDA_D)).getSelectedItem()).getKey();
-
-	value += Integer.parseInt(strA) * 0.3;
-	value += Integer.parseInt(strB) * 0.2;
-	value += Integer.parseInt(strC) * 0.25;
-	value += Integer.parseInt(strD) * 0.25;
-
-	String strValue = Float.toString(value);
-	resultComponent.setText(strValue);
+    protected String resultName() {
+	return BARRERA_RIGIDA_INDEX;
     }
+
+    @Override
+    protected String[] operandNames() {
+	return new String[] { BARRERA_RIGIDA_A, BARRERA_RIGIDA_B,
+		BARRERA_RIGIDA_C, BARRERA_RIGIDA_D };
+    }
+
+    @Override
+    protected String calculate() {
+
+	BigDecimal value = new BigDecimal(0);
+
+	value = value.add(operandValue(BARRERA_RIGIDA_A).multiply(weigthA));
+	value = value.add(operandValue(BARRERA_RIGIDA_B).multiply(weigthB));
+	value = value.add(operandValue(BARRERA_RIGIDA_C).multiply(weigthC));
+	value = value.add(operandValue(BARRERA_RIGIDA_D).multiply(weigthD));
+
+	return formatter.format(value);
+    }
+
 }

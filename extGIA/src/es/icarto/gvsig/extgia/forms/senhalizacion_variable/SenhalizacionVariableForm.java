@@ -39,8 +39,8 @@ public class SenhalizacionVariableForm extends AbstractFormWithLocationWidgets {
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getReconocimientosDBTableName(), getWidgetComponents(),
 		getElementID(),
-		DBFieldNames.reconocimientosWhitoutIndexFieldsNames,
-		DBFieldNames.reconocimientosWhitoutIndexFieldsAlias, this));
+		DBFieldNames.reconocimientosWhitoutIndexColNames,
+		DBFieldNames.reconocimientosWhitoutIndexColAlias, this));
     }
 
     private void addNewButtonsToActionsToolBar() {
