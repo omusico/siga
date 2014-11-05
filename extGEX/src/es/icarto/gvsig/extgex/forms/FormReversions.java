@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -23,9 +22,7 @@ import com.hardcode.gdbms.engine.values.Value;
 import com.hardcode.gdbms.engine.values.ValueFactory;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
-import com.jeta.forms.components.image.ImageComponent;
 
-import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.commons.utils.Field;
 import es.icarto.gvsig.extgex.navtable.NavTableComponentsFactory;
 import es.icarto.gvsig.extgex.preferences.DBNames;
@@ -81,11 +78,6 @@ public class FormReversions extends BasicAbstractForm implements
 	super.setListeners();
 
 	Map<String, JComponent> widgets = getWidgets();
-
-	ImageComponent image = (ImageComponent) formBody
-		.getComponentByName("image");
-	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
-	image.setIcon(icon);
 
 	expropiationsLauncher = new FormExpropiationsLauncher(this);
 	fincasAfectadas = (JTable) widgets.get("tabla_fincas_afectadas");
@@ -260,7 +252,7 @@ public class FormReversions extends BasicAbstractForm implements
     public String getBasicName() {
 	return TABLENAME;
     }
-    
+
     @Override
     protected String getSchema() {
 	return DBNames.SCHEMA_DATA;
@@ -277,7 +269,5 @@ public class FormReversions extends BasicAbstractForm implements
     protected boolean showWarning() {
 	return true;
     }
-
-
 
 }

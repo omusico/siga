@@ -123,10 +123,6 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 	super.setListeners();
 
 	if (!isSpecialCase()) {
-	    ImageComponent image = (ImageComponent) formBody
-		    .getComponentByName("image");
-	    ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
-	    image.setIcon(icon);
 
 	    imageComponent = (ImageComponent) formBody
 		    .getComponentByName("element_image");

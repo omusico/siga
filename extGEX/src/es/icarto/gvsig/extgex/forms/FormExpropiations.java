@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -35,9 +34,7 @@ import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.exceptions.visitors.StopWriterVisitorException;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
-import com.jeta.forms.components.image.ImageComponent;
 
-import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.commons.utils.Field;
 import es.icarto.gvsig.extgex.navtable.NavTableComponentsFactory;
 import es.icarto.gvsig.extgex.preferences.DBNames;
@@ -134,11 +131,6 @@ public class FormExpropiations extends BasicAbstractForm implements
 
 	// RETRIEVE WIDGETS
 	Map<String, JComponent> widgets = getWidgets();
-
-	ImageComponent image = (ImageComponent) formBody
-		.getComponentByName("image");
-	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
-	image.setIcon(icon);
 
 	tramo = (JComboBox) widgets.get(DBNames.FIELD_TRAMO_FINCAS);
 	uc = (JComboBox) widgets.get(DBNames.FIELD_UC_FINCAS);
@@ -811,7 +803,7 @@ public class FormExpropiations extends BasicAbstractForm implements
     public String getBasicName() {
 	return TABLENAME;
     }
-    
+
     @Override
     protected String getSchema() {
 	return DBNames.SCHEMA_DATA;

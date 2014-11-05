@@ -56,7 +56,6 @@ public class ObrasDesagueForm extends AbstractFormWithLocationWidgets {
 	    addNewButtonsToActionsToolBar();
 	}
 
-	repaint();
     }
 
     @Override

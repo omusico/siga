@@ -61,7 +61,6 @@ public class SenhalizacionVariableForm extends AbstractFormWithLocationWidgets {
 	    addNewButtonsToActionsToolBar();
 	}
 
-	repaint();
     }
 
     @Override

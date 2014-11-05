@@ -1,11 +1,7 @@
 package es.icarto.gvsig.extgex.forms;
 
-import javax.swing.ImageIcon;
-
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
-import com.jeta.forms.components.image.ImageComponent;
 
-import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.navtableforms.BasicAbstractForm;
 
@@ -20,19 +16,10 @@ public class FormExpropiationLine extends BasicAbstractForm {
     }
 
     @Override
-    protected void setListeners() {
-	super.setListeners();
-	ImageComponent image = (ImageComponent) formBody
-		.getComponentByName("image");
-	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
-	image.setIcon(icon);
-    }
-
-    @Override
     public String getBasicName() {
 	return TABLENAME;
     }
-    
+
     @Override
     protected String getSchema() {
 	return DBNames.SCHEMA_DATA;

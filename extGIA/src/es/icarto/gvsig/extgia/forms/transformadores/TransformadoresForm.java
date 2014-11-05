@@ -66,7 +66,6 @@ public class TransformadoresForm extends AbstractFormWithLocationWidgets {
 	if (filesLinkButton == null) {
 	    addNewButtonsToActionsToolBar();
 	}
-	repaint();
     }
 
     @Override

@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -16,9 +15,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
-import com.jeta.forms.components.image.ImageComponent;
 
-import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.audasacommons.forms.reports.NavTableComponentsPrintButton;
 import es.icarto.gvsig.extgex.forms.OpenWebForm;
 import es.icarto.gvsig.extpm.forms.filesLink.NavTableComponentsFilesLinkButton;
@@ -64,9 +61,9 @@ public class FormPM extends BasicAbstractForm {
 
 	if (openWebBt == null) {
 	    openWebBt = new JButton(new OpenWebForm(this, "pm"));
-	    actionsToolBar.add(openWebBt);	    
+	    actionsToolBar.add(openWebBt);
 	}
-	
+
 	if (printReportB != null) {
 	    for (int i = 0; i < this.getActionsToolBar().getComponents().length; i++) {
 		if (getActionsToolBar().getComponents()[i].getName() != null) {
@@ -85,7 +82,6 @@ public class FormPM extends BasicAbstractForm {
 	if (filesLinkB != null && ntFilesLinkButton == null) {
 	    actionsToolBar.add(filesLinkB);
 	}
-	
 
 	this.getActionsToolBar().remove(saveB);
 	this.getActionsToolBar().remove(removeB);
@@ -99,11 +95,6 @@ public class FormPM extends BasicAbstractForm {
 	super.setListeners();
 
 	Map<String, JComponent> widgets = getWidgets();
-
-	ImageComponent image = (ImageComponent) formBody
-		.getComponentByName("image");
-	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
-	image.setIcon(icon);
 
 	numeroPM = (JTextField) widgets.get(Preferences.PM_FIELD_NUMEROPM);
 
@@ -210,7 +201,7 @@ public class FormPM extends BasicAbstractForm {
     protected String getBasicName() {
 	return "exp_pm";
     }
-    
+
     @Override
     protected String getSchema() {
 	return Preferences.PM_SCHEMA;
