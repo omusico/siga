@@ -55,15 +55,6 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 
     private JComboBox sentidoWidget;
 
-    protected JTable reconocimientoEstado;
-    protected JTable trabajos;
-
-    protected JButton addReconocimientoButton;
-    protected JButton editReconocimientoButton;
-    protected JButton deleteReconocimientoButton;
-    protected JButton addTrabajoButton;
-    protected JButton editTrabajoButton;
-    protected JButton deleteTrabajoButton;
     protected JButton addTrabajosBatchButton;
     protected JButton addReconocimientosBatchButton;
     protected JButton saveRecordsBatchButton;
@@ -83,26 +74,27 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 	super(layer);
 	addChained(BASE_CONTRATISTA, AREA_MANTENIMIENTO);
 	addChained(TRAMO, BASE_CONTRATISTA);
-	if (getWidgets().get(TIPO_VIA) != null) {
+	final Map<String, JComponent> widgets = getWidgets();
+	if (widgets.get(TIPO_VIA) != null) {
 	    addChained(TIPO_VIA, BASE_CONTRATISTA, TRAMO);
 	}
-	if (getWidgets().get(TIPO_VIA_PF) != null) {
+	if (widgets.get(TIPO_VIA_PF) != null) {
 	    addChained(TIPO_VIA_PF, BASE_CONTRATISTA, TRAMO);
 	}
-	if (getWidgets().get(NOMBRE_VIA) != null) {
+	if (widgets.get(NOMBRE_VIA) != null) {
 	    addChained(NOMBRE_VIA, BASE_CONTRATISTA, TRAMO, TIPO_VIA);
 	}
-	if (getWidgets().get(NOMBRE_VIA_PF) != null) {
+	if (widgets.get(NOMBRE_VIA_PF) != null) {
 	    addChained(NOMBRE_VIA_PF, BASE_CONTRATISTA, TRAMO, TIPO_VIA_PF);
 	}
-	if (getWidgets().get(PK) != null) {
+	if (widgets.get(PK) != null) {
 	    addChained(PK, TIPO_VIA, NOMBRE_VIA);
 	}
-	if (getWidgets().get(PK_INICIAL) != null) {
+	if (widgets.get(PK_INICIAL) != null) {
 	    addChained(PK_INICIAL, TIPO_VIA, NOMBRE_VIA);
 	}
-	if (getWidgets().get(PK_FINAL) != null) {
-	    if (getWidgets().get(NOMBRE_VIA_PF) != null) {
+	if (widgets.get(PK_FINAL) != null) {
+	    if (widgets.get(NOMBRE_VIA_PF) != null) {
 		addChained(PK_FINAL, TIPO_VIA_PF, NOMBRE_VIA_PF);
 	    } else {
 		addChained(PK_FINAL, TIPO_VIA, NOMBRE_VIA);
@@ -149,22 +141,6 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 	    if (hasSentido()) {
 		sentidoWidget = (JComboBox) widgets.get(SENTIDO);
 	    }
-
-	    reconocimientoEstado = (JTable) widgets
-		    .get("reconocimiento_estado");
-	    trabajos = (JTable) widgets.get("trabajos");
-	    addReconocimientoButton = (JButton) formBody
-		    .getComponentByName("add_reconocimiento_button");
-	    editReconocimientoButton = (JButton) formBody
-		    .getComponentByName("edit_reconocimiento_button");
-	    addTrabajoButton = (JButton) formBody
-		    .getComponentByName("add_trabajo_button");
-	    editTrabajoButton = (JButton) formBody
-		    .getComponentByName("edit_trabajo_button");
-	    deleteReconocimientoButton = (JButton) formBody
-		    .getComponentByName("delete_reconocimiento_button");
-	    deleteTrabajoButton = (JButton) formBody
-		    .getComponentByName("delete_trabajo_button");
 
 	    if (addImageListener == null) {
 		addImageListener = new AddImageListener(imageComponent,
@@ -522,21 +498,4 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
     protected abstract String getBasicName();
 
     protected abstract boolean hasSentido();
-
-    public class DeleteReconocimientoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    deleteElement(reconocimientoEstado,
-		    getReconocimientosDBTableName(),
-		    getReconocimientosIDField());
-	}
-    }
-
-    public class DeleteTrabajoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    deleteElement(trabajos, getTrabajosDBTableName(),
-		    getTrabajosIDField());
-	}
-    }
 }

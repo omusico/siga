@@ -12,21 +12,11 @@ public class DBFieldNames {
 	    "fecha_inspeccion as \"Fecha Inspección\"",
 	    "indice_estado as \"Índice Estado\"" };
 
-    public static String[] enlacesReconocimientoEstadoFields = {
-	    "n_inspeccion as \"Nº Inspección\"",
-	    "nombre_revisor as \"Revisor\"",
-	    "fecha_inspeccion as \"Fecha Inspección\"" };
-
     public static String[] reconocimientoEstadoFields = {
 	    "n_inspeccion as \"Nº Inspección\"",
 	    "nombre_revisor as \"Revisor\"",
 	    "fecha_inspeccion as \"Fecha Inspección\"",
 	    "indice_estado as \"Índice Estado\"" };
-
-    public static String[] reconocimientoEstadoWhitoutIndexFields = {
-	    "n_inspeccion as \"Nº Inspección\"",
-	    "nombre_revisor as \"Revisor\"",
-	    "fecha_inspeccion as \"Fecha Inspección\"" };
 
     public static String[] genericTrabajoFields = { "id_trabajo as \"ID\"",
 	    "fecha_certificado as \"Fecha cert\"", "unidad as \"Unidad\"",
@@ -36,11 +26,6 @@ public class DBFieldNames {
     public static String[] senhalizacionVerticalTrabajoFields = {
 	    "id_trabajo as \"ID\"", "fecha_certificado as \"Fecha cert\"",
 	    "unidad as \"Unidad\"", "medicion_audasa as \"Medición AUDASA\"",
-	    "observaciones as \"Observaciones\"" };
-
-    public static String[] trabajoFields = { "id_trabajo as \"ID\"",
-	    "fecha_certificado as \"Fecha cert\"", "unidad as \"Unidad\"",
-	    "medicion_audasa as \"Medición AUDASA\"",
 	    "observaciones as \"Observaciones\"" };
 
     public static String[] carreteras_enlazadas = {
@@ -58,16 +43,6 @@ public class DBFieldNames {
 	    "fecha_fabricacion as \"Fabricación\"",
 	    "fecha_reposicion as \"Reposición\"" };
 
-    public static String[] firmeReconocimientoEstadoFields = {
-	    "n_inspeccion as \"Nº Inspección\"", "tipo_inspeccion as \"Tipo\"",
-	    "nombre_revisor as \"Revisor\"", "aparato_medicion as \"Aparato\"",
-	    "fecha_inspeccion as \"Fecha Inspección\"" };
-
-    public static String[] firmeTrabajoFields = { "id_trabajo as \"ID\"",
-	    "fecha_certificado as \"Fecha cert\"",
-	    "pk_inicial as \"PK inicio\"", "pk_final as \"PK fin\"",
-	    "sentido as \"Sentido\"", "descripcion as \"Descripción\"" };
-
     public static String[] viasFields = { "id_via as \"ID\"",
 	    "via as \"Nª Vía\"", "via_tipo as \"Tipo Vía\"",
 	    "reversible as \"Reversible\"", "cabinas as \"Nº Cabinas\"" };
@@ -81,6 +56,17 @@ public class DBFieldNames {
 	    "sentido_ramal", "direccion_ramal", "longitud" };
     public static String[] ramalesDireccionColAlias = { "ID Ramal",
 	    "Nombre Ramal", "Sentido", "Dirección", "Longitud" };
+
+    public static String[] reconocimientosWhitoutIndexFieldsNames = {
+	    "n_inspeccion", "nombre_revisor", "fecha_inspeccion" };
+    public static String[] reconocimientosWhitoutIndexFieldsAlias = {
+	    "Nº Inspección", "Revisor", "Fecha Inspección" };
+
+    public static String[] trabajosColNames = { "id_trabajo",
+	    "fecha_certificado", "unidad", "medicion_audasa", "observaciones" };
+
+    public static String[] trabajosColAlias = { "ID", "Fecha cert", "Unidad",
+	    "Medición AUDASA", "Observaciones" };
 
     public static final String GIA_SCHEMA = "audasa_extgia";
 
@@ -257,14 +243,6 @@ public class DBFieldNames {
     // LINEAS SUMINISTRO
     public static final String TRANSFORMADORES_LAYERNAME = "Transformadores";
     public static final String ID_TRANSFORMADORES = "id_transformador";
-
-    public static void setReconocimientoEstadoFields(String[] fields) {
-	reconocimientoEstadoFields = fields;
-    }
-
-    public static void setTrabajosFields(String[] fields) {
-	trabajoFields = fields;
-    }
 
     public static String getPrimaryKey(Elements element) {
 	String pk = "";

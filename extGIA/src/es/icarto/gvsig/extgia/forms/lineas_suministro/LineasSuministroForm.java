@@ -1,7 +1,5 @@
 package es.icarto.gvsig.extgia.forms.lineas_suministro;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,13 +12,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
+import es.icarto.gvsig.extgia.forms.utils.ReconocimientosHandler;
+import es.icarto.gvsig.extgia.forms.utils.TrabajosHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -36,15 +34,20 @@ public class LineasSuministroForm extends AbstractFormWithLocationWidgets {
     private DependentComboboxHandler direccionPIDomainHandler;
     private DependentComboboxHandler direccionPFDomainHandler;
 
-    AddReconocimientoListener addReconocimientoListener;
-    EditReconocimientoListener editReconocimientoListener;
-    AddTrabajoListener addTrabajoListener;
-    EditTrabajoListener editTrabajoListener;
-    DeleteReconocimientoListener deleteReconocimientoListener;
-    DeleteTrabajoListener deleteTrabajoListener;
-
     public LineasSuministroForm(FLyrVect layer) {
 	super(layer);
+
+	// int[] trabajoColumnsSize = { 1, 30, 90, 70, 200 };
+	addTableHandler(new TrabajosHandler(getTrabajosDBTableName(),
+		getWidgetComponents(), getElementID(),
+		DBFieldNames.trabajosColNames, DBFieldNames.trabajosColAlias,
+		this));
+
+	addTableHandler(new ReconocimientosHandler(
+		getReconocimientosDBTableName(), getWidgetComponents(),
+		getElementID(),
+		DBFieldNames.reconocimientosWhitoutIndexFieldsNames,
+		DBFieldNames.reconocimientosWhitoutIndexFieldsAlias, this));
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -59,8 +62,8 @@ public class LineasSuministroForm extends AbstractFormWithLocationWidgets {
 	direccionPFDomainHandler.updateComboBoxValues();
 
 	if (lineaSuministroIDWidget.getText().isEmpty()) {
-	    lineaSuministroid = new LineasSuministroCalculateIDValue(this, getWidgetComponents(),
-		    getElementID(), getElementID());
+	    lineaSuministroid = new LineasSuministroCalculateIDValue(this,
+		    getWidgetComponents(), getElementID(), getElementID());
 	    lineaSuministroid.setValue(true);
 	}
 
@@ -69,14 +72,6 @@ public class LineasSuministroForm extends AbstractFormWithLocationWidgets {
 	}
 
 	// Embebed Tables
-	int[] trabajoColumnsSize = {1, 30, 90, 70, 200};
-	SqlUtils.createEmbebedTableFromDB(reconocimientoEstado,
-		"audasa_extgia", getReconocimientosDBTableName(),
-		DBFieldNames.reconocimientoEstadoWhitoutIndexFields, null, getElementID(),
-		lineaSuministroIDWidget.getText(), "n_inspeccion");
-	SqlUtils.createEmbebedTableFromDB(trabajos, DBFieldNames.GIA_SCHEMA,
-		getTrabajosDBTableName(), DBFieldNames.trabajoFields,
-		trabajoColumnsSize, getElementID(), lineaSuministroIDWidget.getText(), "id_trabajo");
 	repaint();
     }
 
@@ -84,11 +79,11 @@ public class LineasSuministroForm extends AbstractFormWithLocationWidgets {
     protected void setListeners() {
 	super.setListeners();
 	Map<String, JComponent> widgets = getWidgets();
-	reconocimientoEstado = (JTable) widgets.get("reconocimiento_estado_sin_indice");
-	lineaSuministroIDWidget = (JTextField) widgets.get(DBFieldNames.ID_LINEAS_SUMINISTRO);
+	lineaSuministroIDWidget = (JTextField) widgets
+		.get(DBFieldNames.ID_LINEAS_SUMINISTRO);
 
-	lineaSuministroid = new LineasSuministroCalculateIDValue(this, getWidgetComponents(),
-		getElementID(), getElementID());
+	lineaSuministroid = new LineasSuministroCalculateIDValue(this,
+		getWidgetComponents(), getElementID(), getElementID());
 	lineaSuministroid.setListeners();
 
 	JComboBox direccionPI = (JComboBox) widgets.get("direccion_pi");
@@ -102,19 +97,6 @@ public class LineasSuministroForm extends AbstractFormWithLocationWidgets {
 	direccionPFDomainHandler = new DependentComboboxHandler(this,
 		tipoViaPF, direccionPF);
 	tipoViaPF.addActionListener(direccionPFDomainHandler);
-
-	addReconocimientoListener = new AddReconocimientoListener();
-	addReconocimientoButton.addActionListener(addReconocimientoListener);
-	editReconocimientoListener = new EditReconocimientoListener();
-	editReconocimientoButton.addActionListener(editReconocimientoListener);
-	addTrabajoListener = new AddTrabajoListener();
-	addTrabajoButton.addActionListener(addTrabajoListener);
-	editTrabajoListener = new EditTrabajoListener();
-	editTrabajoButton.addActionListener(editTrabajoListener);
-	deleteReconocimientoListener = new DeleteReconocimientoListener();
-	deleteReconocimientoButton.addActionListener(deleteReconocimientoListener);
-	deleteTrabajoListener = new DeleteTrabajoListener();
-	deleteTrabajoButton.addActionListener(deleteTrabajoListener);
     }
 
     @Override
@@ -122,12 +104,6 @@ public class LineasSuministroForm extends AbstractFormWithLocationWidgets {
 	lineaSuministroid.removeListeners();
 	tipoViaPI.removeActionListener(direccionPIDomainHandler);
 	tipoViaPF.removeActionListener(direccionPFDomainHandler);
-	addReconocimientoButton.removeActionListener(addReconocimientoListener);
-	editReconocimientoButton.removeActionListener(editReconocimientoListener);
-	addTrabajoButton.removeActionListener(addTrabajoListener);
-	editTrabajoButton.removeActionListener(editTrabajoListener);
-	deleteReconocimientoButton.removeActionListener(deleteReconocimientoListener);
-	deleteTrabajoButton.removeActionListener(deleteTrabajoListener);
 	super.removeListeners();
     }
 
@@ -137,7 +113,8 @@ public class LineasSuministroForm extends AbstractFormWithLocationWidgets {
 		.containsKey("id_linea_suministro")) {
 	    if (lineaSuministroIDWidget.getText() != "") {
 		String query = "SELECT id_linea_suministro FROM audasa_extgia.lineas_suministro "
-			+ " WHERE id_linea_suministro = '" + lineaSuministroIDWidget.getText() + "';";
+			+ " WHERE id_linea_suministro = '"
+			+ lineaSuministroIDWidget.getText() + "';";
 		PreparedStatement statement = null;
 		Connection connection = DBSession.getCurrentSession()
 			.getJavaConnection();
@@ -157,88 +134,6 @@ public class LineasSuministroForm extends AbstractFormWithLocationWidgets {
 	    }
 	}
 	return super.validationHasErrors();
-    }
-
-    public class AddReconocimientoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    LineasSuministroReconocimientosSubForm subForm =
-		    new LineasSuministroReconocimientosSubForm(
-			    getReconocimientosFormFileName(),
-			    getReconocimientosDBTableName(),
-			    reconocimientoEstado,
-			    getElementID(),
-			    lineaSuministroIDWidget.getText(),
-			    null,
-			    null,
-			    false);
-	    PluginServices.getMDIManager().addWindow(subForm);
-	}
-    }
-
-    public class AddTrabajoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    LineasSuministroTrabajosSubForm subForm = new LineasSuministroTrabajosSubForm(
-		    getTrabajosFormFileName(),
-		    getTrabajosDBTableName(),
-		    trabajos,
-		    getElementID(),
-		    lineaSuministroIDWidget.getText(),
-		    null,
-		    null,
-		    false);
-	    PluginServices.getMDIManager().addWindow(subForm);
-	}
-    }
-
-    public class EditReconocimientoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    if (reconocimientoEstado.getSelectedRowCount() != 0) {
-		int row = reconocimientoEstado.getSelectedRow();
-		LineasSuministroReconocimientosSubForm subForm =
-			new LineasSuministroReconocimientosSubForm(
-				getReconocimientosFormFileName(),
-				getReconocimientosDBTableName(),
-				reconocimientoEstado,
-				getElementID(),
-				lineaSuministroIDWidget.getText(),
-				"n_inspeccion",
-				reconocimientoEstado.getValueAt(row, 0).toString(),
-				true);
-		PluginServices.getMDIManager().addWindow(subForm);
-	    }else {
-		JOptionPane.showMessageDialog(null,
-			"Debe seleccionar una fila para editar los datos.",
-			"Ninguna fila seleccionada",
-			JOptionPane.INFORMATION_MESSAGE);
-	    }
-	}
-    }
-
-    public class EditTrabajoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    if (trabajos.getSelectedRowCount() != 0) {
-		int row = trabajos.getSelectedRow();
-		LineasSuministroTrabajosSubForm subForm = new LineasSuministroTrabajosSubForm(
-			getTrabajosFormFileName(),
-			getTrabajosDBTableName(),
-			trabajos,
-			getElementID(),
-			lineaSuministroIDWidget.getText(),
-			"id_trabajo",
-			trabajos.getValueAt(row, 0).toString(),
-			true);
-		PluginServices.getMDIManager().addWindow(subForm);
-	    }else {
-		JOptionPane.showMessageDialog(null,
-			"Debe seleccionar una fila para editar los datos.",
-			"Ninguna fila seleccionada",
-			JOptionPane.INFORMATION_MESSAGE);
-	    }
-	}
     }
 
     @Override

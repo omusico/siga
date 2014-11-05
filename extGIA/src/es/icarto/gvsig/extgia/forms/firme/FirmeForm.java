@@ -1,17 +1,13 @@
 package es.icarto.gvsig.extgia.forms.firme;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.jeta.forms.components.image.ImageComponent;
 
@@ -21,26 +17,43 @@ import es.icarto.gvsig.extgia.forms.images.DeleteImageListener;
 import es.icarto.gvsig.extgia.forms.images.ShowImageAction;
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
+import es.icarto.gvsig.extgia.forms.utils.ReconocimientosHandler;
+import es.icarto.gvsig.extgia.forms.utils.TrabajosHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.extgia.utils.SqlUtils;
 
 @SuppressWarnings("serial")
 public class FirmeForm extends AbstractFormWithLocationWidgets {
 
     public static final String TABLENAME = "firme";
 
+    public static String[] firmeReconocimientoColNames = { "n_inspeccion",
+	    "tipo_inspeccion", "nombre_revisor", "aparato_medicion",
+	    "fecha_inspeccion" };
+    public static String[] firmeReconocimientoColAlias = { "Nº Inspección",
+	    "Tipo", "Revisor", "Aparato", "Fecha Inspección" };
+
     JTextField firmeIDWidget;
     CalculateComponentValue firmeid;
 
-    AddReconocimientoListener addReconocimientoListener;
-    EditReconocimientoListener editReconocimientoListener;
-    AddTrabajoListener addTrabajoListener;
-    EditTrabajoListener editTrabajoListener;
-    DeleteReconocimientoListener deleteReconocimientoListener;
-    DeleteTrabajoListener deleteTrabajoListener;
+    public static String[] firmeTrabajoColNames = { "id_trabajo",
+	    "fecha_certificado", "pk_inicial", "pk_final", "sentido",
+	    "descripcion" };
+
+    public static String[] firmeTrabajoColAlias = { "ID", "Fecha cert",
+	    "PK inicio", "PK fin", "Sentido", "Descripción" };
 
     public FirmeForm(FLyrVect layer) {
 	super(layer);
+
+	addTableHandler(new ReconocimientosHandler(
+		getReconocimientosDBTableName(), getWidgetComponents(),
+		getElementID(), firmeReconocimientoColNames,
+		firmeReconocimientoColAlias, this));
+
+	// int[] trabajoColumnsSize = { 1, 1, 1, 1, 30, 250 };
+	addTableHandler(new TrabajosHandler(getTrabajosDBTableName(),
+		getWidgetComponents(), getElementID(), firmeTrabajoColNames,
+		firmeTrabajoColAlias, this));
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -49,6 +62,7 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 
     @Override
     protected void fillSpecificValues() {
+	super.fillSpecificValues();
 	if (firmeIDWidget.getText().isEmpty()) {
 	    firmeid = new FirmeCalculateIDValue(this, getWidgets(),
 		    DBFieldNames.ID_FIRME, DBFieldNames.ID_FIRME);
@@ -71,16 +85,6 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 	new ShowImageAction(imageComponent, addImageButton,
 		getImagesDBTableName(), getElementID(), getElementIDValue());
 
-	// Embebed Tables
-	int[] trabajoColumnsSize = { 1, 1, 1, 1, 30, 250 };
-	SqlUtils.createEmbebedTableFromDB(reconocimientoEstado,
-		"audasa_extgia", getReconocimientosDBTableName(),
-		DBFieldNames.firmeReconocimientoEstadoFields, null, "id_firme",
-		firmeIDWidget.getText(), "n_inspeccion");
-	SqlUtils.createEmbebedTableFromDB(trabajos, "audasa_extgia",
-		getTrabajosDBTableName(), DBFieldNames.firmeTrabajoFields,
-		trabajoColumnsSize, "id_firme", firmeIDWidget.getText(),
-		"id_trabajo");
 	repaint();
     }
 
@@ -102,22 +106,6 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 	deleteImageButton = (JButton) formBody
 		.getComponentByName("delete_image_button");
 
-	reconocimientoEstado = (JTable) widgets
-		.get("reconocimiento_estado_firme");
-	trabajos = (JTable) widgets.get("trabajos_firme");
-	addReconocimientoButton = (JButton) formBody
-		.getComponentByName("add_reconocimiento_button");
-	editReconocimientoButton = (JButton) formBody
-		.getComponentByName("edit_reconocimiento_button");
-	addTrabajoButton = (JButton) formBody
-		.getComponentByName("add_trabajo_button");
-	editTrabajoButton = (JButton) formBody
-		.getComponentByName("edit_trabajo_button");
-	deleteReconocimientoButton = (JButton) formBody
-		.getComponentByName("delete_reconocimiento_button");
-	deleteTrabajoButton = (JButton) formBody
-		.getComponentByName("delete_trabajo_button");
-
 	if (addImageListener == null) {
 	    addImageListener = new AddImageListener(imageComponent,
 		    addImageButton, getImagesDBTableName(), getElementID());
@@ -130,95 +118,6 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 	    deleteImageButton.addActionListener(deleteImageListener);
 	}
 	firmeIDWidget = (JTextField) widgets.get(DBFieldNames.ID_FIRME);
-
-	addReconocimientoListener = new AddReconocimientoListener();
-	addReconocimientoButton.addActionListener(addReconocimientoListener);
-	editReconocimientoListener = new EditReconocimientoListener();
-	editReconocimientoButton.addActionListener(editReconocimientoListener);
-	addTrabajoListener = new AddTrabajoListener();
-	addTrabajoButton.addActionListener(addTrabajoListener);
-	editTrabajoListener = new EditTrabajoListener();
-	editTrabajoButton.addActionListener(editTrabajoListener);
-	deleteReconocimientoListener = new DeleteReconocimientoListener();
-	deleteReconocimientoButton
-		.addActionListener(deleteReconocimientoListener);
-	deleteTrabajoListener = new DeleteTrabajoListener();
-	deleteTrabajoButton.addActionListener(deleteTrabajoListener);
-    }
-
-    @Override
-    protected void removeListeners() {
-	addReconocimientoButton.removeActionListener(addReconocimientoListener);
-	editReconocimientoButton
-		.removeActionListener(editReconocimientoListener);
-	addTrabajoButton.removeActionListener(addTrabajoListener);
-	editTrabajoButton.removeActionListener(editTrabajoListener);
-	deleteReconocimientoButton
-		.removeActionListener(deleteReconocimientoListener);
-	deleteTrabajoButton.removeActionListener(deleteTrabajoListener);
-    }
-
-    public class AddReconocimientoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    FirmeReconocimientosSubForm subForm = new FirmeReconocimientosSubForm(
-		    getReconocimientosFormFileName(),
-		    getReconocimientosDBTableName(), reconocimientoEstado,
-		    "id_firme", firmeIDWidget.getText(), null, null, false);
-	    PluginServices.getMDIManager().addWindow(subForm);
-	}
-    }
-
-    public class AddTrabajoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    FirmeTrabajosSubForm subForm = new FirmeTrabajosSubForm(
-		    getTrabajosFormFileName(), getTrabajosDBTableName(),
-		    trabajos, "id_firme", firmeIDWidget.getText(), null, null,
-		    false);
-	    PluginServices.getMDIManager().addWindow(subForm);
-	}
-    }
-
-    public class EditReconocimientoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    if (reconocimientoEstado.getSelectedRowCount() != 0) {
-		int row = reconocimientoEstado.getSelectedRow();
-		FirmeReconocimientosSubForm subForm = new FirmeReconocimientosSubForm(
-			getReconocimientosFormFileName(),
-			getReconocimientosDBTableName(), reconocimientoEstado,
-			"id_firme", firmeIDWidget.getText(), "n_inspeccion",
-			reconocimientoEstado.getValueAt(row, 0).toString(),
-			true);
-		PluginServices.getMDIManager().addWindow(subForm);
-	    } else {
-		JOptionPane.showMessageDialog(null,
-			"Debe seleccionar una fila para editar los datos.",
-			"Ninguna fila seleccionada",
-			JOptionPane.INFORMATION_MESSAGE);
-	    }
-	}
-    }
-
-    public class EditTrabajoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    if (trabajos.getSelectedRowCount() != 0) {
-		int row = trabajos.getSelectedRow();
-		FirmeTrabajosSubForm subForm = new FirmeTrabajosSubForm(
-			getTrabajosFormFileName(), getTrabajosDBTableName(),
-			trabajos, "id_firme", firmeIDWidget.getText(),
-			"id_trabajo", trabajos.getValueAt(row, 0).toString(),
-			true);
-		PluginServices.getMDIManager().addWindow(subForm);
-	    } else {
-		JOptionPane.showMessageDialog(null,
-			"Debe seleccionar una fila para editar los datos.",
-			"Ninguna fila seleccionada",
-			JOptionPane.INFORMATION_MESSAGE);
-	    }
-	}
     }
 
     @Override

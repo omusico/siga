@@ -1,7 +1,5 @@
 package es.icarto.gvsig.extgia.forms.transformadores;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,13 +12,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
+import es.icarto.gvsig.extgia.forms.utils.ReconocimientosHandler;
+import es.icarto.gvsig.extgia.forms.utils.TrabajosHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -34,15 +32,20 @@ public class TransformadoresForm extends AbstractFormWithLocationWidgets {
     private JComboBox tipoVia;
     private DependentComboboxHandler direccionDomainHandler;
 
-    AddReconocimientoListener addReconocimientoListener;
-    EditReconocimientoListener editReconocimientoListener;
-    AddTrabajoListener addTrabajoListener;
-    EditTrabajoListener editTrabajoListener;
-    DeleteReconocimientoListener deleteReconocimientoListener;
-    DeleteTrabajoListener deleteTrabajoListener;
-
     public TransformadoresForm(FLyrVect layer) {
 	super(layer);
+
+	// int[] trabajoColumnsSize = { 1, 30, 90, 70, 200 };
+	addTableHandler(new TrabajosHandler(getTrabajosDBTableName(),
+		getWidgetComponents(), getElementID(),
+		DBFieldNames.trabajosColNames, DBFieldNames.trabajosColAlias,
+		this));
+
+	addTableHandler(new ReconocimientosHandler(
+		getReconocimientosDBTableName(), getWidgetComponents(),
+		getElementID(),
+		DBFieldNames.reconocimientosWhitoutIndexFieldsNames,
+		DBFieldNames.reconocimientosWhitoutIndexFieldsAlias, this));
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -56,25 +59,14 @@ public class TransformadoresForm extends AbstractFormWithLocationWidgets {
 	direccionDomainHandler.updateComboBoxValues();
 
 	if (transformadorIDWidget.getText().isEmpty()) {
-	    transformadorid = new TransformadoresCalculateIDValue(this, getWidgetComponents(),
-		    getElementID(), getElementID());
+	    transformadorid = new TransformadoresCalculateIDValue(this,
+		    getWidgetComponents(), getElementID(), getElementID());
 	    transformadorid.setValue(true);
 	}
 
 	if (filesLinkButton == null) {
 	    addNewButtonsToActionsToolBar();
 	}
-
-	// Embebed Tables
-	int[] trabajoColumnsSize = {1, 30, 90, 70, 200};
-	SqlUtils.createEmbebedTableFromDB(reconocimientoEstado,
-		"audasa_extgia", getReconocimientosDBTableName(),
-		DBFieldNames.reconocimientoEstadoWhitoutIndexFields, null, getElementID(),
-		transformadorIDWidget.getText(), "n_inspeccion");
-	SqlUtils.createEmbebedTableFromDB(trabajos,
-		"audasa_extgia", getTrabajosDBTableName(),
-		DBFieldNames.trabajoFields, trabajoColumnsSize, getElementID(),
-		transformadorIDWidget.getText(), "id_trabajo");
 	repaint();
     }
 
@@ -82,43 +74,25 @@ public class TransformadoresForm extends AbstractFormWithLocationWidgets {
     protected void setListeners() {
 	super.setListeners();
 	Map<String, JComponent> widgets = getWidgets();
-	reconocimientoEstado = (JTable) widgets.get("reconocimiento_estado_sin_indice");
 
-	transformadorIDWidget = (JTextField) widgets.get(DBFieldNames.ID_TRANSFORMADORES);
+	transformadorIDWidget = (JTextField) widgets
+		.get(DBFieldNames.ID_TRANSFORMADORES);
 
-	transformadorid = new TransformadoresCalculateIDValue(this, getWidgetComponents(),
-		getElementID(), getElementID());
+	transformadorid = new TransformadoresCalculateIDValue(this,
+		getWidgetComponents(), getElementID(), getElementID());
 	transformadorid.setListeners();
 
 	JComboBox direccion = (JComboBox) widgets.get("direccion");
 	tipoVia = (JComboBox) widgets.get("tipo_via");
-	direccionDomainHandler = new DependentComboboxHandler(this,
-		tipoVia, direccion);
+	direccionDomainHandler = new DependentComboboxHandler(this, tipoVia,
+		direccion);
 	tipoVia.addActionListener(direccionDomainHandler);
-
-	addReconocimientoListener = new AddReconocimientoListener();
-	addReconocimientoButton.addActionListener(addReconocimientoListener);
-	editReconocimientoListener = new EditReconocimientoListener();
-	editReconocimientoButton.addActionListener(editReconocimientoListener);
-	addTrabajoListener = new AddTrabajoListener();
-	addTrabajoButton.addActionListener(addTrabajoListener);
-	editTrabajoListener = new EditTrabajoListener();
-	editTrabajoButton.addActionListener(editTrabajoListener);
-	deleteReconocimientoListener = new DeleteReconocimientoListener();
-	deleteReconocimientoButton.addActionListener(deleteReconocimientoListener);
-	deleteTrabajoListener = new DeleteTrabajoListener();
-	deleteTrabajoButton.addActionListener(deleteTrabajoListener);
     }
 
     @Override
     protected void removeListeners() {
 	tipoVia.removeActionListener(direccionDomainHandler);
-	addReconocimientoButton.removeActionListener(addReconocimientoListener);
-	editReconocimientoButton.removeActionListener(editReconocimientoListener);
-	addTrabajoButton.removeActionListener(addTrabajoListener);
-	editTrabajoButton.removeActionListener(editTrabajoListener);
-	deleteReconocimientoButton.removeActionListener(deleteReconocimientoListener);
-	deleteTrabajoButton.removeActionListener(deleteTrabajoListener);
+
 	super.removeListeners();
     }
 
@@ -149,88 +123,6 @@ public class TransformadoresForm extends AbstractFormWithLocationWidgets {
 	    }
 	}
 	return super.validationHasErrors();
-    }
-
-    public class AddReconocimientoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    TransformadoresReconocimientosSubForm subForm =
-		    new TransformadoresReconocimientosSubForm(
-			    getReconocimientosFormFileName(),
-			    getReconocimientosDBTableName(),
-			    reconocimientoEstado,
-			    getElementID(),
-			    transformadorIDWidget.getText(),
-			    null,
-			    null,
-			    false);
-	    PluginServices.getMDIManager().addWindow(subForm);
-	}
-    }
-
-    public class AddTrabajoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    TransformadoresTrabajosSubForm subForm = new TransformadoresTrabajosSubForm(
-		    getTrabajosFormFileName(),
-		    getTrabajosDBTableName(),
-		    trabajos,
-		    getElementID(),
-		    transformadorIDWidget.getText(),
-		    null,
-		    null,
-		    false);
-	    PluginServices.getMDIManager().addWindow(subForm);
-	}
-    }
-
-    public class EditReconocimientoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    if (reconocimientoEstado.getSelectedRowCount() != 0) {
-		int row = reconocimientoEstado.getSelectedRow();
-		TransformadoresReconocimientosSubForm subForm =
-			new TransformadoresReconocimientosSubForm(
-				getReconocimientosFormFileName(),
-				getReconocimientosDBTableName(),
-				reconocimientoEstado,
-				getElementID(),
-				transformadorIDWidget.getText(),
-				"n_inspeccion",
-				reconocimientoEstado.getValueAt(row, 0).toString(),
-				true);
-		PluginServices.getMDIManager().addWindow(subForm);
-	    }else {
-		JOptionPane.showMessageDialog(null,
-			"Debe seleccionar una fila para editar los datos.",
-			"Ninguna fila seleccionada",
-			JOptionPane.INFORMATION_MESSAGE);
-	    }
-	}
-    }
-
-    public class EditTrabajoListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    if (trabajos.getSelectedRowCount() != 0) {
-		int row = trabajos.getSelectedRow();
-		TransformadoresTrabajosSubForm subForm = new TransformadoresTrabajosSubForm(
-			getTrabajosFormFileName(),
-			getTrabajosDBTableName(),
-			trabajos,
-			getElementID(),
-			transformadorIDWidget.getText(),
-			"id_trabajo",
-			trabajos.getValueAt(row, 0).toString(),
-			true);
-		PluginServices.getMDIManager().addWindow(subForm);
-	    }else {
-		JOptionPane.showMessageDialog(null,
-			"Debe seleccionar una fila para editar los datos.",
-			"Ninguna fila seleccionada",
-			JOptionPane.INFORMATION_MESSAGE);
-	    }
-	}
     }
 
     @Override
