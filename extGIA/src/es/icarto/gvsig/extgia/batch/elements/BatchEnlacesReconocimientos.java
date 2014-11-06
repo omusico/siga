@@ -8,7 +8,6 @@ public class BatchEnlacesReconocimientos extends BatchAbstractSubForm {
 
     public BatchEnlacesReconocimientos(String formFile, String dbTableName) {
 	super(formFile, dbTableName);
-	// TODO Auto-generated constructor stub
     }
 
     @Override
@@ -20,15 +19,4 @@ public class BatchEnlacesReconocimientos extends BatchAbstractSubForm {
     public String getIdFieldName() {
 	return DBFieldNames.ID_ENLACE;
     }
-
-    @Override
-    public String getXMLPath() {
-	return this
-		.getClass()
-		.getClassLoader()
-		.getResource(
-			"rules/enlaces_reconocimientos_metadata.xml")
-			.getPath();
-    }
-
 }

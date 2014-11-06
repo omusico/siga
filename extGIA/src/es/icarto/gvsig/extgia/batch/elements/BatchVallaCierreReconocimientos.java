@@ -9,15 +9,7 @@ public class BatchVallaCierreReconocimientos extends BatchAbstractSubForm {
 
     public BatchVallaCierreReconocimientos(String formFile, String dbTableName) {
 	super(formFile, dbTableName);
-
-	VallaCierreCalculateIndiceEstado index = new VallaCierreCalculateIndiceEstado(
-		this,
-		this.getWidgetsVector(),
-		DBFieldNames.VALLA_CIERRE_INDEX,
-		DBFieldNames.VALLA_CIERRE_A,
-		DBFieldNames.VALLA_CIERRE_B,
-		DBFieldNames.VALLA_CIERRE_C);
-	index.setListeners();
+	addCalculation(new VallaCierreCalculateIndiceEstado(this));
     }
 
     @Override
@@ -29,12 +21,4 @@ public class BatchVallaCierreReconocimientos extends BatchAbstractSubForm {
     public String getIdFieldName() {
 	return DBFieldNames.ID_VALLA_CIERRE;
     }
-
-    @Override
-    public String getXMLPath() {
-	return this.getClass().getClassLoader()
-		.getResource("rules/valla_cierre_reconocimientos_metadata.xml")
-		.getPath();
-    }
-
 }

@@ -9,17 +9,7 @@ public class BatchJuntasReconocimientos extends BatchAbstractSubForm {
 
     public BatchJuntasReconocimientos(String formFile, String dbTableName) {
 	super(formFile, dbTableName);
-
-	JuntasCalculateIndiceEstado index = new JuntasCalculateIndiceEstado(
-		this,
-		this.getWidgetsVector(),
-		DBFieldNames.JUNTAS_INDEX,
-		DBFieldNames.JUNTAS_A,
-		DBFieldNames.JUNTAS_B,
-		DBFieldNames.JUNTAS_C,
-		DBFieldNames.JUNTAS_D,
-		DBFieldNames.JUNTAS_E);
-	index.setListeners();
+	addCalculation(new JuntasCalculateIndiceEstado(this));
     }
 
     @Override
@@ -31,12 +21,4 @@ public class BatchJuntasReconocimientos extends BatchAbstractSubForm {
     public String getIdFieldName() {
 	return DBFieldNames.ID_JUNTA;
     }
-
-    @Override
-    public String getXMLPath() {
-	return this.getClass().getClassLoader()
-		.getResource("rules/juntas_reconocimientos_metadata.xml")
-		.getPath();
-    }
-
 }

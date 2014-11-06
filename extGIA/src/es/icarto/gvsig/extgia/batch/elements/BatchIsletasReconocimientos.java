@@ -9,14 +9,7 @@ public class BatchIsletasReconocimientos extends BatchAbstractSubForm {
 
     public BatchIsletasReconocimientos(String formFile, String dbTableName) {
 	super(formFile, dbTableName);
-
-	IsletasCalculateIndiceEstado index = new IsletasCalculateIndiceEstado(
-		this,
-		this.getWidgetsVector(),
-		DBFieldNames.ISLETAS_INDEX,
-		DBFieldNames.ISLETAS_A
-		);
-	index.setListeners();
+	addCalculation(new IsletasCalculateIndiceEstado(this));
     }
 
     @Override
@@ -28,12 +21,4 @@ public class BatchIsletasReconocimientos extends BatchAbstractSubForm {
     public String getIdFieldName() {
 	return DBFieldNames.ID_ISLETA;
     }
-
-    @Override
-    public String getXMLPath() {
-	return this.getClass().getClassLoader()
-		.getResource("rules/isletas_reconocimientos_metadata.xml")
-		.getPath();
-    }
-
 }

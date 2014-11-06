@@ -8,7 +8,6 @@ public class BatchObrasPasoTrabajos extends BatchAbstractSubForm {
 
     public BatchObrasPasoTrabajos(String formFile, String dbTableName) {
 	super(formFile, dbTableName);
-	// TODO Auto-generated constructor stub
     }
 
     @Override
@@ -18,15 +17,6 @@ public class BatchObrasPasoTrabajos extends BatchAbstractSubForm {
 
     @Override
     public String getIdFieldName() {
-	// TODO Auto-generated method stub
 	return DBFieldNames.ID_OBRA_PASO;
     }
-
-    @Override
-    public String getXMLPath() {
-	return this.getClass().getClassLoader()
-		.getResource("rules/obras_paso_trabajos_metadata.xml")
-		.getPath();
-    }
-
 }

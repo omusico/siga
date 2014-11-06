@@ -8,7 +8,6 @@ public class BatchLechoFrenadoReconocimientos extends BatchAbstractSubForm {
 
     public BatchLechoFrenadoReconocimientos(String formFile, String dbTableName) {
 	super(formFile, dbTableName);
-	// TODO Auto-generated constructor stub
     }
 
     @Override
@@ -20,12 +19,4 @@ public class BatchLechoFrenadoReconocimientos extends BatchAbstractSubForm {
     public String getIdFieldName() {
 	return DBFieldNames.ID_LECHO_FRENADO;
     }
-
-    @Override
-    public String getXMLPath() {
-	return this.getClass().getClassLoader()
-		.getResource("rules/lecho_frenado_reconocimientos_metadata.xml")
-		.getPath();
-    }
-
 }
