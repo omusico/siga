@@ -8,7 +8,6 @@ public class BatchJuntasTrabajos extends BatchAbstractSubForm {
 
     public BatchJuntasTrabajos(String formFile, String dbTableName) {
 	super(formFile, dbTableName);
-	// TODO Auto-generated constructor stub
     }
 
     @Override
@@ -20,12 +19,4 @@ public class BatchJuntasTrabajos extends BatchAbstractSubForm {
     public String getIdFieldName() {
 	return DBFieldNames.ID_JUNTA;
     }
-
-    @Override
-    public String getXMLPath() {
-	return this.getClass().getClassLoader()
-		.getResource("rules/juntas_trabajos_metadata.xml")
-		.getPath();
-    }
-
 }

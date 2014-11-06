@@ -3,6 +3,7 @@ package es.icarto.gvsig.extgia.forms.utils;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
+import es.icarto.gvsig.extgia.batch.BatchAbstractSubForm;
 import es.icarto.gvsig.extgia.batch.elements.BatchAreasDescansoReconocimientos;
 import es.icarto.gvsig.extgia.batch.elements.BatchAreasDescansoTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchAreasPeajeReconocimientos;
@@ -59,11 +60,15 @@ import es.icarto.gvsig.extgia.forms.taludes.TaludesForm;
 import es.icarto.gvsig.extgia.forms.transformadores.TransformadoresForm;
 import es.icarto.gvsig.extgia.forms.valla_cierre.VallaCierreForm;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.navtableforms.gui.tables.model.AlphanumericTableModel;
+import es.icarto.gvsig.navtableforms.gui.tables.model.TableModelFactory;
+import es.icarto.gvsig.navtableforms.utils.FormFactory;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 
 public class LaunchGIAForms {
 
-    public static void callFormDependingOfLayer(String layerName, boolean editing) {
+    public static void callFormDependingOfLayer(String layerName,
+	    boolean editing) {
 	final TOCLayerManager toc = new TOCLayerManager();
 	FLyrVect layer = toc.getLayerByName(layerName);
 
@@ -100,7 +105,8 @@ public class LaunchGIAForms {
 	    }
 	    break;
 	case Barrera_Rigida:
-	    final BarreraRigidaForm barreraRigidaForm = new BarreraRigidaForm(layer);
+	    final BarreraRigidaForm barreraRigidaForm = new BarreraRigidaForm(
+		    layer);
 	    if (barreraRigidaForm.init()) {
 		PluginServices.getMDIManager().addWindow(barreraRigidaForm);
 	    }
@@ -109,7 +115,8 @@ public class LaunchGIAForms {
 	    }
 	    break;
 	case Areas_Servicio:
-	    final AreasServicioForm areasServicioForm = new AreasServicioForm(layer);
+	    final AreasServicioForm areasServicioForm = new AreasServicioForm(
+		    layer);
 	    if (areasServicioForm.init()) {
 		PluginServices.getMDIManager().addWindow(areasServicioForm);
 	    }
@@ -118,7 +125,8 @@ public class LaunchGIAForms {
 	    }
 	    break;
 	case Areas_Descanso:
-	    final AreasDescansoForm areasDescansoForm = new AreasDescansoForm(layer);
+	    final AreasDescansoForm areasDescansoForm = new AreasDescansoForm(
+		    layer);
 	    if (areasDescansoForm.init()) {
 		PluginServices.getMDIManager().addWindow(areasDescansoForm);
 	    }
@@ -127,7 +135,8 @@ public class LaunchGIAForms {
 	    }
 	    break;
 	case Areas_Peaje:
-	    final AbstractFormWithLocationWidgets areasPeajeForm = new AreasPeajeForm(layer);
+	    final AbstractFormWithLocationWidgets areasPeajeForm = new AreasPeajeForm(
+		    layer);
 	    if (areasPeajeForm.init()) {
 		PluginServices.getMDIManager().addWindow(areasPeajeForm);
 	    }
@@ -145,7 +154,8 @@ public class LaunchGIAForms {
 	    }
 	    break;
 	case Pasos_Mediana:
-	    final AbstractFormWithLocationWidgets pasosMedianaForm = new PasosMedianaForm(layer);
+	    final AbstractFormWithLocationWidgets pasosMedianaForm = new PasosMedianaForm(
+		    layer);
 	    if (pasosMedianaForm.init()) {
 		PluginServices.getMDIManager().addWindow(pasosMedianaForm);
 	    }
@@ -154,9 +164,11 @@ public class LaunchGIAForms {
 	    }
 	    break;
 	case Senhalizacion_Vertical:
-	    final SenhalizacionVerticalForm senhalizacionVerticalForm = new SenhalizacionVerticalForm(layer);
+	    final SenhalizacionVerticalForm senhalizacionVerticalForm = new SenhalizacionVerticalForm(
+		    layer);
 	    if (senhalizacionVerticalForm.init()) {
-		PluginServices.getMDIManager().addWindow(senhalizacionVerticalForm);
+		PluginServices.getMDIManager().addWindow(
+			senhalizacionVerticalForm);
 	    }
 	    if (editing) {
 		senhalizacionVerticalForm.last();
@@ -190,7 +202,8 @@ public class LaunchGIAForms {
 	    }
 	    break;
 	case Obras_Desague:
-	    final ObrasDesagueForm obrasDesagueForm = new ObrasDesagueForm(layer);
+	    final ObrasDesagueForm obrasDesagueForm = new ObrasDesagueForm(
+		    layer);
 	    if (obrasDesagueForm.init()) {
 		PluginServices.getMDIManager().addWindow(obrasDesagueForm);
 	    }
@@ -208,16 +221,19 @@ public class LaunchGIAForms {
 	    }
 	    break;
 	case Senhalizacion_Variable:
-	    final SenhalizacionVariableForm senhalizacionVariableForm = new SenhalizacionVariableForm(layer);
+	    final SenhalizacionVariableForm senhalizacionVariableForm = new SenhalizacionVariableForm(
+		    layer);
 	    if (senhalizacionVariableForm.init()) {
-		PluginServices.getMDIManager().addWindow(senhalizacionVariableForm);
+		PluginServices.getMDIManager().addWindow(
+			senhalizacionVariableForm);
 	    }
 	    if (editing) {
 		senhalizacionVariableForm.last();
 	    }
 	    break;
 	case Lecho_Frenado:
-	    final LechoFrenadoForm lechoFrenadoForm = new LechoFrenadoForm(layer);
+	    final LechoFrenadoForm lechoFrenadoForm = new LechoFrenadoForm(
+		    layer);
 	    if (lechoFrenadoForm.init()) {
 		PluginServices.getMDIManager().addWindow(lechoFrenadoForm);
 	    }
@@ -226,16 +242,19 @@ public class LaunchGIAForms {
 	    }
 	    break;
 	case Areas_Mantenimiento:
-	    final AreasMantenimientoForm areasMantenimientoForm = new AreasMantenimientoForm(layer);
+	    final AreasMantenimientoForm areasMantenimientoForm = new AreasMantenimientoForm(
+		    layer);
 	    if (areasMantenimientoForm.init()) {
-		PluginServices.getMDIManager().addWindow(areasMantenimientoForm);
+		PluginServices.getMDIManager()
+			.addWindow(areasMantenimientoForm);
 	    }
 	    if (editing) {
 		areasMantenimientoForm.last();
 	    }
 	    break;
 	case Lineas_Suministro:
-	    final LineasSuministroForm lineasSuministroForm = new LineasSuministroForm(layer);
+	    final LineasSuministroForm lineasSuministroForm = new LineasSuministroForm(
+		    layer);
 	    if (lineasSuministroForm.init()) {
 		PluginServices.getMDIManager().addWindow(lineasSuministroForm);
 	    }
@@ -244,7 +263,8 @@ public class LaunchGIAForms {
 	    }
 	    break;
 	case Transformadores:
-	    final TransformadoresForm transformadoresForm = new TransformadoresForm(layer);
+	    final TransformadoresForm transformadoresForm = new TransformadoresForm(
+		    layer);
 	    if (transformadoresForm.init()) {
 		PluginServices.getMDIManager().addWindow(transformadoresForm);
 	    }
@@ -257,7 +277,7 @@ public class LaunchGIAForms {
 
     private static boolean isGIALayerName(String layerName) {
 	boolean isGIALayerName = false;
-	for (int i=0;i<DBFieldNames.Elements.values().length;i++) {
+	for (int i = 0; i < DBFieldNames.Elements.values().length; i++) {
 	    if (DBFieldNames.Elements.values()[i].toString().equals(layerName)) {
 		isGIALayerName = true;
 	    }
@@ -265,188 +285,167 @@ public class LaunchGIAForms {
 	return isGIALayerName;
     }
 
-    public static void callBatchTrabajosSubFormDependingOfElement(String element,
-	    String formFileName, String dbTableName) {
+    public static void callBatchTrabajosSubFormDependingOfElement(
+	    String element, String formFileName, String dbTableName) {
+	BatchAbstractSubForm subform;
 	switch (DBFieldNames.Elements.valueOf(element)) {
 	case Taludes:
-	    final BatchTaludesTrabajos taludesSubForm = new BatchTaludesTrabajos(formFileName,
-		    dbTableName);
-	    PluginServices.getMDIManager().addWindow(taludesSubForm);
+	    subform = new BatchTaludesTrabajos(formFileName, dbTableName);
 	    break;
 	case Isletas:
-	    final BatchIsletasTrabajos isletasSubForm = new BatchIsletasTrabajos(formFileName,
-		    dbTableName);
-	    PluginServices.getMDIManager().addWindow(isletasSubForm);
+	    subform = new BatchIsletasTrabajos(formFileName, dbTableName);
 	    break;
 	case Barrera_Rigida:
-	    final BatchBarreraRigidaTrabajos barreraRigidaSubForm = new BatchBarreraRigidaTrabajos(formFileName,
-		    dbTableName);
-	    PluginServices.getMDIManager().addWindow(barreraRigidaSubForm);
+	    subform = new BatchBarreraRigidaTrabajos(formFileName, dbTableName);
 	    break;
 	case Areas_Servicio:
-	    final BatchAreasServicioTrabajos areasServicioSubForm = new BatchAreasServicioTrabajos(formFileName,
-		    dbTableName);
-	    PluginServices.getMDIManager().addWindow(areasServicioSubForm);
+	    subform = new BatchAreasServicioTrabajos(formFileName, dbTableName);
 	    break;
 	case Areas_Descanso:
-	    final BatchAreasDescansoTrabajos areasDescansoSubForm = new BatchAreasDescansoTrabajos(formFileName,
-		    dbTableName);
-	    PluginServices.getMDIManager().addWindow(areasDescansoSubForm);
+	    subform = new BatchAreasDescansoTrabajos(formFileName, dbTableName);
 	    break;
 	case Areas_Peaje:
-	    final BatchAreasPeajeTrabajos areasPeajeSubForm = new BatchAreasPeajeTrabajos(formFileName,
-		    dbTableName);
-	    PluginServices.getMDIManager().addWindow(areasPeajeSubForm);
+	    subform = new BatchAreasPeajeTrabajos(formFileName, dbTableName);
 	    break;
 	case Juntas:
-	    final BatchJuntasTrabajos juntasSubForm = new BatchJuntasTrabajos(formFileName,
-		    dbTableName);
-	    PluginServices.getMDIManager().addWindow(juntasSubForm);
+	    subform = new BatchJuntasTrabajos(formFileName, dbTableName);
 	    break;
 	case Pasos_Mediana:
-	    final BatchPasosMedianaTrabajos pasosMedianaSubForm = new BatchPasosMedianaTrabajos(formFileName,
-		    dbTableName);
-	    PluginServices.getMDIManager().addWindow(pasosMedianaSubForm);
+	    subform = new BatchPasosMedianaTrabajos(formFileName, dbTableName);
 	    break;
 	case Senhalizacion_Vertical:
-	    final BatchSenhalizacionVerticalTrabajos senhalizacionVerticalSubForm = new BatchSenhalizacionVerticalTrabajos(formFileName,
+	    subform = new BatchSenhalizacionVerticalTrabajos(formFileName,
 		    dbTableName);
-	    PluginServices.getMDIManager().addWindow(senhalizacionVerticalSubForm);
 	    break;
 	case Valla_Cierre:
-	    final BatchVallaCierreTrabajos vallaCierreSubForm = new BatchVallaCierreTrabajos(formFileName,
-		    dbTableName);
-	    PluginServices.getMDIManager().addWindow(vallaCierreSubForm);
+	    subform = new BatchVallaCierreTrabajos(formFileName, dbTableName);
 	    break;
 	case Firme:
-	    final BatchFirmeTrabajos firmeSubForm = new BatchFirmeTrabajos(formFileName,
-		    dbTableName);
-	    PluginServices.getMDIManager().addWindow(firmeSubForm);
+	    subform = new BatchFirmeTrabajos(formFileName, dbTableName);
 	    break;
 	case Obras_Paso:
-	    final BatchObrasPasoTrabajos obrasPasoSubForm = new BatchObrasPasoTrabajos(formFileName,
-		    dbTableName);
-	    PluginServices.getMDIManager().addWindow(obrasPasoSubForm);
+	    subform = new BatchObrasPasoTrabajos(formFileName, dbTableName);
 	    break;
 	case Obras_Desague:
-	    final BatchObrasDesagueTrabajos obrasDesagueSubForm = new BatchObrasDesagueTrabajos(formFileName,
-		    dbTableName);
-	    PluginServices.getMDIManager().addWindow(obrasDesagueSubForm);
+	    subform = new BatchObrasDesagueTrabajos(formFileName, dbTableName);
 	    break;
 	case Muros:
-	    final BatchMurosTrabajos murosSubForm = new BatchMurosTrabajos(formFileName,
-		    dbTableName);
-	    PluginServices.getMDIManager().addWindow(murosSubForm);
+	    subform = new BatchMurosTrabajos(formFileName, dbTableName);
 	    break;
 	case Senhalizacion_Variable:
-	    final BatchSenhalizacionVariableTrabajos senhalizacionVariableSubForm = new BatchSenhalizacionVariableTrabajos(formFileName,
+	    subform = new BatchSenhalizacionVariableTrabajos(formFileName,
 		    dbTableName);
-	    PluginServices.getMDIManager().addWindow(senhalizacionVariableSubForm);
 	    break;
 	case Lecho_Frenado:
-	    final BatchLechoFrenadoTrabajos lechoFrenadoSubForm = new BatchLechoFrenadoTrabajos(formFileName,
-		    dbTableName);
-	    PluginServices.getMDIManager().addWindow(lechoFrenadoSubForm);
+	    subform = new BatchLechoFrenadoTrabajos(formFileName, dbTableName);
 	    break;
 	case Lineas_Suministro:
-	    final BatchLineasSuministroTrabajos lineasSuministroSubForm = new BatchLineasSuministroTrabajos(formFileName,
+	    subform = new BatchLineasSuministroTrabajos(formFileName,
 		    dbTableName);
-	    PluginServices.getMDIManager().addWindow(lineasSuministroSubForm);
 	    break;
 	case Transformadores:
-	    final BatchTransformadoresTrabajos transformadoresSubForm = new BatchTransformadoresTrabajos(formFileName,
+	    subform = new BatchTransformadoresTrabajos(formFileName,
 		    dbTableName);
-	    PluginServices.getMDIManager().addWindow(transformadoresSubForm);
 	    break;
+	default:
+	    subform = null;
 	}
+
+	FormFactory.checkAndLoadTableRegistered(dbTableName);
+	AlphanumericTableModel model = TableModelFactory.createFromTable(
+		dbTableName, null, null);
+	subform.setModel(model);
+	subform.actionCreateRecord();
     }
 
-    public static void callBatchReconocimientosSubFormDependingOfElement(String element,
-	    String formFileName, String dbTableName) {
+    public static void callBatchReconocimientosSubFormDependingOfElement(
+	    String element, String formFileName, String dbTableName) {
 	switch (DBFieldNames.Elements.valueOf(element)) {
 	case Taludes:
-	    final BatchTaludesReconocimientos taludesSubForm = new BatchTaludesReconocimientos(formFileName,
-		    dbTableName);
+	    final BatchTaludesReconocimientos taludesSubForm = new BatchTaludesReconocimientos(
+		    formFileName, dbTableName);
 	    PluginServices.getMDIManager().addWindow(taludesSubForm);
 	    break;
 	case Isletas:
-	    final BatchIsletasReconocimientos isletasSubForm = new BatchIsletasReconocimientos(formFileName,
-		    dbTableName);
+	    final BatchIsletasReconocimientos isletasSubForm = new BatchIsletasReconocimientos(
+		    formFileName, dbTableName);
 	    PluginServices.getMDIManager().addWindow(isletasSubForm);
 	    break;
 	case Barrera_Rigida:
-	    final BatchBarreraRigidaReconocimientos barreraRigidaSubForm = new BatchBarreraRigidaReconocimientos(formFileName,
-		    dbTableName);
+	    final BatchBarreraRigidaReconocimientos barreraRigidaSubForm = new BatchBarreraRigidaReconocimientos(
+		    formFileName, dbTableName);
 	    PluginServices.getMDIManager().addWindow(barreraRigidaSubForm);
 	    break;
 	case Areas_Servicio:
-	    final BatchAreasServicioReconocimientos areasServicioSubForm = new BatchAreasServicioReconocimientos(formFileName,
-		    dbTableName);
+	    final BatchAreasServicioReconocimientos areasServicioSubForm = new BatchAreasServicioReconocimientos(
+		    formFileName, dbTableName);
 	    PluginServices.getMDIManager().addWindow(areasServicioSubForm);
 	    break;
 	case Areas_Descanso:
-	    final BatchAreasDescansoReconocimientos areasDescansoSubForm = new BatchAreasDescansoReconocimientos(formFileName,
-		    dbTableName);
+	    final BatchAreasDescansoReconocimientos areasDescansoSubForm = new BatchAreasDescansoReconocimientos(
+		    formFileName, dbTableName);
 	    PluginServices.getMDIManager().addWindow(areasDescansoSubForm);
 	    break;
 	case Areas_Peaje:
-	    final BatchAreasPeajeReconocimientos areasPeajeSubForm = new BatchAreasPeajeReconocimientos(formFileName,
-		    dbTableName);
+	    final BatchAreasPeajeReconocimientos areasPeajeSubForm = new BatchAreasPeajeReconocimientos(
+		    formFileName, dbTableName);
 	    PluginServices.getMDIManager().addWindow(areasPeajeSubForm);
 	    break;
 	case Enlaces:
-	    final BatchEnlacesReconocimientos enlacesSubForm = new BatchEnlacesReconocimientos(formFileName,
-		    dbTableName);
+	    final BatchEnlacesReconocimientos enlacesSubForm = new BatchEnlacesReconocimientos(
+		    formFileName, dbTableName);
 	    PluginServices.getMDIManager().addWindow(enlacesSubForm);
 	    break;
 	case Juntas:
-	    final BatchJuntasReconocimientos juntasSubForm = new BatchJuntasReconocimientos(formFileName,
-		    dbTableName);
+	    final BatchJuntasReconocimientos juntasSubForm = new BatchJuntasReconocimientos(
+		    formFileName, dbTableName);
 	    PluginServices.getMDIManager().addWindow(juntasSubForm);
 	    break;
 	case Pasos_Mediana:
-	    final BatchPasosMedianaReconocimientos pasosMedianaSubForm = new BatchPasosMedianaReconocimientos(formFileName,
-		    dbTableName);
+	    final BatchPasosMedianaReconocimientos pasosMedianaSubForm = new BatchPasosMedianaReconocimientos(
+		    formFileName, dbTableName);
 	    PluginServices.getMDIManager().addWindow(pasosMedianaSubForm);
 	    break;
 	case Senhalizacion_Vertical:
-	    final BatchSenhalizacionVerticalReconocimientos senhalizacionVerticalSubForm = new BatchSenhalizacionVerticalReconocimientos(formFileName,
-		    dbTableName);
-	    PluginServices.getMDIManager().addWindow(senhalizacionVerticalSubForm);
+	    final BatchSenhalizacionVerticalReconocimientos senhalizacionVerticalSubForm = new BatchSenhalizacionVerticalReconocimientos(
+		    formFileName, dbTableName);
+	    PluginServices.getMDIManager().addWindow(
+		    senhalizacionVerticalSubForm);
 	    break;
 	case Valla_Cierre:
-	    final BatchVallaCierreReconocimientos vallaCierreSubForm = new BatchVallaCierreReconocimientos(formFileName,
-		    dbTableName);
+	    final BatchVallaCierreReconocimientos vallaCierreSubForm = new BatchVallaCierreReconocimientos(
+		    formFileName, dbTableName);
 	    PluginServices.getMDIManager().addWindow(vallaCierreSubForm);
 	    break;
 	case Firme:
-	    final BatchFirmeReconocimientos firmeSubForm = new BatchFirmeReconocimientos(formFileName,
-		    dbTableName);
+	    final BatchFirmeReconocimientos firmeSubForm = new BatchFirmeReconocimientos(
+		    formFileName, dbTableName);
 	    PluginServices.getMDIManager().addWindow(firmeSubForm);
 	    break;
 	case Muros:
-	    final BatchMurosReconocimientos murosSubForm = new BatchMurosReconocimientos(formFileName,
-		    dbTableName);
+	    final BatchMurosReconocimientos murosSubForm = new BatchMurosReconocimientos(
+		    formFileName, dbTableName);
 	    PluginServices.getMDIManager().addWindow(murosSubForm);
 	    break;
 	case Senhalizacion_Variable:
-	    final BatchSenhalizacionVariableReconocimientos senhalizacionVariableSubForm = new BatchSenhalizacionVariableReconocimientos(formFileName,
-		    dbTableName);
-	    PluginServices.getMDIManager().addWindow(senhalizacionVariableSubForm);
+	    final BatchSenhalizacionVariableReconocimientos senhalizacionVariableSubForm = new BatchSenhalizacionVariableReconocimientos(
+		    formFileName, dbTableName);
+	    PluginServices.getMDIManager().addWindow(
+		    senhalizacionVariableSubForm);
 	    break;
 	case Lecho_Frenado:
-	    final BatchLechoFrenadoReconocimientos lechoFrenadoSubForm = new BatchLechoFrenadoReconocimientos(formFileName,
-		    dbTableName);
+	    final BatchLechoFrenadoReconocimientos lechoFrenadoSubForm = new BatchLechoFrenadoReconocimientos(
+		    formFileName, dbTableName);
 	    PluginServices.getMDIManager().addWindow(lechoFrenadoSubForm);
 	    break;
 	case Lineas_Suministro:
-	    final BatchLineasSuministroReconocimientos lineasSuministroSubForm = new BatchLineasSuministroReconocimientos(formFileName,
-		    dbTableName);
+	    final BatchLineasSuministroReconocimientos lineasSuministroSubForm = new BatchLineasSuministroReconocimientos(
+		    formFileName, dbTableName);
 	    PluginServices.getMDIManager().addWindow(lineasSuministroSubForm);
 	    break;
 	case Transformadores:
-	    final BatchTransformadoresReconocimientos transformadoresSubForm = new BatchTransformadoresReconocimientos(formFileName,
-		    dbTableName);
+	    final BatchTransformadoresReconocimientos transformadoresSubForm = new BatchTransformadoresReconocimientos(
+		    formFileName, dbTableName);
 	    PluginServices.getMDIManager().addWindow(transformadoresSubForm);
 	    break;
 	}

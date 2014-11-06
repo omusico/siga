@@ -8,7 +8,6 @@ public class BatchPasosMedianaTrabajos extends BatchAbstractSubForm {
 
     public BatchPasosMedianaTrabajos(String formFile, String dbTableName) {
 	super(formFile, dbTableName);
-	// TODO Auto-generated constructor stub
     }
 
     @Override
@@ -20,14 +19,4 @@ public class BatchPasosMedianaTrabajos extends BatchAbstractSubForm {
     public String getIdFieldName() {
 	return DBFieldNames.ID_PASO_MEDIANA;
     }
-
-    @Override
-    public String getXMLPath() {
-	return this
-		.getClass()
-		.getClassLoader()
-		.getResource("rules/pasos_mediana_trabajos_metadata.xml")
-		.getPath();
-    }
-
 }

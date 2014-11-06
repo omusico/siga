@@ -8,7 +8,6 @@ public class BatchBarreraRigidaTrabajos extends BatchAbstractSubForm {
 
     public BatchBarreraRigidaTrabajos(String formFile, String dbTableName) {
 	super(formFile, dbTableName);
-	// TODO Auto-generated constructor stub
     }
 
     @Override
@@ -20,15 +19,4 @@ public class BatchBarreraRigidaTrabajos extends BatchAbstractSubForm {
     public String getIdFieldName() {
 	return DBFieldNames.ID_BARRERA_RIGIDA;
     }
-
-    @Override
-    public String getXMLPath() {
-	return this
-		.getClass()
-		.getClassLoader()
-		.getResource(
-			"rules/barrera_rigida_trabajos_metadata.xml")
-			.getPath();
-    }
-
 }

@@ -9,7 +9,6 @@ public class BatchSenhalizacionVariableTrabajos extends BatchAbstractSubForm {
     public BatchSenhalizacionVariableTrabajos(String formFile,
 	    String dbTableName) {
 	super(formFile, dbTableName);
-	// TODO Auto-generated constructor stub
     }
 
     @Override
@@ -21,12 +20,4 @@ public class BatchSenhalizacionVariableTrabajos extends BatchAbstractSubForm {
     public String getIdFieldName() {
 	return DBFieldNames.ID_SENHAL_VARIABLE;
     }
-
-    @Override
-    public String getXMLPath() {
-	return this.getClass().getClassLoader()
-		.getResource("rules/senhalizacion_variable_trabajos_metadata.xml")
-		.getPath();
-    }
-
 }

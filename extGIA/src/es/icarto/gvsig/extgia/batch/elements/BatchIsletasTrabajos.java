@@ -8,7 +8,6 @@ public class BatchIsletasTrabajos extends BatchAbstractSubForm {
 
     public BatchIsletasTrabajos(String formFile, String dbTableName) {
 	super(formFile, dbTableName);
-	// TODO Auto-generated constructor stub
     }
 
     @Override
@@ -20,12 +19,4 @@ public class BatchIsletasTrabajos extends BatchAbstractSubForm {
     public String getIdFieldName() {
 	return DBFieldNames.ID_ISLETA;
     }
-
-    @Override
-    public String getXMLPath() {
-	return this.getClass().getClassLoader()
-		.getResource("rules/isletas_trabajos_metadata.xml")
-		.getPath();
-    }
-
 }
