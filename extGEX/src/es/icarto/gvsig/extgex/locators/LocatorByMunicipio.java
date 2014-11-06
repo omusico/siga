@@ -21,13 +21,14 @@ import es.icarto.gvsig.commons.gui.gvWindow;
 import es.icarto.gvsig.extgex.locators.actions.IPositionRetriever;
 import es.icarto.gvsig.extgex.locators.actions.ZoomToHandler;
 import es.icarto.gvsig.extgex.preferences.DBNames;
-import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
 import es.icarto.gvsig.extgex.utils.retrievers.KeyValueRetriever;
 import es.icarto.gvsig.extgex.utils.retrievers.PositionRetriever;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
+import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 import es.udc.cartolab.gvsig.navtable.AbstractNavTable;
 
-public class LocatorByMunicipio extends gvWindow implements IPositionRetriever, ActionListener {
+public class LocatorByMunicipio extends gvWindow implements IPositionRetriever,
+	ActionListener {
 
     private final FormPanel formBody;
     private JComboBox ayuntamiento;
@@ -36,7 +37,8 @@ public class LocatorByMunicipio extends gvWindow implements IPositionRetriever, 
 
     public LocatorByMunicipio() {
 	super(400, 145);
-	InputStream stream = getClass().getClassLoader().getResourceAsStream("LocatorByMunicipio.xml");
+	InputStream stream = getClass().getClassLoader().getResourceAsStream(
+		"LocatorByMunicipio.xml");
 	FormPanel result = null;
 	try {
 	    result = new FormPanel(stream);
@@ -51,8 +53,9 @@ public class LocatorByMunicipio extends gvWindow implements IPositionRetriever, 
 
     public void initWidgets() {
 
-	ImageComponent image = (ImageComponent) formBody.getComponentByName("image");
-	ImageIcon icon = new ImageIcon (PreferencesPage.AUDASA_ICON);
+	ImageComponent image = (ImageComponent) formBody
+		.getComponentByName("image");
+	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
 	image.setIcon(icon);
 
 	ayuntamiento = (JComboBox) formBody.getComponentByName("ayuntamiento");
@@ -68,21 +71,16 @@ public class LocatorByMunicipio extends gvWindow implements IPositionRetriever, 
     private void fillParroquia() {
 	ArrayList<KeyValue> fks = new ArrayList<KeyValue>();
 	KeyValueRetriever kvParroquia;
-	if(ayuntamiento.getSelectedItem() instanceof KeyValue) {
+	if (ayuntamiento.getSelectedItem() instanceof KeyValue) {
 	    KeyValue concello = new KeyValue(DBNames.COD_CONCELLO,
 		    ((KeyValue) ayuntamiento.getSelectedItem()).getKey());
 	    fks.add(concello);
-	    kvParroquia = new KeyValueRetriever(
-		    getParroquiaLayer(),
-		    DBNames.COD_PARROQUIA,
-		    DBNames.NOME_PARROQUIA,
-		    fks);
+	    kvParroquia = new KeyValueRetriever(getParroquiaLayer(),
+		    DBNames.COD_PARROQUIA, DBNames.NOME_PARROQUIA, fks);
 	    kvParroquia.setOrderBy(DBNames.NOME_PARROQUIA);
 	} else {
-	    kvParroquia = new KeyValueRetriever(
-		    getParroquiaLayer(),
-		    DBNames.COD_PARROQUIA,
-		    DBNames.NOME_PARROQUIA);
+	    kvParroquia = new KeyValueRetriever(getParroquiaLayer(),
+		    DBNames.COD_PARROQUIA, DBNames.NOME_PARROQUIA);
 	    kvParroquia.setOrderBy(DBNames.NOME_PARROQUIA);
 	}
 	parroquia.removeAllItems();
@@ -94,8 +92,7 @@ public class LocatorByMunicipio extends gvWindow implements IPositionRetriever, 
 
     private void fillAyuntamiento() {
 	KeyValueRetriever kvMunicipio = new KeyValueRetriever(
-		getMunicipioLayer(),
-		DBNames.COD_CONCELLO,
+		getMunicipioLayer(), DBNames.COD_CONCELLO,
 		DBNames.NOME_AYUNTAMIENTO);
 	kvMunicipio.setOrderBy(DBNames.NOME_AYUNTAMIENTO);
 	for (KeyValue kv : kvMunicipio.getValues()) {
@@ -105,8 +102,8 @@ public class LocatorByMunicipio extends gvWindow implements IPositionRetriever, 
 
     public boolean init() {
 	TOCLayerManager toc = new TOCLayerManager();
-	if((toc.getLayerByName(DBNames.LAYER_MUNICIPIOS) != null) &&
-		(toc.getLayerByName(DBNames.LAYER_PARROQUIAS) != null)) {
+	if ((toc.getLayerByName(DBNames.LAYER_MUNICIPIOS) != null)
+		&& (toc.getLayerByName(DBNames.LAYER_PARROQUIAS) != null)) {
 	    initWidgets();
 	    return true;
 	}
@@ -119,22 +116,22 @@ public class LocatorByMunicipio extends gvWindow implements IPositionRetriever, 
 	String fieldValue = null;
 	int position = AbstractNavTable.EMPTY_REGISTER;
 	FLyrVect layer = getLayer();
-	if(layer == null) {
+	if (layer == null) {
 	    JOptionPane.showMessageDialog(this,
 		    "Es necesario seleccionar un municipio o parroquia.");
 	    position = AbstractNavTable.EMPTY_REGISTER;
 
-	} else if(layer.getName().equalsIgnoreCase(DBNames.LAYER_PARROQUIAS)) {
+	} else if (layer.getName().equalsIgnoreCase(DBNames.LAYER_PARROQUIAS)) {
 	    fieldValue = ((KeyValue) parroquia.getSelectedItem()).getKey();
 	    fieldName = DBNames.COD_PARROQUIA;
-	    PositionRetriever positionRetriever = new PositionRetriever(
-		    layer, fieldName, fieldValue);
+	    PositionRetriever positionRetriever = new PositionRetriever(layer,
+		    fieldName, fieldValue);
 	    position = positionRetriever.getPosition();
-	} else if(layer.getName().equalsIgnoreCase(DBNames.LAYER_MUNICIPIOS)){
+	} else if (layer.getName().equalsIgnoreCase(DBNames.LAYER_MUNICIPIOS)) {
 	    fieldName = DBNames.COD_CONCELLO;
 	    fieldValue = ((KeyValue) ayuntamiento.getSelectedItem()).getKey();
-	    PositionRetriever positionRetriever = new PositionRetriever(
-		    layer, fieldName, fieldValue);
+	    PositionRetriever positionRetriever = new PositionRetriever(layer,
+		    fieldName, fieldValue);
 	    position = positionRetriever.getPosition();
 	}
 	return position;
@@ -152,9 +149,9 @@ public class LocatorByMunicipio extends gvWindow implements IPositionRetriever, 
 
     @Override
     public FLyrVect getLayer() {
-	if(parroquia.getSelectedItem() instanceof KeyValue) {
+	if (parroquia.getSelectedItem() instanceof KeyValue) {
 	    return getParroquiaLayer();
-	} else if (ayuntamiento.getSelectedItem() instanceof KeyValue ){
+	} else if (ayuntamiento.getSelectedItem() instanceof KeyValue) {
 	    return getMunicipioLayer();
 	} else {
 	    return null;

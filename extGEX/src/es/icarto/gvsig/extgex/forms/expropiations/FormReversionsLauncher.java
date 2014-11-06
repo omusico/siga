@@ -16,8 +16,8 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgex.forms.reversions.FormReversions;
 import es.icarto.gvsig.extgex.preferences.DBNames;
-import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
 import es.icarto.gvsig.navtableforms.gui.TableUtils;
+import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 import es.udc.cartolab.gvsig.navtable.AbstractNavTable;
 
 public class FormReversionsLauncher implements MouseListener {
@@ -35,16 +35,15 @@ public class FormReversionsLauncher implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
 	table = (JTable) e.getComponent();
-	if((e.getClickCount() == 2)
-		&& TableUtils.hasRows(table)) {
+	if ((e.getClickCount() == 2) && TableUtils.hasRows(table)) {
 	    openForm();
-	} else if((e.getButton() == BUTTON_RIGHT)
-		&& TableUtils.hasRows(table)
+	} else if ((e.getButton() == BUTTON_RIGHT) && TableUtils.hasRows(table)
 		&& (table.getSelectedRow() != -1)) {
 	    JPopupMenu popup = new JPopupMenu();
 
 	    JMenuItem menuOpenForm = new JMenuItem("Abrir reversiones");
 	    menuOpenForm.addActionListener(new ActionListener() {
+		@Override
 		public void actionPerformed(ActionEvent arg0) {
 		    openForm();
 		}
@@ -73,8 +72,7 @@ public class FormReversionsLauncher implements MouseListener {
     private void openForm() {
 	try {
 	    int index = (int) TableUtils.getFeatureIndexFromJTable(table,
-		    layerReversions.getRecordset(),
-		    "exp_id");
+		    layerReversions.getRecordset(), "exp_id");
 	    if (index != AbstractNavTable.EMPTY_REGISTER) {
 		formReversions = new FormReversions(layerReversions, null);
 		if (formReversions.init()) {
@@ -90,13 +88,13 @@ public class FormReversionsLauncher implements MouseListener {
 
     private void selectFeaturesInForm() {
 	try {
-	    ArrayList<Long> rowIndexes = TableUtils.getFeatureIndexesFromJTable(
-		    table,
-		    layerReversions.getRecordset(),
-		    DBNames.FIELD_IDREVERSION_FINCAS_REVERSIONES);
+	    ArrayList<Long> rowIndexes = TableUtils
+		    .getFeatureIndexesFromJTable(table,
+			    layerReversions.getRecordset(),
+			    DBNames.FIELD_IDREVERSION_FINCAS_REVERSIONES);
 	    formReversions.clearSelection();
 	    formReversions.setOnlySelected(false);
-	    if(rowIndexes.size() > 0) {
+	    if (rowIndexes.size() > 0) {
 		for (long rowIndex : rowIndexes) {
 		    formReversions.selectFeature(rowIndex);
 		}
@@ -110,7 +108,7 @@ public class FormReversionsLauncher implements MouseListener {
     }
 
     private FLyrVect getLayer() {
-	if(layerReversions == null) {
+	if (layerReversions == null) {
 	    TOCLayerManager toc = new TOCLayerManager();
 	    return toc.getLayerByName(FormReversions.TOCNAME);
 	}

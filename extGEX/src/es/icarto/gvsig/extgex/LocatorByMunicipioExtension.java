@@ -9,7 +9,7 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.icarto.gvsig.extgex.locators.LocatorByMunicipio;
 import es.icarto.gvsig.extgex.preferences.DBNames;
-import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
+import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class LocatorByMunicipioExtension extends Extension {
@@ -32,9 +32,8 @@ public class LocatorByMunicipioExtension extends Extension {
 
     @Override
     public boolean isEnabled() {
-	if((DBSession.getCurrentSession() != null) && 
-		hasView() && 
-		areLayersLoaded()) {
+	if ((DBSession.getCurrentSession() != null) && hasView()
+		&& areLayersLoaded()) {
 	    return true;
 	}
 	return false;
@@ -47,7 +46,7 @@ public class LocatorByMunicipioExtension extends Extension {
 
     private boolean areLayersLoaded() {
 	TOCLayerManager toc = new TOCLayerManager();
-	if((toc.getLayerByName(DBNames.LAYER_MUNICIPIOS) != null) 
+	if ((toc.getLayerByName(DBNames.LAYER_MUNICIPIOS) != null)
 		&& (toc.getLayerByName(DBNames.LAYER_PARROQUIAS) != null)) {
 	    return true;
 	}

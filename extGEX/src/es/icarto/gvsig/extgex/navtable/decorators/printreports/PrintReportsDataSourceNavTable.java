@@ -1,14 +1,15 @@
 package es.icarto.gvsig.extgex.navtable.decorators.printreports;
 
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRField;
+
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.hardcode.gdbms.engine.values.Value;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 
-import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
-import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRField;
+import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 
 public class PrintReportsDataSourceNavTable implements JRDataSource {
 
@@ -30,6 +31,7 @@ public class PrintReportsDataSourceNavTable implements JRDataSource {
 	}
     }
 
+    @Override
     public boolean next() throws JRException {
 	try {
 	    colIndex++;
@@ -44,6 +46,7 @@ public class PrintReportsDataSourceNavTable implements JRDataSource {
 	}
     }
 
+    @Override
     public Object getFieldValue(JRField field) throws JRException {
 	try {
 	    Value valueField = sds.getFieldValue(currentPosition, colIndex);

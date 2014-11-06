@@ -36,9 +36,9 @@ import com.jeta.forms.gui.common.FormException;
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.commons.gui.gvWindow;
 import es.icarto.gvsig.extgex.preferences.DBNames;
-import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
 import es.icarto.gvsig.extgex.utils.retrievers.KeyValueRetriever;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
+import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 
 @SuppressWarnings("serial")
 public class LocatorByPK extends gvWindow implements ActionListener {
@@ -61,7 +61,8 @@ public class LocatorByPK extends gvWindow implements ActionListener {
 
     public LocatorByPK() {
 	super(400, 145);
-	InputStream stream = getClass().getClassLoader().getResourceAsStream("LocatorByPK.xml");
+	InputStream stream = getClass().getClassLoader().getResourceAsStream(
+		"LocatorByPK.xml");
 	FormPanel result = null;
 	try {
 	    result = new FormPanel(stream);
@@ -77,8 +78,9 @@ public class LocatorByPK extends gvWindow implements ActionListener {
 
     public void initWidgets() {
 
-	ImageComponent image = (ImageComponent) formBody.getComponentByName("image");
-	ImageIcon icon = new ImageIcon (PreferencesPage.AUDASA_ICON);
+	ImageComponent image = (ImageComponent) formBody
+		.getComponentByName("image");
+	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
 	image.setIcon(icon);
 
 	tramoCB = (JComboBox) formBody.getComponentByName(ID_TRAMO);
@@ -114,9 +116,11 @@ public class LocatorByPK extends gvWindow implements ActionListener {
 	DataSourceFactory dsf;
 	try {
 	    dsf = getPKSLayer().getRecordset().getDataSourceFactory();
-	    String sqlQuery = "select * from " + getPKSLayer().getRecordset().getName() +
-		    " where tramo = " + "'" + tramoCB.getSelectedItem().toString() + "'" +
-		    " order by pks;";
+	    String sqlQuery = "select * from "
+		    + getPKSLayer().getRecordset().getName()
+		    + " where tramo = " + "'"
+		    + tramoCB.getSelectedItem().toString() + "'"
+		    + " order by pks;";
 	    DataSource ds = dsf.executeSQL(sqlQuery, EditionEvent.ALPHANUMERIC);
 	    ds.setDataSourceFactory(dsf);
 	    SelectableDataSource sds = new SelectableDataSource(ds);
@@ -124,7 +128,7 @@ public class LocatorByPK extends gvWindow implements ActionListener {
 	    ea.setOriginalDataSource(sds);
 	    pkNumberCB.removeAllItems();
 	    int pkIndex = ea.getRecordset().getFieldIndexByName(PK_FIELD);
-	    for (int i=0; i<ea.getRecordset().getRowCount(); i++) {
+	    for (int i = 0; i < ea.getRecordset().getRowCount(); i++) {
 		pkNumberCB.addItem(ea.getRecordset().getFieldValue(i, pkIndex));
 	    }
 	} catch (ReadDriverException e) {
@@ -152,17 +156,19 @@ public class LocatorByPK extends gvWindow implements ActionListener {
 	    if (pkToFind != null) {
 		try {
 		    SelectableDataSource pkRecordset = pkLayer.getRecordset();
-		    int tramoIndex = pkRecordset.getFieldIndexByName(TRAMO_FIELD);
+		    int tramoIndex = pkRecordset
+			    .getFieldIndexByName(TRAMO_FIELD);
 		    int pkIndex = pkRecordset.getFieldIndexByName(PK_FIELD);
 		    for (int i = 0; i < pkRecordset.getRowCount(); i++) {
-			Value pkValue = pkRecordset.getFieldValue(i,
-				pkIndex);
+			Value pkValue = pkRecordset.getFieldValue(i, pkIndex);
 			String pkStringValue = pkValue
 				.getStringValue(ValueWriter.internalValueWriter);
-			Value tramoValue = pkRecordset.getFieldValue(i, tramoIndex);
+			Value tramoValue = pkRecordset.getFieldValue(i,
+				tramoIndex);
 
-			if ((pkStringValue.compareToIgnoreCase(pkToFind) == 0) &&
-				(tramoValue.toString().compareToIgnoreCase(tramo) == 0)){
+			if ((pkStringValue.compareToIgnoreCase(pkToFind) == 0)
+				&& (tramoValue.toString().compareToIgnoreCase(
+					tramo) == 0)) {
 			    zoom(pkLayer, i);
 			    return;
 			}
@@ -191,9 +197,9 @@ public class LocatorByPK extends gvWindow implements ActionListener {
 	    }
 	    rectangle = g.getBounds2D();
 	    if (rectangle.getWidth() < 200) {
-		rectangle.setFrameFromCenter(rectangle.getCenterX(), rectangle
-			.getCenterY(), rectangle.getCenterX() + 100, rectangle
-			.getCenterY() + 100);
+		rectangle.setFrameFromCenter(rectangle.getCenterX(),
+			rectangle.getCenterY(), rectangle.getCenterX() + 100,
+			rectangle.getCenterY() + 100);
 	    }
 	    if (rectangle != null) {
 		layer.getMapContext().getViewPort().setExtent(rectangle);

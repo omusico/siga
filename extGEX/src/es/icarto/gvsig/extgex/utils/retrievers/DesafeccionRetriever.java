@@ -15,7 +15,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 
 import es.icarto.gvsig.extgex.preferences.DBNames;
-import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
+import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 
 public class DesafeccionRetriever {
 
@@ -29,7 +29,7 @@ public class DesafeccionRetriever {
 	values = new HashMap<String, String>();
 	TOCLayerManager toc = new TOCLayerManager();
 	FLyrVect desafecciones = toc
-	.getLayerByName(DBNames.TABLE_DESAFECCIONES);
+		.getLayerByName(DBNames.TABLE_DESAFECCIONES);
 	if (desafecciones == null) {
 	    values.put(DBNames.FIELD_FECHAACTA_DESAFECCIONES, "");
 	    values.put(DBNames.FIELD_SUPERFICIE_DESAFECCIONES, "");
@@ -38,11 +38,11 @@ public class DesafeccionRetriever {
 	    SelectableDataSource sds = getFilteredRecordset(idFinca);
 	    try {
 		int indexOfOcupacion = sds
-		.getFieldIndexByName(DBNames.FIELD_OCUPACION_DESAFECCIONES);
+			.getFieldIndexByName(DBNames.FIELD_OCUPACION_DESAFECCIONES);
 		int indexOfSuperficie = sds
-		.getFieldIndexByName(DBNames.FIELD_SUPERFICIE_DESAFECCIONES);
+			.getFieldIndexByName(DBNames.FIELD_SUPERFICIE_DESAFECCIONES);
 		int indexOfFechaActa = sds
-		.getFieldIndexByName(DBNames.FIELD_FECHAACTA_DESAFECCIONES);
+			.getFieldIndexByName(DBNames.FIELD_FECHAACTA_DESAFECCIONES);
 		values.put(DBNames.FIELD_FECHAACTA_DESAFECCIONES, sds
 			.getFieldValue(0, indexOfFechaActa).toString());
 		values.put(DBNames.FIELD_SUPERFICIE_DESAFECCIONES, sds
@@ -58,28 +58,33 @@ public class DesafeccionRetriever {
     private SelectableDataSource getFilteredRecordset(String idFinca) {
 	TOCLayerManager toc = new TOCLayerManager();
 	FLyrVect desafecciones = toc
-	.getLayerByName(DBNames.TABLE_DESAFECCIONES);
+		.getLayerByName(DBNames.TABLE_DESAFECCIONES);
 	LocalizacionRetriever localizacionRetriever = new LocalizacionRetriever(
 		idFinca);
 	String tramo = localizacionRetriever.getKey(DBNames.FIELD_TRAMO_FINCAS);
 	String uc = localizacionRetriever.getKey(DBNames.FIELD_UC_FINCAS);
 	String ayuntamiento = localizacionRetriever
-	.getKey(DBNames.FIELD_AYUNTAMIENTO_FINCAS);
+		.getKey(DBNames.FIELD_AYUNTAMIENTO_FINCAS);
 	String parroquiaSubtramo = localizacionRetriever
-	.getKey(DBNames.FIELD_PARROQUIASUBTRAMO_FINCAS);
-	String numFinca = localizacionRetriever.getKey(DBNames.FIELD_NUMEROFINCA_FINCAS);
-	String seccion = localizacionRetriever.getKey(DBNames.FIELD_SECCION_FINCAS);
+		.getKey(DBNames.FIELD_PARROQUIASUBTRAMO_FINCAS);
+	String numFinca = localizacionRetriever
+		.getKey(DBNames.FIELD_NUMEROFINCA_FINCAS);
+	String seccion = localizacionRetriever
+		.getKey(DBNames.FIELD_SECCION_FINCAS);
 
 	try {
-	    DataSourceFactory dsf = desafecciones.getRecordset().getDataSourceFactory();
-	    String sqlQuery = "select * from " + desafecciones.getRecordset().getName()
-	    + " where " + DBNames.FIELD_TRAMO_FINCAS + " = '" + tramo
-	    + "' and " + DBNames.FIELD_UC_FINCAS + " = '" + uc + "' and "
-	    + DBNames.FIELD_AYUNTAMIENTO_FINCAS + " = '" + ayuntamiento
-	    + "' and " + DBNames.FIELD_PARROQUIASUBTRAMO_FINCAS + " = '"
-	    + parroquiaSubtramo + "' and " + DBNames.FIELD_NUMEROFINCA_FINCAS
-	    + " = '" + numFinca + "' and " + DBNames.FIELD_SECCION_FINCAS
-	    + " = '" + seccion + "';";
+	    DataSourceFactory dsf = desafecciones.getRecordset()
+		    .getDataSourceFactory();
+	    String sqlQuery = "select * from "
+		    + desafecciones.getRecordset().getName() + " where "
+		    + DBNames.FIELD_TRAMO_FINCAS + " = '" + tramo + "' and "
+		    + DBNames.FIELD_UC_FINCAS + " = '" + uc + "' and "
+		    + DBNames.FIELD_AYUNTAMIENTO_FINCAS + " = '" + ayuntamiento
+		    + "' and " + DBNames.FIELD_PARROQUIASUBTRAMO_FINCAS
+		    + " = '" + parroquiaSubtramo + "' and "
+		    + DBNames.FIELD_NUMEROFINCA_FINCAS + " = '" + numFinca
+		    + "' and " + DBNames.FIELD_SECCION_FINCAS + " = '"
+		    + seccion + "';";
 	    DataSource ds = dsf.executeSQL(sqlQuery, EditionEvent.ALPHANUMERIC);
 	    ds.setDataSourceFactory(dsf);
 	    SelectableDataSource sds = new SelectableDataSource(ds);

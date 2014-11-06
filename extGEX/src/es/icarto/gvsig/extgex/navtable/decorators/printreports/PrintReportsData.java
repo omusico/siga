@@ -33,10 +33,10 @@ import com.iver.cit.gvsig.project.documents.view.gui.BaseView;
 import com.vividsolutions.jts.geom.Point;
 
 import es.icarto.gvsig.extgex.preferences.DBNames;
-import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
 import es.icarto.gvsig.extgex.utils.retrievers.CultivosRetriever;
 import es.icarto.gvsig.extgex.utils.retrievers.DesafeccionRetriever;
 import es.icarto.gvsig.extgex.utils.retrievers.LocalizacionRetriever;
+import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 
 public class PrintReportsData implements JRDataSource {
 
@@ -88,12 +88,14 @@ public class PrintReportsData implements JRDataSource {
 	prepareDataSource();
     }
 
+    @Override
     public boolean next() throws JRException {
 	// just need to print 1 register
 	isDataSourceReady = !isDataSourceReady;
 	return isDataSourceReady;
     }
 
+    @Override
     public Object getFieldValue(JRField field) throws JRException {
 	return values.get(field.getName());
     }
@@ -150,10 +152,9 @@ public class PrintReportsData implements JRDataSource {
 	values.put(JASPER_COORDENADA_UTM_Y, getCoordinateYFromView());
 
 	// cultivos
-	CultivosRetriever finca = new CultivosRetriever(
-		getIDFinca());
-	values.put(JASPER_TIPOCULTIVO_EDIFICACION, finca
-		.hasCultivo(DBNames.VALUE_CULTIVOS_EDIFICACION));
+	CultivosRetriever finca = new CultivosRetriever(getIDFinca());
+	values.put(JASPER_TIPOCULTIVO_EDIFICACION,
+		finca.hasCultivo(DBNames.VALUE_CULTIVOS_EDIFICACION));
 	values.put(JASPER_TIPOCULTIVO_INCULTO,
 		finca.hasCultivo(DBNames.VALUE_CULTIVOS_INCULTO));
 	values.put(JASPER_TIPOCULTIVO_LABRADIO,
@@ -244,8 +245,7 @@ public class PrintReportsData implements JRDataSource {
     }
 
     private Object getScaleFromView() {
-	if (PluginServices.getMDIManager()
-		.getActiveWindow() instanceof BaseView) {
+	if (PluginServices.getMDIManager().getActiveWindow() instanceof BaseView) {
 	    BaseView view = (BaseView) PluginServices.getMDIManager()
 		    .getActiveWindow();
 	    MapContext mapContext = view.getMapControl().getMapContext();
@@ -266,7 +266,8 @@ public class PrintReportsData implements JRDataSource {
 		.getResource("images/map-for-report.png");
 	try {
 	    if (bufferedImage != null) {
-		ImageIO.write(bufferedImage, "png", new File(mapInReport.getFile()));
+		ImageIO.write(bufferedImage, "png",
+			new File(mapInReport.getFile()));
 	    }
 	    return mapInReport;
 	} catch (IOException e) {
@@ -290,7 +291,8 @@ public class PrintReportsData implements JRDataSource {
 	    int widthImageFromJasperReport = JASPER_IMAGEWIDTH;
 	    int heightImageFromJasperReport = JASPER_IMAGEHEIGHT;
 	    int x = (vp.getImageWidth() / 2) - (widthImageFromJasperReport / 2);
-	    int y = (vp.getImageHeight() / 2) - (heightImageFromJasperReport / 2);
+	    int y = (vp.getImageHeight() / 2)
+		    - (heightImageFromJasperReport / 2);
 	    return mapControl.getImage().getSubimage(x, y,
 		    widthImageFromJasperReport, heightImageFromJasperReport);
 	}

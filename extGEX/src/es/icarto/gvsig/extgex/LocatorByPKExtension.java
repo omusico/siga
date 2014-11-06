@@ -7,7 +7,7 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.icarto.gvsig.extgex.locators.LocatorByPK;
 import es.icarto.gvsig.extgex.preferences.DBNames;
-import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
+import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class LocatorByPKExtension extends Extension {
@@ -25,9 +25,8 @@ public class LocatorByPKExtension extends Extension {
 
     @Override
     public boolean isEnabled() {
-	if((DBSession.getCurrentSession() != null) && 
-		hasView() && 
-		isLayerLoaded()) {
+	if ((DBSession.getCurrentSession() != null) && hasView()
+		&& isLayerLoaded()) {
 	    return true;
 	}
 	return false;
@@ -40,7 +39,7 @@ public class LocatorByPKExtension extends Extension {
 
     private boolean isLayerLoaded() {
 	TOCLayerManager toc = new TOCLayerManager();
-	if(toc.getLayerByName(DBNames.LAYER_PKS) != null) {
+	if (toc.getLayerByName(DBNames.LAYER_PKS) != null) {
 	    return true;
 	}
 	return false;

@@ -9,7 +9,7 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.icarto.gvsig.extgex.locators.LocatorByFinca;
 import es.icarto.gvsig.extgex.preferences.DBNames;
-import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
+import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class LocatorByFincaExtension extends Extension {
@@ -17,7 +17,7 @@ public class LocatorByFincaExtension extends Extension {
     @Override
     public void execute(String actionCommand) {
 	LocatorByFinca fincaLocator = new LocatorByFinca();
-	if(fincaLocator.init()) {
+	if (fincaLocator.init()) {
 	    PluginServices.getMDIManager().addCentredWindow(fincaLocator);
 	} else {
 	    JOptionPane.showMessageDialog(null, PluginServices.getText(this,
@@ -32,9 +32,8 @@ public class LocatorByFincaExtension extends Extension {
 
     @Override
     public boolean isEnabled() {
-	if((DBSession.getCurrentSession() != null) && 
-		hasView() && 
-		isLayerLoaded()) {
+	if ((DBSession.getCurrentSession() != null) && hasView()
+		&& isLayerLoaded()) {
 	    return true;
 	}
 	return false;
@@ -47,7 +46,7 @@ public class LocatorByFincaExtension extends Extension {
 
     private boolean isLayerLoaded() {
 	TOCLayerManager toc = new TOCLayerManager();
-	if(toc.getLayerByName(DBNames.LAYER_FINCAS) != null) {
+	if (toc.getLayerByName(DBNames.LAYER_FINCAS) != null) {
 	    return true;
 	}
 	return false;
