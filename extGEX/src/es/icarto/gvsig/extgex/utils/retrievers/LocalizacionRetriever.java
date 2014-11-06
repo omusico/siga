@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.iver.andami.PluginServices;
 
-import es.icarto.gvsig.extgex.forms.FormExpropiations;
+import es.icarto.gvsig.extgex.forms.expropiations.FormExpropiations;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.DomainValues;

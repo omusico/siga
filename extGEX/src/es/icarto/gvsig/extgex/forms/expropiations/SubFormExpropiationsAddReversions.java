@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgex.forms;
+package es.icarto.gvsig.extgex.forms.expropiations;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,6 +32,7 @@ import com.vividsolutions.jts.geom.Geometry;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.commons.gui.AbstractIWindow;
+import es.icarto.gvsig.extgex.forms.reversions.FormReversions;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
 import es.udc.cartolab.gvsig.users.utils.DBSession;

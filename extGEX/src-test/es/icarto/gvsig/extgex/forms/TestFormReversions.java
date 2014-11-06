@@ -11,6 +11,7 @@ import com.iver.cit.gvsig.fmap.drivers.DBException;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
+import es.icarto.gvsig.extgex.forms.reversions.FormReversions;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.CommonMethodsForTestDBForms;
 import es.udc.cartolab.gvsig.users.utils.DBSession;

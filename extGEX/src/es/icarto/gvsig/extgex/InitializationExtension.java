@@ -15,8 +15,8 @@ import com.iver.cit.gvsig.listeners.EndGeometryListener;
 import es.icarto.gvsig.extgex.cad.AddFincaCADTool;
 import es.icarto.gvsig.extgex.cad.GextJoinCADTool;
 import es.icarto.gvsig.extgex.forms.FormExpropiationLine;
-import es.icarto.gvsig.extgex.forms.FormExpropiations;
-import es.icarto.gvsig.extgex.forms.FormReversions;
+import es.icarto.gvsig.extgex.forms.expropiations.FormExpropiations;
+import es.icarto.gvsig.extgex.forms.reversions.FormReversions;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgia.forms.utils.LaunchGIAForms;
 import es.udc.cartolab.gvsig.users.DBConnectionExtension;
@@ -105,7 +105,7 @@ public class InitializationExtension extends Extension {
 	    if (cadTool instanceof PolylineCADTool) {
 		insertedGeom = ((PolylineCADTool) cadTool).getGeometry();
 	    }
-	    es.icarto.gvsig.extgex.forms.FormReversions dialog = new es.icarto.gvsig.extgex.forms.FormReversions(
+	    es.icarto.gvsig.extgex.forms.reversions.FormReversions dialog = new es.icarto.gvsig.extgex.forms.reversions.FormReversions(
 		    (FLyrVect) layer, insertedGeom);
 	    if (dialog.init()) {
 		PluginServices.getMDIManager().addCentredWindow(dialog);

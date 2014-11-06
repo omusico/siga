@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgex.forms;
+package es.icarto.gvsig.extgex.forms.expropiations;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +14,7 @@ import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
+import es.icarto.gvsig.extgex.forms.reversions.FormReversions;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
 import es.icarto.gvsig.navtableforms.gui.TableUtils;

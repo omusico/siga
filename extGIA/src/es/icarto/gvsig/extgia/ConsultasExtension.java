@@ -9,8 +9,6 @@ public class ConsultasExtension extends Extension {
 
     @Override
     public void initialize() {
-	// TODO Auto-generated method stub
-
     }
 
     @Override

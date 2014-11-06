@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgex.forms;
+package es.icarto.gvsig.extgex.forms.reversions;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -55,7 +55,7 @@ public class FormReversions extends BasicAbstractForm implements
 	if (filesLinkB != null) {
 	    actionsToolBar.add(filesLinkB);
 	}
-	actionsToolBar.add(new JButton(new OpenWebForm(this, "rv")));
+	actionsToolBar.add(new JButton(new OpenWebAction(this, "rv")));
 
 	this.getActionsToolBar().remove(saveB);
 	this.getActionsToolBar().remove(removeB);

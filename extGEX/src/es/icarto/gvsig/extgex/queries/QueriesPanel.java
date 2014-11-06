@@ -34,7 +34,7 @@ import es.icarto.gvsig.commons.queries.FinalActions;
 import es.icarto.gvsig.commons.queries.QueriesWidget;
 import es.icarto.gvsig.commons.queries.Utils;
 import es.icarto.gvsig.commons.utils.Field;
-import es.icarto.gvsig.extgex.forms.FormExpropiations;
+import es.icarto.gvsig.extgex.forms.expropiations.FormExpropiations;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 

@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
-import es.icarto.gvsig.extgex.forms.FormExpropiations;
+import es.icarto.gvsig.extgex.forms.expropiations.FormExpropiations;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
 

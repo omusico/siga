@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgex.forms;
+package es.icarto.gvsig.extgex.forms.expropiations;
 
 import static es.icarto.gvsig.extgex.preferences.DBNames.FINCAS_ANTICIPO;
 import static es.icarto.gvsig.extgex.preferences.DBNames.FINCAS_DEPOSITO_PREVIO_CONSIGNADO;

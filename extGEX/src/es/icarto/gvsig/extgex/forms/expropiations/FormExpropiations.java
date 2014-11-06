@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgex.forms;
+package es.icarto.gvsig.extgex.forms.expropiations;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

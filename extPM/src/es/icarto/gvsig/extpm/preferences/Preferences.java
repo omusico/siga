@@ -7,8 +7,6 @@ public class Preferences {
     public static final String PM_LAYER_NAME = "Policia_Margenes";
 
     // -- FORMS --
-    public static final String PM_FORM_TITLE = "Policía de Márgenes";
-
     public static final String PM_FORM_WIDGET_PM_NUMBER = "exp_id";
     public static final String PM_FORM_WIDGETS_NUM_PARCELA_CATASTRO = "catastro_parcela";
     public static final String PM_FORM_WIDGETS_POLIGONO_CATASTRO = "catastro_poligono";

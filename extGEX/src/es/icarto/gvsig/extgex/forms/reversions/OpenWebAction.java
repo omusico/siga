@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgex.forms;
+package es.icarto.gvsig.extgex.forms.reversions;
 
 import java.awt.event.ActionEvent;
 import java.net.URI;
@@ -16,13 +16,13 @@ import es.icarto.gvsig.utils.DesktopApi;
 import es.udc.cartolab.gvsig.navtable.AbstractNavTable;
 
 @SuppressWarnings("serial")
-public class OpenWebForm extends AbstractAction {
+public class OpenWebAction extends AbstractAction {
 
-    private static final Logger logger = Logger.getLogger(OpenWebForm.class);
+    private static final Logger logger = Logger.getLogger(OpenWebAction.class);
     private final AbstractNavTable nt;
     private final String type;
 
-    public OpenWebForm(AbstractNavTable nt, String type) {
+    public OpenWebAction(AbstractNavTable nt, String type) {
 	super();
 	this.nt = nt;
 	this.type = type;

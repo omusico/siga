@@ -11,6 +11,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 
+import org.apache.log4j.Logger;
+
 import com.hardcode.driverManager.DriverLoadException;
 import com.hardcode.gdbms.driver.exceptions.InitializeDriverException;
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
@@ -21,17 +23,12 @@ import com.hardcode.gdbms.engine.instruction.SemanticException;
 import com.hardcode.gdbms.engine.values.Value;
 import com.hardcode.gdbms.engine.values.ValueWriter;
 import com.hardcode.gdbms.parser.ParseException;
-import com.iver.andami.PluginServices;
-import com.iver.cit.gvsig.fmap.MapControl;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.edition.EditableAdapter;
 import com.iver.cit.gvsig.fmap.edition.EditionEvent;
-import com.iver.cit.gvsig.fmap.layers.FLayer;
-import com.iver.cit.gvsig.fmap.layers.FLayers;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.ReadableVectorial;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
-import com.iver.cit.gvsig.project.documents.view.gui.BaseView;
 import com.jeta.forms.components.image.ImageComponent;
 import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
@@ -43,7 +40,10 @@ import es.icarto.gvsig.extgex.utils.managers.TOCLayerManager;
 import es.icarto.gvsig.extgex.utils.retrievers.KeyValueRetriever;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 
+@SuppressWarnings("serial")
 public class LocatorByPK extends gvWindow implements ActionListener {
+
+    private static final Logger logger = Logger.getLogger(LocatorByPK.class);
 
     private static final String TRAMO_FIELD = "tramo";
     private static final String PK_FIELD = "pks";
@@ -110,15 +110,6 @@ public class LocatorByPK extends gvWindow implements ActionListener {
 	}
     }
 
-    private void fillPK2() {
-	KeyValueRetriever kvPks = new KeyValueRetriever(getPKSLayer(),
-		PK_FIELD, PK_FIELD);
-	kvPks.setOrderBy(PK_FIELD);
-	for (KeyValue kv : kvPks.getValues()) {
-	    pkNumberCB.addItem(kv);
-	}
-    }
-
     private void fillPK() {
 	DataSourceFactory dsf;
 	try {
@@ -137,20 +128,15 @@ public class LocatorByPK extends gvWindow implements ActionListener {
 		pkNumberCB.addItem(ea.getRecordset().getFieldValue(i, pkIndex));
 	    }
 	} catch (ReadDriverException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
+	    logger.error(e.getStackTrace(), e);
 	} catch (DriverLoadException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
+	    logger.error(e.getStackTrace(), e);
 	} catch (ParseException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
+	    logger.error(e.getStackTrace(), e);
 	} catch (SemanticException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
+	    logger.error(e.getStackTrace(), e);
 	} catch (EvaluationException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
+	    logger.error(e.getStackTrace(), e);
 	}
     }
 
@@ -186,16 +172,6 @@ public class LocatorByPK extends gvWindow implements ActionListener {
 		}
 	    }
 	}
-    }
-
-    private FLayer getPKLayer() {
-	FLayer pkLayer = null;
-	BaseView view = (BaseView) PluginServices.getMDIManager()
-		.getActiveWindow();
-	MapControl mapControl = view.getMapControl();
-	FLayers flayers = mapControl.getMapContext().getLayers();
-	pkLayer = flayers.getLayer(DBNames.LAYER_PKS);
-	return pkLayer;
     }
 
     private void zoom(FLyrVect layer, int pos) {

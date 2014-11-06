@@ -13,16 +13,11 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class FormPMExtension extends Extension {
 
-    private FLyrVect layer;
-    private FormPM dialog;
-
-    public static final String KEY_NAME = "es.udc.cartolab.gvsig.navtable";
-
     @Override
     public void execute(String actionCommand) {
 	DBSession.getCurrentSession().setSchema(Preferences.PM_SCHEMA);
-	layer = getPMLayer();
-	dialog = new FormPM(layer, false, -1);
+	FLyrVect layer = getPMLayer();
+	FormPM dialog = new FormPM(layer, false, -1);
 	if (dialog.init()) {
 	    PluginServices.getMDIManager().addWindow(dialog);
 	}
@@ -34,9 +29,8 @@ public class FormPMExtension extends Extension {
 
     @Override
     public boolean isEnabled() {
-	if ((DBSession.getCurrentSession() != null) &&
-		hasView() &&
-		isLayerLoaded(Preferences.PM_LAYER_NAME)) {
+	if ((DBSession.getCurrentSession() != null) && hasView()
+		&& isLayerLoaded(Preferences.PM_LAYER_NAME)) {
 	    return true;
 	} else {
 	    return false;
@@ -52,7 +46,7 @@ public class FormPMExtension extends Extension {
 	PluginServices.getIconTheme().registerDefault(
 		"extpm-pmForm",
 		this.getClass().getClassLoader()
-		.getResource("images/pm_form.png"));
+			.getResource("images/pm_form.png"));
     }
 
     private FLyrVect getPMLayer() {
@@ -63,7 +57,7 @@ public class FormPMExtension extends Extension {
     private boolean isLayerLoaded(String layerName) {
 	TOCLayerManager toc = new TOCLayerManager();
 	FLyrVect layer = toc.getLayerByName(layerName);
-	if(layer == null) {
+	if (layer == null) {
 	    return false;
 	}
 	return true;
@@ -71,7 +65,7 @@ public class FormPMExtension extends Extension {
 
     private boolean hasView() {
 	IWindow window = PluginServices.getMDIManager().getActiveWindow();
-	if(window instanceof View) {
+	if (window instanceof View) {
 	    return true;
 	}
 	return false;
