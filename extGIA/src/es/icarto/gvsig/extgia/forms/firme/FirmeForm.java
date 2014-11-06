@@ -2,18 +2,12 @@ package es.icarto.gvsig.extgia.forms.firme;
 
 import java.util.Map;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
-import com.jeta.forms.components.image.ImageComponent;
 
-import es.icarto.gvsig.audasacommons.PreferencesPage;
-import es.icarto.gvsig.extgia.forms.images.AddImageListener;
-import es.icarto.gvsig.extgia.forms.images.DeleteImageListener;
 import es.icarto.gvsig.extgia.forms.images.ShowImageAction;
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
@@ -92,31 +86,8 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
     protected void setListeners() {
 	super.setListeners();
 
-	ImageComponent image = (ImageComponent) formBody
-		.getComponentByName("image");
-	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
-	image.setIcon(icon);
-
 	Map<String, JComponent> widgets = getWidgets();
 
-	imageComponent = (ImageComponent) formBody
-		.getComponentByName("element_image");
-	addImageButton = (JButton) formBody
-		.getComponentByName("add_image_button");
-	deleteImageButton = (JButton) formBody
-		.getComponentByName("delete_image_button");
-
-	if (addImageListener == null) {
-	    addImageListener = new AddImageListener(imageComponent,
-		    addImageButton, getImagesDBTableName(), getElementID());
-	    addImageButton.addActionListener(addImageListener);
-	}
-
-	if (deleteImageListener == null) {
-	    deleteImageListener = new DeleteImageListener(imageComponent,
-		    addImageButton, getImagesDBTableName(), getElementID());
-	    deleteImageButton.addActionListener(deleteImageListener);
-	}
 	firmeIDWidget = (JTextField) widgets.get(DBFieldNames.ID_FIRME);
     }
 
@@ -130,11 +101,6 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
     public JTable getTrabajosJTable() {
 	// TODO Auto-generated method stub
 	return null;
-    }
-
-    @Override
-    public boolean isSpecialCase() {
-	return true;
     }
 
     @Override

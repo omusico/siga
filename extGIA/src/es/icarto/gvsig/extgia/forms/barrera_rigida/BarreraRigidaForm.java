@@ -137,12 +137,6 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public boolean isSpecialCase() {
-	// TODO Auto-generated method stub
-	return false;
-    }
-
-    @Override
     protected String getBasicName() {
 	return TABLENAME;
     }

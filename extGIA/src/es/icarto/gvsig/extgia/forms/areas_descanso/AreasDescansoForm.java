@@ -118,11 +118,6 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public boolean isSpecialCase() {
-	return false;
-    }
-
-    @Override
     protected String getBasicName() {
 	return TABLENAME;
     }

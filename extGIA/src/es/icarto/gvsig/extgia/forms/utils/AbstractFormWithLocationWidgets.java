@@ -122,32 +122,27 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
     protected void setListeners() {
 	super.setListeners();
 
-	if (!isSpecialCase()) {
+	imageComponent = (ImageComponent) formBody
+		.getComponentByName("element_image");
+	addImageButton = (JButton) formBody
+		.getComponentByName("add_image_button");
+	deleteImageButton = (JButton) formBody
+		.getComponentByName("delete_image_button");
 
-	    imageComponent = (ImageComponent) formBody
-		    .getComponentByName("element_image");
-	    addImageButton = (JButton) formBody
-		    .getComponentByName("add_image_button");
-	    deleteImageButton = (JButton) formBody
-		    .getComponentByName("delete_image_button");
+	if (addImageListener == null) {
+	    addImageListener = new AddImageListener(imageComponent,
+		    addImageButton, getImagesDBTableName(), getElementID());
+	    addImageButton.addActionListener(addImageListener);
+	}
 
-	    Map<String, JComponent> widgets = getWidgets();
+	if (deleteImageListener == null) {
+	    deleteImageListener = new DeleteImageListener(imageComponent,
+		    addImageButton, getImagesDBTableName(), getElementID());
+	    deleteImageButton.addActionListener(deleteImageListener);
+	}
 
-	    if (hasSentido()) {
-		sentidoWidget = (JComboBox) widgets.get(SENTIDO);
-	    }
-
-	    if (addImageListener == null) {
-		addImageListener = new AddImageListener(imageComponent,
-			addImageButton, getImagesDBTableName(), getElementID());
-		addImageButton.addActionListener(addImageListener);
-	    }
-
-	    if (deleteImageListener == null) {
-		deleteImageListener = new DeleteImageListener(imageComponent,
-			addImageButton, getImagesDBTableName(), getElementID());
-		deleteImageButton.addActionListener(deleteImageListener);
-	    }
+	if (hasSentido()) {
+	    sentidoWidget = (JComboBox) getWidgets().get(SENTIDO);
 	}
 
 	if (SqlUtils.elementHasType(dataName, "inspecciones")) {
@@ -451,8 +446,6 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
     public String getTrabajosIDField() {
 	return "id_trabajo";
     }
-
-    public abstract boolean isSpecialCase();
 
     @Override
     protected abstract String getBasicName();
