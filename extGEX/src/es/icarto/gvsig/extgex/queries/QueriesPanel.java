@@ -83,7 +83,7 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
 
 	try {
 	    formBody = new FormPanel(getClass().getClassLoader()
-		    .getResourceAsStream("consultas.xml"));
+		    .getResourceAsStream("forms/consultas.xml"));
 	    this.add(formBody);
 	} catch (FormException e) {
 	    logger.error(e.getStackTrace(), e);

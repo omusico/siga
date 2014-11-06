@@ -81,7 +81,7 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
     public LocatorByFinca() {
 	super(470, 220);
 	InputStream stream = getClass().getClassLoader().getResourceAsStream(
-		"LocatorByFinca.xml");
+		"forms/LocatorByFinca.xml");
 	FormPanel result = null;
 	try {
 	    result = new FormPanel(stream);

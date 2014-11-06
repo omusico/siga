@@ -38,7 +38,7 @@ public class LocatorByMunicipio extends gvWindow implements IPositionRetriever,
     public LocatorByMunicipio() {
 	super(400, 145);
 	InputStream stream = getClass().getClassLoader().getResourceAsStream(
-		"LocatorByMunicipio.xml");
+		"forms/LocatorByMunicipio.xml");
 	FormPanel result = null;
 	try {
 	    result = new FormPanel(stream);
