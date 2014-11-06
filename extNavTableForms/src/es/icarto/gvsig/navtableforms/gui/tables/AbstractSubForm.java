@@ -63,7 +63,7 @@ public abstract class AbstractSubForm extends AbstractIWindow implements IForm,
     private FormPanel formPanel;
     private HashMap<String, JComponent> widgets;
     private final ValidationHandler validationHandler;
-    private IController iController;
+    protected IController iController;
     private final ORMLite ormlite;
     private FillHandler fillHandler;
     private final DependencyHandler dependencyHandler;
@@ -72,13 +72,13 @@ public abstract class AbstractSubForm extends AbstractIWindow implements IForm,
     private boolean isFillingValues;
     private boolean changedValues;
     private JPanel southPanel;
-    private JButton saveButton;
+    protected JButton saveButton;
     private Map<String, String> foreingKey;
     private final List<BaseTableHandler> tableHandlers = new ArrayList<BaseTableHandler>();
 
-    private long position;
-    private ActionListener action;
-    private AlphanumericTableModel model;
+    protected long position;
+    protected ActionListener action;
+    protected AlphanumericTableModel model;
 
     private String basicName;
 
