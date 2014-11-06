@@ -11,10 +11,9 @@ import com.iver.cit.gvsig.project.documents.view.gui.BaseView;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.icarto.gvsig.extpm.preferences.Preferences;
-import es.icarto.gvsig.extpm.utils.managers.TOCLayerManager;
 import es.icarto.gvsig.extpm.utils.managers.ToggleEditingManager;
+import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
-
 
 public class InsertPointWrapper extends InsertPointExtension {
     @Override
@@ -35,9 +34,8 @@ public class InsertPointWrapper extends InsertPointExtension {
 
     @Override
     public boolean isEnabled() {
-	if ((DBSession.getCurrentSession() != null) &&
-		hasView() &&
-		isLayerLoaded(Preferences.PM_LAYER_NAME)) {
+	if ((DBSession.getCurrentSession() != null) && hasView()
+		&& isLayerLoaded(Preferences.PM_LAYER_NAME)) {
 	    return true;
 	} else {
 	    return false;
@@ -51,7 +49,7 @@ public class InsertPointWrapper extends InsertPointExtension {
 
     private FLayer getActiveLayer() {
 	BaseView view = (BaseView) PluginServices.getMDIManager()
-	.getActiveWindow();
+		.getActiveWindow();
 	MapControl mapControl = view.getMapControl();
 	FLayers flayers = mapControl.getMapContext().getLayers();
 	FLyrVect actLayer = null;
@@ -66,7 +64,7 @@ public class InsertPointWrapper extends InsertPointExtension {
 
     public void setActiveLayerForPM() {
 	BaseView view = (BaseView) PluginServices.getMDIManager()
-	.getActiveWindow();
+		.getActiveWindow();
 	MapControl mapControl = view.getMapControl();
 	FLayers layersInTOC = mapControl.getMapContext().getLayers();
 	layersInTOC.setAllActives(false);
@@ -81,7 +79,7 @@ public class InsertPointWrapper extends InsertPointExtension {
     private boolean isLayerLoaded(String layerName) {
 	TOCLayerManager toc = new TOCLayerManager();
 	FLyrVect layer = toc.getLayerByName(layerName);
-	if(layer == null) {
+	if (layer == null) {
 	    return false;
 	}
 	return true;
@@ -89,7 +87,7 @@ public class InsertPointWrapper extends InsertPointExtension {
 
     private boolean hasView() {
 	IWindow window = PluginServices.getMDIManager().getActiveWindow();
-	if(window instanceof View) {
+	if (window instanceof View) {
 	    return true;
 	}
 	return false;

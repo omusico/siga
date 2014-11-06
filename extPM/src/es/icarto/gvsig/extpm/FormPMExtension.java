@@ -8,7 +8,7 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.icarto.gvsig.extpm.forms.FormPM;
 import es.icarto.gvsig.extpm.preferences.Preferences;
-import es.icarto.gvsig.extpm.utils.managers.TOCLayerManager;
+import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class FormPMExtension extends Extension {
