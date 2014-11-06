@@ -32,8 +32,6 @@ import es.icarto.gvsig.navtableforms.BasicAbstractForm;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkButton;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkData;
 import es.udc.cartolab.gvsig.navtable.ToggleEditing;
-import es.udc.cartolab.gvsig.users.utils.DBSession;
-import es.udc.cartolab.gvsig.users.utils.Formatter;
 
 @SuppressWarnings("serial")
 public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm {
@@ -99,23 +97,6 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 		addChained(PK_FINAL, TIPO_VIA, NOMBRE_VIA);
 	    }
 	}
-    }
-
-    /**
-     * TODO Take care. This is a kind of experiment used to retrieve
-     * audasa_extgia_dominios.pk.item values from the database in the number
-     * displayed format choose for the forms. The first time
-     * ormListe.getAppDomains is called is in initWidgets, and that method take
-     * the values from the table with DBSession.getTable method. Here, we are
-     * injecting a custom formatting. All this stuff MUST be removed when we fix
-     * how formats all used across all the application.
-     */
-    @Override
-    protected void initWidgets() {
-	DBSession session = DBSession.getCurrentSession();
-	session.setFormatter(new GIAFormatter());
-	super.initWidgets();
-	session.setFormatter(new Formatter());
     }
 
     @Override

@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgia.forms.utils;
+package es.icarto.gvsig.utils;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -6,7 +6,7 @@ import java.text.NumberFormat;
 import es.udc.cartolab.gvsig.navtable.format.DoubleFormatNT;
 import es.udc.cartolab.gvsig.users.utils.IFormatter;
 
-public class GIAFormatter implements IFormatter {
+public class SIGAFormatter implements IFormatter {
     private final NumberFormat numberFormat = DoubleFormatNT
 	    .getDisplayingFormat();
 

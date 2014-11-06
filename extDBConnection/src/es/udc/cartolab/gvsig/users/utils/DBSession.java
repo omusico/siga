@@ -54,7 +54,7 @@ import com.iver.cit.gvsig.project.Project;
 public class DBSession {
 
 	protected static DBSession instance = null;
-	private IFormatter formatter = new Formatter();
+	private static IFormatter formatter = new Formatter();
 	private final String server, username, password;
 	private final int port;
 	private String database;
@@ -199,8 +199,8 @@ public class DBSession {
 		return user;
 	}
 	
-	public void setFormatter(IFormatter formatter) {
-	    this.formatter = formatter; 
+	public static void setFormatter(IFormatter f) {
+	    formatter = f; 
 	}
 
 	/* GET LAYER */
