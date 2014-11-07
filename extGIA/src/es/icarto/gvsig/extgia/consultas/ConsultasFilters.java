@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import es.icarto.gvsig.commons.queries.QueryFiltersI;
 import es.icarto.gvsig.commons.utils.Field;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
+import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 
 public class ConsultasFilters<E> implements QueryFiltersI {
 
@@ -20,9 +20,7 @@ public class ConsultasFilters<E> implements QueryFiltersI {
     private Date fechaInicio;
     private Date fechaFin;
 
-    private final Locale loc = new Locale("es");
-    private final DateFormat dateFormat = DateFormat.getDateInstance(
-	    DateFormat.LONG, loc);
+    private final DateFormat dateFormat = DateFormatNT.getDateFormat();
     private String queryType = "";
     private List<E> fields;
     private List<E> orderBy;

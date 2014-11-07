@@ -17,9 +17,12 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.WorkbookUtil;
 
 import es.icarto.gvsig.commons.utils.Field;
+import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 
 public class XLSReport {
 
+    private static final String PATTERN = DateFormatNT.getDateFormat()
+	    .toPattern();
     private Workbook wb;
     protected Sheet sheet;
     protected final QueryFiltersI filters;
@@ -101,7 +104,7 @@ public class XLSReport {
 		CellStyle cellStyle = wb.createCellStyle();
 		CreationHelper creationHelper = wb.getCreationHelper();
 		cellStyle.setDataFormat(creationHelper.createDataFormat()
-			.getFormat("d/m/yyyy"));
+			.getFormat(PATTERN));
 		sheet.setDefaultColumnStyle(column, cellStyle);
 	    }
 	    row.createCell(column).setCellValue((Date) value);

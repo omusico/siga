@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -32,6 +31,7 @@ import com.lowagie.text.rtf.style.RtfParagraphStyle;
 
 import es.icarto.gvsig.commons.queries.Utils;
 import es.icarto.gvsig.commons.utils.Field;
+import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 
 public abstract class PDFReport {
 
@@ -40,7 +40,8 @@ public abstract class PDFReport {
     protected final com.lowagie.text.Font bodyBoldStyle = FontFactory.getFont(
 	    "arial", 8, Font.BOLD);
 
-    private final Locale loc = new Locale("es");
+    private final static DateFormat dateFormatter = DateFormatNT
+	    .getDateFormat();
 
     boolean isFirstPage = true;
 
@@ -161,10 +162,8 @@ public abstract class PDFReport {
     }
 
     private String getDateFormated() {
-	Calendar calendar = Calendar.getInstance();
-	DateFormat df = DateFormat.getDateInstance(DateFormat.LONG, loc);
-	Date d = calendar.getTime();
-	String date = df.format(d);
+	Date d = Calendar.getInstance().getTime();
+	String date = dateFormatter.format(d);
 	return date;
     }
 

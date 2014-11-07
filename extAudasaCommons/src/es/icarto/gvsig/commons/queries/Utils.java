@@ -19,6 +19,8 @@ import org.apache.log4j.Logger;
 
 import es.icarto.gvsig.commons.utils.Field;
 import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
+import es.udc.cartolab.gvsig.navtable.format.DoubleFormatNT;
+import es.udc.cartolab.gvsig.navtable.format.IntegerFormatNT;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class Utils {
@@ -27,6 +29,17 @@ public class Utils {
 
     private final static List<String> reservedColumns = Arrays
 	    .asList(new String[] { "gid", "the_geom", "geom" });
+
+    private final static SimpleDateFormat DATE_FORMAT = DateFormatNT
+	    .getDateFormat();
+    private final static NumberFormat DOUBLE_FORMAT = DoubleFormatNT
+	    .getDisplayingFormat();
+    private static final NumberFormat INT_FORMAT = IntegerFormatNT
+	    .getDisplayingFormat();
+
+    private Utils() {
+	throw new AssertionError("Non instantiable class");
+    }
 
     public static List<Field> getFields(String filePath, String schema,
 	    String table) {
@@ -55,15 +68,6 @@ public class Utils {
 	    logger.error(e.getStackTrace(), e);
 	}
 	return fields;
-    }
-
-    private final static SimpleDateFormat DATE_FORMAT = DateFormatNT
-	    .getDateFormat();
-    private final static NumberFormat NUMBER_FORMAT = NumberFormat
-	    .getInstance(Locale.getDefault());
-
-    private Utils() {
-	throw new AssertionError("Non instantiable class");
     }
 
     @Deprecated
@@ -126,8 +130,10 @@ public class Utils {
 	    return "";
 	} else if (o instanceof Date) {
 	    return DATE_FORMAT.format(o);
+	} else if (o instanceof Integer) {
+	    return INT_FORMAT.format(o);
 	} else if (o instanceof Number) {
-	    return NUMBER_FORMAT.format(o);
+	    return DOUBLE_FORMAT.format(o);
 	} else if (o instanceof Boolean) {
 	    return ((Boolean) o) ? "Sí" : "No";
 	}
