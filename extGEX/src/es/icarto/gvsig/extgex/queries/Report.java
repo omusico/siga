@@ -10,7 +10,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
+
+import org.apache.log4j.Logger;
 
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Chunk;
@@ -38,8 +39,13 @@ import com.lowagie.text.rtf.style.RtfParagraphStyle;
 import com.lowagie.text.rtf.table.RtfCell;
 
 import es.icarto.gvsig.commons.utils.Field;
+import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
+import es.udc.cartolab.gvsig.navtable.format.DoubleFormatNT;
+import es.udc.cartolab.gvsig.navtable.format.IntegerFormatNT;
 
 public class Report {
+
+    private static final Logger logger = Logger.getLogger(Report.class);
 
     protected static final int RTF = 0;
     protected static final int PDF = 1;
@@ -52,7 +58,11 @@ public class Report {
     private static final float TITULAR_COLUMN_WIDTH = 200f;
     private static final float PAGOS_COLUMN_WIDTH = 50f;
 
-    private final Locale loc = new Locale("es");
+    private static DateFormat dateFormatter = DateFormatNT.getDateFormat();
+    private static NumberFormat doubleFormatter = DoubleFormatNT
+	    .getDisplayingFormat();
+    private static NumberFormat intFormatter = IntegerFormatNT
+	    .getDisplayingFormat();
 
     private String[] tableHeader;
     private boolean startNewReport;
@@ -78,14 +88,11 @@ public class Report {
 	    image.setAbsolutePosition(0, 0);
 	    image.setAlignment(Chunk.ALIGN_RIGHT);
 	} catch (BadElementException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
+	    logger.error(e.getStackTrace(), e);
 	} catch (MalformedURLException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
+	    logger.error(e.getStackTrace(), e);
 	} catch (IOException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
+	    logger.error(e.getStackTrace(), e);
 	}
 	return image;
     }
@@ -107,20 +114,18 @@ public class Report {
 	    }
 	    document.add(Chunk.NEWLINE);
 	} catch (DocumentException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
+	    logger.error(e.getStackTrace(), e);
 	}
     }
 
     private String writeFiltersInHeader(String[] filters) {
-	String headFilters = null;
 	if (filters[3] == null) {
-	    return headFilters = "\n" + "Tramo: " + filters[0] + " UC: "
-		    + filters[1] + " Ayuntamiento: " + filters[2];
+	    return "\n" + "Tramo: " + filters[0] + " UC: " + filters[1]
+		    + " Ayuntamiento: " + filters[2];
 	} else {
-	    return headFilters = "\n" + "Tramo: " + filters[0] + " UC: "
-		    + filters[1] + " Ayuntamiento: " + filters[2]
-		    + " Parroquia/Subtramo: " + filters[3];
+	    return "\n" + "Tramo: " + filters[0] + " UC: " + filters[1]
+		    + " Ayuntamiento: " + filters[2] + " Parroquia/Subtramo: "
+		    + filters[3];
 	}
     }
 
@@ -133,8 +138,7 @@ public class Report {
 	try {
 	    document.add(titleP);
 	} catch (DocumentException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
+	    logger.error(e.getStackTrace(), e);
 	}
 
 	Paragraph subtitleP = new Paragraph(subtitle,
@@ -143,16 +147,13 @@ public class Report {
 	try {
 	    document.add(subtitleP);
 	} catch (DocumentException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
+	    logger.error(e.getStackTrace(), e);
 	}
     }
 
     private String getDateFormated() {
-	Calendar calendar = Calendar.getInstance();
-	DateFormat df = DateFormat.getDateInstance(DateFormat.LONG, loc);
-	Date d = calendar.getTime();
-	String date = df.format(d);
+	Date d = Calendar.getInstance().getTime();
+	String date = dateFormatter.format(d);
 	return date;
     }
 
@@ -162,8 +163,7 @@ public class Report {
 	try {
 	    document.add(dateP);
 	} catch (DocumentException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
+	    logger.error(e.getStackTrace(), e);
 	}
     }
 
@@ -173,8 +173,7 @@ public class Report {
 	try {
 	    document.add(numFincasP);
 	} catch (DocumentException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
+	    logger.error(e.getStackTrace(), e);
 	}
     }
 
@@ -252,8 +251,7 @@ public class Report {
 	    document.close();
 
 	} catch (DocumentException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
+	    logger.error(e.getStackTrace(), e);
 	}
 
     }
@@ -334,8 +332,6 @@ public class Report {
 
 	    startNewReport = false;
 	    tableHeader = headerCells;
-	    NumberFormat nf = NumberFormat.getInstance(loc);
-	    DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, loc);
 
 	    // Values
 	    Paragraph value;
@@ -344,17 +340,19 @@ public class Report {
 		for (int column = 0; column < columnCount; column++) {
 		    if (result.getValueAt(row, column) != null) {
 			if (result.getValueAt(row, column).getClass().getName()
-				.equalsIgnoreCase("java.lang.Integer")
-				|| result.getValueAt(row, column).getClass()
-					.getName()
-					.equalsIgnoreCase("java.lang.Double")) {
-			    valueFormatted = nf.format(result.getValueAt(row,
-				    column));
+				.equalsIgnoreCase("java.lang.Integer")) {
+			    valueFormatted = intFormatter.format(result
+				    .getValueAt(row, column));
+			    value = new Paragraph(valueFormatted, cellBoldStyle);
+			} else if (result.getValueAt(row, column).getClass()
+				.getName().equalsIgnoreCase("java.lang.Double")) {
+			    valueFormatted = doubleFormatter.format(result
+				    .getValueAt(row, column));
 			    value = new Paragraph(valueFormatted, cellBoldStyle);
 			} else if (result.getValueAt(row, column).getClass()
 				.getName().equalsIgnoreCase("java.sql.Date")) {
-			    valueFormatted = df.format(result.getValueAt(row,
-				    column));
+			    valueFormatted = dateFormatter.format(result
+				    .getValueAt(row, column));
 			    value = new Paragraph(valueFormatted, cellBoldStyle);
 			} else {
 			    value = new Paragraph(result
@@ -378,8 +376,7 @@ public class Report {
 	    document.close();
 
 	} catch (DocumentException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
+	    logger.error(e.getStackTrace(), e);
 	}
     }
 
@@ -403,8 +400,7 @@ public class Report {
 	    document.close();
 
 	} catch (FileNotFoundException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
+	    logger.error(e.getStackTrace(), e);
 	}
     }
 
@@ -424,23 +420,17 @@ public class Report {
 	    document.close();
 
 	} catch (FileNotFoundException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
+	    logger.error(e.getStackTrace(), e);
 	} catch (DocumentException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
+	    logger.error(e.getStackTrace(), e);
 	}
     }
 
     public class MyPageEvent extends PdfPageEventHelper {
-	private final PdfWriter pdfWriter;
-	private final Document document;
 	private final ResultTableModel resultMap;
 
 	public MyPageEvent(PdfWriter pdfWriter, Document document,
 		ResultTableModel resultsMap) {
-	    this.pdfWriter = pdfWriter;
-	    this.document = document;
 	    this.resultMap = resultsMap;
 	}
 
@@ -477,8 +467,7 @@ public class Report {
 		    }
 		}
 	    } catch (DocumentException e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
+		logger.error(e1.getMessage(), e1);
 	    }
 	}
     }
