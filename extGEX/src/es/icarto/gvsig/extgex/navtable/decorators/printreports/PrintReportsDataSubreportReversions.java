@@ -12,11 +12,9 @@ import net.sf.jasperreports.engine.JRField;
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
-import com.iver.cit.gvsig.project.documents.table.gui.Table;
 
 import es.icarto.gvsig.extgex.forms.reversions.FormReversions;
 import es.icarto.gvsig.extgex.preferences.DBNames;
-import es.icarto.gvsig.extgex.utils.managers.TableLayerManager;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -30,12 +28,10 @@ public class PrintReportsDataSubreportReversions implements JRDataSource {
     private int count = 0;
     private String idFinca = null;
     private ArrayList<Integer> indexOfReversionsAffected = null;
-    private Table reversionsTable = null;
     private FLyrVect reversionsLayer = null;
 
     public PrintReportsDataSubreportReversions(String idFinca) {
 	this.idFinca = idFinca;
-	reversionsTable = getReversionsTable();
 	reversionsLayer = getReversionsLayer();
 	indexOfReversionsAffected = getReversions(this.idFinca);
     }
@@ -45,30 +41,10 @@ public class PrintReportsDataSubreportReversions implements JRDataSource {
 	return toc.getLayerByName(FormReversions.TOCNAME);
     }
 
-    private Table getReversionsTable() {
-	TableLayerManager tableManager = new TableLayerManager();
-	return tableManager.getTableByName(DBNames.TABLE_FINCASREVERSIONES);
-    }
-
     private ArrayList<Integer> getReversions(String idFinca) {
 	indexOfReversionsAffected = new ArrayList<Integer>();
 	ArrayList<String> reversionsAffected = new ArrayList<String>();
 	try {
-	    // SelectableDataSource sds = reversionsTable.getModel().getModelo()
-	    // .getRecordset();
-	    // SelectableDataSource sdsReversions =
-	    // reversionsLayer.getRecordset();
-	    // int indexOfIDFinca =
-	    // sds.getFieldIndexByName(DBNames.FIELD_IDFINCA);
-	    // int indexOfIDReversion = sds
-	    // .getFieldIndexByName(DBNames.FIELD_IDREVERSION_REVERSIONES);
-	    // for (int i = 0; i < sds.getRowCount(); i++) {
-	    // if (sds.getFieldValue(i, indexOfIDFinca).toString()
-	    // .equalsIgnoreCase(idFinca)) {
-	    // reversionsAffected.add(sds.getFieldValue(i,
-	    // indexOfIDReversion).toString());
-	    // }
-	    // }
 	    SelectableDataSource sdsReversions = reversionsLayer.getRecordset();
 	    PreparedStatement statement;
 	    String query = "SELECT id_reversion FROM audasa_expropiaciones.finca_reversion "

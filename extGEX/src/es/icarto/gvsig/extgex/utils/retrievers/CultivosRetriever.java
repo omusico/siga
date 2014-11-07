@@ -19,7 +19,7 @@ import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 import com.iver.cit.gvsig.project.documents.table.gui.Table;
 
 import es.icarto.gvsig.extgex.preferences.DBNames;
-import es.icarto.gvsig.extgex.utils.managers.TableLayerManager;
+import es.icarto.gvsig.navtableforms.utils.TOCTableManager;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class CultivosRetriever {
@@ -39,8 +39,10 @@ public class CultivosRetriever {
     private void setCultivosForFinca() {
 	try {
 	    PreparedStatement statement;
-	    String query = "SELECT distinct(id_cultivo) from audasa_expropiaciones.expropiaciones where id_finca = '" +idFinca +"';";
-	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
+	    String query = "SELECT distinct(id_cultivo) from audasa_expropiaciones.expropiaciones where id_finca = '"
+		    + idFinca + "';";
+	    statement = DBSession.getCurrentSession().getJavaConnection()
+		    .prepareStatement(query);
 	    statement.execute();
 	    ResultSet rs = statement.getResultSet();
 	    while (rs.next()) {
@@ -49,25 +51,25 @@ public class CultivosRetriever {
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
-	//	try {
-	//	    SelectableDataSource sds = getFilteredRecordset();
-	//	    int idCultivoIndex = getCultivoIDIndex(sds);
-	//	    for (int i = 0; i < sds.getRowCount(); i++) {
-	//		cultivosID
-	//			.add(((IntValue) sds.getFieldValue(i, idCultivoIndex))
-	//				.getValue());
-	//	    }
-	//	} catch (DriverLoadException e) {
-	//	    e.printStackTrace();
-	//	} catch (ReadDriverException e) {
-	//	    e.printStackTrace();
-	//	} catch (ParseException e) {
-	//	    e.printStackTrace();
-	//	} catch (SemanticException e) {
-	//	    e.printStackTrace();
-	//	} catch (EvaluationException e) {
-	//	    e.printStackTrace();
-	//	}
+	// try {
+	// SelectableDataSource sds = getFilteredRecordset();
+	// int idCultivoIndex = getCultivoIDIndex(sds);
+	// for (int i = 0; i < sds.getRowCount(); i++) {
+	// cultivosID
+	// .add(((IntValue) sds.getFieldValue(i, idCultivoIndex))
+	// .getValue());
+	// }
+	// } catch (DriverLoadException e) {
+	// e.printStackTrace();
+	// } catch (ReadDriverException e) {
+	// e.printStackTrace();
+	// } catch (ParseException e) {
+	// e.printStackTrace();
+	// } catch (SemanticException e) {
+	// e.printStackTrace();
+	// } catch (EvaluationException e) {
+	// e.printStackTrace();
+	// }
     }
 
     private int getCultivoIDIndex(SelectableDataSource sds) {
@@ -90,7 +92,7 @@ public class CultivosRetriever {
     private SelectableDataSource getFilteredRecordset()
 	    throws ReadDriverException, ParseException, DriverLoadException,
 	    SemanticException, EvaluationException {
-	TableLayerManager tableManager = new TableLayerManager();
+	TOCTableManager tableManager = new TOCTableManager();
 	Table expropiaciones = tableManager
 		.getTableByName(DBNames.TABLE_EXPROPIACIONES);
 	IEditableSource source = expropiaciones.getModel().getModelo();
