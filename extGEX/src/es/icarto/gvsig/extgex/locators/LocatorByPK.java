@@ -21,7 +21,6 @@ import com.hardcode.gdbms.engine.data.DataSourceFactory;
 import com.hardcode.gdbms.engine.instruction.EvaluationException;
 import com.hardcode.gdbms.engine.instruction.SemanticException;
 import com.hardcode.gdbms.engine.values.Value;
-import com.hardcode.gdbms.engine.values.ValueWriter;
 import com.hardcode.gdbms.parser.ParseException;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.edition.EditableAdapter;
@@ -39,9 +38,12 @@ import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.utils.retrievers.KeyValueRetriever;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
+import es.udc.cartolab.gvsig.navtable.format.ValueFormatNT;
 
 @SuppressWarnings("serial")
 public class LocatorByPK extends gvWindow implements ActionListener {
+
+    private static final ValueFormatNT WRITER = new ValueFormatNT();
 
     private static final Logger logger = Logger.getLogger(LocatorByPK.class);
 
@@ -129,7 +131,8 @@ public class LocatorByPK extends gvWindow implements ActionListener {
 	    pkNumberCB.removeAllItems();
 	    int pkIndex = ea.getRecordset().getFieldIndexByName(PK_FIELD);
 	    for (int i = 0; i < ea.getRecordset().getRowCount(); i++) {
-		pkNumberCB.addItem(ea.getRecordset().getFieldValue(i, pkIndex));
+		pkNumberCB.addItem(ea.getRecordset().getFieldValue(i, pkIndex)
+			.getStringValue(WRITER));
 	    }
 	} catch (ReadDriverException e) {
 	    logger.error(e.getStackTrace(), e);
@@ -161,8 +164,7 @@ public class LocatorByPK extends gvWindow implements ActionListener {
 		    int pkIndex = pkRecordset.getFieldIndexByName(PK_FIELD);
 		    for (int i = 0; i < pkRecordset.getRowCount(); i++) {
 			Value pkValue = pkRecordset.getFieldValue(i, pkIndex);
-			String pkStringValue = pkValue
-				.getStringValue(ValueWriter.internalValueWriter);
+			String pkStringValue = pkValue.getStringValue(WRITER);
 			Value tramoValue = pkRecordset.getFieldValue(i,
 				tramoIndex);
 
