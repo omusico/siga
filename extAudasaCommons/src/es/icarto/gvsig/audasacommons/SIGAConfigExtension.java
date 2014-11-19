@@ -11,6 +11,7 @@ import com.iver.andami.preferences.IPreferenceExtension;
 import com.iver.cit.gvsig.About;
 import com.iver.cit.gvsig.gui.panels.FPanelAbout;
 
+import es.icarto.gvsig.navtableforms.SIGAFormFactory;
 import es.icarto.gvsig.utils.SIGAFormatter;
 import es.udc.cartolab.gvsig.elle.ConfigExtension;
 import es.udc.cartolab.gvsig.elle.utils.MapFilter;
@@ -25,6 +26,8 @@ public class SIGAConfigExtension extends Extension implements
 	FPanelAbout panelAbout = about.getAboutPanel();
 	java.net.URL aboutURL = this.getClass().getResource("/about.htm");
 	panelAbout.addAboutUrl("AUDASA", aboutURL);
+
+	SIGAFormFactory.registerFormFactory();
     }
 
     @Override

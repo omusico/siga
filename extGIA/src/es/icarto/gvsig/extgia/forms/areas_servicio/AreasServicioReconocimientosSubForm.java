@@ -1,9 +1,9 @@
 package es.icarto.gvsig.extgia.forms.areas_servicio;
 
-import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.GIASubForm;
 
 @SuppressWarnings("serial")
-public class AreasServicioReconocimientosSubForm extends BasicAbstractSubForm {
+public class AreasServicioReconocimientosSubForm extends GIASubForm {
 
     public AreasServicioReconocimientosSubForm() {
 	super("areas_servicio_reconocimientos");

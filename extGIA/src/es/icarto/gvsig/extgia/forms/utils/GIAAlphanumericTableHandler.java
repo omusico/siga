@@ -35,7 +35,7 @@ public class GIAAlphanumericTableHandler extends BaseTableHandler {
 	super(tableName, widgets, foreignKeyId, colNames, colAliases);
 
 	FormFactory.checkAndLoadTableRegistered(tableName);
-	subform = new BasicAbstractSubForm(tableName);
+	subform = new GIASubForm(tableName);
 
 	addButton = (JButton) form.getFormBody().getComponentByName(
 		tableName + "_add_button");

@@ -1,23 +1,21 @@
-package es.icarto.gvsig.extgia.forms.utils;
+package es.icarto.gvsig.navtableforms;
 
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
-import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.gui.tables.AbstractSubForm;
 import es.icarto.gvsig.navtableforms.utils.DBConnectionBaseFormFactory;
 import es.icarto.gvsig.navtableforms.utils.FormFactory;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 
-public class GIAFormFactory extends DBConnectionBaseFormFactory {
+public class SIGAFormFactory extends DBConnectionBaseFormFactory {
 
-    private final static GIAFormFactory instance;
+    private final static SIGAFormFactory instance;
 
     static {
-	instance = new GIAFormFactory();
+	instance = new SIGAFormFactory();
     }
 
-    private GIAFormFactory() {
+    private SIGAFormFactory() {
     }
 
     public static void registerFormFactory() {
@@ -63,11 +61,19 @@ public class GIAFormFactory extends DBConnectionBaseFormFactory {
 
     @Override
     public void loadLayer(String layerName) {
-	loadLayer(layerName, DBFieldNames.GIA_SCHEMA);
+	loadLayer(layerName, "audasa_extgia");
     }
 
     @Override
     public void loadTable(String tableName) {
-	loadTable(tableName, DBFieldNames.GIA_SCHEMA);
+	/*
+	 * As nt formfactory only allows register one factory we should do this
+	 * ugly if instead of have a factory for each project
+	 */
+	String schema = "audasa_extgia";
+	if (tableName.equalsIgnoreCase("expropiaciones")) {
+	    schema = "audasa_expropiaciones";
+	}
+	loadTable(tableName, schema);
     }
 }

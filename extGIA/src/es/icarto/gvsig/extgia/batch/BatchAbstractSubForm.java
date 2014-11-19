@@ -13,14 +13,14 @@ import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 
-import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.GIASubForm;
 import es.icarto.gvsig.navtableforms.gui.tables.model.AlphanumericTableModel;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 import es.udc.cartolab.gvsig.navtable.dataacces.IController;
 import es.udc.cartolab.gvsig.navtable.format.ValueFormatNT;
 
 @SuppressWarnings("serial")
-public abstract class BatchAbstractSubForm extends BasicAbstractSubForm {
+public abstract class BatchAbstractSubForm extends GIASubForm {
 
     private static final ValueFormatNT WRITER = new ValueFormatNT();
 

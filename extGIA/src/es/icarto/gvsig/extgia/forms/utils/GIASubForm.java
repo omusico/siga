@@ -2,21 +2,20 @@ package es.icarto.gvsig.extgia.forms.utils;
 
 import javax.swing.ImageIcon;
 
-import com.iver.andami.PluginServices;
 import com.jeta.forms.components.image.ImageComponent;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.navtableforms.gui.tables.AbstractSubForm;
 
 @SuppressWarnings("serial")
-public class BasicAbstractSubForm extends AbstractSubForm {
+public class GIASubForm extends AbstractSubForm {
 
-    public BasicAbstractSubForm(String basicName) {
+    public GIASubForm(String basicName) {
 	super(basicName);
 	initGUIPost();
     }
 
-    public BasicAbstractSubForm() {
+    public GIASubForm() {
 	super();
 	initGUIPost();
     }
@@ -27,9 +26,5 @@ public class BasicAbstractSubForm extends AbstractSubForm {
 		.getComponentByName("image");
 	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
 	image.setIcon(icon);
-    }
-
-    public void closeWindow() {
-	PluginServices.getMDIManager().closeWindow(this);
     }
 }

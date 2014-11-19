@@ -1,10 +1,10 @@
 package es.icarto.gvsig.extgia.forms.senhalizacion_vertical;
 
-import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.GIASubForm;
 
 @SuppressWarnings("serial")
 public class SenhalizacionVerticalReconocimientosSubForm extends
-	BasicAbstractSubForm {
+	GIASubForm {
 
     public SenhalizacionVerticalReconocimientosSubForm() {
 	super("senhalizacion_vertical_reconocimientos");

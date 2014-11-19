@@ -1,9 +1,9 @@
 package es.icarto.gvsig.extgia.forms.muros;
 
-import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.GIASubForm;
 
 @SuppressWarnings("serial")
-public class MurosReconocimientosSubForm extends BasicAbstractSubForm {
+public class MurosReconocimientosSubForm extends GIASubForm {
 
     public MurosReconocimientosSubForm() {
 	super("muros_reconocimientos");

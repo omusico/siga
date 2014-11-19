@@ -1,9 +1,9 @@
 package es.icarto.gvsig.extgia.forms.areas_descanso;
 
-import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.GIASubForm;
 
 @SuppressWarnings("serial")
-public class AreasDescansoReconocimientosSubForm extends BasicAbstractSubForm {
+public class AreasDescansoReconocimientosSubForm extends GIASubForm {
 
     public AreasDescansoReconocimientosSubForm() {
 	addCalculation(new AreasDescansoCalculateIndiceEstado(this));

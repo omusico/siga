@@ -1,9 +1,9 @@
 package es.icarto.gvsig.extgia.forms.valla_cierre;
 
-import es.icarto.gvsig.extgia.forms.utils.BasicAbstractSubForm;
+import es.icarto.gvsig.extgia.forms.utils.GIASubForm;
 
 @SuppressWarnings("serial")
-public class VallaCierreReconocimientosSubForm extends BasicAbstractSubForm {
+public class VallaCierreReconocimientosSubForm extends GIASubForm {
 
     public VallaCierreReconocimientosSubForm() {
 	super("valla_cierre_reconocimientos");
