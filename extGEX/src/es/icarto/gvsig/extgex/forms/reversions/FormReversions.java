@@ -3,10 +3,7 @@ package es.icarto.gvsig.extgex.forms.reversions;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Map;
 
 import javax.swing.JButton;
@@ -14,27 +11,21 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
-import com.hardcode.gdbms.engine.values.Value;
-import com.hardcode.gdbms.engine.values.ValueFactory;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
+import es.icarto.gvsig.commons.queries.Utils;
 import es.icarto.gvsig.commons.utils.Field;
 import es.icarto.gvsig.extgex.navtable.NavTableComponentsFactory;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.navtableforms.BasicAbstractForm;
 import es.icarto.gvsig.navtableforms.gui.CustomTableModel;
-import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
-import es.udc.cartolab.gvsig.navtable.format.DoubleFormatNT;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
-public class FormReversions extends BasicAbstractForm implements
-	TableModelListener {
+public class FormReversions extends BasicAbstractForm {
 
     public static final String TABLENAME = "exp_rv";
     public static final String TOCNAME = "Reversiones";
@@ -110,9 +101,9 @@ public class FormReversions extends BasicAbstractForm implements
 
 	DefaultTableModel tableModel = setTableHeader();
 
-	double totalSuperficie = 0.0;
-	double totalImporteEuros = 0.0;
-	double totalImportePtas = 0.0;
+	Double totalSuperficie = 0.0;
+	Double totalImporteEuros = 0.0;
+	Double totalImportePtas = 0.0;
 
 	try {
 
@@ -125,55 +116,39 @@ public class FormReversions extends BasicAbstractForm implements
 		    .setPreferredWidth(100);
 	    fincasAfectadas.getColumnModel().getColumn(5).setPreferredWidth(60);
 
-	    Value[] reversionData = new Value[tableModel.getColumnCount()];
+	    String[] reversionData = new String[tableModel.getColumnCount()];
 	    ResultSet rs = getFincasByExpReversion();
 
 	    while (rs.next()) {
-		reversionData[0] = ValueFactory.createValue(rs.getString(1));
-		reversionData[1] = ValueFactory
-			.createValue(getExpedientesPMByFinca(rs.getString(1)));
+		reversionData[0] = Utils.formatValue(rs.getObject(1));
+		reversionData[1] = getExpedientesPMByFinca(rs.getString(1));
+		reversionData[2] = Utils.formatValue(rs.getObject(2));
 		if (rs.getObject(2) != null) {
-		    totalSuperficie = totalSuperficie + rs.getDouble(2);
-		    reversionData[2] = ValueFactory
-			    .createValue(getDoubleFormatted(rs.getDouble(2)));
-		} else {
-		    reversionData[2] = ValueFactory.createNullValue();
+		    totalSuperficie += rs.getDouble(2);
 		}
+		reversionData[3] = Utils.formatValue(rs.getObject(3));
 		if (rs.getObject(3) != null) {
-		    totalImporteEuros = totalImporteEuros + rs.getDouble(3);
-		    reversionData[3] = ValueFactory
-			    .createValue(getDoubleFormatted(rs.getDouble(3)));
-		} else {
-		    reversionData[3] = ValueFactory.createNullValue();
+		    totalImporteEuros += rs.getDouble(3);
 		}
+		reversionData[4] = Utils.formatValue(rs.getObject(4));
 		if (rs.getObject(4) != null) {
-		    totalImportePtas = totalImportePtas + rs.getDouble(4);
-		    reversionData[4] = ValueFactory
-			    .createValue(getDoubleFormatted(rs.getDouble(4)));
-		} else {
-		    reversionData[4] = ValueFactory.createNullValue();
+		    totalImportePtas += rs.getDouble(4);
 		}
-		if (rs.getObject(5) != null) {
-		    reversionData[5] = ValueFactory
-			    .createValue(getDateFormatted(rs.getDate(5)));
-		} else {
-		    reversionData[5] = ValueFactory.createNullValue();
-		}
+		reversionData[5] = Utils.formatValue(rs.getObject(5));
+
 		tableModel.addRow(reversionData);
 	    }
-	    reversionData[0] = ValueFactory.createValue("<html><b>" + "TOTAL"
-		    + "</b></html>");
-	    reversionData[1] = ValueFactory.createNullValue();
-	    reversionData[2] = ValueFactory.createValue("<html><b>"
-		    + totalSuperficie + "</b></html>");
-	    reversionData[3] = ValueFactory.createValue("<html><b>"
-		    + totalImporteEuros + "</b></html>");
-	    reversionData[4] = ValueFactory.createValue("<html><b>"
-		    + totalImportePtas + "</b></html>");
-	    reversionData[5] = ValueFactory.createNullValue();
+	    reversionData[0] = "<html><b>" + "TOTAL" + "</b></html>";
+	    reversionData[1] = "";
+	    reversionData[2] = "<html><b>" + Utils.formatValue(totalSuperficie)
+		    + "</b></html>";
+	    reversionData[3] = "<html><b>"
+		    + Utils.formatValue(totalImporteEuros) + "</b></html>";
+	    reversionData[4] = "<html><b>"
+		    + Utils.formatValue(totalImportePtas) + "</b></html>";
+	    reversionData[5] = "";
 	    tableModel.addRow(reversionData);
 	    repaint();
-	    tableModel.addTableModelListener(this);
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
@@ -197,16 +172,6 @@ public class FormReversions extends BasicAbstractForm implements
 	    tableModel.addColumn(columnName);
 	}
 	return tableModel;
-    }
-
-    private String getDateFormatted(Date date) {
-	SimpleDateFormat dateFormat = DateFormatNT.getDateFormat();
-	return dateFormat.format(date);
-    }
-
-    private String getDoubleFormatted(Double doubleValue) {
-	NumberFormat doubleFormat = DoubleFormatNT.getDisplayingFormat();
-	return doubleFormat.format(doubleValue);
     }
 
     private ResultSet getFincasByExpReversion() throws SQLException {
@@ -256,12 +221,6 @@ public class FormReversions extends BasicAbstractForm implements
     @Override
     protected String getSchema() {
 	return DBNames.SCHEMA_DATA;
-    }
-
-    @Override
-    public void tableChanged(TableModelEvent arg0) {
-	super.setChangedValues(true);
-	super.saveB.setEnabled(true);
     }
 
     @Override
