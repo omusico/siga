@@ -9,6 +9,7 @@
 	<depends plugin-name="org.gvsig.mapsheets.print.series"/>
 	<depends plugin-name="es.icarto.gvsig.audasacommons"/>
 	<depends plugin-name="es.icarto.gvsig.extgia"/>
+	<depends plugin-name="es.icarto.gvsig.commons"/>
 	<libraries library-dir="lib"/>
 	<resourceBundle name="text"/>
 	<extensions>
