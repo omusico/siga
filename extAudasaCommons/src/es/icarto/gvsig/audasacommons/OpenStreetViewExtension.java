@@ -15,14 +15,18 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
  * 
  */
 public class OpenStreetViewExtension extends Extension {
-    private final static String iconKey = "open-street-view";
+    public final static String KEY = "open-street-view";
 
     @Override
     public void initialize() {
 	// ImageIcon icon = new ImageIcon("images/open-street-view.png");
-	URL resource = getClass().getClassLoader().getResource(
+	URL iconResource = getClass().getClassLoader().getResource(
 		"images/open-street-view.png");
-	PluginServices.getIconTheme().registerDefault(iconKey, resource);
+	URL cursorResource = getClass().getClassLoader().getResource(
+		"images/open-street-view-cursor.png");
+	PluginServices.getIconTheme().registerDefault(KEY, iconResource);
+	PluginServices.getIconTheme().registerDefault(KEY + "-cursor",
+		cursorResource);
     }
 
     @Override
@@ -30,12 +34,12 @@ public class OpenStreetViewExtension extends Extension {
 
 	View view = (View) PluginServices.getMDIManager().getActiveWindow();
 	MapControl mc = view.getMapControl();
-	if (!mc.getNamesMapTools().containsKey(iconKey)) {
+	if (!mc.getNamesMapTools().containsKey(KEY)) {
 	    StreetViewListener fpl = new StreetViewListener(mc);
-	    mc.addMapTool(iconKey, new PointBehavior(fpl));
+	    mc.addMapTool(KEY, new PointBehavior(fpl));
 	}
 
-	mc.setTool(iconKey);
+	mc.setTool(KEY);
 
     }
 

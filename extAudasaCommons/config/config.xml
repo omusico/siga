@@ -9,27 +9,21 @@
 	<libraries library-dir="lib"/>
 	<resourceBundle name="text"/>
 	<extensions>
-		
 		<extension class-name="es.icarto.gvsig.audasacommons.SIGAConfigExtension" active="true">
 		</extension>
-		
 		<extension class-name="es.icarto.gvsig.audasacommons.OpenStreetViewExtension" active="true">
+			<menu text="SIGA" position="30949" is_separator="true"/>	
+			<menu text="SIGA/Street View" icon="open-street-view" position="30950"/>
 			<tool-bar name="SIGA_Tools" position="75">
-				<action-tool icon="open-street-view" position="100" tooltip="Abrir Street View"></action-tool>
+				<action-tool icon="open-street-view" position="4" tooltip="Abrir Street View" />
 			</tool-bar>
 		</extension>
-		 
-		
 		<extension
-            class-name="es.udc.cartolab.gvsig.elle.SigaLoadMapExtension"
-            active="true" description="Load map">
-            <menu action-command="LoadMap" icon="load-map"
-                text="data_base_menu/Load_map" position="20100"/>
+            class-name="es.udc.cartolab.gvsig.elle.SigaLoadMapExtension" active="true" description="Load map">
+            <menu action-command="LoadMap" icon="load-map" text="data_base_menu/Load_map" position="20100"/>
             <tool-bar name="ELLE" position="30">
-                <action-tool name="load-map" action-command="LoadMap"
-                    icon="load-map" tooltip="Load_map" position="1"/>
+                <action-tool name="load-map" action-command="LoadMap" icon="load-map" tooltip="Load_map" position="1"/>
             </tool-bar>
         </extension>
-		
 	</extensions>
 </plugin-config>

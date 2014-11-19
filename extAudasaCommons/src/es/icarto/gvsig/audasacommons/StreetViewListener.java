@@ -36,7 +36,7 @@ public class StreetViewListener extends PointSelectionListener {
      * The image to display when the cursor is active.
      */
     private final Image img = PluginServices.getIconTheme()
-	    .get("cursor-query-information").getImage();
+	    .get(OpenStreetViewExtension.KEY + "-cursor").getImage();
 
     /**
      * The cursor used to work with this tool listener.
