@@ -139,9 +139,6 @@ public class DBNames {
 
     public static final String EXPROPIATIONS_AFECTADO_PM = "afectado_por_policia_margenes";
 
-    public static final String EXPROPIATIONS_ADD_EXPROPIATION_BUTTON = "add_expropiation_button";
-    public static final String EXPROPIATIONS_DELETE_EXPROPIATION_BUTTON = "delete_expropiation_button";
-
     public static final String SUBFORMEXPROPIATION_ADD_EXPROPIATION_BUTTON = "add_expropiation_subform_button";
     public static final String SUBFORMEXPROPIATION_SUPERFICIE = "expropiacion_superficie";
     public static final String SUBFORMEXPROPIATION_CULTIVO = "expropiacion_cultivo";

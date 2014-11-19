@@ -62,7 +62,7 @@ public class SubFormExpropiationsAddReversions extends AbstractIWindow
 	setWindowTitle("Añadir Reversiones");
 	setWindowInfoProperties(WindowInfo.MODALDIALOG);
 	InputStream stream = getClass().getClassLoader().getResourceAsStream(
-		"expropiaciones_add_reversiones.xml");
+		"forms/expropiaciones_add_reversiones.xml");
 	FormPanel result = null;
 	try {
 	    result = new FormPanel(stream);

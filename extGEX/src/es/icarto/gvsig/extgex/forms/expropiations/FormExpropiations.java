@@ -53,9 +53,10 @@ public class FormExpropiations extends BasicAbstractForm implements
 
     public static final String TABLENAME = "exp_finca";
     public static final Object TOCNAME = "Fincas";
+    public static final String PKFIELD = "id_finca";
 
     private static final String WIDGET_REVERSIONES = "tabla_reversiones_afectan";
-    private static final String WIDGET_EXPROPIACIONES = "tabla_expropiaciones";
+    private static final String WIDGET_EXPROPIACIONES = "expropiaciones";
     private static final String WIDGET_PM = "tabla_pm_afectan";
 
     private JComboBox tramo;
@@ -82,7 +83,6 @@ public class FormExpropiations extends BasicAbstractForm implements
     private JButton addExpropiationButton;
     private JButton deleteExpropiationButton;
 
-    private DependentComboboxHandler ucDomainHandler;
     private DependentComboboxHandler ayuntamientoDomainHandler;
     private DependentComboboxHandler subtramoDomainHandler;
     private UpdateNroFincaHandler updateNroFincaHandler;
@@ -102,6 +102,7 @@ public class FormExpropiations extends BasicAbstractForm implements
 
 	addCalculation(new ImporteTotalPagadoCalculation(this));
 	addCalculation(new ImportePendienteTotalCalculation(this));
+	addChained(DBNames.FIELD_UC_FINCAS, DBNames.FIELD_TRAMO_FINCAS);
     }
 
     private void addButtonsToActionsToolBar() {
@@ -117,12 +118,8 @@ public class FormExpropiations extends BasicAbstractForm implements
     }
 
     @Override
-    protected void enableSaveButton(boolean bool) {
-	if (!isChangedValues()) {
-	    saveB.setEnabled(false);
-	} else {
-	    saveB.setEnabled(bool);
-	}
+    protected String getPrimaryKeyValue() {
+	return getFormController().getValue(PKFIELD);
     }
 
     @Override
@@ -143,7 +140,6 @@ public class FormExpropiations extends BasicAbstractForm implements
 	seccion = (JTextField) widgets.get(DBNames.FIELD_SECCION_FINCAS);
 
 	finca = (JTextField) widgets.get(DBNames.FIELD_IDFINCA);
-	// finca.setEnabled(false);
 
 	expropiaciones = (JTable) widgets.get(WIDGET_EXPROPIACIONES);
 	reversiones = (JTable) widgets.get(WIDGET_REVERSIONES);
@@ -164,17 +160,15 @@ public class FormExpropiations extends BasicAbstractForm implements
 
 	addExpropiationListener = new AddExpropiationListener();
 	addExpropiationButton = (JButton) formBody
-		.getComponentByName(DBNames.EXPROPIATIONS_ADD_EXPROPIATION_BUTTON);
+		.getComponentByName("expropiaciones_add_button");
 	addExpropiationButton.addActionListener(addExpropiationListener);
 
 	deleteExpropiationListener = new DeleteExpropiationListener();
 	deleteExpropiationButton = (JButton) formBody
-		.getComponentByName(DBNames.EXPROPIATIONS_DELETE_EXPROPIATION_BUTTON);
+		.getComponentByName("expropiaciones_delete_button");
 	deleteExpropiationButton.addActionListener(deleteExpropiationListener);
 
 	// BIND LISTENERS TO WIDGETS
-	ucDomainHandler = new DependentComboboxHandler(this, tramo, uc);
-	tramo.addActionListener(ucDomainHandler);
 
 	ayuntamientoDomainHandler = new DependentComboboxHandler(this, uc,
 		ayuntamiento);
@@ -209,7 +203,6 @@ public class FormExpropiations extends BasicAbstractForm implements
     protected void removeListeners() {
 	super.removeListeners();
 
-	tramo.removeActionListener(ucDomainHandler);
 	uc.removeActionListener(ayuntamientoDomainHandler);
 	ayuntamiento.removeActionListener(subtramoDomainHandler);
 	subtramo.removeActionListener(updateNroFincaHandler);
@@ -361,7 +354,7 @@ public class FormExpropiations extends BasicAbstractForm implements
 
     @Override
     protected void fillSpecificValues() {
-	ucDomainHandler.updateComboBoxValues();
+	super.fillSpecificValues();
 	ayuntamientoDomainHandler.updateComboBoxValues();
 	subtramoDomainHandler.updateComboBoxValues();
 	updateJTables();
