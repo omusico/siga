@@ -428,7 +428,15 @@ public class DBSession {
 		while (rs.next()) {
 			String[] row = new String[fieldNames.length];
 			for (int i=0; i<fieldNames.length; i++) {
-				row[i] = formatter.toString(rs.getObject(fieldNames[i]));
+			    
+			    // elle styles in table elle._map_style are defined as 'xml' columns
+			    // for some reasons rs.getObject returns null and con.setTypeMap
+			    // is not working to set a custom mapping. So this workaround is used
+			    if (rs.getMetaData().getColumnType(i+1) == java.sql.Types.OTHER) {
+				row[i] = rs.getString(i+1);
+			    } else {
+				row[i] = formatter.toString(rs.getObject(i+1));
+			    }
 			}
 			rows.add(row);
 		}
