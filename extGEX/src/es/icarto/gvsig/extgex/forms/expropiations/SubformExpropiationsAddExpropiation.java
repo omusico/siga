@@ -1,5 +1,6 @@
 package es.icarto.gvsig.extgex.forms.expropiations;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.InputStream;
@@ -28,6 +29,7 @@ import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
+@SuppressWarnings("serial")
 public class SubformExpropiationsAddExpropiation extends JPanel implements
 	IWindow, ActionListener {
 
@@ -43,6 +45,9 @@ public class SubformExpropiationsAddExpropiation extends JPanel implements
     private final String title = "Añadir Expropiación";
     private final int width = 300;
     private final int height = 80;
+
+    private Color defaultbg;
+    private static final Color invalidBg = new Color(249, 112, 140);
 
     public SubformExpropiationsAddExpropiation(JTable expropiationsTable) {
 	InputStream stream = getClass().getClassLoader().getResourceAsStream(
@@ -72,6 +77,7 @@ public class SubformExpropiationsAddExpropiation extends JPanel implements
 
 	superficie = (JTextField) form
 		.getComponentByName(DBNames.SUBFORMEXPROPIATION_SUPERFICIE);
+	defaultbg = superficie.getBackground();
 	cultivo = (JComboBox) form
 		.getComponentByName(DBNames.SUBFORMEXPROPIATION_CULTIVO);
 	for (String tipo_cultivo : getTiposCultivo()) {
@@ -117,11 +123,28 @@ public class SubformExpropiationsAddExpropiation extends JPanel implements
     @Override
     public void actionPerformed(ActionEvent e) {
 	if (e.getSource() == addExpropiationButton) {
+	    if (notValidate()) {
+		superficie.setBackground(invalidBg);
+		return;
+	    }
+	    superficie.setBackground(defaultbg);
 	    Value[] expropiationData = getExpropiationData();
 	    DefaultTableModel tableModel = (DefaultTableModel) expropiationsTable
 		    .getModel();
 	    tableModel.addRow(expropiationData);
 	}
+    }
+
+    private boolean notValidate() {
+	final String superficieText = superficie.getText();
+	if (!superficieText.isEmpty()) {
+	    try {
+		Integer.parseInt(superficieText);
+	    } catch (NumberFormatException nfe) {
+		return true;
+	    }
+	}
+	return false;
     }
 
     private Value[] getExpropiationData() {
