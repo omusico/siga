@@ -26,8 +26,8 @@
 	<classpathentry kind="lib" path="lib/poi-ooxml-3.10.1-20140818.jar"/>
 	<classpathentry kind="src" path="/extNavTableForms"/>
 	<classpathentry kind="lib" path="lib/jasperreports-5.6.1.jar"/>
-	<classpathentry kind="lib" path="/extNavTableForms/lib/formsrt.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/es.icarto.gvsig.commons"/>
 	<classpathentry kind="lib" path="/es.icarto.gvsig.commons/lib/miglayout-3.7.3.1.jar"/>
+	<classpathentry kind="lib" path="/es.icarto.gvsig.commons/lib/formsrt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
