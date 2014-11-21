@@ -22,6 +22,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.InputStream;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
@@ -30,11 +31,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
+
 import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.iver.cit.gvsig.fmap.drivers.DBException;
 import com.jeta.forms.components.panel.FormPanel;
+import com.jeta.forms.gui.common.FormException;
 
 import es.udc.cartolab.gvsig.users.utils.DBAdminUtils;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
@@ -46,6 +50,10 @@ public class DropUserDialog extends JPanel implements IWindow, ActionListener {
 	private JTextField userTF;
 	private WindowInfo viewInfo;
 
+	
+	private static final Logger logger = Logger
+		.getLogger(DropUserDialog.class);
+	
 	public DropUserDialog() {
 
 		GridBagLayout layout = new GridBagLayout();
@@ -67,7 +75,14 @@ public class DropUserDialog extends JPanel implements IWindow, ActionListener {
 
 		if (centerPanel == null) {
 			centerPanel = new JPanel();
-			FormPanel form = new FormPanel("forms/dropUser.jfrm");
+			InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("forms/dropUser.jfrm");
+			FormPanel form;
+			try {
+			    form = new FormPanel(resourceAsStream);
+			} catch (FormException e) {
+			    logger.error(e.getStackTrace(), e);
+			    return centerPanel;
+			}
 			form.setFocusTraversalPolicyProvider(true);
 			centerPanel.add(form);
 

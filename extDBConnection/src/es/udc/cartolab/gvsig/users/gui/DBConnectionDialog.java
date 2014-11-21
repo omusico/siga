@@ -18,6 +18,7 @@ package es.udc.cartolab.gvsig.users.gui;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.io.InputStream;
 
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
@@ -27,12 +28,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
+
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.ProjectExtension;
 import com.iver.cit.gvsig.fmap.drivers.DBException;
 import com.iver.utiles.XMLEntity;
 import com.jeta.forms.components.image.ImageComponent;
 import com.jeta.forms.components.panel.FormPanel;
+import com.jeta.forms.gui.common.FormException;
 
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -74,6 +78,10 @@ public class DBConnectionDialog extends AbstractGVWindow {
     public static final String ID_PASSL = "passLabel";
     public static final String ID_DBL = "dbLabel";
     //    public static final String ID_SCHEMAL = "schemaLabel";
+    
+    
+    private static final Logger logger = Logger
+	    .getLogger(DBConnectionDialog.class);
 
     public DBConnectionDialog() {
 	super(325, INIT_MIN_HEIGHT);
@@ -85,7 +93,14 @@ public class DBConnectionDialog extends AbstractGVWindow {
 
 	if (centerPanel == null) {
 	    centerPanel = new JPanel();
-	    FormPanel form = new FormPanel("forms/dbConnection.xml");
+	    InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("forms/dbConnection.xml");
+	    FormPanel form;
+	    try {
+		form = new FormPanel(resourceAsStream);
+	    } catch (FormException e) {
+		logger.error(e.getStackTrace(), e);
+		return centerPanel;
+	    }
 	    centerPanel.add(form);
 	    serverTF = form.getTextField(ID_SERVERTF);
 	    portTF = form.getTextField(ID_PORTTF);
