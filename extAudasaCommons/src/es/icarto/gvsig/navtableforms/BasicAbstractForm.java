@@ -44,10 +44,11 @@ public abstract class BasicAbstractForm extends AbstractForm {
 	}
     }
 
-    private void addSorterButton() {
+    protected void addSorterButton() {
 	java.net.URL imgURL = getClass().getClassLoader().getResource(
 		"sort.png");
 	JButton jButton = new JButton(new ImageIcon(imgURL));
+	jButton.setToolTipText("Ordenar registros");
 
 	jButton.addActionListener(new ActionListener() {
 	    @Override
