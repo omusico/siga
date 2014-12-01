@@ -1,5 +1,6 @@
 package es.icarto.gvsig.extpm.forms;
 
+import java.awt.Color;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,10 +14,12 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.JTextComponent;
 
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.audasacommons.forms.reports.NavTableComponentsPrintButton;
+import es.icarto.gvsig.commons.gui.WidgetFactory;
 import es.icarto.gvsig.extgex.forms.reversions.OpenWebAction;
 import es.icarto.gvsig.extpm.forms.filesLink.NavTableComponentsFilesLinkButton;
 import es.icarto.gvsig.extpm.preferences.Preferences;
@@ -26,6 +29,7 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 @SuppressWarnings("serial")
 public class FormPM extends BasicAbstractForm {
 
+    
     // WIDGETS
     private JTextField numParcelaCatastro;
     private JTextField poligonoCatastro;
@@ -118,6 +122,7 @@ public class FormPM extends BasicAbstractForm {
 
     @Override
     protected void fillSpecificValues() {
+	super.fillSpecificValues();
 	createFincasAfectadasTable();
 
 	for (String finca : getFincasAfectadas()) {
@@ -126,11 +131,9 @@ public class FormPM extends BasicAbstractForm {
 		    .addRow(fincaValues);
 	}
 	for (JComponent c : getWidgets().values()) {
-	    c.setEnabled(false);
+	    WidgetFactory.disableComponent(c);
 	}
 	addNewButtonsToActionsToolBar();
-	revalidate();
-	repaint();
     }
 
     private String[] getFincaValuesFromID(String idFinca) {
