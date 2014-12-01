@@ -139,7 +139,7 @@ public abstract class AbstractSubForm extends AbstractIWindow implements IForm,
 
     private JPanel getSouthPanel() {
 	if (southPanel == null) {
-	    southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+	    southPanel = new JPanel(new FlowLayout(FlowLayout.TRAILING));
 	    saveButton = new JButton("Salvar");
 	    action = new CreateAction(this);
 	    saveButton.addActionListener(action);
