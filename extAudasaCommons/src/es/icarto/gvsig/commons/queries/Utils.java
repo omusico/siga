@@ -42,7 +42,7 @@ public class Utils {
     }
 
     public static List<Field> getFields(String filePath, String schema,
-	    String table) {
+	    String table, List<String> ignoreColumns) {
 	List<Field> fields = new ArrayList<Field>();
 	try {
 	    DBSession session = DBSession.getCurrentSession();
@@ -53,7 +53,7 @@ public class Utils {
 	    List<String> asList = Arrays.asList(columns);
 
 	    for (String c : asList) {
-		if (reservedColumns.contains(c)) {
+		if (ignoreColumns.contains(c)) {
 		    continue;
 		}
 		String longname = props.getProperty(schema + "." + table + "."
@@ -68,6 +68,11 @@ public class Utils {
 	    logger.error(e.getStackTrace(), e);
 	}
 	return fields;
+    }
+    
+    public static List<Field> getFields(String filePath, String schema,
+	    String table) {
+	return getFields(filePath, schema, table, reservedColumns);
     }
 
     @Deprecated
