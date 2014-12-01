@@ -1,27 +1,38 @@
 package es.icarto.gvsig.extgex.forms.reversions;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowSorter.SortKey;
 import javax.swing.table.DefaultTableModel;
 
+import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
+import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 
+import es.icarto.gvsig.commons.gui.OkCancelPanel;
 import es.icarto.gvsig.commons.queries.Utils;
 import es.icarto.gvsig.commons.utils.Field;
 import es.icarto.gvsig.extgex.navtable.NavTableComponentsFactory;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.navtableforms.BasicAbstractForm;
 import es.icarto.gvsig.navtableforms.gui.CustomTableModel;
+import es.udc.cartolab.gvsig.navtable.contextualmenu.ChooseSortFieldDialog;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
@@ -33,6 +44,9 @@ public class FormReversions extends BasicAbstractForm {
     private JTable fincasAfectadas;
     private JTextField expId;
     private FormExpropiationsLauncher expropiationsLauncher;
+    
+    private final static List<String> ignoreColumns = Arrays
+	    .asList(new String[] { "gid", "the_geom", "geom", "orden", "municipio", "id", "num_reversion" });
 
     public FormReversions(FLyrVect layer, IGeometry insertedGeom) {
 	super(layer);
@@ -53,6 +67,42 @@ public class FormReversions extends BasicAbstractForm {
 	this.getActionsToolBar().remove(undoB);
 	this.getActionsToolBar().remove(copyPreviousB);
 	this.getActionsToolBar().remove(copySelectedB);
+    }
+    
+    protected void addSorterButton() {
+	java.net.URL imgURL = getClass().getClassLoader().getResource(
+		"sort.png");
+	JButton jButton = new JButton(new ImageIcon(imgURL));
+	jButton.setToolTipText("Ordenar registros");
+
+	jButton.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		URL resource = this.getClass().getClassLoader().getResource("columns.properties");
+		List<Field> fields = Utils.getFields(resource.getPath(),
+			getSchema(), getBasicName(), ignoreColumns);
+
+		ChooseSortFieldDialog dialog = new ChooseSortFieldDialog(fields);
+
+		if (dialog.open().equals(OkCancelPanel.OK_ACTION_COMMAND)) {
+		    List<Field> sortedFields = dialog.getFields();
+		    List<SortKey> sortKeys = new ArrayList<SortKey>();
+		    SelectableDataSource sds = getRecordset();
+		    for (Field field : sortedFields) {
+			try {
+			    int fieldIdx = sds.getFieldIndexByName(field
+				    .getKey());
+			    sortKeys.add(new SortKey(fieldIdx, field
+				    .getSortOrder()));
+			} catch (ReadDriverException e1) {
+			    logger.error(e1.getStackTrace(), e1);
+			}
+		    }
+		    setSortKeys(sortKeys);
+		}
+	    }
+	});
+	getActionsToolBar().add(jButton);
     }
 
     @Override
