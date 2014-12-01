@@ -23,8 +23,8 @@ public class XLSReport {
 
     private static final String PATTERN = DateFormatNT.getDateFormat()
 	    .toPattern();
-    private Workbook wb;
-    protected Sheet sheet;
+    private final Workbook wb;
+    protected final Sheet sheet;
     protected final QueryFiltersI filters;
     private final int colNamesRowIdx;
     private final boolean[] columnsStyles;
@@ -36,6 +36,8 @@ public class XLSReport {
 	Arrays.fill(columnsStyles, false);
 	colNamesRowIdx = filters.getLocation().size() + 4;
 	if (outputFile == null) {
+	    wb = null;
+	    sheet = null;
 	    return;
 	}
 	wb = new HSSFWorkbook(); // xls
