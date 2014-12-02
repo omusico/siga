@@ -172,6 +172,8 @@ public abstract class AbstractForm extends AbstractNavTable implements
 		SimpleDateFormat dateFormat = DateFormatNT.getDateFormat();
 		((JDateChooser) c).setDateFormatString(dateFormat.toPattern());
 		((JDateChooser) c).getDateEditor().setEnabled(false);
+		((JDateChooser) c).getDateEditor().getUiComponent()
+			.setToolTipText(null);
 	    }
 	}
     }

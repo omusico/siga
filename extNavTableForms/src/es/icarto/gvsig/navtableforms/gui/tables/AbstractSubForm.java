@@ -123,6 +123,8 @@ public abstract class AbstractSubForm extends AbstractIWindow implements IForm,
 		SimpleDateFormat dateFormat = DateFormatNT.getDateFormat();
 		((JDateChooser) c).setDateFormatString(dateFormat.toPattern());
 		((JDateChooser) c).getDateEditor().setEnabled(false);
+		((JDateChooser) c).getDateEditor().getUiComponent()
+			.setToolTipText(null);
 	    }
 	}
 	// AbeilleUtils au = new AbeilleUtils();
