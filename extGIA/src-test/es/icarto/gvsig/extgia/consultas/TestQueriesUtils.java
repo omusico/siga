@@ -20,11 +20,11 @@ import org.junit.Test;
 import com.iver.cit.gvsig.fmap.drivers.DBException;
 
 import es.icarto.gvsig.commons.queries.Utils;
+import es.icarto.gvsig.commons.testutils.Drivers;
 import es.icarto.gvsig.commons.utils.Field;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.DomainValues;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
-import es.udc.cartolab.gvsig.testutils.Drivers;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class TestQueriesUtils {
@@ -60,7 +60,7 @@ public class TestQueriesUtils {
 	URI uri = getClass().getClassLoader().getResource(".").toURI();
 	String foo = new File(uri).getParent() + "/";
 
-	ORMLite ormLite = new ORMLite(foo + "rules/consultas_metadata.xml");
+	ORMLite ormLite = new ORMLite(foo + "rules/consultas_inventario.xml");
 	DomainValues dv = ormLite.getAppDomain().getDomainValuesForComponent(
 		"elemento");
 

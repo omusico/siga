@@ -18,7 +18,6 @@ import org.junit.Test;
 
 import es.icarto.gvsig.extgia.utils.ImageUtils;
 
-
 public class TestImages {
 
     private static final String PKVALUE = "C-002N";
@@ -31,7 +30,7 @@ public class TestImages {
 
     @Before
     public void doSetupImage() {
-	String url = "jdbc:postgresql://localhost:5432/audasa_test";
+	String url = "jdbc:postgresql://localhost:5434/audasa_test";
 	String user = "postgres";
 	String passwd = "postgres";
 	// postgresql-9.1-903.jdbc3.jar needs to be in the classpasth before th
@@ -60,10 +59,10 @@ public class TestImages {
 	    statement.execute();
 	    connection.commit();
 
-	    dao.insertImageIntoDb(connection, SCHEMA, TABLENAME,
-		    PKFIELD, PKVALUE, image, false);
-	    byte[] imageDbBytes = dao.readImageFromDb(connection,
-		    SCHEMA, TABLENAME, PKFIELD, PKVALUE);
+	    dao.insertImageIntoDb(connection, SCHEMA, TABLENAME, PKFIELD,
+		    PKVALUE, image, false);
+	    byte[] imageDbBytes = dao.readImageFromDb(connection, SCHEMA,
+		    TABLENAME, PKFIELD, PKVALUE);
 
 	    byte[] imageMockBytes = ImageUtils.convertImageToBytea(image);
 
@@ -84,15 +83,15 @@ public class TestImages {
 	    statement.execute();
 	    connection.commit();
 
-	    dao.insertImageIntoDb(connection, SCHEMA, TABLENAME,
-		    PKFIELD, null, image, false);
-	    byte[] imageDbBytes = dao.readImageFromDb(connection,
-		    SCHEMA, TABLENAME, PKFIELD, null);
+	    dao.insertImageIntoDb(connection, SCHEMA, TABLENAME, PKFIELD, null,
+		    image, false);
+	    byte[] imageDbBytes = dao.readImageFromDb(connection, SCHEMA,
+		    TABLENAME, PKFIELD, null);
 
 	    if (imageDbBytes != null) {
 		byte[] imageMockBytes = ImageUtils.convertImageToBytea(image);
 		assertTrue(Arrays.equals(imageDbBytes, imageMockBytes));
-	    }else {
+	    } else {
 		assertTrue(true);
 	    }
 	} finally {
@@ -111,15 +110,15 @@ public class TestImages {
 	    statement.execute();
 	    connection.commit();
 
-	    dao.insertImageIntoDb(connection, SCHEMA, TABLENAME,
-		    PKFIELD, "", image, false);
-	    byte[] imageDbBytes = dao.readImageFromDb(connection,
-		    SCHEMA, TABLENAME, PKFIELD, "");
+	    dao.insertImageIntoDb(connection, SCHEMA, TABLENAME, PKFIELD, "",
+		    image, false);
+	    byte[] imageDbBytes = dao.readImageFromDb(connection, SCHEMA,
+		    TABLENAME, PKFIELD, "");
 
 	    if (imageDbBytes != null) {
 		byte[] imageMockBytes = ImageUtils.convertImageToBytea(image);
 		assertTrue(Arrays.equals(imageDbBytes, imageMockBytes));
-	    }else {
+	    } else {
 		assertTrue(true);
 	    }
 	} finally {
@@ -138,12 +137,12 @@ public class TestImages {
 	    statement.execute();
 	    connection.commit();
 
-	    dao.insertImageIntoDb(connection, SCHEMA, TABLENAME,
-		    PKFIELD, PKVALUE, image, false);
+	    dao.insertImageIntoDb(connection, SCHEMA, TABLENAME, PKFIELD,
+		    PKVALUE, image, false);
 	    File fileImageToUpdate = new File("data-test/test2.jpg");
 	    BufferedImage imageToUpdate = ImageIO.read(fileImageToUpdate);
-	    dao.insertImageIntoDb(connection, SCHEMA, TABLENAME,
-		    PKFIELD, PKVALUE, imageToUpdate, true);
+	    dao.insertImageIntoDb(connection, SCHEMA, TABLENAME, PKFIELD,
+		    PKVALUE, imageToUpdate, true);
 
 	    byte[] imageDbBytes = dao.readImageFromDb(connection, SCHEMA,
 		    TABLENAME, PKFIELD, PKVALUE);
@@ -160,7 +159,8 @@ public class TestImages {
     @Test
     public void testingDeleteImage() throws Exception {
 	try {
-	    dao.deleteImageFromDb(connection, SCHEMA, TABLENAME, PKFIELD, PKVALUE);
+	    dao.deleteImageFromDb(connection, SCHEMA, TABLENAME, PKFIELD,
+		    PKVALUE);
 	    byte[] image = dao.readImageFromDb(connection, SCHEMA, TABLENAME,
 		    PKFIELD, PKVALUE);
 	    assertNull(image);

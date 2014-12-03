@@ -7,6 +7,7 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
@@ -19,6 +20,7 @@ import java.util.Set;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.junit.Before;
@@ -28,6 +30,7 @@ import org.xml.sax.SAXException;
 
 import com.iver.cit.gvsig.fmap.drivers.DBException;
 import com.jeta.forms.components.panel.FormPanel;
+import com.jeta.forms.gui.common.FormException;
 
 import es.icarto.gvsig.commons.testutils.Drivers;
 import es.icarto.gvsig.commons.testutils.TestProperties;
@@ -60,15 +63,23 @@ public abstract class CommonMethodsForTestDBForms {
     }
 
     @Before
-    public void doSetup() {
+    public void doSetup() throws FormException {
 	ORMLite ormLite = new ORMLite(getMetadataFile());
 	ado = ormLite.getAppDomain();
+
+	InputStream file;
 	try {
-	    InputStream file = new FileInputStream(getUIFile());
-	    formPanel = new FormPanel(file);
-	} catch (Exception e) {
-	    e.printStackTrace();
+	    file = new FileInputStream("forms/" + getTableName() + ".jfrm");
+	} catch (FileNotFoundException e) {
+	    try {
+		file = new FileInputStream("forms/" + getTableName() + ".xml");
+	    } catch (FileNotFoundException e1) {
+		throw new RuntimeException("abeille file not found");
+	    }
 	}
+
+	formPanel = new FormPanel(file);
+
 	widgets = AbeilleParser.getWidgetsFromContainer(formPanel);
     }
 
@@ -107,9 +118,10 @@ public abstract class CommonMethodsForTestDBForms {
 	for (final String domainValue : domainValues.keySet()) {
 	    JComponent cb = this.widgets.get(domainValue);
 	    if (!(cb instanceof JComboBox)) {
-		// if (!(cb instanceof JTextField)) { // only for pk fields
+		if (cb.getName().startsWith("pk") && (cb instanceof JTextField)) {
+		    continue;
+		}
 		fail(domainValue);
-		// }
 	    }
 	}
 	assertTrue(true);
@@ -171,10 +183,6 @@ public abstract class CommonMethodsForTestDBForms {
 	final Set<String> columnsSet = new HashSet<String>(
 		Arrays.asList(columns));
 	return columnsSet;
-    }
-
-    protected String getUIFile() {
-	return "forms/" + getTableName() + ".xml";
     }
 
     protected String getMetadataFile() {

@@ -13,10 +13,10 @@ import java.util.Date;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.iver.cit.gvsig.fmap.layers.LayerFactory;
-
 import es.icarto.gvsig.commons.queries.CSVReport;
 import es.icarto.gvsig.commons.queries.ConnectionWrapper;
+import es.icarto.gvsig.commons.testutils.Drivers;
+import es.icarto.gvsig.commons.testutils.TestProperties;
 import es.icarto.gvsig.extgia.consultas.agregados.TrabajosAgregadosReportQueries;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.CSVCaracteristicasQueries;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.PDFCaracteristicasQueries;
@@ -48,27 +48,12 @@ public class TestConsultas {
 	}
 
 	try {
-	    initializegvSIGDrivers();
-	    DBSession.createConnection("localhost", 5432, "audasa_test", null,
+	    Drivers.initgvSIGDrivers(TestProperties.driversPath);
+	    DBSession.createConnection("localhost", 5434, "audasa_test", null,
 		    "postgres", "postgres");
 
 	} catch (Exception e) {
 	    e.printStackTrace();
-	}
-    }
-
-    private static void initializegvSIGDrivers() throws Exception {
-	final String fwAndamiDriverPath = "../_fwAndami/gvSIG/extensiones/com.iver.cit.gvsig/drivers";
-	final File baseDriversPath = new File(fwAndamiDriverPath);
-	if (!baseDriversPath.exists()) {
-	    throw new Exception("Can't find drivers path: "
-		    + fwAndamiDriverPath);
-	}
-
-	LayerFactory.setDriversPath(baseDriversPath.getAbsolutePath());
-	if (LayerFactory.getDM().getDriverNames().length < 1) {
-	    throw new Exception("Can't find drivers in path: "
-		    + fwAndamiDriverPath);
 	}
     }
 
@@ -90,7 +75,8 @@ public class TestConsultas {
 				DBFieldNames.Elements.values()[i].toString(),
 				mockFilters);
 		ResultSet rs = st.executeQuery(query);
-		assertTrue(rs != null);
+		assertTrue(DBFieldNames.Elements.values()[i].toString(),
+			rs != null);
 	    }
 	}
     }
