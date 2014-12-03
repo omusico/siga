@@ -11,6 +11,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
+
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
@@ -21,6 +23,9 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
 public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
+
+    private static final Logger logger = Logger
+	    .getLogger(AreasDescansoForm.class);
 
     public static final String TABLENAME = "areas_descanso";
 

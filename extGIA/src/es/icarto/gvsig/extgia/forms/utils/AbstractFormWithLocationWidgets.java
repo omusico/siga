@@ -13,6 +13,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
+import org.apache.log4j.Logger;
+
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.Launcher;
 import com.iver.andami.PluginServices;
@@ -35,6 +37,9 @@ import es.udc.cartolab.gvsig.navtable.ToggleEditing;
 
 @SuppressWarnings("serial")
 public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm {
+
+    private static final Logger logger = Logger
+	    .getLogger(AbstractFormWithLocationWidgets.class);
 
     protected static final String AREA_MANTENIMIENTO = "area_mantenimiento";
     protected static final String BASE_CONTRATISTA = "base_contratista";

@@ -40,7 +40,7 @@ public abstract class BatchAbstractSubForm extends GIASubForm {
     public void actionCreateRecord() {
 	this.position = -1;
 	saveButton.removeActionListener(action);
-	action = new BatchCreateAction(this, iController, model);
+	action = new BatchCreateAction(this, getFormController(), model);
 	saveButton.addActionListener(action);
 	setListeners();
 	fillEmptyValues();
