@@ -122,6 +122,9 @@ public class GIAAlphanumericTableHandler extends BaseTableHandler {
 		columnModel.getColumn(i).setPreferredWidth(coldWidths[i]);
 	    }
 	}
+	// TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(
+	// jtable.getModel());
+	// jtable.setRowSorter(sorter);
     }
 
     // TODO

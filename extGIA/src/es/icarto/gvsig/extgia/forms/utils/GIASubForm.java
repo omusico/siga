@@ -26,5 +26,6 @@ public class GIASubForm extends AbstractSubForm {
 		.getComponentByName("image");
 	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
 	image.setIcon(icon);
+	getWindowInfo().setTitle(null);
     }
 }
