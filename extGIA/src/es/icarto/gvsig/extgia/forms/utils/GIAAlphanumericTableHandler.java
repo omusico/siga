@@ -1,11 +1,18 @@
 package es.icarto.gvsig.extgia.forms.utils;
 
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import org.apache.log4j.Logger;
 
@@ -18,6 +25,7 @@ import es.icarto.gvsig.navtableforms.gui.tables.menu.AlphanumericCompleteJTableC
 import es.icarto.gvsig.navtableforms.gui.tables.model.AlphanumericTableModel;
 import es.icarto.gvsig.navtableforms.gui.tables.model.TableModelFactory;
 import es.icarto.gvsig.navtableforms.utils.FormFactory;
+import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 
 public class GIAAlphanumericTableHandler extends BaseTableHandler {
 
@@ -122,9 +130,34 @@ public class GIAAlphanumericTableHandler extends BaseTableHandler {
 		columnModel.getColumn(i).setPreferredWidth(coldWidths[i]);
 	    }
 	}
-	// TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(
-	// jtable.getModel());
-	// jtable.setRowSorter(sorter);
+	TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(
+		jtable.getModel());
+	sorter.setSortsOnUpdates(true);
+	for (int i = 0; i < colNames.length; i++) {
+	    if (colNames[i].startsWith("fecha")) {
+		sorter.setComparator(i, new Comparator<String>() {
+
+		    @Override
+		    public int compare(String o1, String o2) {
+			Date d1 = DateFormatNT.convertStringToDate(o1);
+			Date d2 = DateFormatNT.convertStringToDate(o2);
+			if (d1 == null) {
+			    return 1;
+			}
+			if (d2 == null) {
+			    return -1;
+			}
+			return d1.compareTo(d2);
+		    }
+		});
+		javax.swing.RowSorter.SortKey sk = new RowSorter.SortKey(i,
+			SortOrder.ASCENDING);
+		sorter.setSortKeys(Arrays
+			.asList(new RowSorter.SortKey[] { sk }));
+		break;
+	    }
+	}
+	jtable.setRowSorter(sorter);
     }
 
     // TODO

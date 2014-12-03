@@ -31,7 +31,7 @@ public class DBFieldNames {
 
     public static String[] trabajosColAlias = { "ID", "Fecha cert", "Unidad",
 	    "Medición AUDASA", "Observaciones" };
-    public static int[] trabajosColWidths = { 1, 35, 90, 75, 190 };
+    public static int[] trabajosColWidths = { 10, 45, 90, 75, 190 };
 
     public static final String GIA_SCHEMA = "audasa_extgia";
 
