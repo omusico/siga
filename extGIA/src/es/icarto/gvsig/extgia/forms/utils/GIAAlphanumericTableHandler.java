@@ -79,6 +79,27 @@ public class GIAAlphanumericTableHandler extends BaseTableHandler {
 	if (subform != null) {
 	    subform.setModel(model);
 	}
+	// jtable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+
+    }
+
+    private void autoFit() {
+
+	// TODO never less that the header text
+	int avaliable = jtable.getColumnModel().getTotalColumnWidth();
+
+	int[] maxLengths = model.getMaxLengths();
+	double needed = 0.0;
+	for (int l : maxLengths) {
+	    needed += l;
+	}
+
+	for (int i = 0; i < model.getColumnCount(); i++) {
+	    double preferredWidth = avaliable * (maxLengths[i] / needed);
+
+	    jtable.getColumnModel().getColumn(i)
+		    .setPreferredWidth((int) preferredWidth);
+	}
     }
 
     // TODO
