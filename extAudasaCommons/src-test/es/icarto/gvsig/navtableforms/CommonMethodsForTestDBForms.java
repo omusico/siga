@@ -19,7 +19,6 @@ import java.util.Set;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.junit.Before;
@@ -30,14 +29,14 @@ import org.xml.sax.SAXException;
 import com.iver.cit.gvsig.fmap.drivers.DBException;
 import com.jeta.forms.components.panel.FormPanel;
 
+import es.icarto.gvsig.commons.testutils.Drivers;
+import es.icarto.gvsig.commons.testutils.TestProperties;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLiteAppDomain;
 import es.icarto.gvsig.navtableforms.ormlite.XMLSAXParser;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.rules.ValidationRule;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.DomainValues;
 import es.icarto.gvsig.navtableforms.utils.AbeilleParser;
-import es.udc.cartolab.gvsig.navtable.TestProperties;
-import es.udc.cartolab.gvsig.testutils.Drivers;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 import es.udc.cartolab.gvsig.users.utils.DBSessionPostGIS;
 
@@ -109,7 +108,7 @@ public abstract class CommonMethodsForTestDBForms {
 	    JComponent cb = this.widgets.get(domainValue);
 	    if (!(cb instanceof JComboBox)) {
 		// if (!(cb instanceof JTextField)) { // only for pk fields
-		    fail(domainValue);
+		fail(domainValue);
 		// }
 	    }
 	}
