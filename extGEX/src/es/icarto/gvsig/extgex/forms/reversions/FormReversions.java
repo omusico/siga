@@ -1,6 +1,5 @@
 package es.icarto.gvsig.extgex.forms.reversions;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
@@ -20,7 +19,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowSorter.SortKey;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.JTextComponent;
+
+import org.apache.log4j.Logger;
 
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
@@ -41,17 +41,18 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 @SuppressWarnings("serial")
 public class FormReversions extends BasicAbstractForm {
 
+    private static final Logger logger = Logger.getLogger(FormReversions.class);
+
     public static final String TABLENAME = "exp_rv";
     public static final String TOCNAME = "Reversiones";
 
     private JTable fincasAfectadas;
     private JTextField expId;
     private FormExpropiationsLauncher expropiationsLauncher;
-    
-    private static final Color DISABLED_TEXT_COLOR = new Color(189, 190, 176);
-    
+
     private final static List<String> ignoreColumns = Arrays
-	    .asList(new String[] { "gid", "the_geom", "geom", "orden", "municipio", "id", "num_reversion" });
+	    .asList(new String[] { "gid", "the_geom", "geom", "orden",
+		    "municipio", "id", "num_reversion" });
 
     public FormReversions(FLyrVect layer, IGeometry insertedGeom) {
 	super(layer);
@@ -73,7 +74,8 @@ public class FormReversions extends BasicAbstractForm {
 	this.getActionsToolBar().remove(copyPreviousB);
 	this.getActionsToolBar().remove(copySelectedB);
     }
-    
+
+    @Override
     protected void addSorterButton() {
 	java.net.URL imgURL = getClass().getClassLoader().getResource(
 		"sort.png");
@@ -83,7 +85,8 @@ public class FormReversions extends BasicAbstractForm {
 	jButton.addActionListener(new ActionListener() {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-		URL resource = this.getClass().getClassLoader().getResource("columns.properties");
+		URL resource = this.getClass().getClassLoader()
+			.getResource("columns.properties");
 		List<Field> fields = Utils.getFields(resource.getPath(),
 			getSchema(), getBasicName(), ignoreColumns);
 
