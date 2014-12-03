@@ -36,12 +36,13 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getTrabajosDBTableName(), getWidgetComponents(),
 		getElementID(), DBFieldNames.trabajosColNames,
-		DBFieldNames.trabajosColAlias, this));
+		DBFieldNames.trabajosColAlias, DBFieldNames.trabajosColWidths,
+		this));
 
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getReconocimientosDBTableName(), getWidgetComponents(),
 		getElementID(), DBFieldNames.reconocimientosColNames,
-		DBFieldNames.reconocimientosColAlias, this,
+		DBFieldNames.reconocimientosColAlias, null, this,
 		AreasServicioReconocimientosSubForm.class));
     }
 

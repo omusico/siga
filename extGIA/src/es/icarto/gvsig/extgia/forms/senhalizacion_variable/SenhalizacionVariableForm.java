@@ -30,17 +30,17 @@ public class SenhalizacionVariableForm extends AbstractFormWithLocationWidgets {
     public SenhalizacionVariableForm(FLyrVect layer) {
 	super(layer);
 
-	// int[] trabajoColumnsSize = { 1, 30, 90, 70, 200 };
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getTrabajosDBTableName(), getWidgetComponents(),
 		getElementID(), DBFieldNames.trabajosColNames,
-		DBFieldNames.trabajosColAlias, this));
+		DBFieldNames.trabajosColAlias, DBFieldNames.trabajosColWidths,
+		this));
 
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getReconocimientosDBTableName(), getWidgetComponents(),
 		getElementID(),
 		DBFieldNames.reconocimientosWhitoutIndexColNames,
-		DBFieldNames.reconocimientosWhitoutIndexColAlias, this));
+		DBFieldNames.reconocimientosWhitoutIndexColAlias, null, this));
     }
 
     private void addNewButtonsToActionsToolBar() {

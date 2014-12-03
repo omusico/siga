@@ -38,17 +38,18 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getRamalesDBTableName(), getWidgetComponents(), getElementID(),
 		DBFieldNames.ramalesDireccionColNames,
-		DBFieldNames.ramalesDireccionColAlias, this));
+		DBFieldNames.ramalesDireccionColAlias, null, this));
 
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getReconocimientosDBTableName(), getWidgetComponents(),
 		getElementID(),
 		DBFieldNames.reconocimientosWhitoutIndexColNames,
-		DBFieldNames.reconocimientosWhitoutIndexColAlias, this));
+		DBFieldNames.reconocimientosWhitoutIndexColAlias, null, this));
 
 	addTableHandler(new GIAAlphanumericTableHandler(
 		"enlaces_carreteras_enlazadas", getWidgetComponents(),
-		getElementID(), carreterasColNames, carreterasColAlias, this));
+		getElementID(), carreterasColNames, carreterasColAlias, null,
+		this));
     }
 
     private void addNewButtonsToActionsToolBar() {

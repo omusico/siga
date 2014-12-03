@@ -35,22 +35,22 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
     public SenhalizacionVerticalForm(FLyrVect layer) {
 	super(layer);
 
-	// int[] trabajoColumnsSize = { 1, 30, 90, 70, 200 };
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getTrabajosDBTableName(), getWidgetComponents(),
 		getElementID(), DBFieldNames.trabajosColNames,
-		DBFieldNames.trabajosColAlias, this));
+		DBFieldNames.trabajosColAlias, DBFieldNames.trabajosColWidths,
+		this));
 
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getReconocimientosDBTableName(), getWidgetComponents(),
 		getElementID(), DBFieldNames.reconocimientosColNames,
-		DBFieldNames.reconocimientosColAlias, this,
+		DBFieldNames.reconocimientosColAlias, null, this,
 		SenhalizacionVerticalReconocimientosSubForm.class));
 
-	// int[] senhalesColumnsSize = { 20, 45, 45, 180, 40, 40 };
 	addTableHandler(new GIAAlphanumericTableHandler(
 		"senhalizacion_vertical_senhales", getWidgetComponents(),
-		getElementID(), senhalesColNames, senhalesColAlias, this));
+		getElementID(), senhalesColNames, senhalesColAlias, new int[] {
+			20, 45, 45, 180, 40, 40 }, this));
     }
 
     private void addNewButtonsToActionsToolBar() {

@@ -57,16 +57,16 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     public TaludesForm(FLyrVect layer) {
 	super(layer);
 
-	// int[] trabajoColumnsSize = { 1, 30, 90, 70, 200 };
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getTrabajosDBTableName(), getWidgetComponents(),
 		getElementID(), DBFieldNames.trabajosColNames,
-		DBFieldNames.trabajosColAlias, this));
+		DBFieldNames.trabajosColAlias, DBFieldNames.trabajosColWidths,
+		this));
 
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getReconocimientosDBTableName(), getWidgetComponents(),
 		getElementID(), DBFieldNames.reconocimientosColNames,
-		DBFieldNames.reconocimientosColAlias, this,
+		DBFieldNames.reconocimientosColAlias, null, this,
 		AreasServicioReconocimientosSubForm.class));
     }
 

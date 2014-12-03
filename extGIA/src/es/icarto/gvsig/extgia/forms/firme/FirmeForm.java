@@ -41,13 +41,12 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getReconocimientosDBTableName(), getWidgetComponents(),
 		getElementID(), firmeReconocimientoColNames,
-		firmeReconocimientoColAlias, this));
+		firmeReconocimientoColAlias, null, this));
 
-	// int[] trabajoColumnsSize = { 1, 1, 1, 1, 30, 250 };
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getTrabajosDBTableName(), getWidgetComponents(),
 		getElementID(), firmeTrabajoColNames, firmeTrabajoColAlias,
-		this));
+		new int[] { 1, 35, 1, 1, 30, 250 }, this));
     }
 
     private void addNewButtonsToActionsToolBar() {

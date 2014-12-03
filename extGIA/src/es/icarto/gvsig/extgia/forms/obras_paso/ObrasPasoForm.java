@@ -28,11 +28,11 @@ public class ObrasPasoForm extends AbstractFormWithLocationWidgets {
     public ObrasPasoForm(FLyrVect layer) {
 	super(layer);
 
-	// int[] trabajoColumnsSize = { 1, 30, 90, 70, 200 };
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getTrabajosDBTableName(), getWidgetComponents(),
 		getElementID(), DBFieldNames.trabajosColNames,
-		DBFieldNames.trabajosColAlias, this));
+		DBFieldNames.trabajosColAlias, DBFieldNames.trabajosColWidths,
+		this));
     }
 
     private void addNewButtonsToActionsToolBar() {

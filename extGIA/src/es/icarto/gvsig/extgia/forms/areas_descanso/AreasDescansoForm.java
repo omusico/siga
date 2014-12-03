@@ -35,22 +35,22 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
     public AreasDescansoForm(FLyrVect layer) {
 	super(layer);
 
-	// int[] trabajoColumnsSize = { 1, 1, 110, 70, 60 };
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getTrabajosDBTableName(), getWidgetComponents(),
 		getElementID(), DBFieldNames.trabajosColNames,
-		DBFieldNames.trabajosColAlias, this));
+		DBFieldNames.trabajosColAlias, DBFieldNames.trabajosColWidths,
+		this));
 
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getRamalesDBTableName(), getWidgetComponents(), getElementID(),
 		DBFieldNames.ramalesColNames, DBFieldNames.ramalesColAlias,
-		this));
+		null, this));
 
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getReconocimientosDBTableName(), getWidgetComponents(),
 		getElementID(),
 		DBFieldNames.reconocimientosWhitoutIndexColNames,
-		DBFieldNames.reconocimientosWhitoutIndexColAlias, this,
+		DBFieldNames.reconocimientosWhitoutIndexColAlias, null, this,
 		AreasDescansoReconocimientosSubForm.class));
     }
 

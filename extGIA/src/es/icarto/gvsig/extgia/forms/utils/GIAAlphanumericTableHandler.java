@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.table.TableColumnModel;
 
 import org.apache.log4j.Logger;
 
@@ -28,11 +29,15 @@ public class GIAAlphanumericTableHandler extends BaseTableHandler {
     private final JButton editButton;
     private final JButton deleteButton;
 
+    private final int[] coldWidths;
+
     public GIAAlphanumericTableHandler(String tableName,
 	    HashMap<String, JComponent> widgets, String foreignKeyId,
-	    String[] colNames, String[] colAliases, AbstractForm form) {
+	    String[] colNames, String[] colAliases, int[] colWidths,
+	    AbstractForm form) {
 
 	super(tableName, widgets, foreignKeyId, colNames, colAliases);
+	this.coldWidths = colWidths;
 
 	FormFactory.checkAndLoadTableRegistered(tableName);
 	subform = new GIASubForm(tableName);
@@ -47,12 +52,12 @@ public class GIAAlphanumericTableHandler extends BaseTableHandler {
 
     public GIAAlphanumericTableHandler(String tableName,
 	    HashMap<String, JComponent> widgets, String foreignKeyId,
-	    String[] colNames, String[] colAliases, AbstractForm form,
-	    Class<? extends AbstractSubForm> subFormClass) {
+	    String[] colNames, String[] colAliases, int[] colWidths,
+	    AbstractForm form, Class<? extends AbstractSubForm> subFormClass) {
 	super(tableName, widgets, foreignKeyId, colNames, colAliases);
 
 	FormFactory.checkAndLoadTableRegistered(tableName);
-
+	this.coldWidths = colWidths;
 	addButton = (JButton) form.getFormBody().getComponentByName(
 		tableName + "_add_button");
 	editButton = (JButton) form.getFormBody().getComponentByName(
@@ -110,6 +115,12 @@ public class GIAAlphanumericTableHandler extends BaseTableHandler {
 	foreignKey.put(destinationKey, originKeyValue);
 	if (subform != null) {
 	    subform.setForeingKey(foreignKey);
+	}
+	if (coldWidths != null) {
+	    TableColumnModel columnModel = jtable.getColumnModel();
+	    for (int i = 0; i < coldWidths.length; i++) {
+		columnModel.getColumn(i).setPreferredWidth(coldWidths[i]);
+	    }
 	}
     }
 

@@ -36,21 +36,21 @@ public class AreasPeajeForm extends AbstractFormWithLocationWidgets {
     public AreasPeajeForm(FLyrVect layer) {
 	super(layer);
 
-	// int[] trabajoColumnsSize = { 1, 30, 90, 70, 200 };
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getTrabajosDBTableName(), getWidgetComponents(),
 		getElementID(), DBFieldNames.trabajosColNames,
-		DBFieldNames.trabajosColAlias, this));
+		DBFieldNames.trabajosColAlias,
+		new int[] { 1, 30, 90, 70, 200 }, this));
 
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getReconocimientosDBTableName(), getWidgetComponents(),
 		getElementID(),
 		DBFieldNames.reconocimientosWhitoutIndexColNames,
-		DBFieldNames.reconocimientosWhitoutIndexColAlias, this));
+		DBFieldNames.reconocimientosWhitoutIndexColAlias, null, this));
 
 	addTableHandler(new GIAAlphanumericTableHandler("areas_peaje_vias",
 		getWidgetComponents(), getElementID(), viasColNames,
-		viasColAlias, this));
+		viasColAlias, null, this));
     }
 
     private void addNewButtonsToActionsToolBar() {
