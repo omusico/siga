@@ -11,6 +11,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.RowSorter.SortKey;
 
+import org.apache.log4j.Logger;
+
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
@@ -28,11 +30,14 @@ import es.udc.cartolab.gvsig.navtable.contextualmenu.ChooseSortFieldDialog;
 @SuppressWarnings("serial")
 public abstract class BasicAbstractForm extends AbstractForm {
 
+    private static final Logger logger = Logger
+	    .getLogger(BasicAbstractForm.class);
+
     public BasicAbstractForm(FLyrVect layer) {
 	super(layer);
 	initLogo();
-	setWindowTitle(PluginServices.getText(this, getBasicName()));
 	addSorterButton();
+	setTitle(PluginServices.getText(this, getBasicName()));
     }
 
     private void initLogo() {
