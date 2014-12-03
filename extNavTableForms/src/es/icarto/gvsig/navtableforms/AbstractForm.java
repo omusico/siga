@@ -63,15 +63,14 @@ import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 public abstract class AbstractForm extends AbstractNavTable implements
 	IValidatableForm {
 
-    private WindowInfo windowInfoMask = null;
+    private static final Logger logger = Logger.getLogger(AbstractForm.class);
+
     protected FormPanel formBody;
     private boolean isFillingValues;
     private boolean isSavingValues = false;
     private final List<BaseTableHandler> tableHandlers = new ArrayList<BaseTableHandler>();
 
     HashMap<String, JComponent> widgets;
-
-    protected static Logger logger = null;
 
     private final ORMLite ormlite;
 
@@ -82,9 +81,10 @@ public abstract class AbstractForm extends AbstractNavTable implements
     private final CalculationHandler calculationHandler;
     private final ChainedHandler chainedHandler;
 
+    private String title;
+
     public AbstractForm(FLyrVect layer) {
 	super(layer);
-	logger = Logger.getLogger(getClass());
 	formBody = getFormBody();
 	widgets = AbeilleParser.getWidgetsFromContainer(formBody);
 	ormlite = new ORMLite(getXMLPath());
@@ -96,24 +96,26 @@ public abstract class AbstractForm extends AbstractNavTable implements
 
     @Override
     public WindowInfo getWindowInfo() {
-	if (windowInfoMask == null) {
-	    windowInfoMask = super.getWindowInfo();
-
+	if (windowInfo == null) {
+	    super.getWindowInfo();
+	    if (title != null) {
+		windowInfo.setTitle(title);
+	    }
 	    for (FormWindowProperties fwp : getFormWindowProperties()) {
 		if (fwp.getFormName().equalsIgnoreCase(getClass().getName())) {
 		    // WindowInfoSupport.getWindowInfo adds 40 to the
 		    // getWindowInfo declared
 		    // by IWindow objects
 		    final int ANDAMI_CORRECTION = 40;
-		    windowInfoMask.setHeight(fwp.getFormWindowHeight()
+		    windowInfo.setHeight(fwp.getFormWindowHeight()
 			    - ANDAMI_CORRECTION);
-		    windowInfoMask.setWidth(fwp.getFormWindowWidth());
-		    windowInfoMask.setX(fwp.getFormWindowXPosition());
-		    windowInfoMask.setY(fwp.getFormWindowYPosition());
+		    windowInfo.setWidth(fwp.getFormWindowWidth());
+		    windowInfo.setX(fwp.getFormWindowXPosition());
+		    windowInfo.setY(fwp.getFormWindowYPosition());
 		}
 	    }
 	}
-	return windowInfoMask;
+	return windowInfo;
     }
 
     public abstract FormPanel getFormBody();
@@ -363,10 +365,10 @@ public abstract class AbstractForm extends AbstractNavTable implements
 	List<FormWindowProperties> formWindowPropertiesList = getFormWindowProperties();
 	for (FormWindowProperties fwp : formWindowPropertiesList) {
 	    if (fwp.getFormName().equalsIgnoreCase(getClass().getName())) {
-		fwp.setFormWindowHeight(windowInfoMask.getHeight());
-		fwp.setFormWindowWidth(windowInfoMask.getWidth());
-		fwp.setFormWindowXPosition(windowInfoMask.getX());
-		fwp.setFormWindowYPosition(windowInfoMask.getY());
+		fwp.setFormWindowHeight(windowInfo.getHeight());
+		fwp.setFormWindowWidth(windowInfo.getWidth());
+		fwp.setFormWindowXPosition(windowInfo.getX());
+		fwp.setFormWindowYPosition(windowInfo.getY());
 		update = true;
 		break;
 	    }
@@ -375,10 +377,10 @@ public abstract class AbstractForm extends AbstractNavTable implements
 	if (!update) {
 	    FormWindowProperties fwpToAdd = new FormWindowProperties();
 	    fwpToAdd.setFormName(getClass().getName());
-	    fwpToAdd.setFormWindowHeight(windowInfoMask.getHeight());
-	    fwpToAdd.setFormWindowWidth(windowInfoMask.getWidth());
-	    fwpToAdd.setFormWindowXPosition(windowInfoMask.getX());
-	    fwpToAdd.setFormWindowYPosition(windowInfoMask.getY());
+	    fwpToAdd.setFormWindowHeight(windowInfo.getHeight());
+	    fwpToAdd.setFormWindowWidth(windowInfo.getWidth());
+	    fwpToAdd.setFormWindowXPosition(windowInfo.getX());
+	    fwpToAdd.setFormWindowYPosition(windowInfo.getY());
 	    formWindowPropertiesList.add(fwpToAdd);
 	}
 
@@ -407,6 +409,10 @@ public abstract class AbstractForm extends AbstractNavTable implements
     @Override
     public Object getWindowProfile() {
 	return null;
+    }
+
+    protected void setTitle(String title) {
+	this.title = title;
     }
 
     @Override
