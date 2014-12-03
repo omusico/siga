@@ -1,12 +1,10 @@
 package es.icarto.gvsig.audasacommons;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.geom.Point2D;
-import java.io.FileNotFoundException;
 
 import javax.swing.ImageIcon;
 
@@ -15,7 +13,6 @@ import org.cresques.cts.IProjection;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -27,12 +24,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import com.iver.andami.PluginServices;
 import com.iver.andami.iconthemes.IIconTheme;
 import com.iver.andami.iconthemes.IconThemeDir;
-import com.iver.andami.plugins.IExtension;
-import com.iver.andami.plugins.config.generate.ActionTool;
-import com.iver.andami.plugins.config.generate.Extension;
-import com.iver.andami.plugins.config.generate.Extensions;
-import com.iver.andami.plugins.config.generate.PluginConfig;
-import com.iver.andami.plugins.config.generate.ToolBar;
 import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.andami.ui.mdiManager.MDIManager;
 import com.iver.cit.gvsig.fmap.crs.CRSFactory;
@@ -45,65 +36,6 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
 @PrepareForTest({ PluginServices.class, MDIManager.class })
 public class TestOpenStreetViewExtension {
 
-    class MyExtension {
-	private final Extension expected;
-
-	public MyExtension(Class<? extends IExtension> c) {
-	    expected = new Extension();
-
-	    // iCarto extensions should have the suffix "Extension"
-	    expected.setClassName(c.getName());
-
-	    // active="true" is mandatory for extensions
-	    expected.setActive(true);
-
-	    // iCarto extensions should not set a description
-	    expected.setDescription(null);
-	}
-
-	private void iCartoRules(Extension actual) {
-	    assertTrue(actual.isValid());
-	    assertEquals(expected.hasActive(), actual.hasActive());
-	    assertEquals(expected.getActive(), actual.getActive());
-	    assertEquals(expected.getDescription(), actual.getDescription());
-	    assertEquals(expected.getClassName(), actual.getClassName());
-	    assertTrue(actual.getClassName().endsWith("Extension"));
-
-	    if (actual.getToolBarCount() > 0) {
-		assertEquals(1, actual.getToolBarCount());
-		ToolBar toolBar = actual.getToolBar(0);
-		// name is a mandatory field in toolbars
-		assertEquals("SIGA_Tools", toolBar.getName()); // TODO
-		assertTrue(toolBar.hasPosition()); // TODO
-		assertEquals(75, toolBar.getPosition()); // TODO
-		assertEquals(1, toolBar.getActionToolCount()); // TODO
-		ActionTool actionTool = toolBar.getActionTool(0);
-		// icon is a mandatory field in action-tool
-		assertEquals("open-street-view", actionTool.getIcon()); // TODO
-		assertTrue(actionTool.hasPosition()); // TODO
-		assertEquals(6, actionTool.getPosition()); // TODO
-	    }
-	}
-
-	public void check(Extension[] exts) {
-	    Extension actual = null;
-	    for (Extension e : exts) {
-		if (e.getClassName().equals(expected.getClassName())) {
-		    actual = e;
-		    break;
-		}
-	    }
-	    assertNotNull("extension not found", actual);
-	    iCartoRules(actual);
-	}
-
-    }
-
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-
-    }
-
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
     }
@@ -114,24 +46,6 @@ public class TestOpenStreetViewExtension {
 
     @After
     public void tearDown() throws Exception {
-    }
-
-    @Test
-    public void testConfigFile() throws FileNotFoundException {
-	PluginConfig config = ExtensionTestHelper
-		.getConfig("config/config.xml");
-	assertTrue(config.isValid());
-
-	Extensions extensions = config.getExtensions();
-
-	assertEquals(0, extensions.getSkinExtensionCount());
-	assertEquals(3, extensions.getExtensionCount());
-
-	Extension[] exts = extensions.getExtension();
-
-	MyExtension myExtension = new MyExtension(OpenStreetViewExtension.class);
-	myExtension.check(exts);
-
     }
 
     @Test
