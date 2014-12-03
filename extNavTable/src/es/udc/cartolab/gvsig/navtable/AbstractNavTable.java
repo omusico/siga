@@ -27,6 +27,7 @@ package es.udc.cartolab.gvsig.navtable;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -50,6 +51,8 @@ import org.gvsig.exceptions.BaseException;
 import com.hardcode.gdbms.driver.exceptions.InitializeDriverException;
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
+import com.iver.andami.ui.mdiFrame.MDIFrame;
+import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.andami.ui.mdiManager.IWindowListener;
 import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.iver.cit.gvsig.FiltroExtension;
@@ -67,7 +70,6 @@ import com.iver.utiles.extensionPoints.ExtensionPoint;
 import com.iver.utiles.extensionPoints.ExtensionPoints;
 import com.iver.utiles.extensionPoints.ExtensionPointsSingleton;
 
-import es.icarto.gvsig.commons.gui.AbstractIWindow;
 import es.icarto.gvsig.navtable.navigation.NavigationHandler;
 import es.udc.cartolab.gvsig.navtable.dataacces.IController;
 import es.udc.cartolab.gvsig.navtable.dataacces.LayerController;
@@ -84,8 +86,12 @@ import es.udc.cartolab.gvsig.navtable.utils.EditionListener;
  * it will be loaded on the NorthPanel.
  * 
  */
-public abstract class AbstractNavTable extends AbstractIWindow implements
+
+public abstract class AbstractNavTable extends JPanel implements IWindow,
 	ActionListener, IWindowListener, PositionListener {
+
+    private static final Logger logger = Logger
+	    .getLogger(AbstractNavTable.class);
 
     public static final int EMPTY_REGISTER = -1;
     protected static final int BUTTON_REMOVE = 0;
@@ -98,7 +104,6 @@ public abstract class AbstractNavTable extends AbstractIWindow implements
     protected String deleteMessageKey = "confirm_delete_register";
     protected String saveErrorTitleKey = "save_layer_error";
     protected String saveErrorGenericMessageKey = "errorSavingData";
-    protected static Logger logger = Logger.getLogger("NavTable");
     public static final String NAVTABLE_ACTIONS_TOOLBAR = "navtable_extension_point_actions_toolbar";
     public static final String NAVTABLE_CONTEXT_MENU = "navtable_extension_point_context_menu";
 
@@ -138,14 +143,13 @@ public abstract class AbstractNavTable extends AbstractIWindow implements
     protected boolean openEmptyLayers = false;
     protected boolean isAlphanumericNT = false;
 
+    protected WindowInfo windowInfo = null;
+
     public AbstractNavTable(FLyrVect layer) {
 	super();
 	this.layer = layer;
 	this.dataName = layer.getName();
 	navigation = new NavigationHandler(this);
-	setWindowTitle("NavTable: " + dataName);
-	setWindowInfoProperties(WindowInfo.MODELESSDIALOG | WindowInfo.PALETTE
-		| WindowInfo.RESIZABLE);
     }
 
     // [nachouve] Check this method because
@@ -591,6 +595,47 @@ public abstract class AbstractNavTable extends AbstractIWindow implements
      */
     public void clearSelection() {
 	getRecordset().clearSelection();
+    }
+
+    @Override
+    public WindowInfo getWindowInfo() {
+	if (windowInfo == null) {
+	    windowInfo = new WindowInfo(WindowInfo.MODELESSDIALOG
+		    | WindowInfo.PALETTE | WindowInfo.RESIZABLE);
+
+	    windowInfo.setTitle("NavTable: " + dataName);
+	    Dimension dim = getPreferredSize();
+	    // To calculate the maximum size of a form we take the size of the
+	    // main frame minus a "magic number" for the menus, toolbar, state
+	    // bar
+	    // Take into account that in edition mode there is less available
+	    // space
+	    MDIFrame a = (MDIFrame) PluginServices.getMainFrame();
+	    final int MENU_TOOL_STATE_BAR = 205;
+	    int maxHeight = a.getHeight() - MENU_TOOL_STATE_BAR;
+	    int maxWidth = a.getWidth() - 15;
+
+	    int width, heigth = 0;
+	    if (dim.getHeight() > maxHeight) {
+		heigth = maxHeight;
+	    } else {
+		heigth = new Double(dim.getHeight()).intValue();
+	    }
+	    if (dim.getWidth() > maxWidth) {
+		width = maxWidth;
+	    } else {
+		width = new Double(dim.getWidth()).intValue();
+	    }
+
+	    // getPreferredSize doesn't take into account the borders and other
+	    // stuff
+	    // introduced by Andami, neither scroll bars so we must increase the
+	    // "preferred"
+	    // dimensions
+	    windowInfo.setWidth(width + 25);
+	    windowInfo.setHeight(heigth + 15);
+	}
+	return windowInfo;
     }
 
     /**
