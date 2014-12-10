@@ -9,7 +9,6 @@ import javax.swing.JTextField;
 
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
-import es.icarto.gvsig.extgia.forms.areas_servicio.AreasServicioReconocimientosSubForm;
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.utils.GIAAlphanumericTableHandler;
@@ -43,7 +42,7 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
 		getReconocimientosDBTableName(), getWidgetComponents(),
 		getElementID(), DBFieldNames.reconocimientosColNames,
 		DBFieldNames.reconocimientosColAlias, null, this,
-		AreasServicioReconocimientosSubForm.class));
+		VallaCierreReconocimientosSubForm.class));
     }
 
     private void addNewButtonsToActionsToolBar() {

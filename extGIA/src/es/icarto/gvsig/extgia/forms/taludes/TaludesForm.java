@@ -20,7 +20,6 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.audasacommons.forms.reports.NavTableComponentsPrintButton;
-import es.icarto.gvsig.extgia.forms.areas_servicio.AreasServicioReconocimientosSubForm;
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.utils.EnableComponentBasedOnCheckBox;
@@ -67,7 +66,7 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 		getReconocimientosDBTableName(), getWidgetComponents(),
 		getElementID(), DBFieldNames.reconocimientosColNames,
 		DBFieldNames.reconocimientosColAlias, null, this,
-		AreasServicioReconocimientosSubForm.class));
+		TaludesReconocimientosSubForm.class));
     }
 
     private void addNewButtonsToActionsToolBar() {
