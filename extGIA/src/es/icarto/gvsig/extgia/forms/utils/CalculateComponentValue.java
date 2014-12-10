@@ -168,8 +168,13 @@ public abstract class CalculateComponentValue {
 	// pkValue has only natural part
 	if (!pkValue.isEmpty()
 		&& !pkValue.contains(String.valueOf(decimalSeparator))) {
-	    pkValueFormatted = String.format("%03d", Integer.valueOf(pkValue))
-		    + "000";
+	    try {
+		final Integer valueOf = Integer.valueOf(pkValue);
+		pkValueFormatted = String.format("%03d", valueOf) + "000";
+	    } catch (NumberFormatException e) {
+		return pkValue;
+	    }
+
 	}
 
 	String[] pkValues = null;
