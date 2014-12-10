@@ -10,6 +10,8 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
@@ -77,6 +79,36 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 		DBFieldNames.BASE_CONTRATISTA, DBFieldNames.TRAMO,
 		DBFieldNames.TIPO_VIA, DBFieldNames.MUNICIPIO, DBFieldNames.PK);
 	enlaceid.setListeners();
+
+	setIdWhenPkIsAutomaticallyUpdated();
+
+    }
+
+    /**
+     * Workaround. When pk field is not typed id is not update. Maybe
+     * Calculation class should use DocumentListener for textfield instead of
+     * KeyListener
+     */
+    private void setIdWhenPkIsAutomaticallyUpdated() {
+
+	JTextField textField = (JTextField) getFormBody().getComponentByName(
+		DBFieldNames.PK);
+	textField.getDocument().addDocumentListener(new DocumentListener() {
+	    @Override
+	    public void changedUpdate(DocumentEvent e) {
+		enlaceid.setValue(true);
+	    }
+
+	    @Override
+	    public void removeUpdate(DocumentEvent e) {
+		enlaceid.setValue(true);
+	    }
+
+	    @Override
+	    public void insertUpdate(DocumentEvent e) {
+		enlaceid.setValue(true);
+	    }
+	});
     }
 
     @Override
