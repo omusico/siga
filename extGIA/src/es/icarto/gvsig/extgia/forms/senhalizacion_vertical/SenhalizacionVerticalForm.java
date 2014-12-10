@@ -1,14 +1,20 @@
 package es.icarto.gvsig.extgia.forms.senhalizacion_vertical;
 
+import java.net.URL;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
+import es.icarto.gvsig.audasacommons.forms.reports.NavTableComponentsPrintButton;
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.utils.GIAAlphanumericTableHandler;
@@ -24,6 +30,14 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
     CalculateComponentValue elementoSenhalizacionid;
     private JComboBox tipoVia;
     private DependentComboboxHandler direccionDomainHandler;
+
+    private JButton printReportB;
+
+    private URL reportPath;
+
+    private String extensionPath;
+
+    private PrintSVReportObserver printListener;
 
     public static String[] senhalesColNames = { "id_senhal_vertical",
 	    "tipo_senhal", "codigo_senhal", "leyenda", "fecha_fabricacion",
@@ -53,10 +67,6 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 			20, 45, 45, 180, 40, 40 }, this));
     }
 
-    private void addNewButtonsToActionsToolBar() {
-	super.addNewButtonsToActionsToolBar(DBFieldNames.Elements.Senhalizacion_Vertical);
-    }
-
     @Override
     protected void fillSpecificValues() {
 	super.fillSpecificValues();
@@ -71,9 +81,48 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 	    elementoSenhalizacionid.setValue(true);
 	}
 
+	addNewButtonsToActionsToolBar();
+    }
+
+    private void addNewButtonsToActionsToolBar() {
 	if (filesLinkButton == null) {
-	    addNewButtonsToActionsToolBar();
+	    super.addNewButtonsToActionsToolBar(DBFieldNames.Elements.Senhalizacion_Vertical);
 	}
+
+	if (printReportB == null) {
+	    addPrintButton();
+	}
+	printReportB.removeActionListener(printListener);
+
+	printListener = new PrintSVReportObserver(this, extensionPath,
+		reportPath.getPath(), getElementID(), getPrimaryKeyValue());
+	printReportB.addActionListener(printListener);
+    }
+
+    public ImageIcon getPrintIcon() {
+	java.net.URL imgURL = this.getClass().getClassLoader()
+		.getResource("images/print-report.jpg");
+	ImageIcon icon = new ImageIcon(imgURL);
+	return icon;
+    }
+
+    private void addPrintButton() {
+	reportPath = this.getClass().getClassLoader()
+		.getResource("reports/senhalizacion_vertical.jasper");
+	extensionPath = reportPath.getPath().replace(
+		"reports/senhalizacion_vertical.jasper", "");
+	JPanel actionsToolBar = this.getActionsToolBar();
+
+	NavTableComponentsPrintButton ntPrintButton = new NavTableComponentsPrintButton();
+
+	printListener = new PrintSVReportObserver(this, extensionPath,
+		reportPath.getPath(), getElementID(), getPrimaryKeyValue());
+	printReportB = ntPrintButton.createButton(
+		PluginServices.getText(this, "printReportsToolTip"),
+		getPrintIcon(), printListener);
+
+	printReportB.setName("printButton");
+	actionsToolBar.add(printReportB);
     }
 
     @Override

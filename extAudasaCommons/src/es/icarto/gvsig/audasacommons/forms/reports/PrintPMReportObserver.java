@@ -56,7 +56,7 @@ public class PrintPMReportObserver implements ActionListener {
 		inputImageFile = ifs.showDialog();
 	    }
 
-	    PrintPMReportAction reportAction = new PrintPMReportAction();
+	    PrintReportAction reportAction = new PrintReportAction();
 	    reportAction.print(outputFile.getAbsolutePath(), getReportPath(),
 		    getReportParameters());
 

@@ -10,7 +10,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
-public class PrintPMReportAction {
+public class PrintReportAction {
 
     public void print(String outputFile, String reportFilePath,  HashMap<String, Object> parameters) {
 	JasperPrint print;

@@ -85,9 +85,20 @@ public class GIAAlphanumericTableHandler extends BaseTableHandler {
     // TODO
     @Override
     protected void createTableModel() throws ReadDriverException {
-	AlphanumericTableModel model = TableModelFactory
-		.createFromTableWithFilter(sourceTableName, destinationKey,
-			originKeyValue, colNames, colAliases);
+	AlphanumericTableModel model = null;
+	// if (sourceTableName.equals("senhalizacion_vertical_senhales")) {
+	// TOCTableManager toc = new TOCTableManager();
+	// IEditableSource orgModel = toc.getTableModelByName(sourceTableName);
+	// int fieldIndex = orgModel.getRecordset().getFieldIndexByName(
+	// destinationKey);
+	// IRowFilter filter = new IRowFilterQuick(fieldIndex, originKeyValue);
+	// model = new AlphanumericTableModel(orgModel, colNames, colAliases,
+	// filter);
+	// } else {
+	model = TableModelFactory.createFromTableWithFilter(sourceTableName,
+		destinationKey, originKeyValue, colNames, colAliases);
+	// }
+
 	jtable.setModel(model);
 	if (subform != null) {
 	    subform.setModel(model);
