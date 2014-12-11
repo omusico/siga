@@ -96,17 +96,23 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 	textField.getDocument().addDocumentListener(new DocumentListener() {
 	    @Override
 	    public void changedUpdate(DocumentEvent e) {
-		enlaceid.setValue(true);
+		doIt();
 	    }
 
 	    @Override
 	    public void removeUpdate(DocumentEvent e) {
-		enlaceid.setValue(true);
+		doIt();
 	    }
 
 	    @Override
 	    public void insertUpdate(DocumentEvent e) {
-		enlaceid.setValue(true);
+		doIt();
+	    }
+
+	    private void doIt() {
+		if (!isFillingValues()) {
+		    enlaceid.setValue(true);
+		}
 	    }
 	});
     }

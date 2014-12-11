@@ -87,17 +87,23 @@ public class PasosMedianaForm extends AbstractFormWithLocationWidgets {
 	textField.getDocument().addDocumentListener(new DocumentListener() {
 	    @Override
 	    public void changedUpdate(DocumentEvent e) {
-		pasoMedianaid.setValue(true);
+		doIt();
 	    }
 
 	    @Override
 	    public void removeUpdate(DocumentEvent e) {
-		pasoMedianaid.setValue(true);
+		doIt();
 	    }
 
 	    @Override
 	    public void insertUpdate(DocumentEvent e) {
-		pasoMedianaid.setValue(true);
+		doIt();
+	    }
+
+	    private void doIt() {
+		if (!isFillingValues()) {
+		    pasoMedianaid.setValue(true);
+		}
 	    }
 	});
     }
