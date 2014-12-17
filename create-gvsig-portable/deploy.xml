@@ -110,6 +110,11 @@
 			<fileset dir="${custom-portable-path}lin" />
 		</copy>
 		
+		<!-- Copies the jaxb custom files -->
+		<copy todir="/tmp/${name-lin}/jre/1.6.0_20" overwrite="yes">
+			<fileset dir="${custom-portable-path}jre" />
+		</copy>
+		
 		
 		<exec executable="tar" output="/dev/null" os="Linux">
 			<arg value="-cvz"/>
@@ -170,6 +175,11 @@
 				<copy todir="/tmp/${name-win}/" overwrite="yes">
 					<fileset dir="${custom-portable-path}common" />
 					<fileset dir="${custom-portable-path}win" />
+				</copy>
+		
+				<!-- Copies the jaxb custom files -->
+				<copy todir="/tmp/${name-win}/jre/" overwrite="yes">
+					<fileset dir="${custom-portable-path}jre" />
 				</copy>
 		
 		<zip destfile="/tmp/${name-win}.zip" basedir="/tmp/${name-win}" />
