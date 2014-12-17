@@ -101,7 +101,7 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 
     public ImageIcon getPrintIcon() {
 	java.net.URL imgURL = this.getClass().getClassLoader()
-		.getResource("images/print-report.jpg");
+		.getResource("images/print-report.png");
 	ImageIcon icon = new ImageIcon(imgURL);
 	return icon;
     }

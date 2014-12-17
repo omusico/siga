@@ -11,11 +11,13 @@ import es.udc.cartolab.gvsig.navtable.AbstractNavTable;
 
 public class NavTableComponentsPrintButton {
 
-    public JButton getPrintButton(AbstractNavTable dialog, String extensionPath, String reportPath,
-	    String tableName, String idField, String idValue) {
+    public JButton getPrintButton(AbstractNavTable dialog,
+	    String extensionPath, String reportPath, String tableName,
+	    String idField, String idValue) {
 	JButton printReportB = createButton(PluginServices.getText(this,
-		"printReportsToolTip"), getIcon("images/print-report.jpg"),
-		new PrintPMReportObserver(dialog, extensionPath, reportPath, tableName, idField, idValue));
+		"printReportsToolTip"), getIcon("images/print-report.png"),
+		new PrintPMReportObserver(dialog, extensionPath, reportPath,
+			tableName, idField, idValue));
 	return printReportB;
     }
 
