@@ -24,7 +24,7 @@ public class LocalizacionRetriever {
     public LocalizacionRetriever(String idFinca) {
 	String extPath = PluginServices.getPluginServices(this)
 		.getPluginDirectory().getAbsolutePath();
-	orm = new ORMLite(extPath + "/data/" + FormExpropiations.TABLENAME
+	orm = new ORMLite(extPath + "/rules/" + FormExpropiations.TABLENAME
 		+ ".xml");
 	decipher(idFinca);
     }
