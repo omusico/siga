@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.hardcode.gdbms.engine.values.NumericValue;
 import com.hardcode.gdbms.engine.values.Value;
+import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FBitSet;
 
 import es.icarto.gvsig.audasacommons.forms.reports.PrintReportAction;
@@ -95,9 +96,16 @@ public class PrintSVReportObserver implements ActionListener {
 	    }
 
 	} else {
-	    msg = "Se van a imprimir las " + size + " fichas seleccionadas";
-	    int showConfirmDialog = JOptionPane.showConfirmDialog(dialog, msg);
-	    if (showConfirmDialog != JOptionPane.YES_OPTION) {
+	    msg = "Se van a imprimir las " + size
+		    + " fichas seleccionadas\n¿Desea continuar?";
+	    Object[] options = {
+		    PluginServices.getText(this, "optionPane_yes"),
+		    PluginServices.getText(this, "optionPane_no") };
+	    int showConfirmDialog = JOptionPane.showOptionDialog(dialog, msg,
+		    null, JOptionPane.YES_NO_CANCEL_OPTION,
+		    JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+
+	    if (showConfirmDialog != JOptionPane.OK_OPTION) {
 		return;
 	    }
 	    JFileChooser jFileChooser = new JFileChooser(
@@ -107,6 +115,12 @@ public class PrintSVReportObserver implements ActionListener {
 	    if (showDialog == JFileChooser.APPROVE_OPTION) {
 		final File selectedFile = jFileChooser.getSelectedFile();
 		if (selectedFile != null) {
+		    if (!selectedFile.isDirectory()) {
+			JOptionPane.showMessageDialog(dialog,
+				"El directorio seleccionado no existe", null,
+				JOptionPane.ERROR_MESSAGE, null);
+			return;
+		    }
 		    for (int i = selection.nextSetBit(0); i >= 0; i = selection
 			    .nextSetBit(i + 1)) {
 			HashMap<String, Object> parameters = new HashMap<String, Object>();
@@ -121,8 +135,8 @@ public class PrintSVReportObserver implements ActionListener {
 				    intValue);
 			    PrintReportAction reportAction = new PrintReportAction();
 			    reportAction.print(selectedFile.getAbsolutePath()
-				    + "/señalizacion_vertical_" + intValue,
-				    getReportPath(), parameters);
+				    + "/señalizacion_vertical_" + intValue
+				    + ".pdf", getReportPath(), parameters);
 			} catch (ReadDriverException e) {
 			    logger.error(e.getStackTrace(), e);
 			}
