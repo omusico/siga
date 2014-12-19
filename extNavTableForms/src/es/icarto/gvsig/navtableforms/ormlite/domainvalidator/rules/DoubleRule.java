@@ -16,49 +16,25 @@
  */
 package es.icarto.gvsig.navtableforms.ormlite.domainvalidator.rules;
 
-import java.text.NumberFormat;
-import java.text.ParseException;
-
-import es.udc.cartolab.gvsig.navtable.format.DoubleFormatNT;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DoubleRule extends ValidationRule {
 
-    private NumberFormat format;
+    private static final String regExp = "[+-]?([0-9]*)(,)?([0-9]*)";
+    private static final Pattern pattern = Pattern.compile(regExp);
 
     public DoubleRule() {
-	format = DoubleFormatNT.getDisplayingFormat();
     }
 
     @Override
     public boolean validate(String value) {
-	return isEmpty (value) || isDouble(value);
+	return isEmpty(value) || isDouble(value);
     }
 
     private boolean isDouble(String value) {
-	try {
-	    value = removeStartingTrailingZeros(value);
-	    Double doubleValue = format.parse(value).doubleValue();
-	    if ((doubleValue.toString().length() == value.length())) {
-		return true;
-	    }
-	    return false;
-	} catch (ParseException nfe) {
-	    return false;
-	}
+	value = value == null ? "" : value.trim();
+	Matcher m = pattern.matcher(value);
+	return m.matches();
     }
-
-    private String removeStartingTrailingZeros(String number) {
-	char decimalSeparator = format.format(1.1).charAt(1);
-	String aux = number.replaceAll("^[0]*", "").replaceAll("[0]*$", "")
-		.replaceAll("\\" + decimalSeparator + "$", "");
-	if (!aux.contains("" + decimalSeparator)) {
-	    aux += decimalSeparator + "0";
-	}
-	if (aux.startsWith("" + decimalSeparator)) {
-	    aux = "0" + aux;
-	}
-	return aux;
-    }
-
 }
