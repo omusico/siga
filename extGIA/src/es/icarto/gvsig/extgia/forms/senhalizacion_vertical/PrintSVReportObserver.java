@@ -61,9 +61,14 @@ public class PrintSVReportObserver implements ActionListener {
 	String msg = "";
 	if (size == 0) {
 	    msg = "Se va a imprimir la ficha actual";
+	    Object[] options = {
+		    PluginServices.getText(this, "optionPane_yes"),
+		    PluginServices.getText(this, "optionPane_no") };
+	    int showConfirmDialog = JOptionPane.showOptionDialog(dialog, msg,
+		    null, JOptionPane.YES_NO_CANCEL_OPTION,
+		    JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 
-	    int showConfirmDialog = JOptionPane.showConfirmDialog(dialog, msg);
-	    if (showConfirmDialog != JOptionPane.YES_OPTION) {
+	    if (showConfirmDialog != JOptionPane.OK_OPTION) {
 		return;
 	    }
 
