@@ -1,15 +1,13 @@
 package es.icarto.gvsig.audasacommons.incidencias;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.Types;
+import java.io.OutputStream;
 import java.text.Collator;
 import java.text.Normalizer;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,6 +17,7 @@ import javax.swing.table.TableModel;
 import org.apache.log4j.Logger;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -27,11 +26,8 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import com.hardcode.driverManager.DriverLoadException;
 import com.hardcode.gdbms.driver.exceptions.InitializeWriterException;
-import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
-import com.hardcode.gdbms.engine.instruction.FieldNotFoundException;
 import com.hardcode.gdbms.engine.values.Value;
 import com.hardcode.gdbms.engine.values.ValueFactory;
-import com.iver.cit.gvsig.exceptions.layers.LegendLayerException;
 import com.iver.cit.gvsig.exceptions.visitors.ProcessWriterVisitorException;
 import com.iver.cit.gvsig.exceptions.visitors.StartWriterVisitorException;
 import com.iver.cit.gvsig.exceptions.visitors.StopWriterVisitorException;
@@ -40,21 +36,18 @@ import com.iver.cit.gvsig.fmap.core.FShape;
 import com.iver.cit.gvsig.fmap.core.IFeature;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.core.ShapeFactory;
-import com.iver.cit.gvsig.fmap.core.symbols.SimpleMarkerSymbol;
 import com.iver.cit.gvsig.fmap.drivers.FieldDescription;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
-import com.iver.cit.gvsig.fmap.layers.ReadableVectorial;
-import com.iver.cit.gvsig.fmap.rendering.VectorialUniqueValueLegend;
-import com.iver.cit.gvsig.fmap.rendering.styling.labeling.AttrInTableLabelingStrategy;
 
 import de.micromata.opengis.kml.v_2_2_0.Document;
 import de.micromata.opengis.kml.v_2_2_0.Kml;
 import de.micromata.opengis.kml.v_2_2_0.StyleSelector;
+import es.icarto.gvsig.audasacommons.incidencias.KMZPackager.DataSource;
+import es.icarto.gvsig.audasacommons.incidencias.KMZPackager.FileDataSource;
 import es.icarto.gvsig.commons.datasources.FieldDescriptionFactory;
 import es.icarto.gvsig.commons.datasources.SHPFactory;
 import es.icarto.gvsig.commons.queries.ConnectionWrapper;
 import es.icarto.gvsig.commons.utils.FileNameUtils;
-import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 import es.udc.cartolab.gvsig.navtable.format.DoubleFormatNT;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -62,6 +55,8 @@ public class IncidenciasParser {
 
     private static final Logger logger = Logger
 	    .getLogger(IncidenciasParser.class);
+
+    private static final DataFormatter dataFormatter = new DataFormatter();
 
     private final Sheet sheet;
 
@@ -93,6 +88,13 @@ public class IncidenciasParser {
 	cw = new ConnectionWrapper(DBSession.getCurrentSession()
 		.getJavaConnection());
 
+	/**
+	 * Enum is singleton. So header idx is set from previous executions
+	 */
+	for (Header h : Header.values()) {
+	    h.setIdx(-1);
+	}
+
 	this.file = file;
 
 	if ((file == null) || (!file.isFile())) {
@@ -115,6 +117,32 @@ public class IncidenciasParser {
     public void parse() {
 	initHeader();
 	initFeatures();
+    }
+
+    private String formatPkForDisplay(String pk) {
+	if ((pk == null) || (pk.isEmpty())) {
+	    return "";
+	}
+	String str = pk.trim().replace("+", ",").replace(",", ".");
+	try {
+	    return String.format("%3.3f", Double.parseDouble(str)).replace(".",
+		    ",");
+	} catch (NumberFormatException e) {
+	    return "";
+	}
+    }
+
+    private String formatPkForDouble(String pk) {
+	if ((pk == null) || (pk.isEmpty())) {
+	    return "";
+	}
+	String str = pk.trim().replace("+", ",").replace(",", ".");
+	try {
+	    return String.format("%3.3f", Double.parseDouble(str)).replace(",",
+		    ".");
+	} catch (NumberFormatException e) {
+	    return "";
+	}
     }
 
     private void initHeader() {
@@ -208,6 +236,10 @@ public class IncidenciasParser {
 		    str = "ACCIDENTES";
 		} else {
 		    str = getValueAsString(row.getCell(i));
+
+		    if (Header.PK.getIdx() == i) {
+			str = formatPkForDisplay(str);
+		    }
 		}
 		values[i] = ValueFactory.createValue(str);
 	    }
@@ -261,7 +293,8 @@ public class IncidenciasParser {
 	try {
 	    SHPFactory.createSHP(outfile, fieldsDesc, geometryType, features);
 	    layer = SHPFactory.getFLyrVectFromSHP(outfile, "EPSG:23029");
-	    applySymbology(layer);
+
+	    // applySymbology(layer);
 	} catch (StartWriterVisitorException e) {
 	    logger.error(e.getStackTrace(), e);
 	} catch (ProcessWriterVisitorException e) {
@@ -287,8 +320,11 @@ public class IncidenciasParser {
 
     public boolean toKml() {
 
-	Kml unmarshal = Kml
-		.unmarshal("<?xml version=\"1.0\" encoding=\"UTF-8\"?><kml xmlns=\"http://www.opengis.net/kml/2.2\" xmlns:gx=\"http://www.google.com/kml/ext/2.2\" xmlns:kml=\"http://www.opengis.net/kml/2.2\" xmlns:atom=\"http://www.w3.org/2005/Atom\"><Document>	<name>/tmp/listado de prueba</name>	<open>1</open>	<StyleMap id=\"m_ylw-pushpin\">		<Pair>			<key>normal</key>			<styleUrl>#s_ylw-pushpin</styleUrl>		</Pair>		<Pair>			<key>highlight</key>			<styleUrl>#s_ylw-pushpin_hl</styleUrl>		</Pair>	</StyleMap>	<Style id=\"s_ylw-pushpin\">		<IconStyle>			<scale>0.7</scale>			<Icon>				<href>http://maps.google.com/mapfiles/kml/pushpin/wht-pushpin.png</href>			</Icon>			<hotSpot x=\"20\" y=\"2\" xunits=\"pixels\" yunits=\"pixels\"/>		</IconStyle>		<LabelStyle>			<scale>0.5</scale>		</LabelStyle>		<BalloonStyle>		</BalloonStyle>		<ListStyle>		</ListStyle>	</Style>	<Style id=\"s_ylw-pushpin_hl\">		<IconStyle>			<scale>0.827273</scale>			<Icon>				<href>http://maps.google.com/mapfiles/kml/pushpin/wht-pushpin.png</href>			</Icon>			<hotSpot x=\"20\" y=\"2\" xunits=\"pixels\" yunits=\"pixels\"/>		</IconStyle>		<LabelStyle>			<scale>0.5</scale>		</LabelStyle>		<BalloonStyle>		</BalloonStyle>		<ListStyle>		</ListStyle>	</Style>	<Placemark>		<name>ACCIDENTES</name>		<open>1</open>		<description>prueba</description>		<styleUrl>#m_ylw-pushpin</styleUrl>		<Point>			<coordinates>-8.666041999999999,42.275911,0</coordinates>		</Point>	</Placemark></Document></kml>");
+	// Kml unmarshal = Kml
+	// .unmarshal("<?xml version=\"1.0\" encoding=\"UTF-8\"?><kml xmlns=\"http://www.opengis.net/kml/2.2\" xmlns:gx=\"http://www.google.com/kml/ext/2.2\" xmlns:kml=\"http://www.opengis.net/kml/2.2\" xmlns:atom=\"http://www.w3.org/2005/Atom\"><Document>	<name>/tmp/listado de prueba</name>	<open>1</open>	<StyleMap id=\"m_ylw-pushpin\">		<Pair>			<key>normal</key>			<styleUrl>#s_ylw-pushpin</styleUrl>		</Pair>		<Pair>			<key>highlight</key>			<styleUrl>#s_ylw-pushpin_hl</styleUrl>		</Pair>	</StyleMap>	<Style id=\"s_ylw-pushpin\">		<IconStyle>			<scale>0.7</scale>			<Icon>				<href>http://maps.google.com/mapfiles/kml/pushpin/wht-pushpin.png</href>			</Icon>			<hotSpot x=\"20\" y=\"2\" xunits=\"pixels\" yunits=\"pixels\"/>		</IconStyle>		<LabelStyle>			<scale>0.5</scale>		</LabelStyle>		<BalloonStyle>		</BalloonStyle>		<ListStyle>		</ListStyle>	</Style>	<Style id=\"s_ylw-pushpin_hl\">		<IconStyle>			<scale>0.827273</scale>			<Icon>				<href>http://maps.google.com/mapfiles/kml/pushpin/wht-pushpin.png</href>			</Icon>			<hotSpot x=\"20\" y=\"2\" xunits=\"pixels\" yunits=\"pixels\"/>		</IconStyle>		<LabelStyle>			<scale>0.5</scale>		</LabelStyle>		<BalloonStyle>		</BalloonStyle>		<ListStyle>		</ListStyle>	</Style>	<Placemark>		<name>ACCIDENTES</name>		<open>1</open>		<description>prueba</description>		<styleUrl>#m_ylw-pushpin</styleUrl>		<Point>			<coordinates>-8.666041999999999,42.275911,0</coordinates>		</Point>	</Placemark></Document></kml>");
+	String templatePath = getClass().getClassLoader()
+		.getResource("incidencias.kml").getPath();
+	Kml unmarshal = Kml.unmarshal(new File(templatePath));
 	List<StyleSelector> styleSelector = unmarshal.getFeature()
 		.getStyleSelector();
 
@@ -312,13 +348,30 @@ public class IncidenciasParser {
 		    .createAndSetPoint().addToCoordinates(coord[0], coord[1]);
 	}
 
+	KMZPackager kmzPackager = new KMZPackager();
+	OutputStream os;
 	try {
-	    kml.marshal(new File(kmlNamePath + ".kml"));
-
-	} catch (FileNotFoundException e) {
-	    logger.error(e.getStackTrace(), e);
+	    os = new FileOutputStream(kmlNamePath + ".kmz");
+	    DataSource kmlDataSource = new KMZPackager.KMLDataSource(kml,
+		    "doc.kml");
+	    List<FileDataSource> resourceList = new ArrayList<KMZPackager.FileDataSource>();
+	    String signal2Path = getClass().getClassLoader()
+		    .getResource("images/signal2.png").getPath();
+	    resourceList.add(new KMZPackager.FileDataSource(new File(
+		    signal2Path), "files/signal2.png"));
+	    kmzPackager.packageAsKMZ(os, kmlDataSource, resourceList);
+	} catch (FileNotFoundException e1) {
+	    logger.error(e1.getStackTrace(), e1);
 	    return false;
 	}
+	//
+	// try {
+	// kml.marshal(new File(kmlNamePath + ".kml"));
+	//
+	// } catch (FileNotFoundException e) {
+	// logger.error(e.getStackTrace(), e);
+	//
+	// }
 	return true;
 
     }
@@ -356,24 +409,16 @@ public class IncidenciasParser {
 	String nombre = getValueAsString(row.getCell(nombreIdx));
 
 	String pkStr = getValueAsString(row.getCell(pkIdx));
-	pkStr = pkStr.replace("+", ".").replace(",", ".");
-	String pkformatted = null;
-	try {
-	    double pk = Double.parseDouble(pkStr);
-	    pkformatted = String.format("%3.3f", pk).replace(",", ".");
-	} catch (NumberFormatException e) {
-	    pkformatted = null;
-	}
+	String pkformatted = formatPkForDouble(pkStr);
 
 	String ramal = getValueAsString(row.getCell(ramalIdx));
 	String sentido = getValueAsString(row.getCell(sentidoIdx));
 	sentido = sentido.isEmpty() ? "Ambos" : sentido;
 
 	if (tramo.isEmpty() || tipoVia.isEmpty()) {
-	    addWarning(String
-		    .format("Fila %d no localizada. Tramo y Tipo Via son campos obligatorios. Tramo: %s. Tipo vía: %s. Nombre: %s. PK: %s. Ramal: %s. Sentido: %s",
-			    row.getRowNum() + 1, tramo, tipoVia, nombre,
-			    pkformatted, ramal, sentido));
+	    addLocalizedWarning("Tramo y Tipo Via son campos obligatorios.",
+		    row.getRowNum() + 1, tramo, tipoVia, nombre, pkformatted,
+		    ramal, sentido);
 	    return null;
 	}
 
@@ -385,23 +430,40 @@ public class IncidenciasParser {
 		|| (collator.compare(tipoVia, "A. de Servicio") == 0)
 		|| (collator.compare(tipoVia, "A. de Manto.") == 0)
 		|| (collator.compare(tipoVia, "Enlace") == 0)) {
-	    query += String.format(
-		    " and nombre = '%s' and ramal = '%s' and sentido = '%s'",
-		    nombre, ramal, sentido);
+	    // ramal is a workaround. table have null in ramal but excel is ''
+	    // but more cases should be checked before a more general solution
+	    query += String
+		    .format(" and nombre = '%s' and ((ramal = '%s') or ((ramal is null) and ('%s' = ''))) and sentido = '%s'",
+			    nombre, ramal, ramal, sentido);
 
 	} else if (collator.compare(tipoVia, "Estación de Peaje") == 0) {
 	    query += String.format(" and nombre = '%s' and sentido = '%s'",
 		    nombre, sentido);
 
 	} else if (collator.compare(tipoVia, "Intercambiador") == 0) {
+	    if (pkformatted.isEmpty()) {
+		addLocalizedWarning("PK es un campo obligatorio",
+			row.getRowNum() + 1, tramo, tipoVia, nombre,
+			pkformatted, ramal, sentido);
+	    }
 	    query += String.format(
 		    " and nombre = '%s' and abs(pk - %s) < 0.01", nombre,
 		    pkformatted);
 	} else if (collator.compare(tipoVia, "Tronco") == 0) {
+	    if (pkformatted.isEmpty()) {
+		addLocalizedWarning("PK es un campo obligatorio",
+			row.getRowNum() + 1, tramo, tipoVia, nombre,
+			pkformatted, ramal, sentido);
+	    }
 	    query += String.format(
 		    " and sentido = '%s' and abs(pk - %s) < 0.01", sentido,
 		    pkformatted);
 	} else if (collator.compare(tipoVia, "Túnel") == 0) {
+	    if (pkformatted.isEmpty()) {
+		addLocalizedWarning("PK es un campo obligatorio",
+			row.getRowNum() + 1, tramo, tipoVia, nombre,
+			pkformatted, ramal, sentido);
+	    }
 	    query += String
 		    .format(" and nombre = '%s' and sentido = '%s' and abs(pk - %s) < 0.01",
 			    nombre, sentido, pkformatted);
@@ -412,13 +474,27 @@ public class IncidenciasParser {
 	DefaultTableModel results = cw.execute(query);
 
 	if (results.getRowCount() == 0) {
-	    addWarning(String
-		    .format("Fila %d no localizada. Tramo: %s. Tipo vía: %s. Nombre: %s. PK: %s. Ramal: %s. Sentido: %s",
-			    row.getRowNum(), tramo, tipoVia, nombre,
-			    pkformatted, ramal, sentido));
+	    addLocalizedWarning("", row.getRowNum() + 1, tramo, tipoVia,
+		    nombre, pkformatted, ramal, sentido);
 	    return null;
 	}
 	return results;
+    }
+
+    private void addLocalizedWarning(String string, int rowNumber,
+	    String tramo, String tipoVia, String nombre, String pkformatted,
+	    String ramal, String sentido) {
+	tramo = tramo.isEmpty() ? " - " : tramo;
+	tipoVia = tipoVia.isEmpty() ? " - " : tipoVia;
+	nombre = nombre.isEmpty() ? " - " : nombre;
+	pkformatted = pkformatted.isEmpty() ? " - "
+		: formatPkForDisplay(pkformatted);
+	ramal = ramal.isEmpty() ? " - " : ramal;
+	sentido = sentido.isEmpty() ? " - " : sentido;
+	addWarning(String
+		.format("Fila %d no localizada. %s Tramo: %s. Tipo vía: %s. Nombre: %s. PK: %s. Ramal: %s. Sentido: %s",
+			rowNumber, string, tramo, tipoVia, nombre, pkformatted,
+			ramal, sentido));
     }
 
     public List<String> getHeader() {
@@ -434,8 +510,9 @@ public class IncidenciasParser {
 	    return cell.getRichStringCellValue().getString();
 	case Cell.CELL_TYPE_NUMERIC:
 	    if (DateUtil.isCellDateFormatted(cell)) {
-		Date date = cell.getDateCellValue();
-		return DateFormatNT.getDateFormat().format(date);
+		// Date date = cell.getDateCellValue();
+		// return DateFormatNT.getDateFormat().format(date);
+		return dataFormatter.formatCellValue(cell);
 	    } else {
 		double numericCellValue = cell.getNumericCellValue();
 		return DoubleFormatNT.getEditingFormat().format(
@@ -456,71 +533,71 @@ public class IncidenciasParser {
 	return warnings;
     }
 
-    private void applySymbology(FLyrVect layer) {
-	try {
-	    applyLegend(layer);
-	} catch (LegendLayerException e) {
-	    logger.error(e.getStackTrace(), e);
-	} catch (ReadDriverException e) {
-	    logger.error(e.getStackTrace(), e);
-	} catch (FieldNotFoundException e) {
-	    logger.error(e.getStackTrace(), e);
-	}
-	applyLabel(layer);
-    }
+    // private void applySymbology(FLyrVect layer) {
+    // try {
+    // applyLegend(layer);
+    // } catch (LegendLayerException e) {
+    // logger.error(e.getStackTrace(), e);
+    // } catch (ReadDriverException e) {
+    // logger.error(e.getStackTrace(), e);
+    // } catch (FieldNotFoundException e) {
+    // logger.error(e.getStackTrace(), e);
+    // }
+    // applyLabel(layer);
+    // }
 
-    private void applyLabel(FLyrVect layer) {
-	AttrInTableLabelingStrategy st = new AttrInTableLabelingStrategy();
-	st.setFixedColor(new Color(51, 51, 51));
-	st.setFixedSize(6);
-	st.setTextField("MOTIVO");
-	st.setFont(new Font("Arial", Font.BOLD, 6));
-	st.setUsesFixedSize(true);
-	st.setUsesFixedColor(true);
-	st.setLayer(layer);
-
-	layer.setLabelingStrategy(st);
-	layer.setIsLabeled(true);
-    }
-
-    private void applyLegend(FLyrVect layer) throws ReadDriverException,
-	    FieldNotFoundException, LegendLayerException {
-
-	ReadableVectorial source = layer.getSource();
-	int motivoIdx = source.getRecordset().getFieldIndexByName("MOTIVO");
-	List<Value> list = new ArrayList<Value>();
-	for (int i = 0; i < source.getShapeCount(); i++) {
-	    Value att = source.getFeature(i).getAttribute(motivoIdx);
-	    if (!list.contains(att)) {
-		list.add(att);
-	    }
-	}
-
-	VectorialUniqueValueLegend legend = new VectorialUniqueValueLegend(
-		layer.getShapeType());
-	legend.setDataSource(source.getRecordset());
-	legend.setClassifyingFieldNames(new String[] { "MOTIVO" });
-	legend.setClassifyingFieldTypes(new int[] { Types.VARCHAR });
-	for (int i = 0; i < list.size(); i++) {
-	    Motivo motivo = Motivo.fromString(list.get(i).toString());
-	    SimpleMarkerSymbol symbol = new SimpleMarkerSymbol();
-	    if (motivo == null) {
-		legend.useDefaultSymbol(true);
-		symbol.setColor(new Color(255, 0, 0));
-		symbol.setSize(6);
-		symbol.setDescription("MOTIVO NO IDENTIFICADO");
-		// legend.addSymbol(new NullUniqueValue(), symbol);
-		// legend.getSymbolByValue(new NullUniqueValue());
-		legend.setDefaultSymbol(symbol);
-		addWarning(String.format("Motivo desconocido: %s", list.get(i)));
-	    } else {
-		symbol.setColor(motivo.color());
-		symbol.setSize(6);
-		symbol.setDescription(motivo.toString());
-		legend.addSymbol(list.get(i), symbol);
-	    }
-	}
-
-	layer.setLegend(legend);
-    }
+    // private void applyLabel(FLyrVect layer) {
+    // AttrInTableLabelingStrategy st = new AttrInTableLabelingStrategy();
+    // st.setFixedColor(new Color(100, 0, 0));
+    // st.setFixedSize(6);
+    // st.setTextField("MOTIVO");
+    // st.setFont(new Font("Arial", Font.BOLD, 7));
+    // st.setUsesFixedSize(true);
+    // st.setUsesFixedColor(true);
+    // st.setLayer(layer);
+    //
+    // layer.setLabelingStrategy(st);
+    // layer.setIsLabeled(true);
+    // }
+    //
+    // private void applyLegend(FLyrVect layer) throws ReadDriverException,
+    // FieldNotFoundException, LegendLayerException {
+    //
+    // ReadableVectorial source = layer.getSource();
+    // int motivoIdx = source.getRecordset().getFieldIndexByName("MOTIVO");
+    // List<Value> list = new ArrayList<Value>();
+    // for (int i = 0; i < source.getShapeCount(); i++) {
+    // Value att = source.getFeature(i).getAttribute(motivoIdx);
+    // if (!list.contains(att)) {
+    // list.add(att);
+    // }
+    // }
+    //
+    // VectorialUniqueValueLegend legend = new VectorialUniqueValueLegend(
+    // layer.getShapeType());
+    // legend.setDataSource(source.getRecordset());
+    // legend.setClassifyingFieldNames(new String[] { "MOTIVO" });
+    // legend.setClassifyingFieldTypes(new int[] { Types.VARCHAR });
+    // for (int i = 0; i < list.size(); i++) {
+    // Motivo motivo = Motivo.fromString(list.get(i).toString());
+    // SimpleMarkerSymbol symbol = new SimpleMarkerSymbol();
+    // if (motivo == null) {
+    // legend.useDefaultSymbol(true);
+    // symbol.setColor(new Color(255, 0, 0));
+    // symbol.setSize(6);
+    // symbol.setDescription("MOTIVO NO IDENTIFICADO");
+    // // legend.addSymbol(new NullUniqueValue(), symbol);
+    // // legend.getSymbolByValue(new NullUniqueValue());
+    // legend.setDefaultSymbol(symbol);
+    // addWarning(String.format("Motivo desconocido: %s", list.get(i)));
+    // } else {
+    // symbol.setColor(motivo.color());
+    // symbol.setSize(6);
+    // symbol.setDescription(motivo.toString());
+    // legend.addSymbol(list.get(i), symbol);
+    // }
+    // }
+    //
+    // layer.setLegend(legend);
+    // }
 }

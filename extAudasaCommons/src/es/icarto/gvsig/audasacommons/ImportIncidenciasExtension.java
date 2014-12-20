@@ -1,5 +1,7 @@
 package es.icarto.gvsig.audasacommons;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -15,11 +17,13 @@ import com.iver.andami.plugins.Extension;
 import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.cit.gvsig.fmap.layers.FLayers;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
+import com.iver.cit.gvsig.fmap.rendering.styling.labeling.AttrInTableLabelingStrategy;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.icarto.gvsig.audasacommons.incidencias.IncidenciasParser;
 import es.icarto.gvsig.commons.gui.ExcelFileChooser;
 import es.icarto.gvsig.utils.DesktopApi;
+import es.udc.cartolab.gvsig.elle.utils.LoadLegend;
 
 public class ImportIncidenciasExtension extends Extension {
 
@@ -103,6 +107,10 @@ public class ImportIncidenciasExtension extends Extension {
 		    FLayers layers = view.getMapControl().getMapContext()
 			    .getLayers();
 		    layers.addLayer(layer);
+		    String path = getClass().getClassLoader()
+			    .getResource("incidencias.gvl").getPath();
+		    LoadLegend.setLegend(layer, path, true);
+		    applyLabel(layer);
 		}
 
 		kmlWritted = parser.toKml();
@@ -166,6 +174,20 @@ public class ImportIncidenciasExtension extends Extension {
 	JOptionPane.showMessageDialog(null, msg, null,
 		JOptionPane.INFORMATION_MESSAGE, null);
 
+    }
+
+    private void applyLabel(FLyrVect layer) {
+	AttrInTableLabelingStrategy st = new AttrInTableLabelingStrategy();
+	st.setFixedColor(new Color(100, 0, 0));
+	st.setFixedSize(6);
+	st.setTextField("MOTIVO");
+	st.setFont(new Font("Arial", Font.BOLD, 7));
+	st.setUsesFixedSize(true);
+	st.setUsesFixedColor(true);
+	st.setLayer(layer);
+
+	layer.setLabelingStrategy(st);
+	layer.setIsLabeled(true);
     }
 
     @Override

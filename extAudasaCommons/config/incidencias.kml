@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>Incidencias</name>
+	<StyleMap id="m_ylw-pushpin">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#s_ylw-pushpin</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#s_ylw-pushpin_hl</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="s_ylw-pushpin">
+		<IconStyle>
+			<scale>0.7</scale>
+			<heading>0</heading>
+			<Icon>
+				<href>files/signal2.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<LabelStyle>
+			<color>ff11a8ff</color>
+			<scale>0.6</scale>
+		</LabelStyle>
+		<ListStyle>
+			<maxSnippetLines>0</maxSnippetLines>
+		</ListStyle>
+	</Style>
+	<Style id="s_ylw-pushpin_hl">
+		<IconStyle>
+			<scale>0.827273</scale>
+			<heading>0</heading>
+			<Icon>
+				<href>files/signal2.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<LabelStyle>
+			<color>ff11a8ff</color>
+			<scale>0.6</scale>
+		</LabelStyle>
+		<ListStyle>
+			<maxSnippetLines>0</maxSnippetLines>
+		</ListStyle>
+	</Style>
+	<Placemark>
+		<name>ACCIDENTES: 38116</name>
+		<open>1</open>
+		<description><![CDATA[<table><tr><td><strong>Fecha<strong></td><td>01/04/2014</td></tr><tr><td><strong>Hora<strong></td><td>07:34:00</td></tr><tr><td><strong>P.K.<strong></td><td>109+000</td></tr><tr><td><strong>Sentido<strong></td><td>Creciente</td></tr><tr><td><strong>Duración<strong></td><td>48 minutos</td></tr><tr><td><strong>Asistencias Movilizadas<strong></td><td>E.V.P.</td></tr></table>]]></description>
+		<styleUrl>#m_ylw-pushpin</styleUrl>
+		<Point>
+			<coordinates>-8.668982,42.605112,0</coordinates>
+		</Point>
+	</Placemark>
+</Document>
+</kml>
