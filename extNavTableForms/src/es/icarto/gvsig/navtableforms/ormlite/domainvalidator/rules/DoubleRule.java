@@ -16,15 +16,15 @@
  */
 package es.icarto.gvsig.navtableforms.ormlite.domainvalidator.rules;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.text.NumberFormat;
+import java.text.ParsePosition;
+
+import es.udc.cartolab.gvsig.navtable.format.DoubleFormatNT;
 
 public class DoubleRule extends ValidationRule {
 
-    private static final String regExp = "[+-]?([0-9]*)(,)?([0-9]*)";
-    private static final Pattern pattern = Pattern.compile(regExp);
-
     public DoubleRule() {
+	super();
     }
 
     @Override
@@ -34,7 +34,9 @@ public class DoubleRule extends ValidationRule {
 
     private boolean isDouble(String value) {
 	value = value == null ? "" : value.trim();
-	Matcher m = pattern.matcher(value);
-	return m.matches();
+	NumberFormat formatter = DoubleFormatNT.getDisplayingFormat();
+	ParsePosition pos = new ParsePosition(0);
+	formatter.parse(value, pos);
+	return value.length() == pos.getIndex();
     }
 }

@@ -21,18 +21,19 @@ import es.icarto.gvsig.navtableforms.IValidatableForm;
 
 public class EnabledComponentBasedOnWidgets implements ActionListener {
 
-    private JComponent component;
-    private Map<JComponent, List<String>> conditions = new HashMap<JComponent, List<String>>();
+    private final JComponent component;
+    private final Map<JComponent, List<String>> conditions = new HashMap<JComponent, List<String>>();
     private boolean removeDependentValues;
-    private IValidatableForm form;
+    private final IValidatableForm form;
     // to store the table listeners when the component is a jtable
     private MouseListener[] listeners = new MouseListener[0];
 
-    public EnabledComponentBasedOnWidgets(JComponent component, IValidatableForm form) {
+    public EnabledComponentBasedOnWidgets(JComponent component,
+	    IValidatableForm form) {
 	this.component = component;
 	this.form = form;
     }
-    
+
     public void addCondition(JComponent widget, String value) {
 	if (!conditions.containsKey(widget)) {
 	    conditions.put(widget, new ArrayList<String>());
@@ -77,11 +78,11 @@ public class EnabledComponentBasedOnWidgets implements ActionListener {
 	    if (widget instanceof JCheckBox) {
 		enable = enable
 			&& checkCheckBoxCondition((JCheckBox) widget,
-			conditions.get(widget));
+				conditions.get(widget));
 	    } else if (widget instanceof JComboBox) {
 		enable = enable
 			&& checkComboBoxCondition((JComboBox) widget,
-			conditions.get(widget));
+				conditions.get(widget));
 	    }
 	}
 	changeComponentState(enable, initialLoad);
@@ -89,7 +90,7 @@ public class EnabledComponentBasedOnWidgets implements ActionListener {
 
     private boolean checkComboBoxCondition(JComboBox widget, List<String> values) {
 	if (widget.getSelectedItem() != null) {
-	    String selected = ((JComboBox) widget).getSelectedItem().toString();
+	    String selected = widget.getSelectedItem().toString();
 	    for (String value : values) {
 		if (value.equalsIgnoreCase(selected)) {
 		    return true;
@@ -131,7 +132,9 @@ public class EnabledComponentBasedOnWidgets implements ActionListener {
 		if ((component instanceof JComboBox) && !enabled) {
 		    // If the component is a combobox and we are disabling
 		    // it, prior to that we select the default item.
-		    ((JComboBox) component).setSelectedIndex(0);
+		    if (((JComboBox) component).getItemCount() > 0) {
+			((JComboBox) component).setSelectedIndex(0);
+		    }
 		} else {
 		    if ((component instanceof JCheckBox) && !enabled
 			    && ((JCheckBox) component).isSelected()) {
