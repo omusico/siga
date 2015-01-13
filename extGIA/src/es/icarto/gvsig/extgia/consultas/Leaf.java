@@ -256,7 +256,10 @@ public class Leaf implements Component {
 		select += "nv.item AS  \"Nombre Vía\", ";
 	    } else if (field.getKey().endsWith("municipio")) {
 		select += "mu.item AS  \"Municipio\", ";
-	    } else if (field.getKey().endsWith("sentido")) {
+		// workaround. Sentido is in trabajos table and not in the main
+		// table
+	    } else if (field.getKey().endsWith("sentido")
+		    && !element[0].equalsIgnoreCase("firme")) {
 		select += "st.item AS  \"Sentido\", ";
 	    } else {
 		select = select
