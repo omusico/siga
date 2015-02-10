@@ -49,6 +49,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import com.hardcode.gdbms.engine.values.BlankValue;
 import com.hardcode.gdbms.engine.values.BooleanValue;
 import com.hardcode.gdbms.engine.values.DateValue;
 import com.hardcode.gdbms.engine.values.DoubleValue;
@@ -178,6 +179,10 @@ public class XTypes {
 		// byte[] data;
 		ResultSetMetaData metaData = rs.getMetaData();
 		int fieldId = fieldId_ceroBased + 1;
+		if (val instanceof BlankValue) {
+		    rs.updateNull(fieldId);
+		    return;
+		}
 		// System.out.println("EScritrua: " + metaData.isDefinitelyWritable(1));
 		switch (val.getSQLType()) {
 		case Types.VARCHAR:
