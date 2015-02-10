@@ -21,13 +21,19 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 import com.hardcode.gdbms.driver.exceptions.InitializeWriterException;
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
+import com.hardcode.gdbms.engine.values.BlankValue;
 import com.hardcode.gdbms.engine.values.Value;
+import com.iver.cit.gvsig.exceptions.expansionfile.ExpansionFileReadException;
+import com.iver.cit.gvsig.exceptions.validate.ValidateRowException;
 import com.iver.cit.gvsig.exceptions.visitors.StartWriterVisitorException;
 import com.iver.cit.gvsig.exceptions.visitors.StopWriterVisitorException;
 import com.iver.cit.gvsig.fmap.core.DefaultRow;
 import com.iver.cit.gvsig.fmap.core.IRow;
+import com.iver.cit.gvsig.fmap.drivers.FieldDescription;
 import com.iver.cit.gvsig.fmap.drivers.ITableDefinition;
 import com.iver.cit.gvsig.fmap.edition.EditionEvent;
 import com.iver.cit.gvsig.fmap.edition.IEditableSource;
@@ -48,6 +54,10 @@ import es.udc.cartolab.gvsig.navtable.format.ValueFormatNT;
  * 
  */
 public class TableController implements IController {
+    
+    
+    private static final Logger logger = Logger
+	    .getLogger(TableController.class);
 
     public static int NO_ROW = -1;
 
@@ -138,13 +148,69 @@ public class TableController implements IController {
 	if (!wasEditing) {
 	    te.startEditing(model);
 	}
-	te.modifyValues(model, (int) position, getIndexesOfValuesChanged(),
+	this.modifyValues(model, (int) position, getIndexesOfValuesChanged(),
 		getValuesChanged().values().toArray(new String[0]));
 	if (!wasEditing) {
 	    te.stopEditing(model);
 	}
 	read((int) position);
     }
+    
+    // fpuga. 10/02/2015
+    // Workaround: JDBCWriter, used to write values to alphanumeric postgres tables don't send null
+    // values to the database, so, there is no way to "blank" an already set value. It's not 
+    // enough modify Xtypes to send NullValue because in this case when a new row is inserted
+    // a null is send to the pk and the not null constraint is not satisfied. Probably a new 
+    // Value type DefaultValue is need to be included in gvSIG code.
+    public void modifyValues(IEditableSource source, int rowPosition,
+	    int[] attIndexes, String[] attValues) {
+	try {
+	    Value[] attributes = getNewAttributes(
+		    source, rowPosition, attIndexes, attValues);
+
+	    IRow newRow = new DefaultRow(attributes);
+	    source.modifyRow(rowPosition, newRow, "NAVTABLE MODIFY",
+		    EditionEvent.ALPHANUMERIC);
+	} catch (ExpansionFileReadException e) {
+	    logger.error(e.getMessage(), e);
+	} catch (ReadDriverException e) {
+	    logger.error(e.getMessage(), e);
+	} catch (ValidateRowException e) {
+	    logger.error(e.getMessage(), e);
+	}
+    }
+    
+    private Value[] getNewAttributes(IEditableSource source, 
+	    int rowPosition, 
+	    int[] attIndexes, 
+	    String[] attValues) {
+
+	int type;
+	try {
+	    FieldDescription[] fieldDesc = source.getTableDefinition().getFieldsDesc();
+	    Value[] attributes = source.getRow(rowPosition).getAttributes();
+	    for (int i = 0; i < attIndexes.length; i++) {
+		String att = attValues[i];
+		int idx = attIndexes[i];
+		if (att == null || att.length() == 0) {
+		    attributes[idx] = new BlankValue();
+		} else {
+		    type = fieldDesc[idx].getFieldType();
+		    try {
+			attributes[idx] = ValueFactoryNT.createValueByType(att, type);
+		    } catch (ParseException e) {
+		        logger.warn(e.getStackTrace(), e);
+		    }
+		}
+	    }
+	    return attributes;
+	} catch (ReadDriverException e) {
+	    logger.error(e.getMessage(), e);
+	    return null;
+	}
+    }
+    
+    // end workaround
 
     @Override
     public void delete(long position) throws StopWriterVisitorException,
