@@ -5,11 +5,12 @@ import java.util.Map;
 
 public enum Header {
 
-    PK("P.K."), SENTIDO("Sentido"), FECHA("Fecha"), HORA("Hora"), MOTIVO(
-	    "Motivo"), DURACION("Duración"), ASISTENCIAS_MOVILIZADAS(
-	    "Asistencias Movilizadas"), CLIMA("Clima"), CAUSAS("Causas"), N_VEHICULOS(
-	    "nº Vehículos"), HERIDOS("Heridos"), MUERTOS("Muertos"), ASIST_SANITARIA(
-	    "Asistencia Sanitaria"), INFORME_ARENA("Informe Areana");
+    PK("P.K.", 10), SENTIDO("Sentido", 15), FECHA("Fecha", 15), HORA("Hora", 10), MOTIVO(
+	    "Motivo", 25), DURACION("Duración", 25), ASISTENCIAS_MOVILIZADAS(
+	    "Asistencias Movilizadas", 250), CLIMA("Clima", 25), CAUSAS(
+	    "Causas", 100), N_VEHICULOS("nº Vehículos", 10), HERIDOS("Heridos",
+	    10), MUERTOS("Muertos", 10), ASIST_SANITARIA(
+	    "Asistencia Sanitaria", 5), INFORME_ARENA("Informe Arena", 5);
 
     private static final Map<String, Header> stringToEnum = new HashMap<String, Header>();
 
@@ -21,9 +22,11 @@ public enum Header {
 
     private final String text;
     private int idx = -1;
+    private final int fieldLength;
 
-    private Header(String text) {
+    private Header(String text, int fieldLength) {
 	this.text = text;
+	this.fieldLength = fieldLength;
     }
 
     public void setIdx(int idx) {
@@ -32,6 +35,10 @@ public enum Header {
 
     public int getIdx() {
 	return idx;
+    }
+
+    public int getFieldLength() {
+	return this.fieldLength;
     }
 
     @Override

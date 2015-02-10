@@ -276,12 +276,15 @@ public class IncidenciasParser {
 	File outfile = new File(shpPath);
 
 	FieldDescriptionFactory fdf = new FieldDescriptionFactory();
-	fdf.setDefaultStringLength(254);
 	for (String h : header) {
+	    fdf.setDefaultStringLength(100);
 	    String normalizedColumn = Normalizer
 		    .normalize(h, Normalizer.Form.NFD)
 		    .replaceAll("[^\\p{ASCII}]", "").replace(" ", "_")
 		    .toUpperCase();
+	    if (normalizedColumn.equals("SEGUIMIENT")) {
+		fdf.setDefaultStringLength(250);
+	    }
 	    fdf.addString(normalizedColumn);
 	}
 	FieldDescription[] fieldsDesc = fdf.getFields();
