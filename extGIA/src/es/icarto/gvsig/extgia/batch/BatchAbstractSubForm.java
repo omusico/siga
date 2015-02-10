@@ -3,6 +3,7 @@ package es.icarto.gvsig.extgia.batch;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import javax.swing.JOptionPane;
 
@@ -66,7 +67,12 @@ public abstract class BatchAbstractSubForm extends GIASubForm {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-	    HashMap<String, String> values = iController.getValues();
+	    HashMap<String, String> values = new HashMap<String, String>();
+
+	    // controller values must be cloned to avoid bugs
+	    for (Entry<String, String> f : iController.getValues().entrySet()) {
+		values.put(f.getKey(), f.getValue());
+	    }
 
 	    final TOCLayerManager toc = new TOCLayerManager();
 	    FLyrVect layer = toc.getLayerByName(getLayerName());
@@ -100,6 +106,8 @@ public abstract class BatchAbstractSubForm extends GIASubForm {
 			JOptionPane.INFORMATION_MESSAGE, null, options,
 			options[1]);
 		if (m == JOptionPane.OK_OPTION) {
+		    // TODO: fpuga. 04/02/2014. Istead of this use
+		    // selection.nextSetBit. it will performs fast
 		    for (int i = 0; i < recordset.getRowCount(); i++) {
 			if (recordset.isSelected(i)) {
 			    values.put(getIdFieldName(), recordset
