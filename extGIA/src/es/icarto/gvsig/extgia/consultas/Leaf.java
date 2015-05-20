@@ -122,7 +122,9 @@ public class Leaf implements Component {
 	QueryType tipo = QueryType.TYPE_NOT_SET;
 	if (tipoConsulta.equals("Trabajos") && element[1].equals("Firme")) {
 	    tipo = QueryType.TRABAJOS_FIRME;
-	} else if (tipoConsulta.equals("Trabajos") && element[1].equals("Taludes") || element[1].equals("Isletas") || element[1].equals("Barrera Rígida")) {
+	} else if (tipoConsulta.equals("Trabajos") && element[1].equals("Taludes") || 
+		element[1].equals("Isletas") || element[1].equals("Barrera Rígida") ||
+		element[1].equals("Señalización Vertical")) {
 	    tipo = QueryType.TRABAJOS_VEGETACION;
 	} else if (tipoConsulta.equals("Trabajos")) {
 	    tipo = QueryType.TRABAJOS;
