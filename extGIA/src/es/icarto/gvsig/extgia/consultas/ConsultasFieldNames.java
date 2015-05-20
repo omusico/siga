@@ -39,6 +39,12 @@ public class ConsultasFieldNames {
 		+ ", sub.fecha, sub.unidad, sub.medicion_contratista, sub.medicion_audasa, "
 		+ "sub.observaciones, sub.fecha_certificado";
     }
+    
+    public static String getTrabajosVegetacionFieldNames(String elementId) {
+	return "sub."
+		+ elementId
+		+ ", sub.fecha, sub.unidad, sub.medicion, sub.observaciones";
+    }
 
     public static String getFirmeTrabajosFieldNames(String elementId) {
 	return "sub." + elementId

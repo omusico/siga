@@ -122,6 +122,8 @@ public class Leaf implements Component {
 	QueryType tipo = QueryType.TYPE_NOT_SET;
 	if (tipoConsulta.equals("Trabajos") && element[1].equals("Firme")) {
 	    tipo = QueryType.TRABAJOS_FIRME;
+	} else if (tipoConsulta.equals("Trabajos") && element[1].equals("Taludes") || element[1].equals("Isletas") || element[1].equals("Barrera Rígida")) {
+	    tipo = QueryType.TRABAJOS_VEGETACION;
 	} else if (tipoConsulta.equals("Trabajos")) {
 	    tipo = QueryType.TRABAJOS;
 	} else if (tipoConsulta.equals("Inspecciones")
@@ -144,6 +146,8 @@ public class Leaf implements Component {
 	    return ConsultasFieldNames.getFirmeTrabajosFieldNames(elementId);
 	case TRABAJOS:
 	    return ConsultasFieldNames.getTrabajosFieldNames(elementId);
+	case TRABAJOS_VEGETACION:
+	    return ConsultasFieldNames.getTrabajosVegetacionFieldNames(elementId);
 	case RECONOCIMIENTOS_FIRME:
 	    return ConsultasFieldNames
 		    .getFirmeReconocimientosFieldNames(elementId);
@@ -196,6 +200,8 @@ public class Leaf implements Component {
 
 	    if (tipo == QueryType.TRABAJOS || tipo == QueryType.TRABAJOS_FIRME) {
 		query += filters.getWhereClauseByDates("fecha_certificado");
+	    } else if (tipo == QueryType.TRABAJOS_VEGETACION) {
+		query += filters.getWhereClauseByDates("fecha");
 	    } else {
 		query += filters.getWhereClauseByDates("fecha_inspeccion");
 	    }
@@ -286,6 +292,9 @@ public class Leaf implements Component {
 	    break;
 	case TRABAJOS_FIRME:
 	    new FirmeTrabajosReport(element, outputFile, table, filters, tipo);
+	    break;
+	case TRABAJOS_VEGETACION:
+	    new TrabajosVegetacionReport(element, outputFile, table, filters, tipo);
 	    break;
 	case CARACTERISTICAS:
 	    ConsultasFieldNames.createCaracteristicasReport(element,
