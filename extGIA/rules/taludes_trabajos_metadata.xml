@@ -20,6 +20,21 @@
 		<FIELDNAME>medicion</FIELDNAME>
 		<VALIDATIONRULE>double_positive</VALIDATIONRULE>
 	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>medicion_elemento</FIELDNAME>
+		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>medicion_complementaria</FIELDNAME>
+		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>medicion_ultimo_trabajo</FIELDNAME>
+		<VALIDATIONRULE>double_positive</VALIDATIONRULE>
+	</FIELD>
 
 	<FIELD>
 		<FIELDNAME>unidad</FIELDNAME>
