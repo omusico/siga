@@ -12,7 +12,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/extDBConnection"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/libDriverManager"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/extJDBC"/>
-	<classpathentry kind="lib" path="/libFMap/lib/org.cresques.cts.jar" sourcepath="/libProjection/src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/libGDBMS"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/libExceptions"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/appgvSIG"/>
@@ -26,5 +25,6 @@
 	<classpathentry kind="lib" path="/es.icarto.gvsig.commons/lib/miglayout-3.7.3.1.jar"/>
 	<classpathentry kind="lib" path="/es.icarto.gvsig.commons/lib/formsrt.jar"/>
 	<classpathentry kind="lib" path="/es.icarto.gvsig.commons/lib/jcalendar-1.4.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/libProjection"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

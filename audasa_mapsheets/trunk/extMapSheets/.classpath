@@ -10,15 +10,15 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/libExceptions"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/libGDBMS"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/extSymbology"/>
-	<classpathentry kind="lib" path="/libFMap/lib/driver-manager-1.1.jar" sourcepath="/libDriverManager"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/extRasterTools-SE"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/libRaster"/>
-	<classpathentry kind="lib" path="/libFMap/lib/org.cresques.cts.jar" sourcepath="/extJCRS/src/org/gvsig/crs"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
 	<classpathentry kind="lib" path="lib/PDFRenderer-0.9.0.jar"/>
 	<classpathentry kind="lib" path="/_fwAndami/lib/log4j-1.2.14.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/libUIComponent"/>
 	<classpathentry kind="lib" path="/_fwAndami/lib/castor-0.9.5.3-xml.jar"/>
 	<classpathentry kind="lib" path="lib/itextpdf-5.4.2.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/libProjection"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/libDriverManager"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
