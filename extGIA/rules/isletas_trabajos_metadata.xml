@@ -30,7 +30,7 @@
 
 	<FIELD>
 		<FIELDNAME>ancho</FIELDNAME>
-		<VALIDATIONRULE>INTEGER_POSITIVE</VALIDATIONRULE>
+		<VALIDATIONRULE>DOUBLE_POSITIVE</VALIDATIONRULE>
 		<ENABLEIF>
 			<CONDITION>
 			<COMPONENT>unidad</COMPONENT>
@@ -42,6 +42,36 @@
 	<FIELD>
 		<FIELDNAME>medicion</FIELDNAME>
 		<VALIDATIONRULE>double_positive</VALIDATIONRULE>
+				<ENABLEIF>
+			<CONDITION>
+			<COMPONENT>unidad</COMPONENT>
+			<VALUE>Desbroce con retroaraña</VALUE>
+			</CONDITION>
+			<CONDITION>
+			<COMPONENT>unidad</COMPONENT>
+			<VALUE>Desbroce mecánico</VALUE>
+			</CONDITION>
+			<CONDITION>
+			<COMPONENT>unidad</COMPONENT>
+			<VALUE>Eliminación veg. mediana de HG y transp. a vertedero</VALUE>
+			</CONDITION>
+			<CONDITION>
+			<COMPONENT>unidad</COMPONENT>
+			<VALUE>Siega mecánica de isletas</VALUE>
+			</CONDITION>
+			<CONDITION>
+			<COMPONENT>unidad</COMPONENT>
+			<VALUE>Siega mecánica de medianas</VALUE>
+			</CONDITION>
+			<CONDITION>
+			<COMPONENT>unidad</COMPONENT>
+			<VALUE>Siega mecánica de medianas &lt; 1,5 m</VALUE>
+			</CONDITION>
+			<CONDITION>
+			<COMPONENT>unidad</COMPONENT>
+			<VALUE>Tala y desbroce manual</VALUE>
+			</CONDITION>
+		</ENABLEIF>
 	</FIELD>
 	
 	<FIELD>

@@ -210,6 +210,11 @@ public static String[] trabajosVegetacionColAlias = { "ID", "Fecha", "Unidad",
     // LINEAS SUMINISTRO
     public static final String TRANSFORMADORES_LAYERNAME = "Transformadores";
     public static final String ID_TRANSFORMADORES = "id_transformador";
+    
+    // VEGETACION TRABAJOS (Barrera Rígida, Isletas y Taludes)
+    public static final String MEDICION = "medicion";
+    public static final String LONGITUD = "longitud";
+    public static final String ANCHO = "ancho";
 
     public static String getPrimaryKey(Elements element) {
 	String pk = "";

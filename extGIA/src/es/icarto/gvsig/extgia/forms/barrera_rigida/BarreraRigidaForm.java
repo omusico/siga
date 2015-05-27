@@ -39,7 +39,7 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 		getTrabajosDBTableName(), getWidgetComponents(),
 		getElementID(), DBFieldNames.trabajosVegetacionColNames,
 		DBFieldNames.trabajosVegetacionColAlias, DBFieldNames.trabajosColWidths,
-		this));
+		this, BarreraRigidaTrabajosSubForm.class));
 
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getReconocimientosDBTableName(), getWidgetComponents(),

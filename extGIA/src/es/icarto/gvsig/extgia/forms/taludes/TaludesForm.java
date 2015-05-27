@@ -60,7 +60,7 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 		getTrabajosDBTableName(), getWidgetComponents(),
 		getElementID(), DBFieldNames.trabajosVegetacionColNames,
 		DBFieldNames.trabajosVegetacionColAlias, DBFieldNames.trabajosColWidths,
-		this));
+		this, TaludesTrabajosSubForm.class));
 
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getReconocimientosDBTableName(), getWidgetComponents(),
