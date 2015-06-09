@@ -57,7 +57,7 @@ import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 
 @SuppressWarnings("serial")
 public abstract class AbstractSubForm extends JPanel implements IForm,
-	IValidatableForm, IWindow, IWindowListener {
+IValidatableForm, IWindow, IWindowListener {
 
     private static final Logger logger = Logger
 	    .getLogger(AbstractSubForm.class);
@@ -132,15 +132,19 @@ public abstract class AbstractSubForm extends JPanel implements IForm,
 	c.setDateFormatString(dateFormat.toPattern());
 	c.getDateEditor().setEnabled(false);
 	c.getDateEditor().getUiComponent()
-		.setBackground(new Color(255, 255, 255));
+	.setBackground(new Color(255, 255, 255));
 	c.getDateEditor().getUiComponent()
-		.setFont(new Font("Arial", Font.PLAIN, 11));
+	.setFont(new Font("Arial", Font.PLAIN, 11));
 	c.getDateEditor().getUiComponent().setToolTipText(null);
 
     }
 
     public void setForeingKey(Map<String, String> foreingKey) {
 	this.foreingKey = foreingKey;
+    }
+
+    public Map<String, String> getForeignKey() {
+	return foreingKey;
     }
 
     private JPanel getSouthPanel() {
@@ -512,14 +516,14 @@ public abstract class AbstractSubForm extends JPanel implements IForm,
 			.replace("ERROR: ", "").replace(" ", "_")
 			.replace("\n", ""), auxMessageIntl = PluginServices
 			.getText(this, auxMessage);
-		if (auxMessageIntl.compareToIgnoreCase(auxMessage) != 0) {
-		    errorMessage = auxMessageIntl;
-		}
-		JOptionPane.showMessageDialog(
-			(Component) PluginServices.getMainFrame(),
-			errorMessage,
-			PluginServices.getText(this, "save_layer_error"),
-			JOptionPane.ERROR_MESSAGE);
+			if (auxMessageIntl.compareToIgnoreCase(auxMessage) != 0) {
+			    errorMessage = auxMessageIntl;
+			}
+			JOptionPane.showMessageDialog(
+				(Component) PluginServices.getMainFrame(),
+				errorMessage,
+				PluginServices.getText(this, "save_layer_error"),
+				JOptionPane.ERROR_MESSAGE);
 	    }
 	    PluginServices.getMDIManager().closeWindow(iWindow);
 	}
