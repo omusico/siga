@@ -9,4 +9,5 @@ public class AreasServicioReconocimientosSubForm extends GIASubForm {
 	super("areas_servicio_reconocimientos");
 	addCalculation(new AreasServicioCalculateIndiceEstado(this));
     }
+
 }

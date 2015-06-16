@@ -9,4 +9,5 @@ public class TaludesReconocimientosSubForm extends GIASubForm {
 	super("taludes_reconocimientos");
 	addCalculation(new TaludesCalculateIndiceEstado(this));
     }
+
 }

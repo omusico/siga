@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import com.hardcode.gdbms.engine.values.Value;
 import com.iver.andami.Launcher;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
@@ -55,7 +56,7 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 
     public TaludesForm(FLyrVect layer) {
 	super(layer);
-
+	
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getTrabajosDBTableName(), getWidgetComponents(),
 		getElementID(), DBFieldNames.trabajosVegetacionColNames,

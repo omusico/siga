@@ -7,37 +7,37 @@ public class DBFieldNames {
     }
 
     public static String[] ramalesColNames = { "id_ramal", "ramal",
-	    "sentido_ramal", "longitud" };
+	"sentido_ramal", "longitud" };
     public static String[] ramalesColAlias = { "ID Ramal", "Nombre Ramal",
-	    "Sentido", "Longitud" };
+	"Sentido", "Longitud" };
 
     public static String[] ramalesDireccionColNames = { "id_ramal", "ramal",
-	    "sentido_ramal", "direccion_ramal", "longitud" };
+	"sentido_ramal", "direccion_ramal", "longitud" };
     public static String[] ramalesDireccionColAlias = { "ID Ramal",
-	    "Nombre Ramal", "Sentido", "Dirección", "Longitud" };
+	"Nombre Ramal", "Sentido", "Dirección", "Longitud" };
 
     public static String[] reconocimientosWhitoutIndexColNames = {
-	    "n_inspeccion", "nombre_revisor", "fecha_inspeccion" };
+	"n_inspeccion", "nombre_revisor", "fecha_inspeccion" };
     public static String[] reconocimientosWhitoutIndexColAlias = {
-	    "Nº Inspección", "Revisor", "Fecha Inspección" };
+	"Nº Inspección", "Revisor", "Fecha Inspección" };
 
     public static final String[] reconocimientosColNames = { "n_inspeccion",
-	    "nombre_revisor", "fecha_inspeccion", "indice_estado" };
+	"nombre_revisor", "fecha_inspeccion", "indice_estado" };
     public static final String[] reconocimientosColAlias = { "Nº Inspección",
-	    "Revisor", "Fecha Inspección", "Índice Estado" };
+	"Revisor", "Fecha Inspección", "Índice Estado" };
 
     public static String[] trabajosColNames = { "id_trabajo",
-	    "fecha_certificado", "unidad", "medicion_audasa", "observaciones" };
+	"fecha_certificado", "unidad", "medicion_audasa", "observaciones" };
 
     public static String[] trabajosColAlias = { "ID", "Fecha cert", "Unidad",
-	    "Medición AUDASA", "Observaciones" };
+	"Medición AUDASA", "Observaciones" };
     public static int[] trabajosColWidths = { 10, 45, 90, 75, 190 };
-    
-    public static String[] trabajosVegetacionColNames = { "id_trabajo",
-	    "fecha", "unidad", "medicion", "observaciones" };
 
-public static String[] trabajosVegetacionColAlias = { "ID", "Fecha", "Unidad",
-	    "Medición", "Observaciones" };
+    public static String[] trabajosVegetacionColNames = { "id_trabajo",
+	"fecha", "unidad", "medicion", "observaciones" };
+
+    public static String[] trabajosVegetacionColAlias = { "ID", "Fecha", "Unidad",
+	"Medición", "Observaciones" };
 
     public static final String GIA_SCHEMA = "audasa_extgia";
 
@@ -49,11 +49,19 @@ public static String[] trabajosVegetacionColAlias = { "ID", "Fecha", "Unidad",
 
     // TALUDES
     public static final String TALUDES_LAYERNAME = "Taludes";
+    public static final String TALUDES_DBTABLENAME = "taludes";
     public static final String ID_TALUD = "id_talud";
     public static final String NUMERO_TALUD = "numero_talud";
     public static final String TIPO_TALUD = "tipo_talud";
     public static final String INCLINACION_MEDIA = "inclinacion_media";
     public static final String SECTOR_INCLINACION = "sector_inclinacion";
+    public static final String SUP_TOTAL_ANALITICA = "sup_total_analitica";
+    public static final String SUP_COMPLEMENTARIA = "sup_complementaria";
+    public static final String TALUDES_LONGITUD = "longitud";
+
+    // TALUDES TRABAJOS
+    public static final String TALUDES_TRABAJOS_DBTABLENAME = "taludes_trabajos";
+    public static final String UNIDAD = "unidad";
 
     // TALUDES RECONOCIMIENTO
     public static final String TALUDES_INDEX = "indice_estado";
@@ -64,9 +72,14 @@ public static String[] trabajosVegetacionColAlias = { "ID", "Fecha", "Unidad",
 
     // ISLETAS
     public static final String ISLETAS_LAYERNAME = "Isletas";
+    public static final String ISLETAS_DBTABLENAME = "isletas";
+    public static final String SUPERFICIE_BAJO_BIONDA = "superficie_bajo_bionda";
     public static final String ID_ISLETA = "id_isleta";
     public static final String NUMERO_ISLETA = "numero_isleta";
     public static final String TIPO_ISLETA = "tipo_isleta";
+
+    // ISLETAS TRABAJOS
+    public static final String ISLETAS_TRABAJOS_DBTABLENAME = "isletas_trabajos";
 
     // ISLETAS RECONOCIMIENTO
     public static final String ISLETAS_INDEX = "indice_estado";
@@ -80,12 +93,17 @@ public static String[] trabajosVegetacionColAlias = { "ID", "Fecha", "Unidad",
 
     // BARRERA RIGIDA
     public static final String BARRERA_RIGIDA_LAYERNAME = "Barrera_Rigida";
+    public static final String BARRERA_RIGIDA_DBTABLENAME = "barrera_rigida";
     public static final String ID_BARRERA_RIGIDA = "id_barrera_rigida";
     public static final String NUMERO_BARRERA_RIGIDA = "numero_barrera_rigida";
     public static final String CODIGO = "codigo";
     public static final String TIPO = "tipo";
     public static final String METODO_CONSTRUCTIVO = "metodo_constructivo";
     public static final String PERFIL = "perfil";
+    public static final String BARRERA_RIGIDA_LONGITUD = "longitud";
+
+    // BARRERA RIGIDA TRABAJOS
+    public static final String BARRERA_RIGIDA_TRABAJOS_DBTABLENAME = "barrera_rigida_trabajos";
 
     // BARRERA RIGIDA RECONOCIMIENTO ESTADO
     public static final String BARRERA_RIGIDA_INDEX = "indice_estado";
@@ -210,11 +228,15 @@ public static String[] trabajosVegetacionColAlias = { "ID", "Fecha", "Unidad",
     // LINEAS SUMINISTRO
     public static final String TRANSFORMADORES_LAYERNAME = "Transformadores";
     public static final String ID_TRANSFORMADORES = "id_transformador";
-    
+
     // VEGETACION TRABAJOS (Barrera Rígida, Isletas y Taludes)
     public static final String MEDICION = "medicion";
+    public static final String MEDICION_ELEMENTO = "medicion_elemento";
+    public static final String MEDICION_COMPLEMENTARIA = "medicion_complementaria";
+    public static final String MEDICION_ULTIMO_TRABAJO = "medicion_ultimo_trabajo";
     public static final String LONGITUD = "longitud";
     public static final String ANCHO = "ancho";
+    public static final String FECHA = "fecha";
 
     public static String getPrimaryKey(Elements element) {
 	String pk = "";

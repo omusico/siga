@@ -1,13 +1,26 @@
 package es.icarto.gvsig.extgia.forms.barrera_rigida;
 
-import es.icarto.gvsig.extgia.forms.utils.GIASubForm;
-import es.icarto.gvsig.extgia.forms.utils.VegetationCalculateMedicion;
+import java.util.ArrayList;
+
+import javax.swing.JComboBox;
+
+import es.icarto.gvsig.extgia.forms.utils.ForeignValue;
+import es.icarto.gvsig.extgia.forms.utils.GIATrabajosSubForm;
+import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 
 @SuppressWarnings("serial")
-public class BarreraRigidaTrabajosSubForm extends GIASubForm {
+public class BarreraRigidaTrabajosSubForm extends GIATrabajosSubForm {
     public BarreraRigidaTrabajosSubForm() {
 	super("barrera_rigida_trabajos");
-	addCalculation(new VegetationCalculateMedicion(this));
+	addCalculation(new BarreraRigidaTrabajosCalculateMedicion(this));
     }
 
+    @Override
+    protected ArrayList<ForeignValue> getForeignValues() {
+	JComboBox unidadCB = (JComboBox) getFormPanel().getComponentByName(DBFieldNames.UNIDAD);
+	String unidad = unidadCB.getSelectedItem().toString();
+	ArrayList<ForeignValue> foreignValues = new ArrayList<ForeignValue>();
+	foreignValues.add(new CalculateBarreraRigidaTrabajosMedicionUltimoTrabajo(getForeignKey(), unidad).getForeignValue());
+	return foreignValues;
+    }
 }

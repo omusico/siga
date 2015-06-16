@@ -9,4 +9,5 @@ public class BarreraRigidaReconocimientosSubForm extends GIASubForm {
 	super("barrera_rigida_reconocimientos");
 	addCalculation(new BarreraRigidaCalculateIndiceEstado(this));
     }
+
 }

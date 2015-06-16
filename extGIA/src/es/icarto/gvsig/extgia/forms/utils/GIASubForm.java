@@ -1,6 +1,9 @@
 package es.icarto.gvsig.extgia.forms.utils;
 
+import java.util.ArrayList;
+
 import javax.swing.ImageIcon;
+import javax.swing.JTextField;
 
 import com.jeta.forms.components.image.ImageComponent;
 
@@ -28,4 +31,5 @@ public class GIASubForm extends AbstractSubForm {
 	image.setIcon(icon);
 	getWindowInfo().setTitle(null);
     }
+
 }
