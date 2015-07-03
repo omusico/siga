@@ -12,6 +12,29 @@
 	</FIELD>
 	
 	<FIELD>
+		<FIELDNAME>codigo_senhal</FIELDNAME>
+		<DOMAINREADER>
+			<DRTYPE>db</DRTYPE>
+			<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+			<DRDBTABLE>codigo_senhal</DRDBTABLE>
+			<DRDBCOLUMNALIAS>codigo_senhal</DRDBCOLUMNALIAS>
+			<DRDBCOLUMNVALUE>codigo_senhal</DRDBCOLUMNVALUE>
+		</DOMAINREADER>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>nombre_senhal</FIELDNAME>
+		<DOMAINREADER>
+			<DRTYPE>db</DRTYPE>
+			<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+			<DRDBTABLE>codigo_senhal</DRDBTABLE>
+			<DRDBCOLUMNALIAS>nombre_senhal</DRDBCOLUMNALIAS>
+			<DRDBCOLUMNVALUE>nombre_senhal</DRDBCOLUMNVALUE>
+			<DRDBFOREIGNKEY>codigo_senhal</DRDBFOREIGNKEY>
+		</DOMAINREADER>
+	</FIELD>
+	
+	<FIELD>
 		<FIELDNAME>tipo_superficie</FIELDNAME>
 		<DOMAINREADER>
 			<DRTYPE>db</DRTYPE>
