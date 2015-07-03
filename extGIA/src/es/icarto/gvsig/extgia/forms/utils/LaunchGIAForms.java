@@ -4,6 +4,7 @@ import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.batch.BatchAbstractSubForm;
+import es.icarto.gvsig.extgia.batch.BatchVegetationTrabajosAbstractSubForm;
 import es.icarto.gvsig.extgia.batch.elements.BatchAreasDescansoReconocimientos;
 import es.icarto.gvsig.extgia.batch.elements.BatchAreasDescansoTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchAreasPeajeReconocimientos;
@@ -246,7 +247,7 @@ public class LaunchGIAForms {
 		    layer);
 	    if (areasMantenimientoForm.init()) {
 		PluginServices.getMDIManager()
-			.addWindow(areasMantenimientoForm);
+		.addWindow(areasMantenimientoForm);
 	    }
 	    if (editing) {
 		areasMantenimientoForm.last();
@@ -287,10 +288,11 @@ public class LaunchGIAForms {
 
     public static void callBatchTrabajosSubFormDependingOfElement(
 	    String element, String formFileName, String dbTableName) {
-	BatchAbstractSubForm subform;
+	BatchAbstractSubForm subform = null;
+	BatchVegetationTrabajosAbstractSubForm vegetationSubForm = null;
 	switch (DBFieldNames.Elements.valueOf(element)) {
 	case Taludes:
-	    subform = new BatchTaludesTrabajos(formFileName, dbTableName);
+	    vegetationSubForm = new BatchTaludesTrabajos(formFileName, dbTableName);
 	    break;
 	case Isletas:
 	    subform = new BatchIsletasTrabajos(formFileName, dbTableName);
@@ -354,8 +356,13 @@ public class LaunchGIAForms {
 	FormFactory.checkAndLoadTableRegistered(dbTableName);
 	AlphanumericTableModel model = TableModelFactory.createFromTable(
 		dbTableName, null, null);
-	subform.setModel(model);
-	subform.actionCreateRecord();
+	if (subform != null) {
+	    subform.setModel(model);
+	    subform.actionCreateRecord();
+	}else {
+	    vegetationSubForm.setModel(model);
+	    vegetationSubForm.actionCreateRecord();
+	}
     }
 
     public static void callBatchReconocimientosSubFormDependingOfElement(
