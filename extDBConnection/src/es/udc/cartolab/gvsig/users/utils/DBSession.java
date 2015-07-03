@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License along with extDBConnection.
  * If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package es.udc.cartolab.gvsig.users.utils;
 
 import java.sql.Connection;
@@ -23,6 +23,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +33,7 @@ import org.cresques.cts.IProjection;
 
 import com.hardcode.driverManager.Driver;
 import com.hardcode.driverManager.DriverLoadException;
-import com.hardcode.gdbms.engine.values.ValueWriter;
+import com.hardcode.gdbms.engine.values.NullValue;
 import com.iver.andami.Launcher;
 import com.iver.andami.Launcher.TerminationProcess;
 import com.iver.andami.PluginServices;
@@ -53,678 +54,682 @@ import com.iver.cit.gvsig.project.Project;
 
 public class DBSession {
 
-	protected static DBSession instance = null;
-	private static IFormatter formatter = new Formatter();
-	private final String server, username, password;
-	private final int port;
-	private String database;
-	private String schema;
-	private DBUser user;
-	private ConnectionWithParams conwp;
+    protected static DBSession instance = null;
+    private static IFormatter formatter = new Formatter();
+    private final String server, username, password;
+    private final int port;
+    private final String database;
+    private String schema;
+    private DBUser user;
+    private ConnectionWithParams conwp;
 
-	private DBSession(String server, int port, String database, String schema, String username, String password) {
-		this.server = server;
-		this.port = port;
-		this.username = username;
-		this.password = password;
+    private DBSession(String server, int port, String database, String schema, String username, String password) {
+	this.server = server;
+	this.port = port;
+	this.username = username;
+	this.password = password;
 
-		this.database = database;
-		this.schema = schema;
+	this.database = database;
+	this.schema = schema;
 
+    }
+    /**
+     *
+     * @return the DB Connection or null if there isn't any
+     */
+    public static DBSession getCurrentSession() {
+	return instance;
+    }
+
+    public static boolean isActive() {
+	if(instance == null) {
+	    return false;
 	}
-	/**
-	 *
-	 * @return the DB Connection or null if there isn't any
-	 */
-	public static DBSession getCurrentSession() {
-		return instance;
-	}
+	return true;
+    }
 
-	public static boolean isActive() {
-	    if(instance == null) {
-		return false;
-	    }
-	    return true;
+    /**
+     * Creates a new DB Connection or changes the current one.
+     * @param server
+     * @param port
+     * @param database
+     * @param schema
+     * @param username
+     * @param password
+     * @return the connection
+     * @throws DBException if there's any problem (server error or login error)
+     */
+    public static DBSession createConnection(String server, int port, String database, String schema,
+	    String username, String password) throws DBException {
+	if (instance != null) {
+	    instance.close();
 	}
+	instance = new DBSession(server, port, database, schema, username, password);
+	connect();
+	LaunchFakeRequestsThread();
+	return instance;
+    }
 
-	/**
-	 * Creates a new DB Connection or changes the current one.
-	 * @param server
-	 * @param port
-	 * @param database
-	 * @param schema
-	 * @param username
-	 * @param password
-	 * @return the connection
-	 * @throws DBException if there's any problem (server error or login error)
-	 */
-	public static DBSession createConnection(String server, int port, String database, String schema,
-			String username, String password) throws DBException {
-		if (instance != null) {
-			instance.close();
-		}
-		instance = new DBSession(server, port, database, schema, username, password);
-		connect();
-		LaunchFakeRequestsThread();
-		return instance;
+    /**
+     * To be used only when there's any error (SQLException) that is not handled by gvSIG
+     * @return the session
+     * @throws DBException
+     */
+    public static DBSession reconnect() throws DBException {
+	if (instance!=null) {
+	    String server = instance.server;
+	    int port = instance.port;
+	    String database = instance.database;
+	    String username = instance.username;
+	    String pass = instance.password;
+	    String schema = instance.schema;
+	    return createConnection(server, port, database, schema, username, pass);
 	}
+	return null;
+    }
 
-	/**
-	 * To be used only when there's any error (SQLException) that is not handled by gvSIG
-	 * @return the session
-	 * @throws DBException
-	 */
-	public static DBSession reconnect() throws DBException {
-		if (instance!=null) {
-			String server = instance.server;
-			int port = instance.port;
-			String database = instance.database;
-			String username = instance.username;
-			String pass = instance.password;
-			String schema = instance.schema;
-			return createConnection(server, port, database, schema, username, pass);
-		}
-		return null;
-	}
-
-	private static void connect() throws DBException {
-		try {
+    private static void connect() throws DBException {
+	try {
 	    instance.conwp = SingleDBConnectionManager.instance()
 		    .getConnection(PostGisDriver.NAME, instance.username,
 			    instance.password, "ELLE_connection",
 			    instance.server,
 			    (new Integer(instance.port)).toString(),
 			    instance.database, "", true);
-			instance.user = new DBUser(instance.username, instance.password, ((ConnectionJDBC) instance.conwp.getConnection()).getConnection());
-		} catch (DBException e) {
-			if (instance!=null) {
-				if (instance.conwp != null) {
-					SingleDBConnectionManager.instance().closeAndRemove(instance.conwp);
-				}
-			}
-			instance = null;
-			throw e;
+	    instance.user = new DBUser(instance.username, instance.password, ((ConnectionJDBC) instance.conwp.getConnection()).getConnection());
+	} catch (DBException e) {
+	    if (instance!=null) {
+		if (instance.conwp != null) {
+		    SingleDBConnectionManager.instance().closeAndRemove(instance.conwp);
 		}
-
+	    }
+	    instance = null;
+	    throw e;
 	}
 
-	public String getServer() {
-		return server;
+    }
+
+    public String getServer() {
+	return server;
+    }
+
+    public int getPort() {
+	return port;
+    }
+
+    public String getUserName() {
+	return username;
+    }
+
+    public String getPassword() {
+	return password;
+    }
+
+    public String getDatabase() {
+	return database;
+    }
+
+    public String getSchema () {
+	return schema;
+    }
+
+    public void setSchema(String schema) {
+	this. schema = schema;
+    }
+
+    public void changeSchema(String schema) {
+	this.schema = schema;
+    }
+
+    public Connection getJavaConnection() {
+	return ((ConnectionJDBC) conwp.getConnection()).getConnection();
+    }
+
+    public void close() throws DBException {
+
+	user = null;
+	if (conwp!=null) {
+	    SingleDBConnectionManager.instance().closeAndRemove(conwp);
+	    conwp = null;
+	}
+	instance = null;
+
+    }
+
+    public DBUser getDBUser() {
+	return user;
+    }
+
+    public static void setFormatter(IFormatter f) {
+	formatter = f;
+    }
+
+    /* GET LAYER */
+
+    public FLayer getLayer(String layerName, String tableName, String schema, String whereClause,
+	    IProjection projection) throws SQLException, DBException {
+	//Code by Sergio Piñón (gvsig_desarrolladores)
+
+	if (whereClause == null) {
+	    whereClause = "";
 	}
 
-	public int getPort() {
-		return port;
+	if (schema == null || schema.compareTo("")==0) {
+	    schema = this.schema;
 	}
 
-	public String getUserName() {
-		return username;
+	DBLayerDefinition dbLayerDef = new DBLayerDefinition();
+	dbLayerDef.setCatalogName(database); //Nombre de la base de datos
+	dbLayerDef.setSchema(schema); //Nombre del esquema
+	dbLayerDef.setTableName(tableName); //Nombre de la tabla
+	dbLayerDef.setWhereClause("");
+	dbLayerDef.setConnection(conwp.getConnection());
+
+	Connection con = ((ConnectionJDBC) conwp.getConnection()).getConnection();
+	DatabaseMetaData metadataDB = con.getMetaData();
+
+	String tipos[] = new String[1];
+	tipos[0] = "TABLE";
+	ResultSet tablas = metadataDB.getTables(null, schema, tableName, tipos);
+	tablas.next();
+	//String t = tablas.getString(tablas.findColumn( "TABLE_NAME" ));
+
+	ResultSet columnas = metadataDB.getColumns(null,schema,tableName, "%");
+	ResultSet claves = metadataDB.getPrimaryKeys(null, schema, tableName);
+
+	//ResultSetMetaData aux = columnas.getMetaData();
+
+	ArrayList<FieldDescription> descripciones = new ArrayList <FieldDescription>();
+	ArrayList<String> nombres = new ArrayList<String>();
+
+	while(columnas.next()) {
+	    //log.info("Tratando atributo: \""+columnas.getString("Column_Name")+"\" de la tabla: "+nombreTabla);
+	    if(columnas.getString("Type_Name").equalsIgnoreCase("geometry")) {
+		/*si es la columna de geometria*/
+		//log.info("Encontrado atributo de geometria para la tabla: "+nombreTabla);
+		dbLayerDef.setFieldGeometry(columnas.getString("Column_Name"));
+	    }
+	    else {
+		FieldDescription fieldDescription = new FieldDescription();
+		fieldDescription.setFieldName(columnas.getString("Column_Name"));
+		fieldDescription.setFieldType(columnas.getType());
+		descripciones.add(fieldDescription);
+		nombres.add(columnas.getString("Column_Name"));
+	    }
+	}
+	FieldDescription fields[] = new FieldDescription[descripciones.size()];
+	String s[] = new String[nombres.size()];
+	for(int i = 0; i < descripciones.size(); i++)  {
+	    fields[i] = descripciones.get(i);
+	    s[i] = nombres.get(i);
 	}
 
-	public String getPassword() {
-	    return password;
-	}
-	
-	public String getDatabase() {
-		return database;
-	}
+	dbLayerDef.setFieldsDesc(fields);
+	dbLayerDef.setFieldNames(s);
 
-	public String getSchema () {
-		return schema;
-	}
-	
-	public void setSchema(String schema) {
-	    this. schema = schema;
+	if (whereClause.compareTo("")!=0) {
+	    dbLayerDef.setWhereClause(whereClause);
 	}
 
-	public void changeSchema(String schema) {
-		this.schema = schema;
+	/*buscamos clave primaria y la añadimos a la definicion de la capa*/
+	//OJO, esta solución no vale con claves primarias de más de una columna!!!
+	while(claves.next()) {
+	    dbLayerDef.setFieldID(claves.getString("Column_Name"));
 	}
 
-	public Connection getJavaConnection() {
-		return ((ConnectionJDBC) conwp.getConnection()).getConnection();
+	if (dbLayerDef.getFieldID() == null) {
+	    dbLayerDef.setFieldID("gid");
 	}
 
-	public void close() throws DBException {
+	dbLayerDef.setSRID_EPSG(projection.getAbrev());
 
-		user = null;
-		if (conwp!=null) {
-			SingleDBConnectionManager.instance().closeAndRemove(conwp);
-			conwp = null;
-		}
-		instance = null;
+	Driver drv;
+	FLayer lyr = null;
+	try {
+	    drv = LayerFactory.getDM().getDriver("PostGIS JDBC Driver");
+	    IVectorialJDBCDriver dbDriver = (IVectorialJDBCDriver) drv;
 
+	    dbDriver.setData(conwp.getConnection(), dbLayerDef);
+
+	    lyr =  LayerFactory.createDBLayer(dbDriver, layerName, projection);
+	    /*asignamos proyección a la capa y al ViewPort*/
+	    //			dbLayerDef.setSRID_EPSG(projection.getAbrev());
+	} catch (DriverLoadException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+	return lyr;
+    }
+
+    public FLayer getLayer(String layerName, String tableName, String whereClause,
+	    IProjection projection) throws SQLException, DBException {
+	return getLayer(layerName, tableName, schema, whereClause, projection);
+    }
+
+    public FLayer getLayer(String tableName, String whereClause,
+	    IProjection projection) throws SQLException, DBException {
+	return getLayer(tableName, tableName, schema, whereClause, projection);
+    }
+
+    public FLayer getLayer(String tableName, IProjection projection) throws SQLException, DBException {
+	return getLayer(tableName, null, projection);
+    }
+
+
+    /* GET TABLE */
+
+    private String[] getColumnNames(String tablename, String schema) throws SQLException {
+
+	Connection con = ((ConnectionJDBC) conwp.getConnection()).getConnection();
+
+	String query = "SELECT * FROM " + schema + "." + tablename + " LIMIT 1";
+	Statement st = con.createStatement();
+	ResultSet resultSet = st.executeQuery(query);
+	ResultSetMetaData md = resultSet.getMetaData();
+	String[] cols = new String[md.getColumnCount()];
+	for (int i=0; i<md.getColumnCount(); i++) {
+	    cols[i] = md.getColumnLabel(i+1);
+	}
+	return cols;
+    }
+
+    private int getColumnType(String tablename, String schema, String column) throws SQLException {
+
+	Connection con = ((ConnectionJDBC) conwp.getConnection()).getConnection();
+
+	DatabaseMetaData meta = con.getMetaData();
+	ResultSet rsColumns = meta.getColumns(null, schema, tablename, column);
+	while (rsColumns.next()) {
+	    if (column.equalsIgnoreCase(rsColumns.getString("COLUMN_NAME"))) {
+		return rsColumns.getInt("COLUMN_TYPE");
+	    }
+	}
+	return -1;
+    }
+
+    public String[][] getTable(String tableName, String schema, String whereClause,
+	    String[] orderBy, boolean desc) throws SQLException {
+
+	String[] columnNames = getColumnNames(tableName, schema);
+
+	return getTable(tableName, schema, columnNames, whereClause,
+		orderBy, desc);
+    }
+
+
+    public String[][] getTable(String tableName, String schema, String[] fieldNames, String whereClause,
+	    String[] orderBy, boolean desc) throws SQLException {
+	Connection con = ((ConnectionJDBC) conwp.getConnection()).getConnection();
+
+	if (whereClause == null) {
+	    whereClause = "";
 	}
 
-	public DBUser getDBUser() {
-		return user;
-	}
-	
-	public static void setFormatter(IFormatter f) {
-	    formatter = f; 
-	}
+	int numFieldsOrder;
 
-	/* GET LAYER */
-
-	public FLayer getLayer(String layerName, String tableName, String schema, String whereClause,
-			IProjection projection) throws SQLException, DBException {
-		//Code by Sergio Piñón (gvsig_desarrolladores)
-
-		if (whereClause == null) {
-			whereClause = "";
-		}
-
-		if (schema == null || schema.compareTo("")==0) {
-			schema = this.schema;
-		}
-
-		DBLayerDefinition dbLayerDef = new DBLayerDefinition();
-		dbLayerDef.setCatalogName(database); //Nombre de la base de datos
-		dbLayerDef.setSchema(schema); //Nombre del esquema
-		dbLayerDef.setTableName(tableName); //Nombre de la tabla
-		dbLayerDef.setWhereClause("");
-		dbLayerDef.setConnection(conwp.getConnection());
-
-		Connection con = ((ConnectionJDBC) conwp.getConnection()).getConnection();
-		DatabaseMetaData metadataDB = con.getMetaData();
-
-		String tipos[] = new String[1];
-		tipos[0] = "TABLE";
-		ResultSet tablas = metadataDB.getTables(null, schema, tableName, tipos);
-		tablas.next();
-		//String t = tablas.getString(tablas.findColumn( "TABLE_NAME" ));
-
-		ResultSet columnas = metadataDB.getColumns(null,schema,tableName, "%");
-		ResultSet claves = metadataDB.getPrimaryKeys(null, schema, tableName);
-
-		//ResultSetMetaData aux = columnas.getMetaData();
-
-		ArrayList<FieldDescription> descripciones = new ArrayList <FieldDescription>();
-		ArrayList<String> nombres = new ArrayList<String>();
-
-		while(columnas.next()) {
-			//log.info("Tratando atributo: \""+columnas.getString("Column_Name")+"\" de la tabla: "+nombreTabla);
-			if(columnas.getString("Type_Name").equalsIgnoreCase("geometry")) {
-				/*si es la columna de geometria*/
-				//log.info("Encontrado atributo de geometria para la tabla: "+nombreTabla);
-				dbLayerDef.setFieldGeometry(columnas.getString("Column_Name"));
-			}
-			else {
-				FieldDescription fieldDescription = new FieldDescription();
-				fieldDescription.setFieldName(columnas.getString("Column_Name"));
-				fieldDescription.setFieldType(columnas.getType());
-				descripciones.add(fieldDescription);
-				nombres.add(columnas.getString("Column_Name"));
-			}
-		}
-		FieldDescription fields[] = new FieldDescription[descripciones.size()];
-		String s[] = new String[nombres.size()];
-		for(int i = 0; i < descripciones.size(); i++)  {
-			fields[i] = descripciones.get(i);
-			s[i] = nombres.get(i);
-		}
-
-		dbLayerDef.setFieldsDesc(fields);
-		dbLayerDef.setFieldNames(s);
-
-		if (whereClause.compareTo("")!=0) {
-			dbLayerDef.setWhereClause(whereClause);
-		}
-
-		/*buscamos clave primaria y la añadimos a la definicion de la capa*/
-		//OJO, esta solución no vale con claves primarias de más de una columna!!!
-		while(claves.next()) {
-			dbLayerDef.setFieldID(claves.getString("Column_Name"));
-		}
-
-		if (dbLayerDef.getFieldID() == null) {
-			dbLayerDef.setFieldID("gid");
-		}
-
-		dbLayerDef.setSRID_EPSG(projection.getAbrev());
-
-		Driver drv;
-		FLayer lyr = null;
-		try {
-			drv = LayerFactory.getDM().getDriver("PostGIS JDBC Driver");
-			IVectorialJDBCDriver dbDriver = (IVectorialJDBCDriver) drv;
-
-			dbDriver.setData(conwp.getConnection(), dbLayerDef);
-
-			lyr =  LayerFactory.createDBLayer(dbDriver, layerName, projection);
-			/*asignamos proyección a la capa y al ViewPort*/
-//			dbLayerDef.setSRID_EPSG(projection.getAbrev());
-		} catch (DriverLoadException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return lyr;
-	}
-
-	public FLayer getLayer(String layerName, String tableName, String whereClause,
-			IProjection projection) throws SQLException, DBException {
-		return getLayer(layerName, tableName, schema, whereClause, projection);
-	}
-
-	public FLayer getLayer(String tableName, String whereClause,
-			IProjection projection) throws SQLException, DBException {
-		return getLayer(tableName, tableName, schema, whereClause, projection);
-	}
-
-	public FLayer getLayer(String tableName, IProjection projection) throws SQLException, DBException {
-		return getLayer(tableName, null, projection);
+	if (orderBy == null) {
+	    numFieldsOrder = 0;
+	} else {
+	    numFieldsOrder = orderBy.length;
 	}
 
 
-	/* GET TABLE */
-
-	private String[] getColumnNames(String tablename, String schema) throws SQLException {
-
-		Connection con = ((ConnectionJDBC) conwp.getConnection()).getConnection();
-
-		String query = "SELECT * FROM " + schema + "." + tablename + " LIMIT 1";
-		Statement st = con.createStatement();
-		ResultSet resultSet = st.executeQuery(query);
-		ResultSetMetaData md = resultSet.getMetaData();
-		String[] cols = new String[md.getColumnCount()];
-		for (int i=0; i<md.getColumnCount(); i++) {
-			cols[i] = md.getColumnLabel(i+1);
-		}
-		return cols;
+	String query = "SELECT ";
+	for (int i=0; i<fieldNames.length-1; i++) {
+	    query = query + fieldNames[i] + ", ";
 	}
 
-	private int getColumnType(String tablename, String schema, String column) throws SQLException {
+	query = query + fieldNames[fieldNames.length-1] + " FROM " + schema + "." + tableName;
 
-		Connection con = ((ConnectionJDBC) conwp.getConnection()).getConnection();
+	List<String> whereValues = new ArrayList<String>();
 
-		DatabaseMetaData meta = con.getMetaData();
-		ResultSet rsColumns = meta.getColumns(null, schema, tablename, column);
-		while (rsColumns.next()) {
-			if (column.equalsIgnoreCase(rsColumns.getString("COLUMN_NAME"))) {
-				return rsColumns.getInt("COLUMN_TYPE");
-			}
-		}
-		return -1;
+	if (whereClause.compareTo("")==0) {
+	    query = query + " WHERE true";
+	} else {
+
+	    int quoteIdx = whereClause.indexOf('\'');
+	    while (quoteIdx>-1) {
+		int endQuote = whereClause.indexOf('\'', quoteIdx+1);
+		String subStr = whereClause.substring(quoteIdx+1, endQuote);
+		whereValues.add(subStr);
+		quoteIdx = whereClause.indexOf('\'', endQuote+1);
+	    }
+
+	    for (int i=0; i<whereValues.size(); i++) {
+		whereClause = whereClause.replaceFirst("'" + whereValues.get(i) + "'", "?");
+	    }
+
+	    if (whereClause.toUpperCase().startsWith("WHERE")){
+		query = query + " " + whereClause;
+	    } else {
+		query = query + " WHERE " + whereClause;
+	    }
 	}
 
-	public String[][] getTable(String tableName, String schema, String whereClause,
-			String[] orderBy, boolean desc) throws SQLException {
+	if (numFieldsOrder > 0) {
+	    query = query + " ORDER BY ";
+	    for (int i=0; i<numFieldsOrder-1; i++) {
+		query = query + orderBy[i] + ", ";
+	    }
+	    query = query + orderBy[orderBy.length-1];
 
-		String[] columnNames = getColumnNames(tableName, schema);
-
-		return getTable(tableName, schema, columnNames, whereClause,
-				orderBy, desc);
+	    if (desc) {
+		query = query + " DESC";
+	    }
 	}
 
+	PreparedStatement stat = con.prepareStatement(query);
+	for (int i=0; i<whereValues.size(); i++) {
+	    stat.setString(i+1, whereValues.get(i));
+	}
 
-	public String[][] getTable(String tableName, String schema, String[] fieldNames, String whereClause,
-			String[] orderBy, boolean desc) throws SQLException {
-		Connection con = ((ConnectionJDBC) conwp.getConnection()).getConnection();
+	ResultSet rs = stat.executeQuery();
 
-		if (whereClause == null) {
-			whereClause = "";
-		}
+	ArrayList<String[]> rows = new ArrayList<String[]>();
+	while (rs.next()) {
+	    String[] row = new String[fieldNames.length];
+	    for (int i=0; i<fieldNames.length; i++) {
 
-		int numFieldsOrder;
-
-		if (orderBy == null) {
-			numFieldsOrder = 0;
+		// elle styles in table elle._map_style are defined as 'xml' columns
+		// for some reasons rs.getObject returns null and con.setTypeMap
+		// is not working to set a custom mapping. So this workaround is used
+		if (rs.getMetaData().getColumnType(i+1) == java.sql.Types.OTHER) {
+		    row[i] = rs.getString(i+1);
 		} else {
-			numFieldsOrder = orderBy.length;
+		    row[i] = formatter.toString(rs.getObject(i+1));
 		}
+	    }
+	    rows.add(row);
+	}
+	rs.close();
+
+	return rows.toArray(new String[0][0]);
+
+    }
+
+    public String[][] getTable(String tableName, String schema,
+	    String[] orderBy, boolean desc) throws SQLException {
+	return getTable(tableName, schema, null, orderBy, desc);
+    }
+
+    public String[][] getTable(String tableName, String schema,
+	    String whereClause) throws SQLException {
+	return getTable(tableName, schema, whereClause, null, false);
+    }
+
+    public String[][] getTable(String tableName, String whereClause) throws SQLException {
+	return getTable(tableName, schema, whereClause, null, false);
+    }
+
+    public String[][] getTable(String tableName) throws SQLException {
+	return getTable(tableName, schema, null, null, false);
+    }
 
 
-		String query = "SELECT ";
-		for (int i=0; i<fieldNames.length-1; i++) {
-			query = query + fieldNames[i] + ", ";
-		}
 
-		query = query + fieldNames[fieldNames.length-1] + " FROM " + schema + "." + tableName;
+    /* GET DISTINCT VALUES FROM A COLUMN */
 
-		List<String> whereValues = new ArrayList<String>();
+    public String[] getDistinctValues(String tableName, String schema, String fieldName, boolean sorted, boolean desc, String whereClause) throws SQLException {
 
-		if (whereClause.compareTo("")==0) {
-			query = query + " WHERE true";
-		} else {
+	Connection con = ((ConnectionJDBC) conwp.getConnection()).getConnection();
 
-			int quoteIdx = whereClause.indexOf('\'');
-			while (quoteIdx>-1) {
-				int endQuote = whereClause.indexOf('\'', quoteIdx+1);
-				String subStr = whereClause.substring(quoteIdx+1, endQuote);
-				whereValues.add(subStr);
-				quoteIdx = whereClause.indexOf('\'', endQuote+1);
-			}
+	Statement stat = con.createStatement();
 
-			for (int i=0; i<whereValues.size(); i++) {
-				whereClause = whereClause.replaceFirst("'" + whereValues.get(i) + "'", "?");
-			}
-
-			if (whereClause.toUpperCase().startsWith("WHERE")){
-				query = query + " " + whereClause;
-			} else {
-				query = query + " WHERE " + whereClause;
-			}
-		}
-
-		if (numFieldsOrder > 0) {
-			query = query + " ORDER BY ";
-			for (int i=0; i<numFieldsOrder-1; i++) {
-				query = query + orderBy[i] + ", ";
-			}
-			query = query + orderBy[orderBy.length-1];
-
-			if (desc) {
-				query = query + " DESC";
-			}
-		}
-
-		PreparedStatement stat = con.prepareStatement(query);
-		for (int i=0; i<whereValues.size(); i++) {
-			stat.setString(i+1, whereValues.get(i));
-		}
-
-		ResultSet rs = stat.executeQuery();
-
-		ArrayList<String[]> rows = new ArrayList<String[]>();
-		while (rs.next()) {
-			String[] row = new String[fieldNames.length];
-			for (int i=0; i<fieldNames.length; i++) {
-			    
-			    // elle styles in table elle._map_style are defined as 'xml' columns
-			    // for some reasons rs.getObject returns null and con.setTypeMap
-			    // is not working to set a custom mapping. So this workaround is used
-			    if (rs.getMetaData().getColumnType(i+1) == java.sql.Types.OTHER) {
-				row[i] = rs.getString(i+1);
-			    } else {
-				row[i] = formatter.toString(rs.getObject(i+1));
-			    }
-			}
-			rows.add(row);
-		}
-		rs.close();
-
-		return rows.toArray(new String[0][0]);
-
+	if (schema == null | schema.length() == 0) {
+	    schema = this.schema;
 	}
 
-	public String[][] getTable(String tableName, String schema,
-			String[] orderBy, boolean desc) throws SQLException {
-		return getTable(tableName, schema, null, orderBy, desc);
+	if (whereClause == null) {
+	    whereClause = "";
 	}
 
-	public String[][] getTable(String tableName, String schema,
-			String whereClause) throws SQLException {
-		return getTable(tableName, schema, whereClause, null, false);
+	String query = "SELECT DISTINCT " + fieldName + " FROM " + schema + "." + tableName + " " + whereClause;
+
+	if (sorted) {
+	    query = query + " ORDER BY " + fieldName;
+	    if (desc) {
+		query = query + " DESC";
+	    }
 	}
 
-	public String[][] getTable(String tableName, String whereClause) throws SQLException {
-		return getTable(tableName, schema, whereClause, null, false);
+	ResultSet rs = stat.executeQuery(query);
+
+	List <String>resultArray = new ArrayList<String>();
+	while (rs.next()) {
+	    String val = rs.getString(fieldName);
+	    resultArray.add(val);
+	}
+	rs.close();
+
+	String[] result = new String[resultArray.size()];
+	for (int i=0; i<resultArray.size(); i++) {
+	    result[i] = resultArray.get(i);
 	}
 
-	public String[][] getTable(String tableName) throws SQLException {
-		return getTable(tableName, schema, null, null, false);
-	}
+	return result;
 
+    }
 
+    public String[] getDistinctValues(String tableName, String schema, String fieldName, boolean sorted, boolean desc) throws SQLException {
+	return getDistinctValues(tableName, schema, fieldName, sorted, desc, null);
+    }
 
-	/* GET DISTINCT VALUES FROM A COLUMN */
+    public String[] getDistinctValues(String tableName, String schema, String fieldName) throws SQLException {
+	return getDistinctValues(tableName, schema, fieldName, false, false, null);
+    }
 
-	public String[] getDistinctValues(String tableName, String schema, String fieldName, boolean sorted, boolean desc, String whereClause) throws SQLException {
+    public String[] getDistinctValues(String tableName, String fieldName) throws SQLException {
+	return getDistinctValues(tableName, schema, fieldName, false, false, null);
+    }
 
-		Connection con = ((ConnectionJDBC) conwp.getConnection()).getConnection();
+    public String[] getTables(boolean onlyGeospatial) throws SQLException {
 
-		Statement stat = con.createStatement();
-
-		if (schema == null | schema.length() == 0) {
-			schema = this.schema;
-		}
-
-		if (whereClause == null) {
-			whereClause = "";
-		}
-
-		String query = "SELECT DISTINCT " + fieldName + " FROM " + schema + "." + tableName + " " + whereClause;
-
-		if (sorted) {
-			query = query + " ORDER BY " + fieldName;
-			if (desc) {
-				query = query + " DESC";
-			}
-		}
-
-		ResultSet rs = stat.executeQuery(query);
-
-		List <String>resultArray = new ArrayList<String>();
-		while (rs.next()) {
-			String val = rs.getString(fieldName);
-			resultArray.add(val);
-		}
-		rs.close();
-
-		String[] result = new String[resultArray.size()];
-		for (int i=0; i<resultArray.size(); i++) {
-			result[i] = resultArray.get(i);
-		}
-
-		return result;
-
-	}
-
-	public String[] getDistinctValues(String tableName, String schema, String fieldName, boolean sorted, boolean desc) throws SQLException {
-		return getDistinctValues(tableName, schema, fieldName, sorted, desc, null);
-	}
-
-	public String[] getDistinctValues(String tableName, String schema, String fieldName) throws SQLException {
-		return getDistinctValues(tableName, schema, fieldName, false, false, null);
-	}
-
-	public String[] getDistinctValues(String tableName, String fieldName) throws SQLException {
-		return getDistinctValues(tableName, schema, fieldName, false, false, null);
-	}
-
-	public String[] getTables(boolean onlyGeospatial) throws SQLException {
-
-		Connection con = ((ConnectionJDBC) conwp.getConnection()).getConnection();
-		DatabaseMetaData metadataDB = con.getMetaData();
-		ResultSet rs = metadataDB.getTables(null, null, null, new String[] {"TABLE"});
-		List<String> tables = new ArrayList<String>();
-		while (rs.next()) {
-			String tableName = rs.getString("TABLE_NAME");
-			if (onlyGeospatial) {
-				boolean geometry = false;
-				ResultSet columns = metadataDB.getColumns(null,null,tableName, "%");
-				while (columns.next()) {
-					if (columns.getString("Type_name").equalsIgnoreCase("geometry")) {
-						geometry = true;
-						break;
-					}
-				}
-				if (geometry) {
-					tables.add(tableName);
-				}
-			} else {
-				tables.add(tableName);
-			}
-		}
-		String[] result = new String[tables.size()];
-		for (int i=0; i<tables.size(); i++) {
-			result[i] = tables.get(i);
-		}
-		return result;
-	}
-
-	public String[] getColumns(String table) throws SQLException {
-
-		return getColumns(null, table);
-
-	}
-
-	public String[] getColumns(String schema, String table) throws SQLException {
-
-		Connection con = ((ConnectionJDBC) conwp.getConnection()).getConnection();
-		DatabaseMetaData metadataDB = con.getMetaData();
-
-		ResultSet columns = metadataDB.getColumns(null,schema,table, "%");
-		List <String> cols = new ArrayList<String>();
+	Connection con = ((ConnectionJDBC) conwp.getConnection()).getConnection();
+	DatabaseMetaData metadataDB = con.getMetaData();
+	ResultSet rs = metadataDB.getTables(null, null, null, new String[] {"TABLE"});
+	List<String> tables = new ArrayList<String>();
+	while (rs.next()) {
+	    String tableName = rs.getString("TABLE_NAME");
+	    if (onlyGeospatial) {
+		boolean geometry = false;
+		ResultSet columns = metadataDB.getColumns(null,null,tableName, "%");
 		while (columns.next()) {
-			cols.add(columns.getString("Column_name"));
+		    if (columns.getString("Type_name").equalsIgnoreCase("geometry")) {
+			geometry = true;
+			break;
+		    }
 		}
-		String[] result = new String[cols.size()];
-		for (int i=0; i<cols.size(); i++) {
-			result[i] = cols.get(i);
+		if (geometry) {
+		    tables.add(tableName);
 		}
-		return result;
+	    } else {
+		tables.add(tableName);
+	    }
+	}
+	String[] result = new String[tables.size()];
+	for (int i=0; i<tables.size(); i++) {
+	    result[i] = tables.get(i);
+	}
+	return result;
+    }
+
+    public String[] getColumns(String table) throws SQLException {
+
+	return getColumns(null, table);
+
+    }
+
+    public String[] getColumns(String schema, String table) throws SQLException {
+
+	Connection con = ((ConnectionJDBC) conwp.getConnection()).getConnection();
+	DatabaseMetaData metadataDB = con.getMetaData();
+
+	ResultSet columns = metadataDB.getColumns(null,schema,table, "%");
+	List <String> cols = new ArrayList<String>();
+	while (columns.next()) {
+	    cols.add(columns.getString("Column_name"));
+	}
+	String[] result = new String[cols.size()];
+	for (int i=0; i<cols.size(); i++) {
+	    result[i] = cols.get(i);
+	}
+	return result;
+    }
+
+    /**
+     * Be careful!
+     * @param table
+     * @param whereClause
+     * @throws SQLException
+     */
+    public void deleteRows(String schema, String table, String whereClause) throws SQLException {
+
+	Connection con = ((ConnectionJDBC) conwp.getConnection()).getConnection();
+
+	String sql = "DELETE FROM " + schema + "." + table + " " +  whereClause;
+
+	Statement statement = con.createStatement();
+	statement.executeUpdate(sql);
+	con.commit();
+    }
+
+    public void insertRow(String schema, String table, Object[] values) throws SQLException {
+
+	String[] columns = getColumnNames(table, schema);
+	insertRow(schema, table, columns, values);
+    }
+
+    public void insertRow(String schema, String table, String[] columns, Object[] values) throws SQLException {
+
+	Connection con = ((ConnectionJDBC) conwp.getConnection()).getConnection();
+
+	if (columns.length == values.length) {
+	    String sql = "INSERT INTO " + schema + "." + table + " (";
+	    for (String col : columns) {
+		sql = sql + col + ", ";
+	    }
+	    sql = sql.substring(0, sql.length()-2) + ") VALUES (";
+	    for (int i=0; i<columns.length; i++) {
+		sql = sql + "?, ";
+	    }
+	    sql = sql.substring(0, sql.length()-2) + ")";
+
+	    PreparedStatement statement = con.prepareStatement(sql);
+
+	    for (int i=0; i<columns.length; i++) {
+		if (values[i] instanceof NullValue) {
+		    statement.setNull(i+1, Types.NULL);
+		}else {
+		    statement.setObject(i+1, values[i]);
+		}
+	    }
+
+	    statement.executeUpdate();
+	    con.commit();
+
 	}
 
-	/**
-	 * Be careful!
-	 * @param table
-	 * @param whereClause
-	 * @throws SQLException
-	 */
-	public void deleteRows(String schema, String table, String whereClause) throws SQLException {
+    }
+    /**
+     * Be careful!
+     * @param schema
+     * @param tablename
+     * @param fields
+     * @param values
+     * @param whereClause
+     * @throws SQLException
+     */
+    public void updateRows(String schema, String tablename, String[] columns,
+	    Object[] values, String whereClause) throws SQLException {
 
-		Connection con = ((ConnectionJDBC) conwp.getConnection()).getConnection();
+	Connection con =((ConnectionJDBC) conwp.getConnection()).getConnection();
 
-		String sql = "DELETE FROM " + schema + "." + table + " " +  whereClause;
+	if (columns.length == values.length) {
+	    String sql = "UPDATE " + schema + "." + tablename + " SET ";
+	    for (String column : columns) {
+		sql = sql + column + "=?, ";
+	    }
+	    sql = sql.substring(0, sql.length()-2) + " " + whereClause;
 
-		Statement statement = con.createStatement();
-		statement.executeUpdate(sql);
-		con.commit();
+	    PreparedStatement statement = con.prepareStatement(sql);
+	    for (int i=0; i<values.length; i++) {
+		statement.setObject(i+1, values[i]);
+	    }
+
+	    statement.executeUpdate();
+	    con.commit();
 	}
 
-	public void insertRow(String schema, String table, Object[] values) throws SQLException {
+    }
 
-		String[] columns = getColumnNames(table, schema);
-		insertRow(schema, table, columns, values);
-	}
+    public boolean tableExists(String schema, String tablename) throws SQLException {
 
-	public void insertRow(String schema, String table, String[] columns, Object[] values) throws SQLException {
+	Connection con =((ConnectionJDBC) conwp.getConnection()).getConnection();
 
-		Connection con = ((ConnectionJDBC) conwp.getConnection()).getConnection();
+	String query = "select count(*) as count from pg_tables where schemaname='" + schema + "' and tablename='" + tablename + "'";
 
-		if (columns.length == values.length) {
-			String sql = "INSERT INTO " + schema + "." + table + " (";
-			for (String col : columns) {
-				sql = sql + col + ", ";
-			}
-			sql = sql.substring(0, sql.length()-2) + ") VALUES (";
-			for (int i=0; i<columns.length; i++) {
-				sql = sql + "?, ";
-			}
-			sql = sql.substring(0, sql.length()-2) + ")";
+	Statement stat = con.createStatement();
+	ResultSet rs = stat.executeQuery(query);
 
-			PreparedStatement statement = con.prepareStatement(sql);
-
-			for (int i=0; i<columns.length; i++) {
-				statement.setObject(i+1, values[i]);
-			}
-
-			statement.executeUpdate();
-			con.commit();
-
-		}
-
-	}
-	/**
-	 * Be careful!
-	 * @param schema
-	 * @param tablename
-	 * @param fields
-	 * @param values
-	 * @param whereClause
-	 * @throws SQLException
-	 */
-	public void updateRows(String schema, String tablename, String[] columns,
-			Object[] values, String whereClause) throws SQLException {
-
-		Connection con =((ConnectionJDBC) conwp.getConnection()).getConnection();
-
-		if (columns.length == values.length) {
-			String sql = "UPDATE " + schema + "." + tablename + " SET ";
-			for (String column : columns) {
-				sql = sql + column + "=?, ";
-			}
-			sql = sql.substring(0, sql.length()-2) + " " + whereClause;
-
-			PreparedStatement statement = con.prepareStatement(sql);
-			for (int i=0; i<values.length; i++) {
-				statement.setObject(i+1, values[i]);
-			}
-
-			statement.executeUpdate();
-			con.commit();
-		}
-
-	}
-
-	public boolean tableExists(String schema, String tablename) throws SQLException {
-
-		Connection con =((ConnectionJDBC) conwp.getConnection()).getConnection();
-
-		String query = "select count(*) as count from pg_tables where schemaname='" + schema + "' and tablename='" + tablename + "'";
-
-		Statement stat = con.createStatement();
-		ResultSet rs = stat.executeQuery(query);
-
-		while (rs.next()) {
-			int count = rs.getInt("count");
-			if (count!=1) {
-				return false;
-			} else {
-				return true;
-			}
-		}
+	while (rs.next()) {
+	    int count = rs.getInt("count");
+	    if (count!=1) {
 		return false;
-
-	}
-
-	/**
-	 * Checks if there is an active and unsaved project and asks the user to save resources.
-	 * @return true if there's no unsaved data
-	 */
-	public boolean askSave() {
-
-		ProjectExtension pExt = (ProjectExtension) PluginServices.getExtension(ProjectExtension.class);
-		Project p = pExt.getProject();
-
-		if (p != null && p.hasChanged()) {
-			TerminationProcess process = Launcher.getTerminationProcess();
-			UnsavedDataPanel panel = process.getUnsavedDataPanel();
-			panel.setHeaderText(PluginServices.getText(this, "Select_resources_to_save_before_closing_current_project"));
-			panel.setAcceptText(
-					PluginServices.getText(this, "save_resources"),
-					PluginServices.getText(this, "Save_the_selected_resources_and_close_current_project"));
-			panel.setCancelText(
-					PluginServices.getText(this, "Dont_close"),
-					PluginServices.getText(this, "Return_to_current_project"));
-			int closeCurrProj = process.manageUnsavedData();
-			if (closeCurrProj==JOptionPane.NO_OPTION) {
-				// the user chose to return to current project
-				return false;
-			} else if (closeCurrProj==JOptionPane.YES_OPTION) {
-				//trick to avoid ask twice for modified data
-				p.setModified(false);
-			}
-		}
+	    } else {
 		return true;
+	    }
 	}
-	
-	private static void LaunchFakeRequestsThread() {
-	    FakeRequestsThread fakeRequestThread = new FakeRequestsThread();
-	    fakeRequestThread.setName("fake_requests");
-	    fakeRequestThread.start();
+	return false;
+
+    }
+
+    /**
+     * Checks if there is an active and unsaved project and asks the user to save resources.
+     * @return true if there's no unsaved data
+     */
+    public boolean askSave() {
+
+	ProjectExtension pExt = (ProjectExtension) PluginServices.getExtension(ProjectExtension.class);
+	Project p = pExt.getProject();
+
+	if (p != null && p.hasChanged()) {
+	    TerminationProcess process = Launcher.getTerminationProcess();
+	    UnsavedDataPanel panel = process.getUnsavedDataPanel();
+	    panel.setHeaderText(PluginServices.getText(this, "Select_resources_to_save_before_closing_current_project"));
+	    panel.setAcceptText(
+		    PluginServices.getText(this, "save_resources"),
+		    PluginServices.getText(this, "Save_the_selected_resources_and_close_current_project"));
+	    panel.setCancelText(
+		    PluginServices.getText(this, "Dont_close"),
+		    PluginServices.getText(this, "Return_to_current_project"));
+	    int closeCurrProj = process.manageUnsavedData();
+	    if (closeCurrProj==JOptionPane.NO_OPTION) {
+		// the user chose to return to current project
+		return false;
+	    } else if (closeCurrProj==JOptionPane.YES_OPTION) {
+		//trick to avoid ask twice for modified data
+		p.setModified(false);
+	    }
 	}
-	
-	
-	/* getCompleteTableName and getAlphanumericDriverNames are used from extNavTableForms. 
-	 * To avoid update DBSession in SIGA we copy it here
-	 */
-	public String getCompleteTableName(String name, String schema) {
-		return schema + "." + name;
-	}
-	public String getAlphanumericDriverName() {
-		return "PostgreSQL Alphanumeric";
-	}
+	return true;
+    }
+
+    private static void LaunchFakeRequestsThread() {
+	FakeRequestsThread fakeRequestThread = new FakeRequestsThread();
+	fakeRequestThread.setName("fake_requests");
+	fakeRequestThread.start();
+    }
+
+
+    /* getCompleteTableName and getAlphanumericDriverNames are used from extNavTableForms.
+     * To avoid update DBSession in SIGA we copy it here
+     */
+    public String getCompleteTableName(String name, String schema) {
+	return schema + "." + name;
+    }
+    public String getAlphanumericDriverName() {
+	return "PostgreSQL Alphanumeric";
+    }
 
 
 }
