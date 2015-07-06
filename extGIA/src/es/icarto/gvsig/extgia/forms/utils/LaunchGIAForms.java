@@ -295,10 +295,10 @@ public class LaunchGIAForms {
 	    vegetationSubForm = new BatchTaludesTrabajos(formFileName, dbTableName);
 	    break;
 	case Isletas:
-	    subform = new BatchIsletasTrabajos(formFileName, dbTableName);
+	    vegetationSubForm = new BatchIsletasTrabajos(formFileName, dbTableName);
 	    break;
 	case Barrera_Rigida:
-	    subform = new BatchBarreraRigidaTrabajos(formFileName, dbTableName);
+	    vegetationSubForm = new BatchBarreraRigidaTrabajos(formFileName, dbTableName);
 	    break;
 	case Areas_Servicio:
 	    subform = new BatchAreasServicioTrabajos(formFileName, dbTableName);
@@ -316,7 +316,7 @@ public class LaunchGIAForms {
 	    subform = new BatchPasosMedianaTrabajos(formFileName, dbTableName);
 	    break;
 	case Senhalizacion_Vertical:
-	    subform = new BatchSenhalizacionVerticalTrabajos(formFileName,
+	    vegetationSubForm = new BatchSenhalizacionVerticalTrabajos(formFileName,
 		    dbTableName);
 	    break;
 	case Valla_Cierre:
