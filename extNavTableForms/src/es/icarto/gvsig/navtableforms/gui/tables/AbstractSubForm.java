@@ -266,7 +266,7 @@ IValidatableForm, IWindow, IWindowListener {
 	return formPanel;
     }
 
-    private String getMetadataPath() {
+    protected String getMetadataPath() {
 	return this.getClass().getClassLoader()
 		.getResource("rules/" + getBasicName() + "_metadata.xml")
 		.getPath();
