@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,6 +22,7 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -47,6 +49,7 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 
     private WindowInfo viewInfo;
     private JTable table;
+    private final String dbTableName;
     private final String[] columnNames;
     private final String[] columnDbNames;
     private final Integer[] columnDbTypes;
@@ -56,9 +59,10 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
     private JButton cancelButton;
     private JButton saveButton;
 
-    public BatchTrabajosTable(ORMLite batchOrmLite, String[][] data, final String[] columnNames,
-	    final String[] columnDbNames, final Integer[] columnsDbTypes) {
+    public BatchTrabajosTable(ORMLite batchOrmLite, String dbTableName, String[][] data,
+	    final String[] columnNames, final String[] columnDbNames, final Integer[] columnsDbTypes) {
 	super();
+	this.dbTableName = dbTableName;
 	this.columnNames = columnNames;
 	this.columnDbNames = columnDbNames;
 	this.columnDbTypes = columnsDbTypes;
@@ -131,26 +135,43 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 
 	private void save() {
 	    try {
-	        for (int i = 0; i < data.length; i++) {
-	    	Value[] values = new Value[data[i].length];
-	    	for (int j = 0; j < data[i].length; j++) {
-	    	    if (data[i][j] == null) {
-	    		values[j] = ValueFactory.createNullValue();
-	    	    } else if (!data[i][j].isEmpty()) {
-	    		values[j] = ValueFactory.createValueByType(data[i][j], columnDbTypes[j]);
-	    	    }else {
-	    		values[j] = ValueFactory.createNullValue();
-	    	    }
-	    	}
-	    	DBSession.getCurrentSession().insertRow(DBFieldNames.GIA_SCHEMA,
-	    		"taludes_trabajos", columnDbNames, values);
-	        }
+		for (int i = 0; i < data.length; i++) {
+		    Value[] values = new Value[data[i].length];
+		    for (int j = 0; j < data[i].length; j++) {
+			if (data[i][j] == null) {
+			    values[j] = ValueFactory.createNullValue();
+			} else if (!data[i][j].isEmpty()) {
+			    values[j] = createValueByType(data[i][j], columnDbTypes[j]);
+			}else {
+			    values[j] = ValueFactory.createNullValue();
+			}
+		    }
+		    DBSession.getCurrentSession().insertRow(DBFieldNames.GIA_SCHEMA,
+			    dbTableName, columnDbNames, values);
+		}
 	    } catch (SQLException e1) {
-	        e1.printStackTrace();
+		e1.printStackTrace();
 	    } catch (ParseException e2) {
-	        e2.printStackTrace();
+		e2.printStackTrace();
+	    }
+	    JOptionPane.showMessageDialog(
+		    null,
+		    PluginServices.getText(this, "addedInfo_msg_I")
+		    + data.length
+		    + " "
+		    + PluginServices.getText(this,
+			    "addedInfo_msg_II"));
+	    closeWindow();
+	}
+    }
+
+    private Value createValueByType(String value,int type) throws ParseException {
+	if (type == Types.NUMERIC || type == Types.DOUBLE) {
+	    if (value.contains(",")) {
+		value = value.replace(",", ".");
 	    }
 	}
+	return ValueFactory.createValueByType(value, type);
     }
 
     public HashMap<String, String> getTableDataRow(int row, int columns) {
@@ -162,7 +183,8 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
     }
 
     public void setUnidadCellEditorAsComboBox() {
-	DomainValues unidadValues = batchOrmLite.getAppDomain().getDomainValuesForComponent(DBFieldNames.UNIDAD);
+	DomainValues unidadValues = batchOrmLite.getAppDomain().getDomainValuesForComponent(
+		DBFieldNames.UNIDAD);
 	JComboBox unidadComboBox = new JComboBox();
 	for (KeyValue value : unidadValues.getValues()) {
 	    unidadComboBox.addItem(value.toString());

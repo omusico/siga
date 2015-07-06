@@ -30,18 +30,19 @@ public abstract class BatchVegetationTrabajosAbstractSubForm extends GIASubForm 
     private static final Logger logger = Logger
 	    .getLogger(BatchAbstractSubForm.class);
 
-    private final String primaryKey;
     private final ORMLite batchOrmLite;
 
     public BatchVegetationTrabajosAbstractSubForm(String formFile, String basicName) {
 	super(basicName);
 	setForeingKey(new HashMap<String, String>());
-	primaryKey = basicName.endsWith("_trabajos") ? "id_trabajo"
-		: "n_inspeccion";
-	String metaDataPath = this.getClass().getClassLoader()
-		.getResource("rules/" + getBasicName() + "_metadata.xml")
+	batchOrmLite = new ORMLite(getMetadataPath());
+    }
+
+    @Override
+    protected String getMetadataPath() {
+	return this.getClass().getClassLoader()
+		.getResource("rules/" + getDbTableName() + "_metadata.xml")
 		.getPath();
-	batchOrmLite = new ORMLite(metaDataPath);
     }
 
     @Override
@@ -58,6 +59,8 @@ public abstract class BatchVegetationTrabajosAbstractSubForm extends GIASubForm 
     public abstract String getLayerName();
 
     public abstract String getIdFieldName();
+
+    public abstract String getDbTableName();
 
     public abstract String[] getColumnNames();
 
@@ -123,8 +126,9 @@ public abstract class BatchVegetationTrabajosAbstractSubForm extends GIASubForm 
 		if (m == JOptionPane.OK_OPTION) {
 		    String[][] data = getDataForFillingTable(values, recordset,
 			    selectedElements);
-		    BatchTrabajosTable table = new BatchTrabajosTable(batchOrmLite, data,
-			    getColumnNames(), getColumnDbNames(), getColumnDbTypes());
+		    BatchTrabajosTable table = new BatchTrabajosTable(batchOrmLite, getDbTableName(),
+			    data, getColumnNames(), getColumnDbNames(),
+			    getColumnDbTypes());
 		    PluginServices.getMDIManager().addCentredWindow(table);
 		}
 	    } catch (Exception e) {

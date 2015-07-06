@@ -26,13 +26,18 @@ public class BatchBarreraRigidaTrabajos extends BatchVegetationTrabajosAbstractS
     }
 
     @Override
+    public String getDbTableName() {
+	return "barrera_rigida_trabajos";
+    }
+
+    @Override
     protected String getBasicName() {
 	return "vegetation_trabajos";
     }
 
     @Override
     public String[] getColumnNames() {
-	String[] columnNames = {"ID Talud",
+	String[] columnNames = {"ID Barrera Rígida ",
 		"Fecha",
 		"Unidad",
 		"Longitud",
@@ -46,7 +51,7 @@ public class BatchBarreraRigidaTrabajos extends BatchVegetationTrabajosAbstractS
 
     @Override
     public String[] getColumnDbNames() {
-	String[] columnNames = {"id_talud",
+	String[] columnNames = {"id_barrera_rigida",
 		"fecha",
 		"unidad",
 		"longitud",
@@ -81,4 +86,5 @@ public class BatchBarreraRigidaTrabajos extends BatchVegetationTrabajosAbstractS
 		primaryKey, values.get(DBFieldNames.UNIDAD)).getForeignValue().getValue());
 
     }
+
 }

@@ -28,6 +28,11 @@ public class BatchTaludesTrabajos extends BatchVegetationTrabajosAbstractSubForm
     }
 
     @Override
+    public String getDbTableName() {
+	return "taludes_trabajos";
+    }
+
+    @Override
     protected String getBasicName() {
 	return "vegetation_trabajos";
     }
@@ -94,4 +99,5 @@ public class BatchTaludesTrabajos extends BatchVegetationTrabajosAbstractSubForm
 		primaryKey, values.get(DBFieldNames.UNIDAD)).getForeignValue().getValue());
 
     }
+
 }

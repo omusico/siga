@@ -25,6 +25,11 @@ public class BatchSenhalizacionVerticalTrabajos extends BatchVegetationTrabajosA
     }
 
     @Override
+    public String getDbTableName() {
+	return "senhalizacion_vertical_trabajos";
+    }
+
+    @Override
     protected String getBasicName() {
 	return "vegetation_trabajos";
     }
@@ -73,4 +78,5 @@ public class BatchSenhalizacionVerticalTrabajos extends BatchVegetationTrabajosA
 	// TODO Auto-generated method stub
 
     }
+
 }

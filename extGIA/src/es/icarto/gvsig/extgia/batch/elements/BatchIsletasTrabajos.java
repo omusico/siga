@@ -27,13 +27,18 @@ public class BatchIsletasTrabajos extends BatchVegetationTrabajosAbstractSubForm
     }
 
     @Override
+    public String getDbTableName() {
+	return "isletas_trabajos";
+    }
+
+    @Override
     protected String getBasicName() {
 	return "vegetation_trabajos";
     }
 
     @Override
     public String[] getColumnNames() {
-	String[] columnNames = {"ID Talud",
+	String[] columnNames = {"ID Isleta",
 		"Fecha",
 		"Unidad",
 		"Longitud",
@@ -48,7 +53,7 @@ public class BatchIsletasTrabajos extends BatchVegetationTrabajosAbstractSubForm
 
     @Override
     public String[] getColumnDbNames() {
-	String[] columnNames = {"id_talud",
+	String[] columnNames = {"id_isleta",
 		"fecha",
 		"unidad",
 		"longitud",
@@ -87,4 +92,5 @@ public class BatchIsletasTrabajos extends BatchVegetationTrabajosAbstractSubForm
 		primaryKey, values.get(DBFieldNames.UNIDAD)).getForeignValue().getValue());
 
     }
+
 }
