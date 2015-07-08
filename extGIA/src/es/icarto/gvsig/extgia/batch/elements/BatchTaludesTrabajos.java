@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import es.icarto.gvsig.extgia.batch.BatchVegetationTrabajosAbstractSubForm;
+import es.icarto.gvsig.extgia.forms.taludes.CalculateTaludesTrabajosLongitud;
 import es.icarto.gvsig.extgia.forms.taludes.CalculateTaludesTrabajosMedicionComplementaria;
 import es.icarto.gvsig.extgia.forms.taludes.CalculateTaludesTrabajosMedicionElemento;
 import es.icarto.gvsig.extgia.forms.taludes.CalculateTaludesTrabajosMedicionUltimoTrabajo;
@@ -91,6 +92,8 @@ public class BatchTaludesTrabajos extends BatchVegetationTrabajosAbstractSubForm
 	Map<String, String> primaryKey = new HashMap<String, String>();
 	primaryKey.put(getIdFieldName(), idValue);
 
+	values.put(DBFieldNames.LONGITUD, new CalculateTaludesTrabajosLongitud(
+		primaryKey).getForeignValue().getValue());
 	values.put(DBFieldNames.MEDICION_ELEMENTO, new CalculateTaludesTrabajosMedicionElemento(
 		primaryKey).getForeignValue().getValue());
 	values.put(DBFieldNames.MEDICION_COMPLEMENTARIA, new CalculateTaludesTrabajosMedicionComplementaria(

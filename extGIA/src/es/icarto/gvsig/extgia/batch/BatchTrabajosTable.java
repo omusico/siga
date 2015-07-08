@@ -59,6 +59,8 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
     private JButton cancelButton;
     private JButton saveButton;
 
+    private JComboBox unidadComboBox;
+
     public BatchTrabajosTable(ORMLite batchOrmLite, String dbTableName, String[][] data,
 	    final String[] columnNames, final String[] columnDbNames, final Integer[] columnsDbTypes) {
 	super();
@@ -69,7 +71,6 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	this.batchOrmLite = batchOrmLite;
 	this.data = data;
 	initTable();
-
     }
 
     private void initTable() {
@@ -96,6 +97,7 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 
 	setUnidadCellEditorAsComboBox();
 	setFechaCellEditorAsJDateChooser();
+	updateMedicion();
     }
 
     @Override
@@ -185,7 +187,8 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
     public void setUnidadCellEditorAsComboBox() {
 	DomainValues unidadValues = batchOrmLite.getAppDomain().getDomainValuesForComponent(
 		DBFieldNames.UNIDAD);
-	JComboBox unidadComboBox = new JComboBox();
+	unidadComboBox = new JComboBox();
+	unidadComboBox.addActionListener(new BatchUnidadListener());
 	for (KeyValue value : unidadValues.getValues()) {
 	    unidadComboBox.addItem(value.toString());
 	}
@@ -197,6 +200,58 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 		break;
 	    }
 	}
+    }
+
+    private void updateMedicion() {
+	int medicionColumn = table.getColumn("Medición").getModelIndex();
+	int medicionElementoColumn = table.getColumn("Medición elemento").getModelIndex();
+	int medicionLastJobColumn = table.getColumn("Medición último trabajo").getModelIndex();
+
+	String medicionValue = null;
+
+	for (int i = 0; i < data.length; i++) {
+
+	    if (table.getValueAt(i, medicionLastJobColumn) != null) {
+		medicionValue = data[i][medicionLastJobColumn];
+	    }else if (table.getValueAt(i, medicionElementoColumn) != null) {
+		medicionValue = data[i][medicionElementoColumn];
+	    }
+	    table.setValueAt(medicionValue.toString(), i, medicionColumn);
+	    table.repaint();
+	}
+    }
+
+    private class BatchUnidadListener implements ActionListener {
+
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    JComboBox unidadComboBox = (JComboBox)e.getSource();
+	    int row = table.getSelectedRow();
+	    if (unidadComboBox.getSelectedItem().toString().equals("Herbicida")) {
+		updateMedicionHerbicida(row);
+
+	    } else {
+		updateMedicion();
+	    }
+	}
+
+	private void updateMedicionHerbicida(int row) {
+	    int medicionColumn = table.getColumn("Medición").getModelIndex();
+	    int longitudColumn = table.getColumn("Longitud").getModelIndex();
+	    int anchoColumn = table.getColumn("Ancho").getModelIndex();
+
+	    Object longitudValue = table.getValueAt(row, longitudColumn);
+	    Object anchoValue = table.getValueAt(row, anchoColumn);
+	    if (!longitudValue.toString().isEmpty() && !anchoValue.toString().isEmpty()) {
+		Double medicionHerbicida = Double.parseDouble(longitudValue.toString()) *
+			Double.parseDouble(anchoValue.toString().replace(",", "."));
+		table.setValueAt(medicionHerbicida.toString(), row, medicionColumn);
+		table.repaint();
+	    }
+	}
+
     }
 
     private void setFechaCellEditorAsJDateChooser() {
@@ -212,8 +267,15 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 
     private boolean isColumnEditable(TableColumn column) {
 	for (int i = 0; i < DBFieldNames.trabajosVegetacionTableEditableCells.length; i++) {
-	    if (DBFieldNames.trabajosVegetacionTableEditableCells[i].equals(column.getHeaderValue().toString())) {
+	    if (DBFieldNames.trabajosVegetacionTableEditableCells[i].equals(column.getHeaderValue().
+		    toString())) {
 		return true;
+	    }
+	    if (unidadComboBox.getSelectedItem().toString().equals("Herbicida")) {
+		if (column.getHeaderValue().toString().equals("Longitud") ||
+			column.getHeaderValue().toString().equals("Ancho")) {
+		    return true;
+		}
 	    }
 	}
 	return false;

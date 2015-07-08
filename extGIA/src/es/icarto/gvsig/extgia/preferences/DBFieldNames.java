@@ -39,8 +39,8 @@ public class DBFieldNames {
     public static String[] trabajosVegetacionColAlias = { "ID", "Fecha", "Unidad",
 	"Medición", "Observaciones" };
 
-    public static String[] trabajosVegetacionTableEditableCells = {"Fecha", "Unidad", "Longitud",
-	"Ancho", "Medición", "Observaciones" };
+    public static String[] trabajosVegetacionTableEditableCells = {"Fecha", "Unidad", "Medición",
+    "Observaciones" };
 
     public static final String GIA_SCHEMA = "audasa_extgia";
 
