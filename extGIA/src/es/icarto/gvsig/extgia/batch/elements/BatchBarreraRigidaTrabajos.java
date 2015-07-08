@@ -32,7 +32,7 @@ public class BatchBarreraRigidaTrabajos extends BatchVegetationTrabajosAbstractS
 
     @Override
     protected String getBasicName() {
-	return "vegetation_trabajos";
+	return "batch_vegetation_trabajos";
     }
 
     @Override

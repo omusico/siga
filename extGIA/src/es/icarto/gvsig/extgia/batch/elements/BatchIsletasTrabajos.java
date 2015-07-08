@@ -33,7 +33,7 @@ public class BatchIsletasTrabajos extends BatchVegetationTrabajosAbstractSubForm
 
     @Override
     protected String getBasicName() {
-	return "vegetation_trabajos";
+	return "batch_vegetation_trabajos";
     }
 
     @Override

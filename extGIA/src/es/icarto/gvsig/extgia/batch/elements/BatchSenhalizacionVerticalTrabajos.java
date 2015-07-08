@@ -31,7 +31,7 @@ public class BatchSenhalizacionVerticalTrabajos extends BatchVegetationTrabajosA
 
     @Override
     protected String getBasicName() {
-	return "vegetation_trabajos";
+	return "batch_senhalizacion_vertical_trabajos";
     }
 
     @Override
@@ -39,8 +39,6 @@ public class BatchSenhalizacionVerticalTrabajos extends BatchVegetationTrabajosA
 	String[] columnNames = {"ID Talud",
 		"Fecha",
 		"Unidad",
-		"Longitud",
-		"Ancho",
 		"Medición",
 		"Observaciones"
 	};
@@ -52,8 +50,6 @@ public class BatchSenhalizacionVerticalTrabajos extends BatchVegetationTrabajosA
 	String[] columnNames = {"id_talud",
 		"fecha",
 		"unidad",
-		"longitud",
-		"ancho",
 		"medicion",
 		"observaciones"
 	};
@@ -65,8 +61,6 @@ public class BatchSenhalizacionVerticalTrabajos extends BatchVegetationTrabajosA
 	Integer[] columnTypes = {Types.VARCHAR,
 		Types.DATE,
 		Types.VARCHAR,
-		Types.INTEGER,
-		Types.NUMERIC,
 		Types.NUMERIC,
 		Types.VARCHAR
 	};
