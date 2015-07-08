@@ -7,6 +7,9 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.text.ParseException;
@@ -203,6 +206,7 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
     }
 
     private void updateMedicion() {
+	int unidadColumn = table.getColumn("Unidad").getModelIndex();
 	int medicionColumn = table.getColumn("Medición").getModelIndex();
 	int medicionElementoColumn = table.getColumn("Medición elemento").getModelIndex();
 	int medicionLastJobColumn = table.getColumn("Medición último trabajo").getModelIndex();
@@ -210,46 +214,116 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	String medicionValue = null;
 
 	for (int i = 0; i < data.length; i++) {
-
 	    if (table.getValueAt(i, medicionLastJobColumn) != null) {
 		medicionValue = data[i][medicionLastJobColumn];
 	    }else if (table.getValueAt(i, medicionElementoColumn) != null) {
 		medicionValue = data[i][medicionElementoColumn];
 	    }
 	    table.setValueAt(medicionValue.toString(), i, medicionColumn);
+
+	    if (data[i][unidadColumn].toString().equals("Herbicida")) {
+		updateMedicionHerbicida(i, medicionColumn);
+	    }
 	    table.repaint();
+	}
+    }
+
+    private void updateMedicionHerbicida(int row, int column) {
+	int longitudColumn = table.getColumn("Longitud").getModelIndex();
+	int anchoColumn = table.getColumn("Ancho").getModelIndex();
+
+	Object longitudValue = table.getValueAt(row, longitudColumn);
+	Object anchoValue = table.getValueAt(row, anchoColumn);
+	if (!longitudValue.toString().isEmpty() && !anchoValue.toString().isEmpty()) {
+	    Double medicionHerbicida = Double.parseDouble(longitudValue.toString()) *
+		    Double.parseDouble(anchoValue.toString().replace(",", "."));
+	    table.setValueAt(medicionHerbicida.toString(), row, column);
 	}
     }
 
     private class BatchUnidadListener implements ActionListener {
 
-
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
+	    int medicionColumn = table.getColumn("Medición").getModelIndex();
+	    int medicionLastJobColumn = table.getColumn("Medición último trabajo").getModelIndex();
+
 	    JComboBox unidadComboBox = (JComboBox)e.getSource();
 	    int row = table.getSelectedRow();
 	    if (unidadComboBox.getSelectedItem().toString().equals("Herbicida")) {
-		updateMedicionHerbicida(row);
-
+		updateMedicionHerbicida(row, medicionColumn);
+		if (row != -1) {
+		    table.setValueAt(getMedicionLastJobValueByUnit(row), row, medicionLastJobColumn);
+		    //table.setValueAt(null, row, medicionColumn);
+		}
+		//table.repaint();
 	    } else {
 		updateMedicion();
+		if (row != -1 && getMedicionLastJobValueByUnit(row) != null) {
+		    table.setValueAt(getMedicionLastJobValueByUnit(row), row, medicionLastJobColumn);
+		    table.setValueAt(getMedicionLastJobValueByUnit(row), row, medicionColumn);
+		}
+		//table.repaint();
+	    }
+	    table.repaint();
+	}
+
+	//TODO: This method is copied from CalculateDBForeignValueLastJob class
+	private String getMedicionLastJobValueByUnit(int row) {
+	    try {
+		Connection connection = DBSession.getCurrentSession().getJavaConnection();
+		PreparedStatement statement = connection.prepareStatement(getSQLSentence(row));
+		ResultSet rs = statement.executeQuery();
+		if (rs.next()) {
+		    if (rs.getString(1) != null) {
+			if (rs.getString(1).contains(".")) {
+			    return rs.getString(1).replace(".", ",");
+			} else {
+			    return rs.getString(1);
+			}
+		    }
+		}
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
+	    return null;
+	}
+
+
+	//TODO: This method is copied from CalculateDBForeignValueLastJob class
+	protected String getSQLSentence(int row) {
+	    if (unidadComboBox.getSelectedItem().toString().equalsIgnoreCase(" ") || !getLastJobByUnit(row)) {
+		return "SELECT " + DBFieldNames.MEDICION + " FROM " + DBFieldNames.GIA_SCHEMA + "."
+			+ dbTableName + " WHERE " + columnDbNames[0] + " = " + "'" + data[row][0]
+				+ "'" +" AND " + DBFieldNames.FECHA + " IN (SELECT max(" + DBFieldNames.FECHA + ") FROM "
+				+ DBFieldNames.GIA_SCHEMA + "." + dbTableName + " WHERE " + columnDbNames[0] + " = "
+				+ "'" + data[row][0] + "')";
+	    } else {
+		return "SELECT " + DBFieldNames.MEDICION + " FROM " + DBFieldNames.GIA_SCHEMA + "."
+			+ dbTableName + " WHERE " + columnDbNames[0] + " = " + "'" + data[row][0]
+				+ "'" +" AND " + DBFieldNames.FECHA + " IN (SELECT max(" + DBFieldNames.FECHA + ") FROM "
+				+ DBFieldNames.GIA_SCHEMA + "." + dbTableName + " WHERE " + columnDbNames[0] + " = "
+				+ "'" + data[row][0] + "' AND unidad = '" + unidadComboBox.getSelectedItem().toString() + "')";
 	    }
 	}
 
-	private void updateMedicionHerbicida(int row) {
-	    int medicionColumn = table.getColumn("Medición").getModelIndex();
-	    int longitudColumn = table.getColumn("Longitud").getModelIndex();
-	    int anchoColumn = table.getColumn("Ancho").getModelIndex();
-
-	    Object longitudValue = table.getValueAt(row, longitudColumn);
-	    Object anchoValue = table.getValueAt(row, anchoColumn);
-	    if (!longitudValue.toString().isEmpty() && !anchoValue.toString().isEmpty()) {
-		Double medicionHerbicida = Double.parseDouble(longitudValue.toString()) *
-			Double.parseDouble(anchoValue.toString().replace(",", "."));
-		table.setValueAt(medicionHerbicida.toString(), row, medicionColumn);
-		table.repaint();
+	//TODO: This method is copied from CalculateDBForeignValueLastJob class
+	protected Boolean getLastJobByUnit(int row) {
+	    if (!unidadComboBox.getSelectedItem().toString().equalsIgnoreCase(" ")) {
+		try {
+		    Connection connection = DBSession.getCurrentSession().getJavaConnection();
+		    PreparedStatement statement;
+		    String query = "SELECT " + DBFieldNames.MEDICION + " FROM " + DBFieldNames.GIA_SCHEMA + "."
+			    + dbTableName + " WHERE " + columnDbNames[0] + " = " + "'" + data[row][0]
+				    + "'" +" AND " + DBFieldNames.UNIDAD + " = '" + unidadComboBox.getSelectedItem().toString() + "'";
+		    statement = connection.prepareStatement(query);
+		    ResultSet rs = statement.executeQuery();
+		    return rs.next();
+		} catch (SQLException e) {
+		    e.printStackTrace();
+		}
 	    }
+	    return null;
 	}
 
     }
