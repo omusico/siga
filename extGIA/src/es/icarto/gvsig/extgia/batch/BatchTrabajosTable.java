@@ -30,6 +30,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 
@@ -63,6 +64,15 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
     private JButton saveButton;
 
     private JComboBox unidadComboBox;
+
+    private int unidadColumnIndex;
+    private int longitudColumnIndex;
+    private int anchoColumnIndex;
+    private int medicionColumnIndex;
+    private int medicionElementoColumnIndex;
+    private int medicionLastJobColumnIndex;
+
+    private final Color nonEditableColumnForegndColor = Color.GRAY;
 
     public BatchTrabajosTable(ORMLite batchOrmLite, String dbTableName, String[][] data,
 	    final String[] columnNames, final String[] columnDbNames, final Integer[] columnsDbTypes) {
@@ -98,9 +108,39 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	this.add(scrollPane, BorderLayout.CENTER);
 	this.add(buttonPane, BorderLayout.SOUTH);
 
+	getTableColumnsIndex();
+
 	setUnidadCellEditorAsComboBox();
 	setFechaCellEditorAsJDateChooser();
+
 	updateMedicion();
+
+	setColorForNonEditableColumns(nonEditableColumnForegndColor);
+    }
+
+    private void getTableColumnsIndex() {
+	unidadColumnIndex = table.getColumn("Unidad").getModelIndex();
+	longitudColumnIndex = table.getColumn("Longitud").getModelIndex();
+	anchoColumnIndex = table.getColumn("Ancho").getModelIndex();
+	medicionColumnIndex = table.getColumn("Medición").getModelIndex();
+	medicionElementoColumnIndex = table.getColumn("Medición elemento").getModelIndex();
+	medicionLastJobColumnIndex = table.getColumn("Medición último trabajo").getModelIndex();
+    }
+
+    private void setColorForNonEditableColumns(Color color) {
+	for (int i = 0; i < columnNames.length; i++) {
+	    TableColumn column = table.getColumnModel().getColumn(i);
+	    if (!isColumnEditable(column)) {
+		column.setCellRenderer(new ColorColumnRenderer(color));
+	    }
+	}
+    }
+
+    private void udapteColorLongitudAndAnchoColumns(Color color) {
+	TableColumn longitudColumn = table.getColumnModel().getColumn(longitudColumnIndex);
+	longitudColumn.setCellRenderer(new ColorColumnRenderer(color));
+	TableColumn anchoColumn = table.getColumnModel().getColumn(anchoColumnIndex);
+	anchoColumn.setCellRenderer(new ColorColumnRenderer(color));
     }
 
     @Override
@@ -206,34 +246,26 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
     }
 
     private void updateMedicion() {
-	int unidadColumn = table.getColumn("Unidad").getModelIndex();
-	int medicionColumn = table.getColumn("Medición").getModelIndex();
-	int medicionElementoColumn = table.getColumn("Medición elemento").getModelIndex();
-	int medicionLastJobColumn = table.getColumn("Medición último trabajo").getModelIndex();
-
 	String medicionValue = null;
 
 	for (int i = 0; i < data.length; i++) {
-	    if (table.getValueAt(i, medicionLastJobColumn) != null) {
-		medicionValue = data[i][medicionLastJobColumn];
-	    }else if (table.getValueAt(i, medicionElementoColumn) != null) {
-		medicionValue = data[i][medicionElementoColumn];
+	    if (table.getValueAt(i, medicionLastJobColumnIndex) != null) {
+		medicionValue = data[i][medicionLastJobColumnIndex];
+	    }else if (table.getValueAt(i, medicionElementoColumnIndex) != null) {
+		medicionValue = data[i][medicionElementoColumnIndex];
 	    }
-	    table.setValueAt(medicionValue.toString(), i, medicionColumn);
+	    table.setValueAt(medicionValue.toString(), i, medicionColumnIndex);
 
-	    if (data[i][unidadColumn].toString().equals("Herbicida")) {
-		updateMedicionHerbicida(i, medicionColumn);
+	    if (data[i][unidadColumnIndex].toString().equals("Herbicida")) {
+		updateMedicionHerbicida(i, medicionColumnIndex);
 	    }
 	    table.repaint();
 	}
     }
 
     private void updateMedicionHerbicida(int row, int column) {
-	int longitudColumn = table.getColumn("Longitud").getModelIndex();
-	int anchoColumn = table.getColumn("Ancho").getModelIndex();
-
-	Object longitudValue = table.getValueAt(row, longitudColumn);
-	Object anchoValue = table.getValueAt(row, anchoColumn);
+	Object longitudValue = table.getValueAt(row, longitudColumnIndex);
+	Object anchoValue = table.getValueAt(row, anchoColumnIndex);
 	if (!longitudValue.toString().isEmpty() && !anchoValue.toString().isEmpty()) {
 	    Double medicionHerbicida = Double.parseDouble(longitudValue.toString()) *
 		    Double.parseDouble(anchoValue.toString().replace(",", "."));
@@ -251,24 +283,23 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	    JComboBox unidadComboBox = (JComboBox)e.getSource();
 	    int row = table.getSelectedRow();
 	    if (unidadComboBox.getSelectedItem().toString().equals("Herbicida")) {
+		udapteColorLongitudAndAnchoColumns(Color.BLACK);
 		updateMedicionHerbicida(row, medicionColumn);
 		if (row != -1) {
 		    table.setValueAt(getMedicionLastJobValueByUnit(row), row, medicionLastJobColumn);
-		    //table.setValueAt(null, row, medicionColumn);
 		}
-		//table.repaint();
 	    } else {
+		udapteColorLongitudAndAnchoColumns(nonEditableColumnForegndColor);
 		updateMedicion();
 		if (row != -1 && getMedicionLastJobValueByUnit(row) != null) {
 		    table.setValueAt(getMedicionLastJobValueByUnit(row), row, medicionLastJobColumn);
 		    table.setValueAt(getMedicionLastJobValueByUnit(row), row, medicionColumn);
 		}
-		//table.repaint();
 	    }
 	    table.repaint();
 	}
 
-	//TODO: This method is copied from CalculateDBForeignValueLastJob class
+	//TODO: This method is copied from CalculateDBForeignValueLastJob class.
 	private String getMedicionLastJobValueByUnit(int row) {
 	    try {
 		Connection connection = DBSession.getCurrentSession().getJavaConnection();
@@ -416,6 +447,27 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
 	    TableColumn column = table.getColumnModel().getColumn(columnIndex);
 	    return isColumnEditable(column);
+	}
+    }
+
+    class ColorColumnRenderer extends DefaultTableCellRenderer
+    {
+	Color fgndColor;
+
+	public ColorColumnRenderer(Color foregnd) {
+	    super();
+	    fgndColor = foregnd;
+	}
+
+	@Override
+	public Component getTableCellRendererComponent
+	(JTable table, Object value, boolean isSelected,
+		boolean hasFocus, int row, int column)
+	{
+	    Component cell = super.getTableCellRendererComponent
+		    (table, value, isSelected, hasFocus, row, column);
+	    cell.setForeground( fgndColor );
+	    return cell;
 	}
     }
 }
