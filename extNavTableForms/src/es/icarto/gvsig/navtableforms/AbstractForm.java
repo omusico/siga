@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -45,6 +46,7 @@ import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.iver.cit.gvsig.exceptions.visitors.StopWriterVisitorException;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
+import com.jeta.forms.components.image.ImageComponent;
 import com.jeta.forms.components.panel.FormPanel;
 import com.toedter.calendar.JDateChooser;
 
@@ -53,6 +55,8 @@ import es.icarto.gvsig.navtableforms.calculation.CalculationHandler;
 import es.icarto.gvsig.navtableforms.chained.ChainedHandler;
 import es.icarto.gvsig.navtableforms.forms.windowproperties.FormWindowProperties;
 import es.icarto.gvsig.navtableforms.forms.windowproperties.FormWindowPropertiesSerializator;
+import es.icarto.gvsig.navtableforms.gui.images.ImageHandler;
+import es.icarto.gvsig.navtableforms.gui.images.ImageHandlerManager;
 import es.icarto.gvsig.navtableforms.gui.tables.handler.BaseTableHandler;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.ValidatorForm;
@@ -82,6 +86,7 @@ public abstract class AbstractForm extends AbstractNavTable implements
     private final DependencyHandler dependencyHandler;
     private final CalculationHandler calculationHandler;
     private final ChainedHandler chainedHandler;
+    private ImageHandlerManager imageHandlerManager;
 
     private String title;
 
@@ -94,6 +99,7 @@ public abstract class AbstractForm extends AbstractNavTable implements
 	dependencyHandler = new DependencyHandler(ormlite, widgets, this);
 	calculationHandler = new CalculationHandler();
 	chainedHandler = new ChainedHandler();
+	imageHandlerManager = new ImageHandlerManager();
     }
 
     @Override
@@ -164,6 +170,7 @@ public abstract class AbstractForm extends AbstractNavTable implements
 	}
 	calculationHandler.removeListeners();
 	chainedHandler.removeListeners();
+	imageHandlerManager.removeListeners();
     }
 
     @Override
@@ -232,6 +239,7 @@ public abstract class AbstractForm extends AbstractNavTable implements
 	}
 	calculationHandler.setListeners();
 	chainedHandler.setListeners();
+	imageHandlerManager.setListeners();
     }
 
     @Override
@@ -247,6 +255,7 @@ public abstract class AbstractForm extends AbstractNavTable implements
 	fillHandler.fillEmptyValues();
 	dependencyHandler.fillValues();
 	chainedHandler.fillEmptyValues();
+	imageHandlerManager.fillEmptyValues();
 	setFillingValues(false);
     }
 
@@ -269,6 +278,7 @@ public abstract class AbstractForm extends AbstractNavTable implements
 	fillHandler.fillValues();
 	dependencyHandler.fillValues();
 	chainedHandler.fillValues();
+	imageHandlerManager.fillValues();
 	fillSpecificValues();
 	setFillingValues(false);
 	validationHandler.validate();
@@ -478,5 +488,24 @@ public abstract class AbstractForm extends AbstractNavTable implements
 	    parentList.add(widgets.get(parent));
 	}
 	chainedHandler.add(this, widgets.get(chained), parentList);
+    }
+
+    /**
+     * Instead of create an implementation of ImageHandler that only sets a path (FixedImageHandler) this utiliy method
+     * sets the image without doing anything more
+     * @param imgComponent
+     *            . Name of the abeille widget
+     * @param absPath
+     *            . Absolute path to the image or relative path from andami.jar
+     */
+    protected void addImageHandler(String imgComponent, String absPath) {
+	ImageComponent image = (ImageComponent) formBody
+		.getComponentByName(imgComponent);
+	ImageIcon icon = new ImageIcon(absPath);
+	image.setIcon(icon);
+    }
+    
+    protected void addImageHandler(ImageHandler imageHandler) {
+	imageHandlerManager.addHandler(imageHandler);
     }
 }
