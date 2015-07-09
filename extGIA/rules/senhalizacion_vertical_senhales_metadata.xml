@@ -117,4 +117,25 @@
 		<FIELDNAME>fecha_reposicion</FIELDNAME>
 		<VALIDATIONRULE>DATE</VALIDATIONRULE>
 	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>codigo_panel</FIELDNAME>
+		<ENABLEIF>
+			<CONDITION>
+				<COMPONENT>panel_complementario</COMPONENT>
+				<VALUE>true</VALUE>
+			</CONDITION>
+		</ENABLEIF>
+	</FIELD>
+	
+	<FIELD>
+		<FIELDNAME>texto_panel</FIELDNAME>
+		<ENABLEIF>
+			<CONDITION>
+				<COMPONENT>panel_complementario</COMPONENT>
+				<VALUE>true</VALUE>
+			</CONDITION>
+		</ENABLEIF>
+	</FIELD>
+	
 </LAYER>
