@@ -17,7 +17,6 @@ import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
-import com.jeta.forms.components.image.ImageComponent;
 import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 
@@ -35,18 +34,9 @@ public abstract class BasicAbstractForm extends AbstractForm {
 
     public BasicAbstractForm(FLyrVect layer) {
 	super(layer);
-	initLogo();
+	addImageHandler("image", PreferencesPage.AUDASA_ICON);
 	addSorterButton();
 	setTitle(PluginServices.getText(this, getBasicName()));
-    }
-
-    private void initLogo() {
-	ImageComponent image = (ImageComponent) formBody
-		.getComponentByName("image");
-	if (image != null) {
-	    ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
-	    image.setIcon(icon);
-	}
     }
 
     protected void addSorterButton() {
