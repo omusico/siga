@@ -54,7 +54,7 @@ public abstract class ValidatableForm extends AbstractIWindow implements
 
     protected abstract String getBasicName();
 
-    private FormPanel getFormPanel() {
+    public FormPanel getFormPanel() {
 	if (formPanel == null) {
 	    InputStream stream = getClass().getClassLoader()
 		    .getResourceAsStream("/forms/" + getBasicName() + ".jfrm");

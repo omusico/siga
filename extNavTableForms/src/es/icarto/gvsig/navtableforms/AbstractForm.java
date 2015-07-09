@@ -126,7 +126,16 @@ public abstract class AbstractForm extends AbstractNavTable implements
 	return windowInfo;
     }
 
+    @Deprecated
+    /**
+     * Use getFormPanel instead
+     * @return
+     */
     public abstract FormPanel getFormBody();
+    
+    public FormPanel getFormPanel() {
+	return getFormBody();
+    }
 
     public abstract String getXMLPath();
 

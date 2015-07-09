@@ -260,7 +260,7 @@ IValidatableForm, IWindow, IWindowListener {
 	validationHandler.validate();
     }
 
-    protected FormPanel getFormPanel() {
+    public FormPanel getFormPanel() {
 	if (formPanel == null) {
 	    InputStream stream = getClass().getClassLoader()
 		    .getResourceAsStream("/forms/" + getBasicName() + ".jfrm");
