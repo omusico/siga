@@ -2,12 +2,9 @@ package es.icarto.gvsig.extgia.forms.senhalizacion_vertical;
 
 import java.io.File;
 
-import javax.swing.ImageIcon;
-import javax.swing.JComboBox;
-
 import com.iver.cit.gvsig.fmap.core.SymbologyFactory;
-import com.jeta.forms.components.image.ImageComponent;
 
+import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.extgia.forms.utils.GIASubForm;
 
 @SuppressWarnings("serial")
@@ -18,23 +15,13 @@ public class SenhalizacionVerticalSenhalesSubForm extends GIASubForm {
     public SenhalizacionVerticalSenhalesSubForm() {
 	super(TABLENAME);
 	addChained("nombre_senhal", "codigo_senhal");
-    }
-
-    @Override
-    protected void fillSpecificValues() {
-	super.fillSpecificValues();
-	ImageComponent image = (ImageComponent) getFormPanel()
-		.getComponentByName("img_senhal");
-
-	// TODO.
-	final JComboBox codigoSenhal = (JComboBox) getWidgets().get(
-		"codigo_senhal");
-	Object codigoSenhalValue = codigoSenhal.getSelectedItem();
-
-	ImageIcon icon = new ImageIcon(SymbologyFactory.SymbolLibraryPath
-		+ File.separator + "todas" + File.separator + codigoSenhalValue
-		+ ".gif");
-	image.setIcon(icon);
-
+	
+	String folderPath = SymbologyFactory.SymbolLibraryPath + File.separator
+		+ "senhales" + File.separator;
+	SenhalesImageHandler imageHandler = new SenhalesImageHandler(
+		"img_senhal", "tipo_senhal", "codigo_senhal", folderPath, this);
+	imageHandler.setEmptyImage(PreferencesPage.IMG_UNAVAILABLE);
+	imageHandler.setExtension(".gif");
+	addImageHandler(imageHandler);
     }
 }
