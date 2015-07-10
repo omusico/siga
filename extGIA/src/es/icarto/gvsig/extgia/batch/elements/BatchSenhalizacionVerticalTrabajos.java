@@ -36,7 +36,7 @@ public class BatchSenhalizacionVerticalTrabajos extends BatchVegetationTrabajosA
 
     @Override
     public String[] getColumnNames() {
-	String[] columnNames = {"ID Talud",
+	String[] columnNames = {"ID Señalización",
 		"Fecha",
 		"Unidad",
 		"Medición",
@@ -47,7 +47,7 @@ public class BatchSenhalizacionVerticalTrabajos extends BatchVegetationTrabajosA
 
     @Override
     public String[] getColumnDbNames() {
-	String[] columnNames = {"id_talud",
+	String[] columnNames = {"id_elemento_senhalizacion",
 		"fecha",
 		"unidad",
 		"medicion",
