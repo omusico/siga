@@ -25,7 +25,7 @@ ActionListener {
     private final String folderPath;
     private final ImageComponent image;
 
-    private String extension = ".png";
+    private String extension = ".gif";
     private ImageIcon emptyImage;
     private final JComboBox tipo;
     private final JComboBox codigo;
@@ -41,6 +41,9 @@ ActionListener {
 
 	tipo = (JComboBox) form.getWidgets().get(tipoName);
 	codigo = (JComboBox) form.getWidgets().get(codigoName);
+
+	String emptyImagePath = folderPath + "0_placa.png";
+	emptyImage = ImageUtils.getScaled(emptyImagePath, BOUNDARY);
     }
 
     public void setEmptyImage(String imgPath) {
@@ -82,24 +85,37 @@ ActionListener {
 	String tipoValue = getComboValue(tipo);
 	String codigoValue = getComboValue(codigo);
 
-	ImageIcon icon = null;
+	ImageIcon icon = emptyImage;
+
 	if (tipoValue.equals("Cartel")) {
-	    icon = ImageUtils.getScaled(folderPath + "0_cartel.png",
-		    BOUNDARY);
-	} else if (tipoValue.equals("Placa") && (codigoValue.isEmpty() || (codigoValue.equals("Otro")))) { // FIXME al tener tipo vacio y opner Otro peta
-	    icon = ImageUtils.getScaled(folderPath + "0_placa.png",
-		    BOUNDARY);
-	} else if (! codigoValue.isEmpty()){
-	    String imgPath = folderPath + codigoValue + extension;
-	    // System.out.println(image.getBounds());
-	    // ImageIcon icon = ImageUtils.getScaled(imgPath,
-	    // image.getBounds().getSize());
-	    icon = ImageUtils.getScaled(imgPath, BOUNDARY);
+	    if (codigoValue.isEmpty() || (codigoValue.equals("Otro"))) {
+		icon = ImageUtils.getScaled(folderPath + "0_cartel.png",
+			BOUNDARY);
+	    } else {
+		String imgPath = folderPath + codigoValue + extension;
+		icon = ImageUtils.getScaled(imgPath, BOUNDARY);
+	    }
+
+	} else if (tipoValue.equals("Placa")) {
+	    if (codigoValue.isEmpty() || (codigoValue.equals("Otro"))) {
+		icon = ImageUtils.getScaled(folderPath + "0_placa.png",
+			BOUNDARY);
+	    } else {
+		String imgPath = folderPath + codigoValue + extension;
+		icon = ImageUtils.getScaled(imgPath, BOUNDARY);
+	    }
+	} else {
+	    // This condition is the same as "Placa" but this approach is more
+	    // readable
+	    if (codigoValue.isEmpty() || (codigoValue.equals("Otro"))) {
+		icon = ImageUtils.getScaled(folderPath + "0_placa.png",
+			BOUNDARY);
+	    } else {
+		String imgPath = folderPath + codigoValue + extension;
+		icon = ImageUtils.getScaled(imgPath, BOUNDARY);
+	    }
 	}
 
-	if (icon == null) {
-	    icon = emptyImage;
-	}
 	image.setIcon(icon);
 	image.repaint();
 
