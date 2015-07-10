@@ -120,11 +120,13 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 
     private void getTableColumnsIndex() {
 	unidadColumnIndex = table.getColumn("Unidad").getModelIndex();
-	longitudColumnIndex = table.getColumn("Longitud").getModelIndex();
-	anchoColumnIndex = table.getColumn("Ancho").getModelIndex();
 	medicionColumnIndex = table.getColumn("Medición").getModelIndex();
-	medicionElementoColumnIndex = table.getColumn("Medición elemento").getModelIndex();
-	medicionLastJobColumnIndex = table.getColumn("Medición último trabajo").getModelIndex();
+	if (!dbTableName.equals("senhalizacion_vertical_trabajos")) {
+	    longitudColumnIndex = table.getColumn("Longitud").getModelIndex();
+	    anchoColumnIndex = table.getColumn("Ancho").getModelIndex();
+	    medicionElementoColumnIndex = table.getColumn("Medición elemento").getModelIndex();
+	    medicionLastJobColumnIndex = table.getColumn("Medición último trabajo").getModelIndex();
+	}
     }
 
     private void setColorForNonEditableColumns(Color color) {
@@ -231,10 +233,10 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	DomainValues unidadValues = batchOrmLite.getAppDomain().getDomainValuesForComponent(
 		DBFieldNames.UNIDAD);
 	unidadComboBox = new JComboBox();
-	unidadComboBox.addActionListener(new BatchUnidadListener());
 	for (KeyValue value : unidadValues.getValues()) {
 	    unidadComboBox.addItem(value.toString());
 	}
+	unidadComboBox.addActionListener(new BatchUnidadListener());
 	Enumeration<TableColumn> columns = table.getColumnModel().getColumns();
 	while (columns.hasMoreElements()) {
 	    TableColumn unidadColumn = columns.nextElement();
