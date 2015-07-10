@@ -21,6 +21,7 @@ public abstract class GIATrabajosSubForm extends GIASubForm {
 	super.actionCreateRecord();
 	fillForeignValues();
 	fillMedicionValue();
+	getWindowInfo().setTitle("Añadir Trabajo");
     }
 
     @Override
@@ -28,6 +29,7 @@ public abstract class GIATrabajosSubForm extends GIASubForm {
 	this.setEditing(true);
 	super.actionUpdateRecord(position);
 	fillForeignValues();
+	getWindowInfo().setTitle("Editar Trabajo");
     }
 
     private void fillForeignValues() {

@@ -36,6 +36,7 @@ public abstract class BatchVegetationTrabajosAbstractSubForm extends GIASubForm 
 	super(basicName);
 	setForeingKey(new HashMap<String, String>());
 	batchOrmLite = new ORMLite(getMetadataPath());
+	getWindowInfo().setTitle("Añadir Trabajos");
     }
 
     @Override
