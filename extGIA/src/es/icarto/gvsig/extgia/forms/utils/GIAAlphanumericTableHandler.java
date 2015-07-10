@@ -40,7 +40,7 @@ public class GIAAlphanumericTableHandler extends BaseTableHandler {
     private final int[] coldWidths;
 
     public GIAAlphanumericTableHandler(String tableName,
-	    HashMap<String, JComponent> widgets, String foreignKeyId,
+	    Map<String, JComponent> widgets, String foreignKeyId,
 	    String[] colNames, String[] colAliases, int[] colWidths,
 	    AbstractForm form) {
 
@@ -59,7 +59,7 @@ public class GIAAlphanumericTableHandler extends BaseTableHandler {
     }
 
     public GIAAlphanumericTableHandler(String tableName,
-	    HashMap<String, JComponent> widgets, String foreignKeyId,
+	    Map<String, JComponent> widgets, String foreignKeyId,
 	    String[] colNames, String[] colAliases, int[] colWidths,
 	    AbstractForm form, Class<? extends AbstractSubForm> subFormClass) {
 	super(tableName, widgets, foreignKeyId, colNames, colAliases);
