@@ -84,8 +84,8 @@ public class ImageStyle extends BackgroundFileStyle {
 			this.isRelativePath=false;
 		}
 		else {
-			sourceFile = new URL(SymbologyFactory.SymbolLibraryPath + File.separator + f.getPath());
-			img = ImageIO.read(f);
+			sourceFile = new URL("file:" + SymbologyFactory.SymbolLibraryPath + File.separator + f.getPath());
+			img = ImageIO.read(sourceFile);
 			this.isRelativePath=true;	
 		}
 	}
