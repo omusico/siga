@@ -32,7 +32,7 @@ public class GIAAlphanumericTableHandler extends BaseTableHandler {
     private static final Logger logger = Logger
 	    .getLogger(GIAAlphanumericTableHandler.class);
 
-    private AbstractSubForm subform;
+    protected AbstractSubForm subform;
     private final JButton addButton;
     private final JButton editButton;
     private final JButton deleteButton;

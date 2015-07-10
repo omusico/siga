@@ -40,31 +40,32 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
     private PrintSVReportObserver printListener;
 
     public static String[] senhalesColNames = { "id_senhal_vertical",
-	"tipo_senhal", "codigo_senhal", "leyenda", "fecha_instalacion",
-	"fecha_reposicion"};
+	    "tipo_senhal", "codigo_senhal", "leyenda", "fecha_instalacion",
+	    "fecha_reposicion", "codigo_senhal" };
 
     public static String[] senhalesColAlias = { "ID Señal", "Tipo Señal",
-	"Código Señal", "Leyenda", "Instalación", "Reposición"};
+	    "Código Señal", "Leyenda", "Instalación", "Reposición", "Icono" };
 
     public SenhalizacionVerticalForm(FLyrVect layer) {
 	super(layer);
 
 	addTableHandler(new GIAAlphanumericTableHandler(
-		getTrabajosDBTableName(), getWidgetComponents(),
+		getTrabajosDBTableName(), getWidgets(),
 		getElementID(), DBFieldNames.trabajosVegetacionColNames,
-		DBFieldNames.trabajosVegetacionColAlias, DBFieldNames.trabajosColWidths,
-		this));
+		DBFieldNames.trabajosVegetacionColAlias,
+		DBFieldNames.trabajosColWidths, this));
 
 	addTableHandler(new GIAAlphanumericTableHandler(
-		getReconocimientosDBTableName(), getWidgetComponents(),
+		getReconocimientosDBTableName(), getWidgets(),
 		getElementID(), DBFieldNames.reconocimientosColNames,
 		DBFieldNames.reconocimientosColAlias, null, this,
 		SenhalizacionVerticalReconocimientosSubForm.class));
 
-	addTableHandler(new GIAAlphanumericTableHandler(
-		"senhalizacion_vertical_senhales", getWidgetComponents(),
+	addTableHandler(new SenhalesTableHandler(
+		"senhalizacion_vertical_senhales", getWidgets(),
 		getElementID(), senhalesColNames, senhalesColAlias, new int[] {
-			20, 45, 45, 180, 40, 40 }, this));
+			20, 45, 45, 145, 45, 40, 30 }, this,
+		    SenhalizacionVerticalSenhalesSubForm.class));
     }
 
     @Override

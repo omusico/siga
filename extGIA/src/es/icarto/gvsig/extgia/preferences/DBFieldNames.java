@@ -164,6 +164,7 @@ public class DBFieldNames {
     // SENHALIZACION VERTICAL
     public static final String SENHALIZACION_VERTICAL_LAYERNAME = "Senhalizacion_Vertical";
     public static final String ID_ELEMENTO_SENHALIZACION = "id_elemento_senhalizacion";
+    public static final String SENHALIZACION_VERTICAL_SENHALES_LAYERNAME = "Senhales";
 
     // SENHALIZACION VERTICAL RECONOCIMIENTO ESTADO
     public static final String SENHALIZACION_VERTICAL_INDEX = "indice_estado";
