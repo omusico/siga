@@ -42,5 +42,9 @@
 		<extension class-name="es.icarto.gvsig.extgia.ConsultasExtension" description="consultas" active="true">
 			<menu text="SIGA/Consultas Inventario" action-command="Consultas" position="30419"/>
 		</extension>
+		
+		<extension class-name="es.icarto.gvsig.extgia.SignalSimbologyExtension" active="true">
+			<menu text="SIGA/Pictogramas Señales" position="30420"/>
+		</extension>
 	</extensions>
 </plugin-config>
