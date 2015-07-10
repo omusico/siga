@@ -16,6 +16,7 @@ import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.hardcode.gdbms.engine.values.NumericValue;
 import com.hardcode.gdbms.engine.values.Value;
 import com.iver.andami.PluginServices;
+import com.iver.cit.gvsig.fmap.core.SymbologyFactory;
 import com.iver.cit.gvsig.fmap.layers.FBitSet;
 
 import es.icarto.gvsig.audasacommons.forms.reports.PrintReportAction;
@@ -37,6 +38,8 @@ public class PrintSVReportObserver implements ActionListener {
 
     private int idIdx;
 
+    private final String signalsFolderPath;
+
     public PrintSVReportObserver(AbstractNavTable dialog, String extensionPath,
 	    String reportPath, String idField, String idValue) {
 	this.extensionPath = extensionPath;
@@ -44,7 +47,8 @@ public class PrintSVReportObserver implements ActionListener {
 	this.reportPath = reportPath;
 	this.idField = idField;
 	this.idValue = idValue;
-
+	signalsFolderPath = SymbologyFactory.SymbolLibraryPath
+		    + File.separator + "senhales" + File.separator;
     }
 
     @Override
@@ -138,6 +142,7 @@ public class PrintSVReportObserver implements ActionListener {
 				    .intValue();
 			    parameters.put("SENHALIZACION_VERTICAL_QUERY",
 				    intValue);
+			    parameters.put("IMAGE_PATH", signalsFolderPath);
 			    PrintReportAction reportAction = new PrintReportAction();
 			    reportAction.print(selectedFile.getAbsolutePath()
 				    + "/señalizacion_vertical_" + intValue
@@ -164,6 +169,7 @@ public class PrintSVReportObserver implements ActionListener {
 	parameters.put("SENHALIZACION_VERTICAL_QUERY",
 		Integer.parseInt(idValue));
 	parameters.put("EXTENSION_PATH", extensionPath);
+	parameters.put("IMAGE_PATH", signalsFolderPath);
 	return parameters;
     }
 }

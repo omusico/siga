@@ -9,6 +9,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="EXTENSION_PATH" class="java.lang.String"/>
+    <parameter name="IMAGE_PATH" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select 	distinct a.*,
 	t.item as tramo_n,
@@ -217,6 +218,9 @@ and	a.id_elemento_senhalizacion = $P{SENHALIZACION_VERTICAL_QUERY}]]>
 				<reportElement x="0" y="105" width="510" height="190" uuid="6c5e274c-90ba-4016-b75e-4f7b585af57e"/>
 				<subreportParameter name="SENHALES_QUERY">
 					<subreportParameterExpression><![CDATA[$F{id_elemento_senhalizacion}]]></subreportParameterExpression>
+				</subreportParameter>
+                <subreportParameter name="IMAGE_PATH">
+					<subreportParameterExpression><![CDATA[($P{IMAGE_PATH})]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA["senhalizacion_vertical_senhales.jasper"]]></subreportExpression>
