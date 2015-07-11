@@ -1,5 +1,7 @@
 package es.icarto.gvsig.extgia.consultas;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Map;
@@ -52,13 +54,22 @@ public abstract class ValidatableForm extends AbstractIWindow implements
     protected void initWidgets() {
 	for (JComponent c : getWidgets().values()) {
 	    if (c instanceof JDateChooser) {
-		SimpleDateFormat dateFormat = DateFormatNT.getDateFormat();
-		((JDateChooser) c).setDateFormatString(dateFormat.toPattern());
-		((JDateChooser) c).getDateEditor().setEnabled(false);
+		initDateChooser((JDateChooser) c);
 	    }
 	}
     }
     
+    private void initDateChooser(JDateChooser c) {
+	SimpleDateFormat dateFormat = DateFormatNT.getDateFormat();
+	c.setDateFormatString(dateFormat.toPattern());
+	c.getDateEditor().setEnabled(false);
+	c.getDateEditor().getUiComponent()
+	.setBackground(new Color(255, 255, 255));
+	c.getDateEditor().getUiComponent()
+	.setFont(new Font("Arial", Font.PLAIN, 11));
+	c.getDateEditor().getUiComponent().setToolTipText(null);
+    }
+
     protected void fillValues() {
 	fillingValues = true;
 	fillHandler.fillValues();

@@ -58,13 +58,9 @@ public class ConsultasPanel extends ValidatableForm implements ActionListener {
 
 	super();
 	Calendar calendar = Calendar.getInstance();
-	// Setting name of JTextFieldDateEditors since NTForms gets an error if
-	// it is null
 	fechaInicio = (JDateChooser) formPanel
 		.getComponentByName("fecha_inicio");
-	fechaInicio.getDateEditor().getUiComponent().setName("fecha_inicio_TF");
 	fechaFin = (JDateChooser) formPanel.getComponentByName("fecha_fin");
-	fechaFin.getDateEditor().getUiComponent().setName("fecha_fin_TF");
 	fechaInicio.setDate(calendar.getTime());
 	fechaFin.setDate(calendar.getTime());
     }
