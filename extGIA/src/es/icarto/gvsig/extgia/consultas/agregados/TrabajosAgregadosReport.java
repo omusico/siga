@@ -44,7 +44,7 @@ public class TrabajosAgregadosReport extends PDFReport {
     protected String[] getColumnNames() {
 	String[] columnNames = { "ID Elemento", "Tramo", "Tipo Vía",
 		"Nombre Vía", "PK Inicial", "PK Final", "Sentido",
-		"Medición AUDASA" };
+		"Medición" };
 	return columnNames;
     }
 
