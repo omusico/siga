@@ -16,6 +16,7 @@ import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.text.JTextComponent;
 
 import org.apache.log4j.Logger;
 
@@ -27,7 +28,7 @@ public abstract class Calculation {
 
     private static final Logger logger = Logger.getLogger(Calculation.class);
 
-    protected JTextField resultWidget;
+    protected JComponent resultWidget;
     protected HashMap<String, JComponent> operands;
     protected OperandComponentListener handler;
     private final Map<String, JComponent> formWidgets;
@@ -42,7 +43,7 @@ public abstract class Calculation {
 	this.form = form;
 	formWidgets = form.getWidgets();
 
-	resultWidget = (JTextField) formWidgets.get(resultName());
+	resultWidget = (JComponent) formWidgets.get(resultName());
 	operands = new HashMap<String, JComponent>();
 	for (String name : operandNames()) {
 	    operands.put(name, formWidgets.get(name));
@@ -54,6 +55,10 @@ public abstract class Calculation {
     protected abstract String resultName();
 
     protected abstract String[] operandNames();
+    
+    public String getName() {
+	return resultName();
+    }
 
     protected void setValue(boolean valid) {
 	if (!valid) {
@@ -64,8 +69,10 @@ public abstract class Calculation {
 	if (!allEmpty()) {
 	    value = calculate();
 	}
-	resultWidget.setText(value);
-	form.getFormController().setValue(resultName(), value);
+	if (resultWidget instanceof JTextComponent) {
+	    ((JTextComponent) resultWidget).setText(value);	    
+	    form.getFormController().setValue(resultName(), value);
+	}
     }
 
     protected abstract String calculate();
@@ -162,26 +169,31 @@ public abstract class Calculation {
 	return true;
     }
 
-    protected BigDecimal operandValue(String name) {
+    protected String stringValue(String name) {
 	JComponent jComponent = operands.get(name);
-	String importe = "";
+	String value = "";
 	if (jComponent instanceof JTextField) {
-	    importe = ((JTextField) jComponent).getText().trim();
+	    value = ((JTextField) jComponent).getText().trim();
 	} else if (jComponent instanceof JComboBox) {
 	    Object selectedItem = ((JComboBox) jComponent).getSelectedItem();
 	    if (selectedItem != null) {
 		if (selectedItem instanceof KeyValue) {
-		    importe = ((KeyValue) selectedItem).getKey();
+		    value = ((KeyValue) selectedItem).getKey();
 		} else {
-		    importe = selectedItem.toString().trim();
+		    value = selectedItem.toString().trim();
 		}
 	    }
 	}
+	return value;
+    }
+    
+    protected BigDecimal operandValue(String name) {
+	String stringValue = stringValue(name);
 
 	BigDecimal value = new BigDecimal(0);
-	if (!importe.isEmpty()) {
+	if (!stringValue.isEmpty()) {
 	    try {
-		value = (BigDecimal) formatter.parse(importe);
+		value = (BigDecimal) formatter.parse(stringValue);
 	    } catch (ParseException e) {
 		logger.error(e.getStackTrace(), e);
 	    }
