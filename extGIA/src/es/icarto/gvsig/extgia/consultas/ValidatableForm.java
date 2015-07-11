@@ -4,8 +4,10 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
+import com.jeta.forms.components.image.ImageComponent;
 import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 import com.toedter.calendar.JDateChooser;
@@ -98,6 +100,21 @@ public abstract class ValidatableForm extends AbstractIWindow implements
     @Override
     public Map<String, JComponent> getWidgets() {
 	return widgets;
+    }
+
+    /**
+     * Instead of create an implementation of ImageHandler that only sets a path (FixedImageHandler) this utiliy method
+     * sets the image without doing anything more
+     * @param imgComponent
+     *            . Name of the abeille widget
+     * @param absPath
+     *            . Absolute path to the image or relative path from andami.jar
+     */
+    protected void addImageHandler(String imgComponent, String absPath) {
+	ImageComponent image = (ImageComponent) formPanel
+		.getComponentByName(imgComponent);
+	ImageIcon icon = new ImageIcon(absPath);
+	image.setIcon(icon);
     }
 
 }
