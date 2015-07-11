@@ -191,12 +191,21 @@ public class Leaf implements Component {
 		fields = getFields(tipo, elementId);
 	    }
 
-	    query = "SELECT " + fields + " FROM " + DBFieldNames.GIA_SCHEMA
-		    + "." + element + "_" + tipoConsulta.getKey()
-		    + " AS sub JOIN " + DBFieldNames.GIA_SCHEMA + "." + element
-		    + " AS el ON sub." + elementId + "= el." + elementId
-		    + CSVCaracteristicasQueries.get(element);
-
+	    if (element.equalsIgnoreCase("senhalizacion_vertical")) {
+		query = "SELECT " + fields + " FROM " + DBFieldNames.GIA_SCHEMA
+			    + "." + element + "_" + tipoConsulta.getKey()
+			    + " AS sub JOIN " + DBFieldNames.GIA_SCHEMA + "." + element
+			    + " AS el ON sub." + elementId + "= el." + elementId
+			    + " LEFT OUTER JOIN audasa_extgia.senhalizacion_vertical_senhales se ON (el.id_elemento_senhalizacion = se.id_elemento_senhalizacion) "
+			    + CSVCaracteristicasQueries.get(element);
+	    } else {
+		query = "SELECT " + fields + " FROM " + DBFieldNames.GIA_SCHEMA
+			    + "." + element + "_" + tipoConsulta.getKey()
+			    + " AS sub JOIN " + DBFieldNames.GIA_SCHEMA + "." + element
+			    + " AS el ON sub." + elementId + "= el." + elementId
+			    + CSVCaracteristicasQueries.get(element);
+	    }
+	    
 	    if (!consultasFilters.getWhereClauseByLocationWidgets(false)
 		    .isEmpty()) {
 		query = query + " WHERE el." + elementId + " IN (SELECT "
