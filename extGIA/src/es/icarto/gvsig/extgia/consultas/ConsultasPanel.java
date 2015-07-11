@@ -134,9 +134,10 @@ public class ConsultasPanel extends ValidatableForm implements ActionListener {
 	    }
 
 	    if (selElement.getKey().equalsIgnoreCase("senhalizacion_vertical")) {
+		final List<String> reservedColumns = Arrays.asList(new String[] { "gid", "the_geom", "geom", "municipio" });
 		List<Field> columns2 = Utils.getFields(resource.getPath(),
 			"audasa_extgia", selElement.getKey().toLowerCase()
-				+ "_senhales");
+				+ "_senhales", reservedColumns);
 		for (Field f : columns2) {
 		    f.setKey("se." + f.getKey());
 		}
