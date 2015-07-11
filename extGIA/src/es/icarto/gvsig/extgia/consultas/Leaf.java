@@ -118,13 +118,18 @@ public class Leaf implements Component {
 	new XLSTrabajosAgregadosReport(element[0], outputFile, consultasFilters);
     }
 
+    /**
+     * fpuga. 8/07/2015. Este tipo de datos probablemente habría que mantenerlos 
+     * en la base de datos y "cruzados" mediante claves foráneas, de modo que un
+     * cambio en la base de datos no rompa todo el código 
+     */
     private QueryType getTipo() {
 	QueryType tipo = QueryType.TYPE_NOT_SET;
 	if (tipoConsulta.equals("Trabajos") && element[1].equals("Firme")) {
 	    tipo = QueryType.TRABAJOS_FIRME;
-	} else if (tipoConsulta.equals("Trabajos") && element[1].equals("Taludes") || 
+	} else if (tipoConsulta.equals("Trabajos") && (element[1].equals("Taludes") || 
 		element[1].equals("Isletas") || element[1].equals("Barrera Rígida") ||
-		element[1].equals("Señalización Vertical")) {
+		element[1].equals("Señalización Vertical"))) {
 	    tipo = QueryType.TRABAJOS_VEGETACION;
 	} else if (tipoConsulta.equals("Trabajos")) {
 	    tipo = QueryType.TRABAJOS;
