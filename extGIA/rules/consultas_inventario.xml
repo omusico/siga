@@ -60,10 +60,47 @@
 			<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
 			<DRDBCOLUMNVALUE>id</DRDBCOLUMNVALUE>
 			<DRDBFOREIGNKEY>id_bc</DRDBFOREIGNKEY>
-			<DRADDVOIDVALUE>true</DRADDVOIDVALUE>
 		</DOMAINREADER>
 	</FIELD>
-
 	<!-- LOCATION WIDGETS END -->
+	
+	<FIELD>
+		<FIELDNAME>fecha_inicio</FIELDNAME>
+		<!-- a trick no make it noneditable at the beggining-->
+		<NONEDITABLE></NONEDITABLE>
+		<ENABLEIF>
+			<CONDITION>
+			<COMPONENT>tipo_consulta</COMPONENT>
+			<VALUE>Trabajos</VALUE>
+			</CONDITION>
+			<CONDITION>
+			<COMPONENT>tipo_consulta</COMPONENT>
+			<VALUE>Inspecciones</VALUE>
+			</CONDITION>
+			<CONDITION>
+			<COMPONENT>tipo_consulta</COMPONENT>
+			<VALUE>Trabajos Agrupados</VALUE>
+			</CONDITION>
+		</ENABLEIF>
+	</FIELD>
 
+	<FIELD>
+		<FIELDNAME>fecha_fin</FIELDNAME>
+		<!-- a trick no make it noneditable at the beggining-->
+		<NONEDITABLE></NONEDITABLE>
+		<ENABLEIF>
+			<CONDITION>
+			<COMPONENT>tipo_consulta</COMPONENT>
+			<VALUE>Trabajos</VALUE>
+			</CONDITION>
+			<CONDITION>
+			<COMPONENT>tipo_consulta</COMPONENT>
+			<VALUE>Inspecciones</VALUE>
+			</CONDITION>
+			<CONDITION>
+			<COMPONENT>tipo_consulta</COMPONENT>
+			<VALUE>Trabajos Agrupados</VALUE>
+			</CONDITION>
+		</ENABLEIF>
+	</FIELD>
 </RECORDSET>

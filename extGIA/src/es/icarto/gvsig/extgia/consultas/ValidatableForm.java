@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
@@ -15,6 +18,7 @@ import com.jeta.forms.gui.common.FormException;
 import com.toedter.calendar.JDateChooser;
 
 import es.icarto.gvsig.commons.gui.AbstractIWindow;
+import es.icarto.gvsig.navtableforms.DependencyHandler;
 import es.icarto.gvsig.navtableforms.FillHandler;
 import es.icarto.gvsig.navtableforms.IValidatableForm;
 import es.icarto.gvsig.navtableforms.chained.ChainedHandler;
@@ -26,10 +30,11 @@ import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 
 @SuppressWarnings("serial")
 public abstract class ValidatableForm extends AbstractIWindow implements
-	IValidatableForm {
+IValidatableForm {
 
     private final ORMLite ormlite;
     private final FillHandler fillHandler;
+    private final DependencyHandler dependencyHandler;
     private final ChainedHandler chainedHandler;
     private final Map<String, JComponent> widgets;
     protected FormPanel formPanel;
@@ -42,6 +47,7 @@ public abstract class ValidatableForm extends AbstractIWindow implements
 	formPanel = getFormPanel();
 	this.add(formPanel);
 	widgets = AbeilleParser.getWidgetsFromContainer(formPanel);
+	dependencyHandler = new DependencyHandler(ormlite, widgets, this);
 	mockController = new MockController(widgets);
 	fillHandler = new FillHandler(widgets, mockController,
 		ormlite.getAppDomain());
@@ -73,6 +79,7 @@ public abstract class ValidatableForm extends AbstractIWindow implements
     protected void fillValues() {
 	fillingValues = true;
 	fillHandler.fillValues();
+	dependencyHandler.fillValues();
 	chainedHandler.fillValues();
 	fillingValues = false;
     }
@@ -132,9 +139,11 @@ public abstract class ValidatableForm extends AbstractIWindow implements
     }
 
     protected void setListeners() {
+	dependencyHandler.setListeners();
 	chainedHandler.setListeners();
     }
     protected void removeListeners() {
+	dependencyHandler.removeListeners();
 	chainedHandler.removeListeners();
     }
 

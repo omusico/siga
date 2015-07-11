@@ -1,8 +1,11 @@
 package es.icarto.gvsig.navtableforms.ormlite.widgetsdependency;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +20,10 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import com.toedter.calendar.JDateChooser;
+
 import es.icarto.gvsig.navtableforms.IValidatableForm;
+import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 
 public class EnabledComponentBasedOnWidgets implements ActionListener {
 
@@ -128,27 +134,40 @@ public class EnabledComponentBasedOnWidgets implements ActionListener {
 			component.removeMouseListener(l);
 		    }
 		}
-	    } else {
-		if ((component instanceof JComboBox) && !enabled) {
+	    } else if ((component instanceof JComboBox) && !enabled) {
 		    // If the component is a combobox and we are disabling
 		    // it, prior to that we select the default item.
 		    if (((JComboBox) component).getItemCount() > 0) {
 			((JComboBox) component).setSelectedIndex(0);
 		    }
-		} else {
-		    if ((component instanceof JCheckBox) && !enabled
+	    } else if ((component instanceof JCheckBox) && !enabled
 			    && ((JCheckBox) component).isSelected()) {
 			// If the component is a checkbox, we are disabling
 			// it and it was checked, prior to that we uncheck it.
 			((JCheckBox) component).doClick();
-		    }
-		}
-	    }
+	    } 
+		
+	    
 	    component.setEnabled(enabled);
+	    
+	    if ((component instanceof JDateChooser) && enabled) {
+		initDateChooser((JDateChooser) component);
+	    }
 	    if (removeDependentValues && !initialLoad) {
 		removeValue(component);
 	    }
 	}
+    }
+    
+    private void initDateChooser(JDateChooser c) {
+	SimpleDateFormat dateFormat = DateFormatNT.getDateFormat();
+	c.setDateFormatString(dateFormat.toPattern());
+	c.getDateEditor().setEnabled(false);
+	c.getDateEditor().getUiComponent()
+	.setBackground(new Color(255, 255, 255));
+	c.getDateEditor().getUiComponent()
+	.setFont(new Font("Arial", Font.PLAIN, 11));
+	c.getDateEditor().getUiComponent().setToolTipText(null);
     }
 
     private void removeValue(JComponent c) {
