@@ -15,6 +15,7 @@ import com.toedter.calendar.JDateChooser;
 import es.icarto.gvsig.commons.gui.AbstractIWindow;
 import es.icarto.gvsig.navtableforms.FillHandler;
 import es.icarto.gvsig.navtableforms.IValidatableForm;
+import es.icarto.gvsig.navtableforms.chained.ChainedHandler;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.ValidatorForm;
 import es.icarto.gvsig.navtableforms.utils.AbeilleParser;
@@ -27,6 +28,7 @@ public abstract class ValidatableForm extends AbstractIWindow implements
 
     private final ORMLite ormlite;
     private final FillHandler fillHandler;
+    private final ChainedHandler chainedHandler;
     private final Map<String, JComponent> widgets;
     protected FormPanel formPanel;
     private final IController mockController;
@@ -38,6 +40,16 @@ public abstract class ValidatableForm extends AbstractIWindow implements
 	formPanel = getFormPanel();
 	this.add(formPanel);
 	widgets = AbeilleParser.getWidgetsFromContainer(formPanel);
+	mockController = new MockController(widgets);
+	fillHandler = new FillHandler(widgets, mockController,
+		ormlite.getAppDomain());
+	chainedHandler = new ChainedHandler();
+	initWidgets();
+	fillValues();
+	setListeners();
+    }
+
+    protected void initWidgets() {
 	for (JComponent c : getWidgets().values()) {
 	    if (c instanceof JDateChooser) {
 		SimpleDateFormat dateFormat = DateFormatNT.getDateFormat();
@@ -45,13 +57,13 @@ public abstract class ValidatableForm extends AbstractIWindow implements
 		((JDateChooser) c).getDateEditor().setEnabled(false);
 	    }
 	}
-	mockController = new MockController();
-	fillHandler = new FillHandler(widgets, mockController,
-		ormlite.getAppDomain());
+    }
+    
+    protected void fillValues() {
 	fillingValues = true;
 	fillHandler.fillValues();
+	chainedHandler.fillValues();
 	fillingValues = false;
-
     }
 
     protected abstract String getBasicName();
@@ -100,6 +112,39 @@ public abstract class ValidatableForm extends AbstractIWindow implements
     @Override
     public Map<String, JComponent> getWidgets() {
 	return widgets;
+    }
+    
+    @Override
+    public void windowClosed() {
+	removeListeners();
+        super.windowClosed();
+    }
+
+    protected void setListeners() {
+	chainedHandler.setListeners();
+    }
+    protected void removeListeners() {
+	chainedHandler.removeListeners();
+    }
+
+    protected void addChained(JComponent chained, JComponent parent) {
+	chainedHandler.add(this, chained, parent);
+    }
+
+    protected void addChained(String chained, String parent) {
+	chainedHandler.add(this, widgets.get(chained), widgets.get(parent));
+    }
+
+    protected void addChained(JComponent chained, JComponent... parents) {
+	chainedHandler.add(this, chained, Arrays.asList(parents));
+    }
+
+    protected void addChained(String chained, String... parents) {
+	List<JComponent> parentList = new ArrayList<JComponent>();
+	for (String parent : parents) {
+	    parentList.add(widgets.get(parent));
+	}
+	chainedHandler.add(this, widgets.get(chained), parentList);
     }
 
     /**

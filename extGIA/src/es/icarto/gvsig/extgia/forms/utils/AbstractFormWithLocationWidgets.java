@@ -35,23 +35,24 @@ import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkButton;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkData;
 import es.udc.cartolab.gvsig.navtable.ToggleEditing;
 
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.AREA_MANTENIMIENTO;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.BASE_CONTRATISTA;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TRAMO;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TIPO_VIA;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TIPO_VIA_PF;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.NOMBRE_VIA_PF;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.NOMBRE_VIA;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.PK;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.PK_INICIAL;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.PK_FINAL;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.SENTIDO;
+
+
 @SuppressWarnings("serial")
 public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm {
 
     private static final Logger logger = Logger
 	    .getLogger(AbstractFormWithLocationWidgets.class);
-
-    protected static final String AREA_MANTENIMIENTO = "area_mantenimiento";
-    protected static final String BASE_CONTRATISTA = "base_contratista";
-    protected static final String TRAMO = "tramo";
-    private static final String TIPO_VIA = "tipo_via";
-    private static final String TIPO_VIA_PF = "tipo_via_pf";
-    private static final String NOMBRE_VIA = "nombre_via";
-    private static final String NOMBRE_VIA_PF = "nombre_via_pf";
-    private static final String PK = "pk";
-    private static final String PK_INICIAL = "pk_inicial";
-    private static final String PK_FINAL = "pk_final";
-    private static final String SENTIDO = "sentido";
 
     protected FilesLinkButton filesLinkButton;
 

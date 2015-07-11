@@ -49,6 +49,14 @@ public class DBFieldNames {
     public static final String BASE_CONTRATISTA = "base_contratista";
     public static final String TRAMO = "tramo";
     public static final String TIPO_VIA = "tipo_via";
+    public static final String TIPO_VIA_PF = "tipo_via_pf";
+    public static final String NOMBRE_VIA = "nombre_via";
+    public static final String NOMBRE_VIA_PF = "nombre_via_pf";
+    public static final String PK = "pk";
+    public static final String PK_INICIAL = "pk_inicial";
+    public static final String PK_FINAL = "pk_final";
+    public static final String SENTIDO = "sentido";
+    
 
     // TALUDES
     public static final String TALUDES_LAYERNAME = "Taludes";
@@ -92,8 +100,7 @@ public class DBFieldNames {
     public static final String ENLACES_LAYERNAME = "Enlaces";
     public static final String ID_ENLACE = "id_enlace";
     public static final String MUNICIPIO = "municipio";
-    public static final String PK = "pk";
-
+   
     // BARRERA RIGIDA
     public static final String BARRERA_RIGIDA_LAYERNAME = "Barrera_Rigida";
     public static final String BARRERA_RIGIDA_DBTABLENAME = "barrera_rigida";
@@ -118,7 +125,6 @@ public class DBFieldNames {
     // AREAS SERVICIO
     public static final String AREAS_SERVICIO_LAYERNAME = "Areas_Servicio";
     public static final String ID_AREA_SERVICIO = "id_area_servicio";
-    public static final String SENTIDO = "sentido";
 
     // AREAS SERVICIO RECONOCIMIENTO ESTADO
     public static final String AREA_SERVICIO_INDEX = "indice_estado";
@@ -308,5 +314,7 @@ public class DBFieldNames {
 	}
 	return pk;
     }
+
+    
 
 }

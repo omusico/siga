@@ -1,15 +1,27 @@
 package es.icarto.gvsig.extgia.consultas;
 
 import java.util.HashMap;
+import java.util.Map;
+
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JTextField;
 
 import com.hardcode.gdbms.driver.exceptions.InitializeWriterException;
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.cit.gvsig.exceptions.visitors.StartWriterVisitorException;
 import com.iver.cit.gvsig.exceptions.visitors.StopWriterVisitorException;
 
+import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 import es.udc.cartolab.gvsig.navtable.dataacces.IController;
 
 public class MockController implements IController {
+
+    private Map<String, JComponent> widgets;
+
+    public MockController(Map<String, JComponent> widgets) {
+	this.widgets = widgets;
+    }
 
     @Override
     public long create(HashMap<String, String> newValues) throws Exception {
@@ -47,7 +59,25 @@ public class MockController implements IController {
 
     @Override
     public String getValue(String fieldName) {
-	return null;
+	return stringValue(fieldName);
+    }
+    
+    protected String stringValue(String name) {
+	JComponent jComponent = widgets.get(name);
+	String value = "";
+	if (jComponent instanceof JTextField) {
+	    value = ((JTextField) jComponent).getText().trim();
+	} else if (jComponent instanceof JComboBox) {
+	    Object selectedItem = ((JComboBox) jComponent).getSelectedItem();
+	    if (selectedItem != null) {
+		if (selectedItem instanceof KeyValue) {
+		    value = ((KeyValue) selectedItem).getKey();
+		} else {
+		    value = selectedItem.toString().trim();
+		}
+	    }
+	}
+	return value;
     }
 
     @Override

@@ -8,12 +8,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -28,32 +28,30 @@ import es.icarto.gvsig.commons.queries.Component;
 import es.icarto.gvsig.commons.queries.CustomiceDialog;
 import es.icarto.gvsig.commons.queries.Utils;
 import es.icarto.gvsig.commons.utils.Field;
-import es.icarto.gvsig.extgia.utils.SqlUtils;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.AREA_MANTENIMIENTO;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.BASE_CONTRATISTA;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TRAMO;
 
 @SuppressWarnings("serial")
 public class ConsultasPanel extends ValidatableForm implements ActionListener {
 
-    private static final KeyValue ALL_ITEMS = new KeyValue("todos", "-TODOS-");
+    private static final KeyValue ALL_ITEMS = new KeyValue("todos", "00   TODOS   00");
     private static final KeyValue EMPTY_ITEM = new KeyValue(" ", " ");
 
     private JComboBox elemento;
-    private JComboBox areaMantenimiento;
-    private JComboBox baseContratista;
-    private JComboBox tramo;
+
     private final JDateChooser fechaInicio;
     private final JDateChooser fechaFin;
     private JRadioButton pdfRadioButton;
     private JRadioButton xlsRadioButton;
     private JButton launchButton;
+    private JButton customButton;
 
     private ConsultasFilters<Field> consultasFilters;
 
-    private JButton customButton;
-
-    private final ReportTypeListener reportTypeListener;
+    private ReportTypeListener reportTypeListener;
     private QueriesWidgetCombo queriesWidget;
 
     public ConsultasPanel() {
@@ -69,36 +67,19 @@ public class ConsultasPanel extends ValidatableForm implements ActionListener {
 	fechaFin.getDateEditor().getUiComponent().setName("fecha_fin_TF");
 	fechaInicio.setDate(calendar.getTime());
 	fechaFin.setDate(calendar.getTime());
-
-	reportTypeListener = new ReportTypeListener();
-
-	initWidgets();
     }
-
-    private void initWidgets() {
-	ImageComponent image = (ImageComponent) formPanel
-		.getComponentByName("image");
-	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
-	image.setIcon(icon);
-
-	elemento = (JComboBox) getWidgets().get("elemento");
-	DefaultComboBoxModel model = (DefaultComboBoxModel) elemento.getModel();
-	model.insertElementAt(EMPTY_ITEM, 0);
-	model.insertElementAt(ALL_ITEMS, 1);
-	elemento.setSelectedItem(EMPTY_ITEM);
-	elemento.addActionListener(reportTypeListener);
-
+    
+    @Override
+    protected void initWidgets() {
+        super.initWidgets();
+        addImageHandler("image", PreferencesPage.AUDASA_ICON);
+        addChained(BASE_CONTRATISTA, AREA_MANTENIMIENTO);
+        addChained(TRAMO, BASE_CONTRATISTA);
+        addChained("elemento", "tipo_consulta");
+        
+        elemento = (JComboBox) getWidgets().get("elemento");
+	
 	queriesWidget = new QueriesWidgetCombo(formPanel, "tipo_consulta");
-	queriesWidget.addActionListener(new TipoConsultaListener());
-
-	areaMantenimiento = (JComboBox) getWidgets().get("area_mantenimiento");
-	baseContratista = (JComboBox) getWidgets().get("base_contratista");
-	tramo = (JComboBox) getWidgets().get("tramo");
-
-	areaMantenimiento.addActionListener(new DependentComboboxHandler(this,
-		areaMantenimiento, baseContratista));
-	baseContratista.addActionListener(new DependentComboboxHandler(this,
-		baseContratista, tramo));
 
 	pdfRadioButton = (JRadioButton) formPanel.getComponentByName("pdf");
 	pdfRadioButton.setSelected(true);
@@ -110,10 +91,18 @@ public class ConsultasPanel extends ValidatableForm implements ActionListener {
 	group.add(xlsRadioButton);
 
 	launchButton = (JButton) formPanel.getComponentByName("launch_button");
-	launchButton.addActionListener(this);
-
 	customButton = (JButton) formPanel.getComponentByName("custom_button");
-	customButton.addActionListener(this);
+	
+    }
+    
+    @Override
+    protected void setListeners() {
+        super.setListeners();
+        reportTypeListener = new ReportTypeListener();
+        elemento.addActionListener(reportTypeListener);
+        queriesWidget.addActionListener(reportTypeListener);
+        launchButton.addActionListener(this);
+        customButton.addActionListener(this);
 	customButton.setEnabled(false);
     }
 
@@ -129,25 +118,6 @@ public class ConsultasPanel extends ValidatableForm implements ActionListener {
 	if (!isCheckingOK(selElement, selTipoConsulta)) {
 	    JOptionPane.showMessageDialog(null, PluginServices.getText(this,
 		    "elementAndTypeUnselected_msg"));
-	    return;
-	}
-
-	if (!isCheckingTrabajosAgregadosOK(selElement, selTipoConsulta)) {
-	    JOptionPane.showMessageDialog(null,
-		    PluginServices.getText(this, "unavailableQuery_msg"));
-	    return;
-	}
-
-	if (selElement.equals(ALL_ITEMS)
-		&& !selTipoConsulta.toString().equals("Características")) {
-	    JOptionPane.showMessageDialog(null,
-		    PluginServices.getText(this, "unavailableQuery_msg"));
-	    return;
-	}
-
-	if (notAvaliableType(selElement, selTipoConsulta)) {
-	    JOptionPane.showMessageDialog(null,
-		    PluginServices.getText(this, "unavailableQuery_msg"));
 	    return;
 	}
 
@@ -279,12 +249,6 @@ public class ConsultasPanel extends ValidatableForm implements ActionListener {
 	return firstField;
     }
 
-    private boolean notAvaliableType(KeyValue selElement,
-	    KeyValue selTipoConsulta) {
-	return !SqlUtils.elementHasType(selElement.getKey(),
-		selTipoConsulta.toString());
-    }
-
     private boolean isCheckingOK(KeyValue selElemento, KeyValue selTipoConsulta) {
 	if (!selElemento.equals(EMPTY_ITEM)
 		&& !selTipoConsulta.equals(EMPTY_ITEM)) {
@@ -294,31 +258,16 @@ public class ConsultasPanel extends ValidatableForm implements ActionListener {
 	}
     }
 
-    private boolean isCheckingTrabajosAgregadosOK(KeyValue selElemento,
-	    KeyValue selTipoConsulta) {
-	if (selTipoConsulta.toString().equals("Trabajos Agrupados")) {
-	    if (selElemento.toString().equals("Taludes")
-		    || selElemento.toString().equals("Isletas")
-		    || selElemento.toString().equals("Barrera Rígida")) {
-		return true;
-	    } else {
-		return false;
-	    }
-	} else {
-	    return true;
-	}
-    }
-
     private ArrayList<String[]> getElements(String tipoConsulta) {
 	ArrayList<String[]> elements = new ArrayList<String[]>();
 	PreparedStatement statement;
 	String query;
 	if (tipoConsulta.equals("Características")) {
-	    query = "SELECT id, item FROM audasa_extgia_dominios.elemento "
-		    + "WHERE id_fieldname <> ' '";
+	    query = "SELECT DISTINCT(id, item) FROM audasa_extgia_dominios.elemento "
+		    + "WHERE id_fieldname IS NOT NULL";
 	} else {
-	    query = "SELECT id, item FROM audasa_extgia_dominios.elemento "
-		    + "WHERE id <> 'todos' AND id <> ' ' AND " + tipoConsulta
+	    query = "SELECT DISTINCT(id, item) FROM audasa_extgia_dominios.elemento "
+		    + "WHERE  id_fieldname IS NOT NULL AND " + tipoConsulta
 		    + " = " + "true;";
 	}
 	try {
