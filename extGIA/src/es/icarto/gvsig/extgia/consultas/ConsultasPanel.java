@@ -104,8 +104,8 @@ public class ConsultasPanel extends ValidatableForm implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-	consultasFilters = new ConsultasFilters<Field>(getFilterAreaValue(),
-		getFilterBaseContratistaValue(), getFilterTramoValue(),
+	consultasFilters = new ConsultasFilters<Field>(getFilterValue(AREA_MANTENIMIENTO),
+		getFilterValue(BASE_CONTRATISTA), getFilterValue(TRAMO),
 		fechaInicio.getDate(), fechaFin.getDate());
 
 	KeyValue selElement = (KeyValue) elemento.getSelectedItem();
@@ -177,7 +177,7 @@ public class ConsultasPanel extends ValidatableForm implements ActionListener {
 	}
 
 	Component todos = null;
-	if (elemento.getSelectedItem().toString().equals("-TODOS-")) {
+	if (elemento.getSelectedItem().equals(ALL_ITEMS)) {
 	    todos = new Composite(consultasFilters, selTipoConsulta,
 		    pdfRadioButton.isSelected());
 	    ((Composite) todos).add(getElements(selTipoConsulta.toString()));
@@ -284,45 +284,14 @@ public class ConsultasPanel extends ValidatableForm implements ActionListener {
 	}
 	return elements;
     }
-
-    private KeyValue getFilterAreaValue() {
-	KeyValue areaValue = null;
-	if (!areaMantenimiento.getSelectedItem().toString().equals(" ")) {
-	    areaValue = ((KeyValue) areaMantenimiento.getSelectedItem());
+    
+    private KeyValue getFilterValue(String cmpName) {
+	KeyValue kv = null;
+	JComboBox cmp = (JComboBox) getWidgets().get(cmpName);
+	if (!cmp.getSelectedItem().toString().equals(" ")) {
+	    kv = ((KeyValue) cmp.getSelectedItem());
 	}
-	return areaValue;
-    }
-
-    private KeyValue getFilterBaseContratistaValue() {
-	KeyValue baseValue = null;
-	if (!baseContratista.getSelectedItem().toString().equals(" ")) {
-	    baseValue = ((KeyValue) baseContratista.getSelectedItem());
-	}
-	return baseValue;
-    }
-
-    private KeyValue getFilterTramoValue() {
-	KeyValue tramoValue = null;
-	if (!tramo.getSelectedItem().toString().equals(" ")) {
-	    tramoValue = ((KeyValue) tramo.getSelectedItem());
-	}
-	return tramoValue;
-    }
-
-    public class TipoConsultaListener implements ActionListener {
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    reportTypeListener.actionPerformed(null);
-	    if (queriesWidget.getQueryId().equals(
-		    QueriesWidgetCombo.CARACTERISTICAS)) {
-		fechaInicio.setEnabled(false);
-		fechaFin.setEnabled(false);
-	    } else {
-		fechaInicio.setEnabled(true);
-		fechaFin.setEnabled(true);
-	    }
-	}
+	return kv;
     }
 
     private class ReportTypeListener implements ActionListener {
