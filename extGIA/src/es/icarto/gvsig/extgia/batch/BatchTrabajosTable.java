@@ -73,6 +73,7 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
     private int medicionLastJobColumnIndex;
 
     private final Color nonEditableColumnForegndColor = Color.GRAY;
+    private BatchTrabajosTableModelListener batchTrabajosTableModelListener;
 
     public BatchTrabajosTable(ORMLite ormLite, String dbTableName, String[][] data,
 	    final String[] columnNames, final String[] columnDbNames, final Integer[] columnsDbTypes) {
@@ -116,6 +117,13 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	updateMedicion();
 
 	setColorForNonEditableColumns(nonEditableColumnForegndColor);
+	
+	initValidation();
+    }
+
+    private void initValidation() {
+	batchTrabajosTableModelListener = new BatchTrabajosTableModelListener(this);
+	table.getModel().addTableModelListener(batchTrabajosTableModelListener);
     }
 
     private void getTableColumnsIndex() {
@@ -185,6 +193,11 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	private void save() {
 	    try {
 		stopCellEdition();
+		if (! batchTrabajosTableModelListener.validate()) {
+		    JOptionPane.showMessageDialog(null, "Hay valores incorrectos en la tabla");
+		    saveButton.setEnabled(false);
+		    return;
+		}
 		for (int i = 0; i < data.length; i++) {
 		    Value[] values = new Value[data[i].length];
 		    for (int j = 0; j < data[i].length; j++) {
@@ -482,5 +495,21 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	    cell.setForeground( fgndColor );
 	    return cell;
 	}
+    }
+    
+    public JButton getSaveButton() {
+	return saveButton;
+    }
+    
+    public String[] getColumnDbNames() {
+	return columnDbNames;
+    }
+    
+    public ORMLite getOrmLite() {
+	return ormLite;
+    }
+    
+    public JTable getTable() {
+	return table;
     }
 }
