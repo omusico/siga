@@ -41,7 +41,7 @@
 		
 				<extension class-name="es.icarto.gvsig.extgia.ToolBarBatchTrabajosExtension" description="toolbar_form_launcher" active="true">
 			<tool-bar name="GIA" position="73">
-				<action-tool icon="extgia-batchTrabajos" tooltip="Añadir trabajos" action-command="ToolBarFormExtension" position="2"/>
+				<action-tool icon="extgia-batchTrabajos" tooltip="Añadir trabajos" action-command="ToolBarFormExtension" position="3"/>
 			</tool-bar>
 		</extension>
 

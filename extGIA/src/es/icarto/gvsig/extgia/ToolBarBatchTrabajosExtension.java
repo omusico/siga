@@ -45,7 +45,7 @@ public class ToolBarBatchTrabajosExtension extends Extension {
 	PluginServices.getIconTheme().registerDefault(
 		"extgia-batchTrabajos",
 		this.getClass().getClassLoader()
-		.getResource("images/batch_trabajo.png"));
+		.getResource("images/batch_trabajo_toolbar.png"));
     }
 
     private boolean hasView() {
