@@ -25,14 +25,18 @@ public abstract class VegetationCalculateMedicion extends Calculation {
 
     public VegetationCalculateMedicion(IValidatableForm form) {
 	super(form);
-	unidadHandler = new UnidadListener();
-	((JComboBox) form.getWidgets().get(UNIDAD)).addActionListener(unidadHandler);
+	if (!form.isFillingValues()) {
+	    unidadHandler = new UnidadListener();
+	    ((JComboBox) form.getWidgets().get(UNIDAD)).addActionListener(unidadHandler);
+	}
     }
 
     public VegetationCalculateMedicion(IValidatableForm form, Value longitud) {
 	super(form);
-	unidadHandler = new UnidadListener();
-	((JComboBox) form.getWidgets().get(UNIDAD)).addActionListener(unidadHandler);
+	if (!form.isFillingValues()) {
+	    unidadHandler = new UnidadListener();
+	    ((JComboBox) form.getWidgets().get(UNIDAD)).addActionListener(unidadHandler);
+	}
     }
 
     protected abstract String getIDField();
