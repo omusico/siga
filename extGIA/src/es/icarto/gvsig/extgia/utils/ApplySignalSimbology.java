@@ -29,7 +29,7 @@ import es.icarto.gvsig.commons.utils.FileNameUtils;
 public class ApplySignalSimbology {
 
     private static final int PICTURE_SIZE = 20;
-    private static final int CARTEL_PICTURE_SIZE = 40;
+    private static final int CARTEL_PICTURE_SIZE = 50;
     private static final Point NOFFSET = new Point(0, 0);
 
     private static final Logger logger = Logger

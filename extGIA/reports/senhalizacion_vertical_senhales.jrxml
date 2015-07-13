@@ -405,12 +405,18 @@
 				<textFieldExpression><![CDATA[$F{nombre_senhal}]]></textFieldExpression>
 			</textField>
 			<image hAlign="Center" vAlign="Middle" onErrorType="Blank">
-				<reportElement mode="Opaque" x="5" y="5" width="75" height="75" forecolor="#000000" uuid="df741b24-800f-44bf-9445-a1eb6760e7c3"/>
+				<reportElement mode="Opaque" x="10" y="10" width="65" height="65" forecolor="#000000" uuid="df741b24-800f-44bf-9445-a1eb6760e7c3"/>
+				<graphicElement>
+					<pen lineWidth="0.0" lineStyle="Solid" lineColor="#AAAAAA"/>
+				</graphicElement>
+				<imageExpression><![CDATA[$P{IMAGE_PATH} + ($F{tipo_senhal}.equals("Cartel") ? ($F{codigo_senhal} == null || $F{codigo_senhal}.equals("") || $F{codigo_senhal}.equals("Otro") ? "0_cartel.png" : $F{codigo_senhal} + ".gif") : ($F{codigo_senhal} == null || $F{codigo_senhal}.equals("") || $F{codigo_senhal}.equals("Otro") ? "0_placa.png" : $F{codigo_senhal} + ".gif"))]]></imageExpression>
+			</image>
+			<rectangle>
+				<reportElement mode="Transparent" x="5" y="5" width="75" height="75" uuid="aed0c265-9404-4a49-9bfe-f337777006b8"/>
 				<graphicElement>
 					<pen lineWidth="0.5" lineColor="#AAAAAA"/>
 				</graphicElement>
-				<imageExpression><![CDATA[ $P{IMAGE_PATH} + ($F{tipo_senhal}.equals("Cartel") ? ($F{codigo_senhal} == null || $F{codigo_senhal}.equals("") || $F{codigo_senhal}.equals("Otro") ? "0_cartel.png" : $F{codigo_senhal} + ".gif") : ($F{codigo_senhal} == null || $F{codigo_senhal}.equals("") || $F{codigo_senhal}.equals("Otro") ? "0_placa.png" : $F{codigo_senhal} + ".gif"))]]></imageExpression>
-			</image>
+			</rectangle>
 		</band>
 	</detail>
 </jasperReport>
