@@ -124,7 +124,9 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	if (!dbTableName.equals("senhalizacion_vertical_trabajos")) {
 	    longitudColumnIndex = table.getColumn("Longitud").getModelIndex();
 	    anchoColumnIndex = table.getColumn("Ancho").getModelIndex();
-	    medicionElementoColumnIndex = table.getColumn("Medición elemento").getModelIndex();
+	    if (!dbTableName.equals("barrera_rigida_trabajos")) {
+		medicionElementoColumnIndex = table.getColumn("Medición elemento").getModelIndex();
+	    }
 	    medicionLastJobColumnIndex = table.getColumn("Medición último trabajo").getModelIndex();
 	}
     }
