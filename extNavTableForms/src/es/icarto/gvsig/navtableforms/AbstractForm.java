@@ -46,6 +46,7 @@ import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.iver.cit.gvsig.exceptions.visitors.StopWriterVisitorException;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
+import com.iver.cit.gvsig.fmap.layers.LayerEvent;
 import com.jeta.forms.components.image.ImageComponent;
 import com.jeta.forms.components.panel.FormPanel;
 import com.toedter.calendar.JDateChooser;
@@ -245,6 +246,13 @@ public abstract class AbstractForm extends AbstractNavTable implements
 	dependencyHandler.setListeners();
 	for (BaseTableHandler tableHandler : tableHandlers) {
 	    tableHandler.reload();
+	    // When the layer is in edition mode, subforms must be disabled, because if the user, adds a new subelement
+	    // with an fk or modifies the pk of the element it will fail
+	    // We remove it after the reload, to allow propper initializations, and avoid NullPointerException when 
+	    // removing the listeners or when layerEvent is called
+	    if (layer.isEditing()) {
+		tableHandler.removeListeners();
+	    }
 	}
 	calculationHandler.setListeners();
 	chainedHandler.setListeners();
@@ -516,5 +524,25 @@ public abstract class AbstractForm extends AbstractNavTable implements
     
     protected void addImageHandler(ImageHandler imageHandler) {
 	imageHandlerManager.addHandler(imageHandler);
+    }
+    
+    @Override
+    public void layerEvent(LayerEvent e) {
+	super.layerEvent(e);
+	
+	
+	// When the layer is in edition mode, subforms must be disabled, because if the user, adds a new subelement
+	// with an fk or modifies the pk of the element it will fail
+	if (e.getEventType() == LayerEvent.EDITION_CHANGED) {
+	    if (layer.isEditing()) {
+		for (BaseTableHandler bth : tableHandlers) {
+		    bth.removeListeners();
+		}
+	    } else {
+		for (BaseTableHandler bth : tableHandlers) {
+		    bth.reload();
+		}
+	    }
+	}
     }
 }
