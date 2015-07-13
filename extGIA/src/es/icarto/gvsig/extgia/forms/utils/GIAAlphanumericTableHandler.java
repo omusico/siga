@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.RowSorter;
@@ -193,8 +194,17 @@ public class GIAAlphanumericTableHandler extends BaseTableHandler {
     @Override
     public void removeListeners() {
 	addButton.setAction(null);
+	addButton.setEnabled(false);
+	Object name = getListener().getCreateAction().getValue(Action.NAME);
+	addButton.setText((name != null) ? name.toString() : "");
 	editButton.setAction(null);
+	editButton.setEnabled(false);
+	name = getListener().getUpdateAction().getValue(Action.NAME);
+	editButton.setText((name != null) ? name.toString() : "");
 	deleteButton.setAction(null);
+	deleteButton.setEnabled(false);
+	name = getListener().getDeleteAction().getValue(Action.NAME);
+	deleteButton.setText((name != null) ? name.toString() : "");
 	super.removeListeners();
     }
 
