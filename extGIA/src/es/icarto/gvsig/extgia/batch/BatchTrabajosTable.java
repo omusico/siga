@@ -58,7 +58,7 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
     private final String[] columnDbNames;
     private final Integer[] columnDbTypes;
     private final String[][] data;
-    private final ORMLite batchOrmLite;
+    private final ORMLite ormLite;
 
     private JButton cancelButton;
     private JButton saveButton;
@@ -74,14 +74,14 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 
     private final Color nonEditableColumnForegndColor = Color.GRAY;
 
-    public BatchTrabajosTable(ORMLite batchOrmLite, String dbTableName, String[][] data,
+    public BatchTrabajosTable(ORMLite ormLite, String dbTableName, String[][] data,
 	    final String[] columnNames, final String[] columnDbNames, final Integer[] columnsDbTypes) {
 	super();
 	this.dbTableName = dbTableName;
 	this.columnNames = columnNames;
 	this.columnDbNames = columnDbNames;
 	this.columnDbTypes = columnsDbTypes;
-	this.batchOrmLite = batchOrmLite;
+	this.ormLite = ormLite;
 	this.data = data;
 	initTable();
     }
@@ -153,7 +153,7 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	    viewInfo = new WindowInfo(WindowInfo.ICONIFIABLE |
 		    WindowInfo.MAXIMIZABLE | WindowInfo.RESIZABLE | WindowInfo.PALETTE);
 	    viewInfo.setTitle(PluginServices.getText(this, "Añadir Trabajos"));
-	    viewInfo.setWidth(640);
+	    viewInfo.setWidth(740);
 	    viewInfo.setHeight(480);
 	}
 	return viewInfo;
@@ -240,8 +240,8 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	return rowValues;
     }
 
-    public void setUnidadCellEditorAsComboBox() {
-	DomainValues unidadValues = batchOrmLite.getAppDomain().getDomainValuesForComponent(
+    private void setUnidadCellEditorAsComboBox() {
+	DomainValues unidadValues = ormLite.getAppDomain().getDomainValuesForComponent(
 		DBFieldNames.UNIDAD);
 	unidadComboBox = new JComboBox();
 	for (KeyValue value : unidadValues.getValues()) {
