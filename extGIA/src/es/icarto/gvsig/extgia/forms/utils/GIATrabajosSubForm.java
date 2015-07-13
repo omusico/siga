@@ -48,13 +48,13 @@ public abstract class GIATrabajosSubForm extends GIASubForm {
 	    if (fv.getComponent().equalsIgnoreCase(DBFieldNames.MEDICION_ULTIMO_TRABAJO)
 		    && fv.getValue() != null) {
 		medicionComponent.setText(fv.getValue());
-		getFormController().setValue(fv.getComponent(), fv.getValue());
+		getFormController().setValue(medicionComponent.getName(), fv.getValue());
 		break;
 	    }
 	    if (fv.getComponent().equalsIgnoreCase(DBFieldNames.MEDICION_ELEMENTO)
 		    && !fv.getValue().isEmpty()) {
 		medicionComponent.setText(fv.getValue());
-		getFormController().setValue(fv.getComponent(), fv.getValue());
+		getFormController().setValue(medicionComponent.getName(), fv.getValue());
 	    }
 	}
     }
