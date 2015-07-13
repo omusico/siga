@@ -22,7 +22,7 @@ public class CSVTrabajosAgregadosReport {
     public CSVTrabajosAgregadosReport(String element, String outputFile,
 	    ConsultasFilters<Field> filters) {
 	this.element = element;
-	agregadosReportQueries = new TrabajosAgregadosReportQueries(element);
+	agregadosReportQueries = new TrabajosAgregadosReportQueries(element, filters);
 	this.filters = filters;
 	writeCSVFile(outputFile);
     }
@@ -100,14 +100,7 @@ public class CSVTrabajosAgregadosReport {
 	    String totalQuery) {
 	PreparedStatement statement;
 	try {
-	    statement = DBSession
-		    .getCurrentSession()
-		    .getJavaConnection()
-		    .prepareStatement(
-			    query
-				    + filters
-					    .getWhereClauseFiltersForAgregados(
-						    element, false));
+	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
 	    statement.execute();
 	    ResultSet rs = statement.getResultSet();
 	    if (rs.next()) {
@@ -121,9 +114,7 @@ public class CSVTrabajosAgregadosReport {
 		    }
 		    writer.append("\n");
 		}
-		rs = statement.executeQuery(totalQuery
-			+ filters.getWhereClauseFiltersForAgregados(element,
-				true));
+		rs = statement.executeQuery(totalQuery);
 		writer.append("TOTAL");
 		for (int i = 0; i <= 6; i++) {
 		    writer.append(CSV_SEPARATOR);
@@ -146,14 +137,7 @@ public class CSVTrabajosAgregadosReport {
     private void writeTotal(FileWriter writer, String title, String query) {
 	PreparedStatement statement;
 	try {
-	    statement = DBSession
-		    .getCurrentSession()
-		    .getJavaConnection()
-		    .prepareStatement(
-			    query
-				    + filters
-					    .getWhereClauseFiltersForAgregados(
-						    element, true));
+	    statement = DBSession.getCurrentSession().getJavaConnection().prepareStatement(query);
 	    statement.execute();
 	    ResultSet rs = statement.getResultSet();
 	    rs.next();

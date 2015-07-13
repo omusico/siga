@@ -162,104 +162,88 @@ public class TestConsultas {
     public void testTrabajosAgregadosReportsQueries() throws SQLException {
 	String[] elements = { "Taludes", "Isletas" };
 	TrabajosAgregadosReportQueries agregadosReportQueries = new TrabajosAgregadosReportQueries(
-		elements[0]);
+		elements[0], mockFilters);
 	ResultSet rs;
 	Statement st = DBSession.getCurrentSession().getJavaConnection()
 		.createStatement();
 
 	String query = agregadosReportQueries.getDesbroceManualQuery()
-		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
-			false);
+		+ mockFilters.getWhereClauseFiltersForAgregados();
 	rs = st.executeQuery(query);
 	assertTrue(rs != null);
 
 	query = agregadosReportQueries.getDesbroceManualSumQuery()
-		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
-			true);
+		+ mockFilters.getWhereClauseFiltersForAgregados();
 	rs = st.executeQuery(query);
 	assertTrue(rs != null);
 
 	query = agregadosReportQueries.getDesbroceMecanicoQuery()
-		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
-			false);
+		+ mockFilters.getWhereClauseFiltersForAgregados();
 	rs = st.executeQuery(query);
 	assertTrue(rs != null);
 
 	query = agregadosReportQueries.getDesbroceMecanicoSumQuery()
-		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
-			true);
+		+ mockFilters.getWhereClauseFiltersForAgregados();
 	rs = st.executeQuery(query);
 	assertTrue(rs != null);
 
 	query = agregadosReportQueries.getDesbroceRetroaranhaQuery()
-		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
-			false);
+		+ mockFilters.getWhereClauseFiltersForAgregados();
 	rs = st.executeQuery(query);
 	assertTrue(rs != null);
 
 	query = agregadosReportQueries.getDesbroceRetroaranhaSumQuery()
-		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
-			true);
+		+ mockFilters.getWhereClauseFiltersForAgregados();
 	rs = st.executeQuery(query);
 	assertTrue(rs != null);
 
 	query = agregadosReportQueries.getDesbroceTotalSumQuery()
-		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
-			true);
+		+ mockFilters.getWhereClauseFiltersForAgregados();
 	rs = st.executeQuery(query);
 	assertTrue(rs != null);
 
 	query = agregadosReportQueries.getHerbicidadQuery()
-		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
-			false);
+		+ mockFilters.getWhereClauseFiltersForAgregados();
 	rs = st.executeQuery(query);
 	assertTrue(rs != null);
 
 	query = agregadosReportQueries.getHerbicidaSumQuery()
-		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
-			true);
+		+ mockFilters.getWhereClauseFiltersForAgregados();
 	rs = st.executeQuery(query);
 	assertTrue(rs != null);
 
 	query = agregadosReportQueries.getSiegaMecanicaIsletasQuery()
-		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
-			false);
+		+ mockFilters.getWhereClauseFiltersForAgregados();
 	rs = st.executeQuery(query);
 	assertTrue(rs != null);
 
 	query = agregadosReportQueries.getSiegaMecanicaIsletasSumQuery()
-		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
-			true);
+		+ mockFilters.getWhereClauseFiltersForAgregados();
 	rs = st.executeQuery(query);
 	assertTrue(rs != null);
 
 	query = agregadosReportQueries.getSiegaMecanicaMedianaQuery()
-		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
-			false);
+		+ mockFilters.getWhereClauseFiltersForAgregados();
 	rs = st.executeQuery(query);
 	assertTrue(rs != null);
 
 	query = agregadosReportQueries.getSiegaMecanicaMedianaSumQuery()
-		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
-			true);
+		+ mockFilters.getWhereClauseFiltersForAgregados();
 	rs = st.executeQuery(query);
 	assertTrue(rs != null);
 
 	query = agregadosReportQueries.getSiegaTotalSumQuery()
-		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
-			true);
+		+ mockFilters.getWhereClauseFiltersForAgregados();
 	rs = st.executeQuery(query);
 	assertTrue(rs != null);
 
 	query = agregadosReportQueries.getVegetacionQuery()
-		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
-			false);
+		+ mockFilters.getWhereClauseFiltersForAgregados();
 	rs = st.executeQuery(query);
 	assertTrue(rs != null);
 
 	query = agregadosReportQueries.getVegetacionSumQuery()
-		+ mockFilters.getWhereClauseFiltersForAgregados(elements[0],
-			true);
+		+ mockFilters.getWhereClauseFiltersForAgregados();
 	rs = st.executeQuery(query);
 	assertTrue(rs != null);
     }

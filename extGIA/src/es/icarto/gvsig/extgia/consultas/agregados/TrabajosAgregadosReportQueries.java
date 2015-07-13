@@ -1,145 +1,195 @@
 package es.icarto.gvsig.extgia.consultas.agregados;
 
+import es.icarto.gvsig.commons.utils.Field;
 import es.icarto.gvsig.extgia.consultas.ConsultasFieldNames;
+import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
 
 public class TrabajosAgregadosReportQueries {
 
     private final String element;
+    private final ConsultasFilters<Field> filters;
+    private final String elementId;
+    private final String partialQuery;
 
-    public TrabajosAgregadosReportQueries(String element) {
+    private enum Vegetacion {
+	TALUDES("taludes", "id_talud"), ISLETAS("isletas", "id_isleta"), BARRERA_RIGIDA(
+		"barrera_rigida", "id_barrera_rigida");
+
+	private final String table;
+	private final String id;
+
+	private Vegetacion(String table, String id) {
+	    this.table = table;
+	    this.id = id;
+	}
+
+	public String table() {
+	    return table;
+	}
+
+	public String id() {
+	    return id;
+	}
+
+    }
+
+    public TrabajosAgregadosReportQueries(String element,
+	    ConsultasFilters<Field> filters) {
 	this.element = element;
-
+	this.filters = filters;
+	this.elementId = ConsultasFieldNames.getElementId(element);
+	partialQuery = "COALESCE(sum(medicion),0) from audasa_extgia.%s_trabajos sub JOIN audasa_extgia.%s el ON sub.%s = el.%s WHERE %s "
+		+ filters.getWhereClauseFiltersForAgregados();
     }
 
-    public String getBaseQuery() {
-	String elementId = ConsultasFieldNames.getElementId(element);
+    private String getBaseQuery(String unidad) {
 
-	return "SELECT distinct(a."
-		+ elementId
-		+ "), tr.item, tv.item, nv.item, pk_inicial, pk_final, c.item, "
-		+ "medicion_audasa "
-		+ "FROM audasa_extgia."
-		+ element
-		+ "_trabajos a, audasa_extgia."
-		+ element
-		+ " b, "
-		+ "audasa_extgia_dominios.sentido c, "
-		+ "audasa_extgia_dominios.tramo tr, "
-		+ "audasa_extgia_dominios.tipo_via tv, "
-		+ "audasa_extgia_dominios.nombre_via nv "
-		+ "WHERE a."
-		+ elementId
-		+ " = b."
-		+ elementId
-		+ " AND b.sentido = c.id AND b.tramo = tr.id "
-		+ "AND b.tipo_via = tv.id AND b.nombre_via = cast (nv.id as text) "
-		+ "AND unidad = '";
+	String query = "SELECT el.%s, tr.item, tv.item, nv.item, pk_inicial, pk_final, st.item, "
+		+ "medicion "
+		+ "FROM audasa_extgia.%s_trabajos sub "
+		+ "LEFT OUTER JOIN  audasa_extgia.%s el ON sub.%s = el.%s "
+		+ "LEFT OUTER JOIN audasa_extgia_dominios.tramo tr ON (tr.id = el.tramo AND tr.id_bc = el.base_contratista) "
+		+ "LEFT OUTER JOIN audasa_extgia_dominios.tipo_via tv ON (tv.id = el.tipo_via AND tv.id_tramo = el.tramo AND tv.id_bc = el.base_contratista) "
+		+ "LEFT OUTER JOIN audasa_extgia_dominios.sentido st ON el.sentido = st.id "
+		+ "LEFT OUTER JOIN audasa_extgia_dominios.nombre_via nv ON (cast (nv.id as text) = el.nombre_via AND nv.id_tv = el.tipo_via AND nv.id_bc = el.base_contratista AND nv.id_tramo = el.tramo) "
+		+ "WHERE unidad = '%s' " + filters.getWhereClauseFiltersForAgregados() + " ORDER BY 2, 5, 1";
+
+	if (element.equalsIgnoreCase("vegetacion")) {
+	    String elementQuery = "";
+	    for (Vegetacion eVeg : Vegetacion.values()) {
+		elementQuery += String.format(query , eVeg.id, eVeg.table, eVeg.table, eVeg.id, eVeg.id, unidad).replace(" ORDER BY 2, 5, 1", " UNION ALL ");
+	    }
+	    return elementQuery.replaceFirst(" UNION ALL $", " ORDER BY 2, 5, 1");
+	}
+	return String.format(query, elementId, element, element, elementId, elementId, unidad);
     }
 
-    public String getBaseSumQuery() {
-	return getBaseSumQuery("TOTAL");
+    private String getBaseSumQuery(String where) {
+	return getBaseSumQuery("TOTAL", where);
     }
 
-    public String getBaseSumQuery(String firstField) {
-	return "SELECT '" + firstField
-		+ "', '', null, null, null, null, null, sum(medicion_audasa) "
-		+ "FROM audasa_extgia." + element + "_trabajos "
-		+ "WHERE (unidad = '";
+    private String getBaseSumQuery(String firstField, String where) {
+	String query = String.format("SELECT '%s', '', null, null, null, null, null, ", firstField);
+	String elementQuery = "";
+
+	if (element.equalsIgnoreCase("vegetacion")) {
+	    for (Vegetacion eVeg : Vegetacion.values()) {
+		elementQuery += String.format("(SELECT  " + partialQuery + ") + ", eVeg.table, eVeg.table, eVeg.id, eVeg.id, where);
+	    }
+	    elementQuery = elementQuery.substring(0, elementQuery.length() - 2);
+	} else {
+	    elementQuery = String.format(partialQuery, element, element,
+		    elementId, elementId, where);
+	}
+
+	return query + elementQuery;
     }
 
-    public String getBaseSumQuery2() {
-	return "SELECT sum(medicion_audasa) " + "FROM audasa_extgia." + element
-		+ "_trabajos " + "WHERE (unidad = '";
+    private String getBaseSumQuery2(String where) {
+	if (element.equalsIgnoreCase("vegetacion")) {
+
+	    Vegetacion a = Vegetacion.TALUDES;
+	    String queryTalud = String.format("(SELECT  " + partialQuery
+		    + ") + ", a.table, a.table, a.id, a.id, where);
+	    a = Vegetacion.ISLETAS;
+	    String queryIsletas = String.format("(SELECT  " + partialQuery
+		    + ") + ", a.table, a.table, a.id, a.id, where);
+	    a = Vegetacion.BARRERA_RIGIDA;
+	    String queryBR = String.format("(SELECT  " + partialQuery + ")",
+		    a.table, a.table, a.id, a.id, where);
+
+	    String query = String.format("SELECT " + queryTalud + queryIsletas
+		    + queryBR);
+	    return query;
+	}
+
+	String queryElement = String.format(partialQuery, element, element,
+		elementId, elementId, where);
+	return String.format("SELECT " + queryElement);
     }
 
     public String getDesbroceRetroaranhaQuery() {
-	return getBaseQuery() + "Desbroce con retroaraña'";
+	return getBaseQuery("Desbroce con retroaraña");
     }
 
     public String getDesbroceRetroaranhaSumQuery() {
-	return getBaseSumQuery() + "Desbroce con retroaraña')";
+	return getBaseSumQuery("unidad='Desbroce con retroaraña'");
     }
 
     public String getDesbroceMecanicoQuery() {
-	return getBaseQuery() + "Desbroce mecánico'";
+	return getBaseQuery("Desbroce mecánico");
     }
 
     public String getDesbroceMecanicoSumQuery() {
-	return getBaseSumQuery() + "Desbroce mecánico')";
+	return getBaseSumQuery("unidad='Desbroce mecánico'");
     }
 
     public String getDesbroceManualQuery() {
-	return getBaseQuery() + "Tala y desbroce manual'";
+	return getBaseQuery("Tala y desbroce manual");
     }
 
     public String getDesbroceManualSumQuery() {
-	return getBaseSumQuery() + "Tala y desbroce manual')";
+	return getBaseSumQuery("unidad='Tala y desbroce manual'");
     }
 
     public String getDesbroceTotalSumQuery(String string) {
-	return getBaseSumQuery(string)
-		+ "Desbroce con retroaraña'"
-		+ " OR unidad = 'Desbroce mecánico' OR unidad = 'Tala y desbroce manual')";
+	return getBaseSumQuery(
+		string,
+		"unidad IN ('Desbroce con retroaraña', 'Desbroce mecánico', 'Tala y desbroce manual')");
     }
 
     public String getDesbroceTotalSumQuery() {
-	return getBaseSumQuery2()
-		+ "Desbroce con retroaraña'"
-		+ " OR unidad = 'Desbroce mecánico' OR unidad = 'Tala y desbroce manual')";
+	return getBaseSumQuery2("unidad IN ('Desbroce con retroaraña', 'Desbroce mecánico', 'Tala y desbroce manual')");
     }
 
     public String getSiegaMecanicaIsletasQuery() {
-	return getBaseQuery() + "Siega mecánica de isletas'";
+	return getBaseQuery("Siega mecánica de isletas");
     }
 
     public String getSiegaMecanicaIsletasSumQuery() {
-	return getBaseSumQuery() + "Siega mecánica de isletas')";
+	return getBaseSumQuery("unidad = 'Siega mecánica de isletas'");
     }
 
     public String getSiegaMecanicaMedianaQuery() {
-	return getBaseQuery() + "Siega mecánica de medianas'";
+	return getBaseQuery("Siega mecánica de medianas");
     }
 
     public String getSiegaMecanicaMedianaSumQuery() {
-	return getBaseSumQuery() + "Siega mecánica de medianas')";
+	return getBaseSumQuery("unidad = 'Siega mecánica de medianas'");
     }
 
     public String getSiegaMecanicaMediana1_5mQuery() {
-	return getBaseQuery() + "Siega mecánica de medianas < 1,5 m'";
+	return getBaseQuery("Siega mecánica de medianas < 1,5 m");
     }
 
     public String getSiegaMecanicaMediana1_5mSumQuery() {
-	return getBaseSumQuery() + "Siega mecánica de medianas < 1,5 m')";
+	return getBaseSumQuery("unidad = 'Siega mecánica de medianas < 1,5 m'");
     }
 
     public String getSiegaTotalSumQuery(String string) {
-	return getBaseSumQuery(string) + "Siega mecánica de isletas'"
-		+ " OR unidad = 'Siega mecánica de medianas'"
-		+ " OR unidad = 'Siega mecánica de medianas < 1,5 m')";
+	return getBaseSumQuery(
+		string,
+		"unidad IN ('Siega mecánica de isletas', 'Siega mecánica de medianas', 'Siega mecánica de medianas < 1,5 m')");
     }
 
     public String getSiegaTotalSumQuery() {
-	return getBaseSumQuery2() + "Siega mecánica de isletas'"
-		+ " OR unidad = 'Siega mecánica de medianas'"
-		+ " OR unidad = 'Siega mecánica de medianas < 1,5 m')";
+	return getBaseSumQuery2("unidad IN ('Siega mecánica de isletas', 'Siega mecánica de medianas', 'Siega mecánica de medianas < 1,5 m')");
     }
 
     public String getHerbicidadQuery() {
-	return getBaseQuery() + "Herbicida'";
+	return getBaseQuery("Herbicida");
     }
 
     public String getHerbicidaSumQuery() {
-	return getBaseSumQuery() + "Herbicida')";
+	return getBaseSumQuery("unidad = 'Herbicida'");
     }
 
     public String getVegetacionQuery() {
-	return getBaseQuery()
-		+ "Eliminación veg. mediana de HG y transp. a vertedero'";
+	return getBaseQuery("Eliminación veg. mediana de HG y transp. a vertedero");
     }
 
     public String getVegetacionSumQuery() {
-	return getBaseSumQuery()
-		+ "Eliminación veg. mediana de HG y transp. a vertedero')";
+	return getBaseSumQuery("unidad = 'Eliminación veg. mediana de HG y transp. a vertedero'");
     }
 
 }

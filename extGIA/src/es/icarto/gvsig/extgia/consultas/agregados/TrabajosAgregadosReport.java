@@ -73,7 +73,7 @@ public class TrabajosAgregadosReport extends PDFReport {
     protected void writeValues(Document document, DefaultTableModel tableModel,
 	    PdfPTable table, QueryType reportType) {
 	agregadosReportQueries = new TrabajosAgregadosReportQueries(
-		getElementID());
+		getElementID(), getFilters());
 	writeTable("Desbroce con retroaraña\n\n",
 		agregadosReportQueries.getDesbroceRetroaranhaQuery(),
 		agregadosReportQueries.getDesbroceRetroaranhaSumQuery());
@@ -113,9 +113,7 @@ public class TrabajosAgregadosReport extends PDFReport {
     }
 
     private void writeTotal(Document document, String title, String query) {
-	ResultSet rs = getValuesFromQuery(query
-		+ getFilters().getWhereClauseFiltersForAgregados(
-			getElementID(), true));
+	ResultSet rs = getValuesFromQuery(query);
 	try {
 	    rs.next();
 	    if (rs.getString(1) != null) {
@@ -163,17 +161,13 @@ public class TrabajosAgregadosReport extends PDFReport {
 	try {
 	    ResultSet resultMap;
 
-	    resultMap = getValuesFromQuery(contentQuery
-		    + getFilters().getWhereClauseFiltersForAgregados(
-			    getElementID(), false));
+	    resultMap = getValuesFromQuery(contentQuery);
 	    if (resultMap.next()) {
 		document.add(new Paragraph(tableTittle, bodyBoldStyle));
 		PdfPTable table = super.writeColumnNames(document);
 		writeTableContent(table, resultMap);
 		if (totalQuery != null) {
-		    resultMap = getValuesFromQuery(totalQuery
-			    + getFilters().getWhereClauseFiltersForAgregados(
-				    getElementID(), true));
+		    resultMap = getValuesFromQuery(totalQuery);
 		    PdfPCell totalCell = new PdfPCell(new Paragraph("TOTAL",
 			    bodyBoldStyle));
 		    totalCell.setHorizontalAlignment(Element.ALIGN_CENTER);

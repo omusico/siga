@@ -41,7 +41,7 @@ public class XLSTrabajosAgregadosReport {
     public XLSTrabajosAgregadosReport(String element, String outputFile,
 	    ConsultasFilters<Field> filters) {
 	this.element = element;
-	agregadosReportQueries = new TrabajosAgregadosReportQueries(element);
+	agregadosReportQueries = new TrabajosAgregadosReportQueries(element, filters);
 	this.filters = filters;
 	columnsStyles = new boolean[getColumnNames().length];
 	if (outputFile == null) {
@@ -131,19 +131,20 @@ public class XLSTrabajosAgregadosReport {
 
     }
 
-    private void writeTable(String title, String query, String totalQuery) {
+    private void writeTable(String title, String contentQuery, String totalQuery) {
 
 	ConnectionWrapper con = new ConnectionWrapper(DBSession
 		.getCurrentSession().getJavaConnection());
-	String q = query
-		+ filters.getWhereClauseFiltersForAgregados(element, false)
-		+ " UNION " + totalQuery
-		+ filters.getWhereClauseFiltersForAgregados(element, true);
-	DefaultTableModel table = con.execute(q);
+	DefaultTableModel table = con.execute(contentQuery);
 	if (table.getRowCount() > 1) {
 	    writeTitle(title);
 	    writeColumnNames();
 	    writeRows(table);
+	    
+	    if (totalQuery != null) {
+		table = con.execute(totalQuery);
+		writeRows(table);
+	    }
 	    nextRowIdx += 2;
 	}
     }
@@ -170,23 +171,10 @@ public class XLSTrabajosAgregadosReport {
     }
 
     private void writeRows(DefaultTableModel tableModel) {
-	int totalRow = -1;
 	for (int i = 0; i < tableModel.getRowCount(); i++) {
-	    String t = tableModel.getValueAt(i, 0).toString();
-	    if (t.equalsIgnoreCase("total")) {
-		totalRow = i;
-		continue;
-	    }
 	    Row row = sheet.createRow(nextRowIdx++);
 	    for (int column = 0; column < tableModel.getColumnCount(); column++) {
 		Object value = tableModel.getValueAt(i, column);
-		createCell(row, column, value);
-	    }
-	}
-	if (totalRow != -1) {
-	    Row row = sheet.createRow(nextRowIdx++);
-	    for (int column = 0; column < tableModel.getColumnCount(); column++) {
-		Object value = tableModel.getValueAt(totalRow, column);
 		createCell(row, column, value);
 	    }
 	}
@@ -220,9 +208,7 @@ public class XLSTrabajosAgregadosReport {
     private void writeTotal(String query) {
 	ConnectionWrapper con = new ConnectionWrapper(DBSession
 		.getCurrentSession().getJavaConnection());
-	String q = query
-		+ filters.getWhereClauseFiltersForAgregados(element, true);
-	DefaultTableModel table = con.execute(q);
+	DefaultTableModel table = con.execute(query);
 	Object total = table.getValueAt(0, getColumnNames().length - 1);
 	if ((total != null) && !total.toString().equals("0")) {
 	    writeRows(table);

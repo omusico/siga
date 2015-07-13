@@ -74,49 +74,21 @@ public class ConsultasFilters<E> implements QueryFiltersI {
 	this.fechaFin = fechaFin;
     }
 
-    public String getWhereClauseFiltersForAgregados(String element,
-	    boolean isSum) {
-	String query = "";
-	if (area != null || baseContratista != null || tramo != null) {
-	    if (isSum) {
-		query = " AND ";
-	    } else {
-		query = " AND a.";
-	    }
-	    query = query + ConsultasFieldNames.getElementId(element)
-		    + " IN (SELECT "
-		    + ConsultasFieldNames.getElementId(element) + " FROM "
-		    + DBFieldNames.GIA_SCHEMA + "." + element;
-	}
+    public String getWhereClauseFiltersForAgregados() {
+	
+    	String query = " ";
 	if (area != null) {
-	    query = query + " WHERE area_mantenimiento =  '" + area.getKey()
-		    + "'";
+	    query += " AND el.area_mantenimiento =  '" + area.getKey() + "'";
 	}
 	if (baseContratista != null) {
-	    if (!query.isEmpty()) {
-		query = query + " AND base_contratista =  '"
-			+ baseContratista.getKey() + "'";
-	    } else {
-		query = " WHERE base_contratista =  '"
-			+ baseContratista.getKey() + "'";
-	    }
+	    query += " AND el.base_contratista =  '" + baseContratista.getKey() + "'";
 	}
 	if (tramo != null) {
-	    if (!query.isEmpty()) {
-		query = query + " AND tramo =  '" + tramo.getKey() + "'";
-	    } else {
-		query = " WHERE tramo =  '" + tramo.getKey() + "'";
-	    }
+	    query += " AND el.tramo =  '" + tramo.getKey() + "'";
 	}
 
 	if (fechaInicio != null && fechaFin != null) {
-	    if (area != null || baseContratista != null || tramo != null) {
-		query = query + ") AND fecha_certificado BETWEEN '"
-			+ fechaInicio + "' AND '" + fechaFin + "'";
-	    } else {
-		query = query + " AND fecha_certificado BETWEEN '"
-			+ fechaInicio + "' AND '" + fechaFin + "'";
-	    }
+	    query += " AND sub.fecha BETWEEN '" + fechaInicio + "' AND '" + fechaFin + "'";
 	}
 
 	return query;
