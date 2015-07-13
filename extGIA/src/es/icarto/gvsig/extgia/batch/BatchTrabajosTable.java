@@ -184,6 +184,7 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 
 	private void save() {
 	    try {
+		stopCellEdition();
 		for (int i = 0; i < data.length; i++) {
 		    Value[] values = new Value[data[i].length];
 		    for (int j = 0; j < data[i].length; j++) {
@@ -211,6 +212,14 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 		    + PluginServices.getText(this,
 			    "addedInfo_msg_II"));
 	    closeWindow();
+	}
+    }
+    
+    protected void stopCellEdition() {
+	if (table.isEditing()) {
+	    if (table.getCellEditor() != null) {
+		table.getCellEditor().stopCellEditing();
+	    }
 	}
     }
 
