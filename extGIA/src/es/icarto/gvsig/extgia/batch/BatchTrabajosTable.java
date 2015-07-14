@@ -11,7 +11,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -73,7 +72,7 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
     private int medicionElementoColumnIndex;
     private int medicionLastJobColumnIndex;
 
-    private final Color nonEditableColumnForegndColor = Color.GRAY;
+    private final Color nonEditableColumnForegndColor = Color.LIGHT_GRAY;
     private BatchTrabajosTableModelListener batchTrabajosTableModelListener;
 
     public BatchTrabajosTable(ORMLite ormLite, String dbTableName, String[][] data,
@@ -118,7 +117,7 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	updateMedicion();
 
 	setColorForNonEditableColumns(nonEditableColumnForegndColor);
-	
+
 	initValidation();
     }
 
@@ -228,7 +227,7 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	    closeWindow();
 	}
     }
-    
+
     protected void stopCellEdition() {
 	if (table.isEditing()) {
 	    if (table.getCellEditor() != null) {
@@ -488,19 +487,19 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	    return cell;
 	}
     }
-    
+
     public JButton getSaveButton() {
 	return saveButton;
     }
-    
+
     public String[] getColumnDbNames() {
 	return columnDbNames;
     }
-    
+
     public ORMLite getOrmLite() {
 	return ormLite;
     }
-    
+
     public JTable getTable() {
 	return table;
     }
