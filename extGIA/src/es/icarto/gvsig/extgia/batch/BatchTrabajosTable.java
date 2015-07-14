@@ -46,6 +46,7 @@ import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.DomainValues;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
+import es.udc.cartolab.gvsig.navtable.format.ValueFactoryNT;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
@@ -204,7 +205,7 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 			if (data[i][j] == null) {
 			    values[j] = ValueFactory.createNullValue();
 			} else if (!data[i][j].isEmpty()) {
-			    values[j] = createValueByType(data[i][j], columnDbTypes[j]);
+			    values[j] = ValueFactoryNT.createValueByType(data[i][j], columnDbTypes[j]);
 			}else {
 			    values[j] = ValueFactory.createNullValue();
 			}
@@ -234,15 +235,6 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 		table.getCellEditor().stopCellEditing();
 	    }
 	}
-    }
-
-    private Value createValueByType(String value,int type) throws ParseException {
-	if (type == Types.NUMERIC || type == Types.DOUBLE) {
-	    if (value.contains(",")) {
-		value = value.replace(",", ".");
-	    }
-	}
-	return ValueFactory.createValueByType(value, type);
     }
 
     public HashMap<String, String> getTableDataRow(int row, int columns) {
