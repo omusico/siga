@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.IWindow;
+import com.iver.cit.gvsig.fmap.layers.FBitSet;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 
@@ -135,35 +136,28 @@ public abstract class BatchVegetationTrabajosAbstractSubForm extends GIASubForm 
 	    } catch (Exception e) {
 		iController.clearAll();
 		position = -1;
-		logger.error(e.getStackTrace());
+		logger.error(e.getMessage(), e);
 	    }
 	    PluginServices.getMDIManager().closeWindow(iWindow);
 	}
 
-	private String[][] getDataForFillingTable(
-		HashMap<String, String> values, SelectableDataSource recordset,
-		int selectedElements) throws ReadDriverException {
+	private String[][] getDataForFillingTable(HashMap<String, String> values, SelectableDataSource recordset, int selectedElements) throws ReadDriverException {
 	    String[][] data = new String[selectedElements][];
-	    int idFieldIndex = recordset
-		    .getFieldIndexByName(getIdFieldName());
-	    for (int i = 0; i < selectedElements; i++) {
-		if (recordset.isSelected(i)) {
-		    values.put(getIdFieldName(), recordset
-			    .getFieldValue(i, idFieldIndex).getStringValue(WRITER));
-
-		    getForeignValues(values, recordset
-			    .getFieldValue(i, idFieldIndex).getStringValue(WRITER));
-
-		    String[] row = new String[getColumnNames().length];
-		    for (int j = 0; j < getColumnNames().length; j++ ) {
-			if (values.containsKey(getColumnDbNames()[j])) {
-			    row[j] = values.get(getColumnDbNames()[j]);
-			}else {
-			    row[j] = "";
-			}
+	    int dataIdx = 0;
+	    int idFieldIdx = recordset.getFieldIndexByName(getIdFieldName());
+	    FBitSet selection = recordset.getSelection();
+	    for (int i = selection.nextSetBit(0); i >= 0; i = selection.nextSetBit(i+1)) {
+		values.put(getIdFieldName(), recordset.getFieldValue(i, idFieldIdx).getStringValue(WRITER));
+		getForeignValues(values, recordset.getFieldValue(i, idFieldIdx).getStringValue(WRITER));
+		String[] row = new String[getColumnNames().length];
+		for (int j = 0; j < getColumnNames().length; j++ ) {
+		    if (values.containsKey(getColumnDbNames()[j])) {
+			row[j] = values.get(getColumnDbNames()[j]);
+		    }else {
+			row[j] = "";
 		    }
-		    data[i] = row;
 		}
+		data[dataIdx++] = row;
 	    }
 	    return data;
 	}
