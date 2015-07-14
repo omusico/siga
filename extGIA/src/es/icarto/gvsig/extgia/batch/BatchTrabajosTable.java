@@ -286,7 +286,7 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	if (!longitudValue.toString().isEmpty() && !anchoValue.toString().isEmpty()) {
 	    Double medicionHerbicida = Double.parseDouble(longitudValue.toString()) *
 		    Double.parseDouble(anchoValue.toString().replace(",", "."));
-	    table.setValueAt(medicionHerbicida.toString(), row, column);
+	    table.setValueAt(medicionHerbicida.toString().replace(".", ","), row, column);
 	}
     }
 
