@@ -17,6 +17,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 
 import es.icarto.gvsig.extgia.forms.utils.GIASubForm;
+import es.icarto.gvsig.navtableforms.gui.tables.handler.BaseTableHandler;
 import es.icarto.gvsig.navtableforms.gui.tables.model.AlphanumericTableModel;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
@@ -33,11 +34,18 @@ public abstract class BatchVegetationTrabajosAbstractSubForm extends GIASubForm 
 
     private final ORMLite batchOrmLite;
 
-    public BatchVegetationTrabajosAbstractSubForm(String formFile, String basicName) {
+    private BaseTableHandler trabajosTableHandler;
+
+    public BatchVegetationTrabajosAbstractSubForm(String formFile,
+	    String basicName) {
 	super(basicName);
 	setForeingKey(new HashMap<String, String>());
 	batchOrmLite = new ORMLite(getMetadataPath());
 	getWindowInfo().setTitle("Añadir Trabajos: Datos comunes");
+    }
+
+    public void setTrabajoTableHandler(BaseTableHandler trabajosTableHandler) {
+	this.trabajosTableHandler = trabajosTableHandler;
     }
 
     @Override
@@ -51,7 +59,8 @@ public abstract class BatchVegetationTrabajosAbstractSubForm extends GIASubForm 
     public void actionCreateRecord() {
 	this.position = -1;
 	saveButton.removeActionListener(action);
-	action = new BatchCreateAction(this, getFormController(), model, batchOrmLite);
+	action = new BatchCreateAction(this, getFormController(), model,
+		batchOrmLite, trabajosTableHandler);
 	saveButton.addActionListener(action);
 	setListeners();
 	fillEmptyValues();
@@ -78,13 +87,16 @@ public abstract class BatchVegetationTrabajosAbstractSubForm extends GIASubForm 
 	private final IController iController;
 	private final AlphanumericTableModel model;
 	private final ORMLite batchOrmLite;
+	private final BaseTableHandler trabajosTableHandler;
 
 	public BatchCreateAction(IWindow iWindow, IController iController,
-		AlphanumericTableModel model, ORMLite batchOrmLite) {
+		AlphanumericTableModel model, ORMLite batchOrmLite,
+		BaseTableHandler trabajosTableHandler) {
 	    this.iWindow = iWindow;
 	    this.iController = iController;
 	    this.model = model;
 	    this.batchOrmLite = batchOrmLite;
+	    this.trabajosTableHandler = trabajosTableHandler;
 	}
 
 	@Override
@@ -125,9 +137,10 @@ public abstract class BatchVegetationTrabajosAbstractSubForm extends GIASubForm 
 		if (m == JOptionPane.OK_OPTION) {
 		    String[][] data = getDataForFillingTable(values, recordset,
 			    selectedElements);
-		    BatchTrabajosTable table = new BatchTrabajosTable(batchOrmLite, getDbTableName(),
-			    data, getColumnNames(), getColumnDbNames(),
-			    getColumnDbTypes());
+		    BatchTrabajosTable table = new BatchTrabajosTable(
+			    batchOrmLite, getDbTableName(), data,
+			    getColumnNames(), getColumnDbNames(),
+			    getColumnDbTypes(), trabajosTableHandler);
 		    PluginServices.getMDIManager().addCentredWindow(table);
 		}
 	    } catch (Exception e) {

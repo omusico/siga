@@ -61,6 +61,7 @@ import es.icarto.gvsig.extgia.forms.taludes.TaludesForm;
 import es.icarto.gvsig.extgia.forms.transformadores.TransformadoresForm;
 import es.icarto.gvsig.extgia.forms.valla_cierre.VallaCierreForm;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.navtableforms.gui.tables.handler.BaseTableHandler;
 import es.icarto.gvsig.navtableforms.gui.tables.model.AlphanumericTableModel;
 import es.icarto.gvsig.navtableforms.gui.tables.model.TableModelFactory;
 import es.icarto.gvsig.navtableforms.utils.FormFactory;
@@ -287,7 +288,7 @@ public class LaunchGIAForms {
     }
 
     public static void callBatchTrabajosSubFormDependingOfElement(
-	    String element, String formFileName, String dbTableName) {
+	    String element, String formFileName, String dbTableName, BaseTableHandler trabajosTableHandler) {
 	BatchAbstractSubForm subform = null;
 	BatchVegetationTrabajosAbstractSubForm vegetationSubForm = null;
 	switch (DBFieldNames.Elements.valueOf(element)) {
@@ -361,6 +362,7 @@ public class LaunchGIAForms {
 	    subform.actionCreateRecord();
 	}else {
 	    vegetationSubForm.setModel(model);
+	    vegetationSubForm.setTrabajoTableHandler(trabajosTableHandler);
 	    vegetationSubForm.actionCreateRecord();
 	}
     }

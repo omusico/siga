@@ -41,6 +41,8 @@ import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.toedter.calendar.JDateChooser;
 
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.navtableforms.gui.tables.handler.BaseTableHandler;
+import es.icarto.gvsig.navtableforms.gui.tables.model.BaseTableModel;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.DomainValues;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
@@ -71,12 +73,15 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
     private int medicionColumnIndex;
     private int medicionElementoColumnIndex;
     private int medicionLastJobColumnIndex;
+    private final BaseTableHandler trabajosTableHandler;
 
     private final Color nonEditableColumnForegndColor = Color.LIGHT_GRAY;
     private BatchTrabajosTableModelListener batchTrabajosTableModelListener;
 
-    public BatchTrabajosTable(ORMLite ormLite, String dbTableName, String[][] data,
-	    final String[] columnNames, final String[] columnDbNames, final Integer[] columnsDbTypes) {
+    public BatchTrabajosTable(ORMLite ormLite, String dbTableName,
+	    String[][] data, final String[] columnNames,
+	    final String[] columnDbNames, final Integer[] columnsDbTypes,
+	    BaseTableHandler trabajosTableHandler) {
 	super();
 	this.dbTableName = dbTableName;
 	this.columnNames = columnNames;
@@ -84,6 +89,7 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	this.columnDbTypes = columnsDbTypes;
 	this.ormLite = ormLite;
 	this.data = data;
+	this.trabajosTableHandler = trabajosTableHandler;
 	initTable();
     }
 
@@ -91,6 +97,7 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	this.setLayout(new BorderLayout());
 	table = new JTable(new BatchTrabajosTableModel());
 	table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
 	JScrollPane scrollPane = new JScrollPane(table);
 
 	cancelButton = new JButton("Cancelar");

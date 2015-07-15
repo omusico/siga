@@ -1,5 +1,17 @@
 package es.icarto.gvsig.extgia.forms.utils;
 
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.AREA_MANTENIMIENTO;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.BASE_CONTRATISTA;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.NOMBRE_VIA;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.NOMBRE_VIA_PF;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.PK;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.PK_FINAL;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.PK_INICIAL;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.SENTIDO;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TIPO_VIA;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TIPO_VIA_PF;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TRAMO;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -33,20 +45,8 @@ import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.BasicAbstractForm;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkButton;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkData;
+import es.icarto.gvsig.navtableforms.gui.tables.handler.BaseTableHandler;
 import es.udc.cartolab.gvsig.navtable.ToggleEditing;
-
-import static es.icarto.gvsig.extgia.preferences.DBFieldNames.AREA_MANTENIMIENTO;
-import static es.icarto.gvsig.extgia.preferences.DBFieldNames.BASE_CONTRATISTA;
-import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TRAMO;
-import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TIPO_VIA;
-import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TIPO_VIA_PF;
-import static es.icarto.gvsig.extgia.preferences.DBFieldNames.NOMBRE_VIA_PF;
-import static es.icarto.gvsig.extgia.preferences.DBFieldNames.NOMBRE_VIA;
-import static es.icarto.gvsig.extgia.preferences.DBFieldNames.PK;
-import static es.icarto.gvsig.extgia.preferences.DBFieldNames.PK_INICIAL;
-import static es.icarto.gvsig.extgia.preferences.DBFieldNames.PK_FINAL;
-import static es.icarto.gvsig.extgia.preferences.DBFieldNames.SENTIDO;
-
 
 @SuppressWarnings("serial")
 public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm {
@@ -159,9 +159,16 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 	}
 
 	if (addTrabajosBatchListener == null && addTrabajosBatchButton != null) {
+	    BaseTableHandler trabajosTableHandler = null;
+	    for (BaseTableHandler th : getTableHandlers()) {
+		if (th.getJTable().getName().equals(getTrabajosDBTableName())) {
+		    trabajosTableHandler = th;
+		    break;
+		}
+	    }
 	    addTrabajosBatchListener = new AddTrabajosBatchListener(
 		    getElement(), getTrabajosFormFileName(),
-		    getTrabajosDBTableName());
+		    getTrabajosDBTableName(), trabajosTableHandler);
 	    addTrabajosBatchButton.addActionListener(addTrabajosBatchListener);
 	}
 

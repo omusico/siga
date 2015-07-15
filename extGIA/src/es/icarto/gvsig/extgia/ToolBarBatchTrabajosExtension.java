@@ -52,10 +52,12 @@ public class ToolBarBatchTrabajosExtension extends Extension {
 			showWarning("Debe tener elementos seleccionados en la capa");
 			return;
 		    }
-		    LaunchGIAForms.callBatchTrabajosSubFormDependingOfElement(
-			    layer.getName(), "forms/" + layer.getName()
-			    + "_trabajos.jfrm", layer.getName()
-			    + "_trabajos");
+		    LaunchGIAForms
+			    .callBatchTrabajosSubFormDependingOfElement(layer
+				    .getName(), "forms/" + layer.getName()
+				    + "_trabajos.jfrm",
+				    (layer.getName() + "_trabajos")
+					    .toLowerCase(), null);
 		    return;
 		}
 	    }
