@@ -104,10 +104,7 @@ public abstract class BatchVegetationTrabajosAbstractSubForm extends GIASubForm 
 		recordset = layer.getRecordset();
 		int selectedElements = 0;
 		if (recordset.getSelection().isEmpty()) {
-		    JOptionPane.showMessageDialog(null, PluginServices.getText(
-			    this, "unselectedElements_msg"), PluginServices
-			    .getText(this, "warning"),
-			    JOptionPane.WARNING_MESSAGE);
+		    logger.warn("No hay registros seleccionados");
 		    return;
 		}
 		selectedElements = recordset.getSelection().cardinality();

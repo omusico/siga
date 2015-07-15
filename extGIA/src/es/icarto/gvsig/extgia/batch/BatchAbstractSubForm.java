@@ -84,10 +84,7 @@ public abstract class BatchAbstractSubForm extends GIASubForm {
 		int idFieldIndex = recordset
 			.getFieldIndexByName(getIdFieldName());
 		if (recordset.getSelection().isEmpty()) {
-		    JOptionPane.showMessageDialog(null, PluginServices.getText(
-			    this, "unselectedElements_msg"), PluginServices
-			    .getText(this, "warning"),
-			    JOptionPane.WARNING_MESSAGE);
+		    logger.warn("No record selected");
 		    return;
 		}
 		selectedElements = recordset.getSelection().cardinality();
@@ -98,10 +95,10 @@ public abstract class BatchAbstractSubForm extends GIASubForm {
 		int m = JOptionPane.showOptionDialog(
 			null,
 			PluginServices.getText(this, "addInfo_msg_I")
-				+ selectedElements
-				+ " "
-				+ PluginServices
-					.getText(this, "addInfo_msg_II"), null,
+			+ selectedElements
+			+ " "
+			+ PluginServices
+			.getText(this, "addInfo_msg_II"), null,
 			JOptionPane.YES_NO_CANCEL_OPTION,
 			JOptionPane.INFORMATION_MESSAGE, null, options,
 			options[1]);
@@ -122,10 +119,10 @@ public abstract class BatchAbstractSubForm extends GIASubForm {
 		    JOptionPane.showMessageDialog(
 			    null,
 			    PluginServices.getText(this, "addedInfo_msg_I")
-				    + selectedElements
-				    + " "
-				    + PluginServices.getText(this,
-					    "addedInfo_msg_II"));
+			    + selectedElements
+			    + " "
+			    + PluginServices.getText(this,
+				    "addedInfo_msg_II"));
 
 		}
 		model.dataChanged();
