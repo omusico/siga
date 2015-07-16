@@ -669,6 +669,8 @@ public class GeneralLabelingStrategy implements ILabelingStrategy, Cloneable,Car
 						} else {
 							preTexts.add(labelContents.toString());
 						}
+					} else { 
+					    preTexts.add("");
 					}
 				}
 				texts = new String[preTexts.size()];
