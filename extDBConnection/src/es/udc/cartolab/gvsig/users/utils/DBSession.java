@@ -409,13 +409,15 @@ public class DBSession {
 	if (numFieldsOrder > 0) {
 	    query = query + " ORDER BY ";
 	    for (int i=0; i<numFieldsOrder-1; i++) {
-		query = query + orderBy[i] + ", ";
+		query = query + orderBy[i];
+		if (desc) {
+		    query = query + " DESC";
+		}
+		query += ", ";
 	    }
 	    query = query + orderBy[orderBy.length-1];
 
-	    if (desc) {
-		query = query + " DESC";
-	    }
+	    
 	}
 
 	PreparedStatement stat = con.prepareStatement(query);
