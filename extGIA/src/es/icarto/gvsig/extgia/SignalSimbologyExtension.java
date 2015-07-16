@@ -1,7 +1,10 @@
 package es.icarto.gvsig.extgia;
 
+import java.awt.Component;
+
+import javax.swing.JOptionPane;
+
 import com.iver.andami.PluginServices;
-import com.iver.andami.messages.NotificationManager;
 import com.iver.andami.plugins.Extension;
 import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
@@ -25,11 +28,17 @@ public class SignalSimbologyExtension extends Extension {
 	final FLyrVect signals = tocLayerManager
 		.getLayerByName(DBFieldNames.SENHALIZACION_VERTICAL_SENHALES_LAYERNAME);
 	if ((postes == null) || (signals == null)) {
-	    NotificationManager
-		    .addWarning("La capa de señales o de postes no está cargada en el TOC");
+	    showWarning("La capas 'Senhalizacion_Vertical' y 'Senhales' deben estar cargadas en el TOC");
 	    return;
 	}
 	new ApplySignalSimbology(postes, signals);
+    }
+
+    private void showWarning(String msg) {
+	JOptionPane.showMessageDialog(
+		(Component) PluginServices.getMainFrame(), msg, "Aviso",
+		JOptionPane.WARNING_MESSAGE);
+
     }
 
     @Override
