@@ -7,12 +7,9 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -29,15 +26,15 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 
-import com.hardcode.gdbms.engine.values.Value;
-import com.hardcode.gdbms.engine.values.ValueFactory;
+import org.apache.log4j.Logger;
+
 import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.andami.ui.mdiManager.WindowInfo;
+import com.iver.cit.gvsig.fmap.edition.IEditableSource;
 import com.toedter.calendar.JDateChooser;
 
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
@@ -46,9 +43,9 @@ import es.icarto.gvsig.navtableforms.gui.tables.model.BaseTableModel;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.DomainValues;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
+import es.icarto.gvsig.navtableforms.utils.TOCTableManager;
+import es.udc.cartolab.gvsig.navtable.dataacces.TableController;
 import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
-import es.udc.cartolab.gvsig.navtable.format.ValueFactoryNT;
-import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
 public class BatchTrabajosTable extends JPanel implements IWindow {
@@ -65,18 +62,11 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
     private JButton cancelButton;
     private JButton saveButton;
 
-    private JComboBox unidadComboBox;
-
-    private int unidadColumnIndex;
-    private int longitudColumnIndex;
-    private int anchoColumnIndex;
-    private int medicionColumnIndex;
-    private int medicionElementoColumnIndex;
-    private int medicionLastJobColumnIndex;
+    private BatchTrabajosCalculation foo;
     private final BaseTableHandler trabajosTableHandler;
 
-    private final Color nonEditableColumnForegndColor = Color.LIGHT_GRAY;
-    private BatchTrabajosTableModelListener batchTrabajosTableModelListener;
+    private static final Logger logger = Logger
+	    .getLogger(BatchTrabajosTable.class);
 
     public BatchTrabajosTable(ORMLite ormLite, String dbTableName,
 	    String[][] data, final String[] columnNames,
@@ -116,59 +106,47 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	this.add(scrollPane, BorderLayout.CENTER);
 	this.add(buttonPane, BorderLayout.SOUTH);
 
-	getTableColumnsIndex();
-
 	setUnidadCellEditorAsComboBox();
 	setFechaCellEditorAsJDateChooser();
 
-	updateMedicion();
+	foo = new BatchTrabajosCalculation(this, dbTableName, columnDbNames[0]);
+	table.setDefaultRenderer(Object.class, new ColorColumnRenderer(foo));
 
-	setColorForNonEditableColumns(nonEditableColumnForegndColor);
+	foo.updateAllRows();
+	autoFit();
 
-	initValidation();
+	table.getModel().addTableModelListener(foo);
     }
 
-    private void initValidation() {
-	batchTrabajosTableModelListener = new BatchTrabajosTableModelListener(this);
-	table.getModel().addTableModelListener(batchTrabajosTableModelListener);
-    }
+    private void autoFit() {
+	int avaliable = table.getColumnModel().getTotalColumnWidth();
 
-    private void getTableColumnsIndex() {
-	unidadColumnIndex = table.getColumn("Unidad").getModelIndex();
-	medicionColumnIndex = table.getColumn("Medición").getModelIndex();
-	if (!dbTableName.equals("senhalizacion_vertical_trabajos")) {
-	    longitudColumnIndex = table.getColumn("Longitud").getModelIndex();
-	    anchoColumnIndex = table.getColumn("Ancho").getModelIndex();
-	    if (!dbTableName.equals("barrera_rigida_trabajos")) {
-		medicionElementoColumnIndex = table.getColumn("Medición elemento").getModelIndex();
-	    }
-	    medicionLastJobColumnIndex = table.getColumn("Medición último trabajo").getModelIndex();
+	int[] maxLengths = ((BatchTrabajosTableModel) table.getModel())
+		.getMaxLengths();
+	double needed = 0.0;
+	for (int i = 0; i < table.getColumnCount(); i++) {
+	    int m = (table.getColumnName(i).length() > maxLengths[i]) ? table
+		    .getColumnName(i).length() : maxLengths[i];
+	    needed += m;
 	}
-    }
 
-    private void setColorForNonEditableColumns(Color color) {
-	for (int i = 0; i < columnNames.length; i++) {
-	    TableColumn column = table.getColumnModel().getColumn(i);
-	    if (!isColumnEditable(column)) {
-		column.setCellRenderer(new ColorColumnRenderer(color));
-	    }
+	for (int i = 0; i < table.getModel().getColumnCount(); i++) {
+	    double preferredWidth = avaliable * (maxLengths[i] / needed);
+
+	    preferredWidth = 150;
+	    table.getColumnModel().getColumn(i)
+	    .setPreferredWidth((int) preferredWidth);
 	}
-    }
-
-    private void udapteColorLongitudAndAnchoColumns(Color color) {
-	TableColumn longitudColumn = table.getColumnModel().getColumn(longitudColumnIndex);
-	longitudColumn.setCellRenderer(new ColorColumnRenderer(color));
-	TableColumn anchoColumn = table.getColumnModel().getColumn(anchoColumnIndex);
-	anchoColumn.setCellRenderer(new ColorColumnRenderer(color));
     }
 
     @Override
     public WindowInfo getWindowInfo() {
-	if (viewInfo==null) {
-	    viewInfo = new WindowInfo(WindowInfo.ICONIFIABLE |
-		    WindowInfo.MAXIMIZABLE | WindowInfo.RESIZABLE | WindowInfo.PALETTE);
+	if (viewInfo == null) {
+	    viewInfo = new WindowInfo(WindowInfo.ICONIFIABLE
+		    | WindowInfo.MAXIMIZABLE | WindowInfo.RESIZABLE
+		    | WindowInfo.PALETTE);
 	    viewInfo.setTitle(PluginServices.getText(this, "Añadir Trabajos"));
-	    viewInfo.setWidth(740);
+	    viewInfo.setWidth((int) table.getPreferredSize().getWidth() + 10);
 	    viewInfo.setHeight(480);
 	}
 	return viewInfo;
@@ -181,6 +159,12 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 
     private void closeWindow() {
 	PluginServices.getMDIManager().closeWindow(this);
+    }
+
+    private void showWarning(String msg) {
+	JOptionPane.showMessageDialog(
+		(Component) PluginServices.getMainFrame(), msg, "Aviso",
+		JOptionPane.WARNING_MESSAGE);
     }
 
     public class ButtonsHandler implements ActionListener {
@@ -198,44 +182,62 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	}
 
 	private void save() {
+	    stopCellEdition();
+	    if (!foo.validate()) {
+		showWarning("Hay valores incorrectos en la tabla");
+		saveButton.setEnabled(false);
+		return;
+	    }
+
 	    try {
-		stopCellEdition();
-		if (! batchTrabajosTableModelListener.validate()) {
-		    JOptionPane.showMessageDialog(null, "Hay valores incorrectos en la tabla");
-		    saveButton.setEnabled(false);
-		    return;
-		}
+		TOCTableManager tm = new TOCTableManager();
+		IEditableSource source = tm.getTableModelByName(dbTableName);
 		for (int i = 0; i < data.length; i++) {
-		    Value[] values = new Value[data[i].length];
+		    HashMap<String, String> newValues = new HashMap<String, String>();
 		    for (int j = 0; j < data[i].length; j++) {
-			if (data[i][j] == null) {
-			    values[j] = ValueFactory.createNullValue();
-			} else if (!data[i][j].isEmpty()) {
-			    values[j] = ValueFactoryNT.createValueByType(data[i][j], columnDbTypes[j]);
-			}else {
-			    values[j] = ValueFactory.createNullValue();
-			}
+			String v = (data[i][j] == null) ? "" : data[i][j];
+			newValues.put(columnDbNames[j], v);
 		    }
-		    DBSession.getCurrentSession().insertRow(DBFieldNames.GIA_SCHEMA,
-			    dbTableName, columnDbNames, values);
+
+		    // workaround. Si la unidad no es herbicida ponemos a null a
+		    // la hora de guardar
+		    // longitud y ancho
+		    String unidad = newValues.get("unidad");
+		    if ((unidad != null)
+			    && (!unidad.equalsIgnoreCase("herbicida"))) {
+			newValues.remove("ancho");
+			newValues.remove("longitud");
+		    }
+
+		    TableController tableController = new TableController(
+			    source);
+		    tableController.create(newValues);
 		}
-	    } catch (SQLException e1) {
-		e1.printStackTrace();
-	    } catch (ParseException e2) {
-		e2.printStackTrace();
+		if (trabajosTableHandler != null) {
+		    BaseTableModel m = (BaseTableModel) trabajosTableHandler
+			    .getJTable().getModel();
+		    m.dataChanged();
+		    // workaround. next line should work if createTableModel in
+		    // GIATableHandler doesnt ofuscate it
+		    // trabajosTableHandler.getModel().dataChanged();
+		}
+
+	    } catch (Exception e) {
+		logger.error(e.getStackTrace(), e);
+		showWarning("Problema desconocido guardando la capa. Los datos no serán salvados");
+		return;
 	    }
 	    JOptionPane.showMessageDialog(
 		    null,
 		    PluginServices.getText(this, "addedInfo_msg_I")
-		    + data.length
-		    + " "
-		    + PluginServices.getText(this,
-			    "addedInfo_msg_II"));
+			    + data.length + " "
+			    + PluginServices.getText(this, "addedInfo_msg_II"));
+
 	    closeWindow();
 	}
     }
 
-    protected void stopCellEdition() {
+    private void stopCellEdition() {
 	if (table.isEditing()) {
 	    if (table.getCellEditor() != null) {
 		table.getCellEditor().stopCellEditing();
@@ -252,175 +254,50 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
     }
 
     private void setUnidadCellEditorAsComboBox() {
-	DomainValues unidadValues = ormLite.getAppDomain().getDomainValuesForComponent(
-		DBFieldNames.UNIDAD);
-	unidadComboBox = new JComboBox();
+	DomainValues unidadValues = ormLite.getAppDomain()
+		.getDomainValuesForComponent(DBFieldNames.UNIDAD);
+	JComboBox unidadComboBox = new JComboBox();
 	for (KeyValue value : unidadValues.getValues()) {
 	    unidadComboBox.addItem(value.toString());
 	}
-	unidadComboBox.addActionListener(new BatchUnidadListener());
 	Enumeration<TableColumn> columns = table.getColumnModel().getColumns();
 	while (columns.hasMoreElements()) {
 	    TableColumn unidadColumn = columns.nextElement();
-	    if (unidadColumn.getHeaderValue().toString().equalsIgnoreCase(DBFieldNames.UNIDAD)) {
-		unidadColumn.setCellEditor(new DefaultCellEditor(unidadComboBox));
+	    if (unidadColumn.getHeaderValue().toString()
+		    .equalsIgnoreCase(DBFieldNames.UNIDAD)) {
+		unidadColumn
+			.setCellEditor(new DefaultCellEditor(unidadComboBox));
 		break;
 	    }
 	}
-    }
-
-    private void updateMedicion() {
-	String medicionValue = null;
-
-	for (int i = 0; i < data.length; i++) {
-	    if (table.getValueAt(i, medicionLastJobColumnIndex) != null) {
-		medicionValue = data[i][medicionLastJobColumnIndex];
-	    }else if (table.getValueAt(i, medicionElementoColumnIndex) != null) {
-		medicionValue = data[i][medicionElementoColumnIndex];
-	    }
-	    table.setValueAt(medicionValue.toString(), i, medicionColumnIndex);
-
-	    if (data[i][unidadColumnIndex].toString().equals("Herbicida")) {
-		updateMedicionHerbicida(i, medicionColumnIndex);
-	    }
-	    table.repaint();
-	}
-    }
-
-    private void updateMedicionHerbicida(int row, int column) {
-	Object longitudValue = table.getValueAt(row, longitudColumnIndex);
-	Object anchoValue = table.getValueAt(row, anchoColumnIndex);
-	if (!longitudValue.toString().isEmpty() && !anchoValue.toString().isEmpty()) {
-	    Double medicionHerbicida = Double.parseDouble(longitudValue.toString()) *
-		    Double.parseDouble(anchoValue.toString().replace(",", "."));
-	    table.setValueAt(medicionHerbicida.toString().replace(".", ","), row, column);
-	}
-    }
-
-    private class BatchUnidadListener implements ActionListener {
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    int medicionColumn = table.getColumn("Medición").getModelIndex();
-	    int medicionLastJobColumn = table.getColumn("Medición último trabajo").getModelIndex();
-
-	    JComboBox unidadComboBox = (JComboBox)e.getSource();
-	    int row = table.getSelectedRow();
-	    if (unidadComboBox.getSelectedItem().toString().equals("Herbicida")) {
-		udapteColorLongitudAndAnchoColumns(Color.BLACK);
-		updateMedicionHerbicida(row, medicionColumn);
-		if (row != -1) {
-		    table.setValueAt(getMedicionLastJobValueByUnit(row), row, medicionLastJobColumn);
-		}
-	    } else {
-		udapteColorLongitudAndAnchoColumns(nonEditableColumnForegndColor);
-		updateMedicion();
-		if (row != -1 && getMedicionLastJobValueByUnit(row) != null) {
-		    table.setValueAt(getMedicionLastJobValueByUnit(row), row, medicionLastJobColumn);
-		    table.setValueAt(getMedicionLastJobValueByUnit(row), row, medicionColumn);
-		}
-	    }
-	    table.repaint();
-	}
-
-	//TODO: This method is copied from CalculateDBForeignValueLastJob class.
-	private String getMedicionLastJobValueByUnit(int row) {
-	    try {
-		Connection connection = DBSession.getCurrentSession().getJavaConnection();
-		PreparedStatement statement = connection.prepareStatement(getSQLSentence(row));
-		ResultSet rs = statement.executeQuery();
-		if (rs.next()) {
-		    if (rs.getString(1) != null) {
-			if (rs.getString(1).contains(".")) {
-			    return rs.getString(1).replace(".", ",");
-			} else {
-			    return rs.getString(1);
-			}
-		    }
-		}
-	    } catch (SQLException e) {
-		e.printStackTrace();
-	    }
-	    return null;
-	}
-
-
-	//TODO: This method is copied from CalculateDBForeignValueLastJob class
-	protected String getSQLSentence(int row) {
-	    if (unidadComboBox.getSelectedItem().toString().equalsIgnoreCase(" ") || !getLastJobByUnit(row)) {
-		return "SELECT " + DBFieldNames.MEDICION + " FROM " + DBFieldNames.GIA_SCHEMA + "."
-			+ dbTableName + " WHERE " + columnDbNames[0] + " = " + "'" + data[row][0]
-				+ "'" +" AND " + DBFieldNames.FECHA + " IN (SELECT max(" + DBFieldNames.FECHA + ") FROM "
-				+ DBFieldNames.GIA_SCHEMA + "." + dbTableName + " WHERE " + columnDbNames[0] + " = "
-				+ "'" + data[row][0] + "')";
-	    } else {
-		return "SELECT " + DBFieldNames.MEDICION + " FROM " + DBFieldNames.GIA_SCHEMA + "."
-			+ dbTableName + " WHERE " + columnDbNames[0] + " = " + "'" + data[row][0]
-				+ "'" +" AND " + DBFieldNames.FECHA + " IN (SELECT max(" + DBFieldNames.FECHA + ") FROM "
-				+ DBFieldNames.GIA_SCHEMA + "." + dbTableName + " WHERE " + columnDbNames[0] + " = "
-				+ "'" + data[row][0] + "' AND unidad = '" + unidadComboBox.getSelectedItem().toString() + "')";
-	    }
-	}
-
-	//TODO: This method is copied from CalculateDBForeignValueLastJob class
-	protected Boolean getLastJobByUnit(int row) {
-	    if (!unidadComboBox.getSelectedItem().toString().equalsIgnoreCase(" ")) {
-		try {
-		    Connection connection = DBSession.getCurrentSession().getJavaConnection();
-		    PreparedStatement statement;
-		    String query = "SELECT " + DBFieldNames.MEDICION + " FROM " + DBFieldNames.GIA_SCHEMA + "."
-			    + dbTableName + " WHERE " + columnDbNames[0] + " = " + "'" + data[row][0]
-				    + "'" +" AND " + DBFieldNames.UNIDAD + " = '" + unidadComboBox.getSelectedItem().toString() + "'";
-		    statement = connection.prepareStatement(query);
-		    ResultSet rs = statement.executeQuery();
-		    return rs.next();
-		} catch (SQLException e) {
-		    e.printStackTrace();
-		}
-	    }
-	    return null;
-	}
-
     }
 
     private void setFechaCellEditorAsJDateChooser() {
 	Enumeration<TableColumn> columns = table.getColumnModel().getColumns();
 	while (columns.hasMoreElements()) {
 	    TableColumn unidadColumn = columns.nextElement();
-	    if (unidadColumn.getHeaderValue().toString().equalsIgnoreCase(DBFieldNames.FECHA)) {
+	    if (unidadColumn.getHeaderValue().toString()
+		    .equalsIgnoreCase(DBFieldNames.FECHA)) {
 		unidadColumn.setCellEditor(new DateCellEditor());
 		break;
 	    }
 	}
     }
 
-    private boolean isColumnEditable(TableColumn column) {
-	for (int i = 0; i < DBFieldNames.trabajosVegetacionTableEditableCells.length; i++) {
-	    if (DBFieldNames.trabajosVegetacionTableEditableCells[i].equals(column.getHeaderValue().
-		    toString())) {
-		return true;
-	    }
-	    if (unidadComboBox.getSelectedItem().toString().equals("Herbicida")) {
-		if (column.getHeaderValue().toString().equals("Longitud") ||
-			column.getHeaderValue().toString().equals("Ancho")) {
-		    return true;
-		}
-	    }
-	}
-	return false;
-    }
-
-    public class DateCellEditor extends AbstractCellEditor implements TableCellEditor {
+    public class DateCellEditor extends AbstractCellEditor implements
+	    TableCellEditor {
 	JDateChooser dateChooser = new JDateChooser();
 	SimpleDateFormat dateFormat = DateFormatNT.getDateFormat();
 
 	@Override
-	public Component getTableCellEditorComponent (JTable table, Object value,
-		boolean isSelected, int row, int column) {
+	public Component getTableCellEditorComponent(JTable table,
+		Object value, boolean isSelected, int row, int column) {
 	    dateChooser.setDateFormatString(dateFormat.toPattern());
 	    dateChooser.getDateEditor().setEnabled(false);
-	    dateChooser.getDateEditor().getUiComponent().setBackground(new Color(255, 255, 255));
-	    dateChooser.getDateEditor().getUiComponent().setFont(new Font("Arial", Font.PLAIN, 11));
+	    dateChooser.getDateEditor().getUiComponent()
+		    .setBackground(new Color(255, 255, 255));
+	    dateChooser.getDateEditor().getUiComponent()
+		    .setFont(new Font("Arial", Font.PLAIN, 11));
 	    dateChooser.getDateEditor().getUiComponent().setToolTipText(null);
 	    if (!value.toString().isEmpty()) {
 		try {
@@ -434,7 +311,7 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	}
 
 	@Override
-	public Object getCellEditorValue () {
+	public Object getCellEditorValue() {
 	    return dateFormat.format(dateChooser.getDate());
 	}
     }
@@ -463,35 +340,54 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 
 	@Override
 	public void setValueAt(Object value, int row, int col) {
-	    data[row][col] = (String) value;
-	    fireTableCellUpdated(row, col);
+	    if ((data[row][col] == null) && (value != null)) {
+		data[row][col] = (String) value;
+		fireTableCellUpdated(row, col);
+	    } else if ((data[row][col] == null) && (value == null)) {
+		return;
+	    } else if ((data[row][col] != null)
+		    && (!data[row][col].equals(value))) {
+		data[row][col] = (String) value;
+		fireTableCellUpdated(row, col);
+	    }
 	}
 
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
+	    // TODO
 	    TableColumn column = table.getColumnModel().getColumn(columnIndex);
-	    return isColumnEditable(column);
+
+	    for (int i = 0; i < DBFieldNames.trabajosVegetacionTableEditableCells.length; i++) {
+		if (DBFieldNames.trabajosVegetacionTableEditableCells[i]
+			.equals(column.getHeaderValue().toString())) {
+		    return true;
+		}
+	    }
+	    int unidadColumnIndex = table.getColumn("Unidad").getModelIndex();
+	    Object foo = getValueAt(rowIndex, unidadColumnIndex);
+	    if ((foo != null) && (foo.toString().equals("Herbicida"))) {
+		if (column.getHeaderValue().toString().equals("Longitud")
+			|| column.getHeaderValue().toString().equals("Ancho")) {
+		    return true;
+		}
+	    }
+	    return false;
 	}
-    }
 
-    class ColorColumnRenderer extends DefaultTableCellRenderer
-    {
-	Color fgndColor;
+	public int[] getMaxLengths() {
+	    int[] maxLengths = new int[getColumnCount()];
+	    Arrays.fill(maxLengths, 50);
 
-	public ColorColumnRenderer(Color foregnd) {
-	    super();
-	    fgndColor = foregnd;
-	}
-
-	@Override
-	public Component getTableCellRendererComponent
-	(JTable table, Object value, boolean isSelected,
-		boolean hasFocus, int row, int column)
-	{
-	    Component cell = super.getTableCellRendererComponent
-		    (table, value, isSelected, hasFocus, row, column);
-	    cell.setForeground( fgndColor );
-	    return cell;
+	    for (int i = 0; i < getRowCount(); i++) {
+		for (int j = 0; j < getColumnCount(); j++) {
+		    final Object o = getValueAt(i, j);
+		    int l = (o == null) ? 0 : o.toString().length();
+		    if (l > maxLengths[j]) {
+			maxLengths[j] = l;
+		    }
+		}
+	    }
+	    return maxLengths;
 	}
     }
 
