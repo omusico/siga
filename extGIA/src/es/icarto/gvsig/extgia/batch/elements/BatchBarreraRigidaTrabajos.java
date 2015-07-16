@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import es.icarto.gvsig.extgia.batch.BatchVegetationTrabajosAbstractSubForm;
+import es.icarto.gvsig.extgia.forms.barrera_rigida.CalculateBarreraRigidaTrabajosLongitud;
 import es.icarto.gvsig.extgia.forms.barrera_rigida.CalculateBarreraRigidaTrabajosMedicionUltimoTrabajo;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 
@@ -37,7 +38,7 @@ public class BatchBarreraRigidaTrabajos extends BatchVegetationTrabajosAbstractS
 
     @Override
     public String[] getColumnNames() {
-	String[] columnNames = {"ID Barrera Rígida ",
+	String[] columnNames = {"ID Barrera Rígida",
 		"Fecha",
 		"Unidad",
 		"Longitud",
@@ -68,7 +69,7 @@ public class BatchBarreraRigidaTrabajos extends BatchVegetationTrabajosAbstractS
 	Integer[] columnTypes = {Types.VARCHAR,
 		Types.DATE,
 		Types.VARCHAR,
-		Types.INTEGER,
+		Types.NUMERIC,
 		Types.NUMERIC,
 		Types.NUMERIC,
 		Types.NUMERIC,
@@ -82,6 +83,8 @@ public class BatchBarreraRigidaTrabajos extends BatchVegetationTrabajosAbstractS
 	Map<String, String> primaryKey = new HashMap<String, String>();
 	primaryKey.put(getIdFieldName(), idValue);
 
+	values.put(DBFieldNames.LONGITUD, new CalculateBarreraRigidaTrabajosLongitud(
+		primaryKey).getForeignValue().getValue());
 	values.put(DBFieldNames.MEDICION_ULTIMO_TRABAJO, new CalculateBarreraRigidaTrabajosMedicionUltimoTrabajo(
 		primaryKey, values.get(DBFieldNames.UNIDAD)).getForeignValue().getValue());
 
