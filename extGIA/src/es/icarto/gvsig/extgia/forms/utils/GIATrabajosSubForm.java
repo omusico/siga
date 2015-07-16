@@ -36,8 +36,9 @@ public abstract class GIATrabajosSubForm extends GIASubForm {
 	for (ForeignValue fv : getForeignValues()) {
 	    JTextField component = (JTextField) getFormPanel()
 		    .getComponentByName(fv.getComponent());
-	    component.setText(fv.getValue());
-	    getFormController().setValue(fv.getComponent(), fv.getValue());
+	    String v = (fv.getValue() != null) ? fv.getValue() : "";
+	    component.setText(v);
+	    getFormController().setValue(fv.getComponent(), v);
 	}
     }
 
@@ -52,7 +53,7 @@ public abstract class GIATrabajosSubForm extends GIASubForm {
 		break;
 	    }
 	    if (fv.getComponent().equalsIgnoreCase(DBFieldNames.MEDICION_ELEMENTO)
-		    && !fv.getValue().isEmpty()) {
+		    && fv.getValue() != null) {
 		medicionComponent.setText(fv.getValue());
 		getFormController().setValue(medicionComponent.getName(), fv.getValue());
 	    }
