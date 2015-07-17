@@ -260,12 +260,12 @@ public class ConsultasPanel extends ValidatableForm implements ActionListener {
 	PreparedStatement statement;
 	String query;
 	if (tipoConsulta.equals("Características")) {
-	    query = "SELECT DISTINCT(id, item) FROM audasa_extgia_dominios.elemento "
-		    + "WHERE id_fieldname IS NOT NULL";
+	    query = "SELECT id, item FROM audasa_extgia_dominios.elemento "
+		    + "WHERE id_fieldname IS NOT NULL GROUP BY id, item";
 	} else {
-	    query = "SELECT DISTINCT(id, item) FROM audasa_extgia_dominios.elemento "
+	    query = "SELECT id, item FROM audasa_extgia_dominios.elemento "
 		    + "WHERE  id_fieldname IS NOT NULL AND " + tipoConsulta
-		    + " = " + "true;";
+		    + " = " + "true GROUP BY id, item";
 	}
 	try {
 	    Connection connection = DBSession.getCurrentSession()
