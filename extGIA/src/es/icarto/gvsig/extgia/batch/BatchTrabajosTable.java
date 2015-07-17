@@ -312,7 +312,11 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 
 	@Override
 	public Object getCellEditorValue() {
-	    return dateFormat.format(dateChooser.getDate());
+	    final Date date = dateChooser.getDate();
+	    if (date != null) {
+		return dateFormat.format(date);		
+	    }
+	    return "";
 	}
     }
 
