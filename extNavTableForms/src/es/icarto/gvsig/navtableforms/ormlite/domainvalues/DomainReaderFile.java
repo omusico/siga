@@ -19,15 +19,20 @@ package es.icarto.gvsig.navtableforms.ormlite.domainvalues;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+
+import org.apache.log4j.Logger;
 
 
 /**
  * DomainReader which reads the values from a file.
  * The file must be in the same dir as the xml.
+ * 
+ * File must use UTF8 encoding if it has "weird" chars
  * 
  * XML syntax example:
  * 
@@ -35,6 +40,7 @@ import java.util.ArrayList;
  *	<DRTYPE>file</DRTYPE>
  *	<DRFILENAME>example1</DRFILENAME>
  *	<DRFILEFIELDALIAS>gestion</DRFILEFIELDALIAS>
+ *  <DRADDVOIDVALUE>boolean</DRADDVOIDVALUE>
  * </DOMAINREADER>
  * 
  * @author Jorge López <jlopez@cartolab.es>
@@ -42,8 +48,12 @@ import java.util.ArrayList;
  */
 public class DomainReaderFile implements DomainReader {
 
+	
+	private static final Logger logger = Logger
+			.getLogger(DomainReaderFile.class);
     String fileName = null;
     String fieldAlias = null;
+	private boolean addVoidValue = false;;
 
     public DomainReaderFile() {
     }
@@ -55,15 +65,18 @@ public class DomainReaderFile implements DomainReader {
     public void setFieldAlias(String fieldAlias) {
 	this.fieldAlias = fieldAlias;
     }
+    
+    public void setAddVoidValue(boolean addVoidValue) {
+    	this.addVoidValue  = addVoidValue;
+    }
 
     public DomainValues getDomainValues() {
 	if (fileName != null && fieldAlias != null) {
 	    ArrayList<KeyValue> list = new ArrayList<KeyValue>();
+	    BufferedReader fileReader = null;
 	    try {
 		String line;
-		BufferedReader fileReader = new BufferedReader(new FileReader(
-			System.getProperty("user.dir") + File.separator
-			+ fileName));
+		fileReader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), "UTF8"));
 		while ((line = fileReader.readLine()) != null) {
 		    String tokens[] = line.split("=");
 		    if (tokens.length == 2) {
@@ -88,13 +101,20 @@ public class DomainReaderFile implements DomainReader {
 		    }
 		}
 	    } catch (FileNotFoundException e) {
-		e.printStackTrace(System.out);
+	    	logger.error(e.getStackTrace(), e);
 		return null;
 	    } catch (IOException e) {
-		e.printStackTrace(System.out);
+	    	logger.error(e.getStackTrace(), e);
 		return null;
+	    } finally {
+	    	if (fileReader != null) {
+	    		try {
+					fileReader.close();
+				} catch (IOException e) {
+				}
+	    	}
 	    }
-	    return new DomainValues(list);
+	    return new DomainValues(list, addVoidValue);
 	}
 	return null;
     }
