@@ -17,7 +17,6 @@
   <target name="init">
     <tstamp/>
     <mkdir dir="${dist}"/>
-  	 <mkdir dir="${dist}/lib" />
   </target>
 
 	<target name="compile" description="compile the source" >
