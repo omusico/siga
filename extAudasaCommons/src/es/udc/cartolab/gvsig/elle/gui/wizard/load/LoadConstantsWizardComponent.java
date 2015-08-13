@@ -52,8 +52,6 @@ public class LoadConstantsWizardComponent extends WizardComponent {
     private DBSession dbs;
 
     private String selectedConstant;
-    private String selectedValue;
-    private Object[] selectedValuesList;
 
     public final static String PROPERTY_VIEW = "view";
 
@@ -183,25 +181,8 @@ public class LoadConstantsWizardComponent extends WizardComponent {
     @Override
     public void finish() throws WizardException {
 
-	int[] selected = valuesList.getSelectedIndices();
-	callStateChanged();
-	String[] valuesSelected = null;
-
-	if (selected.length == 1) {
-	    selectedValue = getIdByConstantTag((String) valuesList
-		    .getSelectedValue());
-	    valuesSelected = new String[1];
-	    valuesSelected[0] = selectedValue;
-	    ELLEMap.setConstantValuesSelected(valuesSelected);
-	} else {
-	    // TODO: several constants selected at the same time
-	    selectedValuesList = valuesList.getSelectedValues();
-	    String[] values = new String[selectedValuesList.length];
-	    for (int i = 0; i < selectedValuesList.length; i++) {
-		values[i] = getIdByConstantTag(selectedValuesList[i].toString());
-	    }
-	    ELLEMap.setConstantValuesSelected(values);
-	}
+	Object[] selectedValuesList = valuesList.getSelectedValues();
+	String[] values = new String[selectedValuesList.length];
 
 	Object tmp = properties
 		.get(SigaLoadMapWizardComponent.PROPERTY_MAP_NAME);
@@ -212,67 +193,45 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	    View view = (View) aux;
 	    try {
 		ELLEMap map = MapDAO.getInstance().getMap(view, mapName);
-		// String where = "WHERE " +
-		// getValueOfFieldByConstant(selectedConstant,
-		// CONSTANTS_FILTER_FIELD_NAME) + " IN (";
-		// where += ")";
+		// TODO: An index on selectedConstant field could speed up the
+		// query
+		String where = "WHERE "
+			+ getValueOfFieldByConstant(selectedConstant,
+				CONSTANTS_FILTER_FIELD_NAME) + " IN (";
 
-		// TODO. Esto se puede convertir en una única consulta con un IN
-		// ( ) . El explain analyze demuestra que el rendimiento de usar
-		// un = y un IN con un sólo valor es el mismo.
-		// Plantearse meter un índice sobre municipio, eso debería
-		// mejorar la búsqueda, aunque el cuello debe estar en la tx de
-		// info no en la bd.
-		String where = "WHERE (";
-		if (selectedValuesList != null && selectedValuesList.length > 1) {
+		if (selectedValuesList.length > 0) {
+
 		    for (int i = 0; i < selectedValuesList.length; i++) {
-			if (i != selectedValuesList.length - 1) {
-			    where = where
-				    + getValueOfFieldByConstant(
-					    selectedConstant,
-					    CONSTANTS_FILTER_FIELD_NAME)
-				    + " = "
-				    + "'"
-				    + getIdByConstantTag(selectedValuesList[i]
-					    .toString()) + "'" + " OR ";
-			} else {
-			    where = where
-				    + getValueOfFieldByConstant(
-					    selectedConstant,
-					    CONSTANTS_FILTER_FIELD_NAME)
-				    + " = "
-				    + "'"
-				    + getIdByConstantTag(selectedValuesList[i]
-					    .toString()) + "')";
-			}
+			values[i] = getIdByConstantTag(selectedValuesList[i]
+				.toString());
 		    }
+		    ELLEMap.setConstantValuesSelected(values);
+
+		    for (String s : values) {
+			where += "'" + s + "', ";
+		    }
+		    where = where.substring(0, where.length() - 2) + ")";
+
 		    map.setWhereOnAllLayers(where);
 		    map.setWhereOnAllOverviewLayers(where);
 		    ELLEMap.setFiltered(true);
-		} else if (selectedValue != null) {
-		    where = where
-			    + getValueOfFieldByConstant(selectedConstant,
-				    CONSTANTS_FILTER_FIELD_NAME) + " = " + "'"
-			    + selectedValue + "')";
-		    map.setWhereOnAllLayers(where);
-		    map.setWhereOnAllOverviewLayers(where);
-		    ELLEMap.setFiltered(true);
-		} else if (selectedValue == null && selectedValuesList == null
-			&& !getAreaByConnectedUser().equalsIgnoreCase("ambas")) {
-		    where = where + getWhereWithAllCouncilsOfArea();
+
+		} else if (!getAreaByConnectedUser().equalsIgnoreCase("ambas")) {
+		    where += getWhereWithAllCouncilsOfArea();
 		    map.setWhereOnAllLayers(where);
 		    map.setWhereOnAllOverviewLayers(where);
 		} else {
 		    ELLEMap.setFiltered(false);
 		}
+
 		map.load(view.getProjection(),
 			getTablesAffectedByConstant(selectedConstant));
 		if (view.getModel().getName().equals("ELLE View")
 			&& (view.getModel() instanceof ProjectView)) {
 		    ((ProjectView) view.getModel()).setName(mapName);
 		}
-		writeCouncilsLoadedInStatusBar();
-		zoomToConstant();
+		writeCouncilsLoadedInStatusBar(values);
+		zoomToConstant(values);
 	    } catch (Exception e) {
 		throw new WizardException(e);
 	    }
@@ -329,8 +288,8 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	return null;
     }
 
-    private void writeCouncilsLoadedInStatusBar() {
-	if (selectedValue == null) {
+    private void writeCouncilsLoadedInStatusBar(String[] values) {
+	if (values.length != 1) {
 	    if (getAreaByConnectedUser().equalsIgnoreCase("ambas")) {
 		PluginServices
 			.getMainFrame()
@@ -357,19 +316,19 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 		    .setMessage(
 			    "constants",
 			    selectedConstant + ": "
-				    + getNombreMunicipioById(selectedValue));
+				    + getNombreMunicipioById(values[0]));
 	}
     }
 
-    private void zoomToConstant() {
+    private void zoomToConstant(String[] values) {
 	FLyrVect layer = (FLyrVect) getEnvelopeConstantLayer();
 	if (layer != null) {
-	    int i = getPositionOnEnvelope(layer);
+	    int i = getPositionOnEnvelope(layer, values);
 	    zoom(layer, i);
 	}
     }
 
-    private int getPositionOnEnvelope(FLyrVect layer) {
+    private int getPositionOnEnvelope(FLyrVect layer, String[] values) {
 	try {
 	    SelectableDataSource ds = layer.getRecordset();
 	    int index = ds.getFieldIndexByName(CONSTANTS_ZOOM_LAYER_FIELD);
@@ -377,6 +336,8 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 		Value value = ds.getFieldValue(i, index);
 		String stringValue = value
 			.getStringValue(ValueWriter.internalValueWriter);
+		// TODO: Sólo vale para hacer zoom a 1 único municipo
+		String selectedValue = values.length > 0 ? values[0] : "";
 		if ((stringValue.compareToIgnoreCase("'" + selectedValue + "'") == 0)) {
 		    return i;
 		}
