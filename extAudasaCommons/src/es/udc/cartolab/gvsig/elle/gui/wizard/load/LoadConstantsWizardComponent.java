@@ -13,8 +13,6 @@ import java.util.Map;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import org.apache.log4j.Logger;
 
@@ -110,35 +108,6 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	    }
 	    valuesList
 		    .setListData(getValuesFromConstantByQuery(selectedConstant));
-
-	    // TODO. En lugar de un listener tendría más sentido recoger los
-	    // valores seleccionados al darle a continuar o finalizar
-	    valuesList.addListSelectionListener(new ListSelectionListener() {
-
-		@Override
-		public void valueChanged(ListSelectionEvent arg0) {
-		    int[] selected = valuesList.getSelectedIndices();
-		    callStateChanged();
-		    String[] valuesSelected = null;
-
-		    if (selected.length == 1) {
-			selectedValue = getIdByConstantTag((String) valuesList
-				.getSelectedValue());
-			valuesSelected = new String[1];
-			valuesSelected[0] = selectedValue;
-			ELLEMap.setConstantValuesSelected(valuesSelected);
-		    } else {
-			// TODO: several constants selected at the same time
-			selectedValuesList = valuesList.getSelectedValues();
-			String[] values = new String[selectedValuesList.length];
-			for (int i = 0; i < selectedValuesList.length; i++) {
-			    values[i] = getIdByConstantTag(selectedValuesList[i]
-				    .toString());
-			}
-			ELLEMap.setConstantValuesSelected(values);
-		    }
-		}
-	    });
 	}
 	return listPanel;
     }
@@ -213,6 +182,27 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 
     @Override
     public void finish() throws WizardException {
+
+	int[] selected = valuesList.getSelectedIndices();
+	callStateChanged();
+	String[] valuesSelected = null;
+
+	if (selected.length == 1) {
+	    selectedValue = getIdByConstantTag((String) valuesList
+		    .getSelectedValue());
+	    valuesSelected = new String[1];
+	    valuesSelected[0] = selectedValue;
+	    ELLEMap.setConstantValuesSelected(valuesSelected);
+	} else {
+	    // TODO: several constants selected at the same time
+	    selectedValuesList = valuesList.getSelectedValues();
+	    String[] values = new String[selectedValuesList.length];
+	    for (int i = 0; i < selectedValuesList.length; i++) {
+		values[i] = getIdByConstantTag(selectedValuesList[i].toString());
+	    }
+	    ELLEMap.setConstantValuesSelected(values);
+	}
+
 	Object tmp = properties
 		.get(SigaLoadMapWizardComponent.PROPERTY_MAP_NAME);
 	String mapName = (tmp == null ? "" : tmp.toString());
