@@ -1,7 +1,6 @@
 package es.udc.cartolab.gvsig.elle.gui.wizard.load;
 
 import java.awt.BorderLayout;
-import java.awt.geom.Rectangle2D;
 import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,20 +15,8 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
-import com.hardcode.gdbms.driver.exceptions.InitializeDriverException;
-import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
-import com.hardcode.gdbms.engine.values.Value;
-import com.hardcode.gdbms.engine.values.ValueWriter;
 import com.iver.andami.PluginServices;
-import com.iver.cit.gvsig.fmap.MapControl;
-import com.iver.cit.gvsig.fmap.core.IGeometry;
-import com.iver.cit.gvsig.fmap.layers.FLayer;
-import com.iver.cit.gvsig.fmap.layers.FLayers;
-import com.iver.cit.gvsig.fmap.layers.FLyrVect;
-import com.iver.cit.gvsig.fmap.layers.ReadableVectorial;
-import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 import com.iver.cit.gvsig.project.documents.view.ProjectView;
-import com.iver.cit.gvsig.project.documents.view.gui.BaseView;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
@@ -63,10 +50,6 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 
     private static final String MUNICIPIO_CONSTANTS_TABLENAME = "audasa_extgia_dominios.municipio_constantes";
     public static final String USUARIOS_TABLENAME = "audasa_expedientes.usuarios";
-
-    // ZoomToConstant
-    public final static String CONSTANTS_ZOOM_LAYER_FIELD = "municipio_codigo";
-    public final static String CONSTANTS_ZOOM_LAYER_NAME = "Constante";
 
     public LoadConstantsWizardComponent(Map<String, Object> properties) {
 	super(properties);
@@ -231,7 +214,8 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 		    ((ProjectView) view.getModel()).setName(mapName);
 		}
 		writeCouncilsLoadedInStatusBar(values);
-		zoomToConstant(values);
+		ZoomToConstant zoomToConstant = new ZoomToConstant();
+		zoomToConstant.zoom(values);
 	    } catch (Exception e) {
 		throw new WizardException(e);
 	    }
@@ -317,75 +301,6 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 			    "constants",
 			    selectedConstant + ": "
 				    + getNombreMunicipioById(values[0]));
-	}
-    }
-
-    private void zoomToConstant(String[] values) {
-	FLyrVect layer = (FLyrVect) getEnvelopeConstantLayer();
-	if (layer != null) {
-	    int i = getPositionOnEnvelope(layer, values);
-	    zoom(layer, i);
-	}
-    }
-
-    private int getPositionOnEnvelope(FLyrVect layer, String[] values) {
-	try {
-	    SelectableDataSource ds = layer.getRecordset();
-	    int index = ds.getFieldIndexByName(CONSTANTS_ZOOM_LAYER_FIELD);
-	    for (int i = 0; i < ds.getRowCount(); i++) {
-		Value value = ds.getFieldValue(i, index);
-		String stringValue = value
-			.getStringValue(ValueWriter.internalValueWriter);
-		// TODO: Sólo vale para hacer zoom a 1 único municipo
-		String selectedValue = values.length > 0 ? values[0] : "";
-		if ((stringValue.compareToIgnoreCase("'" + selectedValue + "'") == 0)) {
-		    return i;
-		}
-	    }
-	} catch (ReadDriverException e) {
-	    e.printStackTrace();
-	}
-	return -1;
-    }
-
-    private FLayer getEnvelopeConstantLayer() {
-	FLayer layer = null;
-	BaseView view = (BaseView) PluginServices.getMDIManager()
-		.getActiveWindow();
-	MapControl mapControl = view.getMapControl();
-	FLayers flayers = mapControl.getMapContext().getLayers();
-	layer = flayers.getLayer(CONSTANTS_ZOOM_LAYER_NAME);
-	return layer;
-    }
-
-    private void zoom(FLyrVect layer, int pos) {
-	try {
-	    Rectangle2D rectangle = null;
-	    IGeometry g;
-	    ReadableVectorial source = (layer).getSource();
-	    source.start();
-	    g = source.getShape(pos);
-	    source.stop();
-	    /*
-	     * fix to avoid zoom problems when layer and view projections aren't
-	     * the same.
-	     */
-	    if (layer.getCoordTrans() != null) {
-		g.reProject(layer.getCoordTrans());
-	    }
-	    rectangle = g.getBounds2D();
-	    if (rectangle.getWidth() < 200) {
-		rectangle.setFrameFromCenter(rectangle.getCenterX(),
-			rectangle.getCenterY(), rectangle.getCenterX() + 100,
-			rectangle.getCenterY() + 100);
-	    }
-	    if (rectangle != null) {
-		layer.getMapContext().getViewPort().setExtent(rectangle);
-	    }
-	} catch (InitializeDriverException e) {
-	    e.printStackTrace();
-	} catch (ReadDriverException e) {
-	    e.printStackTrace();
 	}
     }
 
