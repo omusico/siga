@@ -66,18 +66,6 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 	    addNewButtonsToActionsToolBar();
 	}
 
-	if (addImageListener != null) {
-	    addImageListener.setPkValue(getElementIDValue());
-	}
-
-	if (deleteImageListener != null) {
-	    deleteImageListener.setPkValue(getElementIDValue());
-	}
-
-	// Element image
-	new ShowImageAction(imageComponent, addImageButton,
-		getImagesDBTableName(), getElementID(), getElementIDValue());
-
 	repaint();
     }
 
@@ -87,7 +75,7 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 
 	Map<String, JComponent> widgets = getWidgets();
 
-	firmeIDWidget = (JTextField) widgets.get(DBFieldNames.ID_FIRME);
+	firmeIDWidget = (JTextField) widgets.get(getElementID());
     }
 
     @Override
@@ -120,7 +108,7 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public String getElementID() {
-	return "id_firme";
+	return DBFieldNames.ID_FIRME;
     }
 
     @Override

@@ -32,14 +32,10 @@ import com.iver.andami.Launcher;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.exceptions.visitors.StopWriterVisitorException;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
-import com.jeta.forms.components.image.ImageComponent;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.extgia.batch.AddReconocimientosBatchListener;
 import es.icarto.gvsig.extgia.batch.AddTrabajosBatchListener;
-import es.icarto.gvsig.extgia.forms.images.AddImageListener;
-import es.icarto.gvsig.extgia.forms.images.DeleteImageListener;
-import es.icarto.gvsig.extgia.forms.images.ShowImageAction;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.BasicAbstractForm;
@@ -62,16 +58,11 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
     protected JButton addReconocimientosBatchButton;
     protected JButton saveRecordsBatchButton;
 
-    protected ImageComponent imageComponent;
-    protected JButton addImageButton;
-    protected JButton deleteImageButton;
-
     AddTrabajosBatchListener addTrabajosBatchListener;
     AddReconocimientosBatchListener addReconocimientosBatchListener;
     SaveRecordsBatchListener saveRecordsBatchListener;
 
-    protected AddImageListener addImageListener;
-    protected DeleteImageListener deleteImageListener;
+    private final ImagesInForms imagesInForms;
 
     public AbstractFormWithLocationWidgets(FLyrVect layer) {
 	super(layer);
@@ -103,30 +94,13 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 		addChained(PK_FINAL, TIPO_VIA, NOMBRE_VIA);
 	    }
 	}
+	imagesInForms = new ImagesInForms(formBody, getImagesDBTableName(), getElementID());
     }
 
     @Override
     protected void setListeners() {
 	super.setListeners();
-
-	imageComponent = (ImageComponent) formBody
-		.getComponentByName("element_image");
-	addImageButton = (JButton) formBody
-		.getComponentByName("add_image_button");
-	deleteImageButton = (JButton) formBody
-		.getComponentByName("delete_image_button");
-
-	if (addImageListener == null) {
-	    addImageListener = new AddImageListener(imageComponent,
-		    addImageButton, getImagesDBTableName(), getElementID());
-	    addImageButton.addActionListener(addImageListener);
-	}
-
-	if (deleteImageListener == null) {
-	    deleteImageListener = new DeleteImageListener(imageComponent,
-		    addImageButton, getImagesDBTableName(), getElementID());
-	    deleteImageButton.addActionListener(deleteImageListener);
-	}
+	imagesInForms.setListeners();
 
 	if (hasSentido()) {
 	    sentidoWidget = (JComboBox) getWidgets().get(SENTIDO);
@@ -309,8 +283,7 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 
 	saveRecordsBatchButton.removeActionListener(saveRecordsBatchListener);
 
-	addImageButton.removeActionListener(addImageListener);
-	deleteImageButton.removeActionListener(deleteImageListener);
+	imagesInForms.removeListeners();
 
 	super.removeListeners();
     }
@@ -378,17 +351,7 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
     @Override
     protected void fillSpecificValues() {
 	super.fillSpecificValues();
-	if (addImageListener != null) {
-	    addImageListener.setPkValue(getElementIDValue());
-	}
-
-	if (deleteImageListener != null) {
-	    deleteImageListener.setPkValue(getElementIDValue());
-	}
-
-	// Element image
-	new ShowImageAction(imageComponent, addImageButton,
-		getImagesDBTableName(), getElementID(), getElementIDValue());
+	imagesInForms.fillSpecificValues(getPrimaryKeyValue());
     }
 
     @Override
