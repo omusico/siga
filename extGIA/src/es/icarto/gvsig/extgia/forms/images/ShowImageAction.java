@@ -35,6 +35,7 @@ public class ShowImageAction {
 	}else {
 	    addImageButton.setText("Añadir");
 	}
+	imageComponent.repaint();
     }
 
     public boolean showImage() {

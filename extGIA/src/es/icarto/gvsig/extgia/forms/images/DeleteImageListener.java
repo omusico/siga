@@ -56,7 +56,6 @@ public class DeleteImageListener implements ActionListener {
 	    if (response == JOptionPane.YES_OPTION) {
 		dao.deleteImageFromDb(connection, DBFieldNames.GIA_SCHEMA, tablename, pkField, pkValue);
 		new ShowImageAction(imageComponent, addImageButton, tablename, pkField, pkValue);
-		imageComponent.repaint();
 	    }
 	} catch (SQLException e1) {
 	    e1.printStackTrace();

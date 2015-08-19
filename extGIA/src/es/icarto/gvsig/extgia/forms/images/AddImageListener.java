@@ -74,7 +74,7 @@ public class AddImageListener implements ActionListener {
 	    JOptionPane.showMessageDialog(null,
 		    PluginServices.getText(this, "image_msg_added"));
 	    new ShowImageAction(imageComponent, addImageButton, tablename, pkField, pkValue);
-	    imageComponent.repaint();
+	    
 	}
     }
 
