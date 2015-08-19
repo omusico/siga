@@ -42,11 +42,9 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 
     public final static String PROPERTY_VIEW = "view";
 
-    public final static String CONSTANTS_TABLE_NAME = "_constants";
-    public final static String CONSTANTS_CONSTANT_FIELD_NAME = "constante";
-    public final static String CONSTANTS_AFFECTED_TABLE_NAME = "nombre_tabla";
-    public final static String CONSTANTS_FILTER_FIELD_NAME = "campo_filtro";
-    public final static String CONSTANTS_QUERY_FIELD_NAME = "campo_query";
+    private final static String CONSTANTS_TABLE_NAME = "_constants";
+    private final static String CONSTANTS_CONSTANT_FIELD_NAME = "constante";
+    private final static String CONSTANTS_FILTER_FIELD_NAME = "campo_filtro";
 
     private static final String MUNICIPIO_CONSTANTS_TABLENAME = "audasa_extgia_dominios.municipio_constantes";
     public static final String USUARIOS_TABLENAME = "audasa_expedientes.usuarios";
@@ -207,14 +205,17 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 		    ELLEMap.setFiltered(false);
 		}
 
-		map.load(view.getProjection(),
-			getTablesAffectedByConstant(selectedConstant));
+		//TODO
+		String[] tablesAffectedByConstant = Constant.getTablesAffectedByConstant(selectedConstant);
+		//
+		map.load(view.getProjection(), tablesAffectedByConstant);
 		if (view.getModel().getName().equals("ELLE View")
 			&& (view.getModel() instanceof ProjectView)) {
 		    ((ProjectView) view.getModel()).setName(mapName);
 		}
 		writeCouncilsLoadedInStatusBar(values);
-		ZoomToConstant zoomToConstant = new ZoomToConstant(view.getMapControl(), new Constant(values, view.getMapControl()));
+		Constant constant = new Constant(values, view.getMapControl());
+		ZoomToConstant zoomToConstant = new ZoomToConstant(view.getMapControl(), constant);
 		zoomToConstant.zoom(values);
 	    } catch (Exception e) {
 		throw new WizardException(e);
@@ -242,35 +243,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	return null;
     }
 
-    private String[] getTablesAffectedByConstant(String constant) {
-	String query = "SELECT nombre_tabla FROM " + DBStructure.getSchema()
-		+ "." + CONSTANTS_TABLE_NAME + " WHERE "
-		+ CONSTANTS_CONSTANT_FIELD_NAME + " = " + "'" + constant + "'"
-		+ ";";
-	PreparedStatement statement;
-	try {
-	    statement = dbs.getJavaConnection().prepareStatement(query);
-	    statement.execute();
-	    ResultSet rs = statement.getResultSet();
-
-	    List<String> resultArray = new ArrayList<String>();
-	    while (rs.next()) {
-		String val = rs.getString(CONSTANTS_AFFECTED_TABLE_NAME);
-		resultArray.add(val);
-	    }
-	    rs.close();
-
-	    String[] result = new String[resultArray.size()];
-	    for (int i = 0; i < resultArray.size(); i++) {
-		result[i] = resultArray.get(i);
-	    }
-
-	    return result;
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
-	return null;
-    }
+    
 
     private void writeCouncilsLoadedInStatusBar(String[] values) {
 	if (values.length != 1) {
