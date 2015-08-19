@@ -214,7 +214,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 		    ((ProjectView) view.getModel()).setName(mapName);
 		}
 		writeCouncilsLoadedInStatusBar(values);
-		ZoomToConstant zoomToConstant = new ZoomToConstant();
+		ZoomToConstant zoomToConstant = new ZoomToConstant(view.getMapControl(), new Constant(values, view.getMapControl()));
 		zoomToConstant.zoom(values);
 	    } catch (Exception e) {
 		throw new WizardException(e);
