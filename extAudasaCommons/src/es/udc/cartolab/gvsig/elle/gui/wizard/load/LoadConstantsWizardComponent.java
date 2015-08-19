@@ -40,6 +40,8 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 
     private String selectedConstant;
 
+    private boolean reload = false;
+
     public final static String PROPERTY_VIEW = "view";
 
     private final static String CONSTANTS_TABLE_NAME = "_constants";
@@ -55,6 +57,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	if (getListPanel() != null) {
 	    add(getListPanel());
 	}
+
     }
 
     private JPanel getListPanel() {
@@ -86,7 +89,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 		return null;
 	    }
 	    valuesList
-		    .setListData(getValuesFromConstantByQuery(selectedConstant));
+	    .setListData(getValuesFromConstantByQuery(selectedConstant));
 	}
 	return listPanel;
     }
@@ -165,6 +168,11 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	Object[] selectedValuesList = valuesList.getSelectedValues();
 	String[] values = new String[selectedValuesList.length];
 
+	if (reload) {
+	    // new Reload();
+	    return;
+	}
+
 	Object tmp = properties
 		.get(SigaLoadMapWizardComponent.PROPERTY_MAP_NAME);
 	String mapName = (tmp == null ? "" : tmp.toString());
@@ -205,8 +213,9 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 		    ELLEMap.setFiltered(false);
 		}
 
-		//TODO
-		String[] tablesAffectedByConstant = Constant.getTablesAffectedByConstant(selectedConstant);
+		// TODO
+		String[] tablesAffectedByConstant = Constant
+			.getTablesAffectedByConstant(selectedConstant);
 		//
 		map.load(view.getProjection(), tablesAffectedByConstant);
 		if (view.getModel().getName().equals("ELLE View")
@@ -215,7 +224,8 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 		}
 		writeCouncilsLoadedInStatusBar(values);
 		Constant constant = new Constant(values, view.getMapControl());
-		ZoomToConstant zoomToConstant = new ZoomToConstant(view.getMapControl(), constant);
+		ZoomToConstant zoomToConstant = new ZoomToConstant(
+			view.getMapControl(), constant);
 		zoomToConstant.zoom(values);
 	    } catch (Exception e) {
 		throw new WizardException(e);
@@ -243,37 +253,35 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	return null;
     }
 
-    
-
     private void writeCouncilsLoadedInStatusBar(String[] values) {
 	if (values.length != 1) {
 	    if (getAreaByConnectedUser().equalsIgnoreCase("ambas")) {
 		PluginServices
-			.getMainFrame()
-			.getStatusBar()
-			.setMessage("constants",
-				selectedConstant + ": " + "TODOS");
+		.getMainFrame()
+		.getStatusBar()
+		.setMessage("constants",
+			selectedConstant + ": " + "TODOS");
 	    } else if (getAreaByConnectedUser().equalsIgnoreCase("norte")) {
 		PluginServices
-			.getMainFrame()
-			.getStatusBar()
-			.setMessage("constants",
-				selectedConstant + ": " + "햞ea Norte");
+		.getMainFrame()
+		.getStatusBar()
+		.setMessage("constants",
+			selectedConstant + ": " + "햞ea Norte");
 	    } else {
 		PluginServices
-			.getMainFrame()
-			.getStatusBar()
-			.setMessage("constants",
-				selectedConstant + ": " + "햞ea Sur");
+		.getMainFrame()
+		.getStatusBar()
+		.setMessage("constants",
+			selectedConstant + ": " + "햞ea Sur");
 	    }
 	} else {
 	    PluginServices
-		    .getMainFrame()
-		    .getStatusBar()
-		    .setMessage(
-			    "constants",
-			    selectedConstant + ": "
-				    + getNombreMunicipioById(values[0]));
+	    .getMainFrame()
+	    .getStatusBar()
+	    .setMessage(
+		    "constants",
+		    selectedConstant + ": "
+			    + getNombreMunicipioById(values[0]));
 	}
     }
 
@@ -342,12 +350,12 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 		where = where
 			+ getValueOfFieldByConstant(selectedConstant,
 				CONSTANTS_FILTER_FIELD_NAME) + " = " + "'"
-			+ getCouncilsByConnectedUser().get(i) + "'" + " OR ";
+				+ getCouncilsByConnectedUser().get(i) + "'" + " OR ";
 	    } else {
 		where = where
 			+ getValueOfFieldByConstant(selectedConstant,
 				CONSTANTS_FILTER_FIELD_NAME) + " = " + "'"
-			+ getCouncilsByConnectedUser().get(i) + "')";
+				+ getCouncilsByConnectedUser().get(i) + "')";
 	    }
 	}
 	return where;
@@ -373,5 +381,9 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	    e.printStackTrace();
 	}
 	return null;
+    }
+
+    public void setReload(boolean reload) {
+	this.reload = true;
     }
 }
