@@ -1,5 +1,6 @@
 package es.icarto.gvsig.extgia.forms.images;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -12,6 +13,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
+import org.apache.log4j.Logger;
+
 import com.iver.andami.PluginServices;
 import com.jeta.forms.components.image.ImageComponent;
 
@@ -20,6 +23,9 @@ import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.ImageUtils;
 
 public class AddImageListener implements ActionListener {
+    
+    
+    private static final Logger logger = Logger.getLogger(AddImageListener.class);
 
     private final Connection connection;
     private final ImagesDAO dao;
@@ -66,16 +72,24 @@ public class AddImageListener implements ActionListener {
 		BufferedImage imageResized = resizeImage(image);
 		dao.insertImageIntoDb(connection, DBFieldNames.GIA_SCHEMA, tablename,
 			pkField, pkValue, imageResized, update);
+		JOptionPane.showMessageDialog(null,
+			    PluginServices.getText(this, "image_msg_added"));
+		    new ShowImageAction(imageComponent, addImageButton, tablename, pkField, pkValue);
 	    } catch (SQLException e) {
-		e.printStackTrace();
+		logger.error(e.getStackTrace(), e);
+		showWarning(PluginServices.getText(this, "image_msg_error"));
 	    } catch (IOException e) {
-		e.printStackTrace();
+		logger.error(e.getStackTrace(), e);
+		showWarning(PluginServices.getText(this, "image_msg_error"));
 	    }
-	    JOptionPane.showMessageDialog(null,
-		    PluginServices.getText(this, "image_msg_added"));
-	    new ShowImageAction(imageComponent, addImageButton, tablename, pkField, pkValue);
 	    
 	}
+    }
+    
+    private void showWarning(String msg) {
+	JOptionPane.showMessageDialog(
+		(Component) PluginServices.getMainFrame(), msg, "Aviso",
+		JOptionPane.WARNING_MESSAGE);
     }
 
     private BufferedImage resizeImage(BufferedImage image) {
