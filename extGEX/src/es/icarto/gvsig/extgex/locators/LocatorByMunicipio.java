@@ -18,13 +18,13 @@ import com.jeta.forms.gui.common.FormException;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.commons.gui.gvWindow;
-import es.icarto.gvsig.extgex.locators.actions.IPositionRetriever;
 import es.icarto.gvsig.extgex.locators.actions.ZoomToHandler;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.utils.retrievers.KeyValueRetriever;
 import es.icarto.gvsig.extgex.utils.retrievers.PositionRetriever;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
+import es.udc.cartolab.gvsig.elle.gui.wizard.load.IPositionRetriever;
 import es.udc.cartolab.gvsig.navtable.AbstractNavTable;
 
 public class LocatorByMunicipio extends gvWindow implements IPositionRetriever,

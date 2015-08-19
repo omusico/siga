@@ -11,6 +11,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import es.icarto.gvsig.extgex.forms.expropiations.FormExpropiations;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
+import es.udc.cartolab.gvsig.elle.gui.wizard.load.IPositionRetriever;
 
 public class FormOpener implements ActionListener {
 

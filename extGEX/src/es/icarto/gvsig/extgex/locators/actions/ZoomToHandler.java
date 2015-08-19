@@ -14,6 +14,7 @@ import com.iver.cit.gvsig.fmap.layers.FBitSet;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.ReadableVectorial;
 
+import es.udc.cartolab.gvsig.elle.gui.wizard.load.IPositionRetriever;
 import es.udc.cartolab.gvsig.navtable.AbstractNavTable;
 
 public class ZoomToHandler implements ActionListener {

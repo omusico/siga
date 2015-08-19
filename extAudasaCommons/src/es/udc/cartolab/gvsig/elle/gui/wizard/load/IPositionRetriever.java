@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgex.locators.actions;
+package es.udc.cartolab.gvsig.elle.gui.wizard.load;
 
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
