@@ -47,7 +47,7 @@ public class ELLEMap {
     private final List<LayerProperties> overviewLayers;
     private IProjection projection;
     private static boolean filtered = false;
-    private static String[] constantValuesSelected;
+    private static String[] constantValuesSelected = new String[0];
 
     public ELLEMap(String name, BaseView view) {
 	this.setName(name);
@@ -244,6 +244,7 @@ public class ELLEMap {
 	    FLayers group = getGroup(lp);
 	    try {
 		boolean coincidence = false;
+		// TODO: Usar un arraylist para layersAffec y un contains
 		for (int i=0; i<layersAffectedByConstant.length; i++) {
 		    if (lp.getTablename().equalsIgnoreCase(layersAffectedByConstant[i])) {
 			coincidence = true;

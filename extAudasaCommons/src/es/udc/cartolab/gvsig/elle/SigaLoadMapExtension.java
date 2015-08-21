@@ -32,14 +32,14 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.icarto.gvsig.elle.db.DBStructure;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardWindow;
-import es.udc.cartolab.gvsig.elle.gui.wizard.load.LoadConstantsWizardComponent;
+import es.udc.cartolab.gvsig.elle.gui.wizard.load.ConstantUtils;
 import es.udc.cartolab.gvsig.elle.gui.wizard.load.SigaLoadMapWizard;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class SigaLoadMapExtension extends Extension {
 
     public void execute(String actionCommand) {
-	if (LoadConstantsWizardComponent.getAreaByConnectedUser() == null) {
+	if (ConstantUtils.getAreaByConnectedUser() == null) {
 	    JOptionPane.showMessageDialog(null,
 		    PluginServices.getText(this, "userHasNotAreaDefined"));
 	}else {

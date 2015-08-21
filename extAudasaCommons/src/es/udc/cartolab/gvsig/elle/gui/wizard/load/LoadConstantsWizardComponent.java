@@ -2,16 +2,15 @@ package es.udc.cartolab.gvsig.elle.gui.wizard.load;
 
 import java.awt.BorderLayout;
 import java.io.InputStream;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.ListModel;
 
 import org.apache.log4j.Logger;
 
@@ -21,12 +20,10 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
 import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 
-import es.icarto.gvsig.elle.db.DBStructure;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardComponent;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardException;
 import es.udc.cartolab.gvsig.elle.utils.ELLEMap;
 import es.udc.cartolab.gvsig.elle.utils.MapDAO;
-import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
 public class LoadConstantsWizardComponent extends WizardComponent {
@@ -36,107 +33,73 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 
     private JPanel listPanel;
     private JList valuesList;
-    private DBSession dbs;
-
-    private String selectedConstant;
 
     private boolean reload = false;
 
     public final static String PROPERTY_VIEW = "view";
 
-    private final static String CONSTANTS_TABLE_NAME = "_constants";
-    private final static String CONSTANTS_CONSTANT_FIELD_NAME = "constante";
-    private final static String CONSTANTS_FILTER_FIELD_NAME = "campo_filtro";
-
-    private static final String MUNICIPIO_CONSTANTS_TABLENAME = "audasa_extgia_dominios.municipio_constantes";
-    public static final String USUARIOS_TABLENAME = "audasa_expedientes.usuarios";
+    private final static String SELECTED_CONSTANT = "Municipio";
 
     public LoadConstantsWizardComponent(Map<String, Object> properties) {
 	super(properties);
 	setLayout(new BorderLayout());
-	if (getListPanel() != null) {
-	    add(getListPanel());
-	}
-
+	makeListPanel();
     }
 
-    private JPanel getListPanel() {
-	dbs = DBSession.getCurrentSession();
+    private void makeListPanel() {
 
-	if (listPanel == null) {
-	    listPanel = new JPanel();
-
-	    FormPanel form = null;
-	    try {
-		InputStream stream = getClass().getClassLoader()
-			.getResourceAsStream("forms/loadConstants.jfrm");
-		form = new FormPanel(stream);
-	    } catch (FormException e) {
-		logger.error(e.getStackTrace(), e);
-		return listPanel;
-	    }
-
-	    listPanel.add(form);
-
-	    JLabel constantsLabel = form.getLabel("constantsLabel");
-	    constantsLabel.setText(PluginServices.getText(this,
-		    "constants_load"));
-
-	    selectedConstant = "Municipio";
-
-	    valuesList = form.getList("valuesList");
-	    if (getValuesFromConstantByQuery(selectedConstant) == null) {
-		return null;
-	    }
-	    valuesList
-	    .setListData(getValuesFromConstantByQuery(selectedConstant));
-	}
-	return listPanel;
-    }
-
-    private String[] getValuesFromConstantByQuery(String constant) {
-	String query;
-	final String userArea = getAreaByConnectedUser();
-	if (userArea == null) {
-	    return null;
-	}
-	if (userArea.equalsIgnoreCase("ambas")) {
-	    query = "SELECT tag FROM " + MUNICIPIO_CONSTANTS_TABLENAME
-		    + " ORDER BY orden;";
-	} else if (userArea.equalsIgnoreCase("sur")) {
-	    // Include Padron in councils list if area = Sur
-	    query = "SELECT tag, orden FROM " + MUNICIPIO_CONSTANTS_TABLENAME
-		    + " WHERE area = " + "'" + userArea
-		    + "' UNION SELECT tag, orden FROM "
-		    + MUNICIPIO_CONSTANTS_TABLENAME + " WHERE id = '15065'"
-		    + " ORDER BY orden;";
-	} else {
-	    query = "SELECT tag FROM " + MUNICIPIO_CONSTANTS_TABLENAME
-		    + " WHERE area = " + "'" + userArea + "' ORDER BY orden;";
-	}
-	PreparedStatement statement;
+	FormPanel form = null;
 	try {
-	    statement = dbs.getJavaConnection().prepareStatement(query);
-	    statement.execute();
-	    ResultSet rs = statement.getResultSet();
-
-	    List<String> resultArray = new ArrayList<String>();
-	    while (rs.next()) {
-		String val = rs.getString(1);
-		resultArray.add(val);
-	    }
-	    rs.close();
-
-	    String[] result = new String[resultArray.size()];
-	    for (int i = 0; i < resultArray.size(); i++) {
-		result[i] = resultArray.get(i);
-	    }
-
-	    return result;
-	} catch (SQLException e) {
-	    e.printStackTrace();
+	    InputStream stream = getClass().getClassLoader()
+		    .getResourceAsStream("forms/loadConstants.jfrm");
+	    form = new FormPanel(stream);
+	} catch (FormException e) {
+	    logger.error(e.getStackTrace(), e);
+	    return;
 	}
-	return null;
+
+	JLabel constantsLabel = form.getLabel("constantsLabel");
+	constantsLabel.setText(PluginServices.getText(this, "constants_load"));
+
+	valuesList = form.getList("valuesList");
+	final String[] valueListData = ConstantUtils
+		.getValuesFromConstantByQuery(SELECTED_CONSTANT);
+	if (valueListData == null) {
+	    return;
+	}
+	valuesList.setListData(valueListData);
+
+	preselectConstants();
+
+	listPanel = new JPanel();
+	listPanel.add(form);
+	this.add(listPanel);
+    }
+
+    private void preselectConstants() {
+	List<String> constants = Arrays.asList(ELLEMap
+		.getConstantValuesSelected());
+	if (constants.isEmpty()) {
+	    return;
+	}
+
+	ListModel model = valuesList.getModel();
+	List<Integer> indexes = new ArrayList<Integer>();
+	for (int i = 0; i < model.getSize(); i++) {
+	    final String displayedText = (String) model.getElementAt(i);
+	    String ineCode = ConstantUtils.getIdByConstantTag(displayedText);
+	    if (constants.contains(ineCode)) {
+		indexes.add(i);
+	    }
+	}
+
+	if (!indexes.isEmpty()) {
+	    int[] idx = new int[indexes.size()];
+	    for (int j = 0; j < indexes.size(); j++) {
+		idx[j] = indexes.get(j).intValue();
+	    }
+	    valuesList.setSelectedIndices(idx);
+	}
     }
 
     @Override
@@ -185,14 +148,16 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 		// TODO: An index on selectedConstant field could speed up the
 		// query
 		String where = "WHERE "
-			+ getValueOfFieldByConstant(selectedConstant,
-				CONSTANTS_FILTER_FIELD_NAME) + " IN (";
+			+ ConstantUtils
+			.getValueOfFieldByConstant(SELECTED_CONSTANT)
+			+ " IN (";
 
 		if (selectedValuesList.length > 0) {
 
 		    for (int i = 0; i < selectedValuesList.length; i++) {
-			values[i] = getIdByConstantTag(selectedValuesList[i]
-				.toString());
+			values[i] = ConstantUtils
+				.getIdByConstantTag(selectedValuesList[i]
+					.toString());
 		    }
 		    ELLEMap.setConstantValuesSelected(values);
 
@@ -205,8 +170,10 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 		    map.setWhereOnAllOverviewLayers(where);
 		    ELLEMap.setFiltered(true);
 
-		} else if (!getAreaByConnectedUser().equalsIgnoreCase("ambas")) {
-		    where += getWhereWithAllCouncilsOfArea();
+		} else if (!ConstantUtils.getAreaByConnectedUser()
+			.equalsIgnoreCase("ambas")) {
+		    where += ConstantUtils
+			    .getWhereWithAllCouncilsOfArea(SELECTED_CONSTANT);
 		    map.setWhereOnAllLayers(where);
 		    map.setWhereOnAllOverviewLayers(where);
 		} else {
@@ -214,8 +181,8 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 		}
 
 		// TODO
-		String[] tablesAffectedByConstant = Constant
-			.getTablesAffectedByConstant(selectedConstant);
+		String[] tablesAffectedByConstant = ConstantUtils
+			.getTablesAffectedByConstant(SELECTED_CONSTANT);
 		//
 		map.load(view.getProjection(), tablesAffectedByConstant);
 		if (view.getModel().getName().equals("ELLE View")
@@ -235,152 +202,39 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	}
     }
 
-    private String getValueOfFieldByConstant(String constant, String field) {
-	String query = "SELECT " + field + " FROM " + DBStructure.getSchema()
-		+ "." + CONSTANTS_TABLE_NAME + " WHERE "
-		+ CONSTANTS_CONSTANT_FIELD_NAME + " = " + "'" + constant + "'"
-		+ ";";
-	PreparedStatement statement;
-	try {
-	    statement = dbs.getJavaConnection().prepareStatement(query);
-	    statement.execute();
-	    ResultSet rs = statement.getResultSet();
-	    rs.first();
-	    return rs.getString(1);
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
-	return null;
-    }
-
     private void writeCouncilsLoadedInStatusBar(String[] values) {
+	String areaByConnectedUser = ConstantUtils.getAreaByConnectedUser();
 	if (values.length != 1) {
-	    if (getAreaByConnectedUser().equalsIgnoreCase("ambas")) {
+	    if (areaByConnectedUser.equalsIgnoreCase("ambas")) {
 		PluginServices
-		.getMainFrame()
-		.getStatusBar()
-		.setMessage("constants",
-			selectedConstant + ": " + "TODOS");
-	    } else if (getAreaByConnectedUser().equalsIgnoreCase("norte")) {
+			.getMainFrame()
+			.getStatusBar()
+			.setMessage("constants",
+				SELECTED_CONSTANT + ": " + "TODOS");
+	    } else if (areaByConnectedUser.equalsIgnoreCase("norte")) {
 		PluginServices
-		.getMainFrame()
-		.getStatusBar()
-		.setMessage("constants",
-			selectedConstant + ": " + "햞ea Norte");
+			.getMainFrame()
+			.getStatusBar()
+			.setMessage("constants",
+				SELECTED_CONSTANT + ": " + "햞ea Norte");
 	    } else {
 		PluginServices
-		.getMainFrame()
-		.getStatusBar()
-		.setMessage("constants",
-			selectedConstant + ": " + "햞ea Sur");
+			.getMainFrame()
+			.getStatusBar()
+			.setMessage("constants",
+				SELECTED_CONSTANT + ": " + "햞ea Sur");
 	    }
 	} else {
 	    PluginServices
-	    .getMainFrame()
-	    .getStatusBar()
-	    .setMessage(
-		    "constants",
-		    selectedConstant + ": "
-			    + getNombreMunicipioById(values[0]));
+		    .getMainFrame()
+		    .getStatusBar()
+		    .setMessage(
+			    "constants",
+			    SELECTED_CONSTANT
+		    + ": "
+				    + ConstantUtils
+		    .getNombreMunicipioById(values[0]));
 	}
-    }
-
-    private String getIdByConstantTag(String constantTag) {
-	String query = "SELECT id FROM " + MUNICIPIO_CONSTANTS_TABLENAME
-		+ " WHERE tag =" + "'" + constantTag + "'" + ";";
-	PreparedStatement statement;
-	try {
-	    statement = dbs.getJavaConnection().prepareStatement(query);
-	    statement.execute();
-	    ResultSet rs = statement.getResultSet();
-	    rs.first();
-	    return rs.getString(1);
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
-	return null;
-    }
-
-    private String getNombreMunicipioById(String id) {
-	String query = "SELECT item FROM " + MUNICIPIO_CONSTANTS_TABLENAME
-		+ " WHERE id =" + "'" + id + "'" + ";";
-	PreparedStatement statement;
-	try {
-	    statement = dbs.getJavaConnection().prepareStatement(query);
-	    statement.execute();
-	    ResultSet rs = statement.getResultSet();
-	    rs.first();
-	    return rs.getString(1);
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
-	return null;
-    }
-
-    private ArrayList<String> getCouncilsByConnectedUser() {
-	ArrayList<String> councils = new ArrayList<String>();
-	if (getAreaByConnectedUser() == null) {
-	    return null;
-	}
-	String query = "SELECT id FROM " + MUNICIPIO_CONSTANTS_TABLENAME
-		+ " WHERE area = '" + getAreaByConnectedUser() + "';";
-	PreparedStatement statement;
-	try {
-	    statement = dbs.getJavaConnection().prepareStatement(query);
-	    statement.execute();
-	    ResultSet rs = statement.getResultSet();
-	    while (rs.next()) {
-		councils.add(rs.getString(1));
-	    }
-	    // If area=Sur included also Padron into councils list
-	    if (getAreaByConnectedUser().equalsIgnoreCase("sur")) {
-		councils.add("15065");
-	    }
-	    return councils;
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
-	return null;
-    }
-
-    private String getWhereWithAllCouncilsOfArea() {
-	String where = "";
-	for (int i = 0; i < getCouncilsByConnectedUser().size(); i++) {
-	    if (i != getCouncilsByConnectedUser().size() - 1) {
-		where = where
-			+ getValueOfFieldByConstant(selectedConstant,
-				CONSTANTS_FILTER_FIELD_NAME) + " = " + "'"
-				+ getCouncilsByConnectedUser().get(i) + "'" + " OR ";
-	    } else {
-		where = where
-			+ getValueOfFieldByConstant(selectedConstant,
-				CONSTANTS_FILTER_FIELD_NAME) + " = " + "'"
-				+ getCouncilsByConnectedUser().get(i) + "')";
-	    }
-	}
-	return where;
-    }
-
-    public static String getAreaByConnectedUser() {
-	String query = "SELECT area FROM "
-		+ LoadConstantsWizardComponent.USUARIOS_TABLENAME
-		+ " WHERE name =" + "'"
-		+ DBSession.getCurrentSession().getUserName() + "'" + ";";
-	PreparedStatement statement;
-	try {
-	    statement = DBSession.getCurrentSession().getJavaConnection()
-		    .prepareStatement(query);
-	    statement.execute();
-	    ResultSet rs = statement.getResultSet();
-	    if (!rs.next()) {
-		return null;
-	    }
-	    rs.first();
-	    return rs.getString(1);
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
-	return null;
     }
 
     public void setReload(boolean reload) {

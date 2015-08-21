@@ -1,9 +1,6 @@
 package es.udc.cartolab.gvsig.elle.gui.wizard.load;
 
 import java.awt.geom.Rectangle2D;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,9 +15,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.ReadableVectorial;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 
-import es.icarto.gvsig.elle.db.DBStructure;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
-import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class Constant {
 
@@ -29,17 +24,15 @@ public class Constant {
     private final static String CONSTANTS_ZOOM_LAYER_FIELD = "municipio_codigo";
     private final static String CONSTANTS_ZOOM_LAYER_NAME = "Constante";
 
-    private final static String CONSTANTS_AFFECTED_TABLE_NAME = "nombre_tabla";
-
-    private final static String CONSTANTS_TABLE_NAME = "_constants";
-    private final static String CONSTANTS_CONSTANT_FIELD_NAME = "constante";
-
     private final String[] values;
     private final FLyrVect layer;
 
     public Constant(String[] values, MapControl mapControl) {
 	this.values = values;
 
+	// Debería lanzar una excepción si la capa no está disponible o la capa
+	// debería cargarse más tarde, pero implica cambios que no pueden
+	// hacerse ahora
 	TOCLayerManager tocManager = new TOCLayerManager(mapControl);
 	this.layer = tocManager.getLayerByName(CONSTANTS_ZOOM_LAYER_NAME);
     }
@@ -138,34 +131,4 @@ public class Constant {
 	return rectangle;
     }
 
-    public static String[] getTablesAffectedByConstant(String constant) {
-	String query = "SELECT nombre_tabla FROM " + DBStructure.getSchema()
-		+ "." + CONSTANTS_TABLE_NAME + " WHERE "
-		+ CONSTANTS_CONSTANT_FIELD_NAME + " = " + "'" + constant + "'"
-		+ ";";
-	PreparedStatement statement;
-	try {
-	    DBSession dbs = DBSession.getCurrentSession();
-	    statement = dbs.getJavaConnection().prepareStatement(query);
-	    statement.execute();
-	    ResultSet rs = statement.getResultSet();
-
-	    List<String> resultArray = new ArrayList<String>();
-	    while (rs.next()) {
-		String val = rs.getString(CONSTANTS_AFFECTED_TABLE_NAME);
-		resultArray.add(val);
-	    }
-	    rs.close();
-
-	    String[] result = new String[resultArray.size()];
-	    for (int i = 0; i < resultArray.size(); i++) {
-		result[i] = resultArray.get(i);
-	    }
-
-	    return result;
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
-	return null;
-    }
 }
