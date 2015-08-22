@@ -150,7 +150,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 		// query
 		String where = "WHERE "
 			+ ConstantUtils
-			.getValueOfFieldByConstant(SELECTED_CONSTANT)
+				.getValueOfFieldByConstant(SELECTED_CONSTANT)
 			+ " IN (";
 
 		if (selectedValuesList.length > 0) {
@@ -208,33 +208,33 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	if (values.length != 1) {
 	    if (areaByConnectedUser.equalsIgnoreCase("ambas")) {
 		PluginServices
-			.getMainFrame()
-			.getStatusBar()
-			.setMessage("constants",
-				SELECTED_CONSTANT + ": " + "TODOS");
+		.getMainFrame()
+		.getStatusBar()
+		.setMessage("constants",
+			SELECTED_CONSTANT + ": " + "TODOS");
 	    } else if (areaByConnectedUser.equalsIgnoreCase("norte")) {
 		PluginServices
-			.getMainFrame()
-			.getStatusBar()
-			.setMessage("constants",
-				SELECTED_CONSTANT + ": " + "햞ea Norte");
+		.getMainFrame()
+		.getStatusBar()
+		.setMessage("constants",
+			SELECTED_CONSTANT + ": " + "햞ea Norte");
 	    } else {
 		PluginServices
-			.getMainFrame()
-			.getStatusBar()
-			.setMessage("constants",
-				SELECTED_CONSTANT + ": " + "햞ea Sur");
+		.getMainFrame()
+		.getStatusBar()
+		.setMessage("constants",
+			SELECTED_CONSTANT + ": " + "햞ea Sur");
 	    }
 	} else {
 	    PluginServices
-		    .getMainFrame()
-		    .getStatusBar()
-		    .setMessage(
-			    "constants",
-			    SELECTED_CONSTANT
-		    + ": "
-				    + ConstantUtils
-		    .getNombreMunicipioById(values[0]));
+	    .getMainFrame()
+	    .getStatusBar()
+	    .setMessage(
+		    "constants",
+		    SELECTED_CONSTANT
+				    + ": "
+		    + ConstantUtils
+					    .getNombreMunicipioById(values[0]));
 	}
     }
 
