@@ -1,4 +1,4 @@
-package es.udc.cartolab.gvsig.elle.gui.wizard.load;
+package es.udc.cartolab.gvsig.elle.constants;
 
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 

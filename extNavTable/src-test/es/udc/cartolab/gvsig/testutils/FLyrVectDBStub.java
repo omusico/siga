@@ -23,7 +23,7 @@ public class FLyrVectDBStub extends FLyrVect {
 	DBLayerDefinition layerDefinition = new DBLayerDefinition();
 	layerDefinition.setFieldsDesc(fieldDescriptionFactory.getFields());
 	VectorialDriver driver = new VectorialDBDriverStub("foo",
-		Collections.EMPTY_LIST, layerDefinition);
+		Collections.<IFeature> emptyList(), layerDefinition);
 	source.setDriver(driver);
 	setSource(source);
     }

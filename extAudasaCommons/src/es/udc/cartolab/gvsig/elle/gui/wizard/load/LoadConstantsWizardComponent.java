@@ -20,7 +20,10 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
 import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 
-import es.icarto.gvsig.audasacommons.ConstantReload;
+import es.udc.cartolab.gvsig.elle.constants.Constant;
+import es.udc.cartolab.gvsig.elle.constants.ConstantReload;
+import es.udc.cartolab.gvsig.elle.constants.ConstantUtils;
+import es.udc.cartolab.gvsig.elle.constants.ZoomToConstant;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardComponent;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardException;
 import es.udc.cartolab.gvsig.elle.utils.ELLEMap;

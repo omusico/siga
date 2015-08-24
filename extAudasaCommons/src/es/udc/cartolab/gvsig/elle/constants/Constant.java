@@ -1,4 +1,4 @@
-package es.udc.cartolab.gvsig.elle.gui.wizard.load;
+package es.udc.cartolab.gvsig.elle.constants;
 
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;

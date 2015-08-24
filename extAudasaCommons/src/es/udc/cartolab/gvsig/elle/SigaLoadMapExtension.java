@@ -31,8 +31,8 @@ import com.iver.cit.gvsig.project.documents.view.ProjectViewFactory;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.icarto.gvsig.elle.db.DBStructure;
+import es.udc.cartolab.gvsig.elle.constants.ConstantUtils;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardWindow;
-import es.udc.cartolab.gvsig.elle.gui.wizard.load.ConstantUtils;
 import es.udc.cartolab.gvsig.elle.gui.wizard.load.SigaLoadMapWizard;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 

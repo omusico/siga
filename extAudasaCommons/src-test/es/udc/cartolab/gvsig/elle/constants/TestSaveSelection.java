@@ -1,4 +1,4 @@
-package es.icarto.gvsig.audasacommons;
+package es.udc.cartolab.gvsig.elle.constants;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -21,6 +21,7 @@ import com.iver.cit.gvsig.fmap.layers.VectorialAdapter;
 import com.iver.cit.gvsig.fmap.layers.VectorialDefaultAdapter;
 
 import es.icarto.gvsig.commons.datasources.FieldDescriptionFactory;
+import es.udc.cartolab.gvsig.elle.constants.SaveSelection;
 import es.udc.cartolab.gvsig.testutils.FLyrVectDBStub;
 import es.udc.cartolab.gvsig.testutils.FLyrVectStub;
 import es.udc.cartolab.gvsig.testutils.VectorialDBDriverStub;

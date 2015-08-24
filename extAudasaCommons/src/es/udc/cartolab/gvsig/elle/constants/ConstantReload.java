@@ -1,4 +1,4 @@
-package es.icarto.gvsig.audasacommons;
+package es.udc.cartolab.gvsig.elle.constants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,8 +24,6 @@ import com.iver.cit.gvsig.project.documents.ProjectDocument;
 import com.iver.cit.gvsig.project.documents.view.ProjectViewFactory;
 import com.iver.cit.gvsig.project.documents.view.gui.BaseView;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
-
-import es.udc.cartolab.gvsig.elle.gui.wizard.load.ConstantUtils;
 
 public class ConstantReload {
 

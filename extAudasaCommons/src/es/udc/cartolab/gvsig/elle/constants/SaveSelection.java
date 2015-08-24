@@ -1,4 +1,4 @@
-package es.icarto.gvsig.audasacommons;
+package es.udc.cartolab.gvsig.elle.constants;
 
 import java.util.ArrayList;
 import java.util.Collection;
