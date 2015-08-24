@@ -37,10 +37,10 @@
         </extension>
 
         <extension class-name="es.icarto.gvsig.audasacommons.ConstantReloadExtension" active="true">
-
-			<tool-bar name="SIGA_Tools" position="75">
-				<action-tool icon="es.icarto.gvsig.audasacommons.constantreloadextension" position="6" tooltip="Recargar constantes" />
-			</tool-bar>
+			<menu text="data_base_menu/constantreload" icon="constantreload"  position="20700"/>
+			<tool-bar name="ELLE" position="30">
+                <action-tool name="constantreload" icon="constantreload" tooltip="constantreload" position="5"/>
+            </tool-bar>
 		</extension>
 
 

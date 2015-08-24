@@ -21,6 +21,7 @@ import com.iver.cit.gvsig.fmap.layers.VectorialAdapter;
 import com.iver.cit.gvsig.fmap.layers.VectorialDefaultAdapter;
 
 import es.icarto.gvsig.commons.datasources.FieldDescriptionFactory;
+import es.udc.cartolab.gvsig.testutils.FLyrVectDBStub;
 import es.udc.cartolab.gvsig.testutils.FLyrVectStub;
 import es.udc.cartolab.gvsig.testutils.VectorialDBDriverStub;
 
@@ -84,7 +85,7 @@ public class TestSaveSelection {
 
     @Test
     public void test() {
-	FLyrVectStub layer = new FLyrVectStub("test");
+	FLyrVectDBStub layer = new FLyrVectDBStub("test");
 
 	layer.setData(featureList(), layerDefinition());
 

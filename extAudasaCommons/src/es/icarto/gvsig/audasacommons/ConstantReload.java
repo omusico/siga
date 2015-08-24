@@ -25,7 +25,6 @@ import com.iver.cit.gvsig.project.documents.view.ProjectViewFactory;
 import com.iver.cit.gvsig.project.documents.view.gui.BaseView;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
-import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 import es.udc.cartolab.gvsig.elle.gui.wizard.load.ConstantUtils;
 
 public class ConstantReload {
@@ -35,29 +34,8 @@ public class ConstantReload {
 
     public ConstantReload(View view, String where) {
 	this.where = where;
-	TOCLayerManager tocManager = new TOCLayerManager();
-	List<FLyrVect> joinedLayers = tocManager.getJoinedLayers();
-	List<FLyrVect> editingLayers = tocManager.getEditingLayers();
 
-	String errorMsg = "";
-
-	if (!joinedLayers.isEmpty()) {
-	    errorMsg += "Deshaga las uniones o enlaces de las siguientes capas para poder continuar:\nn";
-	    for (FLyrVect l : joinedLayers) {
-		errorMsg += " - " + l.getName() + "\n";
-	    }
-	    errorMsg += "\n\n";
-
-	}
-
-	if (!editingLayers.isEmpty()) {
-	    errorMsg += "Cierre la edición de las siguientes capas para poder continuar:\nn";
-	    for (FLyrVect l : editingLayers) {
-		errorMsg += " - " + l.getName() + "\n";
-	    }
-
-	}
-
+	String errorMsg = ConstantUtils.constantChecks(view);
 	if (!errorMsg.isEmpty()) {
 	    throw new RuntimeException(errorMsg);
 	}
