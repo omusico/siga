@@ -36,5 +36,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/libDriverManager"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/extSymbology"/>
 	<classpathentry kind="lib" path="/es.icarto.gvsig.commons/lib/miglayout-swing-5.1-20150404.220019-96.jar"/>
+	<classpathentry kind="src" path="/extJDBC"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

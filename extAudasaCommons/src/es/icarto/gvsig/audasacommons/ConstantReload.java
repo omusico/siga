@@ -31,11 +31,10 @@ import es.udc.cartolab.gvsig.elle.gui.wizard.load.ConstantUtils;
 public class ConstantReload {
 
     private static final Logger logger = Logger.getLogger(ConstantReload.class);
+    private final String where;
 
-    public ConstantReload() {
-	// TODO
-	View view = (View) PluginServices.getMDIManager().getActiveWindow();
-
+    public ConstantReload(View view, String where) {
+	this.where = where;
 	TOCLayerManager tocManager = new TOCLayerManager();
 	List<FLyrVect> joinedLayers = tocManager.getJoinedLayers();
 	List<FLyrVect> editingLayers = tocManager.getEditingLayers();
@@ -139,13 +138,9 @@ public class ConstantReload {
 	vectLayer.deleteSpatialIndex();
     }
 
-    // TODO
-    // coge el antiguo where de la capa
-    // calcula el nuevo where de la capa
-    // lo setea en la definición de la capa
     private void updateLayerConstants(FLyrVect l) {
 	DBLayerDefinition lyrDef = getDBLayerDefinition(l);
-	lyrDef.setWhereClause("WHERE municipio IN ('36045', '36057')");
+	lyrDef.setWhereClause(where);
     }
 
     private void reload(FLyrVect l) {

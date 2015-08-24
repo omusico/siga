@@ -131,66 +131,53 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 
 	Object[] selectedValuesList = valuesList.getSelectedValues();
 	String[] values = new String[selectedValuesList.length];
-
-	if (reload) {
-	    new ConstantReload();
-	    return;
+	for (int i = 0; i < selectedValuesList.length; i++) {
+	    values[i] = ConstantUtils.getIdByConstantTag(selectedValuesList[i]
+		    .toString());
 	}
 
-	Object tmp = properties
-		.get(SigaLoadMapWizardComponent.PROPERTY_MAP_NAME);
-	String mapName = (tmp == null ? "" : tmp.toString());
-
 	Object aux = properties.get(PROPERTY_VIEW);
-	if (aux != null && aux instanceof View) {
-	    View view = (View) aux;
-	    try {
-		ELLEMap map = MapDAO.getInstance().getMap(view, mapName);
-		// TODO: An index on selectedConstant field could speed up the
-		// query
-		String where = "WHERE "
-			+ ConstantUtils
-				.getValueOfFieldByConstant(SELECTED_CONSTANT)
-			+ " IN (";
+	if (!(aux instanceof View)) {
+	    throw new WizardException("Couldn't retrieve the view");
+	}
+	View view = (View) aux;
 
-		if (selectedValuesList.length > 0) {
+	ELLEMap map = null;
 
-		    for (int i = 0; i < selectedValuesList.length; i++) {
-			values[i] = ConstantUtils
-				.getIdByConstantTag(selectedValuesList[i]
-					.toString());
-		    }
-		    ELLEMap.setConstantValuesSelected(values);
-
-		    for (String s : values) {
-			where += "'" + s + "', ";
-		    }
-		    where = where.substring(0, where.length() - 2) + ")";
-
-		    map.setWhereOnAllLayers(where);
-		    map.setWhereOnAllOverviewLayers(where);
-		    ELLEMap.setFiltered(true);
-
-		} else if (!ConstantUtils.getAreaByConnectedUser()
-			.equalsIgnoreCase("ambas")) {
-		    where += ConstantUtils
-			    .getWhereWithAllCouncilsOfArea(SELECTED_CONSTANT);
-		    map.setWhereOnAllLayers(where);
-		    map.setWhereOnAllOverviewLayers(where);
-		} else {
-		    ELLEMap.setFiltered(false);
+	if (reload) {
+	    List<ELLEMap> loadedMaps = MapDAO.getInstance().getLoadedMaps();
+	    for (ELLEMap m : loadedMaps) {
+		if (m.getView().equals(view)
+			&& m.getName().equals(view.getName())) {
+		    map = m;
 		}
+	    }
 
-		// TODO
+	    // TODO. Que hacer si map es null aquí? Por ahora nos contentamos
+	    // con algo parecido al Null Object Pattern para evitar chequeos de
+	    // null sobre map
+	    map = map != null ? map : new ELLEMap(null, null);
+	    String where = buildWhereAndSetConstants(map, selectedValuesList,
+		    values);
+	    new ConstantReload(view, where);
+	    return;
+	} else {
+	    Object tmp = properties
+		    .get(SigaLoadMapWizardComponent.PROPERTY_MAP_NAME);
+	    String mapName = (tmp == null ? "" : tmp.toString());
+
+	    try {
+		map = MapDAO.getInstance().getMap(view, mapName);
+		buildWhereAndSetConstants(map, selectedValuesList, values);
+
 		String[] tablesAffectedByConstant = ConstantUtils
 			.getTablesAffectedByConstant(SELECTED_CONSTANT);
-		//
 		map.load(view.getProjection(), tablesAffectedByConstant);
 		if (view.getModel().getName().equals("ELLE View")
 			&& (view.getModel() instanceof ProjectView)) {
 		    ((ProjectView) view.getModel()).setName(mapName);
 		}
-		writeCouncilsLoadedInStatusBar(values);
+
 		Constant constant = new Constant(values, view.getMapControl());
 		ZoomToConstant zoomToConstant = new ZoomToConstant(
 			view.getMapControl(), constant);
@@ -198,9 +185,11 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	    } catch (Exception e) {
 		throw new WizardException(e);
 	    }
-	} else {
-	    throw new WizardException("Couldn't retrieve the view");
+
 	}
+
+	writeCouncilsLoadedInStatusBar(values);
+
     }
 
     private void writeCouncilsLoadedInStatusBar(String[] values) {
@@ -240,5 +229,43 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 
     public void setReload(boolean reload) {
 	this.reload = true;
+    }
+
+    private String buildWhereAndSetConstants(ELLEMap map,
+	    Object[] selectedValuesList, String[] values) {
+	// TODO: An index on selectedConstant field could speed up the
+	// query
+	String where = "WHERE "
+		+ ConstantUtils.getValueOfFieldByConstant(SELECTED_CONSTANT)
+		+ " IN (";
+
+	if (selectedValuesList.length > 0) {
+
+	    ELLEMap.setConstantValuesSelected(values);
+
+	    for (String s : values) {
+		where += "'" + s + "', ";
+	    }
+	    where = where.substring(0, where.length() - 2) + ")";
+
+	    map.setWhereOnAllLayers(where);
+	    map.setWhereOnAllOverviewLayers(where);
+	    ELLEMap.setFiltered(true);
+
+	} else if (!ConstantUtils.getAreaByConnectedUser().equalsIgnoreCase(
+		"ambas")) {
+	    where += ConstantUtils
+		    .getWhereWithAllCouncilsOfArea(SELECTED_CONSTANT);
+	    map.setWhereOnAllLayers(where);
+	    map.setWhereOnAllOverviewLayers(where);
+	    ELLEMap.setFiltered(false);
+	} else {
+	    where = "";
+	    map.setWhereOnAllLayers(where);
+	    map.setWhereOnAllOverviewLayers(where);
+	    ELLEMap.setFiltered(false);
+	}
+
+	return where;
     }
 }
