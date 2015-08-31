@@ -37,12 +37,9 @@
 	    <copy file="config/config.xml" todir="${dist}" />
 		<copy file="config/incidencias.gvl" todir="${dist}" />
 		<copy file="config/incidencias.kml" todir="${dist}" />
-		<copy file="config/about.htm" todir="${dist}" overwrite="yes"/>
 		<copy todir="${dist}">
 			<fileset dir="config" includes="*.properties" />
 		</copy>
-			
-		<copy file="config/ChangeLog" todir="${dist}" overwrite="yes"/>
 
 		<copy todir="${dist}/images">
 			<fileset dir="images" includes="*" />
@@ -51,6 +48,8 @@
 		<copy todir="${dist}/forms">
 			<fileset dir="forms" includes="*" excludes="*.jfpr" />
 		</copy>
+		
+		<echo file="${dist}/VERSION">version=SIGA versi\u00f3n: ${DSTAMP}</echo>
 
 	</target>
 

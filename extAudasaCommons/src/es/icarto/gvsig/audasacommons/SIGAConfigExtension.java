@@ -1,8 +1,13 @@
 package es.icarto.gvsig.audasacommons;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
+
+import org.apache.log4j.Logger;
 
 import com.iver.andami.PluginServices;
 import com.iver.andami.plugins.Extension;
@@ -18,16 +23,31 @@ import es.udc.cartolab.gvsig.elle.utils.MapFilter;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class SIGAConfigExtension extends Extension implements
-	IPreferenceExtension {
+IPreferenceExtension {
+
+    private static final Logger logger = Logger
+	    .getLogger(SIGAConfigExtension.class);
 
     @Override
     public void initialize() {
+	setVersion();
+	SIGAFormFactory.registerFormFactory();
+    }
+
+    private void setVersion() {
 	About about = (About) PluginServices.getExtension(About.class);
 	FPanelAbout panelAbout = about.getAboutPanel();
-	java.net.URL aboutURL = this.getClass().getResource("/about.htm");
-	panelAbout.addAboutUrl("AUDASA", aboutURL);
-
-	SIGAFormFactory.registerFormFactory();
+	Properties props = new Properties();
+	try {
+	    String file = PluginServices.getPluginServices(this)
+		    .getPluginDirectory().getAbsolutePath()
+		    + File.separator + "VERSION";
+	    props.load(new FileInputStream(file));
+	} catch (Exception e) {
+	    logger.error(e.getStackTrace(), e);
+	}
+	String version = props.getProperty("version");
+	panelAbout.setCustomVersion(version);
     }
 
     @Override
