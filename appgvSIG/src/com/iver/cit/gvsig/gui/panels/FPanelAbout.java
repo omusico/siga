@@ -247,4 +247,8 @@ public class FPanelAbout extends JPanel implements IWindow {
     public Object getWindowProfile() {
     	return WindowInfo.DIALOG_PROFILE;
     }
+    
+    public void setCustomVersion(String version) {
+	jLblVersion.setText(version);
+    }
 }  //  @jve:decl-index=0:visual-constraint="10,10"
