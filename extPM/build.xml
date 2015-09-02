@@ -41,10 +41,6 @@
 		<copy todir="${dist}/images">
 			<fileset dir="images" includes="*" />
 		</copy>
-	
-		<copy todir="${dist}/images/icons">
-			<fileset dir="images/icons" includes="*"/>
-		</copy>
 		
 		<copy todir="${dist}/reports">
 			<fileset dir="reports" includes="*" />
