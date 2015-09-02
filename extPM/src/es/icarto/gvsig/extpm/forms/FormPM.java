@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.JTextComponent;
 
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
@@ -31,8 +30,7 @@ public class FormPM extends BasicAbstractForm {
 
     
     // WIDGETS
-    private JTextField numParcelaCatastro;
-    private JTextField poligonoCatastro;
+
     private JTextField numeroPM;
     private JTable fincasAfectadasTable;
     private JButton printReportB;
@@ -100,24 +98,10 @@ public class FormPM extends BasicAbstractForm {
 
 	Map<String, JComponent> widgets = getWidgets();
 
-	numeroPM = (JTextField) widgets.get(Preferences.PM_FIELD_NUMEROPM);
-
-	numParcelaCatastro = (JTextField) widgets
-		.get(Preferences.PM_FORM_WIDGETS_NUM_PARCELA_CATASTRO);
-	numParcelaCatastro
-		.setToolTipText("Si hay varias parcelas separar con guión (-)");
-	poligonoCatastro = (JTextField) widgets
-		.get(Preferences.PM_FORM_WIDGETS_POLIGONO_CATASTRO);
-	poligonoCatastro
-		.setToolTipText("Si hay varios polígonos separar con guión (-)");
+	numeroPM = (JTextField) widgets.get(PM_FIELD_NUMEROPM);
 
 	fincasAfectadasTable = (JTable) formBody
 		.getComponentByName("parcelas_afectadas_table");
-    }
-
-    @Override
-    protected void removeListeners() {
-	super.removeListeners();
     }
 
     @Override
