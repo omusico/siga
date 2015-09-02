@@ -1,6 +1,5 @@
 package es.icarto.gvsig.extpm.forms;
 
-import java.awt.Color;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,28 +20,39 @@ import es.icarto.gvsig.audasacommons.forms.reports.NavTableComponentsPrintButton
 import es.icarto.gvsig.commons.gui.WidgetFactory;
 import es.icarto.gvsig.extgex.forms.reversions.OpenWebAction;
 import es.icarto.gvsig.extpm.forms.filesLink.NavTableComponentsFilesLinkButton;
-import es.icarto.gvsig.extpm.preferences.Preferences;
 import es.icarto.gvsig.navtableforms.BasicAbstractForm;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
 public class FormPM extends BasicAbstractForm {
-
     
+    public static final String TOCNAME = "Policia_Margenes";
+    public static final String SCHEMA = "audasa_pm";
+    public static final String TABLENAME = "exp_pm";
+
+    private static final String PM_FIELD_NUMEROPM = "exp_id";
+    private static final String FINCAS_TABLENAME = "audasa_expropiaciones.exp_finca";
+    private static final String FINCAS_FIELD_TRAMO = "tramo";
+    private static final String FINCAS_FIELD_IDFINCA = "id_finca";
+    private static final String TRAMOS_TABLENAME = "audasa_expropiaciones.tramos";
+    private static final String TRAMOS_FIELD_ID = "id_tramo";
+    private static final String FINCAS_PM_TABLENAME = "audasa_pm.fincas_pm";
+    private static final String FINCAS_PM_FIELD_IDFINCA = "id_finca";
+    private static final String FINCAS_PM_FIELD_NUMEROPM = "numero_pm";
+
     // WIDGETS
 
     private JTextField numeroPM;
     private JTable fincasAfectadasTable;
     private JButton printReportB;
-    String extensionPath;
-    URL reportPath;
-    boolean firstOpen = true;
+    private String extensionPath;
+    private URL reportPath;
 
-    NavTableComponentsFilesLinkButton ntFilesLinkButton;
-    NavTableComponentsPrintButton ntPrintButton;
+    private NavTableComponentsFilesLinkButton ntFilesLinkButton;
+    private NavTableComponentsPrintButton ntPrintButton;
     private JButton openWebBt;
 
-    public FormPM(FLyrVect layer, boolean newRegister, int insertedRow) {
+    public FormPM(FLyrVect layer) {
 	super(layer);
     }
 
@@ -57,8 +67,8 @@ public class FormPM extends BasicAbstractForm {
 	JButton filesLinkB = ntFilesLinkButton.getFilesLinkButton(layer, this);
 
 	printReportB = ntPrintButton.getPrintButton(this, extensionPath,
-		reportPath.getPath(), Preferences.PM_TABLENAME,
-		Preferences.PM_FIELD_NUMEROPM, numeroPM.getText());
+		reportPath.getPath(), SCHEMA + "." + TABLENAME,
+		PM_FIELD_NUMEROPM, numeroPM.getText());
 	printReportB.setName("printButton");
 
 	if (openWebBt == null) {
@@ -124,12 +134,12 @@ public class FormPM extends BasicAbstractForm {
 	PreparedStatement statement;
 	String[] fincaValues = new String[1];
 	try {
-	    String query = "SELECT " + Preferences.FINCAS_FIELD_IDFINCA
-		    + " FROM " + Preferences.FINCAS_TABLENAME + " a, "
-		    + Preferences.TRAMOS_TABLENAME + " b " + " WHERE "
-		    + Preferences.FINCAS_FIELD_TRAMO + " = "
-		    + Preferences.TRAMOS_FIELD_ID + " AND "
-		    + Preferences.FINCAS_FIELD_IDFINCA + "=" + "'" + idFinca
+	    String query = "SELECT " + FINCAS_FIELD_IDFINCA
+		    + " FROM " + FINCAS_TABLENAME + " a, "
+		    + TRAMOS_TABLENAME + " b " + " WHERE "
+		    + FINCAS_FIELD_TRAMO + " = "
+		    + TRAMOS_FIELD_ID + " AND "
+		    + FINCAS_FIELD_IDFINCA + "=" + "'" + idFinca
 		    + "';";
 	    statement = DBSession.getCurrentSession().getJavaConnection()
 		    .prepareStatement(query);
@@ -160,9 +170,9 @@ public class FormPM extends BasicAbstractForm {
 	PreparedStatement statement;
 	try {
 	    String fincasQuery = "SELECT "
-		    + Preferences.FINCAS_PM_FIELD_IDFINCA + " FROM "
-		    + Preferences.FINCAS_PM_TABLENAME + " WHERE "
-		    + Preferences.FINCAS_PM_FIELD_NUMEROPM + " = '"
+		    + FINCAS_PM_FIELD_IDFINCA + " FROM "
+		    + FINCAS_PM_TABLENAME + " WHERE "
+		    + FINCAS_PM_FIELD_NUMEROPM + " = '"
 		    + numeroPM.getText() + "'";
 	    statement = DBSession.getCurrentSession().getJavaConnection()
 		    .prepareStatement(fincasQuery);
@@ -186,11 +196,11 @@ public class FormPM extends BasicAbstractForm {
 
     @Override
     protected String getBasicName() {
-	return "exp_pm";
+	return TABLENAME;
     }
 
     @Override
     protected String getSchema() {
-	return Preferences.PM_SCHEMA;
+	return SCHEMA;
     }
 }

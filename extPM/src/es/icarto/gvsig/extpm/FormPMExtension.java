@@ -7,7 +7,6 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.icarto.gvsig.extpm.forms.FormPM;
-import es.icarto.gvsig.extpm.preferences.Preferences;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -15,9 +14,8 @@ public class FormPMExtension extends Extension {
 
     @Override
     public void execute(String actionCommand) {
-	DBSession.getCurrentSession().setSchema(Preferences.PM_SCHEMA);
 	FLyrVect layer = getPMLayer();
-	FormPM dialog = new FormPM(layer, false, -1);
+	FormPM dialog = new FormPM(layer);
 	if (dialog.init()) {
 	    PluginServices.getMDIManager().addWindow(dialog);
 	}
@@ -30,7 +28,7 @@ public class FormPMExtension extends Extension {
     @Override
     public boolean isEnabled() {
 	if ((DBSession.getCurrentSession() != null) && hasView()
-		&& isLayerLoaded(Preferences.PM_LAYER_NAME)) {
+		&& isLayerLoaded(FormPM.TOCNAME)) {
 	    return true;
 	} else {
 	    return false;
@@ -42,16 +40,9 @@ public class FormPMExtension extends Extension {
 	return true;
     }
 
-    protected void registerIcons() {
-	PluginServices.getIconTheme().registerDefault(
-		"extpm-pmForm",
-		this.getClass().getClassLoader()
-			.getResource("images/pm_form.png"));
-    }
-
     private FLyrVect getPMLayer() {
 	TOCLayerManager toc = new TOCLayerManager();
-	return toc.getLayerByName(Preferences.PM_LAYER_NAME);
+	return toc.getLayerByName(FormPM.TOCNAME);
     }
 
     private boolean isLayerLoaded(String layerName) {
