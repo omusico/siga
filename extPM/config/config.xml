@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <plugin-config>
 	<depends plugin-name="com.iver.cit.gvsig"/>
-	<depends plugin-name="com.iver.cit.gvsig.cad"/>
 	<depends plugin-name="es.udc.cartolab.gvsig.navtable"/>
 	<depends plugin-name="es.icarto.gvsig.navtableforms"/>
 	<depends plugin-name="es.udc.cartolab.gvsig.users"/>
@@ -18,12 +17,5 @@
 			<menu text="SIGA" position="30199" is_separator="true"/>
 			<menu text="SIGA/Policía Márgenes/Expediente PM" action-command="PMFileExtension" icon="images/pm_form.png" position="30250"/>
 		</extension>
-<!-- 		<extension class-name="es.icarto.gvsig.extpm.CreateNewPMFileExtension" description="NEW_PM" active="true">
-			<tool-bar name="Márgenes" position="72">
-				<action-tool icon="images/new_pm.png" tooltip="Crear nueva Policía de Márgenes" action-command="_point" position="1"/>
-			</tool-bar>
-            <menu text="SIGA" position="30199" is_separator="true"/>
-			<menu text="SIGA/Policía Márgenes/Crear nuevo" action-command="_point" icon="images/new_pm.png" position="30200"/>
-		</extension> -->
 	</extensions>
 </plugin-config>
