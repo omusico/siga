@@ -11,6 +11,7 @@ import static es.icarto.gvsig.extgia.preferences.DBFieldNames.SENTIDO;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TIPO_VIA;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TIPO_VIA_PF;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TRAMO;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.MUNICIPIO;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -49,6 +50,7 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 
     private static final Logger logger = Logger
 	    .getLogger(AbstractFormWithLocationWidgets.class);
+
 
     protected FilesLinkButton filesLinkButton;
 
@@ -94,7 +96,13 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 		addChained(PK_FINAL, TIPO_VIA, NOMBRE_VIA);
 	    }
 	}
-	imagesInForms = new ImagesInForms(formBody, getImagesDBTableName(), getElementID());
+	if (widgets.get(MUNICIPIO) != null) {
+	    addChained(MUNICIPIO, BASE_CONTRATISTA, TRAMO);
+	}
+	imagesInForms = new ImagesInForms(formBody, getImagesDBTableName(),
+		getElementID());
+//	JLabel label = (JLabel) getFormPanel().getComponentByName("fooo");
+//	label.setText("<html><b><p align=\"center\">AUTOPISTAS DEL ATLÁNTICO</p></b><p>Concesionaria Española, S.A.</p></html>");
     }
 
     @Override
