@@ -18,6 +18,7 @@ package es.udc.cartolab.gvsig.users.gui;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.InputStream;
 
 import javax.swing.ImageIcon;
@@ -38,6 +39,7 @@ import com.jeta.forms.components.image.ImageComponent;
 import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 
+import es.udc.cartolab.gvsig.users.preferences.UsersPreferencePage;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 /**
@@ -113,10 +115,7 @@ public class DBConnectionDialog extends AbstractGVWindow {
 	    showAdvancedProperties(false);
 	    advCHB.addActionListener(this);
 
-	    // Add AUDASA icon
-	    ImageComponent image = (ImageComponent) form.getComponentByName("image");
-	    ImageIcon icon = new ImageIcon ("gvSIG/extensiones/es.icarto.gvsig.audasacommons/images/logo_audasa.png");
-	    image.setIcon(icon);
+	    initLogo(form);
 
 	    // localization
 	    JLabel serverLabel = form.getLabel(ID_SERVERL);
@@ -150,6 +149,17 @@ public class DBConnectionDialog extends AbstractGVWindow {
 
 	}
 	return centerPanel;
+    }
+
+    private void initLogo(FormPanel form) {
+	if (! UsersPreferencePage.LOGO.isEmpty()) {
+	    File logo = new File(UsersPreferencePage.LOGO);
+	    if (logo.isFile()) {
+		ImageComponent image = (ImageComponent) form.getComponentByName("image");
+		ImageIcon icon = new ImageIcon (logo.getAbsolutePath());
+		image.setIcon(icon);		
+	    }
+	}
     }
 
     private void fillDialogFromPluginPersistence() {

@@ -20,6 +20,7 @@ import es.icarto.gvsig.navtableforms.SIGAFormFactory;
 import es.icarto.gvsig.utils.SIGAFormatter;
 import es.udc.cartolab.gvsig.elle.ConfigExtension;
 import es.udc.cartolab.gvsig.elle.utils.MapFilter;
+import es.udc.cartolab.gvsig.users.preferences.UsersPreferencePage;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class SIGAConfigExtension extends Extension implements
@@ -32,6 +33,8 @@ IPreferenceExtension {
     public void initialize() {
 	setVersion();
 	SIGAFormFactory.registerFormFactory();
+	
+	UsersPreferencePage.LOGO = PreferencesPage.SIGA_LOGO;
     }
 
     private void setVersion() {

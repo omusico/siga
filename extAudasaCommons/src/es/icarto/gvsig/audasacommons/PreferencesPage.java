@@ -30,7 +30,9 @@ ActionListener {
     private static final Logger logger = Logger
 	    .getLogger(PreferencesPage.class);
     private static final String PLUGIN_NAME = "es.icarto.gvsig.audasacommons";
-    public static final String AUDASA_ICON = "gvSIG/extensiones/es.icarto.gvsig.audasacommons/images/logo_audasa.png";
+    public static final String AUDASA_LOGO = "gvSIG/extensiones/es.icarto.gvsig.audasacommons/images/logo_audasa.png";
+    public static final String AUTOESTRADAS_LOGO = "gvSIG/extensiones/es.icarto.gvsig.audasacommons/images/logo_autoestradas.png";
+    public static final String SIGA_LOGO = "gvSIG/extensiones/es.icarto.gvsig.audasacommons/images/logo_siga.png";
     public static final String IMG_UNAVAILABLE = "gvSIG/extensiones/es.icarto.gvsig.audasacommons/images/img_no_disponible.jpg";
 
     // fileslink
