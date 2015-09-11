@@ -138,32 +138,26 @@ public abstract class AbstractIconTheme implements IIconTheme {
 		return get(iconName,null);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.iver.andami.iconthemes.IIconTheme#get(java.lang.String, java.lang.ClassLoader)
-	 */
 	public ImageIcon get(String iconName, ClassLoader loader) {
-
-		if( loader != null && iconName.contains(".") ) {
+		
+		if (exists(iconName)) {
+			Object object = iconList.get(iconName);
+			if (object != null) {
+				return toImageIcon(object,iconName);
+			}
+			
+			if( defaultTheme.exists(iconName)) {
+				return  defaultTheme.get(iconName, null);
+			}
+			
+		} else if ( loader != null && iconName.contains(".") ) {
 			Logger.getLogger(this.getClass()).warn("Loading icon from resource: '"+ iconName+"'");
 			return toImageIcon(loader.getResource(iconName),iconName);
 		}
 
-		if (defaultTheme==null ){
-			Object object = iconList.get(iconName);
-			if (object!=null) {
-				return toImageIcon(object,iconName);
-			}
-			return getNoIcon();
-		}
-		Object object = iconList.get(iconName);
-		if (object!=null) {
-			return toImageIcon(object,iconName);
-		}
-		if( defaultTheme.exists(iconName)) {
-			return  defaultTheme.get(iconName, null);
-		}
 		return getNoIcon();
 	}
+
 
 	public ImageIcon getNoIcon() {
 		Object object = iconList.get("no-icon");
