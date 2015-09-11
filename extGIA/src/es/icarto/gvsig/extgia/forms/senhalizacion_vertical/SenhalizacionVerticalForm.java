@@ -35,8 +35,6 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 
     private URL reportPath;
 
-    private String extensionPath;
-
     private PrintSVReportObserver printListener;
 
     public static String[] senhalesColNames = { "id_senhal_vertical",
@@ -95,8 +93,7 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 	}
 	printReportB.removeActionListener(printListener);
 
-	printListener = new PrintSVReportObserver(this, extensionPath,
-		reportPath.getPath(), getElementID(), getPrimaryKeyValue());
+	printListener = new PrintSVReportObserver(this, reportPath.getPath(), getElementID(), getPrimaryKeyValue());
 	printReportB.addActionListener(printListener);
     }
 
@@ -110,14 +107,11 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
     private void addPrintButton() {
 	reportPath = this.getClass().getClassLoader()
 		.getResource("reports/senhalizacion_vertical.jasper");
-	extensionPath = reportPath.getPath().replace(
-		"reports/senhalizacion_vertical.jasper", "");
 	JPanel actionsToolBar = this.getActionsToolBar();
 
 	NavTableComponentsPrintButton ntPrintButton = new NavTableComponentsPrintButton();
 
-	printListener = new PrintSVReportObserver(this, extensionPath,
-		reportPath.getPath(), getElementID(), getPrimaryKeyValue());
+	printListener = new PrintSVReportObserver(this, reportPath.getPath(), getElementID(), getPrimaryKeyValue());
 	printReportB = ntPrintButton.createButton(
 		PluginServices.getText(this, "printReportsToolTip"),
 		getPrintIcon(), printListener);

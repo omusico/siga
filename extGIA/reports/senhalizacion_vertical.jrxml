@@ -8,27 +8,28 @@
 	<parameter name="SENHALIZACION_VERTICAL_QUERY" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
-	<parameter name="EXTENSION_PATH" class="java.lang.String"/>
-    <parameter name="IMAGE_PATH" class="java.lang.String"/>
+	<parameter name="LOGO_PATH" class="java.lang.String"/>
+	<parameter name="IMAGE_PATH" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select 	distinct a.*,
-	t.item as tramo_n,
-	v.item as tipo_via_n,
-	n.item as nombre_via_n,
-	s.item as sentido_n,
-	m.item as municipio_n
-from 	audasa_extgia.senhalizacion_vertical a,
-	audasa_extgia_dominios.tramo t,
-	audasa_extgia_dominios.tipo_via v,
-	audasa_extgia_dominios.nombre_via n,
-	audasa_extgia_dominios.sentido s,
-	audasa_extgia_dominios.municipio m
-where 	a.tramo = t.id
-and	a.tipo_via = v.id
-and	cast (a.nombre_via as integer) = n.id
-and	a.sentido = s.id
-and	a.municipio = m.id
-and	a.id_elemento_senhalizacion = $P{SENHALIZACION_VERTICAL_QUERY}]]>
+		<![CDATA[select
+    el.*,
+	tr.item as tramo_n,
+	tv.item as tipo_via_n,
+	nv.item as nombre_via_n,
+	st.item as sentido_n,
+	mu.item as municipio_n,
+    info_empresa.report_logo,
+    info_empresa.report_name
+    from audasa_extgia.senhalizacion_vertical el
+    LEFT OUTER JOIN audasa_extgia_dominios.area_mantenimiento am ON am.id = el.area_mantenimiento
+    LEFT OUTER JOIN audasa_extgia_dominios.base_contratista bc ON bc.id = el.base_contratista
+    LEFT OUTER JOIN audasa_extgia_dominios.tramo tr ON (tr.id = el.tramo AND tr.id_bc = el.base_contratista)
+    LEFT OUTER JOIN audasa_extgia_dominios.municipio mu ON mu.id = el.municipio
+    LEFT OUTER JOIN audasa_extgia_dominios.tipo_via tv ON (tv.id = el.tipo_via AND tv.id_tramo = el.tramo AND tv.id_bc = el.base_contratista)
+    LEFT OUTER JOIN audasa_extgia_dominios.nombre_via nv ON (cast (nv.id as text) = el.nombre_via AND nv.id_tv = el.tipo_via AND nv.id_bc = el.base_contratista AND nv.id_tramo = el.tramo)
+    LEFT OUTER JOIN audasa_extgia_dominios.sentido st ON el.sentido = st.id
+    LEFT OUTER JOIN audasa_aplicaciones.info_empresa as info_empresa ON tr.empresa = info_empresa.id
+    WHERE el.id_elemento_senhalizacion = $P{SENHALIZACION_VERTICAL_QUERY}]]>
 	</queryString>
 	<field name="gid" class="java.lang.Integer"/>
 	<field name="id_elemento_senhalizacion" class="java.lang.Integer"/>
@@ -57,6 +58,8 @@ and	a.id_elemento_senhalizacion = $P{SENHALIZACION_VERTICAL_QUERY}]]>
 	<field name="nombre_via_n" class="java.lang.String"/>
 	<field name="sentido_n" class="java.lang.String"/>
 	<field name="municipio_n" class="java.lang.String"/>
+	<field name="report_logo" class="java.lang.String"/>
+	<field name="report_name" class="java.lang.String"/>
 	<variable name="CURRENTPAGE" class="java.lang.Integer" resetType="Page" incrementType="Page">
 		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
 	</variable>
@@ -65,17 +68,17 @@ and	a.id_elemento_senhalizacion = $P{SENHALIZACION_VERTICAL_QUERY}]]>
 	</background>
 	<pageHeader>
 		<band height="50">
-			<image onErrorType="Blank">
-				<reportElement x="0" y="5" width="40" height="40" uuid="7d1a1d82-41db-41f4-9b37-5e7f85d23951"/>
-				<imageExpression><![CDATA[($P{EXTENSION_PATH}) + "images/logo_audasa.png"]]></imageExpression>
+			<image onErrorType="Blank" scaleImage="RetainShape" hAlign="Left" vAlign="Middle">
+				<reportElement x="0" y="5" width="150" height="40" uuid="7d1a1d82-41db-41f4-9b37-5e7f85d23951"/>
+				<imageExpression><![CDATA[($P{LOGO_PATH}) + $F{report_logo}]]></imageExpression>
 			</image>
-			<staticText>
+			<textField>
 				<reportElement style="Heading 1" x="5" y="5" width="500" height="20" uuid="8a438f59-3f60-412f-9154-9132fa3c75b6"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="16" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Autopistas del Atlántico, C.E.S.A.]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[$F{report_name}]]></textFieldExpression>
+			</textField>
 			<textField>
 				<reportElement x="5" y="25" width="500" height="20" uuid="56f70591-b46e-4ea1-9707-a895fc36d487"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
@@ -219,7 +222,7 @@ and	a.id_elemento_senhalizacion = $P{SENHALIZACION_VERTICAL_QUERY}]]>
 				<subreportParameter name="SENHALES_QUERY">
 					<subreportParameterExpression><![CDATA[$F{id_elemento_senhalizacion}]]></subreportParameterExpression>
 				</subreportParameter>
-                <subreportParameter name="IMAGE_PATH">
+				<subreportParameter name="IMAGE_PATH">
 					<subreportParameterExpression><![CDATA[($P{IMAGE_PATH})]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>

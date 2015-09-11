@@ -19,6 +19,7 @@ import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.core.SymbologyFactory;
 import com.iver.cit.gvsig.fmap.layers.FBitSet;
 
+import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.audasacommons.forms.reports.PrintReportAction;
 import es.icarto.gvsig.audasacommons.forms.reports.SaveFileDialog;
 import es.icarto.gvsig.commons.queries.FinalActions;
@@ -32,7 +33,6 @@ public class PrintSVReportObserver implements ActionListener {
     private final AbstractNavTable dialog;
     private File outputFile;
     private final String reportPath;
-    private final String extensionPath;
     private final String idField;
     private final String idValue;
 
@@ -40,9 +40,7 @@ public class PrintSVReportObserver implements ActionListener {
 
     private final String signalsFolderPath;
 
-    public PrintSVReportObserver(AbstractNavTable dialog, String extensionPath,
-	    String reportPath, String idField, String idValue) {
-	this.extensionPath = extensionPath;
+    public PrintSVReportObserver(AbstractNavTable dialog, String reportPath, String idField, String idValue) {
 	this.dialog = dialog;
 	this.reportPath = reportPath;
 	this.idField = idField;
@@ -133,7 +131,6 @@ public class PrintSVReportObserver implements ActionListener {
 		    for (int i = selection.nextSetBit(0); i >= 0; i = selection
 			    .nextSetBit(i + 1)) {
 			HashMap<String, Object> parameters = new HashMap<String, Object>();
-			parameters.put("EXTENSION_PATH", extensionPath);
 
 			try {
 			    Value fieldValue = dialog.getRecordset()
@@ -143,6 +140,7 @@ public class PrintSVReportObserver implements ActionListener {
 			    parameters.put("SENHALIZACION_VERTICAL_QUERY",
 				    intValue);
 			    parameters.put("IMAGE_PATH", signalsFolderPath);
+			    parameters.put("LOGO_PATH", PreferencesPage.LOGO_PATH);
 			    PrintReportAction reportAction = new PrintReportAction();
 			    reportAction.print(selectedFile.getAbsolutePath()
 				    + "/señalizacion_vertical_" + intValue
@@ -168,7 +166,7 @@ public class PrintSVReportObserver implements ActionListener {
 	HashMap<String, Object> parameters = new HashMap<String, Object>();
 	parameters.put("SENHALIZACION_VERTICAL_QUERY",
 		Integer.parseInt(idValue));
-	parameters.put("EXTENSION_PATH", extensionPath);
+	parameters.put("LOGO_PATH", PreferencesPage.LOGO_PATH);
 	parameters.put("IMAGE_PATH", signalsFolderPath);
 	return parameters;
     }
