@@ -10,12 +10,12 @@
 	<libraries library-dir="lib"/>
 	<resourceBundle name="text"/>
 	<extensions>
-		<extension class-name="es.icarto.gvsig.extpm.FormPMExtension" description="FORMS_PANEL" active="true">
-			<tool-bar name="Márgenes" position="72">
-				<action-tool icon="images/pm_form.png" tooltip="Expediente de Policía de Márgenes" action-command="PMFileExtension" position="2"/>
+		<extension class-name="es.icarto.gvsig.extpm.FormPMExtension" active="true">
+			<tool-bar name="pm" position="72">
+				<action-tool icon="es.icarto.gvsig.extpm.formpmextension" tooltip="formpm" position="2"/>
 			</tool-bar>
 			<menu text="SIGA" position="30199" is_separator="true"/>
-			<menu text="SIGA/Policía Márgenes/Expediente PM" action-command="PMFileExtension" icon="images/pm_form.png" position="30250"/>
+			<menu text="SIGA/formpm" icon="es.icarto.gvsig.extpm.formpmextension" position="30250"/>
 		</extension>
 	</extensions>
 </plugin-config>

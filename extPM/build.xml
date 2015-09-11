@@ -8,17 +8,16 @@
   <property name="plugin" value="es.icarto.gvsig.extpm"/>
   <property name="andami" location="../_fwAndami" />
 	
-	<target name="batch-build" depends="init, compile, create-jar, copy-data-files, copy-libs, move-to-andami">
+	<target name="batch-build" depends="init, compile, create-jar, copy-data-files, move-to-andami">
 	</target>
 	
-	<target name="generate-without-source" depends="init, create-jar,copy-data-files, copy-libs, move-to-andami">
+	<target name="generate-without-source" depends="init, create-jar,copy-data-files, move-to-andami">
 	</target>
 	
 	<target name="init">
 		<tstamp/>
 		<mkdir dir="${build}"/>
 		<mkdir dir="${dist}"/>
-		<mkdir dir="${dist}/lib"/>
 		<mkdir dir="${dist}/rules"/>
 	</target>
 	
@@ -49,12 +48,6 @@
 		<copy todir="${dist}/forms">
 			<fileset dir="forms" includes="*" />
 		</copy>
-	</target>
-	
-	<target name="copy-libs">
-		<copy todir="${dist}/lib">
-			<fileset dir="lib" includes="*"/>
-	  	</copy>
 	</target>
 	
 	<target name="move-to-andami">
