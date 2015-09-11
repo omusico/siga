@@ -40,12 +40,9 @@ public class FormPM extends BasicAbstractForm {
     private static final String FINCAS_PM_FIELD_IDFINCA = "id_finca";
     private static final String FINCAS_PM_FIELD_NUMEROPM = "numero_pm";
 
-    // WIDGETS
-
     private JTextField numeroPM;
     private JTable fincasAfectadasTable;
     private JButton printReportB;
-    private String extensionPath;
     private URL reportPath;
 
     private NavTableComponentsFilesLinkButton ntFilesLinkButton;
@@ -59,15 +56,12 @@ public class FormPM extends BasicAbstractForm {
     private void addNewButtonsToActionsToolBar() {
 	reportPath = this.getClass().getClassLoader()
 		.getResource("reports/pm_report.jasper");
-	extensionPath = reportPath.getPath().replace(
-		"reports/pm_report.jasper", "");
 	JPanel actionsToolBar = this.getActionsToolBar();
 	ntFilesLinkButton = new NavTableComponentsFilesLinkButton();
 	ntPrintButton = new NavTableComponentsPrintButton();
 	JButton filesLinkB = ntFilesLinkButton.getFilesLinkButton(layer, this);
 
-	printReportB = ntPrintButton.getPrintButton(this, extensionPath,
-		reportPath.getPath(), SCHEMA + "." + TABLENAME,
+	printReportB = ntPrintButton.getPrintButton(reportPath.getPath(), SCHEMA + "." + TABLENAME,
 		PM_FIELD_NUMEROPM, numeroPM.getText());
 	printReportB.setName("printButton");
 

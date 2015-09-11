@@ -9,9 +9,15 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="MAIN_IMAGE_PATH" class="java.lang.String"/>
-	<parameter name="EXTENSION_PATH" class="java.lang.String"/>
+	<parameter name="LOGO_PATH" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select * from audasa_pm.exp_pm where id = $P{PM_QUERY_WHERE}]]>
+		<![CDATA[select
+                    el.*,
+                    info_empresa.report_name,
+                    info_empresa.report_logo
+                from audasa_pm.exp_pm as el
+                left outer join audasa_aplicaciones.info_empresa as info_empresa on ( el.ref_empresa ilike '%'|| info_empresa.id)
+                where el.id = $P{PM_QUERY_WHERE}]]>
 	</queryString>
 	<field name="id" class="java.lang.Integer"/>
 	<field name="exp_id" class="java.lang.String"/>
@@ -50,6 +56,8 @@
 	<field name="infraccion_servidumbre" class="java.lang.Boolean"/>
 	<field name="the_geom" class="java.lang.Object"/>
 	<field name="municipio" class="java.lang.String"/>
+    <field name="report_logo" class="java.lang.String"/>
+	<field name="report_name" class="java.lang.String"/>
 	<variable name="CURRENTPAGE" class="java.lang.Integer" resetType="Page" incrementType="Page">
 		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
 	</variable>
@@ -58,17 +66,19 @@
 	</background>
 	<pageHeader>
 		<band height="50">
-			<image onErrorType="Blank">
-				<reportElement x="0" y="5" width="40" height="40" uuid="7d1a1d82-41db-41f4-9b37-5e7f85d23951"/>
-                <imageExpression><![CDATA[($P{EXTENSION_PATH}) + "images/logo_audasa.gif"]]></imageExpression>
+
+			<image onErrorType="Blank" scaleImage="RetainShape" hAlign="Left" vAlign="Middle">
+				<reportElement x="0" y="5" width="150" height="40" uuid="7d1a1d82-41db-41f4-9b37-5e7f85d23951"/>
+                <imageExpression><![CDATA[($P{LOGO_PATH}) + $F{report_logo}]]></imageExpression>
 			</image>
-			<staticText>
+
+            <textField>
 				<reportElement style="Heading 1" x="5" y="5" width="500" height="20" uuid="8a438f59-3f60-412f-9154-9132fa3c75b6"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="16" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Autopistas del Atlántico, C.E.S.A.]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[$F{report_name}]]></textFieldExpression>
+			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement x="5" y="25" width="500" height="20" uuid="2fb14a99-029e-451b-8367-8b5f38b8fc78"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">

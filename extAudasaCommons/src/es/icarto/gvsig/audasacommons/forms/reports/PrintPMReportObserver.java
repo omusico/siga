@@ -12,26 +12,20 @@ import java.util.HashMap;
 
 import javax.swing.JOptionPane;
 
+import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.audasacommons.forms.reports.imagefilechooser.ImageFileChooser;
-import es.icarto.gvsig.navtableforms.AbstractForm;
-import es.udc.cartolab.gvsig.navtable.AbstractNavTable;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class PrintPMReportObserver implements ActionListener {
 
-    private final AbstractNavTable dialog;
     private File inputImageFile;
     private File outputFile;
     private final String reportPath;
-    private final String extensionPath;
     private final String tableName;
     private final String idField;
     private final String idValue;
 
-    public PrintPMReportObserver(AbstractNavTable dialog, String extensionPath,
-	    String reportPath, String tableName, String idField, String idValue) {
-	this.extensionPath = extensionPath;
-	this.dialog = dialog;
+    public PrintPMReportObserver(String reportPath, String tableName, String idField, String idValue) {
 	this.reportPath = reportPath;
 	this.tableName = tableName;
 	this.idField = idField;
@@ -57,7 +51,7 @@ public class PrintPMReportObserver implements ActionListener {
 	    }
 
 	    PrintReportAction reportAction = new PrintReportAction();
-	    reportAction.print(outputFile.getAbsolutePath(), getReportPath(),
+	    reportAction.print(outputFile.getAbsolutePath(), this.reportPath,
 		    getReportParameters());
 
 	    Object[] reportGeneratedOptions = { "Ver informe", "Cerrar" };
@@ -80,20 +74,10 @@ public class PrintPMReportObserver implements ActionListener {
 	}
     }
 
-    private String getReportPath() {
-	AbstractForm form = (AbstractForm) dialog;
-	String empresa = form.getFormController().getValues()
-		.get("ref_empresa");
-	if (empresa.startsWith("AG")) {
-	    return extensionPath + "reports/pm_ag_report.jasper";
-	}
-	return this.reportPath;
-    }
-
     private HashMap<String, Object> getReportParameters() {
 	HashMap<String, Object> parameters = new HashMap<String, Object>();
 	parameters.put("PM_QUERY_WHERE", getPMFileID());
-	parameters.put("EXTENSION_PATH", extensionPath);
+	parameters.put("LOGO_PATH", PreferencesPage.LOGO_PATH);
 	if (inputImageFile != null) {
 	    parameters.put("MAIN_IMAGE_PATH", inputImageFile.getAbsolutePath());
 	}
