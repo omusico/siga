@@ -181,7 +181,7 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
 
 	ImageComponent image = (ImageComponent) formBody
 		.getComponentByName("image");
-	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
+	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_LOGO);
 	image.setIcon(icon);
 
 	tramo = (JComboBox) formBody.getComponentByName("tramo");

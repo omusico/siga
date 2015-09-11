@@ -55,7 +55,7 @@ public class LocatorByMunicipio extends gvWindow implements IPositionRetriever,
 
 	ImageComponent image = (ImageComponent) formBody
 		.getComponentByName("image");
-	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
+	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_LOGO);
 	image.setIcon(icon);
 
 	ayuntamiento = (JComboBox) formBody.getComponentByName("ayuntamiento");

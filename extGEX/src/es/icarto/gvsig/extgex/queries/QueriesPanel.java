@@ -98,7 +98,7 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
     private void initWidgets() {
 	ImageComponent image = (ImageComponent) formBody
 		.getComponentByName("image");
-	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
+	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_LOGO);
 	image.setIcon(icon);
 	runQueriesB = (JButton) formBody.getComponentByName(ID_RUNQUERIES);
 	runQueriesB.addActionListener(this);

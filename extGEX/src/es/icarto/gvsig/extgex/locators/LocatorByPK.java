@@ -82,7 +82,7 @@ public class LocatorByPK extends gvWindow implements ActionListener {
 
 	ImageComponent image = (ImageComponent) formBody
 		.getComponentByName("image");
-	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
+	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_LOGO);
 	image.setIcon(icon);
 
 	tramoCB = (JComboBox) formBody.getComponentByName(ID_TRAMO);

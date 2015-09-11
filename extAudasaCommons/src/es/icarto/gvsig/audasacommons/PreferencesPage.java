@@ -30,9 +30,17 @@ ActionListener {
     private static final Logger logger = Logger
 	    .getLogger(PreferencesPage.class);
     private static final String PLUGIN_NAME = "es.icarto.gvsig.audasacommons";
+    
+    // Maybe it should be on cfg instead that in the plugin folder
+    static {
+	SIGA_LOGO = new File("gvSIG/extensiones/es.icarto.gvsig.audasacommons/images/logo_siga.png").getAbsolutePath();
+	LOGO_PATH = new File ("gvSIG/extensiones/es.icarto.gvsig.audasacommons/images/").getAbsolutePath() + "/";
+    }
+    
     public static final String AUDASA_LOGO = "gvSIG/extensiones/es.icarto.gvsig.audasacommons/images/logo_audasa.png";
     public static final String AUTOESTRADAS_LOGO = "gvSIG/extensiones/es.icarto.gvsig.audasacommons/images/logo_autoestradas.png";
-    public static final String SIGA_LOGO = "gvSIG/extensiones/es.icarto.gvsig.audasacommons/images/logo_siga.png";
+    public static final String SIGA_LOGO;
+    public static final String LOGO_PATH;
     public static final String IMG_UNAVAILABLE = "gvSIG/extensiones/es.icarto.gvsig.audasacommons/images/img_no_disponible.jpg";
 
     // fileslink

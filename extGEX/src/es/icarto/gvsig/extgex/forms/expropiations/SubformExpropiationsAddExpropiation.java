@@ -68,7 +68,7 @@ public class SubformExpropiationsAddExpropiation extends JPanel implements
 
 	ImageComponent image = (ImageComponent) form
 		.getComponentByName("image");
-	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_ICON);
+	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_LOGO);
 	image.setIcon(icon);
 
 	addExpropiationButton = (JButton) form
