@@ -55,13 +55,13 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	super(layer);
 	
 	addTableHandler(new GIAAlphanumericTableHandler(
-		getTrabajosDBTableName(), getWidgetComponents(),
+		getTrabajosDBTableName(), getWidgets(),
 		getElementID(), DBFieldNames.trabajosVegetacionColNames,
 		DBFieldNames.trabajosVegetacionColAlias, DBFieldNames.trabajosColWidths,
 		this, TaludesTrabajosSubForm.class));
 
 	addTableHandler(new GIAAlphanumericTableHandler(
-		getReconocimientosDBTableName(), getWidgetComponents(),
+		getReconocimientosDBTableName(), getWidgets(),
 		getElementID(), DBFieldNames.reconocimientosColNames,
 		DBFieldNames.reconocimientosColAlias, null, this,
 		TaludesReconocimientosSubForm.class));
@@ -111,8 +111,8 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	cunetaCabeza.fillSpecificValues();
 
 	cunetaPie.fillSpecificValues();
-	direccionPIDomainHandler.updateComboBoxValues();
-	direccionPFDomainHandler.updateComboBoxValues();
+	direccionPIDomainHandler.updateChainedComponent();;
+	direccionPFDomainHandler.updateChainedComponent();;
 
 	addNewButtonsToActionsToolBar();
     }
@@ -124,38 +124,38 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 
 	taludIDWidget = (JTextField) widgets.get(DBFieldNames.ID_TALUD);
 
-	taludid = new TaludesCalculateTaludIDValue(this, getWidgetComponents(),
+	taludid = new TaludesCalculateTaludIDValue(this, getWidgets(),
 		DBFieldNames.ID_TALUD, DBFieldNames.TIPO_TALUD,
 		DBFieldNames.NUMERO_TALUD, DBFieldNames.BASE_CONTRATISTA);
 	taludid.setListeners();
 
 	inclinacionMedia = new TaludesCalculateInclinacionMediaValue(this,
-		getWidgetComponents(), DBFieldNames.INCLINACION_MEDIA,
+		getWidgets(), DBFieldNames.INCLINACION_MEDIA,
 		DBFieldNames.SECTOR_INCLINACION);
 	inclinacionMedia.setListeners();
 
 	cunetaCabeza = new EnableComponentBasedOnCheckBox(
-		(JCheckBox) getWidgetComponents().get("cuneta_cabeza"),
-		getWidgetComponents().get("cuneta_cabeza_revestida"));
+		(JCheckBox) getWidgets().get("cuneta_cabeza"),
+		getWidgets().get("cuneta_cabeza_revestida"));
 	// cunetaCabeza.setRemoveDependentValues(true);
 
 	cunetaCabeza.setListeners();
 	cunetaPie = new EnableComponentBasedOnCheckBox(
-		(JCheckBox) getWidgetComponents().get("cuneta_pie"),
-		getWidgetComponents().get("cuneta_pie_revestida"));
+		(JCheckBox) getWidgets().get("cuneta_pie"),
+		getWidgets().get("cuneta_pie_revestida"));
 	// cunetaPie.setRemoveDependentValues(true);
 	cunetaPie.setListeners();
 
-	JComboBox direccionPI = (JComboBox) getWidgetComponents().get(
+	JComboBox direccionPI = (JComboBox) getWidgets().get(
 		"direccion_pi");
-	tipoViaPI = (JComboBox) getWidgetComponents().get("tipo_via");
+	tipoViaPI = (JComboBox) getWidgets().get("tipo_via");
 	direccionPIDomainHandler = new DependentComboboxHandler(this,
 		tipoViaPI, direccionPI);
 	tipoViaPI.addActionListener(direccionPIDomainHandler);
 
-	JComboBox direccionPF = (JComboBox) getWidgetComponents().get(
+	JComboBox direccionPF = (JComboBox) getWidgets().get(
 		"direccion_pf");
-	tipoViaPF = (JComboBox) getWidgetComponents().get("tipo_via_pf");
+	tipoViaPF = (JComboBox) getWidgets().get("tipo_via_pf");
 	direccionPFDomainHandler = new DependentComboboxHandler(this,
 		tipoViaPF, direccionPF);
 	tipoViaPF.addActionListener(direccionPFDomainHandler);

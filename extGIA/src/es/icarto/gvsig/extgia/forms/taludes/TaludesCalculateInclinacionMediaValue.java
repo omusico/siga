@@ -1,6 +1,6 @@
 package es.icarto.gvsig.extgia.forms.taludes;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -13,7 +13,7 @@ import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 public class TaludesCalculateInclinacionMediaValue extends CalculateComponentValue {
 
     public TaludesCalculateInclinacionMediaValue(AbstractForm form,
-	    HashMap<String, JComponent> allFormWidgets,
+	    Map<String, JComponent> allFormWidgets,
 	    String resultComponentName, String... operatorComponentsNames) {
 	super(form, allFormWidgets, resultComponentName,
 		operatorComponentsNames);
