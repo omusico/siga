@@ -15,12 +15,10 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import com.hardcode.gdbms.engine.values.Value;
 import com.iver.andami.Launcher;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.audasacommons.PreferencesPage;
-import es.icarto.gvsig.audasacommons.forms.reports.NavTableComponentsPrintButton;
 import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.utils.EnableComponentBasedOnCheckBox;
@@ -50,7 +48,6 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     private DependentComboboxHandler direccionPFDomainHandler;
 
     FilesLinkButton filesLinkButton;
-    NavTableComponentsPrintButton ntPrintButton;
 
     boolean hasJustOpened = true;
 
@@ -71,10 +68,6 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     }
 
     private void addNewButtonsToActionsToolBar() {
-	// URL reportPath = this.getClass().getClassLoader()
-	// .getResource("reports/taludes.jasper");
-	// String extensionPath =
-	// reportPath.getPath().replace("reports/taludes.jasper", "");
 	JPanel actionsToolBar = this.getActionsToolBar();
 
 	filesLinkButton = new FilesLinkButton(this, new FilesLinkData() {
@@ -109,46 +102,12 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	    actionsToolBar.add(filesLinkButton);
 	    hasJustOpened = false;
 	}
-
-	// ntPrintButton = new NavTableComponentsPrintButton();
-	// JButton printReportB = null;
-	// if (!layer.isEditing()) {
-	// printReportB = ntPrintButton.getPrintButton(this, extensionPath,
-	// reportPath.getPath(),
-	// DBFieldNames.TALUDES_TABLENAME, DBFieldNames.ID_TALUD,
-	// taludIDWidget.getText());
-	// printReportB.setName("printButton");
-	// }
-	//
-	// if (printReportB != null) {
-	// for (int i=0; i<this.getActionsToolBar().getComponents().length; i++)
-	// {
-	// if (getActionsToolBar().getComponents()[i].getName() != null) {
-	// if
-	// (getActionsToolBar().getComponents()[i].getName().equalsIgnoreCase("printButton"))
-	// {
-	// this.getActionsToolBar().remove(getActionsToolBar().getComponents()[i]);
-	// actionsToolBar.add(printReportB);
-	// break;
-	// }
-	// }
-	// }
-	// actionsToolBar.add(printReportB);
-	// }
-	//
-	// if (printReportB != null) {
-	// actionsToolBar.add(printReportB);
-	// }
     }
 
     @Override
     protected void fillSpecificValues() {
 	super.fillSpecificValues();
-
-	// if (!((JCheckBox)
-	// getWidgetComponents().get("cuneta_cabeza")).isSelected()) {
-	// cunetaCabeza.setRemoveDependentValues(true);
-	// }
+	
 	cunetaCabeza.fillSpecificValues();
 
 	cunetaPie.fillSpecificValues();
@@ -156,7 +115,6 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	direccionPFDomainHandler.updateComboBoxValues();
 
 	addNewButtonsToActionsToolBar();
-
     }
 
     @Override
