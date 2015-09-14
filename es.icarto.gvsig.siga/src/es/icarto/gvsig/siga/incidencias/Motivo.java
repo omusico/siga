@@ -1,4 +1,4 @@
-package es.icarto.gvsig.audasacommons.incidencias;
+package es.icarto.gvsig.siga.incidencias;
 
 import java.awt.Color;
 import java.util.HashMap;

@@ -31,9 +31,9 @@ import com.lowagie.text.pdf.PdfPageEventHelper;
 import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.rtf.style.RtfParagraphStyle;
 
-import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.commons.queries.Utils;
 import es.icarto.gvsig.commons.utils.Field;
+import es.icarto.gvsig.siga.PreferencesPage;
 import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 
 public abstract class PDFReport {

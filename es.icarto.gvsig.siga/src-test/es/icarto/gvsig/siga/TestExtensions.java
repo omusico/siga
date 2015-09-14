@@ -1,4 +1,4 @@
-package es.icarto.gvsig.audasacommons;
+package es.icarto.gvsig.siga;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -19,6 +19,8 @@ import com.iver.andami.plugins.config.generate.Extensions;
 import com.iver.andami.plugins.config.generate.PluginConfig;
 import com.iver.andami.plugins.config.generate.ToolBar;
 
+import es.icarto.gvsig.siga.OpenStreetViewExtension;
+import es.icarto.gvsig.siga.SIGAConfigExtension;
 import es.udc.cartolab.gvsig.elle.SigaLoadMapExtension;
 
 public class TestExtensions {

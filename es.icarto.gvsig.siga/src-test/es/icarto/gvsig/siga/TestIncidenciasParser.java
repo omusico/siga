@@ -1,4 +1,4 @@
-package es.icarto.gvsig.audasacommons;
+package es.icarto.gvsig.siga;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,9 +9,9 @@ import com.iver.andami.messages.NotificationManager;
 import com.iver.cit.gvsig.fmap.drivers.DBException;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
-import es.icarto.gvsig.audasacommons.incidencias.IncidenciasParser;
 import es.icarto.gvsig.commons.testutils.Drivers;
 import es.icarto.gvsig.commons.testutils.TestProperties;
+import es.icarto.gvsig.siga.incidencias.IncidenciasParser;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class TestIncidenciasParser {

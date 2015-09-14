@@ -18,9 +18,9 @@ import org.apache.log4j.Logger;
 import com.iver.andami.PluginServices;
 import com.jeta.forms.components.image.ImageComponent;
 
-import es.icarto.gvsig.audasacommons.forms.reports.imagefilechooser.ImageFileChooser;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.ImageUtils;
+import es.icarto.gvsig.siga.forms.reports.imagefilechooser.ImageFileChooser;
 
 public class AddImageListener implements ActionListener {
     

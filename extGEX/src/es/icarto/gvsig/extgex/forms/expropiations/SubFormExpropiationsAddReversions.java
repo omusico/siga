@@ -30,11 +30,11 @@ import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 import com.vividsolutions.jts.geom.Geometry;
 
-import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.commons.gui.AbstractIWindow;
 import es.icarto.gvsig.extgex.forms.reversions.FormReversions;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
+import es.icarto.gvsig.siga.PreferencesPage;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")

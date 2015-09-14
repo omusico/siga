@@ -4,7 +4,7 @@ import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 
-import es.icarto.gvsig.audasacommons.PreferencesPage;
+import es.icarto.gvsig.siga.PreferencesPage;
 
 public class FilesLinkData {
 

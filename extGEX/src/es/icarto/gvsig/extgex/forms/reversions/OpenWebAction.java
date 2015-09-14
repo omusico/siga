@@ -41,7 +41,7 @@ public class OpenWebAction extends AbstractAction {
 		"exp_id");
 	try {
 	    String ip = PluginServices.getPluginServices(
-		    "es.icarto.gvsig.audasacommons").getText("internal_ip");
+		    "es.icarto.gvsig.siga").getText("internal_ip");
 	    URI uri = new URI(ip + type + "/" + expId);
 	    DesktopApi.browse(uri);
 	} catch (URISyntaxException e1) {

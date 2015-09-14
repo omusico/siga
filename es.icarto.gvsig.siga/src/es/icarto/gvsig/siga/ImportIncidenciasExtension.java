@@ -1,4 +1,4 @@
-package es.icarto.gvsig.audasacommons;
+package es.icarto.gvsig.siga;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -20,8 +20,8 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.rendering.styling.labeling.AttrInTableLabelingStrategy;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
-import es.icarto.gvsig.audasacommons.incidencias.IncidenciasParser;
 import es.icarto.gvsig.commons.gui.ExcelFileChooser;
+import es.icarto.gvsig.siga.incidencias.IncidenciasParser;
 import es.icarto.gvsig.utils.DesktopApi;
 import es.udc.cartolab.gvsig.elle.utils.LoadLegend;
 

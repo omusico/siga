@@ -5,7 +5,7 @@
 	<depends plugin-name="es.icarto.gvsig.commons"/>
 	<depends plugin-name="es.udc.cartolab.gvsig.users"/>
 	<depends plugin-name="es.udc.cartolab.gvsig.elle"/>
-	<depends plugin-name="es.icarto.gvsig.audasacommons"/>
+	<depends plugin-name="es.icarto.gvsig.siga"/>
 	<depends plugin-name="es.udc.cartolab.gvsig.navtable"/>
 	<depends plugin-name="es.icarto.gvsig.navtableforms"/>
 	<depends plugin-name="org.gvsig.mapsheets.print.series"/>

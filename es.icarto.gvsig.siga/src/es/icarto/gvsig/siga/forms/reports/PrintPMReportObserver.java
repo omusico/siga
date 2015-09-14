@@ -1,4 +1,4 @@
-package es.icarto.gvsig.audasacommons.forms.reports;
+package es.icarto.gvsig.siga.forms.reports;
 
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
@@ -12,8 +12,8 @@ import java.util.HashMap;
 
 import javax.swing.JOptionPane;
 
-import es.icarto.gvsig.audasacommons.PreferencesPage;
-import es.icarto.gvsig.audasacommons.forms.reports.imagefilechooser.ImageFileChooser;
+import es.icarto.gvsig.siga.PreferencesPage;
+import es.icarto.gvsig.siga.forms.reports.imagefilechooser.ImageFileChooser;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class PrintPMReportObserver implements ActionListener {

@@ -15,7 +15,7 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-package es.icarto.gvsig.audasacommons.forms.reports;
+package es.icarto.gvsig.siga.forms.reports;
 
 import java.io.File;
 import java.io.FileOutputStream;

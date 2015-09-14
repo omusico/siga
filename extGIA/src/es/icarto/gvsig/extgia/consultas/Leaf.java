@@ -6,7 +6,6 @@ import javax.swing.table.DefaultTableModel;
 
 import com.iver.andami.PluginServices;
 
-import es.icarto.gvsig.audasacommons.forms.reports.SaveFileDialog;
 import es.icarto.gvsig.commons.queries.Component;
 import es.icarto.gvsig.commons.queries.ConnectionWrapper;
 import es.icarto.gvsig.commons.queries.FinalActions;
@@ -20,6 +19,7 @@ import es.icarto.gvsig.extgia.consultas.firme.FirmeReconocimientosReport;
 import es.icarto.gvsig.extgia.consultas.firme.FirmeTrabajosReport;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
+import es.icarto.gvsig.siga.forms.reports.SaveFileDialog;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class Leaf implements Component {

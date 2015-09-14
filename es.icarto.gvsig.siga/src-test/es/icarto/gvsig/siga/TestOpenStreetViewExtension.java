@@ -1,4 +1,4 @@
-package es.icarto.gvsig.audasacommons;
+package es.icarto.gvsig.siga;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -29,6 +29,8 @@ import com.iver.andami.ui.mdiManager.MDIManager;
 import com.iver.cit.gvsig.fmap.crs.CRSFactory;
 import com.iver.cit.gvsig.project.documents.table.gui.Table;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
+
+import es.icarto.gvsig.siga.OpenStreetViewExtension;
 
 @RunWith(PowerMockRunner.class)
 // http://stackoverflow.com/questions/11943703/trying-to-mock-static-system-class-with-powermock-gives-verifyerror

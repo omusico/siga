@@ -1,4 +1,4 @@
-package es.icarto.gvsig.audasacommons.incidencias;
+package es.icarto.gvsig.siga.incidencias;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -42,12 +42,12 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import de.micromata.opengis.kml.v_2_2_0.Document;
 import de.micromata.opengis.kml.v_2_2_0.Kml;
 import de.micromata.opengis.kml.v_2_2_0.StyleSelector;
-import es.icarto.gvsig.audasacommons.incidencias.KMZPackager.DataSource;
-import es.icarto.gvsig.audasacommons.incidencias.KMZPackager.FileDataSource;
 import es.icarto.gvsig.commons.datasources.FieldDescriptionFactory;
 import es.icarto.gvsig.commons.datasources.SHPFactory;
 import es.icarto.gvsig.commons.queries.ConnectionWrapper;
 import es.icarto.gvsig.commons.utils.FileNameUtils;
+import es.icarto.gvsig.siga.incidencias.KMZPackager.DataSource;
+import es.icarto.gvsig.siga.incidencias.KMZPackager.FileDataSource;
 import es.udc.cartolab.gvsig.navtable.format.DoubleFormatNT;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 

@@ -1,4 +1,4 @@
-package es.icarto.gvsig.audasacommons;
+package es.icarto.gvsig.siga;
 
 import com.iver.andami.PluginServices;
 import com.iver.andami.plugins.Extension;

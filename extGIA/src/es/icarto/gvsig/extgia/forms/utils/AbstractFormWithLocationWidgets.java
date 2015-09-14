@@ -34,7 +34,6 @@ import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.exceptions.visitors.StopWriterVisitorException;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
-import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.extgia.batch.AddReconocimientosBatchListener;
 import es.icarto.gvsig.extgia.batch.AddTrabajosBatchListener;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
@@ -43,6 +42,7 @@ import es.icarto.gvsig.navtableforms.BasicAbstractForm;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkButton;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkData;
 import es.icarto.gvsig.navtableforms.gui.tables.handler.BaseTableHandler;
+import es.icarto.gvsig.siga.PreferencesPage;
 import es.udc.cartolab.gvsig.navtable.ToggleEditing;
 
 @SuppressWarnings("serial")

@@ -1,4 +1,4 @@
-package es.icarto.gvsig.audasacommons;
+package es.icarto.gvsig.siga;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,28 +28,28 @@ public class PreferencesPage extends AbstractPreferencePage implements
 
     private static final Logger logger = Logger
 	    .getLogger(PreferencesPage.class);
-    private static final String PLUGIN_NAME = "es.icarto.gvsig.audasacommons";
+    private static final String PLUGIN_NAME = "es.icarto.gvsig.siga";
 
     // Maybe it should be on cfg instead that in the plugin folder
     static {
 	SIGA_LOGO = new File(
-		"gvSIG/extensiones/es.icarto.gvsig.audasacommons/images/logo_siga.png")
+		"gvSIG/extensiones/es.icarto.gvsig.siga/images/logo_siga.png")
 		.getAbsolutePath();
 	SIGA_REPORT_LOGO = new File(
-		"gvSIG/extensiones/es.icarto.gvsig.audasacommons/images/logo_siga_report.png")
+		"gvSIG/extensiones/es.icarto.gvsig.siga/images/logo_siga_report.png")
 		.getAbsolutePath();
 	LOGO_PATH = new File(
-		"gvSIG/extensiones/es.icarto.gvsig.audasacommons/images/")
+		"gvSIG/extensiones/es.icarto.gvsig.siga/images/")
 		.getAbsolutePath()
 		+ "/";
     }
 
-    public static final String AUDASA_LOGO = "gvSIG/extensiones/es.icarto.gvsig.audasacommons/images/logo_audasa.png";
-    public static final String AUTOESTRADAS_LOGO = "gvSIG/extensiones/es.icarto.gvsig.audasacommons/images/logo_autoestradas.png";
+    public static final String AUDASA_LOGO = "gvSIG/extensiones/es.icarto.gvsig.siga/images/logo_audasa.png";
+    public static final String AUTOESTRADAS_LOGO = "gvSIG/extensiones/es.icarto.gvsig.siga/images/logo_autoestradas.png";
     public static final String SIGA_LOGO;
     public static final String SIGA_REPORT_LOGO;
     public static final String LOGO_PATH;
-    public static final String IMG_UNAVAILABLE = "gvSIG/extensiones/es.icarto.gvsig.audasacommons/images/img_no_disponible.jpg";
+    public static final String IMG_UNAVAILABLE = "gvSIG/extensiones/es.icarto.gvsig.siga/images/img_no_disponible.jpg";
 
     // fileslink
     private static final String DEFAULT_FILES_DIR_KEY_NAME = "FilesDir";

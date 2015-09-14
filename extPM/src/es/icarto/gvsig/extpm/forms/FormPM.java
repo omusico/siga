@@ -16,11 +16,11 @@ import javax.swing.table.DefaultTableModel;
 
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
-import es.icarto.gvsig.audasacommons.forms.reports.NavTableComponentsPrintButton;
 import es.icarto.gvsig.commons.gui.WidgetFactory;
 import es.icarto.gvsig.extgex.forms.reversions.OpenWebAction;
 import es.icarto.gvsig.extpm.forms.filesLink.NavTableComponentsFilesLinkButton;
 import es.icarto.gvsig.navtableforms.BasicAbstractForm;
+import es.icarto.gvsig.siga.forms.reports.NavTableComponentsPrintButton;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")

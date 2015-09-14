@@ -20,10 +20,10 @@ import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 import com.jeta.forms.components.panel.FormPanel;
 import com.jeta.forms.gui.common.FormException;
 
-import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.commons.gui.OkCancelPanel;
 import es.icarto.gvsig.commons.queries.Utils;
 import es.icarto.gvsig.commons.utils.Field;
+import es.icarto.gvsig.siga.PreferencesPage;
 import es.udc.cartolab.gvsig.navtable.contextualmenu.ChooseSortFieldDialog;
 
 @SuppressWarnings("serial")

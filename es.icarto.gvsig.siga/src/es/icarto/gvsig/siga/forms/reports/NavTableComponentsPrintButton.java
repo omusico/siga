@@ -1,4 +1,4 @@
-package es.icarto.gvsig.audasacommons.forms.reports;
+package es.icarto.gvsig.siga.forms.reports;
 
 import java.awt.event.ActionListener;
 

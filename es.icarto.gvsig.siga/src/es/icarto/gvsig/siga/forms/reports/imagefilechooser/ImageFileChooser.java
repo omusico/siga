@@ -1,4 +1,4 @@
-package es.icarto.gvsig.audasacommons.forms.reports.imagefilechooser;
+package es.icarto.gvsig.siga.forms.reports.imagefilechooser;
 
 import java.io.File;
 

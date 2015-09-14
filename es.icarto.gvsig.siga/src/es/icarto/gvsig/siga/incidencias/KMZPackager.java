@@ -1,4 +1,4 @@
-package es.icarto.gvsig.audasacommons.incidencias;
+package es.icarto.gvsig.siga.incidencias;
 
 import java.io.BufferedOutputStream;
 import java.io.File;

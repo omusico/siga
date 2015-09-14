@@ -12,7 +12,7 @@ import com.iver.andami.plugins.config.generate.Extension;
 import com.iver.andami.plugins.config.generate.Extensions;
 import com.iver.andami.plugins.config.generate.PluginConfig;
 
-import es.icarto.gvsig.audasacommons.ExtensionTestHelper;
+import es.icarto.gvsig.siga.ExtensionTestHelper;
 
 public class TestFormExpropiationExtension {
 
