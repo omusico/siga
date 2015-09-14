@@ -1,16 +1,18 @@
 package es.icarto.gvsig.extgia.consultas;
 
 import java.awt.Font;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.table.DefaultTableModel;
+
+import org.apache.log4j.Logger;
 
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Chunk;
@@ -29,12 +31,16 @@ import com.lowagie.text.pdf.PdfPageEventHelper;
 import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.rtf.style.RtfParagraphStyle;
 
+import es.icarto.gvsig.audasacommons.PreferencesPage;
 import es.icarto.gvsig.commons.queries.Utils;
 import es.icarto.gvsig.commons.utils.Field;
 import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 
 public abstract class PDFReport {
 
+    
+    private static final Logger logger = Logger.getLogger(PDFReport.class);
+    
     protected final com.lowagie.text.Font cellBoldStyle = FontFactory.getFont(
 	    "arial", 6, Font.BOLD);
     protected final com.lowagie.text.Font bodyBoldStyle = FontFactory.getFont(
@@ -77,18 +83,22 @@ public abstract class PDFReport {
     protected abstract PdfPCell writeAditionalColumnValues(String id);
 
     private Image getHeaderImage() {
+	String logoPath = PreferencesPage.SIGA_REPORT_LOGO;
+	
+	if (filters.getTramo() != null) {
+	    String tramo = filters.getTramo().getValue();
+	    logoPath = PreferencesPage.LOGO_PATH + File.separator + ConsultasFieldNames.getLogoPathForTramo(tramo);
+	}
+
 	Image image = null;
 	try {
-	    image = Image
-		    .getInstance("gvSIG/extensiones/es.icarto.gvsig.extgex/images/logo_audasa.gif");
-	    image.scalePercent((float) 15.00);
+	    image = Image.getInstance(logoPath);
+	    image.scaleToFit(200, 50);
 	    image.setAlignment(Chunk.ALIGN_RIGHT);
-	} catch (BadElementException e) {
-	    e.printStackTrace();
-	} catch (MalformedURLException e) {
-	    e.printStackTrace();
 	} catch (IOException e) {
-	    e.printStackTrace();
+	    logger.error(e.getMessage(), e);
+	} catch (BadElementException e) {
+	    logger.error(e.getStackTrace(), e);
 	}
 	return image;
     }
