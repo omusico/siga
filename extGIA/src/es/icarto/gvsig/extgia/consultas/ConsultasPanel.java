@@ -68,7 +68,7 @@ public class ConsultasPanel extends ValidatableForm implements ActionListener {
     @Override
     protected void initWidgets() {
         super.initWidgets();
-        addImageHandler("image", PreferencesPage.AUDASA_LOGO);
+        addImageHandler("image", PreferencesPage.SIGA_LOGO);
         addChained(BASE_CONTRATISTA, AREA_MANTENIMIENTO);
         addChained(TRAMO, BASE_CONTRATISTA);
         addChained("elemento", "tipo_consulta");
