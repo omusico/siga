@@ -56,7 +56,7 @@
 		extDBConnection,
 		extELLE,
 		extNavTableForms,
-		extAudasaCommons,
+		es.icarto.gvsig.siga,
 		extGIA,
 		extGEX,
 		extPM

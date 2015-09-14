@@ -16,16 +16,16 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/libExceptions"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/appgvSIG"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/libIverUtiles"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/extAudasaCommons"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/es.icarto.gvsig.siga"/>
 	<classpathentry kind="lib" path="lib/iText-2.1.5.jar"/>
 	<classpathentry kind="lib" path="lib/iText-rtf-2.1.5.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/extNavTableForms"/>
-	<classpathentry kind="lib" path="/extAudasaCommons/lib/poi-3.10.1-20140818.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/es.icarto.gvsig.commons"/>
 	<classpathentry kind="lib" path="/es.icarto.gvsig.commons/lib/formsrt.jar"/>
 	<classpathentry kind="lib" path="/es.icarto.gvsig.commons/lib/jcalendar-1.4.jar"/>
 	<classpathentry kind="lib" path="/es.icarto.gvsig.commons/lib/miglayout-swing-5.1-20150404.220019-96.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/libProjection"/>
 	<classpathentry kind="src" path="/extSymbology"/>
+	<classpathentry kind="lib" path="/es.icarto.gvsig.siga/lib/poi-3.10.1-20140818.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

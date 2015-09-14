@@ -1,4 +1,4 @@
-<project name="extAudasaCommons" default="generate-without-source" basedir=".">
+<project name="es.icarto.gvsig.siga" default="generate-without-source" basedir=".">
 
 
   	<!-- set global properties for this build -->
@@ -79,16 +79,16 @@
 
 	<!--
 				=====================
-				Build audasa projects
+				Build SIGA projects
 				=====================
 	-->
 
 
-		<property name="gvSIG-audasa_projects" value="
+		<property name="gvSIG-SIGA_projects" value="
 			extMapSheets,
 			extDBConnection,
 			extELLE,
-			extAudasaCommons,
+			es.icarto.gvsig.siga,
 			extGEX,
 			extGIA,
 			extNavTable,
@@ -96,9 +96,8 @@
 		"/>
 
 
-		<target name="build-audasa-projects"
-			description="calls the default target for the audasa projects">
-			<foreach list="${gvSIG-audasa_projects}" trim="true" delimiter="," target="default-ant-target" param="da-target.name"/>
+		<target name="build-SIGA-projects">
+			<foreach list="${gvSIG-SIGA_projects}" trim="true" delimiter="," target="default-ant-target" param="da-target.name"/>
 		</target>
 
 		<target name="default-ant-target">

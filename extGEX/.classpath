@@ -22,17 +22,17 @@
 	<classpathentry kind="lib" path="/libFMap/lib/jts-1.12.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/extELLE"/>
-	<classpathentry kind="src" path="/extAudasaCommons"/>
+	<classpathentry kind="src" path="/es.icarto.gvsig.siga"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/extCAD"/>
-	<classpathentry kind="lib" path="/extAudasaCommons/lib/asm-4.0.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/extGIA"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/extNavTableForms"/>
 	<classpathentry kind="lib" path="/_fwAndami/lib/log4j-1.2.14.jar"/>
 	<classpathentry kind="lib" path="/extCAD/lib/Smc.jar"/>
-	<classpathentry kind="lib" path="/extAudasaCommons/lib/jasperreports-5.6.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/es.icarto.gvsig.commons"/>
 	<classpathentry kind="lib" path="/es.icarto.gvsig.commons/lib/formsrt.jar"/>
 	<classpathentry kind="lib" path="/es.icarto.gvsig.commons/lib/miglayout-swing-5.1-20150404.220019-96.jar"/>
+	<classpathentry kind="lib" path="/es.icarto.gvsig.siga/lib/asm-4.0.jar"/>
+	<classpathentry kind="lib" path="/es.icarto.gvsig.siga/lib/jasperreports-5.6.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
