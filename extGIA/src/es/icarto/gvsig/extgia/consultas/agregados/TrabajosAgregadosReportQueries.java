@@ -3,6 +3,7 @@ package es.icarto.gvsig.extgia.consultas.agregados;
 import es.icarto.gvsig.commons.utils.Field;
 import es.icarto.gvsig.extgia.consultas.ConsultasFieldNames;
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
+import es.icarto.gvsig.extgia.consultas.caracteristicas.CSVCaracteristicasQueries;
 
 public class TrabajosAgregadosReportQueries {
 
@@ -48,10 +49,10 @@ public class TrabajosAgregadosReportQueries {
 		+ "medicion "
 		+ "FROM audasa_extgia.%s_trabajos sub "
 		+ "LEFT OUTER JOIN  audasa_extgia.%s el ON sub.%s = el.%s "
-		+ "LEFT OUTER JOIN audasa_extgia_dominios.tramo tr ON (tr.id = el.tramo AND tr.id_bc = el.base_contratista) "
-		+ "LEFT OUTER JOIN audasa_extgia_dominios.tipo_via tv ON (tv.id = el.tipo_via AND tv.id_tramo = el.tramo AND tv.id_bc = el.base_contratista) "
-		+ "LEFT OUTER JOIN audasa_extgia_dominios.sentido st ON el.sentido = st.id "
-		+ "LEFT OUTER JOIN audasa_extgia_dominios.nombre_via nv ON (cast (nv.id as text) = el.nombre_via AND nv.id_tv = el.tipo_via AND nv.id_bc = el.base_contratista AND nv.id_tramo = el.tramo) "
+		+ CSVCaracteristicasQueries.getJoinedTramo()
+		+ CSVCaracteristicasQueries.getJoinedTipoVia() 
+		+ CSVCaracteristicasQueries.getJoinedSentido()
+		+ CSVCaracteristicasQueries.getJoinedNombreVia()
 		+ "WHERE unidad = '%s' " + filters.getWhereClauseFiltersForAgregados() + " ORDER BY 2, 5, 1";
 
 	if (element.equalsIgnoreCase("vegetacion")) {
