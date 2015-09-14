@@ -49,7 +49,7 @@ public class CSVCaracteristicasQueries {
 			    .getCSVCaracteristicasFieldNames(element)
 		    + getFieldCountRamales(element) + " FROM audasa_extgia."
 		    + element + " el " + get(element)
-		    + filters.getWhereClauseByLocationWidgets(false)
+		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Areas_Servicio:
 	    return "SELECT "
@@ -57,7 +57,7 @@ public class CSVCaracteristicasQueries {
 			    .getCSVCaracteristicasFieldNames(element)
 		    + getFieldCountRamales(element) + " FROM audasa_extgia."
 		    + element + " el " + get(element)
-		    + filters.getWhereClauseByLocationWidgets(false)
+		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Areas_Mantenimiento:
 	    return "SELECT "
@@ -65,7 +65,7 @@ public class CSVCaracteristicasQueries {
 			    .getCSVCaracteristicasFieldNames(element)
 		    + getFieldCountRamales(element) + " FROM audasa_extgia."
 		    + element + " el " + get(element)
-		    + filters.getWhereClauseByLocationWidgets(false)
+		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Enlaces:
 	    return "SELECT "
@@ -80,7 +80,7 @@ public class CSVCaracteristicasQueries {
 		    + "as \"Nº Ramales | Carreteras Enlazadas\"" + " FROM "
 		    + DBFieldNames.GIA_SCHEMA + "." + element + " el "
 		    + get(element)
-		    + filters.getWhereClauseByLocationWidgets(false)
+		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Senhalizacion_Vertical:
 	    return "SELECT "
@@ -88,7 +88,7 @@ public class CSVCaracteristicasQueries {
 			    .getCSVCaracteristicasFieldNames(element)
 		    + " FROM  audasa_extgia.senhalizacion_vertical_senhales se LEFT OUTER JOIN audasa_extgia.senhalizacion_vertical el ON (el.id_elemento_senhalizacion = se.id_elemento_senhalizacion) "
 		    + get(element)
-		    + filters.getWhereClauseByLocationWidgets(false)
+		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY el.id_elemento_senhalizacion";
 	case Firme:
 	    return "SELECT "
@@ -96,7 +96,7 @@ public class CSVCaracteristicasQueries {
 			    .getCSVCaracteristicasFieldNames(element)
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
-		    + filters.getWhereClauseByLocationWidgets(false)
+		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Valla_Cierre:
 	    return "SELECT "
@@ -104,7 +104,7 @@ public class CSVCaracteristicasQueries {
 			    .getCSVCaracteristicasFieldNames(element)
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
-		    + filters.getWhereClauseByLocationWidgets(false)
+		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Taludes:
 	    return "SELECT "
@@ -112,7 +112,7 @@ public class CSVCaracteristicasQueries {
 			    .getCSVCaracteristicasFieldNames(element)
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
-		    + filters.getWhereClauseByLocationWidgets(false)
+		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Juntas:
 	    return "SELECT "
@@ -120,7 +120,7 @@ public class CSVCaracteristicasQueries {
 			    .getCSVCaracteristicasFieldNames(element)
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
-		    + filters.getWhereClauseByLocationWidgets(false)
+		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Isletas:
 	    return "SELECT "
@@ -128,7 +128,7 @@ public class CSVCaracteristicasQueries {
 			    .getCSVCaracteristicasFieldNames(element)
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
-		    + filters.getWhereClauseByLocationWidgets(false)
+		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Barrera_Rigida:
 	    return "SELECT "
@@ -136,7 +136,7 @@ public class CSVCaracteristicasQueries {
 			    .getCSVCaracteristicasFieldNames(element)
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
-		    + filters.getWhereClauseByLocationWidgets(false)
+		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Obras_Paso:
 	    return "SELECT "
@@ -144,7 +144,7 @@ public class CSVCaracteristicasQueries {
 			    .getCSVCaracteristicasFieldNames(element)
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
-		    + filters.getWhereClauseByLocationWidgets(false)
+		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Obras_Desague:
 	    return "SELECT "
@@ -152,7 +152,7 @@ public class CSVCaracteristicasQueries {
 			    .getCSVCaracteristicasFieldNames(element)
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
-		    + filters.getWhereClauseByLocationWidgets(false)
+		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Areas_Peaje:
 	    return "SELECT "
@@ -160,7 +160,7 @@ public class CSVCaracteristicasQueries {
 			    .getCSVCaracteristicasFieldNames(element)
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
-		    + filters.getWhereClauseByLocationWidgets(false)
+		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Lecho_Frenado:
 	    return "SELECT "
@@ -168,7 +168,7 @@ public class CSVCaracteristicasQueries {
 			    .getCSVCaracteristicasFieldNames(element)
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
-		    + filters.getWhereClauseByLocationWidgets(false)
+		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Muros:
 	    return "SELECT "
@@ -176,7 +176,7 @@ public class CSVCaracteristicasQueries {
 			    .getCSVCaracteristicasFieldNames(element)
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
-		    + filters.getWhereClauseByLocationWidgets(false)
+		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Senhalizacion_Variable:
 	    return "SELECT "
@@ -184,7 +184,7 @@ public class CSVCaracteristicasQueries {
 			    .getCSVCaracteristicasFieldNames(element)
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
-		    + filters.getWhereClauseByLocationWidgets(false)
+		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Lineas_Suministro:
 	    return "SELECT "
@@ -192,7 +192,7 @@ public class CSVCaracteristicasQueries {
 			    .getCSVCaracteristicasFieldNames(element)
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
-		    + filters.getWhereClauseByLocationWidgets(false)
+		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Transformadores:
 	    return "SELECT "
@@ -200,7 +200,7 @@ public class CSVCaracteristicasQueries {
 			    .getCSVCaracteristicasFieldNames(element)
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
-		    + filters.getWhereClauseByLocationWidgets(false)
+		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	default:
 	    return "SELECT "
@@ -208,7 +208,7 @@ public class CSVCaracteristicasQueries {
 			    .getCSVCaracteristicasFieldNames(element)
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
-		    + filters.getWhereClauseByLocationWidgets(false)
+		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	}
 

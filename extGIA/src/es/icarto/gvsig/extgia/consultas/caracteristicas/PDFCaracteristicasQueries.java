@@ -22,14 +22,14 @@ public class PDFCaracteristicasQueries {
 			    .getPDFCaracteristicasFieldNames(element)
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el" + CSVCaracteristicasQueries.getJoinedTramo()
-		    + filters.getWhereClauseByLocationWidgets(false)
+		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Firme:
 	    return "SELECT gid, "
 		    + ConsultasFieldNames
 			    .getPDFCaracteristicasFieldNames(element)
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
-		    + filters.getWhereClauseByLocationWidgets(false)
+		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Senhalizacion_Vertical:
 	    return "SELECT gid, el.id_elemento_senhalizacion, tr.item, tv.item, nv.item, pk, tipo_senhal, "
@@ -41,14 +41,14 @@ public class PDFCaracteristicasQueries {
 		    + element
 		    + " el LEFT OUTER JOIN audasa_extgia.senhalizacion_vertical_senhales se ON el.id_elemento_senhalizacion = se.id_elemento_senhalizacion"
 		    + CSVCaracteristicasQueries.getJoinedTramo() + CSVCaracteristicasQueries.getJoinedTipoVia() + CSVCaracteristicasQueries.getJoinedNombreVia()
-		    + filters.getWhereClauseByLocationWidgets(false)
+		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY el.id_elemento_senhalizacion";
 	default:
 	    return "SELECT gid, "
 		    + ConsultasFieldNames.getPDFCaracteristicasFieldNames(element)
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el" + CSVCaracteristicasQueries.getJoinedTramo() + CSVCaracteristicasQueries.getJoinedTipoVia() + CSVCaracteristicasQueries.getJoinedNombreVia()
-		    + filters.getWhereClauseByLocationWidgets(false)
+		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 
 	}

@@ -206,12 +206,12 @@ public class Leaf implements Component {
 			    + CSVCaracteristicasQueries.get(element);
 	    }
 	    
-	    if (!consultasFilters.getWhereClauseByLocationWidgets(false)
+	    if (!consultasFilters.getWhereClauseByLocationWidgets()
 		    .isEmpty()) {
 		query = query + " WHERE el." + elementId + " IN (SELECT "
 			+ elementId + " FROM " + DBFieldNames.GIA_SCHEMA + "."
 			+ element
-			+ filters.getWhereClauseByLocationWidgets(false);
+			+ filters.getWhereClauseByLocationWidgets();
 	    }
 
 	    if (tipo == QueryType.TRABAJOS || tipo == QueryType.TRABAJOS_FIRME) {

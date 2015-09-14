@@ -8,7 +8,6 @@ import java.util.List;
 
 import es.icarto.gvsig.commons.queries.QueryFiltersI;
 import es.icarto.gvsig.commons.utils.Field;
-import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 
@@ -94,14 +93,10 @@ public class ConsultasFilters<E> implements QueryFiltersI {
 	return query;
     }
 
-    public String getWhereClauseByLocationWidgets(boolean queryHasWhere) {
+    public String getWhereClauseByLocationWidgets() {
 	String query = "";
 	if (area != null) {
-	    if (!queryHasWhere) {
-		query = " WHERE area_mantenimiento =  '" + area.getKey() + "'";
-	    } else {
-		query = " AND area_mantenimiento =  '" + area.getKey() + "'";
-	    }
+	    query = " WHERE area_mantenimiento =  '" + area.getKey() + "'";
 	}
 	if (baseContratista != null) {
 	    if (!query.isEmpty()) {
@@ -124,7 +119,7 @@ public class ConsultasFilters<E> implements QueryFiltersI {
 
     public String getWhereClauseByDates(String dateField) {
 	String query = "";
-	if (!getWhereClauseByLocationWidgets(false).isEmpty()) {
+	if (!getWhereClauseByLocationWidgets().isEmpty()) {
 	    query = " ) AND " + dateField + " BETWEEN '" + fechaInicio
 		    + "' AND '" + fechaFin + "'";
 	} else {

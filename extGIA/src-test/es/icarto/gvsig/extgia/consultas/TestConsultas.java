@@ -150,7 +150,7 @@ public class TestConsultas {
 				.getElementId(DBFieldNames.Elements.values()[i]
 					.toString()) + " FROM " + getSchema()
 			+ "." + DBFieldNames.Elements.values()[i].toString()
-			+ mockFilters.getWhereClauseByLocationWidgets(false)
+			+ mockFilters.getWhereClauseByLocationWidgets()
 			+ ");";
 		ResultSet rs = st.executeQuery(query);
 		assertTrue(rs != null);
@@ -336,7 +336,7 @@ public class TestConsultas {
 				.getElementId(DBFieldNames.Elements.values()[i]
 					.toString()) + " FROM " + getSchema()
 			+ "." + DBFieldNames.Elements.values()[i].toString()
-			+ mockFilters.getWhereClauseByLocationWidgets(false)
+			+ mockFilters.getWhereClauseByLocationWidgets()
 			+ ");";
 		ResultSet rs = st.executeQuery(query);
 		assertTrue(rs != null);
@@ -369,7 +369,7 @@ public class TestConsultas {
 		    + getSchema() + "." + "firme_trabajos"
 		    + " WHERE id_firme IN (SELECT id_firme FROM " + getSchema()
 		    + ".firme"
-		    + mockFilters.getWhereClauseByLocationWidgets(false) + ");";
+		    + mockFilters.getWhereClauseByLocationWidgets() + ");";
 	    ResultSet rs = st.executeQuery(query);
 	    assertTrue(rs != null);
 	}
@@ -401,7 +401,7 @@ public class TestConsultas {
 		    + " FROM " + getSchema() + "." + "firme_reconocimientos"
 		    + " WHERE id_firme IN (SELECT id_firme FROM " + getSchema()
 		    + ".firme"
-		    + mockFilters.getWhereClauseByLocationWidgets(false) + ");";
+		    + mockFilters.getWhereClauseByLocationWidgets() + ");";
 	    ResultSet rs = st.executeQuery(query);
 	    assertTrue(rs != null);
 	}
