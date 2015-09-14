@@ -34,7 +34,7 @@ public abstract class BasicAbstractForm extends AbstractForm {
 
     public BasicAbstractForm(FLyrVect layer) {
 	super(layer);
-	addImageHandler("image", PreferencesPage.AUDASA_LOGO);
+	addImageHandler("image", PreferencesPage.SIGA_LOGO);
 	addSorterButton();
 	setTitle(PluginServices.getText(this, getBasicName()));
     }
