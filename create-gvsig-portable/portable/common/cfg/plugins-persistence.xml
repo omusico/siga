@@ -40,15 +40,6 @@
     </xml-tag>
 
     <xml-tag>
-        <property key="host" value="192.168.0.12"/>
-        <property key="port" value="5434"/>
-        <property key="database" value="audasa_test"/>
-        <property key="user" value="postgres"/>
-        <property key="schema" value="audasa_expropiaciones"/>
-        <property key="com.iver.andami.pluginName" value="es.udc.cartolab.gvsig.users"/>
-    </xml-tag>
-
-    <xml-tag>
         <property key="general_auto_preview" value="true"/>
         <property key="general_ask_coordinates" value="false"/>
         <property key="general_defaultNumberOfClasses" value="64"/>

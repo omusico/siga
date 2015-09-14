@@ -7,8 +7,8 @@
 	<property name="custom-portable-path" value="../${this-folder}/portable/" /> <!-- remember to use the trailing slash -->
 	
 	<tstamp />
-	<property name="name-lin" value="gvSIG_AUDASA_lin32_${DSTAMP}" />
-	<property name="name-win" value="gvSIG_AUDASA_${DSTAMP}" />
+	<property name="name-lin" value="gvSIG_SIGA_lin32_${DSTAMP}" />
+	<property name="name-win" value="gvSIG_SIGA_${DSTAMP}" />
 	
 	<!-- Projects to be builded.
 	Check the file ../install/gvsig_default_installation_projects.xml,
