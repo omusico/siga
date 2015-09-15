@@ -45,32 +45,28 @@ public class CSVCaracteristicasQueries {
 	switch (DBFieldNames.Elements.valueOf(element)) {
 	case Areas_Descanso:
 	    return "SELECT "
-		    + ConsultasFieldNames
-			    .getCSVCaracteristicasFieldNames(element)
+		    + ConsultasFieldNames.areasDescansoCSVFieldNames()
 		    + getFieldCountRamales(element) + " FROM audasa_extgia."
 		    + element + " el " + get(element)
 		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Areas_Servicio:
 	    return "SELECT "
-		    + ConsultasFieldNames
-			    .getCSVCaracteristicasFieldNames(element)
+		    + ConsultasFieldNames.areasServicioCSVFieldNames()
 		    + getFieldCountRamales(element) + " FROM audasa_extgia."
 		    + element + " el " + get(element)
 		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Areas_Mantenimiento:
 	    return "SELECT "
-		    + ConsultasFieldNames
-			    .getCSVCaracteristicasFieldNames(element)
+		    + ConsultasFieldNames.areasMantenimientoCSVFieldNames()
 		    + getFieldCountRamales(element) + " FROM audasa_extgia."
 		    + element + " el " + get(element)
 		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Enlaces:
 	    return "SELECT "
-		    + ConsultasFieldNames
-			    .getCSVCaracteristicasFieldNames(element)
+		    + ConsultasFieldNames.enlacesCSVFieldNames()
 		    + ", (select count(id_ramal) from audasa_extgia.enlaces_ramales ra "
 		    + "where ra.id_enlace = el.id_enlace) "
 		    + "|| ' | ' || "
@@ -84,133 +80,118 @@ public class CSVCaracteristicasQueries {
 		    + " ORDER BY gid";
 	case Senhalizacion_Vertical:
 	    return "SELECT "
-		    + ConsultasFieldNames
-			    .getCSVCaracteristicasFieldNames(element)
+		    + ConsultasFieldNames.senhalizacionCSVFieldNames()
 		    + " FROM  audasa_extgia.senhalizacion_vertical_senhales se LEFT OUTER JOIN audasa_extgia.senhalizacion_vertical el ON (el.id_elemento_senhalizacion = se.id_elemento_senhalizacion) "
 		    + get(element)
 		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY el.id_elemento_senhalizacion";
 	case Firme:
 	    return "SELECT "
-		    + ConsultasFieldNames
-			    .getCSVCaracteristicasFieldNames(element)
+		    + ConsultasFieldNames.firmeCSVFieldNames()
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
 		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Valla_Cierre:
 	    return "SELECT "
-		    + ConsultasFieldNames
-			    .getCSVCaracteristicasFieldNames(element)
+		    + ConsultasFieldNames.vallaCierreCSVFieldNames()
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
 		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Taludes:
 	    return "SELECT "
-		    + ConsultasFieldNames
-			    .getCSVCaracteristicasFieldNames(element)
+		    + ConsultasFieldNames.taludesCSVFieldNames()
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
 		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Juntas:
 	    return "SELECT "
-		    + ConsultasFieldNames
-			    .getCSVCaracteristicasFieldNames(element)
+		    + ConsultasFieldNames.juntasCSVFieldNames()
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
 		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Isletas:
 	    return "SELECT "
-		    + ConsultasFieldNames
-			    .getCSVCaracteristicasFieldNames(element)
+		    + ConsultasFieldNames.isletasCSVFieldNames()
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
 		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Barrera_Rigida:
 	    return "SELECT "
-		    + ConsultasFieldNames
-			    .getCSVCaracteristicasFieldNames(element)
+		    + ConsultasFieldNames.barreraRigidaCSVFieldNames()
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
 		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Obras_Paso:
 	    return "SELECT "
-		    + ConsultasFieldNames
-			    .getCSVCaracteristicasFieldNames(element)
+		    + ConsultasFieldNames.obrasPasoCSVFieldNames()
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
 		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Obras_Desague:
 	    return "SELECT "
-		    + ConsultasFieldNames
-			    .getCSVCaracteristicasFieldNames(element)
+		    + ConsultasFieldNames.obrasDesagueCSVFieldNames()
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
 		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Areas_Peaje:
 	    return "SELECT "
-		    + ConsultasFieldNames
-			    .getCSVCaracteristicasFieldNames(element)
+		    + ConsultasFieldNames.areasPeajeCSVFieldNames()
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
 		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Lecho_Frenado:
 	    return "SELECT "
-		    + ConsultasFieldNames
-			    .getCSVCaracteristicasFieldNames(element)
+		    + ConsultasFieldNames.lechoFrenadoCSVFieldNames()
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
 		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Muros:
 	    return "SELECT "
-		    + ConsultasFieldNames
-			    .getCSVCaracteristicasFieldNames(element)
+		    + ConsultasFieldNames.murosCSVFieldNames()
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
 		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Senhalizacion_Variable:
 	    return "SELECT "
-		    + ConsultasFieldNames
-			    .getCSVCaracteristicasFieldNames(element)
+		    + ConsultasFieldNames.senhalizacionVariableCSVFieldNames()
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
 		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Lineas_Suministro:
 	    return "SELECT "
-		    + ConsultasFieldNames
-			    .getCSVCaracteristicasFieldNames(element)
+		    + ConsultasFieldNames.lineasSuministroCSVFieldNames()
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
 		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Transformadores:
 	    return "SELECT "
-		    + ConsultasFieldNames
-			    .getCSVCaracteristicasFieldNames(element)
+		    + ConsultasFieldNames.transformadoresCSVFieldNames()
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
 		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
-	default:
+	case Pasos_Mediana:
 	    return "SELECT "
-		    + ConsultasFieldNames
-			    .getCSVCaracteristicasFieldNames(element)
+		    + ConsultasFieldNames.pasosMedianaCSVFieldNames()
 		    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
 		    + " el " + get(element)
 		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	}
+	return null;
 
     }
 

@@ -145,53 +145,7 @@ public class ConsultasFieldNames {
 	return null;
     }
 
-    public static String getCSVCaracteristicasFieldNames(String element) {
-	switch (DBFieldNames.Elements.valueOf(element)) {
-	case Taludes:
-	    return taludesCSVFieldNames();
-	case Isletas:
-	    return isletasCSVFieldNames();
-	case Barrera_Rigida:
-	    return barreraRigidaCSVFieldNames();
-	case Areas_Servicio:
-	    return areasServicioCSVFieldNames();
-	case Areas_Descanso:
-	    return areasDescansoCSVFieldNames();
-	case Areas_Peaje:
-	    return areasPeajeCSVFieldNames();
-	case Enlaces:
-	    return enlacesCSVFieldNames();
-	case Juntas:
-	    return juntasCSVFieldNames();
-	case Pasos_Mediana:
-	    return pasosMedianaCSVFieldNames();
-	case Senhalizacion_Vertical:
-	    return senhalizacionCSVFieldNames();
-	case Valla_Cierre:
-	    return vallaCierreCSVFieldNames();
-	case Firme:
-	    return firmeCSVFieldNames();
-	case Obras_Paso:
-	    return obrasPasoCSVFieldNames();
-	case Obras_Desague:
-	    return obrasDesagueCSVFieldNames();
-	case Muros:
-	    return murosCSVFieldNames();
-	case Senhalizacion_Variable:
-	    return senhalizacionVariableCSVFieldNames();
-	case Lecho_Frenado:
-	    return lechoFrenadoCSVFieldNames();
-	case Areas_Mantenimiento:
-	    return areasMantenimientoCSVFieldNames();
-	case Lineas_Suministro:
-	    return lineasSuministroCSVFieldNames();
-	case Transformadores:
-	    return transformadoresCSVFieldNames();
-	}
-	return null;
-    }
-
-    private static String transformadoresCSVFieldNames() {
+    public static String transformadoresCSVFieldNames() {
 	return "distinct(gid), "
 		+ "el.id_transformador as \"ID Transformador\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
@@ -225,7 +179,7 @@ public class ConsultasFieldNames {
 		+ "tv.item as \"Tipo Vía\"," + "nv.item as \"Nombre Vía\",";
     }
 
-    private static String taludesCSVFieldNames() {
+    public static String taludesCSVFieldNames() {
 	return "distinct(gid), " + "el.id_talud as \"ID Talud\","
 		+ "numero_talud as \"Nº Talud\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
@@ -272,7 +226,7 @@ public class ConsultasFieldNames {
 		+ "concepto as \"Concepto\"";
     }
 
-    private static String isletasCSVFieldNames() {
+    public static String isletasCSVFieldNames() {
 	return "distinct(gid), "
 		+ "el.id_isleta as \"ID Isleta\","
 		+ "numero_isleta as \"Nº Isleta\","
@@ -291,7 +245,7 @@ public class ConsultasFieldNames {
 		+ "observaciones as \"Observaciones\"";
     }
 
-    private static String barreraRigidaCSVFieldNames() {
+    public static String barreraRigidaCSVFieldNames() {
 	return "distinct(gid), "
 		+ "el.id_barrera_rigida as \"ID Barrera Rígida\","
 		+ "numero_barrera_rigida as \"Nº Barrera Rígida\","
@@ -308,7 +262,7 @@ public class ConsultasFieldNames {
 		+ "observaciones as \"Observaciones\"";
     }
 
-    private static String areasServicioCSVFieldNames() {
+    public static String areasServicioCSVFieldNames() {
 	return "distinct(gid), "
 		+ "el.id_area_servicio as \"ID Área Servicio\","
 		+ "nombre as \"Nombre\","
@@ -329,7 +283,7 @@ public class ConsultasFieldNames {
 		+ "observaciones as \"Observaciones\"";
     }
 
-    private static String areasDescansoCSVFieldNames() {
+    public static String areasDescansoCSVFieldNames() {
 	return "distinct(gid), "
 		+ "el.id_area_descanso as \"ID Área Descanso\","
 		+ "nombre as \"Nombre\","
@@ -349,7 +303,7 @@ public class ConsultasFieldNames {
 		+ "observaciones as \"Observaciones\"";
     }
 
-    private static String areasPeajeCSVFieldNames() {
+    public static String areasPeajeCSVFieldNames() {
 	return "distinct(gid), " + "el.id_area_peaje as \"ID Área Peaje\","
 		+ "nombre as \"Nombre\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
@@ -371,7 +325,7 @@ public class ConsultasFieldNames {
 		+ "observaciones as \"Observaciones\"";
     }
 
-    private static String pasosMedianaCSVFieldNames() {
+    public static String pasosMedianaCSVFieldNames() {
 	return "distinct(gid), " + "el.id_paso_mediana as \"ID Paso Mediana\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
 		+ localizationCSVFieldNames() + "pk as \"PK\","
@@ -382,7 +336,7 @@ public class ConsultasFieldNames {
 		+ "observaciones as \"Observaciones\"";
     }
 
-    private static String juntasCSVFieldNames() {
+    public static String juntasCSVFieldNames() {
 	return "distinct(gid), " + "el.id_junta as \"ID Junta\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
 		+ localizationCSVFieldNames() + "pk as \"PK\","
@@ -395,7 +349,7 @@ public class ConsultasFieldNames {
 		+ "observaciones as \"Observaciones\"";
     }
 
-    private static String enlacesCSVFieldNames() {
+    public static String enlacesCSVFieldNames() {
 	return "distinct(gid), " + "el.id_enlace as \"ID Enlace\","
 		+ "nombre as \"Nombre\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
@@ -406,7 +360,7 @@ public class ConsultasFieldNames {
 		+ "observaciones as \"Observaciones\"";
     }
 
-    private static String senhalizacionCSVFieldNames() {
+    public static String senhalizacionCSVFieldNames() {
 	return "distinct(el.id_elemento_senhalizacion) as \"ID Elemento\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
 		+ localizationCSVFieldNames()
@@ -447,7 +401,7 @@ public class ConsultasFieldNames {
 		+ "se.observaciones as \"Observaciones Señal\"";
     }
 
-    private static String vallaCierreCSVFieldNames() {
+    public static String vallaCierreCSVFieldNames() {
 	return "distinct(gid), " + "el.id_valla as \"ID Valla\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
 		+ localizationCSVFieldNames() + "tvf.item as \"Tipo Vía PF\","
@@ -466,7 +420,7 @@ public class ConsultasFieldNames {
 		+ "observaciones as \"Observaciones\"";
     }
 
-    private static String firmeCSVFieldNames() {
+    public static String firmeCSVFieldNames() {
 	return "distinct(gid), "
 		+ "el.id_firme as \"ID Firme\","
 		+ "fecha_inauguracion as \"Fecha Inauguración\","
@@ -504,7 +458,7 @@ public class ConsultasFieldNames {
 		+ "observaciones as \"Observaciones\"";
     }
 
-    private static String obrasPasoCSVFieldNames() {
+    public static String obrasPasoCSVFieldNames() {
 	return "distinct(gid), " + "el.id_obra_paso as \"ID Obra Paso\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
 		+ localizationCSVFieldNames()
@@ -533,7 +487,7 @@ public class ConsultasFieldNames {
 		+ "observaciones as \"Observaciones\"";
     }
 
-    private static String obrasDesagueCSVFieldNames() {
+    public static String obrasDesagueCSVFieldNames() {
 	return "distinct(gid), " + "el.id_obra_desague as \"ID Obra Desagüe\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
 		+ localizationCSVFieldNames() + "pk as \"PK\","
@@ -548,7 +502,7 @@ public class ConsultasFieldNames {
 		+ "observaciones as \"Observaciones\"";
     }
 
-    private static String murosCSVFieldNames() {
+    public static String murosCSVFieldNames() {
 	return "distinct(gid), " + "el.id_muro as \"ID Muro\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
 		+ localizationCSVFieldNames() + "tvf.item as \"Tipo Vía PF\","
@@ -564,7 +518,7 @@ public class ConsultasFieldNames {
 		+ "observaciones as \"Observaciones\"";
     }
 
-    private static String lechoFrenadoCSVFieldNames() {
+    public static String lechoFrenadoCSVFieldNames() {
 	return "distinct(gid), "
 		+ "el.id_lecho_frenado as \"ID Lecho Frenado\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
@@ -575,7 +529,7 @@ public class ConsultasFieldNames {
 		+ "observaciones as \"Observaciones\"";
     }
 
-    private static String areasMantenimientoCSVFieldNames() {
+    public static String areasMantenimientoCSVFieldNames() {
 	return "distinct(gid), "
 		+ "el.id_area_mantenimiento as \"ID Área Mantenimiento\","
 		+ "nombre as \"Nombre\","
@@ -591,7 +545,7 @@ public class ConsultasFieldNames {
 		+ "observaciones as \"Observaciones\"";
     }
 
-    private static String senhalizacionVariableCSVFieldNames() {
+    public static String senhalizacionVariableCSVFieldNames() {
 	return "distinct(gid), " + "el.id_senhal_variable as \"ID Señal\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
 		+ localizationCSVFieldNames() + "pk as \"PK\","
@@ -609,7 +563,7 @@ public class ConsultasFieldNames {
 		+ "observaciones as \"Observaciones\"";
     }
 
-    private static String lineasSuministroCSVFieldNames() {
+    public static String lineasSuministroCSVFieldNames() {
 	return "distinct(gid), " + "el.id_linea_suministro as \"ID Línea\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
 		+ localizationCSVFieldNames() + "tvf.item as \"Tipo Vía PF\","
