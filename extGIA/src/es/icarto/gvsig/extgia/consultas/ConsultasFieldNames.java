@@ -79,81 +79,80 @@ public class ConsultasFieldNames {
 	switch (DBFieldNames.Elements.valueOf(element)) {
 	case Taludes:
 	    return "id_talud, tr.item, pk_inicial, pk_final, tipo_talud, roca, arboles, "
-	    + "gunita, escollera, maleza, malla, longitud, altura_max_talud, sup_total_analitica,"
-	    + "sup_mecanizada_analitica, sup_manual_analitica, sup_restada_analitica";
+		    + "gunita, escollera, maleza, malla, longitud, altura_max_talud, sup_total_analitica,"
+		    + "sup_mecanizada_analitica, sup_manual_analitica, sup_restada_analitica";
 	case Isletas:
 	    return "id_isleta, tr.item, tv.item, nv.item, pk_inicial, pk_final, "
-	    + "tipo_isleta, superficie_bajo_bionda, posibilidad_empleo_vehiculos, observaciones";
+		    + "tipo_isleta, superficie_bajo_bionda, posibilidad_empleo_vehiculos, observaciones";
 	case Barrera_Rigida:
 	    return "id_barrera_rigida, tr.item, tv.item, nv.item, pk_inicial, pk_final, "
-	    + "obstaculo_protegido, longitud, codigo, tipo, metodo_constructivo, perfil, observaciones";
+		    + "obstaculo_protegido, longitud, codigo, tipo, metodo_constructivo, perfil, observaciones";
 	case Areas_Servicio:
 	    return "id_area_servicio, nombre, tr.item, pk, fecha_puesta_servicio, "
-	    + "sup_total, riego, cafeteria_rest_bar, aparcamiento_camion_bus, area_picnic, "
-	    + "fuentes_potables, observaciones";
+		    + "sup_total, riego, cafeteria_rest_bar, aparcamiento_camion_bus, area_picnic, "
+		    + "fuentes_potables, observaciones";
 	case Areas_Descanso:
 	    return "id_area_descanso, nombre, tr.item, pk, fecha_puesta_servicio, "
-	    + "sup_total, riego, aparcamiento_camion_bus, area_picnic, fuentes_potables, observaciones";
+		    + "sup_total, riego, aparcamiento_camion_bus, area_picnic, fuentes_potables, observaciones";
 	case Areas_Peaje:
 	    return "id_area_peaje, nombre, tr.item, pk, fecha_puesta_servicio, "
-	    + "bordillos, bumpers, tunel_peaje, marquesina_tipo, marquesina_sup, sup_total, "
-	    + "observaciones, numero_vias";
+		    + "bordillos, bumpers, tunel_peaje, marquesina_tipo, marquesina_sup, sup_total, "
+		    + "observaciones, numero_vias";
 	case Enlaces:
 	    return "id_enlace, nombre, tr.item, pk, n_salida, tipo_enlace, "
-	    + "alumbrado, observaciones";
+		    + "alumbrado, observaciones";
 	case Juntas:
 	    return "id_junta, tr.item, tv.item, nv.item, pk, numero_junta, ancho, modulo, "
-	    + "elemento, codigo_elemento, descripcion, observaciones";
+		    + "elemento, codigo_elemento, descripcion, observaciones";
 	case Pasos_Mediana:
 	    return "id_paso_mediana, tr.item, tv.item, nv.item, pk, longitud, numero_postes, "
-	    + "cierre, longitud_cierre, cuneta_entubada, observaciones";
+		    + "cierre, longitud_cierre, cuneta_entubada, observaciones";
 	case Senhalizacion_Vertical:
 	    return "el.id_elemento_senhalizacion, tr.item, tv.item, nv.item, pk, tipo_senhal, "
-	    + "codigo_senhal, leyenda, panel_complementario, codigo_panel, texto_panel, "
-	    + "fecha_fabricacion, fecha_instalacion, fecha_reposicion, tipo_sustentacion ";
+		    + "codigo_senhal, leyenda, panel_complementario, codigo_panel, texto_panel, "
+		    + "fecha_fabricacion, fecha_instalacion, fecha_reposicion, tipo_sustentacion ";
 	case Valla_Cierre:
 	    return "id_valla, tr.item, pk_inicial, pk_final, tipo_valla, longitud, "
-	    + "altura, n_panhos, n_puertas, n_postes_simples, n_postes_tripode, pastor_electrico, "
-	    + "observaciones";
+		    + "altura, n_panhos, n_puertas, n_postes_simples, n_postes_tripode, pastor_electrico, "
+		    + "observaciones";
 	case Firme:
 	    return "id_firme, fecha_inauguracion, fecha_apertura, unidad_constructiva, "
-	    + "pk_inicial, pk_final, explanada_cm, zahorra_artificial_cm, suelo_cemento_cm, "
-	    + "grava_cemento_cm, mbc_base_cm, mbc_intermedia_cm, mbc_rodadura_cm, observaciones";
+		    + "pk_inicial, pk_final, explanada_cm, zahorra_artificial_cm, suelo_cemento_cm, "
+		    + "grava_cemento_cm, mbc_base_cm, mbc_intermedia_cm, mbc_rodadura_cm, observaciones";
 	case Obras_Paso:
 	    return "id_obra_paso, tr.item, tv.item, nv.item, pk, codigo, nombre,"
-	    + "tipo_obra, tipologia, longitud, anchura, altura,"
-	    + "galibo_v_c, galibo_v_d, observaciones";
+		    + "tipo_obra, tipologia, longitud, anchura, altura,"
+		    + "galibo_v_c, galibo_v_d, observaciones";
 	case Obras_Desague:
 	    return "id_obra_desague, tr.item, tv.item, nv.item, pk, tipologia, material, "
-	    + "objeto, fecha_construccion, n_elementos, seccion, longitud, observaciones";
+		    + "objeto, fecha_construccion, n_elementos, seccion, longitud, observaciones";
 	case Muros:
 	    return "id_muro, tr.item, tv.item, nv.item, pk_inicial, pk_final, material, longitud, "
-	    + "altura_max, observaciones";
+		    + "altura_max, observaciones";
 	case Senhalizacion_Variable:
 	    return "id_senhal_variable, tr.item, tv.item, nv.item, pk, referencia, "
-	    + "fecha_instalacion, tipo, tipo_sustentacion, corunha, ferrol, santiago, pontevedra, "
-	    + "vigo, tui, observaciones";
+		    + "fecha_instalacion, tipo, tipo_sustentacion, corunha, ferrol, santiago, pontevedra, "
+		    + "vigo, tui, observaciones";
 	case Lecho_Frenado:
 	    return "id_lecho_frenado, tr.item, tv.item, nv.item, pk, longitud, anchura, pendiente, "
-	    + "observaciones";
+		    + "observaciones";
 	case Areas_Mantenimiento:
 	    return "id_area_mantenimiento, nombre, tr.item, pk, centro_operaciones, "
-	    + "centro_comunicaciones, control_postes_auxilio, control_tuneles, almacen_fundentes, "
-	    + "alumbrado, observaciones";
+		    + "centro_comunicaciones, control_postes_auxilio, control_tuneles, almacen_fundentes, "
+		    + "alumbrado, observaciones";
 	case Lineas_Suministro:
 	    return "id_linea_suministro, tr.item, tv.item, nv.item, pk_inicial, pk_final, "
-	    + "denominacion, titularidad, estado, tipo, longitud, num_apoyos, observaciones";
+		    + "denominacion, titularidad, estado, tipo, longitud, num_apoyos, observaciones";
 	case Transformadores:
 	    return "id_transformador, tr.item, tv.item, nv.item, pk, denominacion, titularidad, "
-	    + "estado, referencia, fabricante, tipo, ubicacion, "
-	    + "potencia, observaciones";
+		    + "estado, referencia, fabricante, tipo, ubicacion, "
+		    + "potencia, observaciones";
 	}
 	return null;
     }
 
     public static String transformadoresCSVFieldNames() {
-	return "distinct(gid), "
-		+ "el.id_transformador as \"ID Transformador\","
+	return "gid, " + "el.id_transformador as \"ID Transformador\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
 		+ localizationCSVFieldNames()
 		+ "pk as \"PK\","
@@ -186,7 +185,7 @@ public class ConsultasFieldNames {
     }
 
     public static String taludesCSVFieldNames() {
-	return "distinct(gid), " + "el.id_talud as \"ID Talud\","
+	return "gid, " + "el.id_talud as \"ID Talud\","
 		+ "numero_talud as \"Nº Talud\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
 		+ localizationCSVFieldNames()
@@ -233,7 +232,7 @@ public class ConsultasFieldNames {
     }
 
     public static String isletasCSVFieldNames() {
-	return "distinct(gid), "
+	return "gid, "
 		+ "el.id_isleta as \"ID Isleta\","
 		+ "numero_isleta as \"Nº Isleta\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
@@ -252,8 +251,7 @@ public class ConsultasFieldNames {
     }
 
     public static String barreraRigidaCSVFieldNames() {
-	return "distinct(gid), "
-		+ "el.id_barrera_rigida as \"ID Barrera Rígida\","
+	return "gid, " + "el.id_barrera_rigida as \"ID Barrera Rígida\","
 		+ "numero_barrera_rigida as \"Nº Barrera Rígida\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
 		+ localizationCSVFieldNames() + "pk_inicial as \"PK Inicial\","
@@ -269,8 +267,7 @@ public class ConsultasFieldNames {
     }
 
     public static String areasServicioCSVFieldNames() {
-	return "distinct(gid), "
-		+ "el.id_area_servicio as \"ID Área Servicio\","
+	return "gid, " + "el.id_area_servicio as \"ID Área Servicio\","
 		+ "nombre as \"Nombre\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
 		+ localizationCSVFieldNames() + "pk as \"PK\","
@@ -290,8 +287,7 @@ public class ConsultasFieldNames {
     }
 
     public static String areasDescansoCSVFieldNames() {
-	return "distinct(gid), "
-		+ "el.id_area_descanso as \"ID Área Descanso\","
+	return "gid, " + "el.id_area_descanso as \"ID Área Descanso\","
 		+ "nombre as \"Nombre\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
 		+ localizationCSVFieldNames() + "pk as \"PK\","
@@ -310,7 +306,7 @@ public class ConsultasFieldNames {
     }
 
     public static String areasPeajeCSVFieldNames() {
-	return "distinct(gid), " + "el.id_area_peaje as \"ID Área Peaje\","
+	return "gid, " + "el.id_area_peaje as \"ID Área Peaje\","
 		+ "nombre as \"Nombre\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
 		+ localizationCSVFieldNames() + "pk as \"PK\","
@@ -332,7 +328,7 @@ public class ConsultasFieldNames {
     }
 
     public static String pasosMedianaCSVFieldNames() {
-	return "distinct(gid), " + "el.id_paso_mediana as \"ID Paso Mediana\","
+	return "gid, " + "el.id_paso_mediana as \"ID Paso Mediana\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
 		+ localizationCSVFieldNames() + "pk as \"PK\","
 		+ "mu.item as \"Municipio\"," + "longitud as \"Longitud\","
@@ -343,7 +339,7 @@ public class ConsultasFieldNames {
     }
 
     public static String juntasCSVFieldNames() {
-	return "distinct(gid), " + "el.id_junta as \"ID Junta\","
+	return "gid, " + "el.id_junta as \"ID Junta\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
 		+ localizationCSVFieldNames() + "pk as \"PK\","
 		+ "ramal as \"Ramal\"," + "st.item as \"Sentido\","
@@ -356,7 +352,7 @@ public class ConsultasFieldNames {
     }
 
     public static String enlacesCSVFieldNames() {
-	return "distinct(gid), " + "el.id_enlace as \"ID Enlace\","
+	return "gid, " + "el.id_enlace as \"ID Enlace\","
 		+ "nombre as \"Nombre\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
 		+ localizationCSVFieldNames() + "el.pk as \"PK\","
@@ -408,7 +404,7 @@ public class ConsultasFieldNames {
     }
 
     public static String vallaCierreCSVFieldNames() {
-	return "distinct(gid), " + "el.id_valla as \"ID Valla\","
+	return "gid, " + "el.id_valla as \"ID Valla\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
 		+ localizationCSVFieldNames() + "tvf.item as \"Tipo Vía PF\","
 		+ "nvf.item as \"Nombre Vía PF\","
@@ -427,7 +423,7 @@ public class ConsultasFieldNames {
     }
 
     public static String firmeCSVFieldNames() {
-	return "distinct(gid), "
+	return "gid, "
 		+ "el.id_firme as \"ID Firme\","
 		+ "fecha_inauguracion as \"Fecha Inauguración\","
 		+ "fecha_apertura as \"Fecha Apertura\","
@@ -465,7 +461,7 @@ public class ConsultasFieldNames {
     }
 
     public static String obrasPasoCSVFieldNames() {
-	return "distinct(gid), " + "el.id_obra_paso as \"ID Obra Paso\","
+	return "gid, " + "el.id_obra_paso as \"ID Obra Paso\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
 		+ localizationCSVFieldNames()
 		+ "pk as \"PK\","
@@ -494,7 +490,7 @@ public class ConsultasFieldNames {
     }
 
     public static String obrasDesagueCSVFieldNames() {
-	return "distinct(gid), " + "el.id_obra_desague as \"ID Obra Desagüe\","
+	return "gid, " + "el.id_obra_desague as \"ID Obra Desagüe\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
 		+ localizationCSVFieldNames() + "pk as \"PK\","
 		+ "ramal as \"Ramal\"," + "st.item as \"Sentido\","
@@ -509,7 +505,7 @@ public class ConsultasFieldNames {
     }
 
     public static String murosCSVFieldNames() {
-	return "distinct(gid), " + "el.id_muro as \"ID Muro\","
+	return "gid, " + "el.id_muro as \"ID Muro\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
 		+ localizationCSVFieldNames() + "tvf.item as \"Tipo Vía PF\","
 		+ "nvf.item as \"Nombre Vía PF\","
@@ -525,8 +521,7 @@ public class ConsultasFieldNames {
     }
 
     public static String lechoFrenadoCSVFieldNames() {
-	return "distinct(gid), "
-		+ "el.id_lecho_frenado as \"ID Lecho Frenado\","
+	return "gid, " + "el.id_lecho_frenado as \"ID Lecho Frenado\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
 		+ localizationCSVFieldNames() + "pk as \"PK\","
 		+ "st.item as \"Sentido\"," + "mu.item as \"Municipio\","
@@ -536,7 +531,7 @@ public class ConsultasFieldNames {
     }
 
     public static String areasMantenimientoCSVFieldNames() {
-	return "distinct(gid), "
+	return "gid, "
 		+ "el.id_area_mantenimiento as \"ID Área Mantenimiento\","
 		+ "nombre as \"Nombre\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
@@ -552,7 +547,7 @@ public class ConsultasFieldNames {
     }
 
     public static String senhalizacionVariableCSVFieldNames() {
-	return "distinct(gid), " + "el.id_senhal_variable as \"ID Señal\","
+	return "gid, " + "el.id_senhal_variable as \"ID Señal\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
 		+ localizationCSVFieldNames() + "pk as \"PK\","
 		+ "ramal as \"Ramal\"," + "st.item as \"Sentido\","
@@ -570,7 +565,7 @@ public class ConsultasFieldNames {
     }
 
     public static String lineasSuministroCSVFieldNames() {
-	return "distinct(gid), " + "el.id_linea_suministro as \"ID Línea\","
+	return "gid, " + "el.id_linea_suministro as \"ID Línea\","
 		+ "fecha_actualizacion as \"Fecha Actualización\","
 		+ localizationCSVFieldNames() + "tvf.item as \"Tipo Vía PF\","
 		+ "nvf.item as \"Nombre Vía PF\","

@@ -15,7 +15,6 @@ import es.icarto.gvsig.extgia.consultas.agregados.TrabajosAgregadosReport;
 import es.icarto.gvsig.extgia.consultas.agregados.XLSTrabajosAgregadosReport;
 import es.icarto.gvsig.extgia.consultas.firme.FirmeReconocimientosReport;
 import es.icarto.gvsig.extgia.consultas.firme.FirmeTrabajosReport;
-import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 import es.icarto.gvsig.siga.forms.reports.SaveFileDialog;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
@@ -175,7 +174,8 @@ public class Leaf implements Component {
 
 	if (tipo == QueryType.CARACTERISTICAS) {
 	    if (filters.getQueryType().equals("CUSTOM")) {
-		query = getCustomCaracteristicasQuery(filters, element);
+		query = CaracteristicasQueries.getCustomCaracteristicasQuery(
+			filters, element);
 	    } else if (pdf) {
 		query = CaracteristicasQueries.getPDFCaracteristicasQuery(
 			element, filters);
@@ -187,18 +187,13 @@ public class Leaf implements Component {
 	    String elementId = ConsultasFieldNames.getElementId(element);
 	    String fields;
 	    if (filters.getQueryType().equals("CUSTOM")) {
-		fields = buildFields(filters, "");
+		fields = CaracteristicasQueries.buildFields(filters, "",
+			element);
 	    } else {
 		fields = getFields(tipo, elementId);
 	    }
 	    query = CaracteristicasQueries.getReconocimientosTrabajosQuery(
 		    element, filters, fields, elementId, tipoConsulta.getKey());
-
-	    if (!consultasFilters.getWhereClauseByLocationWidgets().isEmpty()) {
-		query = query + " WHERE el." + elementId + " IN (SELECT "
-			+ elementId + " FROM " + DBFieldNames.GIA_SCHEMA + "."
-			+ element + filters.getWhereClauseByLocationWidgets();
-	    }
 
 	    if (tipo == QueryType.TRABAJOS || tipo == QueryType.TRABAJOS_FIRME) {
 		query += filters.getWhereClauseByDates("fecha_certificado");
@@ -208,75 +203,11 @@ public class Leaf implements Component {
 		query += filters.getWhereClauseByDates("fecha_inspeccion");
 	    }
 	    if (filters.getQueryType().equals("CUSTOM")) {
-		query = buildOrderBy(filters, query);
+		query = CaracteristicasQueries.buildOrderBy(filters, query);
 	    }
 
 	}
 	return query;
-    }
-
-    private String getCustomCaracteristicasQuery(
-	    ConsultasFilters<Field> filters, String element) {
-	String query = CaracteristicasQueries.getCSVCaracteristicasQuery(
-		element, filters);
-	String subquery = query;
-	if (filters.getFields().size() > 0) {
-	    subquery = query.substring(query.indexOf(" FROM"));
-	    subquery = buildFields(filters, "SELECT ") + subquery;
-	}
-	subquery = buildOrderBy(filters, subquery);
-	return subquery;
-    }
-
-    private String buildOrderBy(ConsultasFilters<Field> filters, String subquery) {
-	if (filters.getOrderBy().size() > 0) {
-
-	    int indexOf = subquery.indexOf("ORDER BY ");
-	    if (indexOf != -1) {
-		subquery = subquery.substring(0, indexOf + 9);
-	    } else {
-		if (subquery.endsWith(";")) {
-		    subquery = subquery.substring(0, subquery.length() - 1);
-		}
-
-		subquery = subquery + " ORDER BY ";
-	    }
-
-	    for (Field field : filters.getOrderBy()) {
-		subquery = subquery + field.getKey() + ", ";
-	    }
-	    subquery = subquery.substring(0, subquery.length() - 2);
-	}
-	return subquery;
-    }
-
-    private String buildFields(ConsultasFilters<Field> filters, String select) {
-	for (Field field : filters.getFields()) {
-	    if (field.getKey().endsWith("area_mantenimiento")) {
-		select += "am.item AS  \"Área Mantenimiento\", ";
-	    } else if (field.getKey().endsWith("base_contratista")) {
-		select += "bc.item AS  \"Base Contratista\", ";
-	    } else if (field.getKey().endsWith("tramo")) {
-		select += "tr.item AS  \"Tramo\", ";
-	    } else if (field.getKey().endsWith("tipo_via")) {
-		select += "tv.item AS  \"Tipo Vía\", ";
-	    } else if (field.getKey().endsWith("nombre_via")) {
-		select += "nv.item AS  \"Nombre Vía\", ";
-	    } else if (field.getKey().endsWith("municipio")) {
-		select += "mu.item AS  \"Municipio\", ";
-		// workaround. Sentido is in trabajos table and not in the main
-		// table
-	    } else if (field.getKey().endsWith("sentido")
-		    && !element[0].equalsIgnoreCase("firme")) {
-		select += "st.item AS  \"Sentido\", ";
-	    } else {
-		select = select
-			+ field.getKey()
-			+ String.format(" AS \"%s\"", field.getLongName()
-				.replace("\"", "'")) + ", ";
-	    }
-	}
-	return select.substring(0, select.length() - 2);
     }
 
     private void createPdfReport(QueryType tipo, String outputFile,
