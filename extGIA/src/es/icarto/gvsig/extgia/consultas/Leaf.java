@@ -190,21 +190,8 @@ public class Leaf implements Component {
 	    } else {
 		fields = getFields(tipo, elementId);
 	    }
-
-	    if (element.equalsIgnoreCase("senhalizacion_vertical")) {
-		query = "SELECT " + fields + " FROM " + DBFieldNames.GIA_SCHEMA
-			    + "." + element + "_" + tipoConsulta.getKey()
-			    + " AS sub JOIN " + DBFieldNames.GIA_SCHEMA + "." + element
-			    + " AS el ON sub." + elementId + "= el." + elementId
-			    + " LEFT OUTER JOIN audasa_extgia.senhalizacion_vertical_senhales se ON (el.id_elemento_senhalizacion = se.id_elemento_senhalizacion) "
-			    + CSVCaracteristicasQueries.get(element);
-	    } else {
-		query = "SELECT " + fields + " FROM " + DBFieldNames.GIA_SCHEMA
-			    + "." + element + "_" + tipoConsulta.getKey()
-			    + " AS sub JOIN " + DBFieldNames.GIA_SCHEMA + "." + element
-			    + " AS el ON sub." + elementId + "= el." + elementId
-			    + CSVCaracteristicasQueries.get(element);
-	    }
+	    query = CSVCaracteristicasQueries.getReconocimientosTrabajosQuery(element, filters, fields, elementId, tipoConsulta.getKey());
+	    
 	    
 	    if (!consultasFilters.getWhereClauseByLocationWidgets()
 		    .isEmpty()) {

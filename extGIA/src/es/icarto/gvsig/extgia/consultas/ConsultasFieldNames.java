@@ -58,7 +58,15 @@ public class ConsultasFieldNames {
 		+ elementId
 		+ ", sub.nombre_revisor, sub.fecha_inspeccion, sub.indice_estado, sub.observaciones";
     }
-
+    
+    
+    
+    
+//    audasa_extgia.areas_peaje_reconocimientos
+//    audasa_extgia.firme_reconocimientos
+//    audasa_extgia.lineas_suministro_reconocimientos
+//    audasa_extgia.senhalizacion_variable_reconocimientos
+//    audasa_extgia.transformadores_reconocimientos
     public static String getReconocimientosFieldNamesWithoutIndice(
 	    String elementId) {
 	return elementId + ", nombre_revisor, fecha_inspeccion, observaciones";
@@ -104,7 +112,9 @@ public class ConsultasFieldNames {
 	    return "id_paso_mediana, tr.item, tv.item, nv.item, pk, longitud, numero_postes, "
 		    + "cierre, longitud_cierre, cuneta_entubada, observaciones";
 	case Senhalizacion_Vertical:
-	    break;
+	    return "el.id_elemento_senhalizacion, tr.item, tv.item, nv.item, pk, tipo_senhal, "
+		    + "codigo_senhal, leyenda, panel_complementario, codigo_panel, texto_panel, "
+		    + "fecha_fabricacion, fecha_instalacion, fecha_reposicion, tipo_sustentacion ";
 	case Valla_Cierre:
 	    return "id_valla, tr.item, pk_inicial, pk_final, tipo_valla, longitud, "
 		    + "altura, n_panhos, n_puertas, n_postes_simples, n_postes_tripode, pastor_electrico, "
