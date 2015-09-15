@@ -7,7 +7,6 @@ public enum QueryType {
     RECONOCIMIENTOS("Listado de Reconocimientos de Estado"),
     TRABAJOS_VEGETACION("Listado de Trabajos"),
     TRABAJOS_FIRME("Listado de Trabajos"),
-    RECONOCIMIENTOS_FIRME("Listado de Reconocimientos de Estado"),
     CARACTERISTICAS("Listado de Características"),
     TRABAJOS_AGREGADOS("Listado de Trabajos");
 

@@ -25,6 +25,12 @@ public class ReconocimientosReport extends PDFReport {
 	String[] columnNamesWithoutIndex = { "ID Elemento", "Nombre Revisor",
 		"Fecha Inspección", "Observaciones" };
 
+	if (getElementID().equalsIgnoreCase("firme")) {
+	    return new String[] { "ID Elemento", "Tipo Inspección",
+		    "Nombre Revisor", "Aparato Medición", "Fecha Inspección",
+		    "Observaciones" };
+	}
+
 	if (!ConsultasFieldNames
 		.hasIndiceFieldOnReconocimientos(getElementID())) {
 	    return columnNamesWithoutIndex;
@@ -36,6 +42,18 @@ public class ReconocimientosReport extends PDFReport {
     @Override
     protected float[] getColumnsWidth(int columnCount) {
 	float[] columnsWidth = new float[columnCount];
+
+	if (getElementID().equalsIgnoreCase("firme")) {
+
+	    columnsWidth[0] = 60f;
+	    columnsWidth[1] = 60f;
+	    columnsWidth[2] = 100f;
+	    columnsWidth[3] = 60f;
+	    columnsWidth[4] = 60f;
+	    columnsWidth[5] = 258f;
+
+	    return columnsWidth;
+	}
 
 	if (!ConsultasFieldNames
 		.hasIndiceFieldOnReconocimientos(getElementID())) {

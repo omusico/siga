@@ -13,7 +13,6 @@ import es.icarto.gvsig.commons.queries.XLSReport;
 import es.icarto.gvsig.commons.utils.Field;
 import es.icarto.gvsig.extgia.consultas.agregados.TrabajosAgregadosReport;
 import es.icarto.gvsig.extgia.consultas.agregados.XLSTrabajosAgregadosReport;
-import es.icarto.gvsig.extgia.consultas.firme.FirmeReconocimientosReport;
 import es.icarto.gvsig.extgia.consultas.firme.FirmeTrabajosReport;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 import es.icarto.gvsig.siga.forms.reports.SaveFileDialog;
@@ -128,13 +127,10 @@ public class Leaf implements Component {
 		&& (element[1].equals("Taludes")
 			|| element[1].equals("Isletas")
 			|| element[1].equals("Barrera Rígida") || element[1]
-			    .equals("Señalización Vertical"))) {
+				.equals("Señalización Vertical"))) {
 	    tipo = QueryType.TRABAJOS_VEGETACION;
 	} else if (tipoConsulta.equals("Trabajos")) {
 	    tipo = QueryType.TRABAJOS;
-	} else if (tipoConsulta.equals("Inspecciones")
-		&& element[1].equals("Firme")) {
-	    tipo = QueryType.RECONOCIMIENTOS_FIRME;
 	} else if (tipoConsulta.equals("Inspecciones")) {
 	    tipo = QueryType.RECONOCIMIENTOS;
 	} else if (tipoConsulta.equals("Características")) {
@@ -155,11 +151,8 @@ public class Leaf implements Component {
 	case TRABAJOS_VEGETACION:
 	    return ConsultasFieldNames
 		    .getTrabajosVegetacionFieldNames(elementId);
-	case RECONOCIMIENTOS_FIRME:
-	    return ConsultasFieldNames
-		    .getFirmeReconocimientosFieldNames(elementId);
 	case RECONOCIMIENTOS:
-	    return ConsultasFieldNames.getReconocimientosFieldNames(elementId);
+	    return ConsultasFieldNames.getReconocimientosFieldNames(element[0]);
 	case CARACTERISTICAS:
 	    return ConsultasFieldNames
 		    .getPDFCaracteristicasFieldNames(element[0]);
@@ -233,10 +226,6 @@ public class Leaf implements Component {
 	case CARACTERISTICAS:
 	    ConsultasFieldNames.createCaracteristicasReport(element,
 		    outputFile, table, filters, tipo);
-	    break;
-	case RECONOCIMIENTOS_FIRME:
-	    new FirmeReconocimientosReport(element, outputFile, table, filters,
-		    tipo);
 	    break;
 	case RECONOCIMIENTOS:
 	    new ReconocimientosReport(element, outputFile, table, filters, tipo);
