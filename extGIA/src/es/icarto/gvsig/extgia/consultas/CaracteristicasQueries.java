@@ -8,29 +8,22 @@ public class CaracteristicasQueries {
     public static String getPDFCaracteristicasQuery(String element,
 	    ConsultasFilters<Field> filters) {
 	switch (DBFieldNames.Elements.valueOf(element)) {
-	case Firme:
+	case Senhalizacion_Vertical:
 	    return "SELECT gid, "
 	    + ConsultasFieldNames
 	    .getPDFCaracteristicasFieldNames(element)
-	    + " FROM " + DBFieldNames.GIA_SCHEMA + "." + element
+	    + CaracteristicasQueries
+	    .getFromClauseCaracteristicas(element)
 	    + filters.getWhereClauseByLocationWidgets()
-	    + " ORDER BY gid";
-	case Senhalizacion_Vertical:
-	    return "SELECT gid, "
-		    + ConsultasFieldNames
-			    .getPDFCaracteristicasFieldNames(element)
-		    + CaracteristicasQueries
-			    .getFromClauseCaracteristicas(element)
-		    + filters.getWhereClauseByLocationWidgets()
-		    + " ORDER BY el.id_elemento_senhalizacion";
+	    + " ORDER BY el.id_elemento_senhalizacion";
 	default:
 	    return "SELECT gid, "
-	    + ConsultasFieldNames
-			    .getPDFCaracteristicasFieldNames(element)
-	    + CaracteristicasQueries
-			    .getFromClauseCaracteristicas(element)
-	    + filters.getWhereClauseByLocationWidgets()
-	    + " ORDER BY gid";
+		    + ConsultasFieldNames
+	    .getPDFCaracteristicasFieldNames(element)
+		    + CaracteristicasQueries
+	    .getFromClauseCaracteristicas(element)
+		    + filters.getWhereClauseByLocationWidgets()
+		    + " ORDER BY gid";
 
 	}
     }
@@ -65,26 +58,26 @@ public class CaracteristicasQueries {
 	switch (DBFieldNames.Elements.valueOf(element)) {
 	case Senhalizacion_Vertical:
 	    return " FROM "
-		    + DBFieldNames.GIA_SCHEMA
-		    + "."
-		    + element
-		    + "_"
-		    + tipoConsulta
-		    + " AS sub JOIN "
-		    + DBFieldNames.GIA_SCHEMA
-		    + "."
-		    + element
-		    + " AS el ON sub."
-		    + elementId
-		    + "= el."
-		    + elementId
-		    + " LEFT OUTER JOIN audasa_extgia.senhalizacion_vertical_senhales se ON (el.id_elemento_senhalizacion = se.id_elemento_senhalizacion) "
-		    + CaracteristicasQueries.get(element);
+	    + DBFieldNames.GIA_SCHEMA
+	    + "."
+	    + element
+	    + "_"
+	    + tipoConsulta
+	    + " AS sub JOIN "
+	    + DBFieldNames.GIA_SCHEMA
+	    + "."
+	    + element
+	    + " AS el ON sub."
+	    + elementId
+	    + "= el."
+	    + elementId
+	    + " LEFT OUTER JOIN audasa_extgia.senhalizacion_vertical_senhales se ON (el.id_elemento_senhalizacion = se.id_elemento_senhalizacion) "
+	    + CaracteristicasQueries.get(element);
 	default:
 	    return " FROM " + DBFieldNames.GIA_SCHEMA + "." + element + "_"
-		    + tipoConsulta + " AS sub JOIN " + DBFieldNames.GIA_SCHEMA
-		    + "." + element + " AS el ON sub." + elementId + "= el."
-		    + elementId + CaracteristicasQueries.get(element);
+	    + tipoConsulta + " AS sub JOIN " + DBFieldNames.GIA_SCHEMA
+	    + "." + element + " AS el ON sub." + elementId + "= el."
+	    + elementId + CaracteristicasQueries.get(element);
 	}
 
     }
@@ -93,7 +86,7 @@ public class CaracteristicasQueries {
 	switch (DBFieldNames.Elements.valueOf(element)) {
 	case Senhalizacion_Vertical:
 	    return " FROM  audasa_extgia.senhalizacion_vertical_senhales se LEFT OUTER JOIN audasa_extgia.senhalizacion_vertical el ON (el.id_elemento_senhalizacion = se.id_elemento_senhalizacion) "
-		    + get(element);
+	    + get(element);
 	default:
 	    return " FROM audasa_extgia." + element + " el " + get(element);
 	}
@@ -138,36 +131,25 @@ public class CaracteristicasQueries {
 	switch (DBFieldNames.Elements.valueOf(element)) {
 	case Areas_Descanso:
 	    return "SELECT " + ConsultasFieldNames.areasDescansoCSVFieldNames()
-		    + getFieldCountRamales(element)
 		    + getFromClauseCaracteristicas(element)
 		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Areas_Servicio:
 	    return "SELECT " + ConsultasFieldNames.areasServicioCSVFieldNames()
-		    + getFieldCountRamales(element)
 		    + getFromClauseCaracteristicas(element)
 		    + filters.getWhereClauseByLocationWidgets()
 		    + " ORDER BY gid";
 	case Areas_Mantenimiento:
 	    return "SELECT "
-	    + ConsultasFieldNames.areasMantenimientoCSVFieldNames()
-	    + getFieldCountRamales(element)
-		    + getFromClauseCaracteristicas(element)
-	    + filters.getWhereClauseByLocationWidgets()
-	    + " ORDER BY gid";
+		    + ConsultasFieldNames.areasMantenimientoCSVFieldNames()
+	    + getFromClauseCaracteristicas(element)
+		    + filters.getWhereClauseByLocationWidgets()
+		    + " ORDER BY gid";
 	case Enlaces:
-	    return "SELECT "
-	    + ConsultasFieldNames.enlacesCSVFieldNames()
-	    + ", (select count(id_ramal) from audasa_extgia.enlaces_ramales ra "
-	    + "where ra.id_enlace = el.id_enlace) "
-	    + "|| ' | ' || "
-	    + "(select array_to_string(array_agg(clave_carretera), ';') "
-	    + "from audasa_extgia.enlaces_carreteras_enlazadas ce "
-	    + "where ce.id_enlace = el.id_enlace)"
-	    + "as \"Nº Ramales | Carreteras Enlazadas\""
+	    return "SELECT " + ConsultasFieldNames.enlacesCSVFieldNames()
 		    + getFromClauseCaracteristicas(element)
-	    + filters.getWhereClauseByLocationWidgets()
-	    + " ORDER BY gid";
+		    + filters.getWhereClauseByLocationWidgets()
+		    + " ORDER BY gid";
 	case Senhalizacion_Vertical:
 	    return "SELECT " + ConsultasFieldNames.senhalizacionCSVFieldNames()
 		    + getFromClauseCaracteristicas(element)
@@ -230,22 +212,22 @@ public class CaracteristicasQueries {
 		    + " ORDER BY gid";
 	case Senhalizacion_Variable:
 	    return "SELECT "
-	    + ConsultasFieldNames.senhalizacionVariableCSVFieldNames()
-	    + getFromClauseCaracteristicas(element)
-	    + filters.getWhereClauseByLocationWidgets()
-	    + " ORDER BY gid";
+		    + ConsultasFieldNames.senhalizacionVariableCSVFieldNames()
+		    + getFromClauseCaracteristicas(element)
+		    + filters.getWhereClauseByLocationWidgets()
+		    + " ORDER BY gid";
 	case Lineas_Suministro:
 	    return "SELECT "
-	    + ConsultasFieldNames.lineasSuministroCSVFieldNames()
-	    + getFromClauseCaracteristicas(element)
-	    + filters.getWhereClauseByLocationWidgets()
-	    + " ORDER BY gid";
+		    + ConsultasFieldNames.lineasSuministroCSVFieldNames()
+		    + getFromClauseCaracteristicas(element)
+		    + filters.getWhereClauseByLocationWidgets()
+		    + " ORDER BY gid";
 	case Transformadores:
 	    return "SELECT "
-	    + ConsultasFieldNames.transformadoresCSVFieldNames()
-	    + getFromClauseCaracteristicas(element)
-	    + filters.getWhereClauseByLocationWidgets()
-	    + " ORDER BY gid";
+		    + ConsultasFieldNames.transformadoresCSVFieldNames()
+		    + getFromClauseCaracteristicas(element)
+		    + filters.getWhereClauseByLocationWidgets()
+		    + " ORDER BY gid";
 	case Pasos_Mediana:
 	    return "SELECT " + ConsultasFieldNames.pasosMedianaCSVFieldNames()
 		    + getFromClauseCaracteristicas(element)
@@ -256,32 +238,18 @@ public class CaracteristicasQueries {
 
     }
 
-    private static String getFieldCountRamales(String element) {
-	String table = element.toLowerCase();
-	String elementId = ConsultasFieldNames.getElementId(element);
-	return String
-		.format(", (select count(id_ramal) from audasa_extgia.%s_ramales ra where ra.%s = el.%s) as \"Nº Ramales\"",
-			table, elementId, elementId);
-    }
-
-    // area_mantenimiento, base_contratista, tramo, municipio, tipo_via,
-    // nombre_via
     private static String getLocalizationTables() {
 	return getJoinedArea() + getJoinedBase() + getJoinedTramo()
 		+ getJoinedMunicipio() + getJoinedTipoVia()
 		+ getJoinedNombreVia();
     }
 
-    // area_mantenimiento, base_contratista, tramo, municipio, tipo_via,
-    // nombre_via, sentido
     private static String getLocalizationTablesWithSentido() {
 	return getJoinedArea() + getJoinedBase() + getJoinedTramo()
 		+ getJoinedMunicipio() + getJoinedTipoVia()
 		+ getJoinedNombreVia() + getJoinedSentido();
     }
 
-    // area_mantenimiento, base_contratista, tramo, municipio, tipo_via,
-    // nombre_via, sentido + pf
     private static String getLocalizationTablesWithSentidoAndPF() {
 	return getJoinedArea()
 		+ getJoinedBase()
@@ -293,10 +261,8 @@ public class CaracteristicasQueries {
 		+ " LEFT OUTER JOIN audasa_extgia_dominios.tipo_via tvf ON (tvf.id = el.tipo_via_pf AND tvf.id_tramo = el.tramo AND tvf.id_bc = el.base_contratista) LEFT OUTER JOIN audasa_extgia_dominios.nombre_via nvf ON (cast (nvf.id as text) = el.nombre_via_pf AND nvf.id_tv = el.tipo_via AND nvf.id_bc = el.base_contratista AND nvf.id_tramo = el.tramo) ";
     }
 
-    // area_mantenimiento, base_contratista, tramo, municipio
     private static String getFirmeLocalizationTables() {
-	return getJoinedArea() + getJoinedBase() + getJoinedTramo()
-		+ getJoinedMunicipio();
+	return getJoinedArea() + getJoinedBase() + getJoinedTramo();
     }
 
     private static String getJoinedArea() {
