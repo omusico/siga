@@ -19,7 +19,7 @@ public class ConnectionWrapper {
 
     /**
      * Usage:
-     * 
+     *
      * <pre>
      * {@code
      * ConnectionWrapper conW = new ConnectionWrapper(con);
@@ -29,7 +29,7 @@ public class ConnectionWrapper {
      * }
      * }
      * </pre>
-     * 
+     *
      * This class closes correctly the statement and the resultset. The
      * ConnectionWrapper can be reused to execute multiple queries
      */
@@ -41,7 +41,7 @@ public class ConnectionWrapper {
      * Creates a new default table model. Executes the query, and insert the
      * resultset in the table. If the query doesn't get any result the table
      * will be empty
-     * 
+     *
      * @param query
      *            to be executed
      * @return a table model with the results
@@ -55,7 +55,7 @@ public class ConnectionWrapper {
     /**
      * Appends to the given table as match columns and rows as the columns and
      * rows that has the resulset of the executed query
-     * 
+     *
      * @param query
      *            to be executed
      * @param table
@@ -73,6 +73,13 @@ public class ConnectionWrapper {
 	} catch (SQLException e1) {
 	    logger.error(e1.getStackTrace(), e1);
 	    logger.error(query);
+
+	    try {
+		con.rollback();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
+
 	} finally {
 	    close(rs);
 	    close(statement);
