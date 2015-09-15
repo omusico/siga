@@ -86,11 +86,6 @@
 	</FIELD>
 
 	<FIELD>
-		<FIELDNAME>dimensiones</FIELDNAME>
-		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
-	</FIELD>
-
-	<FIELD>
 		<FIELDNAME>ancho</FIELDNAME>
 		<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
 	</FIELD>

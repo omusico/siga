@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LAYER alias="lecho_frenada">
-	<TABLENAME>lecho_frenada</TABLENAME>
+	<TABLENAME>lecho_frenado</TABLENAME>
 	<PRIMARYKEY>
-		<PKELEMENT>id_lecho_frenada</PKELEMENT>
+		<PKELEMENT>id_lecho_frenado</PKELEMENT>
 	</PRIMARYKEY>
 	<RECORDSET>
 
 		<FIELD>
-			<FIELDNAME>id_lecho_frenada</FIELDNAME>
+			<FIELDNAME>id_lecho_frenado</FIELDNAME>
 			<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
 		</FIELD>
 

@@ -344,7 +344,7 @@
 		</FIELD>
 
 		<FIELD>
-			<FIELDNAME>n_postes_tripodes</FIELDNAME>
+			<FIELDNAME>n_postes_tripode</FIELDNAME>
 			<VALIDATIONRULE>integer_positive</VALIDATIONRULE>
 		</FIELD>
 		

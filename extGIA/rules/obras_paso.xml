@@ -268,12 +268,12 @@
 		</FIELD>
 		
 		<FIELD>
-			<FIELDNAME>galibo_h</FIELDNAME>
+			<FIELDNAME>galibo_v_c</FIELDNAME>
 			<VALIDATIONRULE>double_positive</VALIDATIONRULE>
 		</FIELD>
 		
 		<FIELD>
-			<FIELDNAME>galibo_v</FIELDNAME>
+			<FIELDNAME>galibo_v_d</FIELDNAME>
 			<VALIDATIONRULE>double_positive</VALIDATIONRULE>
 		</FIELD>
 
