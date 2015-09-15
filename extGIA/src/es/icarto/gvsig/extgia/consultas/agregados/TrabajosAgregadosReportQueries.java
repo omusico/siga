@@ -1,9 +1,9 @@
 package es.icarto.gvsig.extgia.consultas.agregados;
 
 import es.icarto.gvsig.commons.utils.Field;
+import es.icarto.gvsig.extgia.consultas.CaracteristicasQueries;
 import es.icarto.gvsig.extgia.consultas.ConsultasFieldNames;
 import es.icarto.gvsig.extgia.consultas.ConsultasFilters;
-import es.icarto.gvsig.extgia.consultas.caracteristicas.CSVCaracteristicasQueries;
 
 public class TrabajosAgregadosReportQueries {
 
@@ -49,10 +49,10 @@ public class TrabajosAgregadosReportQueries {
 		+ "medicion "
 		+ "FROM audasa_extgia.%s_trabajos sub "
 		+ "LEFT OUTER JOIN  audasa_extgia.%s el ON sub.%s = el.%s "
-		+ CSVCaracteristicasQueries.getJoinedTramo()
-		+ CSVCaracteristicasQueries.getJoinedTipoVia() 
-		+ CSVCaracteristicasQueries.getJoinedSentido()
-		+ CSVCaracteristicasQueries.getJoinedNombreVia()
+		+ CaracteristicasQueries.getJoinedTramo()
+		+ CaracteristicasQueries.getJoinedTipoVia() 
+		+ CaracteristicasQueries.getJoinedSentido()
+		+ CaracteristicasQueries.getJoinedNombreVia()
 		+ "WHERE unidad = '%s' " + filters.getWhereClauseFiltersForAgregados() + " ORDER BY 2, 5, 1";
 
 	if (element.equalsIgnoreCase("vegetacion")) {

@@ -18,7 +18,6 @@ import es.icarto.gvsig.commons.queries.ConnectionWrapper;
 import es.icarto.gvsig.commons.testutils.Drivers;
 import es.icarto.gvsig.commons.testutils.TestProperties;
 import es.icarto.gvsig.extgia.consultas.agregados.TrabajosAgregadosReportQueries;
-import es.icarto.gvsig.extgia.consultas.caracteristicas.CSVCaracteristicasQueries;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.PDFCaracteristicasQueries;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
@@ -416,7 +415,7 @@ public class TestConsultas {
 		if (ConsultasFieldNames
 			.getCSVCaracteristicasFieldNames(DBFieldNames.Elements
 				.values()[i].toString()) != null) {
-		    String query = CSVCaracteristicasQueries
+		    String query = CaracteristicasQueries
 			    .getCSVCaracteristicasQuery(DBFieldNames.Elements
 				    .values()[i].toString(), mockFilters);
 		    ConnectionWrapper conW = new ConnectionWrapper(DBSession
@@ -451,7 +450,7 @@ public class TestConsultas {
 
     @Test
     public void testCSVCaracteristicasFirme() throws SQLException {
-	String query = CSVCaracteristicasQueries.getCSVCaracteristicasQuery(
+	String query = CaracteristicasQueries.getCSVCaracteristicasQuery(
 		"Firme", mockFilters);
 	String mockFileDir = "/tmp/test_" + "Firme" + ".csv";
 	ConnectionWrapper conW = new ConnectionWrapper(DBSession

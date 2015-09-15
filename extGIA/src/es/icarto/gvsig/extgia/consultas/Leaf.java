@@ -13,8 +13,6 @@ import es.icarto.gvsig.commons.queries.XLSReport;
 import es.icarto.gvsig.commons.utils.Field;
 import es.icarto.gvsig.extgia.consultas.agregados.TrabajosAgregadosReport;
 import es.icarto.gvsig.extgia.consultas.agregados.XLSTrabajosAgregadosReport;
-import es.icarto.gvsig.extgia.consultas.caracteristicas.CSVCaracteristicasQueries;
-import es.icarto.gvsig.extgia.consultas.caracteristicas.PDFCaracteristicasQueries;
 import es.icarto.gvsig.extgia.consultas.firme.FirmeReconocimientosReport;
 import es.icarto.gvsig.extgia.consultas.firme.FirmeTrabajosReport;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
@@ -119,17 +117,19 @@ public class Leaf implements Component {
     }
 
     /**
-     * fpuga. 8/07/2015. Este tipo de datos probablemente habría que mantenerlos 
+     * fpuga. 8/07/2015. Este tipo de datos probablemente habría que mantenerlos
      * en la base de datos y "cruzados" mediante claves foráneas, de modo que un
-     * cambio en la base de datos no rompa todo el código 
+     * cambio en la base de datos no rompa todo el código
      */
     private QueryType getTipo() {
 	QueryType tipo = QueryType.TYPE_NOT_SET;
 	if (tipoConsulta.equals("Trabajos") && element[1].equals("Firme")) {
 	    tipo = QueryType.TRABAJOS_FIRME;
-	} else if (tipoConsulta.equals("Trabajos") && (element[1].equals("Taludes") || 
-		element[1].equals("Isletas") || element[1].equals("Barrera Rígida") ||
-		element[1].equals("Señalización Vertical"))) {
+	} else if (tipoConsulta.equals("Trabajos")
+		&& (element[1].equals("Taludes")
+			|| element[1].equals("Isletas")
+			|| element[1].equals("Barrera Rígida") || element[1]
+			    .equals("Señalización Vertical"))) {
 	    tipo = QueryType.TRABAJOS_VEGETACION;
 	} else if (tipoConsulta.equals("Trabajos")) {
 	    tipo = QueryType.TRABAJOS;
@@ -154,7 +154,8 @@ public class Leaf implements Component {
 	case TRABAJOS:
 	    return ConsultasFieldNames.getTrabajosFieldNames(elementId);
 	case TRABAJOS_VEGETACION:
-	    return ConsultasFieldNames.getTrabajosVegetacionFieldNames(elementId);
+	    return ConsultasFieldNames
+		    .getTrabajosVegetacionFieldNames(elementId);
 	case RECONOCIMIENTOS_FIRME:
 	    return ConsultasFieldNames
 		    .getFirmeReconocimientosFieldNames(elementId);
@@ -176,10 +177,10 @@ public class Leaf implements Component {
 	    if (filters.getQueryType().equals("CUSTOM")) {
 		query = getCustomCaracteristicasQuery(filters, element);
 	    } else if (pdf) {
-		query = PDFCaracteristicasQueries.getPDFCaracteristicasQuery(
+		query = CaracteristicasQueries.getPDFCaracteristicasQuery(
 			element, filters);
 	    } else {
-		query = CSVCaracteristicasQueries.getCSVCaracteristicasQuery(
+		query = CaracteristicasQueries.getCSVCaracteristicasQuery(
 			element, filters);
 	    }
 	} else {
@@ -190,15 +191,13 @@ public class Leaf implements Component {
 	    } else {
 		fields = getFields(tipo, elementId);
 	    }
-	    query = CSVCaracteristicasQueries.getReconocimientosTrabajosQuery(element, filters, fields, elementId, tipoConsulta.getKey());
-	    
-	    
-	    if (!consultasFilters.getWhereClauseByLocationWidgets()
-		    .isEmpty()) {
+	    query = CaracteristicasQueries.getReconocimientosTrabajosQuery(
+		    element, filters, fields, elementId, tipoConsulta.getKey());
+
+	    if (!consultasFilters.getWhereClauseByLocationWidgets().isEmpty()) {
 		query = query + " WHERE el." + elementId + " IN (SELECT "
 			+ elementId + " FROM " + DBFieldNames.GIA_SCHEMA + "."
-			+ element
-			+ filters.getWhereClauseByLocationWidgets();
+			+ element + filters.getWhereClauseByLocationWidgets();
 	    }
 
 	    if (tipo == QueryType.TRABAJOS || tipo == QueryType.TRABAJOS_FIRME) {
@@ -218,7 +217,7 @@ public class Leaf implements Component {
 
     private String getCustomCaracteristicasQuery(
 	    ConsultasFilters<Field> filters, String element) {
-	String query = CSVCaracteristicasQueries.getCSVCaracteristicasQuery(
+	String query = CaracteristicasQueries.getCSVCaracteristicasQuery(
 		element, filters);
 	String subquery = query;
 	if (filters.getFields().size() > 0) {
@@ -297,7 +296,8 @@ public class Leaf implements Component {
 	    new FirmeTrabajosReport(element, outputFile, table, filters, tipo);
 	    break;
 	case TRABAJOS_VEGETACION:
-	    new TrabajosVegetacionReport(element, outputFile, table, filters, tipo);
+	    new TrabajosVegetacionReport(element, outputFile, table, filters,
+		    tipo);
 	    break;
 	case CARACTERISTICAS:
 	    ConsultasFieldNames.createCaracteristicasReport(element,
