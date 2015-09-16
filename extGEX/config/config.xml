@@ -15,20 +15,24 @@
 	<extensions>
 
 		<!-- FORMS EXTENSIONS -->
+		
 		<extension class-name="es.icarto.gvsig.extgex.InitializationExtension" active="true">
 		</extension>
+		
 		<extension class-name="es.icarto.gvsig.extgex.FormExpropiationsExtension" description="FORMS_PANEL" active="true">
 			<tool-bar name="extgex.formularios" position="70">
 				<action-tool icon="extgex-expropiations" tooltip="Expediente de expropiaciones" action-command="ExpropiationsFileExtension" position="1"/>
 			</tool-bar>
 			<menu text="SIGA/Expropiaciones/Expediente Expropiación" action-command="ExpropiationsFileExtension" icon="extgex-expropiations" position="30000"/>
 		</extension>
+		
 		<extension class-name="es.icarto.gvsig.extgex.FormReversionsExtension" description="FORMS_PANEL" active="true">
 			<tool-bar name="extgex.formularios" position="70">
 				<action-tool icon="extgex-reversions" tooltip="Expediente de reversiones" action-command="ReversionsFileExtension" position="2"/>
 			</tool-bar>
 			<menu text="SIGA/Expropiaciones/Expediente Reversión" action-command="ReversionsFileExtension" icon="extgex-reversions" position="30050"/>
 		</extension>
+		
 		<extension class-name="es.icarto.gvsig.extgex.FormExpropiationLineExtension" description="FORMS_PANEL" active="true">
 			<menu text="SIGA/Expropiaciones/Línea de Expropiación" action-command="ExpropiationLineFileExtensionv" position="30060"/>
 		</extension>
@@ -69,18 +73,21 @@
 		-->
 			<menu text="SIGA/Consultas Expropiaciones" action-command="QueriesExtension" position="30100"/>
 		</extension>
-		<extension class-name="es.icarto.gvsig.extgex.LocatorByPKExtension" description="PK_LOCATOR" active="true">
+		
+		<extension class-name="es.icarto.gvsig.extgex.LocatorByPKExtension" active="true">
 			<menu text="SIGA" position="30699" is_separator="true"/>			
-			<menu text="SIGA/Localización/PK" action-command="LocatorByPKExtension" icon="images/pk_locator.png" position="30700"/>
+			<menu text="SIGA/localization/LocatorByPKExtension_menu" icon="es.icarto.gvsig.extgex.locatorbypkextension" position="30700"/>
 			<tool-bar name="SIGA_Tools" position="75">
-				<action-tool icon="images/pk_locator.png" tooltip="Localizador de PK" action-command="LocatorByPKExtension" position="1"/>
+				<action-tool icon="es.icarto.gvsig.extgex.locatorbypkextension" tooltip="LocatorByPKExtension_tooltip" position="1"/>
 			</tool-bar>
 		</extension>
-		<extension class-name="es.icarto.gvsig.extgex.LocatorByFincaExtension" description="FINCA_LOCATOR" active="true">
-			<menu text="SIGA/Localización/Finca" action-command="LocatorByFincaExtension" position="30720"/>
+		
+		<extension class-name="es.icarto.gvsig.extgex.LocatorByFincaExtension" active="true">
+			<menu text="SIGA/localization/LocatorByFincaExtension_menu" position="30720"/>
 		</extension>
-		<extension class-name="es.icarto.gvsig.extgex.LocatorByMunicipioExtension" description="MUNICIPIO_LOCATOR" active="true">
-			<menu text="SIGA/Localización/Municipio o Parroquia" action-command="LocatorByMunicipioExtension" position="30710"/>
+		
+		<extension class-name="es.icarto.gvsig.extgex.LocatorByMunicipioExtension" active="true">
+			<menu text="SIGA/localization/LocatorByMunicipioExtension_menu" position="30710"/>
 		</extension>
 
 		<!-- WMS EXTENSIONS -->
