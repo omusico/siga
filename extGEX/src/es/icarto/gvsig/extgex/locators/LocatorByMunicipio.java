@@ -1,69 +1,53 @@
 package es.icarto.gvsig.extgex.locators;
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.InputStream;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
+import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
-import com.jeta.forms.components.image.ImageComponent;
-import com.jeta.forms.components.panel.FormPanel;
-import com.jeta.forms.gui.common.FormException;
 
-import es.icarto.gvsig.commons.gui.gvWindow;
+import es.icarto.gvsig.commons.gui.BasicAbstractWindow;
 import es.icarto.gvsig.extgex.locators.actions.ZoomToHandler;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.utils.retrievers.KeyValueRetriever;
 import es.icarto.gvsig.extgex.utils.retrievers.PositionRetriever;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
-import es.icarto.gvsig.siga.PreferencesPage;
 import es.udc.cartolab.gvsig.elle.constants.IPositionRetriever;
 import es.udc.cartolab.gvsig.navtable.AbstractNavTable;
 
-public class LocatorByMunicipio extends gvWindow implements IPositionRetriever,
+@SuppressWarnings("serial")
+public class LocatorByMunicipio extends BasicAbstractWindow implements IPositionRetriever,
 	ActionListener {
 
-    private final FormPanel formBody;
     private JComboBox ayuntamiento;
     private JComboBox parroquia;
     private JButton zoom;
 
     public LocatorByMunicipio() {
-	super(400, 145);
-	InputStream stream = getClass().getClassLoader().getResourceAsStream(
-		"forms/LocatorByMunicipio.xml");
-	FormPanel result = null;
-	try {
-	    result = new FormPanel(stream);
-	} catch (FormException e) {
-	    e.printStackTrace();
-	}
-	formBody = result;
-	formBody.setVisible(true);
-	this.add(formBody, BorderLayout.CENTER);
-	this.setTitle("Localizador por Municipio o Parroquia");
+	super();
+	setWindowInfoProperties(WindowInfo.MODELESSDIALOG | WindowInfo.PALETTE);
+	this.setWindowTitle("Localizador por Municipio o Parroquia");
+	initWidgets();
     }
-
+    
+    @Override
+    protected String getBasicName() {
+        return "LocatorByMunicipio";
+    }
+    
     public void initWidgets() {
-
-	ImageComponent image = (ImageComponent) formBody
-		.getComponentByName("image");
-	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_LOGO);
-	image.setIcon(icon);
-
-	ayuntamiento = (JComboBox) formBody.getComponentByName("ayuntamiento");
-	parroquia = (JComboBox) formBody.getComponentByName("parroquia");
+	ayuntamiento = (JComboBox) formPanel.getComponentByName("ayuntamiento");
+	parroquia = (JComboBox) formPanel.getComponentByName("parroquia");
 	fillAyuntamiento();
 	ayuntamiento.addActionListener(this);
 	fillParroquia();
-	zoom = (JButton) formBody.getComponentByName("zoom");
+	zoom = (JButton) formPanel.getComponentByName("zoom");
 	ZoomToHandler zoomToHandler = new ZoomToHandler(this);
 	zoom.addActionListener(zoomToHandler);
     }
@@ -98,16 +82,6 @@ public class LocatorByMunicipio extends gvWindow implements IPositionRetriever,
 	for (KeyValue kv : kvMunicipio.getValues()) {
 	    ayuntamiento.addItem(kv);
 	}
-    }
-
-    public boolean init() {
-	TOCLayerManager toc = new TOCLayerManager();
-	if ((toc.getLayerByName(DBNames.LAYER_MUNICIPIOS) != null)
-		&& (toc.getLayerByName(DBNames.LAYER_PARROQUIAS) != null)) {
-	    initWidgets();
-	    return true;
-	}
-	return false;
     }
 
     @Override

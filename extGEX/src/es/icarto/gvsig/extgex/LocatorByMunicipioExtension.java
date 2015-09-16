@@ -15,12 +15,7 @@ public class LocatorByMunicipioExtension extends AbstractExtension {
     @Override
     public void execute(String actionCommand) {
 	LocatorByMunicipio municipioLocator = new LocatorByMunicipio();
-	if (municipioLocator.init()) {
-	    PluginServices.getMDIManager().addCentredWindow(municipioLocator);
-	} else {
-	    JOptionPane.showMessageDialog(null, PluginServices.getText(this,
-		    "alphanumeric_table_no_loaded"));
-	}
+	municipioLocator.openDialog();
     }
 
     @Override

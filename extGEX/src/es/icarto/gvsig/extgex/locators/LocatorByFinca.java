@@ -25,31 +25,26 @@ import com.hardcode.gdbms.engine.data.DataSourceFactory;
 import com.hardcode.gdbms.engine.instruction.EvaluationException;
 import com.hardcode.gdbms.engine.instruction.SemanticException;
 import com.hardcode.gdbms.parser.ParseException;
+import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
-import com.jeta.forms.components.image.ImageComponent;
-import com.jeta.forms.components.panel.FormPanel;
-import com.jeta.forms.gui.common.FormException;
 
-import es.icarto.gvsig.commons.gui.gvWindow;
+import es.icarto.gvsig.commons.gui.BasicAbstractWindow;
 import es.icarto.gvsig.extgex.forms.expropiations.FormExpropiations;
 import es.icarto.gvsig.extgex.locators.actions.FormOpener;
 import es.icarto.gvsig.extgex.locators.actions.ZoomToHandler;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.queries.QueriesPanel;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
-import es.icarto.gvsig.siga.PreferencesPage;
 import es.udc.cartolab.gvsig.elle.constants.IPositionRetriever;
 import es.udc.cartolab.gvsig.elle.utils.ELLEMap;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
-public class LocatorByFinca extends gvWindow implements IPositionRetriever {
+public class LocatorByFinca extends BasicAbstractWindow implements IPositionRetriever {
     private static final Logger logger = Logger.getLogger(QueriesPanel.class);
 
     private static final String DEFAULT_FILTER = "--SELECCIONAR--";
-
-    private final FormPanel formBody;
 
     private JComboBox tramo;
     private JComboBox uc;
@@ -79,23 +74,10 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
     String[][] tramos;
 
     public LocatorByFinca() {
-	super(470, 220);
-	InputStream stream = getClass().getClassLoader().getResourceAsStream(
-		"forms/LocatorByFinca.xml");
-	FormPanel result = null;
-	try {
-	    result = new FormPanel(stream);
-	} catch (FormException e) {
-	    e.printStackTrace();
-	}
-	formBody = result;
-	formBody.setVisible(true);
-	this.add(formBody, BorderLayout.CENTER);
-	this.setTitle("Localizador por Finca");
+	super();
+	setWindowInfoProperties(WindowInfo.MODELESSDIALOG | WindowInfo.PALETTE);
+	this.setWindowTitle("Localizador por Finca");
 	dbs = DBSession.getCurrentSession();
-    }
-
-    public boolean init() {
 	initWidgets();
 	initListeners();
 
@@ -124,12 +106,11 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
 
 	formOpener = new FormOpener(this);
 	openForm.addActionListener(formOpener);
-
-	TOCLayerManager toc = new TOCLayerManager();
-	if (toc.getLayerByName(DBNames.LAYER_FINCAS) != null) {
-	    return true;
-	}
-	return false;
+    }
+    
+    @Override
+    protected String getBasicName() {
+        return "LocatorByFinca";
     }
 
     private Vector<String> getTramosFromMunicipios(String[] municipios) {
@@ -178,22 +159,16 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
     }
 
     private void initWidgets() {
-
-	ImageComponent image = (ImageComponent) formBody
-		.getComponentByName("image");
-	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_LOGO);
-	image.setIcon(icon);
-
-	tramo = (JComboBox) formBody.getComponentByName("tramo");
+	tramo = (JComboBox) formPanel.getComponentByName("tramo");
 	tramo.addItem(new String(DEFAULT_FILTER));
 	tramo.setSelectedIndex(1);
-	uc = (JComboBox) formBody.getComponentByName("unidad_constructiva");
-	ayuntamiento = (JComboBox) formBody.getComponentByName("ayuntamiento");
-	parroquiaSubtramo = (JComboBox) formBody
+	uc = (JComboBox) formPanel.getComponentByName("unidad_constructiva");
+	ayuntamiento = (JComboBox) formPanel.getComponentByName("ayuntamiento");
+	parroquiaSubtramo = (JComboBox) formPanel
 		.getComponentByName("parroquia_subtramo");
-	fincaSeccion = (JComboBox) formBody.getComponentByName("finca_seccion");
-	openForm = (JButton) formBody.getComponentByName("openform");
-	zoom = (JButton) formBody.getComponentByName("zoom");
+	fincaSeccion = (JComboBox) formPanel.getComponentByName("finca_seccion");
+	openForm = (JButton) formPanel.getComponentByName("openform");
+	zoom = (JButton) formPanel.getComponentByName("zoom");
     }
 
     private void initListeners() {
@@ -506,7 +481,7 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
     }
 
     @Override
-    public void close() {
+    public void closeDialog() {
 	tramo.removeActionListener(tramoListener);
 	uc.removeActionListener(ucListener);
 	ayuntamiento.removeActionListener(ayuntamientoListener);
@@ -514,7 +489,7 @@ public class LocatorByFinca extends gvWindow implements IPositionRetriever {
 	fincaSeccion.removeActionListener(fincasListener);
 	zoom.removeActionListener(zoomToHandler);
 	openForm.removeActionListener(formOpener);
-	this.close();
+	super.closeDialog();
     }
 
 }

@@ -1,13 +1,10 @@
 package es.icarto.gvsig.extgex.locators;
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Rectangle2D;
-import java.io.InputStream;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 
@@ -22,26 +19,23 @@ import com.hardcode.gdbms.engine.instruction.EvaluationException;
 import com.hardcode.gdbms.engine.instruction.SemanticException;
 import com.hardcode.gdbms.engine.values.Value;
 import com.hardcode.gdbms.parser.ParseException;
+import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.edition.EditableAdapter;
 import com.iver.cit.gvsig.fmap.edition.EditionEvent;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.ReadableVectorial;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
-import com.jeta.forms.components.image.ImageComponent;
-import com.jeta.forms.components.panel.FormPanel;
-import com.jeta.forms.gui.common.FormException;
 
-import es.icarto.gvsig.commons.gui.gvWindow;
+import es.icarto.gvsig.commons.gui.BasicAbstractWindow;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.utils.retrievers.KeyValueRetriever;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
-import es.icarto.gvsig.siga.PreferencesPage;
 import es.udc.cartolab.gvsig.navtable.format.ValueFormatNT;
 
 @SuppressWarnings("serial")
-public class LocatorByPK extends gvWindow implements ActionListener {
+public class LocatorByPK extends BasicAbstractWindow implements ActionListener {
 
     private static final ValueFormatNT WRITER = new ValueFormatNT();
 
@@ -50,7 +44,7 @@ public class LocatorByPK extends gvWindow implements ActionListener {
     private static final String TRAMO_FIELD = "tramo";
     private static final String PK_FIELD = "pks";
 
-    private final FormPanel formBody;
+    
 
     public final String ID_TRAMO = "tramo";
     private JComboBox tramoCB;
@@ -62,35 +56,24 @@ public class LocatorByPK extends gvWindow implements ActionListener {
     private JButton goToPKB;
 
     public LocatorByPK() {
-	super(400, 145);
-	InputStream stream = getClass().getClassLoader().getResourceAsStream(
-		"forms/LocatorByPK.xml");
-	FormPanel result = null;
-	try {
-	    result = new FormPanel(stream);
-	} catch (FormException e) {
-	    e.printStackTrace();
-	}
-	formBody = result;
-	formBody.setVisible(true);
-	this.add(formBody, BorderLayout.CENTER);
-	this.setTitle("Localizador por PK");
+	super();
+	setWindowInfoProperties(WindowInfo.MODELESSDIALOG | WindowInfo.PALETTE);
+	this.setWindowTitle("Localizador por PK");
 	initWidgets();
+    }
+    
+    @Override
+    protected String getBasicName() {
+        return "LocatorByPK";
     }
 
     public void initWidgets() {
-
-	ImageComponent image = (ImageComponent) formBody
-		.getComponentByName("image");
-	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_LOGO);
-	image.setIcon(icon);
-
-	tramoCB = (JComboBox) formBody.getComponentByName(ID_TRAMO);
-	pkNumberCB = (JComboBox) formBody.getComponentByName(ID_PKNUMBER);
+	tramoCB = (JComboBox) formPanel.getComponentByName(ID_TRAMO);
+	pkNumberCB = (JComboBox) formPanel.getComponentByName(ID_PKNUMBER);
 	tramoCB.addActionListener(this);
 	fillTramo();
 	fillPK();
-	goToPKB = (JButton) formBody.getComponentByName(ID_GOTOPK);
+	goToPKB = (JButton) formPanel.getComponentByName(ID_GOTOPK);
 	goToPKB.addActionListener(this);
     }
 

@@ -1,12 +1,5 @@
 package es.icarto.gvsig.extgex;
 
-import javax.swing.JOptionPane;
-
-import com.iver.andami.PluginServices;
-import com.iver.andami.plugins.Extension;
-import com.iver.andami.ui.mdiManager.IWindow;
-import com.iver.cit.gvsig.project.documents.view.gui.View;
-
 import es.icarto.gvsig.extgex.locators.LocatorByFinca;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
@@ -18,12 +11,7 @@ public class LocatorByFincaExtension extends AbstractExtension {
     @Override
     public void execute(String actionCommand) {
 	LocatorByFinca fincaLocator = new LocatorByFinca();
-	if (fincaLocator.init()) {
-	    PluginServices.getMDIManager().addCentredWindow(fincaLocator);
-	} else {
-	    JOptionPane.showMessageDialog(null, PluginServices.getText(this,
-		    "alphanumeric_table_no_loaded"));
-	}
+	fincaLocator.openDialog();
     }
 
     @Override
