@@ -49,12 +49,12 @@ import es.udc.cartolab.gvsig.elle.utils.MapDAO;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
-public class SigaLoadMapWizardComponent extends WizardComponent implements ActionListener {
+public class SigaLoadMapWizardComponent extends WizardComponent implements
+	ActionListener {
 
-    
     private static final Logger logger = Logger
 	    .getLogger(SigaLoadMapWizardComponent.class);
-    
+
     protected CRSSelectPanel crsPanel = null;
     protected JList mapList;
     private DBSession dbs;
@@ -76,28 +76,30 @@ public class SigaLoadMapWizardComponent extends WizardComponent implements Actio
 	add(getCRSPanel(), BorderLayout.SOUTH);
     }
 
-
+    @Override
     public boolean canFinish() {
 	return false;
     }
 
-
+    @Override
     public boolean canNext() {
-	if (mapList!=null) {
+	if (mapList != null) {
 	    return mapList.getSelectedIndices().length == 1;
 	}
 	return false;
     }
 
-
+    @Override
     public void actionPerformed(ActionEvent e) {
 	callStateChanged();
     }
 
     private JPanel getCRSPanel() {
 	if (crsPanel == null) {
-	    crsPanel = CRSSelectPanel.getPanel(AddLayerDialog.getLastProjection());
+	    crsPanel = CRSSelectPanel.getPanel(AddLayerDialog
+		    .getLastProjection());
 	    crsPanel.addActionListener(new java.awt.event.ActionListener() {
+		@Override
 		public void actionPerformed(java.awt.event.ActionEvent e) {
 		    if (crsPanel.isOkPressed()) {
 			AddLayerDialog.setLastProjection(crsPanel.getCurProj());
@@ -125,46 +127,58 @@ public class SigaLoadMapWizardComponent extends WizardComponent implements Actio
 
 		dbs = DBSession.getCurrentSession();
 
-		if (dbs.tableExists(DBStructure.getSchema(), DBStructure.getMapTable()) && dbs.tableExists(DBStructure.getSchema(), DBStructure.getOverviewTable())) {
-		    
+		if (dbs.tableExists(DBStructure.getSchema(),
+			DBStructure.getMapTable())
+			&& dbs.tableExists(DBStructure.getSchema(),
+				DBStructure.getOverviewTable())) {
+
 		    Vector<String> mapsToShow = new Vector<String>();
-		    
+
 		    String[] maps = MapDAO.getInstance().getMaps();
-		    
-		    //Show only maps that doesn't start like 'BDD_'
-		    for (int i=0; i<maps.length; i++) {
+
+		    // Show only maps that doesn't start like 'BDD_'
+		    for (int i = 0; i < maps.length; i++) {
 			if (!maps[i].startsWith("BDD_")) {
 			    mapsToShow.add(maps[i]);
 			}
 		    }
 		    Collections.sort(mapsToShow);
-		    //layerList = form.getList("layerList");
+		    // layerList = form.getList("layerList");
 		    mapList = form.getList("mapList");
 		    mapList.setListData(mapsToShow);
 
-		    layerTextArea = (JTextArea) form.getComponentByName("layerTextArea");
+		    layerTextArea = (JTextArea) form
+			    .getComponentByName("layerTextArea");
 		    layerTextArea.setEditable(false);
 
 		    JLabel mapLabel = form.getLabel("mapLabel");
 		    JLabel layerLabel = form.getLabel("layerLabel");
 
 		    mapLabel.setText(PluginServices.getText(this, "map_load"));
-		    layerLabel.setText(PluginServices.getText(this, "layer_load"));
+		    layerLabel.setText(PluginServices.getText(this,
+			    "layer_load"));
 
 		    mapList.addListSelectionListener(new ListSelectionListener() {
 
+			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
 			    int[] selected = mapList.getSelectedIndices();
 			    callStateChanged();
 
 			    if (selected.length == 1) {
-				String selectedValue = (String) mapList.getSelectedValues()[0];
-				String where = String.format("WHERE mapa = '%s'", selectedValue);
+				String selectedValue = (String) mapList
+					.getSelectedValues()[0];
+				String where = String.format(
+					"WHERE mapa = '%s'", selectedValue);
 				try {
-				    layers = dbs.getTable(DBStructure.getMapTable(), DBStructure.getSchema(), where, new String[]{"posicion"}, true);
+				    layers = dbs.getTable(
+					    DBStructure.getMapTable(),
+					    DBStructure.getSchema(), where,
+					    new String[] { "posicion" }, true);
 				    String layerText = "";
-				    for (int i=0; i<layers.length; i++) {
-					layerText = layerText + layers[i][1] + "\n";
+				    for (int i = 0; i < layers.length; i++) {
+					layerText = layerText + layers[i][1]
+						+ "\n";
 				    }
 
 				    layerTextArea.setText(layerText);
@@ -192,10 +206,10 @@ public class SigaLoadMapWizardComponent extends WizardComponent implements Actio
 		    });
 		} else {
 		    listPanel = new JPanel();
-		    JLabel label = new JLabel(PluginServices.getText(this, "no_map_table_on_schema"));
+		    JLabel label = new JLabel(PluginServices.getText(this,
+			    "no_map_table_on_schema"));
 		    listPanel.add(label);
 		}
-
 
 	    } catch (SQLException e) {
 		try {
@@ -204,7 +218,7 @@ public class SigaLoadMapWizardComponent extends WizardComponent implements Actio
 		    // TODO Auto-generated catch block
 		    e1.printStackTrace();
 		}
-		//exception
+		// exception
 		e.printStackTrace();
 	    } catch (FormException e2) {
 		logger.error(e2.getStackTrace(), e2);
@@ -213,6 +227,7 @@ public class SigaLoadMapWizardComponent extends WizardComponent implements Actio
 	return listPanel;
     }
 
+    @Override
     public String getWizardComponentName() {
 	return "load_map_wizard_component";
     }
@@ -221,30 +236,17 @@ public class SigaLoadMapWizardComponent extends WizardComponent implements Actio
 	return mapList.getSelectedValue().toString();
     }
 
+    @Override
     public void showComponent() {
     }
 
+    @Override
     public void finish() throws WizardException {
-//	Object aux = properties.get(PROPERTY_VEW);
-//	if (aux!=null && aux instanceof View) {
-//	    View view = (View) aux;
-//	    try {
-//		ELLEMap map = MapDAO.getInstance().getMap(view,
-//			mapList.getSelectedValue().toString());
-//		map.load(crsPanel.getCurProj());
-//		if (view.getModel().getName().equals("ELLE View") && (view.getModel() instanceof ProjectView)) {
-//		    ((ProjectView) view.getModel()).setName(mapList.getSelectedValue().toString());
-//		}
-//	    } catch (Exception e) {
-//		throw new WizardException(e);
-//	    }
-//	} else {
-//	    throw new WizardException("Couldn't retrieve the view");
-//	}
     }
 
+    @Override
     public void setProperties() {
 	properties.put(SigaLoadMapWizardComponent.PROPERTY_MAP_NAME,
-		(String) mapList.getSelectedValue());
+		mapList.getSelectedValue());
     }
 }

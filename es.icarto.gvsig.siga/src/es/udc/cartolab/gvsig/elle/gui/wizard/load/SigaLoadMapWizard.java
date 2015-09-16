@@ -62,6 +62,5 @@ public class SigaLoadMapWizard extends WizardWindow {
     protected void addWizardComponents() {
 	views.add(new SigaLoadMapWizardComponent(properties));
 	views.add(new LoadConstantsWizardComponent(properties));
-	views.add(new LoadLegendWizardComponent(properties));
     }
 }
