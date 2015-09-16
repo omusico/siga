@@ -1,9 +1,5 @@
 package es.icarto.gvsig.extgex;
 
-import javax.swing.JOptionPane;
-
-import com.iver.andami.PluginServices;
-
 import es.icarto.gvsig.extgex.locators.LocatorByMunicipio;
 import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;

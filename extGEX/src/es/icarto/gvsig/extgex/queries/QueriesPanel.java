@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 
@@ -22,11 +21,8 @@ import org.apache.log4j.Logger;
 import com.iver.andami.PluginServices;
 import com.iver.andami.messages.NotificationManager;
 import com.iver.andami.ui.mdiManager.WindowInfo;
-import com.jeta.forms.components.image.ImageComponent;
-import com.jeta.forms.components.panel.FormPanel;
-import com.jeta.forms.gui.common.FormException;
 
-import es.icarto.gvsig.commons.gui.AbstractIWindow;
+import es.icarto.gvsig.commons.gui.BasicAbstractWindow;
 import es.icarto.gvsig.commons.queries.ConnectionWrapper;
 import es.icarto.gvsig.commons.queries.CustomiceDialog;
 import es.icarto.gvsig.commons.queries.FinalActions;
@@ -35,17 +31,14 @@ import es.icarto.gvsig.commons.queries.Utils;
 import es.icarto.gvsig.commons.utils.Field;
 import es.icarto.gvsig.extgex.forms.expropiations.FormExpropiations;
 import es.icarto.gvsig.extgex.preferences.DBNames;
-import es.icarto.gvsig.siga.PreferencesPage;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
-public class QueriesPanel extends AbstractIWindow implements ActionListener {
+public class QueriesPanel extends BasicAbstractWindow implements ActionListener {
 
     private static final Logger logger = Logger.getLogger(QueriesPanel.class);
 
     private static final String DEFAULT_FILTER = "--TODOS--";
-
-    private FormPanel formBody;
 
     public static final String ID_RUNQUERIES = "runQueriesButton";
     private JButton runQueriesB;
@@ -81,48 +74,34 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
 	setWindowTitle("Consultas");
 	setWindowInfoProperties(WindowInfo.MODELESSDIALOG);
 
-	try {
-	    formBody = new FormPanel(getClass().getClassLoader()
-		    .getResourceAsStream("forms/consultas.xml"));
-	    this.add(formBody);
-	} catch (FormException e) {
-	    logger.error(e.getStackTrace(), e);
-	}
-
 	dbs = DBSession.getCurrentSession();
 	initWidgets();
 	initListeners();
-
     }
 
     private void initWidgets() {
-	ImageComponent image = (ImageComponent) formBody
-		.getComponentByName("image");
-	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_LOGO);
-	image.setIcon(icon);
-	runQueriesB = (JButton) formBody.getComponentByName(ID_RUNQUERIES);
+	runQueriesB = (JButton) formPanel.getComponentByName(ID_RUNQUERIES);
 	runQueriesB.addActionListener(this);
-	customQueriesB = (JButton) formBody
+	customQueriesB = (JButton) formPanel
 		.getComponentByName(ID_CUSTOMQUERIES);
 	customQueriesB.addActionListener(this);
 	customQueriesB.setEnabled(false);
 
 	initFilterWidgets();
 
-	queriesOuputWidget = new QueriesOuputWidget(formBody, "pdf", "excel");
-	queriesWidget = new QueriesWidgetCB(formBody, "tipo_consulta");
-
+	queriesOuputWidget = new QueriesOuputWidget(formPanel, "pdf", "excel");
+	queriesWidget = new QueriesWidgetCB(formPanel, "tipo_consulta");
     }
 
     private void initFilterWidgets() {
-	tramo = (JComboBox) formBody.getComponentByName(ID_TRAMOCB);
+	tramo = (JComboBox) formPanel.getComponentByName(ID_TRAMOCB);
 	tramo.addItem(new String(DEFAULT_FILTER));
-	uc = (JComboBox) formBody.getComponentByName(ID_UCCB);
+	uc = (JComboBox) formPanel.getComponentByName(ID_UCCB);
 	uc.addItem(new String(DEFAULT_FILTER));
-	ayuntamiento = (JComboBox) formBody
+	ayuntamiento = (JComboBox) formPanel
 		.getComponentByName(ID_AYUNTAMIENTOCB);
 	ayuntamiento.addItem(new String(DEFAULT_FILTER));
-	parroquia_subtramo = (JComboBox) formBody
+	parroquia_subtramo = (JComboBox) formPanel
 		.getComponentByName(ID_PARROQUIA_SUBTRAMOCB);
 	parroquia_subtramo.setEnabled(false);
 
@@ -578,6 +557,11 @@ public class QueriesPanel extends AbstractIWindow implements ActionListener {
 	filters[2] = ayuntamientoSelected;
 	filters[3] = parroquiaSelected;
 	return filters;
+    }
+
+    @Override
+    protected String getBasicName() {
+	return "consultas";
     }
 
 }
