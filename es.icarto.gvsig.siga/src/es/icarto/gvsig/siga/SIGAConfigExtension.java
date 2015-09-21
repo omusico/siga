@@ -17,6 +17,7 @@ import com.iver.cit.gvsig.About;
 import com.iver.cit.gvsig.gui.panels.FPanelAbout;
 
 import es.icarto.gvsig.navtableforms.SIGAFormFactory;
+import es.icarto.gvsig.siga.models.InfoEmpresa;
 import es.icarto.gvsig.utils.SIGAFormatter;
 import es.udc.cartolab.gvsig.elle.ConfigExtension;
 import es.udc.cartolab.gvsig.elle.utils.MapFilter;
@@ -24,10 +25,12 @@ import es.udc.cartolab.gvsig.users.preferences.UsersPreferencePage;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class SIGAConfigExtension extends Extension implements
-	IPreferenceExtension {
+IPreferenceExtension {
 
     private static final Logger logger = Logger
 	    .getLogger(SIGAConfigExtension.class);
+
+    private InfoEmpresa infoEmpresa;
 
     @Override
     public void initialize() {
@@ -93,6 +96,13 @@ public class SIGAConfigExtension extends Extension implements
 	IPreference[] preferences = new IPreference[1];
 	preferences[0] = new PreferencesPage();
 	return preferences;
+    }
+
+    public InfoEmpresa getInfoEmpresa() {
+	if (infoEmpresa == null) {
+	    infoEmpresa = new InfoEmpresa();
+	}
+	return infoEmpresa;
     }
 
 }

@@ -7,7 +7,6 @@ import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
 
-import es.icarto.gvsig.commons.queries.ConnectionWrapper;
 import es.icarto.gvsig.commons.utils.Field;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.AreasDescansoCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.AreasMantenimientoCaracteristicasReport;
@@ -709,14 +708,6 @@ public class ConsultasFieldNames {
 	} else {
 	    return true;
 	}
-    }
-
-    public static String getLogoPathForTramo(String tramo) {
-	ConnectionWrapper con = new ConnectionWrapper(DBSession
-		.getCurrentSession().getJavaConnection());
-	String query = "SELECT info_empresa.report_logo FROM audasa_extgia_dominios.tramo tr LEFT OUTER JOIN audasa_aplicaciones.info_empresa as info_empresa ON tr.empresa = info_empresa.id WHERE tr.item = '%s' LIMIT 1";
-	DefaultTableModel result = con.execute(String.format(query, tramo));
-	return result.getValueAt(0, 0).toString();
     }
 
     private static String getFieldCountRamales(String element) {

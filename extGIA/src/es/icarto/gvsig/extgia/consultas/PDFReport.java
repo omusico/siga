@@ -1,7 +1,6 @@
 package es.icarto.gvsig.extgia.consultas;
 
 import java.awt.Font;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -14,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 
 import org.apache.log4j.Logger;
 
+import com.iver.andami.PluginServices;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
@@ -33,7 +33,8 @@ import com.lowagie.text.rtf.style.RtfParagraphStyle;
 
 import es.icarto.gvsig.commons.queries.Utils;
 import es.icarto.gvsig.commons.utils.Field;
-import es.icarto.gvsig.siga.PreferencesPage;
+import es.icarto.gvsig.siga.SIGAConfigExtension;
+import es.icarto.gvsig.siga.models.InfoEmpresa;
 import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 
 public abstract class PDFReport {
@@ -83,12 +84,10 @@ public abstract class PDFReport {
     protected abstract PdfPCell writeAditionalColumnValues(String id);
 
     private Image getHeaderImage() {
-	String logoPath = PreferencesPage.SIGA_REPORT_LOGO;
-	
-	if (filters.getTramo() != null) {
-	    String tramo = filters.getTramo().getValue();
-	    logoPath = PreferencesPage.LOGO_PATH + File.separator + ConsultasFieldNames.getLogoPathForTramo(tramo);
-	}
+
+	SIGAConfigExtension ext = (SIGAConfigExtension) PluginServices.getExtension(SIGAConfigExtension.class);
+	InfoEmpresa infoEmpresa = ext.getInfoEmpresa();
+	String logoPath = infoEmpresa.getReportLogo(filters.getTramo());
 
 	Image image = null;
 	try {
