@@ -9,18 +9,22 @@ import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.commons.gui.WidgetFactory;
 import es.icarto.gvsig.extgex.forms.reversions.OpenWebAction;
 import es.icarto.gvsig.extpm.forms.filesLink.NavTableComponentsFilesLinkButton;
 import es.icarto.gvsig.navtableforms.BasicAbstractForm;
+import es.icarto.gvsig.siga.SIGAConfigExtension;
 import es.icarto.gvsig.siga.forms.reports.NavTableComponentsPrintButton;
+import es.icarto.gvsig.siga.models.InfoEmpresa;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
@@ -48,9 +52,19 @@ public class FormPM extends BasicAbstractForm {
     private NavTableComponentsFilesLinkButton ntFilesLinkButton;
     private NavTableComponentsPrintButton ntPrintButton;
     private JButton openWebBt;
+    private final JTextField tramoCB;
+    private final JLabel empresaLb;
+    private final JLabel concesionariaLb;
+    private final InfoEmpresa infoEmpresa;
 
     public FormPM(FLyrVect layer) {
 	super(layer);
+	SIGAConfigExtension ext = (SIGAConfigExtension) PluginServices
+		.getExtension(SIGAConfigExtension.class);
+	infoEmpresa = ext.getInfoEmpresa();
+	tramoCB = getFormPanel().getTextField("loc_tramo");
+	empresaLb = getFormPanel().getLabel("etiqueta_empresa");
+	concesionariaLb = getFormPanel().getLabel("etiqueta_concesion");
     }
 
     private void addNewButtonsToActionsToolBar() {
@@ -122,6 +136,13 @@ public class FormPM extends BasicAbstractForm {
 	    WidgetFactory.disableComponent(c);
 	}
 	addNewButtonsToActionsToolBar();
+	fillEmpresaLB();
+    }
+    
+    private void fillEmpresaLB() {
+	String tramo = tramoCB.getText();
+	empresaLb.setText(infoEmpresa.getTitle(tramo));
+	concesionariaLb.setText(infoEmpresa.getSubtitle(tramo));
     }
 
     private String[] getFincaValuesFromID(String idFinca) {

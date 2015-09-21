@@ -2901,7 +2901,7 @@
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
            <at name="column">8</at>
            <at name="row">5</at>
-           <at name="colspan">13</at>
+           <at name="colspan">14</at>
            <at name="rowspan">2</at>
            <at name="halign">default</at>
            <at name="valign">default</at>
@@ -2927,8 +2927,8 @@
               <at name="size">12</at>
              </object>
             </at>
-            <at name="name"/>
-            <at name="width">181</at>
+            <at name="width">196</at>
+            <at name="name">etiqueta_concesion</at>
             <at name="fill">
              <object classname="com.jeta.forms.store.properties.effects.PaintProperty">
               <at name="name">fill</at>
@@ -2969,7 +2969,7 @@
           <object classname="com.jeta.forms.store.memento.CellConstraintsMemento">
            <at name="column">8</at>
            <at name="row">3</at>
-           <at name="colspan">13</at>
+           <at name="colspan">14</at>
            <at name="rowspan">2</at>
            <at name="halign">default</at>
            <at name="valign">default</at>
@@ -2996,8 +2996,8 @@
               <at name="size">12</at>
              </object>
             </at>
-            <at name="name"/>
-            <at name="width">181</at>
+            <at name="width">196</at>
+            <at name="name">etiqueta_empresa</at>
             <at name="fill">
              <object classname="com.jeta.forms.store.properties.effects.PaintProperty">
               <at name="name">fill</at>
