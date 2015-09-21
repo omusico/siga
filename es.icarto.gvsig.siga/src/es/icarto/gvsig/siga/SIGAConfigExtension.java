@@ -24,7 +24,7 @@ import es.udc.cartolab.gvsig.users.preferences.UsersPreferencePage;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class SIGAConfigExtension extends Extension implements
-IPreferenceExtension {
+	IPreferenceExtension {
 
     private static final Logger logger = Logger
 	    .getLogger(SIGAConfigExtension.class);
@@ -33,7 +33,7 @@ IPreferenceExtension {
     public void initialize() {
 	setVersion();
 	SIGAFormFactory.registerFormFactory();
-	
+
 	UsersPreferencePage.LOGO = PreferencesPage.SIGA_LOGO;
     }
 
@@ -57,7 +57,7 @@ IPreferenceExtension {
     public void postInitialize() {
 	ConfigExtension configExt = (ConfigExtension) PluginServices
 		.getExtension(ConfigExtension.class);
-	configExt.setWizardTitle("AUDASA");
+	configExt.setWizardTitle(PreferencesPage.APP_NAME);
 	configExt.setMapFilter(new MapFilter() {
 	    @Override
 	    public String[] filter(String[] maps) {

@@ -24,24 +24,25 @@ import com.jeta.forms.gui.common.FormException;
 
 @SuppressWarnings("serial")
 public class PreferencesPage extends AbstractPreferencePage implements
-	ActionListener {
+ActionListener {
 
     private static final Logger logger = Logger
 	    .getLogger(PreferencesPage.class);
     private static final String PLUGIN_NAME = "es.icarto.gvsig.siga";
 
+    public static final String APP_NAME = "SIGA";
+    public static final String APP_DESC = "Sistema de Información y Gestión de Autopistas";
+
     // Maybe it should be on cfg instead that in the plugin folder
     static {
 	SIGA_LOGO = new File(
 		"gvSIG/extensiones/es.icarto.gvsig.siga/images/logo_siga.png")
-		.getAbsolutePath();
+	.getAbsolutePath();
 	SIGA_REPORT_LOGO = new File(
 		"gvSIG/extensiones/es.icarto.gvsig.siga/images/logo_siga_report.png")
-		.getAbsolutePath();
-	LOGO_PATH = new File(
-		"gvSIG/extensiones/es.icarto.gvsig.siga/images/")
-		.getAbsolutePath()
-		+ "/";
+	.getAbsolutePath();
+	LOGO_PATH = new File("gvSIG/extensiones/es.icarto.gvsig.siga/images/")
+	.getAbsolutePath() + "/";
     }
 
     public static final String AUDASA_LOGO = "gvSIG/extensiones/es.icarto.gvsig.siga/images/logo_audasa.png";
@@ -60,7 +61,6 @@ public class PreferencesPage extends AbstractPreferencePage implements
     private boolean panelStarted = false;
     private JTextField filesDirField;
     private JButton filesDirButton;
-    private final String title = "Audasa";
 
     static String baseDirectory = "";
 
@@ -122,7 +122,7 @@ public class PreferencesPage extends AbstractPreferencePage implements
 
     @Override
     public String getTitle() {
-	return title;
+	return APP_NAME;
     }
 
     @Override

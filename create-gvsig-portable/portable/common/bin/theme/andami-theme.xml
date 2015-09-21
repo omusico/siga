@@ -5,5 +5,5 @@
 		</SplashImages>
 		<Icon path="theme/icon.png"/>
 	</ApplicationImages>
-	<ApplicationName value="SIGA: Sistema de Información Geográfica de Autopistas"/>
+	<ApplicationName value="SIGA: Sistema de Información y Gestión de Autopistas"/>
 </AndamiProperties>
