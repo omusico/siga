@@ -2,6 +2,7 @@ package es.icarto.gvsig.extgia.forms.utils;
 
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.AREA_MANTENIMIENTO;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.BASE_CONTRATISTA;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.MUNICIPIO;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.NOMBRE_VIA;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.NOMBRE_VIA_PF;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.PK;
@@ -11,7 +12,6 @@ import static es.icarto.gvsig.extgia.preferences.DBFieldNames.SENTIDO;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TIPO_VIA;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TIPO_VIA_PF;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TRAMO;
-import static es.icarto.gvsig.extgia.preferences.DBFieldNames.MUNICIPIO;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,6 +22,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -43,6 +44,8 @@ import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkButton;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkData;
 import es.icarto.gvsig.navtableforms.gui.tables.handler.BaseTableHandler;
 import es.icarto.gvsig.siga.PreferencesPage;
+import es.icarto.gvsig.siga.SIGAConfigExtension;
+import es.icarto.gvsig.siga.models.InfoEmpresa;
 import es.udc.cartolab.gvsig.navtable.ToggleEditing;
 
 @SuppressWarnings("serial")
@@ -50,7 +53,6 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 
     private static final Logger logger = Logger
 	    .getLogger(AbstractFormWithLocationWidgets.class);
-
 
     protected FilesLinkButton filesLinkButton;
 
@@ -65,6 +67,11 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
     SaveRecordsBatchListener saveRecordsBatchListener;
 
     private final ImagesInForms imagesInForms;
+
+    private JLabel empresaLb;
+    private JLabel concesionariaLb;
+    private JComboBox tramoCB;
+    private InfoEmpresa infoEmpresa;
 
     public AbstractFormWithLocationWidgets(FLyrVect layer) {
 	super(layer);
@@ -101,8 +108,18 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 	}
 	imagesInForms = new ImagesInForms(formBody, getImagesDBTableName(),
 		getElementID());
-//	JLabel label = (JLabel) getFormPanel().getComponentByName("fooo");
-//	label.setText("<html><b><p align=\"center\">AUTOPISTAS DEL ATLÁNTICO</p></b><p>Concesionaria Española, S.A.</p></html>");
+
+	initWidgetsEmpresaLB();
+
+    }
+
+    private void initWidgetsEmpresaLB() {
+	SIGAConfigExtension ext = (SIGAConfigExtension) PluginServices
+		.getExtension(SIGAConfigExtension.class);
+	infoEmpresa = ext.getInfoEmpresa();
+	tramoCB = getFormPanel().getComboBox(TRAMO);
+	empresaLb = getFormPanel().getLabel("etiqueta_empresa");
+	concesionariaLb = getFormPanel().getLabel("etiqueta_concesion");
     }
 
     @Override
@@ -360,6 +377,13 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
     protected void fillSpecificValues() {
 	super.fillSpecificValues();
 	imagesInForms.fillSpecificValues(getPrimaryKeyValue());
+	fillEmpresaLB();
+    }
+
+    private void fillEmpresaLB() {
+	Object tramo = tramoCB.getSelectedItem();
+	empresaLb.setText(infoEmpresa.getTitle(tramo));
+	concesionariaLb.setText(infoEmpresa.getSubtitle(tramo));
     }
 
     @Override
