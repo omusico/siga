@@ -1,4 +1,11 @@
 <launch4jConfig>
+<!-- 
+Put in the root of the workspace and execute as:
+
+./launch4j PATH_TO_WORKSPACE/portable_gvsig.xml
+
+Copy PATH_TO_WORKSPACE/_fwAndami/gvsig-desktop.exe to create-gvsig-portable/portable/win/bin
+-->
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
   <jar>./_fwAndami/andami.jar</jar>
@@ -12,7 +19,7 @@
   <customProcName>true</customProcName>
   <stayAlive>false</stayAlive>
   <manifest></manifest>
-  <icon>./create-gvsig-portable/portable/common/bin/ico-gvSIG.ico</icon>
+  <icon>./create-gvsig-portable/portable/common/bin/theme/SIGA_32_transparente_escritorio.ico</icon>
   <var>PROJ_LIB=./gvSIG/extensiones/org.gvsig.crs/data</var>
   <var>GDAL_DATA=./data/gdal</var>
   <classPath>

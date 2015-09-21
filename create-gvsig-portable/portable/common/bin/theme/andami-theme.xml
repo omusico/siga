@@ -3,7 +3,7 @@
 		<SplashImages>
 			<Splash path="theme/splash.png" timer="10000" version=" " x="270" y="240" fontsize="18" color="80,170,240"/>
 		</SplashImages>
-		<Icon path="theme/icon.png"/>
+		<Icon path="theme/SIGA_32_transparente.png"/>
 	</ApplicationImages>
 	<ApplicationName value="SIGA: Sistema de Información y Gestión de Autopistas"/>
 </AndamiProperties>
