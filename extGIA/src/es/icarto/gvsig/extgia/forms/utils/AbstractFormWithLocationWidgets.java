@@ -13,6 +13,8 @@ import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TIPO_VIA;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TIPO_VIA_PF;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TRAMO;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -34,6 +36,8 @@ import com.iver.andami.Launcher;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.exceptions.visitors.StopWriterVisitorException;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
+import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.JTextFieldDateEditor;
 
 import es.icarto.gvsig.extgia.batch.AddReconocimientosBatchListener;
 import es.icarto.gvsig.extgia.batch.AddTrabajosBatchListener;
@@ -71,7 +75,7 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
     private JLabel empresaLb;
     private JLabel concesionariaLb;
     private JComboBox tramoCB;
-    private InfoEmpresa infoEmpresa;
+    private final InfoEmpresa infoEmpresa;
 
     public AbstractFormWithLocationWidgets(FLyrVect layer) {
 	super(layer);
@@ -109,17 +113,24 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 	imagesInForms = new ImagesInForms(formBody, getImagesDBTableName(),
 		getElementID());
 
-	initWidgetsEmpresaLB();
-
-    }
-
-    private void initWidgetsEmpresaLB() {
 	SIGAConfigExtension ext = (SIGAConfigExtension) PluginServices
 		.getExtension(SIGAConfigExtension.class);
 	infoEmpresa = ext.getInfoEmpresa();
+    }
+
+    @Override
+    protected void initWidgets() {
+	super.initWidgets();
 	tramoCB = getFormPanel().getComboBox(TRAMO);
 	empresaLb = getFormPanel().getLabel("etiqueta_empresa");
 	concesionariaLb = getFormPanel().getLabel("etiqueta_concesion");
+	JDateChooser dateWidget = (JDateChooser) getFormPanel()
+		.getComponentByName("fecha_actualizacion");
+	final JTextFieldDateEditor uiComponent = (JTextFieldDateEditor) dateWidget
+		.getDateEditor().getUiComponent();
+	uiComponent.setDisabledTextColor(Color.black);
+	uiComponent.setBackground(new Color(190, 220, 255));
+	uiComponent.setFont(new Font("Arial", Font.BOLD, 11));
     }
 
     @Override
