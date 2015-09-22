@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -77,9 +78,9 @@ public class LocatorByFinca extends BasicAbstractWindow implements IPositionRetr
 	dbs = DBSession.getCurrentSession();
 	initWidgets();
 	initListeners();
-
+	final List<String> constants = ELLEMap.getConstantValuesSelected();
 	try {
-	    if (!ELLEMap.getFiltered()) {
+	    if (constants.isEmpty()) {
 		String[] order = new String[1];
 		order[0] = DBNames.FIELD_IDTRAMO;
 		String[][] tramos = dbs.getTable(DBNames.TABLE_TRAMOS,
@@ -88,8 +89,7 @@ public class LocatorByFinca extends BasicAbstractWindow implements IPositionRetr
 		    tramo.addItem(tramos[i][1]);
 		}
 	    } else {
-		Vector<String> tramos = getTramosFromMunicipios(ELLEMap
-			.getConstantValuesSelected());
+		Vector<String> tramos = getTramosFromMunicipios(constants);
 		for (int i = 0; i < tramos.size(); i++) {
 		    tramo.addItem(tramos.elementAt(i));
 		}
@@ -110,11 +110,11 @@ public class LocatorByFinca extends BasicAbstractWindow implements IPositionRetr
         return "LocatorByFinca";
     }
 
-    private Vector<String> getTramosFromMunicipios(String[] municipios) {
+    private Vector<String> getTramosFromMunicipios(List<String> municipios) {
 	PreparedStatement statement;
 	String query = null;
 	try {
-	    if (municipios.length == 1) {
+	    if (municipios.size() == 1) {
 		query = "SELECT distinct " + DBNames.FIELD_NOMBRETRAMO_TRAMOS
 			+ "," + "b.id_tramo " + "FROM "
 			+ DBNames.EXPROPIATIONS_SCHEMA + "."
@@ -123,7 +123,7 @@ public class LocatorByFinca extends BasicAbstractWindow implements IPositionRetr
 			+ DBNames.TABLE_MUNICIPIO_TRAMOS + " b "
 			+ "WHERE a.id_tramo = b.id_tramo and "
 			+ DBNames.FIELD_MUNICIPIO_MUNICIPIO_TRAMOS + " = "
-			+ "'" + municipios[0] + "' order by b.id_tramo;";
+			+ "'" + municipios.get(0) + "' order by b.id_tramo;";
 	    } else {
 		query = "SELECT distinct " + DBNames.FIELD_NOMBRETRAMO_TRAMOS
 			+ "," + "b.id_tramo " + "FROM "
@@ -133,8 +133,8 @@ public class LocatorByFinca extends BasicAbstractWindow implements IPositionRetr
 			+ DBNames.TABLE_MUNICIPIO_TRAMOS + " b "
 			+ "WHERE a.id_tramo = b.id_tramo and "
 			+ DBNames.FIELD_MUNICIPIO_MUNICIPIO_TRAMOS + " in (";
-		for (int i = 0; i < municipios.length; i++) {
-		    query = query + "'" + municipios[i] + "',";
+		for (int i = 0; i < municipios.size(); i++) {
+		    query = query + "'" + municipios.get(i) + "',";
 		}
 		query = query.substring(0, query.length() - 1)
 			+ ") order by b.id_tramo;";
