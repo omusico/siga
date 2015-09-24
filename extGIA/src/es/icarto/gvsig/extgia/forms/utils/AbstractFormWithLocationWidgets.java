@@ -126,11 +126,14 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 	concesionariaLb = getFormPanel().getLabel("etiqueta_concesion");
 	JDateChooser dateWidget = (JDateChooser) getFormPanel()
 		.getComponentByName("fecha_actualizacion");
-	final JTextFieldDateEditor uiComponent = (JTextFieldDateEditor) dateWidget
-		.getDateEditor().getUiComponent();
-	uiComponent.setDisabledTextColor(Color.black);
-	uiComponent.setBackground(new Color(190, 220, 255));
-	uiComponent.setFont(new Font("Arial", Font.BOLD, 11));
+	if (dateWidget != null) {
+	    // firme does not have fecha_actualizacion
+	    final JTextFieldDateEditor uiComponent = (JTextFieldDateEditor) dateWidget
+		    .getDateEditor().getUiComponent();
+	    uiComponent.setDisabledTextColor(Color.black);
+	    uiComponent.setBackground(new Color(190, 220, 255));
+	    uiComponent.setFont(new Font("Arial", Font.BOLD, 11));
+	}
     }
 
     @Override
