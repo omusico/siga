@@ -10,11 +10,6 @@
 			<FIELDNAME>id_obra_desague</FIELDNAME>
 		</FIELD>
 
-		<FIELD>
-			<FIELDNAME>fecha_actualizacion</FIELDNAME>
-			<VALIDATIONRULE>DATE</VALIDATIONRULE>
-		</FIELD>
-
 		<!-- LOCATION WIDGETS START -->
 				<FIELD>
 		<FIELDNAME>area_mantenimiento</FIELDNAME>
