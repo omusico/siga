@@ -1,6 +1,7 @@
 package es.udc.cartolab.gvsig.elle.constants;
 
 import java.awt.geom.Rectangle2D;
+import java.util.List;
 
 import com.iver.cit.gvsig.fmap.MapControl;
 import com.iver.cit.gvsig.fmap.ViewPort;
@@ -16,7 +17,7 @@ public class ZoomToConstant {
 	this.constant = constant;
     }
 
-    public void zoom(String[] values) {
+    public void zoom(List<String> values) {
 	Rectangle2D bbox = getGeometry();
 	if (bbox != null) {
 	    zoomTo(bbox);

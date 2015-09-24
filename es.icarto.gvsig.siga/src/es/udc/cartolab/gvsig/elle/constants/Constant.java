@@ -2,7 +2,6 @@ package es.udc.cartolab.gvsig.elle.constants;
 
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -24,10 +23,10 @@ public class Constant {
     private final static String CONSTANTS_ZOOM_LAYER_FIELD = "municipio_codigo";
     private final static String CONSTANTS_ZOOM_LAYER_NAME = "Constante";
 
-    private final String[] values;
+    private final List<String> values;
     private final FLyrVect layer;
 
-    public Constant(String[] values, MapControl mapControl) {
+    public Constant(List<String> values, MapControl mapControl) {
 	this.values = values;
 
 	// Debería lanzar una excepción si la capa no está disponible o la capa
@@ -61,9 +60,9 @@ public class Constant {
 
     // compareIgnoreCase lo he quitado, cuidado de no introducir bugs
     private List<IPositionRetriever> getPositionOnEnvelope(FLyrVect layer,
-	    String[] values) {
+	    List<String> values) {
 	List<IPositionRetriever> list = new ArrayList<IPositionRetriever>();
-	List<String> valueList = new ArrayList<String>(Arrays.asList(values));
+	List<String> valueList = new ArrayList<String>(values);
 
 	try {
 	    SelectableDataSource ds = layer.getRecordset();
@@ -87,7 +86,7 @@ public class Constant {
 
     public Rectangle2D getGeometry() {
 
-	if (values.length == 0) {
+	if (values.isEmpty()) {
 	    try {
 		return layer.getFullExtent();
 	    } catch (ReadDriverException e) {

@@ -1,7 +1,7 @@
 package es.udc.cartolab.gvsig.elle.constants;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -87,9 +87,8 @@ public class ConstantReload {
     private List<FLyrVect> getLayersToBeReloaded(MapControl mapControl) {
 	List<FLyrVect> layersToBeReloaded = new ArrayList<FLyrVect>();
 
-	String[] foo = ConstantUtils.getTablesAffectedByConstant("Municipio");
-
-	List<String> tablesWithConstants = Arrays.asList(foo);
+	Collection<String> tablesWithConstants = ConstantUtils
+		.getTablesAffectedByConstant();
 
 	FLayers layers = mapControl.getMapContext().getLayers();
 
