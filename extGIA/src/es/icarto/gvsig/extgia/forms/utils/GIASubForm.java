@@ -17,7 +17,7 @@ public class GIASubForm extends AbstractSubForm {
     }
 
     protected void initGUIPost() {
-	addImageHandler("image", PreferencesPage.AUDASA_LOGO);
+	addImageHandler("image", PreferencesPage.SIGA_LOGO);
 	getWindowInfo().setTitle("");
     }
 

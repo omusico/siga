@@ -31,7 +31,7 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
 public class SubformExpropiationsAddExpropiation extends JPanel implements
-	IWindow, ActionListener {
+IWindow, ActionListener {
 
     private final FormPanel form;
 
@@ -68,7 +68,7 @@ public class SubformExpropiationsAddExpropiation extends JPanel implements
 
 	ImageComponent image = (ImageComponent) form
 		.getComponentByName("image");
-	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_LOGO);
+	ImageIcon icon = new ImageIcon(PreferencesPage.SIGA_LOGO);
 	image.setIcon(icon);
 
 	addExpropiationButton = (JButton) form

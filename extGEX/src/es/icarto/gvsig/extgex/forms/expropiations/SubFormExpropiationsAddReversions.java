@@ -39,7 +39,7 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
 public class SubFormExpropiationsAddReversions extends AbstractIWindow
-	implements ActionListener {
+implements ActionListener {
 
     private final double INTERSECTION_BUFFER = 100.0;
 
@@ -83,7 +83,7 @@ public class SubFormExpropiationsAddReversions extends AbstractIWindow
 
 	ImageComponent image = (ImageComponent) form
 		.getComponentByName("image");
-	ImageIcon icon = new ImageIcon(PreferencesPage.AUDASA_LOGO);
+	ImageIcon icon = new ImageIcon(PreferencesPage.SIGA_LOGO);
 	image.setIcon(icon);
 
 	addReversionButton = (JButton) form
