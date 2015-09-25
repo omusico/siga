@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.hardcode.gdbms.engine.values.Value;
-import com.iver.cit.gvsig.fmap.MapControl;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.ReadableVectorial;
@@ -26,13 +25,13 @@ public class Constant {
     private final List<String> values;
     private final FLyrVect layer;
 
-    public Constant(List<String> values, MapControl mapControl) {
+    public Constant(List<String> values) {
 	this.values = values;
 
 	// Debería lanzar una excepción si la capa no está disponible o la capa
 	// debería cargarse más tarde, pero implica cambios que no pueden
 	// hacerse ahora
-	TOCLayerManager tocManager = new TOCLayerManager(mapControl);
+	TOCLayerManager tocManager = new TOCLayerManager();
 	this.layer = tocManager.getLayerByName(CONSTANTS_ZOOM_LAYER_NAME);
     }
 

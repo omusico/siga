@@ -3,7 +3,6 @@ package es.udc.cartolab.gvsig.elle.gui.wizard.load;
 import java.awt.BorderLayout;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -16,10 +15,8 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.project.documents.view.ProjectView;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
-import es.udc.cartolab.gvsig.elle.constants.Constant;
 import es.udc.cartolab.gvsig.elle.constants.ConstantReload;
-import es.udc.cartolab.gvsig.elle.constants.ConstantUtils;
-import es.udc.cartolab.gvsig.elle.constants.ZoomToConstant;
+import es.udc.cartolab.gvsig.elle.constants.ZoomTo;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardComponent;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardException;
 import es.udc.cartolab.gvsig.elle.utils.ELLEMap;
@@ -72,8 +69,6 @@ public class LoadConstantsWizardComponent extends WizardComponent {
     @Override
     public void finish() throws WizardException {
 
-	List<String> values = constantsPanel.getCouncils();
-
 	Object aux = properties.get(PROPERTY_VIEW);
 	if (!(aux instanceof View)) {
 	    throw new WizardException("Couldn't retrieve the view");
@@ -81,7 +76,9 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	View view = (View) aux;
 
 	ELLEMap map = null;
-
+	String where = constantsPanel.buildWhereAndSetConstants();
+	final Collection<String> tablesAffectedByConstant = constantsPanel
+		.getTablesAffectedByConstant();
 	if (reload) {
 	    List<ELLEMap> loadedMaps = MapDAO.getInstance().getLoadedMaps();
 	    for (ELLEMap m : loadedMaps) {
@@ -94,9 +91,11 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	    // TODO. Que hacer si map es null aquí? Por ahora nos contentamos
 	    // con algo parecido al Null Object Pattern para evitar chequeos de
 	    // null sobre map
+
 	    map = map != null ? map : new ELLEMap(null, null);
-	    String where = buildWhereAndSetConstants(map, values);
-	    new ConstantReload(view, where);
+	    map.setWhereOnAllLayers(where);
+	    map.setWhereOnAllOverviewLayers(where);
+	    new ConstantReload(view, where, tablesAffectedByConstant);
 	} else {
 	    Object tmp = properties
 		    .get(SigaLoadMapWizardComponent.PROPERTY_MAP_NAME);
@@ -104,10 +103,9 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 
 	    try {
 		map = MapDAO.getInstance().getMap(view, mapName);
-		buildWhereAndSetConstants(map, values);
+		map.setWhereOnAllLayers(where);
+		map.setWhereOnAllOverviewLayers(where);
 
-		Collection<String> tablesAffectedByConstant = ConstantUtils
-			.getTablesAffectedByConstant();
 		map.load(view.getProjection(), tablesAffectedByConstant);
 
 		loadLegends(view, mapName);
@@ -117,17 +115,15 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 		    ((ProjectView) view.getModel()).setName(mapName);
 		}
 
-		Constant constant = new Constant(values, view.getMapControl());
-		ZoomToConstant zoomToConstant = new ZoomToConstant(
-			view.getMapControl(), constant);
-		zoomToConstant.zoom(values);
+		ZoomTo zoomTo = new ZoomTo(view.getMapControl());
+		zoomTo.zoom(constantsPanel.getZoomGeometry());
 	    } catch (Exception e) {
 		throw new WizardException(e);
 	    }
 
 	}
 
-	writeCouncilsLoadedInStatusBar(values);
+	writeCouncilsLoadedInStatusBar();
 
     }
 
@@ -158,58 +154,15 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	}
     }
 
-    private void writeCouncilsLoadedInStatusBar(List<String> values) {
-	String areaByConnectedUser = ConstantUtils.getAreaByConnectedUser();
+    private void writeCouncilsLoadedInStatusBar() {
 	final NewStatusBar statusBar = PluginServices.getMainFrame()
 		.getStatusBar();
-	if (values.size() != 1) {
-	    if (areaByConnectedUser.equalsIgnoreCase("ambas")) {
-		statusBar.setMessage("constants", "Municipio: " + "TODOS");
-	    } else if (areaByConnectedUser.equalsIgnoreCase("norte")) {
-		statusBar.setMessage("constants", "Municipio: " + "Área Norte");
-	    } else {
-		statusBar.setMessage("constants", "Municipio: " + "Área Sur");
-	    }
-	} else {
-	    String msg = "Municipio: "
-		    + ConstantUtils.getNombreMunicipioById(values.get(0));
-	    statusBar.setMessage("constants", msg);
-	}
+	String msg = constantsPanel.getStatusBarMsg();
+	statusBar.setMessage("constants", msg);
     }
 
     public void setReload(boolean reload) {
 	this.reload = true;
     }
 
-    private String buildWhereAndSetConstants(ELLEMap map, List<String> values) {
-	// TODO: An index on selectedConstant field could speed up the queryS
-	String where = "WHERE municipio IN (";
-	if (!values.isEmpty()) {
-
-	    ELLEMap.setConstantValuesSelected(values);
-
-	    for (String s : values) {
-		where += "'" + s + "', ";
-	    }
-	    where = where.substring(0, where.length() - 2) + ")";
-
-	} else if (!ConstantUtils.getAreaByConnectedUser().equalsIgnoreCase(
-		"ambas")) {
-	    ELLEMap.setConstantValuesSelected(new ArrayList<String>());
-	    Collection<String> councils = ConstantUtils
-		    .getCouncilsByConnectedUser();
-	    for (String s : councils) {
-		where += "'" + s + "', ";
-	    }
-	    where = where.substring(0, where.length() - 2) + ")";
-
-	} else {
-	    ELLEMap.setConstantValuesSelected(new ArrayList<String>());
-	    where = "";
-	}
-
-	map.setWhereOnAllLayers(where);
-	map.setWhereOnAllOverviewLayers(where);
-	return where;
-    }
 }
