@@ -1,5 +1,6 @@
 package es.udc.cartolab.gvsig.elle.gui.wizard.load;
 
+import java.awt.BorderLayout;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -40,8 +41,9 @@ public class LoadConstantsWizardComponent extends WizardComponent {
     }
 
     private void setUpUI() {
+	this.setLayout(new BorderLayout());
 	constantsPanel = new ConstantsPanel();
-	this.add(constantsPanel);
+	this.add(constantsPanel, BorderLayout.CENTER);
     }
 
     @Override
