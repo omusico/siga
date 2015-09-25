@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
-import es.udc.cartolab.gvsig.elle.constants.ConstantUtils;
+import es.udc.cartolab.gvsig.elle.constants.ConstantReload;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardComponent;
 import es.udc.cartolab.gvsig.elle.gui.wizard.load.LoadConstantsWizardComponent;
 import es.udc.cartolab.gvsig.elle.gui.wizard.load.SigaLoadMapWizard;
@@ -27,7 +27,7 @@ public class ConstantReloadExtension extends AbstractExtension {
     public void execute(String actionCommand) {
 	View view = (View) PluginServices.getMDIManager().getActiveWindow();
 
-	String errorMsg = ConstantUtils.constantChecks(view);
+	String errorMsg = ConstantReload.constantChecks(view);
 	if (!errorMsg.isEmpty()) {
 	    JOptionPane.showMessageDialog(
 		    (Component) PluginServices.getMainFrame(), errorMsg,

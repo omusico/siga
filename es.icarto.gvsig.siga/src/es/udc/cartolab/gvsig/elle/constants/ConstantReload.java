@@ -25,15 +25,19 @@ import com.iver.cit.gvsig.project.documents.view.ProjectViewFactory;
 import com.iver.cit.gvsig.project.documents.view.gui.BaseView;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
+import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
+
 public class ConstantReload {
 
     private static final Logger logger = Logger.getLogger(ConstantReload.class);
     private final String where;
+    private final Collection<String> tablesWithConstants;
 
-    public ConstantReload(View view, String where) {
+    public ConstantReload(View view, String where,
+	    Collection<String> tablesWithConstants) {
 	this.where = where;
-
-	String errorMsg = ConstantUtils.constantChecks(view);
+	this.tablesWithConstants = tablesWithConstants;
+	String errorMsg = constantChecks(view);
 	if (!errorMsg.isEmpty()) {
 	    throw new RuntimeException(errorMsg);
 	}
@@ -86,9 +90,6 @@ public class ConstantReload {
 
     private List<FLyrVect> getLayersToBeReloaded(MapControl mapControl) {
 	List<FLyrVect> layersToBeReloaded = new ArrayList<FLyrVect>();
-
-	Collection<String> tablesWithConstants = ConstantUtils
-		.getTablesAffectedByConstant();
 
 	FLayers layers = mapControl.getMapContext().getLayers();
 
@@ -143,6 +144,33 @@ public class ConstantReload {
 	    }
 	}
 	return null;
+    }
+
+    public static String constantChecks(View view) {
+	TOCLayerManager tocManager = new TOCLayerManager(view.getMapControl());
+	List<FLyrVect> joinedLayers = tocManager.getJoinedLayers();
+	List<FLyrVect> editingLayers = tocManager.getEditingLayers();
+
+	String errorMsg = "";
+
+	if (!joinedLayers.isEmpty()) {
+	    errorMsg += "Deshaga las uniones o enlaces de las siguientes capas para poder continuar:\n\n";
+	    for (FLyrVect l : joinedLayers) {
+		errorMsg += " - " + l.getName() + "\n";
+	    }
+	    errorMsg += "\n\n";
+
+	}
+
+	if (!editingLayers.isEmpty()) {
+	    errorMsg += "Cierre la edición de las siguientes capas para poder continuar:\n\n";
+	    for (FLyrVect l : editingLayers) {
+		errorMsg += " - " + l.getName() + "\n";
+	    }
+
+	}
+
+	return errorMsg;
     }
 
 }
