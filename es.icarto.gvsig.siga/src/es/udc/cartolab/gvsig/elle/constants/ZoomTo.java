@@ -1,31 +1,26 @@
 package es.udc.cartolab.gvsig.elle.constants;
 
 import java.awt.geom.Rectangle2D;
-import java.util.List;
 
 import com.iver.cit.gvsig.fmap.MapControl;
 import com.iver.cit.gvsig.fmap.ViewPort;
 
-public class ZoomToConstant {
+public class ZoomTo {
 
     private final MapControl mapControl;
 
-    private final Constant constant;
-
-    public ZoomToConstant(MapControl mapControl, Constant constant) {
+    public ZoomTo(MapControl mapControl) {
 	this.mapControl = mapControl;
-	this.constant = constant;
     }
 
-    public void zoom(List<String> values) {
-	Rectangle2D bbox = getGeometry();
+    public void zoom(Rectangle2D rectangle) {
+	Rectangle2D bbox = getGeometry(rectangle);
 	if (bbox != null) {
 	    zoomTo(bbox);
 	}
     }
 
-    private Rectangle2D getGeometry() {
-	Rectangle2D rectangle = constant.getGeometry();
+    private Rectangle2D getGeometry(Rectangle2D rectangle) {
 
 	// constant handles the reprojection
 	// if (layer.getCoordTrans() != null) {
