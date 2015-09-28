@@ -48,9 +48,9 @@
         
 
         <extension class-name="es.icarto.gvsig.siga.ConstantReloadExtension" active="true">
-			<menu text="data_base_menu/constantreload" icon="constantreload"  position="20700"/>
+			<menu text="data_base_menu/es.icarto.gvsig.siga.ConstantReloadExtension.menu" icon="es.icarto.gvsig.siga.constantreloadextension"  position="20700"/>
 			<tool-bar name="ELLE" position="30">
-                <action-tool name="constantreload" icon="constantreload" tooltip="constantreload" position="5"/>
+                <action-tool icon="es.icarto.gvsig.siga.constantreloadextension" tooltip="es.icarto.gvsig.siga.ConstantReloadExtension.tooltip" position="5"/>
             </tool-bar>
 		</extension>
 

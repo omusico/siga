@@ -19,11 +19,6 @@ import es.udc.cartolab.gvsig.elle.gui.wizard.load.SigaLoadMapWizard;
 public class ConstantReloadExtension extends AbstractExtension {
 
     @Override
-    public void initialize() {
-	registerIcon("constantreload");
-    }
-
-    @Override
     public void execute(String actionCommand) {
 	View view = (View) PluginServices.getMDIManager().getActiveWindow();
 
