@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -131,6 +132,43 @@ public class ConstantsPanel extends JPanel implements ItemListener {
 	}
 
 	return where;
+    }
+
+    public String buildWhereForProvinciasLoc() {
+	List<String> values = getSelectedIds();
+	String where = "WHERE cdprov IN (";
+
+	HashSet<String> set = new HashSet<String>();
+	if (!values.isEmpty()) {
+
+	    for (String s : values) {
+		set.add(s.substring(0, 2));
+	    }
+
+	    for (String s : set) {
+		where += s + " ,";
+	    }
+
+	    where = where.substring(0, where.length() - 2) + ")";
+
+	} else if (!user.getArea().equalsIgnoreCase("ambas")) {
+	    Collection<String> councils = municipioConstantes.getAsIds();
+
+	    for (String s : councils) {
+		set.add(s.substring(0, 2));
+	    }
+
+	    for (String s : set) {
+		where += s + " ,";
+	    }
+	    where = where.substring(0, where.length() - 2) + ")";
+
+	} else {
+	    where = "";
+	}
+
+	return where;
+
     }
 
     public String getStatusBarMsg() {

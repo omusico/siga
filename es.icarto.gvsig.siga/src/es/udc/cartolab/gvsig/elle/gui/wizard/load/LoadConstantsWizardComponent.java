@@ -19,6 +19,7 @@ import es.udc.cartolab.gvsig.elle.constants.ConstantReload;
 import es.udc.cartolab.gvsig.elle.constants.ZoomTo;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardComponent;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardException;
+import es.udc.cartolab.gvsig.elle.gui.wizard.save.LayerProperties;
 import es.udc.cartolab.gvsig.elle.utils.ELLEMap;
 import es.udc.cartolab.gvsig.elle.utils.LoadLegend;
 import es.udc.cartolab.gvsig.elle.utils.MapDAO;
@@ -95,7 +96,9 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	    map = map != null ? map : new ELLEMap(null, null);
 	    map.setWhereOnAllLayers(where);
 	    map.setWhereOnAllOverviewLayers(where);
-	    new ConstantReload(view, where, tablesAffectedByConstant);
+	    setWhereOnProvinciasLoc(map);
+	    new ConstantReload(view, where, tablesAffectedByConstant,
+		    constantsPanel.buildWhereForProvinciasLoc());
 	} else {
 	    Object tmp = properties
 		    .get(SigaLoadMapWizardComponent.PROPERTY_MAP_NAME);
@@ -105,6 +108,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 		map = MapDAO.getInstance().getMap(view, mapName);
 		map.setWhereOnAllLayers(where);
 		map.setWhereOnAllOverviewLayers(where);
+		setWhereOnProvinciasLoc(map);
 
 		map.load(view.getProjection(), tablesAffectedByConstant);
 
@@ -125,6 +129,13 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 
 	writeCouncilsLoadedInStatusBar();
 
+    }
+
+    private void setWhereOnProvinciasLoc(ELLEMap map) {
+	LayerProperties overviewLayer = map
+		.getOverviewLayer("Provincias_galicia_loc");
+	String where = constantsPanel.buildWhereForProvinciasLoc();
+	overviewLayer.setWhere(where);
     }
 
     private void loadLegends(View view, String mapName) throws WizardException {

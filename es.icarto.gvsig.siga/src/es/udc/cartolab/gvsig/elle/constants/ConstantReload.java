@@ -32,16 +32,17 @@ public class ConstantReload {
     private static final Logger logger = Logger.getLogger(ConstantReload.class);
     private final String where;
     private final Collection<String> tablesWithConstants;
+    private final String provWhere;
 
     public ConstantReload(View view, String where,
-	    Collection<String> tablesWithConstants) {
+	    Collection<String> tablesWithConstants, String provWhere) {
 	this.where = where;
 	this.tablesWithConstants = tablesWithConstants;
 	String errorMsg = constantChecks(view);
 	if (!errorMsg.isEmpty()) {
 	    throw new RuntimeException(errorMsg);
 	}
-
+	this.provWhere = provWhere;
 	closeNotViewWindowsAndDocuments();
 
 	reloadLayers(view.getMapOverview());
@@ -116,7 +117,11 @@ public class ConstantReload {
 
     private void updateLayerConstants(FLyrVect l) {
 	DBLayerDefinition lyrDef = getDBLayerDefinition(l);
-	lyrDef.setWhereClause(where);
+	if (lyrDef.getTableName().equalsIgnoreCase("provincias_galicia_loc")) {
+	    lyrDef.setWhereClause(provWhere);
+	} else {
+	    lyrDef.setWhereClause(where);
+	}
     }
 
     private void reload(FLyrVect l) {
