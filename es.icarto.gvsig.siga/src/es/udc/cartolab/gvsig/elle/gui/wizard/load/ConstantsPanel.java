@@ -77,7 +77,8 @@ public class ConstantsPanel extends JPanel implements ItemListener {
 	    return;
 	}
 	for (int i = 0; i < table.getRowCount(); i++) {
-	    Object id = table.getModel().getValueAt(i, 0);
+	    int modelIdx = table.convertRowIndexToModel(i);
+	    Object id = table.getModel().getValueAt(modelIdx, 0);
 	    if (constants.contains(id)) {
 		table.getSelectionModel().addSelectionInterval(i, i);
 	    }
@@ -88,7 +89,8 @@ public class ConstantsPanel extends JPanel implements ItemListener {
 	List<String> values = new ArrayList<String>();
 	int[] idx = table.getSelectedRows();
 	for (int i : idx) {
-	    values.add(table.getModel().getValueAt(i, 0).toString());
+	    int modelIdx = table.convertRowIndexToModel(i);
+	    values.add(table.getModel().getValueAt(modelIdx, 0).toString());
 	}
 	return values;
     }
@@ -97,8 +99,9 @@ public class ConstantsPanel extends JPanel implements ItemListener {
 	List<Field> values = new ArrayList<Field>();
 	int[] idx = table.getSelectedRows();
 	for (int i : idx) {
-	    String id = table.getModel().getValueAt(i, 0).toString();
-	    String name = table.getModel().getValueAt(i, 1).toString();
+	    int modelIdx = table.convertRowIndexToModel(i);
+	    String id = table.getModel().getValueAt(modelIdx, 0).toString();
+	    String name = table.getModel().getValueAt(modelIdx, 1).toString();
 	    values.add(new Field(id, name));
 	}
 	return values;
