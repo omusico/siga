@@ -1,6 +1,8 @@
 package es.udc.cartolab.gvsig.elle.gui.wizard.load;
 
 import java.awt.BorderLayout;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.geom.Rectangle2D;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ import es.udc.cartolab.gvsig.elle.utils.ELLEMap;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
-public class ConstantsPanel extends JPanel {
+public class ConstantsPanel extends JPanel implements ItemListener {
 
     private static final Logger logger = Logger.getLogger(ConstantsPanel.class);
     private JTable table;
@@ -51,6 +53,8 @@ public class ConstantsPanel extends JPanel {
 	final TableModel valueListData = municipioConstantes.getAsTableModel();
 	table.setModel(valueListData);
 	table.removeColumn(table.getColumnModel().getColumn(0));
+	table.getColumn("AP").setHeaderRenderer(new CheckBoxHeader(this));
+	table.getColumn("AG").setHeaderRenderer(new CheckBoxHeader(this));
     }
 
     private void preselectConstants() {
@@ -157,6 +161,11 @@ public class ConstantsPanel extends JPanel {
 	    logger.error(e.getStackTrace(), e);
 	}
 	return Collections.emptyList();
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+	System.out.println("done");
     }
 
 }
