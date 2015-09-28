@@ -17,17 +17,17 @@ import javax.swing.table.TableColumnModel;
 @SuppressWarnings("serial")
 // From: http://www.coderanch.com/t/343795/GUI/java/Check-Box-JTable-header
 public class CheckBoxHeader extends JCheckBox implements TableCellRenderer,
-	MouseListener {
+MouseListener {
     protected CheckBoxHeader rendererComponent;
     protected int column;
     protected boolean mousePressed = false;
 
     public CheckBoxHeader(ItemListener itemListener) {
 	rendererComponent = this;
+	setSelected(true);
 	rendererComponent.setHorizontalTextPosition(SwingConstants.LEFT);
 	rendererComponent.addItemListener(itemListener);
 	setHorizontalAlignment(JLabel.CENTER);
-	setSelected(true);
     }
 
     @Override

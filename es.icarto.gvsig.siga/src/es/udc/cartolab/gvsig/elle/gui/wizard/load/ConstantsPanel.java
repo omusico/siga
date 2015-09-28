@@ -13,7 +13,9 @@ import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.RowFilter;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import org.apache.log4j.Logger;
 
@@ -33,6 +35,9 @@ public class ConstantsPanel extends JPanel implements ItemListener {
     private JTable table;
     private MunicipioConstantes municipioConstantes;
     private CurrentUser user;
+    private CheckBoxHeader apHeader;
+    private CheckBoxHeader agHeader;
+    private TableRowSorter<TableModel> sorter;
 
     public ConstantsPanel() {
 	super(new BorderLayout());
@@ -53,8 +58,16 @@ public class ConstantsPanel extends JPanel implements ItemListener {
 	final TableModel valueListData = municipioConstantes.getAsTableModel();
 	table.setModel(valueListData);
 	table.removeColumn(table.getColumnModel().getColumn(0));
-	table.getColumn("AP").setHeaderRenderer(new CheckBoxHeader(this));
-	table.getColumn("AG").setHeaderRenderer(new CheckBoxHeader(this));
+	apHeader = new CheckBoxHeader(this);
+	table.getColumn("AP").setHeaderRenderer(apHeader);
+	agHeader = new CheckBoxHeader(this);
+	table.getColumn("AG").setHeaderRenderer(agHeader);
+	sorter = new TableRowSorter<TableModel>(table.getModel());
+	for (int i = 0; i < table.getModel().getColumnCount(); i++) {
+	    sorter.setSortable(i, false);
+	}
+
+	table.setRowSorter(sorter);
     }
 
     private void preselectConstants() {
@@ -165,7 +178,30 @@ public class ConstantsPanel extends JPanel implements ItemListener {
 
     @Override
     public void itemStateChanged(ItemEvent e) {
+	// both or none selected
+	if (!(apHeader.isSelected() ^ agHeader.isSelected())) {
+	    sorter.setRowFilter(null);
+	    return;
+	}
 	System.out.println("done");
-    }
+	CheckBoxHeader source = (CheckBoxHeader) e.getSource();
 
+	final int column = source.getColumn();
+	System.out.println("selected: " + column);
+	RowFilter<Object, Object> filter = new RowFilter<Object, Object>() {
+
+	    @Override
+	    public boolean include(
+		    javax.swing.RowFilter.Entry<? extends Object, ? extends Object> entry) {
+		if (column == 1) {
+		    return !entry.getStringValue(3).isEmpty();
+		} else if (column == 2) {
+		    return !entry.getStringValue(2).isEmpty();
+		}
+		return true;
+	    }
+	};
+	sorter.setRowFilter(filter);
+
+    }
 }
