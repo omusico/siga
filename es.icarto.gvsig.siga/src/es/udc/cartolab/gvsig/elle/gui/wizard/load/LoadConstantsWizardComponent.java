@@ -84,7 +84,7 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	    List<ELLEMap> loadedMaps = MapDAO.getInstance().getLoadedMaps();
 	    for (ELLEMap m : loadedMaps) {
 		if (m.getView().equals(view)
-			&& m.getName().equals(view.getName())) {
+			&& m.getName().equals(view.getModel().getName())) {
 		    map = m;
 		}
 	    }
