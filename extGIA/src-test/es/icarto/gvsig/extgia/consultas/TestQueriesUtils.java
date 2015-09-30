@@ -21,6 +21,7 @@ import com.iver.cit.gvsig.fmap.drivers.DBException;
 
 import es.icarto.gvsig.commons.queries.Utils;
 import es.icarto.gvsig.commons.testutils.Drivers;
+import es.icarto.gvsig.commons.testutils.TestProperties;
 import es.icarto.gvsig.commons.utils.Field;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.DomainValues;
@@ -32,7 +33,7 @@ public class TestQueriesUtils {
     @BeforeClass
     public static void setupBeforeClass() {
 	try {
-	    Drivers.initgvSIGDrivers("/home/development/audasa/siga/_fwAndami/gvSIG/extensiones/com.iver.cit.gvsig/drivers");
+	    Drivers.initgvSIGDrivers(TestProperties.driversPath);
 	    DBSession.createConnection("localhost", 5434, "audasa_test", null,
 		    "postgres", "postgres");
 
@@ -55,7 +56,7 @@ public class TestQueriesUtils {
 
     @Test
     public void testGetFields() throws IOException, DBException, SQLException,
-	    URISyntaxException {
+    URISyntaxException {
 
 	URI uri = getClass().getClassLoader().getResource(".").toURI();
 	String foo = new File(uri).getParent() + "/";

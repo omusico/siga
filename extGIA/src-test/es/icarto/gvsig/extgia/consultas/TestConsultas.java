@@ -17,8 +17,8 @@ import es.icarto.gvsig.commons.queries.CSVReport;
 import es.icarto.gvsig.commons.queries.ConnectionWrapper;
 import es.icarto.gvsig.commons.testutils.Drivers;
 import es.icarto.gvsig.commons.testutils.TestProperties;
+import es.icarto.gvsig.commons.utils.Field;
 import es.icarto.gvsig.extgia.consultas.agregados.TrabajosAgregadosReportQueries;
-import es.icarto.gvsig.extgia.consultas.caracteristicas.PDFCaracteristicasQueries;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
@@ -26,7 +26,7 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class TestConsultas {
 
-    private static ConsultasFilters mockFilters;
+    private static ConsultasFilters<Field> mockFilters;
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat(
 	    "dd/MM/yyyy");
@@ -38,9 +38,9 @@ public class TestConsultas {
 	    Date firstDate = sdf.parse("01/01/1980");
 	    Date lastDate = sdf.parse("01/07/2013");
 
-	    mockFilters = new ConsultasFilters(new KeyValue("1", "Norte"),
-		    new KeyValue("1", "Norte"), new KeyValue("1", "AP-9"),
-		    firstDate, lastDate);
+	    mockFilters = new ConsultasFilters<Field>(
+		    new KeyValue("1", "Norte"), new KeyValue("1", "Norte"),
+		    new KeyValue("1", "AP-9"), firstDate, lastDate);
 
 	} catch (ParseException e1) {
 	    e1.printStackTrace();
@@ -69,7 +69,7 @@ public class TestConsultas {
 			    .values()[i].toString()) != null) {
 		Statement st = DBSession.getCurrentSession()
 			.getJavaConnection().createStatement();
-		String query = PDFCaracteristicasQueries
+		String query = CaracteristicasQueries
 			.getPDFCaracteristicasQuery(
 				DBFieldNames.Elements.values()[i].toString(),
 				mockFilters);
@@ -88,8 +88,8 @@ public class TestConsultas {
 	    firstDate = sdf.parse("01/01/1980");
 	    Date lastDate = sdf.parse("01/07/2013");
 
-	    mockFilters = new ConsultasFilters(null, null, null, firstDate,
-		    lastDate);
+	    mockFilters = new ConsultasFilters<Field>(null, null, null,
+		    firstDate, lastDate);
 
 	    testCaracteristicasPDFReportsQueries();
 	} catch (ParseException e) {
@@ -108,12 +108,12 @@ public class TestConsultas {
 			.getJavaConnection().createStatement();
 		String query = "SELECT "
 			+ ConsultasFieldNames
-				.getTrabajosFieldNames(ConsultasFieldNames
-					.getElementId(DBFieldNames.Elements
-						.values()[i].toString()))
-			+ " FROM " + getSchema() + "."
-			+ DBFieldNames.Elements.values()[i].toString()
-			+ "_trabajos;";
+			.getTrabajosFieldNames(ConsultasFieldNames
+				.getElementId(DBFieldNames.Elements
+					.values()[i].toString()))
+					+ " FROM " + getSchema() + "."
+					+ DBFieldNames.Elements.values()[i].toString()
+					+ "_trabajos;";
 		ResultSet rs = st.executeQuery(query);
 		assertTrue(rs != null);
 	    }
@@ -132,25 +132,24 @@ public class TestConsultas {
 			.getJavaConnection().createStatement();
 		String query = "SELECT "
 			+ ConsultasFieldNames
-				.getTrabajosFieldNames(ConsultasFieldNames
-					.getElementId(DBFieldNames.Elements
-						.values()[i].toString()))
-			+ " FROM "
-			+ getSchema()
-			+ "."
-			+ DBFieldNames.Elements.values()[i].toString()
-			+ "_trabajos"
-			+ " WHERE "
-			+ ConsultasFieldNames
-				.getElementId(DBFieldNames.Elements.values()[i]
-					.toString())
-			+ " IN (SELECT "
-			+ ConsultasFieldNames
-				.getElementId(DBFieldNames.Elements.values()[i]
-					.toString()) + " FROM " + getSchema()
-			+ "." + DBFieldNames.Elements.values()[i].toString()
-			+ mockFilters.getWhereClauseByLocationWidgets()
-			+ ");";
+			.getTrabajosFieldNames(ConsultasFieldNames
+				.getElementId(DBFieldNames.Elements
+					.values()[i].toString()))
+					+ " FROM "
+					+ getSchema()
+					+ "."
+					+ DBFieldNames.Elements.values()[i].toString()
+					+ "_trabajos"
+					+ " WHERE "
+					+ ConsultasFieldNames
+					.getElementId(DBFieldNames.Elements.values()[i]
+						.toString())
+						+ " IN (SELECT "
+						+ ConsultasFieldNames
+						.getElementId(DBFieldNames.Elements.values()[i]
+							.toString()) + " FROM " + getSchema()
+							+ "." + DBFieldNames.Elements.values()[i].toString()
+							+ mockFilters.getWhereClauseByLocationWidgets() + ");";
 		ResultSet rs = st.executeQuery(query);
 		assertTrue(rs != null);
 	    }
@@ -256,8 +255,8 @@ public class TestConsultas {
 	    firstDate = sdf.parse("01/01/1980");
 	    Date lastDate = sdf.parse("01/07/2013");
 
-	    mockFilters = new ConsultasFilters(null, null, null, firstDate,
-		    lastDate);
+	    mockFilters = new ConsultasFilters<Field>(null, null, null,
+		    firstDate, lastDate);
 
 	    testTrabajosAgregadosReportsQueries();
 	} catch (ParseException e) {
@@ -276,16 +275,14 @@ public class TestConsultas {
 		Statement st = DBSession.getCurrentSession()
 			.getJavaConnection().createStatement();
 		String fields = ConsultasFieldNames
-			.getReconocimientosFieldNames(ConsultasFieldNames
-				.getElementId(DBFieldNames.Elements.values()[i]
-					.toString()));
+			.getReconocimientosFieldNames(DBFieldNames.Elements
+				.values()[i].toString());
 		if (!ConsultasFieldNames
 			.hasIndiceFieldOnReconocimientos(DBFieldNames.Elements
 				.values()[i].toString())) {
 		    fields = ConsultasFieldNames
-			    .getReconocimientosFieldNamesWithoutIndice(ConsultasFieldNames
-				    .getElementId(DBFieldNames.Elements
-					    .values()[i].toString()));
+			    .getReconocimientosFieldNames(DBFieldNames.Elements
+				    .values()[i].toString());
 		}
 		String query = "SELECT " + fields + " FROM " + getSchema()
 			+ "." + DBFieldNames.Elements.values()[i].toString()
@@ -308,16 +305,14 @@ public class TestConsultas {
 		Statement st = DBSession.getCurrentSession()
 			.getJavaConnection().createStatement();
 		String fields = ConsultasFieldNames
-			.getReconocimientosFieldNames(ConsultasFieldNames
-				.getElementId(DBFieldNames.Elements.values()[i]
-					.toString()));
+			.getReconocimientosFieldNames(DBFieldNames.Elements
+				.values()[i].toString());
 		if (!ConsultasFieldNames
 			.hasIndiceFieldOnReconocimientos(DBFieldNames.Elements
 				.values()[i].toString())) {
 		    fields = ConsultasFieldNames
-			    .getReconocimientosFieldNamesWithoutIndice(ConsultasFieldNames
-				    .getElementId(DBFieldNames.Elements
-					    .values()[i].toString()));
+			    .getReconocimientosFieldNames(DBFieldNames.Elements
+				    .values()[i].toString());
 		}
 		String query = "SELECT "
 			+ fields
@@ -328,15 +323,14 @@ public class TestConsultas {
 			+ "_reconocimientos"
 			+ " WHERE "
 			+ ConsultasFieldNames
-				.getElementId(DBFieldNames.Elements.values()[i]
-					.toString())
-			+ " IN (SELECT "
-			+ ConsultasFieldNames
+			.getElementId(DBFieldNames.Elements.values()[i]
+				.toString())
+				+ " IN (SELECT "
+				+ ConsultasFieldNames
 				.getElementId(DBFieldNames.Elements.values()[i]
 					.toString()) + " FROM " + getSchema()
-			+ "." + DBFieldNames.Elements.values()[i].toString()
-			+ mockFilters.getWhereClauseByLocationWidgets()
-			+ ");";
+					+ "." + DBFieldNames.Elements.values()[i].toString()
+					+ mockFilters.getWhereClauseByLocationWidgets() + ");";
 		ResultSet rs = st.executeQuery(query);
 		assertTrue(rs != null);
 	    }
@@ -350,7 +344,7 @@ public class TestConsultas {
 		    .createStatement();
 	    String query = "SELECT "
 		    + ConsultasFieldNames
-			    .getFirmeTrabajosFieldNames("id_firme") + " FROM "
+		    .getFirmeTrabajosFieldNames("id_firme") + " FROM "
 		    + getSchema() + "." + "firme_trabajos;";
 	    ResultSet rs = st.executeQuery(query);
 	    assertTrue(rs != null);
@@ -364,11 +358,11 @@ public class TestConsultas {
 		    .createStatement();
 	    String query = "SELECT "
 		    + ConsultasFieldNames
-			    .getFirmeTrabajosFieldNames("id_firme") + " FROM "
+		    .getFirmeTrabajosFieldNames("id_firme") + " FROM "
 		    + getSchema() + "." + "firme_trabajos"
 		    + " WHERE id_firme IN (SELECT id_firme FROM " + getSchema()
-		    + ".firme"
-		    + mockFilters.getWhereClauseByLocationWidgets() + ");";
+		    + ".firme" + mockFilters.getWhereClauseByLocationWidgets()
+		    + ");";
 	    ResultSet rs = st.executeQuery(query);
 	    assertTrue(rs != null);
 	}
@@ -380,8 +374,7 @@ public class TestConsultas {
 	    Statement st = DBSession.getCurrentSession().getJavaConnection()
 		    .createStatement();
 	    String query = "SELECT "
-		    + ConsultasFieldNames
-			    .getFirmeReconocimientosFieldNames("id_firme")
+		    + ConsultasFieldNames.getReconocimientosFieldNames("Firme")
 		    + " FROM " + getSchema() + "." + "firme_reconocimientos;";
 	    ResultSet rs = st.executeQuery(query);
 	    assertTrue(rs != null);
@@ -395,12 +388,11 @@ public class TestConsultas {
 	    Statement st = DBSession.getCurrentSession().getJavaConnection()
 		    .createStatement();
 	    String query = "SELECT "
-		    + ConsultasFieldNames
-			    .getFirmeReconocimientosFieldNames("id_firme")
+		    + ConsultasFieldNames.getReconocimientosFieldNames("Firme")
 		    + " FROM " + getSchema() + "." + "firme_reconocimientos"
 		    + " WHERE id_firme IN (SELECT id_firme FROM " + getSchema()
-		    + ".firme"
-		    + mockFilters.getWhereClauseByLocationWidgets() + ");";
+		    + ".firme" + mockFilters.getWhereClauseByLocationWidgets()
+		    + ");";
 	    ResultSet rs = st.executeQuery(query);
 	    assertTrue(rs != null);
 	}
@@ -409,26 +401,17 @@ public class TestConsultas {
     @Test
     public void testCSVCaracteristicas() throws SQLException {
 	for (int i = 0; i < DBFieldNames.Elements.values().length; i++) {
-	    if (DBFieldNames.Elements.values()[i].toString().equals("Firme")) {
-		return;
-	    } else {
-		if (ConsultasFieldNames
-			.getCSVCaracteristicasFieldNames(DBFieldNames.Elements
-				.values()[i].toString()) != null) {
-		    String query = CaracteristicasQueries
-			    .getCSVCaracteristicasQuery(DBFieldNames.Elements
-				    .values()[i].toString(), mockFilters);
-		    ConnectionWrapper conW = new ConnectionWrapper(DBSession
-			    .getCurrentSession().getJavaConnection());
-		    String mockFileDir = "/tmp/test_"
-			    + DBFieldNames.Elements.values()[i].toString()
-			    + ".csv";
-		    new CSVReport(mockFileDir, conW.execute(query), mockFilters);
-		    File mockFile = new File(mockFileDir);
-		    assertTrue(mockFile.exists());
-		    mockFile.delete();
-		}
-	    }
+
+	    String query = CaracteristicasQueries.getCSVCaracteristicasQuery(
+		    DBFieldNames.Elements.values()[i].toString(), mockFilters);
+	    ConnectionWrapper conW = new ConnectionWrapper(DBSession
+		    .getCurrentSession().getJavaConnection());
+	    String mockFileDir = "/tmp/test_"
+		    + DBFieldNames.Elements.values()[i].toString() + ".csv";
+	    new CSVReport(mockFileDir, conW.execute(query), mockFilters);
+	    File mockFile = new File(mockFileDir);
+	    assertTrue(mockFile.exists());
+	    mockFile.delete();
 	}
     }
 
@@ -439,8 +422,8 @@ public class TestConsultas {
 	    firstDate = sdf.parse("01/01/1980");
 	    Date lastDate = sdf.parse("01/07/2013");
 
-	    mockFilters = new ConsultasFilters(null, null, null, firstDate,
-		    lastDate);
+	    mockFilters = new ConsultasFilters<Field>(null, null, null,
+		    firstDate, lastDate);
 
 	    testCSVCaracteristicas();
 	} catch (ParseException e) {
@@ -471,12 +454,12 @@ public class TestConsultas {
 			    "Firme")) {
 		String query = "SELECT "
 			+ ConsultasFieldNames
-				.getTrabajosFieldNames(ConsultasFieldNames
-					.getElementId(DBFieldNames.Elements
-						.values()[i].toString()))
-			+ " FROM " + getSchema() + "."
-			+ DBFieldNames.Elements.values()[i].toString()
-			+ "_trabajos;";
+			.getTrabajosFieldNames(ConsultasFieldNames
+				.getElementId(DBFieldNames.Elements
+					.values()[i].toString()))
+					+ " FROM " + getSchema() + "."
+					+ DBFieldNames.Elements.values()[i].toString()
+					+ "_trabajos;";
 		String mockFileDir = "/tmp/test_"
 			+ DBFieldNames.Elements.values()[i].toString() + ".csv";
 
@@ -507,9 +490,8 @@ public class TestConsultas {
 			.hasIndiceFieldOnReconocimientos(DBFieldNames.Elements
 				.values()[i].toString())) {
 		    fields = ConsultasFieldNames
-			    .getReconocimientosFieldNamesWithoutIndice(ConsultasFieldNames
-				    .getElementId(DBFieldNames.Elements
-					    .values()[i].toString()));
+			    .getReconocimientosFieldNames(DBFieldNames.Elements
+				    .values()[i].toString());
 		}
 		String query = "SELECT " + fields + " FROM " + getSchema()
 			+ "." + DBFieldNames.Elements.values()[i].toString()
@@ -531,7 +513,7 @@ public class TestConsultas {
 	for (int i = 0; i < DBFieldNames.Elements.values().length; i++) {
 	    String query = "SELECT "
 		    + ConsultasFieldNames
-			    .getFirmeTrabajosFieldNames("id_firme") + " FROM "
+		    .getFirmeTrabajosFieldNames("id_firme") + " FROM "
 		    + getSchema() + "." + "firme_trabajos;";
 	    String mockFileDir = "/tmp/test_"
 		    + DBFieldNames.Elements.values()[i].toString() + ".csv";
@@ -548,8 +530,7 @@ public class TestConsultas {
     public void testCSVReconocimientosFirme() throws SQLException {
 	for (int i = 0; i < DBFieldNames.Elements.values().length; i++) {
 	    String query = "SELECT "
-		    + ConsultasFieldNames
-			    .getFirmeReconocimientosFieldNames("id_firme")
+		    + ConsultasFieldNames.getReconocimientosFieldNames("Firme")
 		    + " FROM " + getSchema() + "." + "firme_reconocimientos;";
 	    String mockFileDir = "/tmp/test_"
 		    + DBFieldNames.Elements.values()[i].toString() + ".csv";
@@ -567,7 +548,7 @@ public class TestConsultas {
 	    throws SQLException {
 	Statement st = DBSession.getCurrentSession().getJavaConnection()
 		.createStatement();
-	String query = PDFCaracteristicasQueries.getPDFCaracteristicasQuery(
+	String query = CaracteristicasQueries.getPDFCaracteristicasQuery(
 		DBFieldNames.Elements.Senhalizacion_Vertical.toString(),
 		mockFilters);
 	ResultSet rs = st.executeQuery(query);
@@ -582,8 +563,8 @@ public class TestConsultas {
 	    firstDate = sdf.parse("01/01/1980");
 	    Date lastDate = sdf.parse("01/07/2013");
 
-	    mockFilters = new ConsultasFilters(null, null, null, firstDate,
-		    lastDate);
+	    mockFilters = new ConsultasFilters<Field>(null, null, null,
+		    firstDate, lastDate);
 
 	    testCaracteristicasPDFReportSenhalizacionVerticalQuery();
 	} catch (ParseException e) {
