@@ -71,23 +71,23 @@
 				<action-tool icon="es.icarto.gvsig.extgex.queriesextension" tooltip="Consultas" position="1"/>
 			</tool-bar>
 		-->
-			<menu text="SIGA/QueriesExtension_menu" icon="es.icarto.gvsig.extgex.queriesextension" position="30100"/>
+			<menu text="SIGA/es.icarto.gvsig.extgex.QueriesExtension.menu" icon="es.icarto.gvsig.extgex.QueriesExtension" position="30100"/>
 		</extension>
 		
 		<extension class-name="es.icarto.gvsig.extgex.LocatorByPKExtension" active="true">
 			<menu text="SIGA" position="30699" is_separator="true"/>			
-			<menu text="SIGA/localization/LocatorByPKExtension_menu" icon="es.icarto.gvsig.extgex.locatorbypkextension" position="30700"/>
+			<menu text="SIGA/localization/es.icarto.gvsig.extgex.LocatorByPKExtension.menu" icon="es.icarto.gvsig.extgex.LocatorByPKExtension" position="30700"/>
 			<tool-bar name="SIGA_Tools" position="75">
-				<action-tool icon="es.icarto.gvsig.extgex.locatorbypkextension" tooltip="LocatorByPKExtension_tooltip" position="1"/>
+				<action-tool icon="es.icarto.gvsig.extgex.LocatorByPKExtension" tooltip="es.icarto.gvsig.extgex.LocatorByPKExtension.tooltip" position="1"/>
 			</tool-bar>
 		</extension>
 		
 		<extension class-name="es.icarto.gvsig.extgex.LocatorByFincaExtension" active="true">
-			<menu text="SIGA/localization/LocatorByFincaExtension_menu" position="30720"/>
+			<menu text="SIGA/localization/es.icarto.gvsig.extgex.LocatorByFincaExtension.menu" position="30720"/>
 		</extension>
 		
 		<extension class-name="es.icarto.gvsig.extgex.LocatorByMunicipioExtension" active="true">
-			<menu text="SIGA/localization/LocatorByMunicipioExtension_menu" position="30710"/>
+			<menu text="SIGA/localization/es.icarto.gvsig.extgex.LocatorByMunicipioExtension.menu" position="30710"/>
 		</extension>
 
 		<!-- WMS EXTENSIONS -->

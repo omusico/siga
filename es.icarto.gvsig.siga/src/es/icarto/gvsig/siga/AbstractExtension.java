@@ -1,5 +1,7 @@
 package es.icarto.gvsig.siga;
 
+import java.net.URL;
+
 import com.iver.andami.PluginServices;
 import com.iver.andami.plugins.Extension;
 import com.iver.andami.ui.mdiManager.IWindow;
@@ -7,18 +9,12 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 public abstract class AbstractExtension extends Extension {
 
-    public final String id = this.getClass().getName().toLowerCase();
+    public final String id = this.getClass().getName();
 
-    /**
-     * Register the file images/[iconName].png with the name [iconName] in the
-     * icon theme
-     *
-     */
     protected void registerIcon(String iconName) {
-	PluginServices.getIconTheme().registerDefault(
-		iconName,
-		this.getClass().getClassLoader()
-		.getResource("images/" + iconName + ".png"));
+	URL iconUrl = this.getClass().getClassLoader()
+		.getResource("images/" + iconName.toLowerCase() + ".png");
+	PluginServices.getIconTheme().registerDefault(iconName, iconUrl);
     }
 
     @Override

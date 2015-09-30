@@ -12,10 +12,10 @@
 	<extensions>
 		<extension class-name="es.icarto.gvsig.extpm.FormPMExtension" active="true">
 			<tool-bar name="pm" position="72">
-				<action-tool icon="es.icarto.gvsig.extpm.formpmextension" tooltip="formpm" position="2"/>
+				<action-tool icon="es.icarto.gvsig.extpm.FormPMExtension" tooltip="es.icarto.gvsig.extpm.FormPMExtension.tooltip" position="2"/>
 			</tool-bar>
 			<menu text="SIGA" position="30199" is_separator="true"/>
-			<menu text="SIGA/formpm" icon="es.icarto.gvsig.extpm.formpmextension" position="30250"/>
+			<menu text="SIGA/es.icarto.gvsig.extpm.FormPMExtension.menu" icon="es.icarto.gvsig.extpm.FormPMExtension" position="30250"/>
 		</extension>
 	</extensions>
 </plugin-config>
