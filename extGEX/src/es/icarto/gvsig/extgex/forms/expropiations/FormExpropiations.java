@@ -49,7 +49,7 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
 public class FormExpropiations extends BasicAbstractForm implements
-	TableModelListener {
+TableModelListener {
 
     public static final String TABLENAME = "exp_finca";
     public static final Object TOCNAME = "Fincas";
@@ -217,7 +217,7 @@ public class FormExpropiations extends BasicAbstractForm implements
 
 	addExpropiationButton.removeActionListener(addExpropiationListener);
 	deleteExpropiationButton
-		.removeActionListener(deleteExpropiationListener);
+	.removeActionListener(deleteExpropiationListener);
     }
 
     public class AddReversionsListener implements ActionListener {
@@ -286,13 +286,13 @@ public class FormExpropiations extends BasicAbstractForm implements
 		    .getSelectedItem()).getKey())
 		    + LocalizadorFormatter.getUC(((KeyValue) uc
 			    .getSelectedItem()).getKey())
-		    + LocalizadorFormatter
+			    + LocalizadorFormatter
 			    .getAyuntamiento(((KeyValue) ayuntamiento
 				    .getSelectedItem()).getKey())
-		    + LocalizadorFormatter.getSubtramo(((KeyValue) subtramo
-			    .getSelectedItem()).getKey())
-		    + getStringNroFincaFormatted()
-		    + getStringSeccionFormatted();
+				    + LocalizadorFormatter.getSubtramo(((KeyValue) subtramo
+					    .getSelectedItem()).getKey())
+					    + getStringNroFincaFormatted()
+					    + getStringSeccionFormatted();
 	    finca.setText(id_finca);
 	    getFormController().setValue(DBNames.FIELD_IDFINCA, id_finca);
 	}
@@ -565,35 +565,6 @@ public class FormExpropiations extends BasicAbstractForm implements
 	String importeEuros;
 	String importePtas = null;
 	String fechaActa = null;
-
-	// Check if ID reversion exists into reversions table
-	for (int i = 0; i < reversiones.getRowCount(); i++) {
-	    idReversion = reversiones.getModel().getValueAt(i, 0).toString();
-	    query = "SELECT " + DBNames.FIELD_IDREVERSION_REVERSIONES + " "
-		    + "FROM " + DBNames.SCHEMA_DATA + "."
-		    + DBNames.TABLE_REVERSIONES + " " + "WHERE "
-		    + DBNames.FIELD_IDREVERSION_REVERSIONES + " = '"
-		    + idReversion + "';";
-	    try {
-		statement = DBSession.getCurrentSession().getJavaConnection()
-			.prepareStatement(query);
-		statement.execute();
-		ResultSet rs = statement.getResultSet();
-		if (!rs.next()) {
-		    JOptionPane
-			    .showMessageDialog(
-				    this,
-				    "EL ID de Reversión: "
-					    + idReversion
-					    + " no existe. Modifique los datos para poder guardar.",
-				    "Error en los datos",
-				    JOptionPane.ERROR_MESSAGE);
-		    return;
-		}
-	    } catch (SQLException e) {
-		e.getMessage();
-	    }
-	}
 
 	// we remove old Reversions on this Finca
 	for (String ReversionID : oldReversions) {

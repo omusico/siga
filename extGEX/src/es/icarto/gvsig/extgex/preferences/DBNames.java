@@ -53,7 +53,6 @@ public class DBNames {
 
     // table finca_reversion
     public static final String TABLE_FINCA_REVERSION = "finca_reversion";
-    public static final String TABLE_REVERSIONES = "exp_reversion";
     public static final String FIELD_IDREVERSION_FINCA_REVERSION = "id_reversion";
     public static final String FIELD_IDEXPROPIACION_FINCA_REVERSION = "id_finca";
     public static final String FIELD_SUPERFICIE_FINCA_REVERSION = "superficie";
