@@ -39,7 +39,11 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
 public class SubFormExpropiationsAddReversions extends AbstractIWindow
-implements ActionListener {
+	implements ActionListener {
+
+    private static final String SUBFORMEXPROPIATIONS_ADD_REVERSIONS_BUTTON = "add_reversion_button";
+    private static final String SUBFORMSEXPROPIATIONS_IDREVERSIONS = "id_reversion";
+    private static final String SUBFORMEXPROPIATIONS_SUPERFICIE = "superficie";
 
     private final double INTERSECTION_BUFFER = 100.0;
 
@@ -87,15 +91,13 @@ implements ActionListener {
 	image.setIcon(icon);
 
 	addReversionButton = (JButton) form
-		.getComponentByName(DBNames.SUBFORMEXPROPIATIONS_ADD_REVERSIONS_BUTTON);
+		.getComponentByName(SUBFORMEXPROPIATIONS_ADD_REVERSIONS_BUTTON);
 	addReversionButton.addActionListener(this);
 
 	superficie = (JTextField) form
-		.getComponentByName(DBNames.SUBFORMEXPROPIATIONS_SUPERFICIE);
-	importeEuros = (JTextField) form
-		.getComponentByName(DBNames.SUBFORMEXPROPIATIONS_IMPORTE_EUROS);
-	importePtas = (JTextField) form
-		.getComponentByName(DBNames.SUBFORMEXPROPIATIONS_IMPORTE_PTAS);
+		.getComponentByName(SUBFORMEXPROPIATIONS_SUPERFICIE);
+	importeEuros = (JTextField) form.getComponentByName("importe_euros");
+	importePtas = (JTextField) form.getComponentByName("importe_pts");
 	importeEuros.addKeyListener(new KeyListener() {
 
 	    @Override
@@ -118,11 +120,10 @@ implements ActionListener {
 	    public void keyPressed(KeyEvent e) {
 	    }
 	});
-	fecha = (JTextField) form
-		.getComponentByName(DBNames.SUBFORMEXPROPIATIONS_FECHA);
+	fecha = (JTextField) form.getComponentByName("fecha_acta");
 
 	idReversion = (JComboBox) form
-		.getComponentByName(DBNames.SUBFORMSEXPROPIATIONS_IDREVERSIONS);
+		.getComponentByName(SUBFORMSEXPROPIATIONS_IDREVERSIONS);
 	if (!getReversionsFromFinca().isEmpty()) {
 	    for (String id_reversion : getReversionsFromFinca()) {
 		idReversion.addItem(id_reversion);

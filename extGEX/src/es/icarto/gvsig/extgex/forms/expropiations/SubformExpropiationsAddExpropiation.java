@@ -31,7 +31,7 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
 public class SubformExpropiationsAddExpropiation extends JPanel implements
-IWindow, ActionListener {
+	IWindow, ActionListener {
 
     private final FormPanel form;
 
@@ -72,14 +72,13 @@ IWindow, ActionListener {
 	image.setIcon(icon);
 
 	addExpropiationButton = (JButton) form
-		.getComponentByName(DBNames.SUBFORMEXPROPIATION_ADD_EXPROPIATION_BUTTON);
+		.getComponentByName("add_expropiation_subform_button");
 	addExpropiationButton.addActionListener(this);
 
 	superficie = (JTextField) form
-		.getComponentByName(DBNames.SUBFORMEXPROPIATION_SUPERFICIE);
+		.getComponentByName("expropiacion_superficie");
 	defaultbg = superficie.getBackground();
-	cultivo = (JComboBox) form
-		.getComponentByName(DBNames.SUBFORMEXPROPIATION_CULTIVO);
+	cultivo = (JComboBox) form.getComponentByName("expropiacion_cultivo");
 	for (String tipo_cultivo : getTiposCultivo()) {
 	    cultivo.addItem(tipo_cultivo);
 	}

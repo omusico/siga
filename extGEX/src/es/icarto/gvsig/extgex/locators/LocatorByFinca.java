@@ -39,7 +39,12 @@ import es.udc.cartolab.gvsig.elle.utils.ELLEMap;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
-public class LocatorByFinca extends BasicAbstractWindow implements IPositionRetriever {
+public class LocatorByFinca extends BasicAbstractWindow implements
+IPositionRetriever {
+
+    private static final String TABLE_MUNICIPIO_TRAMOS = "municipio_tramos";
+    private static final String FIELD_MUNICIPIO_MUNICIPIO_TRAMOS = "municipio";
+
     private static final Logger logger = Logger.getLogger(QueriesPanel.class);
 
     private static final String DEFAULT_FILTER = "--SELECCIONAR--";
@@ -52,8 +57,8 @@ public class LocatorByFinca extends BasicAbstractWindow implements IPositionRetr
     private JButton zoom;
     private JButton openForm;
 
-    private ZoomToHandler zoomToHandler;
-    private FormOpener formOpener;
+    private final ZoomToHandler zoomToHandler;
+    private final FormOpener formOpener;
 
     // Filters
     String tramoSelected = DEFAULT_FILTER;
@@ -104,10 +109,10 @@ public class LocatorByFinca extends BasicAbstractWindow implements IPositionRetr
 	formOpener = new FormOpener(this);
 	openForm.addActionListener(formOpener);
     }
-    
+
     @Override
     protected String getBasicName() {
-        return "LocatorByFinca";
+	return "LocatorByFinca";
     }
 
     private Vector<String> getTramosFromMunicipios(List<String> municipios) {
@@ -120,19 +125,19 @@ public class LocatorByFinca extends BasicAbstractWindow implements IPositionRetr
 			+ DBNames.EXPROPIATIONS_SCHEMA + "."
 			+ DBNames.TABLE_TRAMOS + " a, "
 			+ DBNames.EXPROPIATIONS_SCHEMA + "."
-			+ DBNames.TABLE_MUNICIPIO_TRAMOS + " b "
+			+ TABLE_MUNICIPIO_TRAMOS + " b "
 			+ "WHERE a.id_tramo = b.id_tramo and "
-			+ DBNames.FIELD_MUNICIPIO_MUNICIPIO_TRAMOS + " = "
-			+ "'" + municipios.get(0) + "' order by b.id_tramo;";
+			+ FIELD_MUNICIPIO_MUNICIPIO_TRAMOS + " = " + "'"
+			+ municipios.get(0) + "' order by b.id_tramo;";
 	    } else {
 		query = "SELECT distinct " + DBNames.FIELD_NOMBRETRAMO_TRAMOS
 			+ "," + "b.id_tramo " + "FROM "
 			+ DBNames.EXPROPIATIONS_SCHEMA + "."
 			+ DBNames.TABLE_TRAMOS + " a, "
 			+ DBNames.EXPROPIATIONS_SCHEMA + "."
-			+ DBNames.TABLE_MUNICIPIO_TRAMOS + " b "
+			+ TABLE_MUNICIPIO_TRAMOS + " b "
 			+ "WHERE a.id_tramo = b.id_tramo and "
-			+ DBNames.FIELD_MUNICIPIO_MUNICIPIO_TRAMOS + " in (";
+			+ FIELD_MUNICIPIO_MUNICIPIO_TRAMOS + " in (";
 		for (int i = 0; i < municipios.size(); i++) {
 		    query = query + "'" + municipios.get(i) + "',";
 		}
@@ -163,7 +168,8 @@ public class LocatorByFinca extends BasicAbstractWindow implements IPositionRetr
 	ayuntamiento = (JComboBox) formPanel.getComponentByName("ayuntamiento");
 	parroquiaSubtramo = (JComboBox) formPanel
 		.getComponentByName("parroquia_subtramo");
-	fincaSeccion = (JComboBox) formPanel.getComponentByName("finca_seccion");
+	fincaSeccion = (JComboBox) formPanel
+		.getComponentByName("finca_seccion");
 	openForm = (JButton) formPanel.getComponentByName("openform");
 	zoom = (JButton) formPanel.getComponentByName("zoom");
     }

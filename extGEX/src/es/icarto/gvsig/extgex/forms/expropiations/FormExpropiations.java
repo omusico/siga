@@ -51,6 +51,10 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 public class FormExpropiations extends BasicAbstractForm implements
 TableModelListener {
 
+    private static final String EXPROPIATIONS_ADD_REVERSIONS_BUTTON = "add_reversions_button";
+    private static final String EXPROPIATIONS_DELETE_REVERSIONS_BUTTON = "delete_reversions_button";
+    private static final String EXPROPIATIONS_AFECTADO_PM = "afectado_por_policia_margenes";
+
     public static final String TABLENAME = "exp_finca";
     public static final Object TOCNAME = "Fincas";
     public static final String PKFIELD = "id_finca";
@@ -145,17 +149,16 @@ TableModelListener {
 	reversiones = (JTable) widgets.get(WIDGET_REVERSIONES);
 	pm = (JTable) widgets.get(WIDGET_PM);
 
-	afectado_pm = (JComboBox) widgets
-		.get(DBNames.EXPROPIATIONS_AFECTADO_PM);
+	afectado_pm = (JComboBox) widgets.get(EXPROPIATIONS_AFECTADO_PM);
 
 	addReversionsListener = new AddReversionsListener();
 	addReversionsButton = (JButton) formBody
-		.getComponentByName(DBNames.EXPROPIATIONS_ADD_REVERSIONS_BUTTON);
+		.getComponentByName(EXPROPIATIONS_ADD_REVERSIONS_BUTTON);
 	addReversionsButton.addActionListener(addReversionsListener);
 
 	deleteReversionsListener = new DeleteReversionsListener();
 	deleteReversionsButton = (JButton) formBody
-		.getComponentByName(DBNames.EXPROPIATIONS_DELETE_REVERSIONS_BUTTON);
+		.getComponentByName(EXPROPIATIONS_DELETE_REVERSIONS_BUTTON);
 	deleteReversionsButton.addActionListener(deleteReversionsListener);
 
 	addExpropiationListener = new AddExpropiationListener();
@@ -167,8 +170,6 @@ TableModelListener {
 	deleteExpropiationButton = (JButton) formBody
 		.getComponentByName("expropiaciones_delete_button");
 	deleteExpropiationButton.addActionListener(deleteExpropiationListener);
-
-	// BIND LISTENERS TO WIDGETS
 
 	ayuntamientoDomainHandler = new DependentComboboxHandler(this, uc,
 		ayuntamiento);
@@ -186,15 +187,7 @@ TableModelListener {
 	numFinca.addKeyListener(updateNroFincaHandler);
 	seccion.addKeyListener(updateNroFincaHandler);
 
-	// BIND LAUNCHERS TO WIDGETS
-	// LauncherParams expropiationsParams = new LauncherParams(this,
-	// DBNames.TABLE_EXPROPIACIONES,
-	// "Cultivos",
-	// "Abrir cultivos");
-	// tableExpropiationsLauncher = new AlphanumericNavTableLauncher(
-	// this, expropiationsParams);
 	formReversionsLauncher = new FormReversionsLauncher(this);
-	// expropiaciones.addMouseListener(tableExpropiationsLauncher);
 	reversiones.addMouseListener(formReversionsLauncher);
 
     }
@@ -209,7 +202,6 @@ TableModelListener {
 	numFinca.removeKeyListener(updateNroFincaHandler);
 	seccion.removeKeyListener(updateNroFincaHandler);
 
-	// expropiaciones.removeMouseListener(tableExpropiationsLauncher);
 	reversiones.removeMouseListener(formReversionsLauncher);
 
 	addReversionsButton.removeActionListener(addReversionsListener);

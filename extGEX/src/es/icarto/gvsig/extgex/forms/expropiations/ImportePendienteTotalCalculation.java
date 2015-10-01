@@ -1,15 +1,15 @@
 package es.icarto.gvsig.extgex.forms.expropiations;
 
-import static es.icarto.gvsig.extgex.preferences.DBNames.FINCAS_IMPORTE_PENDIENTE_MEJORAS;
-import static es.icarto.gvsig.extgex.preferences.DBNames.FINCAS_IMPORTE_PENDIENTE_TERRENOS;
-import static es.icarto.gvsig.extgex.preferences.DBNames.FINCAS_IMPORTE_PENDIENTE_TOTAL_AUTOCALCULADO;
-
 import java.math.BigDecimal;
 
 import es.icarto.gvsig.navtableforms.IValidatableForm;
 import es.icarto.gvsig.navtableforms.calculation.Calculation;
 
 public class ImportePendienteTotalCalculation extends Calculation {
+
+    private static final String FINCAS_IMPORTE_PENDIENTE_MEJORAS = "importe_pendiente_mejoras";
+    private static final String FINCAS_IMPORTE_PENDIENTE_TERRENOS = "importe_pendiente_terrenos";
+    private static final String FINCAS_IMPORTE_PENDIENTE_TOTAL_AUTOCALCULADO = "importe_pendiente_total_autocalculado";
 
     public ImportePendienteTotalCalculation(IValidatableForm form) {
 	super(form);

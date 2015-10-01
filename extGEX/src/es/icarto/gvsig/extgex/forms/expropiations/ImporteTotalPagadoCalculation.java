@@ -1,24 +1,24 @@
 package es.icarto.gvsig.extgex.forms.expropiations;
 
-import static es.icarto.gvsig.extgex.preferences.DBNames.FINCAS_ANTICIPO;
-import static es.icarto.gvsig.extgex.preferences.DBNames.FINCAS_DEPOSITO_PREVIO_CONSIGNADO;
-import static es.icarto.gvsig.extgex.preferences.DBNames.FINCAS_DEPOSITO_PREVIO_CONSIGNADO_INDEMNIZACION;
-import static es.icarto.gvsig.extgex.preferences.DBNames.FINCAS_DEPOSITO_PREVIO_LEVANTADO;
-import static es.icarto.gvsig.extgex.preferences.DBNames.FINCAS_DEPOSITO_PREVIO_PAGADO;
-import static es.icarto.gvsig.extgex.preferences.DBNames.FINCAS_IMPORTE_PAGADO_TOTAL_AUTOCALCULADO;
-import static es.icarto.gvsig.extgex.preferences.DBNames.FINCAS_INDEMNIZACION_IMPORTE;
-import static es.icarto.gvsig.extgex.preferences.DBNames.FINCAS_JUSTIPRECIO_IMPORTE;
-import static es.icarto.gvsig.extgex.preferences.DBNames.FINCAS_LIMITE_ACUERDO_IMORTE;
-import static es.icarto.gvsig.extgex.preferences.DBNames.FINCAS_MUTUO_ACUERDO;
-import static es.icarto.gvsig.extgex.preferences.DBNames.FINCAS_MUTUO_ACUERDO_PARCIAL;
-import static es.icarto.gvsig.extgex.preferences.DBNames.FINCAS_PAGOS_VARIOS;
-
 import java.math.BigDecimal;
 
 import es.icarto.gvsig.navtableforms.IValidatableForm;
 import es.icarto.gvsig.navtableforms.calculation.Calculation;
 
 public class ImporteTotalPagadoCalculation extends Calculation {
+
+    private static final String FINCAS_MUTUO_ACUERDO = "mutuo_acuerdo_importe";
+    private static final String FINCAS_ANTICIPO = "anticipo_importe";
+    private static final String FINCAS_DEPOSITO_PREVIO_PAGADO = "deposito_previo_pagado_importe";
+    private static final String FINCAS_DEPOSITO_PREVIO_CONSIGNADO = "deposito_previo_consignado_importe";
+    private static final String FINCAS_MUTUO_ACUERDO_PARCIAL = "mutuo_acuerdo_parcial_importe";
+    private static final String FINCAS_PAGOS_VARIOS = "pagos_varios_importe";
+    private static final String FINCAS_DEPOSITO_PREVIO_LEVANTADO = "deposito_previo_levantado_importe";
+    private static final String FINCAS_IMPORTE_PAGADO_TOTAL_AUTOCALCULADO = "importe_pagado_total_autocalculado";
+    private static final String FINCAS_DEPOSITO_PREVIO_CONSIGNADO_INDEMNIZACION = "deposito_previo_consignado_indemnizacion";
+    private static final String FINCAS_LIMITE_ACUERDO_IMORTE = "limite_acuerdo_importe";
+    private static final String FINCAS_INDEMNIZACION_IMPORTE = "indemnizacion_importe";
+    private static final String FINCAS_JUSTIPRECIO_IMPORTE = "justiprecio_importe";
 
     public ImporteTotalPagadoCalculation(IValidatableForm form) {
 	super(form);
