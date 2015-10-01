@@ -432,14 +432,14 @@ public class FormExpropiations extends BasicAbstractForm implements
 	    Value[] reversionData = new Value[tableModel.getColumnCount()];
 	    PreparedStatement statement;
 	    String query = "SELECT "
-		    + DBNames.FIELD_IDREVERSION_FINCAS_REVERSIONES + ", "
-		    + DBNames.FIELD_SUPERFICIE_FINCAS_REVERSIONES + ", "
-		    + DBNames.FIELD_IMPORTE_FINCAS_REVERSIONES_EUROS + ", "
-		    + DBNames.FIELD_IMPORTE_FINCAS_REVERSIONES_PTAS + ", "
-		    + DBNames.FIELD_FECHA_FINCAS_REVERSIONES + " " + "FROM "
-		    + DBNames.SCHEMA_DATA + "."
-		    + DBNames.TABLE_FINCASREVERSIONES + " " + "WHERE "
-		    + DBNames.FIELD_IDEXPROPIACION_FINCAS_REVERSIONES + " = '"
+		    + DBNames.FIELD_IDREVERSION_FINCA_REVERSION + ", "
+		    + DBNames.FIELD_SUPERFICIE_FINCA_REVERSION + ", "
+		    + DBNames.FIELD_IMPORTE_FINCA_REVERSION_EUROS + ", "
+		    + DBNames.FIELD_IMPORTE_FINCA_REVERSION_PTAS + ", "
+		    + DBNames.FIELD_FECHA_FINCA_REVERSION + " " + "FROM "
+		    + DBNames.SCHEMA_DATA + "." + DBNames.TABLE_FINCA_REVERSION
+		    + " " + "WHERE "
+		    + DBNames.FIELD_IDEXPROPIACION_FINCA_REVERSION + " = '"
 		    + getIDFinca() + "';";
 	    statement = DBSession.getCurrentSession().getJavaConnection()
 		    .prepareStatement(query);
@@ -599,10 +599,10 @@ public class FormExpropiations extends BasicAbstractForm implements
 	for (String ReversionID : oldReversions) {
 	    try {
 		query = "DELETE FROM " + DBNames.SCHEMA_DATA + "."
-			+ DBNames.TABLE_FINCASREVERSIONES + " " + "WHERE "
-			+ DBNames.FIELD_IDEXPROPIACION_FINCAS_REVERSIONES
-			+ " = '" + getIDFinca() + "' AND "
-			+ DBNames.FIELD_IDREVERSION_FINCAS_REVERSIONES + " = '"
+			+ DBNames.TABLE_FINCA_REVERSION + " WHERE "
+			+ DBNames.FIELD_IDEXPROPIACION_FINCA_REVERSION + " = '"
+			+ getIDFinca() + "' AND "
+			+ DBNames.FIELD_IDREVERSION_FINCA_REVERSION + " = '"
 			+ ReversionID + "';";
 		statement = DBSession.getCurrentSession().getJavaConnection()
 			.prepareStatement(query);
@@ -661,7 +661,7 @@ public class FormExpropiations extends BasicAbstractForm implements
 		query = "INSERT INTO "
 			+ DBNames.SCHEMA_DATA
 			+ "."
-			+ DBNames.TABLE_FINCASREVERSIONES
+			+ DBNames.TABLE_FINCA_REVERSION
 			+ " (id_finca, id_reversion, superficie, importe_euros, importe_ptas, fecha_acta) "
 			+ "VALUES ('" + getIDFinca() + "', '" + idReversion
 			+ "',";

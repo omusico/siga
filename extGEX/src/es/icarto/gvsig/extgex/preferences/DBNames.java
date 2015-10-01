@@ -51,14 +51,15 @@ public class DBNames {
     public static final String FIELD_IDREVERSION_REVERSIONES = "exp_id";
     public static final String FIELD_GID_REVERSIONES = "gid";
 
-    // table fincas_reversiones
+    // table finca_reversion
+    public static final String TABLE_FINCA_REVERSION = "finca_reversion";
     public static final String TABLE_REVERSIONES = "exp_reversion";
-    public static final String FIELD_IDREVERSION_FINCAS_REVERSIONES = "id_reversion";
-    public static final String FIELD_IDEXPROPIACION_FINCAS_REVERSIONES = "id_finca";
-    public static final String FIELD_SUPERFICIE_FINCAS_REVERSIONES = "superficie";
-    public static final String FIELD_IMPORTE_FINCAS_REVERSIONES_EUROS = "importe_euros";
-    public static final String FIELD_IMPORTE_FINCAS_REVERSIONES_PTAS = "importe_ptas";
-    public static final String FIELD_FECHA_FINCAS_REVERSIONES = "fecha_acta";
+    public static final String FIELD_IDREVERSION_FINCA_REVERSION = "id_reversion";
+    public static final String FIELD_IDEXPROPIACION_FINCA_REVERSION = "id_finca";
+    public static final String FIELD_SUPERFICIE_FINCA_REVERSION = "superficie";
+    public static final String FIELD_IMPORTE_FINCA_REVERSION_EUROS = "importe_euros";
+    public static final String FIELD_IMPORTE_FINCA_REVERSION_PTAS = "importe_ptas";
+    public static final String FIELD_FECHA_FINCA_REVERSION = "fecha_acta";
     public static final String FIELD_AYUNTAMIENTO_REVERSIONES = "ayuntamiento_nombre";
 
     // table fincas_pm
@@ -80,7 +81,6 @@ public class DBNames {
     // more tables
     public static final String LAYER_FINCAS = "Fincas";
     public static final String TABLE_EXPROPIACIONES = "expropiaciones";
-    public static final String TABLE_FINCASREVERSIONES = "finca_reversion";
     public static final String LAYER_MUNICIPIOS = "Municipios";
     public static final String LAYER_PARROQUIAS = "Parroquias";
     public static final String LAYER_PKS = "PKs_AP9";

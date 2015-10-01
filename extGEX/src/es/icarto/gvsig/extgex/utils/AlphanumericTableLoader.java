@@ -36,7 +36,7 @@ public class AlphanumericTableLoader {
 	// Alphanumeric tables needed by this form
 	String[] tableNames = new String[3];
 	tableNames[0] = DBNames.TABLE_EXPROPIACIONES;
-	tableNames[1] = DBNames.TABLE_FINCASREVERSIONES;
+	tableNames[1] = DBNames.TABLE_FINCA_REVERSION;
 	tableNames[2] = DBNames.TABLE_CULTIVOS;
 
 	for (int i = 0; i < tableNames.length; i++) {

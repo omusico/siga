@@ -169,9 +169,9 @@ public class FormReversions extends BasicAbstractForm {
 	    // fincasAfectadas.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	    fincasAfectadas.getColumnModel().getColumn(0).setPreferredWidth(80);
 	    fincasAfectadas.getColumnModel().getColumn(1)
-		    .setPreferredWidth(185);
+	    .setPreferredWidth(185);
 	    fincasAfectadas.getColumnModel().getColumn(2)
-		    .setPreferredWidth(100);
+	    .setPreferredWidth(100);
 	    fincasAfectadas.getColumnModel().getColumn(5).setPreferredWidth(60);
 
 	    String[] reversionData = new String[tableModel.getColumnCount()];
@@ -234,14 +234,13 @@ public class FormReversions extends BasicAbstractForm {
 
     private ResultSet getFincasByExpReversion() throws SQLException {
 	PreparedStatement statement;
-	String query = "SELECT "
-		+ DBNames.FIELD_IDEXPROPIACION_FINCAS_REVERSIONES + ", "
-		+ DBNames.FIELD_SUPERFICIE_FINCAS_REVERSIONES + ", "
-		+ DBNames.FIELD_IMPORTE_FINCAS_REVERSIONES_EUROS + ", "
-		+ DBNames.FIELD_IMPORTE_FINCAS_REVERSIONES_PTAS + ", "
-		+ DBNames.FIELD_FECHA_FINCAS_REVERSIONES + " " + "FROM "
-		+ DBNames.SCHEMA_DATA + "." + DBNames.TABLE_FINCASREVERSIONES
-		+ " " + "WHERE " + DBNames.FIELD_IDREVERSION_FINCAS_REVERSIONES
+	String query = "SELECT " + DBNames.FIELD_IDEXPROPIACION_FINCA_REVERSION
+		+ ", " + DBNames.FIELD_SUPERFICIE_FINCA_REVERSION + ", "
+		+ DBNames.FIELD_IMPORTE_FINCA_REVERSION_EUROS + ", "
+		+ DBNames.FIELD_IMPORTE_FINCA_REVERSION_PTAS + ", "
+		+ DBNames.FIELD_FECHA_FINCA_REVERSION + " " + "FROM "
+		+ DBNames.SCHEMA_DATA + "." + DBNames.TABLE_FINCA_REVERSION
+		+ " " + "WHERE " + DBNames.FIELD_IDREVERSION_FINCA_REVERSION
 		+ " = '" + getExpId() + "';";
 	statement = DBSession.getCurrentSession().getJavaConnection()
 		.prepareStatement(query);

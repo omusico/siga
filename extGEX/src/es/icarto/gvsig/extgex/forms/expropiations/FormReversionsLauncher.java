@@ -91,7 +91,7 @@ public class FormReversionsLauncher implements MouseListener {
 	    ArrayList<Long> rowIndexes = TableUtils
 		    .getFeatureIndexesFromJTable(table,
 			    layerReversions.getRecordset(),
-			    DBNames.FIELD_IDREVERSION_FINCAS_REVERSIONES);
+			    DBNames.FIELD_IDREVERSION_FINCA_REVERSION);
 	    formReversions.clearSelection();
 	    formReversions.setOnlySelected(false);
 	    if (rowIndexes.size() > 0) {
