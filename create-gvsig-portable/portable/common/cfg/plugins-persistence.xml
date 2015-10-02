@@ -131,4 +131,13 @@
             <property key="subType" value=""/>
         </xml-tag>
     </xml-tag>
+    
+    <xml-tag>
+		<property key="host" value="192.168.0.30"/>
+    	<property key="port" value="5432"/>
+        <property key="database" value="SIGA"/>
+        <property key="user" value=""/>
+        <property key="schema" value=""/>
+        <property key="com.iver.andami.pluginName" value="es.udc.cartolab.gvsig.users"/>
+    </xml-tag>
 </xml-tag>
