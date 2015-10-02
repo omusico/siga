@@ -8,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,7 +18,6 @@ import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -49,10 +47,8 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
 public class FormExpropiations extends BasicAbstractForm implements
-TableModelListener {
+	TableModelListener {
 
-    private static final String EXPROPIATIONS_ADD_REVERSIONS_BUTTON = "add_reversions_button";
-    private static final String EXPROPIATIONS_DELETE_REVERSIONS_BUTTON = "delete_reversions_button";
     private static final String EXPROPIATIONS_AFECTADO_PM = "afectado_por_policia_margenes";
 
     public static final String TABLENAME = "exp_finca";
@@ -77,11 +73,6 @@ TableModelListener {
 
     private JComboBox afectado_pm;
 
-    private AddReversionsListener addReversionsListener;
-    private DeleteReversionsListener deleteReversionsListener;
-    private JButton addReversionsButton;
-    private JButton deleteReversionsButton;
-
     private AddExpropiationListener addExpropiationListener;
     private DeleteExpropiationListener deleteExpropiationListener;
     private JButton addExpropiationButton;
@@ -93,15 +84,11 @@ TableModelListener {
 
     private FormReversionsLauncher formReversionsLauncher;
 
-    private IGeometry insertedGeom;
-
     private ArrayList<String> oldReversions;
 
     public FormExpropiations(FLyrVect layer, IGeometry insertedGeom) {
 	super(layer);
-	if (insertedGeom != null) {
-	    this.insertedGeom = insertedGeom;
-	}
+
 	addButtonsToActionsToolBar();
 
 	addCalculation(new ImporteTotalPagadoCalculation(this));
@@ -151,16 +138,6 @@ TableModelListener {
 
 	afectado_pm = (JComboBox) widgets.get(EXPROPIATIONS_AFECTADO_PM);
 
-	addReversionsListener = new AddReversionsListener();
-	addReversionsButton = (JButton) formBody
-		.getComponentByName(EXPROPIATIONS_ADD_REVERSIONS_BUTTON);
-	addReversionsButton.addActionListener(addReversionsListener);
-
-	deleteReversionsListener = new DeleteReversionsListener();
-	deleteReversionsButton = (JButton) formBody
-		.getComponentByName(EXPROPIATIONS_DELETE_REVERSIONS_BUTTON);
-	deleteReversionsButton.addActionListener(deleteReversionsListener);
-
 	addExpropiationListener = new AddExpropiationListener();
 	addExpropiationButton = (JButton) formBody
 		.getComponentByName("expropiaciones_add_button");
@@ -204,43 +181,9 @@ TableModelListener {
 
 	reversiones.removeMouseListener(formReversionsLauncher);
 
-	addReversionsButton.removeActionListener(addReversionsListener);
-	deleteReversionsButton.removeActionListener(deleteReversionsListener);
-
 	addExpropiationButton.removeActionListener(addExpropiationListener);
 	deleteExpropiationButton
-	.removeActionListener(deleteExpropiationListener);
-    }
-
-    public class AddReversionsListener implements ActionListener {
-
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-	    SubFormExpropiationsAddReversions subForm = new SubFormExpropiationsAddReversions(
-		    layer, reversiones, getIDFinca(), insertedGeom);
-	    if (!subForm.getReversionsFromFinca().isEmpty()) {
-		PluginServices.getMDIManager().addWindow(subForm);
-	    } else {
-		JOptionPane.showMessageDialog(null,
-			PluginServices.getText(this, "cannotAddReversion"));
-	    }
-	}
-
-    }
-
-    public class DeleteReversionsListener implements ActionListener {
-
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-	    int[] selectedRows = reversiones.getSelectedRows();
-	    DefaultTableModel model = (DefaultTableModel) reversiones
-		    .getModel();
-	    for (int i = 0; i < selectedRows.length; i++) {
-		int rowIndex = selectedRows[i];
-		model.removeRow(rowIndex);
-		repaint();
-	    }
-	}
+		.removeActionListener(deleteExpropiationListener);
     }
 
     public class AddExpropiationListener implements ActionListener {
@@ -278,13 +221,13 @@ TableModelListener {
 		    .getSelectedItem()).getKey())
 		    + LocalizadorFormatter.getUC(((KeyValue) uc
 			    .getSelectedItem()).getKey())
-			    + LocalizadorFormatter
+		    + LocalizadorFormatter
 			    .getAyuntamiento(((KeyValue) ayuntamiento
 				    .getSelectedItem()).getKey())
-				    + LocalizadorFormatter.getSubtramo(((KeyValue) subtramo
-					    .getSelectedItem()).getKey())
-					    + getStringNroFincaFormatted()
-					    + getStringSeccionFormatted();
+		    + LocalizadorFormatter.getSubtramo(((KeyValue) subtramo
+			    .getSelectedItem()).getKey())
+		    + getStringNroFincaFormatted()
+		    + getStringSeccionFormatted();
 	    finca.setText(id_finca);
 	    getFormController().setValue(DBNames.FIELD_IDFINCA, id_finca);
 	}
@@ -544,119 +487,8 @@ TableModelListener {
 
     @Override
     public boolean saveRecord() throws StopWriterVisitorException {
-	saveReversionsTable();
 	saveExpropiationsTable();
 	return super.saveRecord();
-    }
-
-    private void saveReversionsTable() {
-	PreparedStatement statement;
-	String query = null;
-	String idReversion = null;
-	String superficie;
-	String importeEuros;
-	String importePtas = null;
-	String fechaActa = null;
-
-	// we remove old Reversions on this Finca
-	for (String ReversionID : oldReversions) {
-	    try {
-		query = "DELETE FROM " + DBNames.SCHEMA_DATA + "."
-			+ DBNames.TABLE_FINCA_REVERSION + " WHERE "
-			+ DBNames.FIELD_IDEXPROPIACION_FINCA_REVERSION + " = '"
-			+ getIDFinca() + "' AND "
-			+ DBNames.FIELD_IDREVERSION_FINCA_REVERSION + " = '"
-			+ ReversionID + "';";
-		statement = DBSession.getCurrentSession().getJavaConnection()
-			.prepareStatement(query);
-		statement.execute();
-	    } catch (SQLException e) {
-		e.printStackTrace();
-		continue;
-	    }
-	}
-
-	// Now, we save into database current state of JTable
-	for (int i = 0; i < reversiones.getRowCount(); i++) {
-	    try {
-		idReversion = reversiones.getModel().getValueAt(i, 0)
-			.toString();
-		if (reversiones.getModel().getValueAt(i, 1) != null) {
-		    superficie = reversiones.getModel().getValueAt(i, 1)
-			    .toString();
-		    if (superficie.contains(",")) {
-			superficie = superficie.replace(",", ".");
-		    }
-		} else {
-		    superficie = null;
-		}
-		if (reversiones.getModel().getValueAt(i, 2) != null) {
-		    importeEuros = reversiones.getModel().getValueAt(i, 2)
-			    .toString();
-		    if (importeEuros.contains(",")) {
-			importeEuros = importeEuros.replace(",", ".");
-		    }
-		} else {
-		    importeEuros = null;
-		}
-
-		if (importeEuros != null) {
-		    try {
-			double parseDouble = Double.parseDouble(importeEuros) * 166.386;
-			importePtas = Long.toString(Math.round(parseDouble));
-		    } catch (NumberFormatException e) {
-			importeEuros = null;
-			importePtas = null;
-		    }
-
-		}
-
-		if (reversiones.getModel().getValueAt(i, 4) != null) {
-		    fechaActa = reversiones.getModel().getValueAt(i, 4)
-			    .toString();
-		    try {
-			DateFormatNT.getDateFormat().parse(fechaActa);
-		    } catch (ParseException e) {
-			fechaActa = null;
-		    }
-		}
-
-		query = "INSERT INTO "
-			+ DBNames.SCHEMA_DATA
-			+ "."
-			+ DBNames.TABLE_FINCA_REVERSION
-			+ " (id_finca, id_reversion, superficie, importe_euros, importe_ptas, fecha_acta) "
-			+ "VALUES ('" + getIDFinca() + "', '" + idReversion
-			+ "',";
-		if (superficie != null) {
-		    query = query + " '" + superficie + "',";
-		} else {
-		    query = query + " null,";
-		}
-		if (importeEuros != null) {
-		    query = query + " '" + importeEuros + "',";
-		} else {
-		    query = query + " null );";
-		}
-		if (importePtas != null) {
-		    query = query + " '" + importePtas + "',";
-		} else {
-		    query = query + " null );";
-		}
-		if (fechaActa != null) {
-		    query = query + " '" + fechaActa + "');";
-		} else {
-		    query = query + " null );";
-		}
-
-		statement = DBSession.getCurrentSession().getJavaConnection()
-			.prepareStatement(query);
-		statement.execute();
-	    } catch (SQLException e) {
-		e.printStackTrace();
-		continue;
-	    }
-	}
     }
 
     private void saveExpropiationsTable() {
