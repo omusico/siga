@@ -8,20 +8,21 @@ import java.util.Collection;
 
 import javax.swing.table.TableModel;
 
-import es.icarto.gvsig.commons.gui.tables.NotEditableTableModel;
 import es.icarto.gvsig.commons.queries.ConnectionWrapper;
 import es.icarto.gvsig.commons.utils.Field;
+import es.udc.cartolab.gvsig.elle.gui.wizard.load.MunicipiosTableModel;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class MunicipioConstantes {
 
     private static final String MUNICIPIO_CONSTANTS_TABLENAME = "elle.municipio_constantes";
-    private final NotEditableTableModel data;
+    private final MunicipiosTableModel data;
 
     private final CurrentUser user;
 
     public MunicipioConstantes(CurrentUser user) {
-	data = new NotEditableTableModel();
+	data = new MunicipiosTableModel();
+
 	this.user = user;
 
 	if (DBSession.isActive()) {
@@ -41,7 +42,7 @@ public class MunicipioConstantes {
 	    where = "";
 	}
 	String query = String
-		.format("SELECT id as \"Código INE\", municipio as \"Municipio\", ap as \"AP\", ag as \"AG\" FROM %s %s ORDER BY orden;",
+		.format("SELECT id as \"Código INE\", municipio as \"Municipio\", '' as \"Descripción\", '<span style=\"color:blue\">' || ap || '</span>' as \"AP\", '<span style=\"color:green\">' || ag || '</span>' as \"AG\" FROM %s %s ORDER BY orden;",
 			MUNICIPIO_CONSTANTS_TABLENAME, where);
 	con.execute(query, data);
     }

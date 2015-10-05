@@ -1,6 +1,7 @@
 package es.udc.cartolab.gvsig.elle.gui.wizard.load;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.geom.Rectangle2D;
@@ -11,7 +12,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
@@ -30,14 +33,13 @@ import es.udc.cartolab.gvsig.elle.utils.ELLEMap;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
-public class ConstantsPanel extends JPanel implements ItemListener {
+public class ConstantsPanel extends JPanel {
 
     private static final Logger logger = Logger.getLogger(ConstantsPanel.class);
     private JTable table;
     private MunicipioConstantes municipioConstantes;
     private CurrentUser user;
-    private CheckBoxHeader apHeader;
-    private CheckBoxHeader agHeader;
+
     private TableRowSorter<TableModel> sorter;
 
     public ConstantsPanel() {
@@ -48,9 +50,88 @@ public class ConstantsPanel extends JPanel implements ItemListener {
     }
 
     private void setUpUI() {
+	setUpTable();
+	setUpRadioButtonPanel();
+    }
+
+    private void setUpTable() {
 	table = new JTable();
 	table.getTableHeader().setReorderingAllowed(false);
-	this.add(new JScrollPane(table), BorderLayout.CENTER);
+	table.getTableHeader().setResizingAllowed(false);
+	JPanel p = new JPanel();
+	p.add(table);
+
+	this.add(new JScrollPane(p), BorderLayout.CENTER);
+    }
+
+    private void setUpRadioButtonPanel() {
+	JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+	ButtonGroup btGroup = new ButtonGroup();
+	MyItemListener itemListener = new MyItemListener(btGroup);
+
+	JRadioButton todos = new JRadioButton("Todos");
+	todos.setActionCommand("Todos");
+	panel.add(todos);
+	btGroup.add(todos);
+
+	JRadioButton ap = new JRadioButton("AP");
+	ap.setActionCommand("AP");
+	panel.add(ap);
+	btGroup.add(ap);
+
+	JRadioButton ag = new JRadioButton("AG");
+	ag.setActionCommand("AG");
+	panel.add(ag);
+	btGroup.add(ag);
+	btGroup.setSelected(todos.getModel(), true);
+
+	todos.addItemListener(itemListener);
+	ap.addItemListener(itemListener);
+	ag.addItemListener(itemListener);
+
+	this.add(panel, BorderLayout.NORTH);
+
+    }
+
+    private class MyItemListener implements ItemListener {
+
+	private final ButtonGroup btGroup;
+
+	public MyItemListener(ButtonGroup btGroup) {
+	    this.btGroup = btGroup;
+	}
+
+	private class MyRowFilter extends RowFilter<Object, Object> {
+	    private final int column;
+
+	    public MyRowFilter(int column) {
+		this.column = column;
+	    }
+
+	    @Override
+	    public boolean include(
+		    javax.swing.RowFilter.Entry<? extends Object, ? extends Object> entry) {
+		return !entry.getStringValue(column).isEmpty();
+	    }
+
+	}
+
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+	    String selected = btGroup.getSelection().getActionCommand();
+	    RowFilter<Object, Object> filter = null;
+
+	    if (selected.equalsIgnoreCase("TODOS")) {
+		filter = null;
+	    }
+	    if (selected.equalsIgnoreCase("AP")) {
+		filter = new MyRowFilter(3);
+	    } else if (selected.equalsIgnoreCase("AG")) {
+		filter = new MyRowFilter(4);
+	    }
+
+	    sorter.setRowFilter(filter);
+	}
     }
 
     private void setUpData() {
@@ -59,10 +140,13 @@ public class ConstantsPanel extends JPanel implements ItemListener {
 	final TableModel valueListData = municipioConstantes.getAsTableModel();
 	table.setModel(valueListData);
 	table.removeColumn(table.getColumnModel().getColumn(0));
-	apHeader = new CheckBoxHeader(this);
-	table.getColumn("AP").setHeaderRenderer(apHeader);
-	agHeader = new CheckBoxHeader(this);
-	table.getColumn("AG").setHeaderRenderer(agHeader);
+	table.removeColumn(table.getColumnModel().getColumn(2));
+	table.removeColumn(table.getColumnModel().getColumn(2));
+	table.getColumn("Municipio").setPreferredWidth(155);
+	table.getColumn("Municipio").setMaxWidth(155);
+	table.getColumn("Municipio").setMinWidth(155);
+	table.getColumn("Descripción").setMinWidth(600);
+
 	sorter = new TableRowSorter<TableModel>(table.getModel());
 	for (int i = 0; i < table.getModel().getColumnCount(); i++) {
 	    sorter.setSortable(i, false);
@@ -217,32 +301,4 @@ public class ConstantsPanel extends JPanel implements ItemListener {
 	return Collections.emptyList();
     }
 
-    @Override
-    public void itemStateChanged(ItemEvent e) {
-	// both or none selected
-	if (!(apHeader.isSelected() ^ agHeader.isSelected())) {
-	    sorter.setRowFilter(null);
-	    return;
-	}
-	System.out.println("done");
-	CheckBoxHeader source = (CheckBoxHeader) e.getSource();
-
-	final int column = source.getColumn();
-	System.out.println("selected: " + column);
-	RowFilter<Object, Object> filter = new RowFilter<Object, Object>() {
-
-	    @Override
-	    public boolean include(
-		    javax.swing.RowFilter.Entry<? extends Object, ? extends Object> entry) {
-		if (column == 1) {
-		    return !entry.getStringValue(3).isEmpty();
-		} else if (column == 2) {
-		    return !entry.getStringValue(2).isEmpty();
-		}
-		return true;
-	    }
-	};
-	sorter.setRowFilter(filter);
-
-    }
 }
