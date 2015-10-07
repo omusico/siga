@@ -15,13 +15,9 @@ public class LocatorByFincaExtension extends AbstractExtension {
     }
 
     @Override
-    public void initialize() {
-	// Nothing to do
-    }
-
-    @Override
     public boolean isEnabled() {
-	if ((DBSession.getCurrentSession() != null) && (getView() != null) && isLayerLoaded()) {
+	if ((DBSession.getCurrentSession() != null) && (getView() != null)
+		&& isLayerLoaded()) {
 	    return true;
 	}
 	return false;

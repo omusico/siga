@@ -15,13 +15,9 @@ public class LocatorByMunicipioExtension extends AbstractExtension {
     }
 
     @Override
-    public void initialize() {
-	// Nothing to do
-    }
-
-    @Override
     public boolean isEnabled() {
-	if ((DBSession.getCurrentSession() != null) && (getView() != null) && areLayersLoaded()) {
+	if ((DBSession.getCurrentSession() != null) && (getView() != null)
+		&& areLayersLoaded()) {
 	    return true;
 	}
 	return false;
