@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -18,7 +17,6 @@ import es.icarto.gvsig.extgia.forms.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
@@ -29,8 +27,6 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
     JTextField barreraRigidaIDWidget;
     CalculateComponentValue barreraRigidaid;
     CalculateComponentValue barreraRigidaCodigo;
-    private JComboBox tipoVia;
-    private DependentComboboxHandler direccionDomainHandler;
 
     public BarreraRigidaForm(FLyrVect layer) {
 	super(layer);
@@ -38,8 +34,9 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getTrabajosDBTableName(), getWidgetComponents(),
 		getElementID(), DBFieldNames.trabajosVegetacionColNames,
-		DBFieldNames.trabajosVegetacionColAlias, DBFieldNames.trabajosColWidths,
-		this, BarreraRigidaTrabajosSubForm.class));
+		DBFieldNames.trabajosVegetacionColAlias,
+		DBFieldNames.trabajosColWidths, this,
+		BarreraRigidaTrabajosSubForm.class));
 
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getReconocimientosDBTableName(), getWidgetComponents(),
@@ -55,8 +52,6 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
     @Override
     protected void fillSpecificValues() {
 	super.fillSpecificValues();
-
-	direccionDomainHandler.updateComboBoxValues();
 
 	if (filesLinkButton == null) {
 	    addNewButtonsToActionsToolBar();
@@ -81,18 +76,6 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 		getWidgetComponents(), DBFieldNames.CODIGO, DBFieldNames.TIPO,
 		DBFieldNames.METODO_CONSTRUCTIVO, DBFieldNames.PERFIL);
 	barreraRigidaCodigo.setListeners();
-
-	JComboBox direccion = (JComboBox) widgets.get("direccion");
-	tipoVia = (JComboBox) widgets.get("tipo_via");
-	direccionDomainHandler = new DependentComboboxHandler(this, tipoVia,
-		direccion);
-	tipoVia.addActionListener(direccionDomainHandler);
-    }
-
-    @Override
-    protected void removeListeners() {
-	tipoVia.removeActionListener(direccionDomainHandler);
-	super.removeListeners();
     }
 
     @Override
@@ -165,5 +148,4 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
     public String getImagesDBTableName() {
 	return "barrera_rigida_imagenes";
     }
-
 }

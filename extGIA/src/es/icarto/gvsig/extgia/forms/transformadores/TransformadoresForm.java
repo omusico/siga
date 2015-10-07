@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -18,7 +17,6 @@ import es.icarto.gvsig.extgia.forms.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
@@ -28,8 +26,6 @@ public class TransformadoresForm extends AbstractFormWithLocationWidgets {
 
     JTextField transformadorIDWidget;
     CalculateComponentValue transformadorid;
-    private JComboBox tipoVia;
-    private DependentComboboxHandler direccionDomainHandler;
 
     public TransformadoresForm(FLyrVect layer) {
 	super(layer);
@@ -56,8 +52,6 @@ public class TransformadoresForm extends AbstractFormWithLocationWidgets {
     protected void fillSpecificValues() {
 	super.fillSpecificValues();
 
-	direccionDomainHandler.updateComboBoxValues();
-
 	if (transformadorIDWidget.getText().isEmpty()) {
 	    transformadorid = new TransformadoresCalculateIDValue(this,
 		    getWidgetComponents(), getElementID(), getElementID());
@@ -80,19 +74,6 @@ public class TransformadoresForm extends AbstractFormWithLocationWidgets {
 	transformadorid = new TransformadoresCalculateIDValue(this,
 		getWidgetComponents(), getElementID(), getElementID());
 	transformadorid.setListeners();
-
-	JComboBox direccion = (JComboBox) widgets.get("direccion");
-	tipoVia = (JComboBox) widgets.get("tipo_via");
-	direccionDomainHandler = new DependentComboboxHandler(this, tipoVia,
-		direccion);
-	tipoVia.addActionListener(direccionDomainHandler);
-    }
-
-    @Override
-    protected void removeListeners() {
-	tipoVia.removeActionListener(direccionDomainHandler);
-
-	super.removeListeners();
     }
 
     @Override
@@ -165,5 +146,4 @@ public class TransformadoresForm extends AbstractFormWithLocationWidgets {
     protected boolean hasSentido() {
 	return true;
     }
-
 }

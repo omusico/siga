@@ -18,7 +18,6 @@ import es.icarto.gvsig.extgia.forms.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
@@ -31,8 +30,6 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
     JComboBox baseContratistaWidget;
     JTextField isletaIDWidget;
     CalculateComponentValue isletaid;
-    private JComboBox tipoVia;
-    private DependentComboboxHandler direccionDomainHandler;
 
     public IsletasForm(FLyrVect layer) {
 	super(layer);
@@ -40,8 +37,9 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getTrabajosDBTableName(), getWidgetComponents(),
 		getElementID(), DBFieldNames.trabajosVegetacionColNames,
-		DBFieldNames.trabajosVegetacionColAlias, DBFieldNames.trabajosColWidths,
-		this, IsletasTrabajosSubForm.class));
+		DBFieldNames.trabajosVegetacionColAlias,
+		DBFieldNames.trabajosColWidths, this,
+		IsletasTrabajosSubForm.class));
 
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getReconocimientosDBTableName(), getWidgetComponents(),
@@ -57,8 +55,6 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
     @Override
     protected void fillSpecificValues() {
 	super.fillSpecificValues();
-
-	direccionDomainHandler.updateComboBoxValues();
 
 	if (filesLinkButton == null) {
 	    addNewButtonsToActionsToolBar();
@@ -76,20 +72,11 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 		DBFieldNames.ID_ISLETA, DBFieldNames.NUMERO_ISLETA,
 		DBFieldNames.BASE_CONTRATISTA);
 	isletaid.setListeners();
-
-	JComboBox direccion = (JComboBox) getWidgets().get("direccion");
-	tipoVia = (JComboBox) getWidgets().get("tipo_via");
-	direccionDomainHandler = new DependentComboboxHandler(this, tipoVia,
-		direccion);
-	tipoVia.addActionListener(direccionDomainHandler);
-
     }
 
     @Override
     protected void removeListeners() {
 	isletaid.removeListeners();
-	tipoVia.removeActionListener(direccionDomainHandler);
-
 	super.removeListeners();
     }
 

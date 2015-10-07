@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -18,7 +17,6 @@ import es.icarto.gvsig.extgia.forms.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 import es.icarto.gvsig.siga.forms.reports.NavTableComponentsPrintButton;
 
 @SuppressWarnings("serial")
@@ -28,8 +26,6 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 
     JTextField elementoSenhalizacionIDWidget;
     CalculateComponentValue elementoSenhalizacionid;
-    private JComboBox tipoVia;
-    private DependentComboboxHandler direccionDomainHandler;
 
     private JButton printReportB;
 
@@ -38,39 +34,37 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
     private PrintSVReportObserver printListener;
 
     public static String[] senhalesColNames = { "id_senhal_vertical",
-	    "tipo_senhal", "codigo_senhal", "leyenda", "fecha_instalacion",
-	    "fecha_reposicion", "codigo_senhal" };
+	"tipo_senhal", "codigo_senhal", "leyenda", "fecha_instalacion",
+	"fecha_reposicion", "codigo_senhal" };
 
     public static String[] senhalesColAlias = { "ID Señal", "Tipo Señal",
-	    "Código Señal", "Leyenda", "Instalación", "Reposición", "Icono" };
+	"Código Señal", "Leyenda", "Instalación", "Reposición", "Icono" };
 
     public SenhalizacionVerticalForm(FLyrVect layer) {
 	super(layer);
 
 	addTableHandler(new GIAAlphanumericTableHandler(
-		getTrabajosDBTableName(), getWidgets(),
-		getElementID(), DBFieldNames.trabajosVegetacionColNames,
+		getTrabajosDBTableName(), getWidgets(), getElementID(),
+		DBFieldNames.trabajosVegetacionColNames,
 		DBFieldNames.trabajosVegetacionColAlias,
 		DBFieldNames.trabajosColWidths, this));
 
 	addTableHandler(new GIAAlphanumericTableHandler(
-		getReconocimientosDBTableName(), getWidgets(),
-		getElementID(), DBFieldNames.reconocimientosColNames,
+		getReconocimientosDBTableName(), getWidgets(), getElementID(),
+		DBFieldNames.reconocimientosColNames,
 		DBFieldNames.reconocimientosColAlias, null, this,
 		SenhalizacionVerticalReconocimientosSubForm.class));
 
 	addTableHandler(new SenhalesTableHandler(
 		"senhalizacion_vertical_senhales", getWidgets(),
 		getElementID(), senhalesColNames, senhalesColAlias, new int[] {
-			20, 45, 45, 145, 45, 40, 30 }, this,
-		    SenhalizacionVerticalSenhalesSubForm.class));
+		    20, 45, 45, 145, 45, 40, 30 }, this,
+		SenhalizacionVerticalSenhalesSubForm.class));
     }
 
     @Override
     protected void fillSpecificValues() {
 	super.fillSpecificValues();
-
-	direccionDomainHandler.updateComboBoxValues();
 
 	if (elementoSenhalizacionIDWidget.getText().isEmpty()) {
 	    elementoSenhalizacionid = new SenhalizacionVerticalCalculateIDValue(
@@ -93,7 +87,8 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 	}
 	printReportB.removeActionListener(printListener);
 
-	printListener = new PrintSVReportObserver(this, reportPath.getPath(), getElementID(), getPrimaryKeyValue());
+	printListener = new PrintSVReportObserver(this, reportPath.getPath(),
+		getElementID(), getPrimaryKeyValue());
 	printReportB.addActionListener(printListener);
     }
 
@@ -111,7 +106,8 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 
 	NavTableComponentsPrintButton ntPrintButton = new NavTableComponentsPrintButton();
 
-	printListener = new PrintSVReportObserver(this, reportPath.getPath(), getElementID(), getPrimaryKeyValue());
+	printListener = new PrintSVReportObserver(this, reportPath.getPath(),
+		getElementID(), getPrimaryKeyValue());
 	printReportB = ntPrintButton.createButton(
 		PluginServices.getText(this, "printReportsToolTip"),
 		getPrintIcon(), printListener);
@@ -127,19 +123,6 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 
 	elementoSenhalizacionIDWidget = (JTextField) widgets
 		.get(DBFieldNames.ID_ELEMENTO_SENHALIZACION);
-
-	JComboBox direccion = (JComboBox) widgets.get("direccion");
-	tipoVia = (JComboBox) getWidgets().get("tipo_via");
-	direccionDomainHandler = new DependentComboboxHandler(this, tipoVia,
-		direccion);
-	tipoVia.addActionListener(direccionDomainHandler);
-    }
-
-    @Override
-    protected void removeListeners() {
-	tipoVia.removeActionListener(direccionDomainHandler);
-
-	super.removeListeners();
     }
 
     @Override
@@ -183,5 +166,4 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
     public String getImagesDBTableName() {
 	return "senhalizacion_vertical_imagenes";
     }
-
 }

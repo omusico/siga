@@ -2,7 +2,6 @@ package es.icarto.gvsig.extgia.forms.obras_paso;
 
 import java.util.Map;
 
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -13,7 +12,6 @@ import es.icarto.gvsig.extgia.forms.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 
 @SuppressWarnings("serial")
 public class ObrasPasoForm extends AbstractFormWithLocationWidgets {
@@ -22,8 +20,6 @@ public class ObrasPasoForm extends AbstractFormWithLocationWidgets {
 
     JTextField obraPasoIDWidget;
     CalculateComponentValue obraPasoid;
-    private JComboBox tipoVia;
-    private DependentComboboxHandler direccionDomainHandler;
 
     public ObrasPasoForm(FLyrVect layer) {
 	super(layer);
@@ -42,8 +38,6 @@ public class ObrasPasoForm extends AbstractFormWithLocationWidgets {
     @Override
     protected void fillSpecificValues() {
 	super.fillSpecificValues();
-
-	direccionDomainHandler.updateComboBoxValues();
 
 	if (obraPasoIDWidget.getText().isEmpty()) {
 	    obraPasoid = new ObrasPasoCalculateIDValue(this,
@@ -65,12 +59,6 @@ public class ObrasPasoForm extends AbstractFormWithLocationWidgets {
 	Map<String, JComponent> widgets = getWidgets();
 
 	obraPasoIDWidget = (JTextField) widgets.get(DBFieldNames.ID_OBRA_PASO);
-
-	JComboBox direccion = (JComboBox) getWidgets().get("direccion");
-	tipoVia = (JComboBox) getWidgets().get("tipo_via");
-	direccionDomainHandler = new DependentComboboxHandler(this, tipoVia,
-		direccion);
-	tipoVia.addActionListener(direccionDomainHandler);
     }
 
     @Override

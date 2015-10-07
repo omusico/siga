@@ -2,7 +2,6 @@ package es.icarto.gvsig.extgia.forms.obras_desague;
 
 import java.util.Map;
 
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -13,7 +12,6 @@ import es.icarto.gvsig.extgia.forms.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 
 @SuppressWarnings("serial")
 public class ObrasDesagueForm extends AbstractFormWithLocationWidgets {
@@ -22,8 +20,6 @@ public class ObrasDesagueForm extends AbstractFormWithLocationWidgets {
 
     JTextField obraDesagueIDWidget;
     CalculateComponentValue obraDesagueid;
-    private JComboBox tipoVia;
-    private DependentComboboxHandler direccionDomainHandler;
 
     public ObrasDesagueForm(FLyrVect layer) {
 	super(layer);
@@ -42,8 +38,6 @@ public class ObrasDesagueForm extends AbstractFormWithLocationWidgets {
     @Override
     protected void fillSpecificValues() {
 	super.fillSpecificValues();
-
-	direccionDomainHandler.updateComboBoxValues();
 
 	if (obraDesagueIDWidget.getText().isEmpty()) {
 	    obraDesagueid = new ObrasDesagueCalculateIDValue(this,
@@ -65,12 +59,6 @@ public class ObrasDesagueForm extends AbstractFormWithLocationWidgets {
 
 	obraDesagueIDWidget = (JTextField) widgets
 		.get(DBFieldNames.ID_OBRA_DESAGUE);
-
-	JComboBox direccion = (JComboBox) widgets.get("direccion");
-	tipoVia = (JComboBox) widgets.get("tipo_via");
-	direccionDomainHandler = new DependentComboboxHandler(this, tipoVia,
-		direccion);
-	tipoVia.addActionListener(direccionDomainHandler);
     }
 
     @Override
@@ -114,5 +102,4 @@ public class ObrasDesagueForm extends AbstractFormWithLocationWidgets {
     public String getImagesDBTableName() {
 	return "obras_desague_imagenes";
     }
-
 }

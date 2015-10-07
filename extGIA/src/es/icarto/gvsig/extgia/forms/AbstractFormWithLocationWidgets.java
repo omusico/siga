@@ -2,6 +2,7 @@ package es.icarto.gvsig.extgia.forms;
 
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.AREA_MANTENIMIENTO;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.BASE_CONTRATISTA;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.DIRECCION;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.MUNICIPIO;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.NOMBRE_VIA;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.NOMBRE_VIA_PF;
@@ -107,6 +108,10 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 		addChained(PK_FINAL, TIPO_VIA, NOMBRE_VIA);
 	    }
 	}
+	if (widgets.get(DIRECCION) != null) {
+	    addChained(DIRECCION, TIPO_VIA);
+	}
+
 	if (widgets.get(MUNICIPIO) != null) {
 	    addChained(MUNICIPIO, BASE_CONTRATISTA, TRAMO);
 	}
@@ -191,7 +196,7 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 		    getElement(), getReconocimientosFormFileName(),
 		    getReconocimientosDBTableName());
 	    addReconocimientosBatchButton
-	    .addActionListener(addReconocimientosBatchListener);
+		    .addActionListener(addReconocimientosBatchListener);
 	}
 
 	if (saveRecordsBatchButton == null) {
@@ -229,11 +234,11 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 		    if (layerController.getValuesChanged().containsKey(
 			    getElementID())) {
 			JOptionPane
-			.showMessageDialog(
-				null,
-				"La actualización masiva no funciona en campos que forman parte del ID.",
-				"Cambios en el ID",
-				JOptionPane.WARNING_MESSAGE);
+				.showMessageDialog(
+					null,
+					"La actualización masiva no funciona en campos que forman parte del ID.",
+					"Cambios en el ID",
+					JOptionPane.WARNING_MESSAGE);
 			layerController.clearAll();
 			setChangedValues(false);
 			setSavingValues(false);
@@ -246,14 +251,14 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 		    int m = JOptionPane.showOptionDialog(
 			    null,
 			    PluginServices.getText(this, "updateInfo_msg_I")
-			    + layer.getRecordset().getSelection()
-			    .cardinality()
-			    + " "
-			    + PluginServices.getText(this,
-				    "updateInfo_msg_II"), null,
-				    JOptionPane.YES_NO_CANCEL_OPTION,
-				    JOptionPane.INFORMATION_MESSAGE, null, options,
-				    options[1]);
+				    + layer.getRecordset().getSelection()
+					    .cardinality()
+				    + " "
+				    + PluginServices.getText(this,
+					    "updateInfo_msg_II"), null,
+			    JOptionPane.YES_NO_CANCEL_OPTION,
+			    JOptionPane.INFORMATION_MESSAGE, null, options,
+			    options[1]);
 		    if (m == JOptionPane.OK_OPTION) {
 			saveRecords();
 			JOptionPane.showMessageDialog(
@@ -261,7 +266,7 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 				PluginServices.getText(this,
 					"updatedInfo_msg_I")
 					+ layer.getRecordset().getSelection()
-					.cardinality()
+						.cardinality()
 					+ " "
 					+ PluginServices.getText(this,
 						"updatedInfo_msg_II"));
@@ -283,7 +288,7 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 	}
 
 	private void saveRecords() throws ReadDriverException,
-	StopWriterVisitorException {
+		StopWriterVisitorException {
 	    int[] indexesofValuesChanged = layerController
 		    .getIndexesOfValuesChanged();
 	    String[] valuesChanged = layerController.getValuesChanged()
@@ -313,11 +318,11 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 
 	if (addTrabajosBatchButton != null) {
 	    addTrabajosBatchButton
-	    .removeActionListener(addTrabajosBatchListener);
+		    .removeActionListener(addTrabajosBatchListener);
 	}
 	if (addReconocimientosBatchButton != null) {
 	    addReconocimientosBatchButton
-	    .removeActionListener(addReconocimientosBatchListener);
+		    .removeActionListener(addReconocimientosBatchListener);
 	}
 
 	saveRecordsBatchButton.removeActionListener(saveRecordsBatchListener);

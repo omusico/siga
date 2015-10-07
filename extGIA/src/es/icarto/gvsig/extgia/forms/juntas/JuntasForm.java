@@ -2,7 +2,6 @@ package es.icarto.gvsig.extgia.forms.juntas;
 
 import java.util.Map;
 
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -13,7 +12,6 @@ import es.icarto.gvsig.extgia.forms.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 
 @SuppressWarnings("serial")
 public class JuntasForm extends AbstractFormWithLocationWidgets {
@@ -22,8 +20,6 @@ public class JuntasForm extends AbstractFormWithLocationWidgets {
 
     JTextField juntaIDWidget;
     CalculateComponentValue juntaid;
-    private JComboBox tipoVia;
-    private DependentComboboxHandler direccionDomainHandler;
 
     public JuntasForm(FLyrVect layer) {
 	super(layer);
@@ -49,8 +45,6 @@ public class JuntasForm extends AbstractFormWithLocationWidgets {
     protected void fillSpecificValues() {
 	super.fillSpecificValues();
 
-	direccionDomainHandler.updateComboBoxValues();
-
 	if (juntaIDWidget.getText().isEmpty()) {
 	    juntaid = new JuntasCalculateIDValue(this, getWidgetComponents(),
 		    DBFieldNames.ID_JUNTA, DBFieldNames.ID_JUNTA);
@@ -66,22 +60,7 @@ public class JuntasForm extends AbstractFormWithLocationWidgets {
     protected void setListeners() {
 	super.setListeners();
 	Map<String, JComponent> widgets = getWidgets();
-
 	juntaIDWidget = (JTextField) widgets.get(DBFieldNames.ID_JUNTA);
-
-	JComboBox direccion = (JComboBox) widgets.get("direccion");
-	tipoVia = (JComboBox) widgets.get("tipo_via");
-	direccionDomainHandler = new DependentComboboxHandler(this, tipoVia,
-		direccion);
-	tipoVia.addActionListener(direccionDomainHandler);
-
-    }
-
-    @Override
-    protected void removeListeners() {
-	tipoVia.removeActionListener(direccionDomainHandler);
-
-	super.removeListeners();
     }
 
     @Override

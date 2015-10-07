@@ -3,7 +3,7 @@ package es.icarto.gvsig.extgia.preferences;
 public class DBFieldNames {
 
     public enum Elements {
-	Taludes, Isletas, Enlaces, Barrera_Rigida, Areas_Servicio, Areas_Descanso, Areas_Peaje, Juntas, Pasos_Mediana, Senhalizacion_Vertical, Valla_Cierre, Firme, Obras_Paso, Obras_Desague, Muros, Senhalizacion_Variable, Lecho_Frenado, Areas_Mantenimiento, Lineas_Suministro, Transformadores;
+	Taludes, Isletas, Enlaces, Barrera_Rigida, Areas_Servicio, Areas_Descanso, Areas_Peaje, Juntas, Pasos_Mediana, Senhalizacion_Vertical, Valla_Cierre, Firme, Obras_Paso, Obras_Desague, Muros, Senhalizacion_Variable, Lecho_Frenado, Areas_Mantenimiento, Lineas_Suministro, Transformadores, Ramales;
     }
 
     public static String[] ramalesColNames = { "id_ramal", "ramal",
@@ -36,11 +36,11 @@ public class DBFieldNames {
     public static String[] trabajosVegetacionColNames = { "id_trabajo",
 	"fecha", "unidad", "medicion", "observaciones" };
 
-    public static String[] trabajosVegetacionColAlias = { "ID", "Fecha", "Unidad",
-	"Medición", "Observaciones" };
+    public static String[] trabajosVegetacionColAlias = { "ID", "Fecha",
+	"Unidad", "Medición", "Observaciones" };
 
-    public static String[] trabajosVegetacionTableEditableCells = {"Fecha", "Unidad", "Medición",
-    "Observaciones" };
+    public static String[] trabajosVegetacionTableEditableCells = { "Fecha",
+	"Unidad", "Medición", "Observaciones" };
 
     public static final String GIA_SCHEMA = "audasa_extgia";
 
@@ -55,8 +55,8 @@ public class DBFieldNames {
     public static final String PK = "pk";
     public static final String PK_INICIAL = "pk_inicial";
     public static final String PK_FINAL = "pk_final";
+    public static final String DIRECCION = "direccion";
     public static final String SENTIDO = "sentido";
-    
 
     // TALUDES
     public static final String TALUDES_LAYERNAME = "Taludes";
@@ -100,7 +100,7 @@ public class DBFieldNames {
     public static final String ENLACES_LAYERNAME = "Enlaces";
     public static final String ID_ENLACE = "id_enlace";
     public static final String MUNICIPIO = "municipio";
-   
+
     // BARRERA RIGIDA
     public static final String BARRERA_RIGIDA_LAYERNAME = "Barrera_Rigida";
     public static final String BARRERA_RIGIDA_DBTABLENAME = "barrera_rigida";
@@ -314,7 +314,5 @@ public class DBFieldNames {
 	}
 	return pk;
     }
-
-    
 
 }
