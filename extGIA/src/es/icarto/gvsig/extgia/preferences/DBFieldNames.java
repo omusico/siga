@@ -7,40 +7,40 @@ public class DBFieldNames {
     }
 
     public static String[] ramalesColNames = { "id_ramal", "ramal",
-	"sentido_ramal", "longitud" };
+	    "sentido_ramal", "longitud" };
     public static String[] ramalesColAlias = { "ID Ramal", "Nombre Ramal",
-	"Sentido", "Longitud" };
+	    "Sentido", "Longitud" };
 
     public static String[] ramalesDireccionColNames = { "id_ramal", "ramal",
-	"sentido_ramal", "direccion_ramal", "longitud" };
+	    "sentido_ramal", "direccion_ramal", "longitud" };
     public static String[] ramalesDireccionColAlias = { "ID Ramal",
-	"Nombre Ramal", "Sentido", "Dirección", "Longitud" };
+	    "Nombre Ramal", "Sentido", "Dirección", "Longitud" };
 
     public static String[] reconocimientosWhitoutIndexColNames = {
-	"n_inspeccion", "nombre_revisor", "fecha_inspeccion" };
+	    "n_inspeccion", "nombre_revisor", "fecha_inspeccion" };
     public static String[] reconocimientosWhitoutIndexColAlias = {
-	"Nº Inspección", "Revisor", "Fecha Inspección" };
+	    "Nº Inspección", "Revisor", "Fecha Inspección" };
 
     public static final String[] reconocimientosColNames = { "n_inspeccion",
-	"nombre_revisor", "fecha_inspeccion", "indice_estado" };
+	    "nombre_revisor", "fecha_inspeccion", "indice_estado" };
     public static final String[] reconocimientosColAlias = { "Nº Inspección",
-	"Revisor", "Fecha Inspección", "Índice Estado" };
+	    "Revisor", "Fecha Inspección", "Índice Estado" };
 
     public static String[] trabajosColNames = { "id_trabajo",
-	"fecha_certificado", "unidad", "medicion_audasa", "observaciones" };
+	    "fecha_certificado", "unidad", "medicion_audasa", "observaciones" };
 
     public static String[] trabajosColAlias = { "ID", "Fecha cert", "Unidad",
-	"Medición AUDASA", "Observaciones" };
+	    "Medición AUDASA", "Observaciones" };
     public static int[] trabajosColWidths = { 10, 45, 90, 75, 190 };
 
     public static String[] trabajosVegetacionColNames = { "id_trabajo",
-	"fecha", "unidad", "medicion", "observaciones" };
+	    "fecha", "unidad", "medicion", "observaciones" };
 
     public static String[] trabajosVegetacionColAlias = { "ID", "Fecha",
-	"Unidad", "Medición", "Observaciones" };
+	    "Unidad", "Medición", "Observaciones" };
 
     public static String[] trabajosVegetacionTableEditableCells = { "Fecha",
-	"Unidad", "Medición", "Observaciones" };
+	    "Unidad", "Medición", "Observaciones" };
 
     public static final String GIA_SCHEMA = "audasa_extgia";
 

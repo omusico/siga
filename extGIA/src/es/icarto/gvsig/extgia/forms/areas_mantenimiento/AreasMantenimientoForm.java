@@ -31,7 +31,7 @@ public class AreasMantenimientoForm extends AbstractFormWithLocationWidgets {
 	super(layer);
 
 	addTableHandler(new GIAAlphanumericTableHandler(
-		getRamalesDBTableName(), getWidgetComponents(), getElementID(),
+		getRamalesDBTableName(), getWidgets(), getElementID(),
 		DBFieldNames.ramalesDireccionColNames,
 		DBFieldNames.ramalesDireccionColAlias, null, this));
     }

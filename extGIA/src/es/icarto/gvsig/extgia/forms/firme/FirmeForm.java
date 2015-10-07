@@ -20,33 +20,33 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
     public static final String TABLENAME = "firme";
 
     public static String[] firmeReconocimientoColNames = { "n_inspeccion",
-	    "tipo_inspeccion", "nombre_revisor", "aparato_medicion",
-	    "fecha_inspeccion" };
+	"tipo_inspeccion", "nombre_revisor", "aparato_medicion",
+    "fecha_inspeccion" };
     public static String[] firmeReconocimientoColAlias = { "Nº Inspección",
-	    "Tipo", "Revisor", "Aparato", "Fecha Inspección" };
+	"Tipo", "Revisor", "Aparato", "Fecha Inspección" };
 
     JTextField firmeIDWidget;
     CalculateComponentValue firmeid;
 
     public static String[] firmeTrabajoColNames = { "id_trabajo",
-	    "fecha_certificado", "pk_inicial", "pk_final", "sentido",
-	    "descripcion" };
+	"fecha_certificado", "pk_inicial", "pk_final", "sentido",
+    "descripcion" };
 
     public static String[] firmeTrabajoColAlias = { "ID", "Fecha cert",
-	    "PK inicio", "PK fin", "Sentido", "Descripción" };
+	"PK inicio", "PK fin", "Sentido", "Descripción" };
 
     public FirmeForm(FLyrVect layer) {
 	super(layer);
 
 	addTableHandler(new GIAAlphanumericTableHandler(
-		getReconocimientosDBTableName(), getWidgetComponents(),
-		getElementID(), firmeReconocimientoColNames,
-		firmeReconocimientoColAlias, null, this));
+		getReconocimientosDBTableName(), getWidgets(), getElementID(),
+		firmeReconocimientoColNames, firmeReconocimientoColAlias, null,
+		this));
 
 	addTableHandler(new GIAAlphanumericTableHandler(
-		getTrabajosDBTableName(), getWidgetComponents(),
-		getElementID(), firmeTrabajoColNames, firmeTrabajoColAlias,
-		new int[] { 1, 35, 1, 1, 30, 250 }, this));
+		getTrabajosDBTableName(), getWidgets(), getElementID(),
+		firmeTrabajoColNames, firmeTrabajoColAlias, new int[] { 1, 35,
+			1, 1, 30, 250 }, this));
     }
 
     private void addNewButtonsToActionsToolBar() {

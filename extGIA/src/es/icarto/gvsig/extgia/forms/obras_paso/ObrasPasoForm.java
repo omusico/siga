@@ -25,10 +25,9 @@ public class ObrasPasoForm extends AbstractFormWithLocationWidgets {
 	super(layer);
 
 	addTableHandler(new GIAAlphanumericTableHandler(
-		getTrabajosDBTableName(), getWidgetComponents(),
-		getElementID(), DBFieldNames.trabajosColNames,
-		DBFieldNames.trabajosColAlias, DBFieldNames.trabajosColWidths,
-		this));
+		getTrabajosDBTableName(), getWidgets(), getElementID(),
+		DBFieldNames.trabajosColNames, DBFieldNames.trabajosColAlias,
+		DBFieldNames.trabajosColWidths, this));
     }
 
     private void addNewButtonsToActionsToolBar() {

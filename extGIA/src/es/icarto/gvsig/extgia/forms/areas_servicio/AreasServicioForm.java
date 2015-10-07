@@ -31,19 +31,18 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 	super(layer);
 
 	addTableHandler(new GIAAlphanumericTableHandler(
-		getTrabajosDBTableName(), getWidgetComponents(),
-		getElementID(), DBFieldNames.trabajosColNames,
-		DBFieldNames.trabajosColAlias, DBFieldNames.trabajosColWidths,
-		this));
+		getTrabajosDBTableName(), getWidgets(), getElementID(),
+		DBFieldNames.trabajosColNames, DBFieldNames.trabajosColAlias,
+		DBFieldNames.trabajosColWidths, this));
 
 	addTableHandler(new GIAAlphanumericTableHandler(
-		getRamalesDBTableName(), getWidgetComponents(), getElementID(),
+		getRamalesDBTableName(), getWidgets(), getElementID(),
 		DBFieldNames.ramalesColNames, DBFieldNames.ramalesColAlias,
 		null, this));
 
 	addTableHandler(new GIAAlphanumericTableHandler(
-		getReconocimientosDBTableName(), getWidgetComponents(),
-		getElementID(), DBFieldNames.reconocimientosColNames,
+		getReconocimientosDBTableName(), getWidgets(), getElementID(),
+		DBFieldNames.reconocimientosColNames,
 		DBFieldNames.reconocimientosColAlias, null, this,
 		AreasServicioReconocimientosSubForm.class));
     }

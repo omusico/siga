@@ -53,16 +53,17 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 
     public TaludesForm(FLyrVect layer) {
 	super(layer);
-	
-	addTableHandler(new GIAAlphanumericTableHandler(
-		getTrabajosDBTableName(), getWidgets(),
-		getElementID(), DBFieldNames.trabajosVegetacionColNames,
-		DBFieldNames.trabajosVegetacionColAlias, DBFieldNames.trabajosColWidths,
-		this, TaludesTrabajosSubForm.class));
 
 	addTableHandler(new GIAAlphanumericTableHandler(
-		getReconocimientosDBTableName(), getWidgets(),
-		getElementID(), DBFieldNames.reconocimientosColNames,
+		getTrabajosDBTableName(), getWidgets(), getElementID(),
+		DBFieldNames.trabajosVegetacionColNames,
+		DBFieldNames.trabajosVegetacionColAlias,
+		DBFieldNames.trabajosColWidths, this,
+		TaludesTrabajosSubForm.class));
+
+	addTableHandler(new GIAAlphanumericTableHandler(
+		getReconocimientosDBTableName(), getWidgets(), getElementID(),
+		DBFieldNames.reconocimientosColNames,
 		DBFieldNames.reconocimientosColAlias, null, this,
 		TaludesReconocimientosSubForm.class));
     }
@@ -135,14 +136,13 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	inclinacionMedia.setListeners();
 
 	cunetaCabeza = new EnableComponentBasedOnCheckBox(
-		(JCheckBox) getWidgets().get("cuneta_cabeza"),
-		getWidgets().get("cuneta_cabeza_revestida"));
+		(JCheckBox) getWidgets().get("cuneta_cabeza"), getWidgets()
+		.get("cuneta_cabeza_revestida"));
 	// cunetaCabeza.setRemoveDependentValues(true);
 
 	cunetaCabeza.setListeners();
-	cunetaPie = new EnableComponentBasedOnCheckBox(
-		(JCheckBox) getWidgets().get("cuneta_pie"),
-		getWidgets().get("cuneta_pie_revestida"));
+	cunetaPie = new EnableComponentBasedOnCheckBox((JCheckBox) getWidgets()
+		.get("cuneta_pie"), getWidgets().get("cuneta_pie_revestida"));
 	// cunetaPie.setRemoveDependentValues(true);
 	cunetaPie.setListeners();
 

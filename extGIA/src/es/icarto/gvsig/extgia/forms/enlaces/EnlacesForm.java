@@ -38,20 +38,18 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
     public EnlacesForm(FLyrVect layer) {
 	super(layer);
 	addTableHandler(new GIAAlphanumericTableHandler(
-		getRamalesDBTableName(), getWidgetComponents(), getElementID(),
+		getRamalesDBTableName(), getWidgets(), getElementID(),
 		DBFieldNames.ramalesDireccionColNames,
 		DBFieldNames.ramalesDireccionColAlias, null, this));
 
 	addTableHandler(new GIAAlphanumericTableHandler(
-		getReconocimientosDBTableName(), getWidgetComponents(),
-		getElementID(),
+		getReconocimientosDBTableName(), getWidgets(), getElementID(),
 		DBFieldNames.reconocimientosWhitoutIndexColNames,
 		DBFieldNames.reconocimientosWhitoutIndexColAlias, null, this));
 
 	addTableHandler(new GIAAlphanumericTableHandler(
-		"enlaces_carreteras_enlazadas", getWidgetComponents(),
-		getElementID(), carreterasColNames, carreterasColAlias, null,
-		this));
+		"enlaces_carreteras_enlazadas", getWidgets(), getElementID(),
+		carreterasColNames, carreterasColAlias, null, this));
     }
 
     private void addNewButtonsToActionsToolBar() {

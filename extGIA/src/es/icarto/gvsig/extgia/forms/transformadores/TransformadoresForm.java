@@ -32,14 +32,12 @@ public class TransformadoresForm extends AbstractFormWithLocationWidgets {
 
 	// int[] trabajoColumnsSize = { 1, 30, 90, 70, 200 };
 	addTableHandler(new GIAAlphanumericTableHandler(
-		getTrabajosDBTableName(), getWidgetComponents(),
-		getElementID(), DBFieldNames.trabajosColNames,
-		DBFieldNames.trabajosColAlias, DBFieldNames.trabajosColWidths,
-		this));
+		getTrabajosDBTableName(), getWidgets(), getElementID(),
+		DBFieldNames.trabajosColNames, DBFieldNames.trabajosColAlias,
+		DBFieldNames.trabajosColWidths, this));
 
 	addTableHandler(new GIAAlphanumericTableHandler(
-		getReconocimientosDBTableName(), getWidgetComponents(),
-		getElementID(),
+		getReconocimientosDBTableName(), getWidgets(), getElementID(),
 		DBFieldNames.reconocimientosWhitoutIndexColNames,
 		DBFieldNames.reconocimientosWhitoutIndexColAlias, null, this));
     }

@@ -34,11 +34,11 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
     private PrintSVReportObserver printListener;
 
     public static String[] senhalesColNames = { "id_senhal_vertical",
-	"tipo_senhal", "codigo_senhal", "leyenda", "fecha_instalacion",
-	"fecha_reposicion", "codigo_senhal" };
+	    "tipo_senhal", "codigo_senhal", "leyenda", "fecha_instalacion",
+	    "fecha_reposicion", "codigo_senhal" };
 
     public static String[] senhalesColAlias = { "ID Señal", "Tipo Señal",
-	"Código Señal", "Leyenda", "Instalación", "Reposición", "Icono" };
+	    "Código Señal", "Leyenda", "Instalación", "Reposición", "Icono" };
 
     public SenhalizacionVerticalForm(FLyrVect layer) {
 	super(layer);
@@ -58,8 +58,8 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
 	addTableHandler(new SenhalesTableHandler(
 		"senhalizacion_vertical_senhales", getWidgets(),
 		getElementID(), senhalesColNames, senhalesColAlias, new int[] {
-		    20, 45, 45, 145, 45, 40, 30 }, this,
-		SenhalizacionVerticalSenhalesSubForm.class));
+			20, 45, 45, 145, 45, 40, 30 }, this,
+		    SenhalizacionVerticalSenhalesSubForm.class));
     }
 
     @Override
