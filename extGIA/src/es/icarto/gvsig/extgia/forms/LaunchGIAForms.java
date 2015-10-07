@@ -65,19 +65,16 @@ import es.icarto.gvsig.navtableforms.gui.tables.handler.BaseTableHandler;
 import es.icarto.gvsig.navtableforms.gui.tables.model.AlphanumericTableModel;
 import es.icarto.gvsig.navtableforms.gui.tables.model.TableModelFactory;
 import es.icarto.gvsig.navtableforms.utils.FormFactory;
-import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 
 public class LaunchGIAForms {
 
-    public static boolean callFormDependingOfLayer(String layerName,
+    public static boolean callFormDependingOfLayer(FLyrVect layer,
 	    boolean editing) {
-	final TOCLayerManager toc = new TOCLayerManager();
-	FLyrVect layer = toc.getLayerByName(layerName);
 
+	final String layerName = layer.getName();
 	if (!isGIALayerName(layerName)) {
 	    return false;
 	}
-
 	switch (DBFieldNames.Elements.valueOf(layerName)) {
 	case Taludes:
 	    final TaludesForm taludesForm = new TaludesForm(layer);
@@ -248,7 +245,7 @@ public class LaunchGIAForms {
 		    layer);
 	    if (areasMantenimientoForm.init()) {
 		PluginServices.getMDIManager()
-		.addWindow(areasMantenimientoForm);
+			.addWindow(areasMantenimientoForm);
 	    }
 	    if (editing) {
 		areasMantenimientoForm.last();
@@ -291,18 +288,22 @@ public class LaunchGIAForms {
     }
 
     public static void callBatchTrabajosSubFormDependingOfElement(
-	    String element, String formFileName, String dbTableName, BaseTableHandler trabajosTableHandler) {
+	    String element, String formFileName, String dbTableName,
+	    BaseTableHandler trabajosTableHandler) {
 	BatchAbstractSubForm subform = null;
 	BatchVegetationTrabajosAbstractSubForm vegetationSubForm = null;
 	switch (DBFieldNames.Elements.valueOf(element)) {
 	case Taludes:
-	    vegetationSubForm = new BatchTaludesTrabajos(formFileName, dbTableName);
+	    vegetationSubForm = new BatchTaludesTrabajos(formFileName,
+		    dbTableName);
 	    break;
 	case Isletas:
-	    vegetationSubForm = new BatchIsletasTrabajos(formFileName, dbTableName);
+	    vegetationSubForm = new BatchIsletasTrabajos(formFileName,
+		    dbTableName);
 	    break;
 	case Barrera_Rigida:
-	    vegetationSubForm = new BatchBarreraRigidaTrabajos(formFileName, dbTableName);
+	    vegetationSubForm = new BatchBarreraRigidaTrabajos(formFileName,
+		    dbTableName);
 	    break;
 	case Areas_Servicio:
 	    subform = new BatchAreasServicioTrabajos(formFileName, dbTableName);
@@ -320,8 +321,8 @@ public class LaunchGIAForms {
 	    subform = new BatchPasosMedianaTrabajos(formFileName, dbTableName);
 	    break;
 	case Senhalizacion_Vertical:
-	    vegetationSubForm = new BatchSenhalizacionVerticalTrabajos(formFileName,
-		    dbTableName);
+	    vegetationSubForm = new BatchSenhalizacionVerticalTrabajos(
+		    formFileName, dbTableName);
 	    break;
 	case Valla_Cierre:
 	    subform = new BatchVallaCierreTrabajos(formFileName, dbTableName);
@@ -363,7 +364,7 @@ public class LaunchGIAForms {
 	if (subform != null) {
 	    subform.setModel(model);
 	    subform.actionCreateRecord();
-	}else {
+	} else {
 	    vegetationSubForm.setModel(model);
 	    vegetationSubForm.setTrabajoTableHandler(trabajosTableHandler);
 	    vegetationSubForm.actionCreateRecord();

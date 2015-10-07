@@ -27,7 +27,7 @@ public class ToolBarFormLauncherExtension extends AbstractExtension {
 	TOCLayerManager toc = new TOCLayerManager();
 	FLyrVect[] layers = toc.getActiveLayers();
 	for (FLyrVect layer : layers) {
-	    LaunchGIAForms.callFormDependingOfLayer(layer.getName(), false);
+	    LaunchGIAForms.callFormDependingOfLayer(layer, false);
 	}
     }
 

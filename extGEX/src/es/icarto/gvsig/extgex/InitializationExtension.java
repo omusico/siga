@@ -61,7 +61,7 @@ public class InitializationExtension extends Extension {
 	    } else if (layer.getName().equals(FormExpropiationLine.TOCNAME)) {
 		endLineExpropiationGeometry(layer);
 	    } else {
-		LaunchGIAForms.callFormDependingOfLayer(layer.getName(), true);
+		LaunchGIAForms.callFormDependingOfLayer((FLyrVect) layer, true);
 	    }
 	}
 

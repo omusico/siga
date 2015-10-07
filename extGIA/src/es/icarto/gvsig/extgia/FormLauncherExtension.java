@@ -16,7 +16,7 @@ public class FormLauncherExtension extends AbstractExtension {
     public void execute(String actionCommand) {
 	this.layer = getLayerFromTOC(actionCommand);
 	if (this.layer != null) {
-	    LaunchGIAForms.callFormDependingOfLayer(actionCommand, false);
+	    LaunchGIAForms.callFormDependingOfLayer(this.layer, false);
 	} else {
 	    JOptionPane.showMessageDialog(null, "La capa " + actionCommand
 		    + " no está cargada en el TOC", "Capa no encontrada",
