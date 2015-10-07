@@ -17,6 +17,7 @@ import es.icarto.gvsig.extgia.forms.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.extgia.preferences.DBFieldNames.Elements;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
@@ -113,8 +114,8 @@ public class LineasSuministroForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getElement() {
-	return DBFieldNames.Elements.Lineas_Suministro.name();
+    public Elements getElement() {
+	return DBFieldNames.Elements.Lineas_Suministro;
     }
 
     @Override

@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import es.icarto.gvsig.extgia.forms.LaunchGIAForms;
+import es.icarto.gvsig.extgia.preferences.DBFieldNames.Elements;
 import es.icarto.gvsig.navtableforms.gui.tables.handler.BaseTableHandler;
 
 public class AddTrabajosBatchListener implements ActionListener {
@@ -13,9 +14,9 @@ public class AddTrabajosBatchListener implements ActionListener {
     private final String dbTableName;
     private final BaseTableHandler trabajosTableHandler;
 
-    public AddTrabajosBatchListener(String element, String formFileName,
+    public AddTrabajosBatchListener(Elements element, String formFileName,
 	    String dbTableName, BaseTableHandler trabajosTableHandler) {
-	this.element = element;
+	this.element = element.name();
 	this.formFileName = formFileName;
 	this.dbTableName = dbTableName;
 	this.trabajosTableHandler = trabajosTableHandler;

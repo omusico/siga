@@ -45,6 +45,7 @@ import com.toedter.calendar.JTextFieldDateEditor;
 import es.icarto.gvsig.extgia.batch.AddReconocimientosBatchListener;
 import es.icarto.gvsig.extgia.batch.AddTrabajosBatchListener;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.extgia.preferences.DBFieldNames.Elements;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.BasicAbstractForm;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkButton;
@@ -443,7 +444,7 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 	return getFormController().getValue(getElementID());
     }
 
-    public abstract String getElement();
+    public abstract Elements getElement();
 
     public abstract String getElementID();
 

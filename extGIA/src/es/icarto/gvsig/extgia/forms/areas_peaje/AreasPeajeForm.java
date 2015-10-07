@@ -17,6 +17,7 @@ import es.icarto.gvsig.extgia.forms.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.extgia.preferences.DBFieldNames.Elements;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
@@ -108,8 +109,8 @@ public class AreasPeajeForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getElement() {
-	return DBFieldNames.Elements.Areas_Peaje.name();
+    public Elements getElement() {
+	return DBFieldNames.Elements.Areas_Peaje;
     }
 
     @Override

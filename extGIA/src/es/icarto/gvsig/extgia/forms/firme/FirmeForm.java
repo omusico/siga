@@ -11,8 +11,8 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import es.icarto.gvsig.extgia.forms.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.GIAAlphanumericTableHandler;
-import es.icarto.gvsig.extgia.forms.images.ShowImageAction;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.extgia.preferences.DBFieldNames.Elements;
 
 @SuppressWarnings("serial")
 public class FirmeForm extends AbstractFormWithLocationWidgets {
@@ -96,8 +96,8 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getElement() {
-	return DBFieldNames.Elements.Firme.name();
+    public Elements getElement() {
+	return DBFieldNames.Elements.Firme;
     }
 
     @Override

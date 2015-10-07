@@ -23,6 +23,7 @@ import es.icarto.gvsig.extgia.forms.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.EnableComponentBasedOnCheckBox;
 import es.icarto.gvsig.extgia.forms.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.extgia.preferences.DBFieldNames.Elements;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkButton;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkData;
 import es.icarto.gvsig.siga.PreferencesPage;
@@ -190,8 +191,8 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getElement() {
-	return DBFieldNames.Elements.Taludes.name();
+    public Elements getElement() {
+	return DBFieldNames.Elements.Taludes;
     }
 
     @Override

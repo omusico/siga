@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import es.icarto.gvsig.extgia.forms.LaunchGIAForms;
+import es.icarto.gvsig.extgia.preferences.DBFieldNames.Elements;
 
 public class AddReconocimientosBatchListener implements ActionListener {
 
@@ -11,16 +12,17 @@ public class AddReconocimientosBatchListener implements ActionListener {
     private final String formFileName;
     private final String dbTableName;
 
-    public AddReconocimientosBatchListener(String element, String formFileName, String dbTableName) {
-	this.element = element;
+    public AddReconocimientosBatchListener(Elements element,
+	    String formFileName, String dbTableName) {
+	this.element = element.name();
 	this.formFileName = formFileName;
 	this.dbTableName = dbTableName;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-	LaunchGIAForms.callBatchReconocimientosSubFormDependingOfElement(element,
-		formFileName, dbTableName);
+	LaunchGIAForms.callBatchReconocimientosSubFormDependingOfElement(
+		element, formFileName, dbTableName);
     }
 
 }

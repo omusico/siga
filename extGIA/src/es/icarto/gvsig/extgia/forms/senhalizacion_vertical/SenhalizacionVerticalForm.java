@@ -17,6 +17,7 @@ import es.icarto.gvsig.extgia.forms.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.extgia.preferences.DBFieldNames.Elements;
 import es.icarto.gvsig.siga.forms.reports.NavTableComponentsPrintButton;
 
 @SuppressWarnings("serial")
@@ -143,8 +144,8 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    public String getElement() {
-	return DBFieldNames.Elements.Senhalizacion_Vertical.name();
+    public Elements getElement() {
+	return DBFieldNames.Elements.Senhalizacion_Vertical;
     }
 
     @Override
