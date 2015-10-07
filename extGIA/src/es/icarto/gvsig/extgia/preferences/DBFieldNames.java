@@ -56,6 +56,8 @@ public class DBFieldNames {
     public static final String PK_INICIAL = "pk_inicial";
     public static final String PK_FINAL = "pk_final";
     public static final String DIRECCION = "direccion";
+    public static final String DIRECCION_PI = "direccion_pi";
+    public static final String DIRECCION_PF = "direccion_pf";
     public static final String SENTIDO = "sentido";
 
     // TALUDES

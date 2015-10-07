@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -18,7 +17,6 @@ import es.icarto.gvsig.extgia.forms.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
@@ -28,10 +26,6 @@ public class LineasSuministroForm extends AbstractFormWithLocationWidgets {
 
     JTextField lineaSuministroIDWidget;
     CalculateComponentValue lineaSuministroid;
-    private JComboBox tipoViaPI;
-    private JComboBox tipoViaPF;
-    private DependentComboboxHandler direccionPIDomainHandler;
-    private DependentComboboxHandler direccionPFDomainHandler;
 
     public LineasSuministroForm(FLyrVect layer) {
 	super(layer);
@@ -55,9 +49,6 @@ public class LineasSuministroForm extends AbstractFormWithLocationWidgets {
     @Override
     protected void fillSpecificValues() {
 	super.fillSpecificValues();
-
-	direccionPIDomainHandler.updateComboBoxValues();
-	direccionPFDomainHandler.updateComboBoxValues();
 
 	if (lineaSuministroIDWidget.getText().isEmpty()) {
 	    lineaSuministroid = new LineasSuministroCalculateIDValue(this,
@@ -84,24 +75,11 @@ public class LineasSuministroForm extends AbstractFormWithLocationWidgets {
 		getWidgetComponents(), getElementID(), getElementID());
 	lineaSuministroid.setListeners();
 
-	JComboBox direccionPI = (JComboBox) widgets.get("direccion_pi");
-	tipoViaPI = (JComboBox) widgets.get("tipo_via");
-	direccionPIDomainHandler = new DependentComboboxHandler(this,
-		tipoViaPI, direccionPI);
-	tipoViaPI.addActionListener(direccionPIDomainHandler);
-
-	JComboBox direccionPF = (JComboBox) widgets.get("direccion_pf");
-	tipoViaPF = (JComboBox) widgets.get("tipo_via_pf");
-	direccionPFDomainHandler = new DependentComboboxHandler(this,
-		tipoViaPF, direccionPF);
-	tipoViaPF.addActionListener(direccionPFDomainHandler);
     }
 
     @Override
     protected void removeListeners() {
 	lineaSuministroid.removeListeners();
-	tipoViaPI.removeActionListener(direccionPIDomainHandler);
-	tipoViaPF.removeActionListener(direccionPFDomainHandler);
 	super.removeListeners();
     }
 

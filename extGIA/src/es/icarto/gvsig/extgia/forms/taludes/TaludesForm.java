@@ -25,7 +25,6 @@ import es.icarto.gvsig.extgia.forms.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkButton;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkData;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 import es.icarto.gvsig.siga.PreferencesPage;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -42,10 +41,6 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     private CalculateComponentValue inclinacionMedia;
     private EnableComponentBasedOnCheckBox cunetaPie;
     private EnableComponentBasedOnCheckBox cunetaCabeza;
-    private JComboBox tipoViaPI;
-    private JComboBox tipoViaPF;
-    private DependentComboboxHandler direccionPIDomainHandler;
-    private DependentComboboxHandler direccionPFDomainHandler;
 
     FilesLinkButton filesLinkButton;
 
@@ -108,13 +103,8 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     @Override
     protected void fillSpecificValues() {
 	super.fillSpecificValues();
-	
 	cunetaCabeza.fillSpecificValues();
-
 	cunetaPie.fillSpecificValues();
-	direccionPIDomainHandler.updateChainedComponent();;
-	direccionPFDomainHandler.updateChainedComponent();;
-
 	addNewButtonsToActionsToolBar();
     }
 
@@ -145,21 +135,6 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 		.get("cuneta_pie"), getWidgets().get("cuneta_pie_revestida"));
 	// cunetaPie.setRemoveDependentValues(true);
 	cunetaPie.setListeners();
-
-	JComboBox direccionPI = (JComboBox) getWidgets().get(
-		"direccion_pi");
-	tipoViaPI = (JComboBox) getWidgets().get("tipo_via");
-	direccionPIDomainHandler = new DependentComboboxHandler(this,
-		tipoViaPI, direccionPI);
-	tipoViaPI.addActionListener(direccionPIDomainHandler);
-
-	JComboBox direccionPF = (JComboBox) getWidgets().get(
-		"direccion_pf");
-	tipoViaPF = (JComboBox) getWidgets().get("tipo_via_pf");
-	direccionPFDomainHandler = new DependentComboboxHandler(this,
-		tipoViaPF, direccionPF);
-	tipoViaPF.addActionListener(direccionPFDomainHandler);
-
     }
 
     @Override
@@ -168,9 +143,6 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 	inclinacionMedia.removeListeners();
 	cunetaCabeza.removeListeners();
 	cunetaPie.removeListeners();
-	tipoViaPI.removeActionListener(direccionPIDomainHandler);
-	tipoViaPF.removeActionListener(direccionPFDomainHandler);
-
 	super.removeListeners();
     }
 

@@ -2,7 +2,6 @@ package es.icarto.gvsig.extgia.forms.valla_cierre;
 
 import java.util.Map;
 
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -13,7 +12,6 @@ import es.icarto.gvsig.extgia.forms.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 
 @SuppressWarnings("serial")
 public class VallaCierreForm extends AbstractFormWithLocationWidgets {
@@ -22,11 +20,6 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
 
     JTextField vallaCierreIDWidget;
     CalculateComponentValue vallaCierreid;
-
-    private JComboBox tipoViaPI;
-    private JComboBox tipoViaPF;
-    private DependentComboboxHandler direccionPIDomainHandler;
-    private DependentComboboxHandler direccionPFDomainHandler;
 
     public VallaCierreForm(FLyrVect layer) {
 	super(layer);
@@ -52,9 +45,6 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
     protected void fillSpecificValues() {
 	super.fillSpecificValues();
 
-	direccionPIDomainHandler.updateComboBoxValues();
-	direccionPFDomainHandler.updateComboBoxValues();
-
 	if (vallaCierreIDWidget.getText().isEmpty()) {
 	    vallaCierreid = new VallaCierreCalculateIDValue(this,
 		    getWidgetComponents(), DBFieldNames.ID_VALLA_CIERRE,
@@ -75,26 +65,6 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
 	vallaCierreIDWidget = (JTextField) widgets
 		.get(DBFieldNames.ID_VALLA_CIERRE);
 
-	JComboBox direccionPI = (JComboBox) widgets.get("direccion_pi");
-	tipoViaPI = (JComboBox) widgets.get("tipo_via");
-	direccionPIDomainHandler = new DependentComboboxHandler(this,
-		tipoViaPI, direccionPI);
-	tipoViaPI.addActionListener(direccionPIDomainHandler);
-
-	JComboBox direccionPF = (JComboBox) getWidgets().get("direccion_pf");
-	tipoViaPF = (JComboBox) getWidgets().get("tipo_via_pf");
-	direccionPFDomainHandler = new DependentComboboxHandler(this,
-		tipoViaPF, direccionPF);
-	tipoViaPF.addActionListener(direccionPFDomainHandler);
-
-    }
-
-    @Override
-    protected void removeListeners() {
-	tipoViaPI.removeActionListener(direccionPIDomainHandler);
-	tipoViaPF.removeActionListener(direccionPFDomainHandler);
-
-	super.removeListeners();
     }
 
     @Override

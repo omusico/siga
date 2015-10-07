@@ -3,6 +3,8 @@ package es.icarto.gvsig.extgia.forms;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.AREA_MANTENIMIENTO;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.BASE_CONTRATISTA;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.DIRECCION;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.DIRECCION_PF;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.DIRECCION_PI;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.MUNICIPIO;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.NOMBRE_VIA;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.NOMBRE_VIA_PF;
@@ -110,6 +112,12 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 	}
 	if (widgets.get(DIRECCION) != null) {
 	    addChained(DIRECCION, TIPO_VIA);
+	}
+	if (widgets.get(DIRECCION_PI) != null) {
+	    addChained(DIRECCION_PI, TIPO_VIA);
+	}
+	if (widgets.get(DIRECCION_PF) != null) {
+	    addChained(DIRECCION_PF, TIPO_VIA_PF);
 	}
 
 	if (widgets.get(MUNICIPIO) != null) {
