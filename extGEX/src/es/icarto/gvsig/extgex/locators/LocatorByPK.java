@@ -28,10 +28,8 @@ import com.iver.cit.gvsig.fmap.layers.ReadableVectorial;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 
 import es.icarto.gvsig.commons.gui.BasicAbstractWindow;
-import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.extgex.utils.retrievers.KeyValueRetriever;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;
-import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 import es.udc.cartolab.gvsig.navtable.format.ValueFormatNT;
 
 @SuppressWarnings("serial")
@@ -44,8 +42,6 @@ public class LocatorByPK extends BasicAbstractWindow implements ActionListener {
     private static final String TRAMO_FIELD = "tramo";
     private static final String PK_FIELD = "pks";
 
-    
-
     public final String ID_TRAMO = "tramo";
     private JComboBox tramoCB;
 
@@ -55,16 +51,19 @@ public class LocatorByPK extends BasicAbstractWindow implements ActionListener {
     public final String ID_GOTOPK = "goToPKButton";
     private JButton goToPKB;
 
-    public LocatorByPK() {
+    private final FLyrVect pkLayer;
+
+    public LocatorByPK(FLyrVect pkLayer) {
 	super();
+	this.pkLayer = pkLayer;
 	setWindowInfoProperties(WindowInfo.MODELESSDIALOG | WindowInfo.PALETTE);
 	this.setWindowTitle("Localizador por PK");
 	initWidgets();
     }
-    
+
     @Override
     protected String getBasicName() {
-        return "LocatorByPK";
+	return "LocatorByPK";
     }
 
     public void initWidgets() {
@@ -77,14 +76,9 @@ public class LocatorByPK extends BasicAbstractWindow implements ActionListener {
 	goToPKB.addActionListener(this);
     }
 
-    public FLyrVect getPKSLayer() {
-	TOCLayerManager toc = new TOCLayerManager();
-	return toc.getLayerByName(DBNames.LAYER_PKS);
-    }
-
     private void fillTramo() {
-	KeyValueRetriever kvPks = new KeyValueRetriever(getPKSLayer(),
-		TRAMO_FIELD, TRAMO_FIELD);
+	KeyValueRetriever kvPks = new KeyValueRetriever(pkLayer, TRAMO_FIELD,
+		TRAMO_FIELD);
 	kvPks.setOrderBy(TRAMO_FIELD);
 	ArrayList<String> distinctValues = new ArrayList<String>();
 	for (KeyValue kv : kvPks.getValues()) {
@@ -100,11 +94,10 @@ public class LocatorByPK extends BasicAbstractWindow implements ActionListener {
     private void fillPK() {
 	DataSourceFactory dsf;
 	try {
-	    dsf = getPKSLayer().getRecordset().getDataSourceFactory();
+	    dsf = pkLayer.getRecordset().getDataSourceFactory();
 	    String sqlQuery = "select * from "
-		    + getPKSLayer().getRecordset().getName()
-		    + " where tramo = " + "'"
-		    + tramoCB.getSelectedItem().toString() + "'"
+		    + pkLayer.getRecordset().getName() + " where tramo = "
+		    + "'" + tramoCB.getSelectedItem().toString() + "'"
 		    + " order by pks;";
 	    DataSource ds = dsf.executeSQL(sqlQuery, EditionEvent.ALPHANUMERIC);
 	    ds.setDataSourceFactory(dsf);
@@ -138,7 +131,6 @@ public class LocatorByPK extends BasicAbstractWindow implements ActionListener {
 	if (e.getSource() == goToPKB) {
 	    String pkToFind = pkNumberCB.getSelectedItem().toString();
 	    String tramo = tramoCB.getSelectedItem().toString();
-	    FLyrVect pkLayer = getPKSLayer();
 	    if (pkToFind != null) {
 		try {
 		    SelectableDataSource pkRecordset = pkLayer.getRecordset();
@@ -188,6 +180,7 @@ public class LocatorByPK extends BasicAbstractWindow implements ActionListener {
 	    }
 	    if (rectangle != null) {
 		layer.getMapContext().getViewPort().setExtent(rectangle);
+		layer.getMapContext().setScaleView(4000);
 	    }
 	} catch (InitializeDriverException e) {
 	    e.printStackTrace();

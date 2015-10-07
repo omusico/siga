@@ -1,22 +1,28 @@
 package es.icarto.gvsig.extgex;
 
+import com.iver.cit.gvsig.fmap.layers.FLyrVect;
+
 import es.icarto.gvsig.extgex.locators.LocatorByPK;
-import es.icarto.gvsig.extgex.preferences.DBNames;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 import es.icarto.gvsig.siga.AbstractExtension;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class LocatorByPKExtension extends AbstractExtension {
-    
+
+    private static final String LAYER_PKS = "pks";
+
+    private FLyrVect pkLayer;
+
     @Override
     public void execute(String actionCommand) {
-	LocatorByPK pkLocator = new LocatorByPK();
+	LocatorByPK pkLocator = new LocatorByPK(pkLayer);
 	pkLocator.openDialog();
     }
 
     @Override
     public boolean isEnabled() {
-	if ((DBSession.getCurrentSession() != null) && (getView() != null) && isLayerLoaded()) {
+	if ((DBSession.getCurrentSession() != null) && (getView() != null)
+		&& isLayerLoaded()) {
 	    return true;
 	}
 	return false;
@@ -24,7 +30,8 @@ public class LocatorByPKExtension extends AbstractExtension {
 
     private boolean isLayerLoaded() {
 	TOCLayerManager toc = new TOCLayerManager();
-	if (toc.getLayerByName(DBNames.LAYER_PKS) != null) {
+	pkLayer = toc.getLayerByName(LAYER_PKS);
+	if (pkLayer != null) {
 	    return true;
 	}
 	return false;

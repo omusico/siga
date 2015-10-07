@@ -77,7 +77,6 @@ public class DBNames {
     public static final String TABLE_EXPROPIACIONES = "expropiaciones";
     public static final String LAYER_MUNICIPIOS = "Municipios";
     public static final String LAYER_PARROQUIAS = "Parroquias";
-    public static final String LAYER_PKS = "PKs_AP9";
 
     // tipo cultivos en DB
     public static final String TABLE_CULTIVOS = "tipo_cultivos";
