@@ -12,8 +12,7 @@ public class MunicipiosTableModel extends DefaultTableModel {
 		    .getValueAt(row, 3).toString();
 	    String ag = super.getValueAt(row, 4) == null ? "" : super
 		    .getValueAt(row, 4).toString();
-	    String sep = (!ag.isEmpty() && !ap.isEmpty() ? " <span style=\"color:red\">~~</span> "
-		    : "");
+	    String sep = (!ag.isEmpty() && !ap.isEmpty() ? " | " : "");
 	    return "<html>" + ap + sep + ag;
 	}
 	return super.getValueAt(row, column);
