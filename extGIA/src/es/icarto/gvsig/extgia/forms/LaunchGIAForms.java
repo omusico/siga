@@ -69,13 +69,13 @@ import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 
 public class LaunchGIAForms {
 
-    public static void callFormDependingOfLayer(String layerName,
+    public static boolean callFormDependingOfLayer(String layerName,
 	    boolean editing) {
 	final TOCLayerManager toc = new TOCLayerManager();
 	FLyrVect layer = toc.getLayerByName(layerName);
 
 	if (!isGIALayerName(layerName)) {
-	    return;
+	    return false;
 	}
 
 	switch (DBFieldNames.Elements.valueOf(layerName)) {
@@ -274,7 +274,10 @@ public class LaunchGIAForms {
 		transformadoresForm.last();
 	    }
 	    break;
+	default:
+	    return false;
 	}
+	return true;
     }
 
     private static boolean isGIALayerName(String layerName) {
