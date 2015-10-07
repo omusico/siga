@@ -75,204 +75,80 @@ public class LaunchGIAForms {
 	if (!isGIALayerName(layerName)) {
 	    return false;
 	}
+	AbstractFormWithLocationWidgets form = null;
+
 	switch (DBFieldNames.Elements.valueOf(layerName)) {
 	case Taludes:
-	    final TaludesForm taludesForm = new TaludesForm(layer);
-	    if (taludesForm.init()) {
-		PluginServices.getMDIManager().addWindow(taludesForm);
-	    }
-	    if (editing) {
-		taludesForm.last();
-	    }
+	    form = new TaludesForm(layer);
 	    break;
 	case Isletas:
-	    final IsletasForm isletasForm = new IsletasForm(layer);
-	    if (isletasForm.init()) {
-		PluginServices.getMDIManager().addWindow(isletasForm);
-	    }
-	    if (editing) {
-		isletasForm.last();
-	    }
+	    form = new IsletasForm(layer);
 	    break;
 	case Enlaces:
-	    final EnlacesForm enlacesForm = new EnlacesForm(layer);
-	    if (enlacesForm.init()) {
-		PluginServices.getMDIManager().addWindow(enlacesForm);
-	    }
-	    if (editing) {
-		enlacesForm.last();
-	    }
+	    form = new EnlacesForm(layer);
 	    break;
 	case Barrera_Rigida:
-	    final BarreraRigidaForm barreraRigidaForm = new BarreraRigidaForm(
-		    layer);
-	    if (barreraRigidaForm.init()) {
-		PluginServices.getMDIManager().addWindow(barreraRigidaForm);
-	    }
-	    if (editing) {
-		barreraRigidaForm.last();
-	    }
+	    form = new BarreraRigidaForm(layer);
 	    break;
 	case Areas_Servicio:
-	    final AreasServicioForm areasServicioForm = new AreasServicioForm(
-		    layer);
-	    if (areasServicioForm.init()) {
-		PluginServices.getMDIManager().addWindow(areasServicioForm);
-	    }
-	    if (editing) {
-		areasServicioForm.last();
-	    }
+	    form = new AreasServicioForm(layer);
 	    break;
 	case Areas_Descanso:
-	    final AreasDescansoForm areasDescansoForm = new AreasDescansoForm(
-		    layer);
-	    if (areasDescansoForm.init()) {
-		PluginServices.getMDIManager().addWindow(areasDescansoForm);
-	    }
-	    if (editing) {
-		areasDescansoForm.last();
-	    }
+	    form = new AreasDescansoForm(layer);
 	    break;
 	case Areas_Peaje:
-	    final AbstractFormWithLocationWidgets areasPeajeForm = new AreasPeajeForm(
-		    layer);
-	    if (areasPeajeForm.init()) {
-		PluginServices.getMDIManager().addWindow(areasPeajeForm);
-	    }
-	    if (editing) {
-		areasPeajeForm.last();
-	    }
+	    form = new AreasPeajeForm(layer);
 	    break;
 	case Juntas:
-	    final JuntasForm juntasForm = new JuntasForm(layer);
-	    if (juntasForm.init()) {
-		PluginServices.getMDIManager().addWindow(juntasForm);
-	    }
-	    if (editing) {
-		juntasForm.last();
-	    }
+	    form = new JuntasForm(layer);
 	    break;
 	case Pasos_Mediana:
-	    final AbstractFormWithLocationWidgets pasosMedianaForm = new PasosMedianaForm(
-		    layer);
-	    if (pasosMedianaForm.init()) {
-		PluginServices.getMDIManager().addWindow(pasosMedianaForm);
-	    }
-	    if (editing) {
-		pasosMedianaForm.last();
-	    }
+	    form = new PasosMedianaForm(layer);
 	    break;
 	case Senhalizacion_Vertical:
-	    final SenhalizacionVerticalForm senhalizacionVerticalForm = new SenhalizacionVerticalForm(
-		    layer);
-	    if (senhalizacionVerticalForm.init()) {
-		PluginServices.getMDIManager().addWindow(
-			senhalizacionVerticalForm);
-	    }
-	    if (editing) {
-		senhalizacionVerticalForm.last();
-	    }
+	    form = new SenhalizacionVerticalForm(layer);
 	    break;
 	case Valla_Cierre:
-	    final VallaCierreForm vallaCierreForm = new VallaCierreForm(layer);
-	    if (vallaCierreForm.init()) {
-		PluginServices.getMDIManager().addWindow(vallaCierreForm);
-	    }
-	    if (editing) {
-		vallaCierreForm.last();
-	    }
+	    form = new VallaCierreForm(layer);
 	    break;
 	case Firme:
-	    final FirmeForm firmeForm = new FirmeForm(layer);
-	    if (firmeForm.init()) {
-		PluginServices.getMDIManager().addWindow(firmeForm);
-	    }
-	    if (editing) {
-		firmeForm.last();
-	    }
+	    form = new FirmeForm(layer);
 	    break;
 	case Obras_Paso:
-	    final ObrasPasoForm obrasPasoForm = new ObrasPasoForm(layer);
-	    if (obrasPasoForm.init()) {
-		PluginServices.getMDIManager().addWindow(obrasPasoForm);
-	    }
-	    if (editing) {
-		obrasPasoForm.last();
-	    }
+	    form = new ObrasPasoForm(layer);
 	    break;
 	case Obras_Desague:
-	    final ObrasDesagueForm obrasDesagueForm = new ObrasDesagueForm(
-		    layer);
-	    if (obrasDesagueForm.init()) {
-		PluginServices.getMDIManager().addWindow(obrasDesagueForm);
-	    }
-	    if (editing) {
-		obrasDesagueForm.last();
-	    }
+	    form = new ObrasDesagueForm(layer);
 	    break;
 	case Muros:
-	    final MurosForm murosForm = new MurosForm(layer);
-	    if (murosForm.init()) {
-		PluginServices.getMDIManager().addWindow(murosForm);
-	    }
-	    if (editing) {
-		murosForm.last();
-	    }
+	    form = new MurosForm(layer);
 	    break;
 	case Senhalizacion_Variable:
-	    final SenhalizacionVariableForm senhalizacionVariableForm = new SenhalizacionVariableForm(
-		    layer);
-	    if (senhalizacionVariableForm.init()) {
-		PluginServices.getMDIManager().addWindow(
-			senhalizacionVariableForm);
-	    }
-	    if (editing) {
-		senhalizacionVariableForm.last();
-	    }
+	    form = new SenhalizacionVariableForm(layer);
 	    break;
 	case Lecho_Frenado:
-	    final LechoFrenadoForm lechoFrenadoForm = new LechoFrenadoForm(
-		    layer);
-	    if (lechoFrenadoForm.init()) {
-		PluginServices.getMDIManager().addWindow(lechoFrenadoForm);
-	    }
-	    if (editing) {
-		lechoFrenadoForm.last();
-	    }
+	    form = new LechoFrenadoForm(layer);
 	    break;
 	case Areas_Mantenimiento:
-	    final AreasMantenimientoForm areasMantenimientoForm = new AreasMantenimientoForm(
-		    layer);
-	    if (areasMantenimientoForm.init()) {
-		PluginServices.getMDIManager()
-			.addWindow(areasMantenimientoForm);
-	    }
-	    if (editing) {
-		areasMantenimientoForm.last();
-	    }
+	    form = new AreasMantenimientoForm(layer);
 	    break;
 	case Lineas_Suministro:
-	    final LineasSuministroForm lineasSuministroForm = new LineasSuministroForm(
-		    layer);
-	    if (lineasSuministroForm.init()) {
-		PluginServices.getMDIManager().addWindow(lineasSuministroForm);
-	    }
-	    if (editing) {
-		lineasSuministroForm.last();
-	    }
+	    form = new LineasSuministroForm(layer);
 	    break;
 	case Transformadores:
-	    final TransformadoresForm transformadoresForm = new TransformadoresForm(
-		    layer);
-	    if (transformadoresForm.init()) {
-		PluginServices.getMDIManager().addWindow(transformadoresForm);
-	    }
-	    if (editing) {
-		transformadoresForm.last();
-	    }
+	    form = new TransformadoresForm(layer);
 	    break;
 	default:
 	    return false;
+	}
+
+	if (form != null) {
+	    if (form.init()) {
+		PluginServices.getMDIManager().addWindow(form);
+	    }
+	    if (editing) {
+		form.last();
+	    }
 	}
 	return true;
     }
