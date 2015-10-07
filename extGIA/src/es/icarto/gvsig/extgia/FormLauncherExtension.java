@@ -2,13 +2,13 @@ package es.icarto.gvsig.extgia;
 
 import javax.swing.JOptionPane;
 
-import com.iver.andami.plugins.Extension;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.LaunchGIAForms;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
+import es.icarto.gvsig.siga.AbstractExtension;
 
-public class FormLauncherExtension extends Extension {
+public class FormLauncherExtension extends AbstractExtension {
 
     private FLyrVect layer;
 
@@ -35,12 +35,8 @@ public class FormLauncherExtension extends Extension {
     }
 
     @Override
-    public boolean isVisible() {
-	return true;
-    }
-
-    @Override
     public void initialize() {
+	// nothing to do here
     }
 
 }
