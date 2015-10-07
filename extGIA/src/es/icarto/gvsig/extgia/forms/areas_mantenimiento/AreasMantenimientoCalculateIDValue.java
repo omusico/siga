@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import javax.swing.JComponent;
 
-import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
+import es.icarto.gvsig.extgia.forms.CalculateComponentValue;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 

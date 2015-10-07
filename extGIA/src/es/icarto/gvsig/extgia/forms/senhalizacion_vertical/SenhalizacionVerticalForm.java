@@ -14,9 +14,9 @@ import javax.swing.JTextField;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
-import es.icarto.gvsig.extgia.forms.utils.AbstractFormWithLocationWidgets;
-import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
-import es.icarto.gvsig.extgia.forms.utils.GIAAlphanumericTableHandler;
+import es.icarto.gvsig.extgia.forms.AbstractFormWithLocationWidgets;
+import es.icarto.gvsig.extgia.forms.CalculateComponentValue;
+import es.icarto.gvsig.extgia.forms.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.listeners.DependentComboboxHandler;
 import es.icarto.gvsig.siga.forms.reports.NavTableComponentsPrintButton;

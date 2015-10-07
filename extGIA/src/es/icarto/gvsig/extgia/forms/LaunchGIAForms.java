@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgia.forms.utils;
+package es.icarto.gvsig.extgia.forms;
 
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;

@@ -8,7 +8,7 @@ import javax.swing.JComponent;
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.cit.gvsig.fmap.edition.IEditableSource;
 
-import es.icarto.gvsig.extgia.forms.utils.GIAAlphanumericTableHandler;
+import es.icarto.gvsig.extgia.forms.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.gui.tables.AbstractSubForm;
 import es.icarto.gvsig.navtableforms.gui.tables.filter.IRowFilter;

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import javax.swing.JComboBox;
 
-import es.icarto.gvsig.extgia.forms.utils.ForeignValue;
-import es.icarto.gvsig.extgia.forms.utils.GIATrabajosSubForm;
+import es.icarto.gvsig.extgia.forms.ForeignValue;
+import es.icarto.gvsig.extgia.forms.GIATrabajosSubForm;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 
 @SuppressWarnings("serial")

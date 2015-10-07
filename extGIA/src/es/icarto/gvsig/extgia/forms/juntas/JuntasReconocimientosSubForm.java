@@ -1,6 +1,6 @@
 package es.icarto.gvsig.extgia.forms.juntas;
 
-import es.icarto.gvsig.extgia.forms.utils.GIASubForm;
+import es.icarto.gvsig.extgia.forms.GIASubForm;
 
 @SuppressWarnings("serial")
 public class JuntasReconocimientosSubForm extends GIASubForm {

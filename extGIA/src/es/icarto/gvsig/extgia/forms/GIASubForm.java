@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgia.forms.utils;
+package es.icarto.gvsig.extgia.forms;
 
 import es.icarto.gvsig.navtableforms.gui.tables.AbstractSubForm;
 import es.icarto.gvsig.siga.PreferencesPage;

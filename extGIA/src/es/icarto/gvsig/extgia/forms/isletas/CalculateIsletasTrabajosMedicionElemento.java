@@ -2,9 +2,9 @@ package es.icarto.gvsig.extgia.forms.isletas;
 
 import java.util.Map;
 
-import es.icarto.gvsig.extgia.forms.utils.CalculateDBForeignValue;
-import es.icarto.gvsig.extgia.forms.utils.CalculateForeignValue;
-import es.icarto.gvsig.extgia.forms.utils.ForeignValue;
+import es.icarto.gvsig.extgia.forms.CalculateDBForeignValue;
+import es.icarto.gvsig.extgia.forms.CalculateForeignValue;
+import es.icarto.gvsig.extgia.forms.ForeignValue;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 
 public class CalculateIsletasTrabajosMedicionElemento extends

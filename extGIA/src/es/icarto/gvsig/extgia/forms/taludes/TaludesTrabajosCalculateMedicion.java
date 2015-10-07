@@ -2,8 +2,8 @@ package es.icarto.gvsig.extgia.forms.taludes;
 
 import javax.swing.JComboBox;
 
-import es.icarto.gvsig.extgia.forms.utils.ForeignValue;
-import es.icarto.gvsig.extgia.forms.utils.VegetationCalculateMedicion;
+import es.icarto.gvsig.extgia.forms.ForeignValue;
+import es.icarto.gvsig.extgia.forms.VegetationCalculateMedicion;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.IValidatableForm;
 

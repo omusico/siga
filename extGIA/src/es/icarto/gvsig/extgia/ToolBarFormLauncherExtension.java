@@ -6,7 +6,7 @@ import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
-import es.icarto.gvsig.extgia.forms.utils.LaunchGIAForms;
+import es.icarto.gvsig.extgia.forms.LaunchGIAForms;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 import es.udc.cartolab.gvsig.users.utils.DBSession;

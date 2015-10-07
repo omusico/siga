@@ -4,7 +4,7 @@ import java.io.File;
 
 import com.iver.cit.gvsig.fmap.core.SymbologyFactory;
 
-import es.icarto.gvsig.extgia.forms.utils.GIASubForm;
+import es.icarto.gvsig.extgia.forms.GIASubForm;
 
 @SuppressWarnings("serial")
 public class SenhalizacionVerticalSenhalesSubForm extends GIASubForm {

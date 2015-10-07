@@ -1,6 +1,6 @@
 package es.icarto.gvsig.extgia.forms.areas_servicio;
 
-import es.icarto.gvsig.extgia.forms.utils.GIASubForm;
+import es.icarto.gvsig.extgia.forms.GIASubForm;
 
 @SuppressWarnings("serial")
 public class AreasServicioReconocimientosSubForm extends GIASubForm {

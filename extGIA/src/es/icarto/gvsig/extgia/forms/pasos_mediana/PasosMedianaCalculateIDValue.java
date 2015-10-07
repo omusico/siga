@@ -6,7 +6,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JTextField;
 
-import es.icarto.gvsig.extgia.forms.utils.CalculateComponentValue;
+import es.icarto.gvsig.extgia.forms.CalculateComponentValue;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalues.KeyValue;

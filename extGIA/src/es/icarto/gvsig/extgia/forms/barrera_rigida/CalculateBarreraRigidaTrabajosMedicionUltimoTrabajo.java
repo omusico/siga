@@ -2,8 +2,8 @@ package es.icarto.gvsig.extgia.forms.barrera_rigida;
 
 import java.util.Map;
 
-import es.icarto.gvsig.extgia.forms.utils.CalculateDBForeignValueLastJob;
-import es.icarto.gvsig.extgia.forms.utils.CalculateForeignValue;
+import es.icarto.gvsig.extgia.forms.CalculateDBForeignValueLastJob;
+import es.icarto.gvsig.extgia.forms.CalculateForeignValue;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 
 public class CalculateBarreraRigidaTrabajosMedicionUltimoTrabajo extends

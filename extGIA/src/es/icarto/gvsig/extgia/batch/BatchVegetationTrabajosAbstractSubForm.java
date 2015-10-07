@@ -16,7 +16,7 @@ import com.iver.cit.gvsig.fmap.layers.FBitSet;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 
-import es.icarto.gvsig.extgia.forms.utils.GIASubForm;
+import es.icarto.gvsig.extgia.forms.GIASubForm;
 import es.icarto.gvsig.navtableforms.gui.tables.handler.BaseTableHandler;
 import es.icarto.gvsig.navtableforms.gui.tables.model.AlphanumericTableModel;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;

@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgia.forms.utils;
+package es.icarto.gvsig.extgia.forms;
 
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.AREA_MANTENIMIENTO;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.BASE_CONTRATISTA;

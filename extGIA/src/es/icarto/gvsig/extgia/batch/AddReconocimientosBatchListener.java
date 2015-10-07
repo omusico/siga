@@ -3,7 +3,7 @@ package es.icarto.gvsig.extgia.batch;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import es.icarto.gvsig.extgia.forms.utils.LaunchGIAForms;
+import es.icarto.gvsig.extgia.forms.LaunchGIAForms;
 
 public class AddReconocimientosBatchListener implements ActionListener {
 

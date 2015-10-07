@@ -18,7 +18,7 @@ import es.icarto.gvsig.extgex.forms.FormExpropiationLine;
 import es.icarto.gvsig.extgex.forms.expropiations.FormExpropiations;
 import es.icarto.gvsig.extgex.forms.reversions.FormReversions;
 import es.icarto.gvsig.extgex.preferences.DBNames;
-import es.icarto.gvsig.extgia.forms.utils.LaunchGIAForms;
+import es.icarto.gvsig.extgia.forms.LaunchGIAForms;
 import es.udc.cartolab.gvsig.users.DBConnectionExtension;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
