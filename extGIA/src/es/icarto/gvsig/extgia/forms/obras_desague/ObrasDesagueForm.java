@@ -31,10 +31,6 @@ public class ObrasDesagueForm extends AbstractFormWithLocationWidgets {
 		DBFieldNames.trabajosColWidths, this));
     }
 
-    private void addNewButtonsToActionsToolBar() {
-	super.addNewButtonsToActionsToolBar(DBFieldNames.Elements.Obras_Desague);
-    }
-
     @Override
     protected void fillSpecificValues() {
 	super.fillSpecificValues();
@@ -45,11 +41,6 @@ public class ObrasDesagueForm extends AbstractFormWithLocationWidgets {
 		    DBFieldNames.ID_OBRA_DESAGUE);
 	    obraDesagueid.setValue(true);
 	}
-
-	if (filesLinkButton == null) {
-	    addNewButtonsToActionsToolBar();
-	}
-
     }
 
     @Override

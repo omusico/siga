@@ -79,10 +79,6 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
     }
 
     private void addNewButtonsToActionsToolBar() {
-	if (filesLinkButton == null) {
-	    super.addNewButtonsToActionsToolBar(DBFieldNames.Elements.Senhalizacion_Vertical);
-	}
-
 	if (printReportB == null) {
 	    addPrintButton();
 	}

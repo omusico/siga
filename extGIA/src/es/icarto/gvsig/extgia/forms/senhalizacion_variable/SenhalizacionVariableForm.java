@@ -42,10 +42,6 @@ public class SenhalizacionVariableForm extends AbstractFormWithLocationWidgets {
 		DBFieldNames.reconocimientosWhitoutIndexColAlias, null, this));
     }
 
-    private void addNewButtonsToActionsToolBar() {
-	super.addNewButtonsToActionsToolBar(DBFieldNames.Elements.Senhalizacion_Variable);
-    }
-
     @Override
     protected void fillSpecificValues() {
 	super.fillSpecificValues();
@@ -55,11 +51,6 @@ public class SenhalizacionVariableForm extends AbstractFormWithLocationWidgets {
 		    this, getWidgetComponents(), getElementID(), getElementID());
 	    senhalizacionVariableid.setValue(true);
 	}
-
-	if (filesLinkButton == null) {
-	    addNewButtonsToActionsToolBar();
-	}
-
     }
 
     @Override

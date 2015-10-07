@@ -52,10 +52,6 @@ public class AreasPeajeForm extends AbstractFormWithLocationWidgets {
 		this));
     }
 
-    private void addNewButtonsToActionsToolBar() {
-	super.addNewButtonsToActionsToolBar(DBFieldNames.Elements.Areas_Peaje);
-    }
-
     @Override
     protected void fillSpecificValues() {
 	super.fillSpecificValues();
@@ -64,10 +60,6 @@ public class AreasPeajeForm extends AbstractFormWithLocationWidgets {
 	    areaPeajeid = new AreasPeajeCalculateIDValue(this,
 		    getWidgetComponents(), getElementID(), getElementID());
 	    areaPeajeid.setValue(true);
-	}
-
-	if (filesLinkButton == null) {
-	    addNewButtonsToActionsToolBar();
 	}
     }
 

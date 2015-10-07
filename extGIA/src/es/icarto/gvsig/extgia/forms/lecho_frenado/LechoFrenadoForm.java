@@ -43,10 +43,6 @@ public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
 		LechoFrenadoReconocimientosSubForm.class));
     }
 
-    private void addNewButtonsToActionsToolBar() {
-	super.addNewButtonsToActionsToolBar(DBFieldNames.Elements.Lecho_Frenado);
-    }
-
     @Override
     protected void fillSpecificValues() {
 	super.fillSpecificValues();
@@ -55,10 +51,6 @@ public class LechoFrenadoForm extends AbstractFormWithLocationWidgets {
 	    lechoFrenadoid = new LechoFrenadoCalculateIDValue(this,
 		    getWidgetComponents(), getElementID(), getElementID());
 	    lechoFrenadoid.setValue(true);
-	}
-
-	if (filesLinkButton == null) {
-	    addNewButtonsToActionsToolBar();
 	}
     }
 

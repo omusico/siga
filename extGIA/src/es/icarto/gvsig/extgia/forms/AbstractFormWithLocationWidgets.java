@@ -406,6 +406,10 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 	super.fillSpecificValues();
 	imagesInForms.fillSpecificValues(getPrimaryKeyValue());
 	fillEmpresaLB();
+
+	if (filesLinkButton == null) {
+	    addNewButtonsToActionsToolBar(getElement());
+	}
     }
 
     private void fillEmpresaLB() {

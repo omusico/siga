@@ -31,10 +31,6 @@ public class ObrasPasoForm extends AbstractFormWithLocationWidgets {
 		DBFieldNames.trabajosColWidths, this));
     }
 
-    private void addNewButtonsToActionsToolBar() {
-	super.addNewButtonsToActionsToolBar(DBFieldNames.Elements.Obras_Paso);
-    }
-
     @Override
     protected void fillSpecificValues() {
 	super.fillSpecificValues();
@@ -44,10 +40,6 @@ public class ObrasPasoForm extends AbstractFormWithLocationWidgets {
 		    getWidgetComponents(), DBFieldNames.ID_OBRA_PASO,
 		    DBFieldNames.ID_OBRA_PASO);
 	    obraPasoid.setValue(true);
-	}
-
-	if (filesLinkButton == null) {
-	    addNewButtonsToActionsToolBar();
 	}
 
 	repaint();

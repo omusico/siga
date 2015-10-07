@@ -38,10 +38,6 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
 		VallaCierreReconocimientosSubForm.class));
     }
 
-    private void addNewButtonsToActionsToolBar() {
-	super.addNewButtonsToActionsToolBar(DBFieldNames.Elements.Valla_Cierre);
-    }
-
     @Override
     protected void fillSpecificValues() {
 	super.fillSpecificValues();
@@ -51,10 +47,6 @@ public class VallaCierreForm extends AbstractFormWithLocationWidgets {
 		    getWidgetComponents(), DBFieldNames.ID_VALLA_CIERRE,
 		    DBFieldNames.ID_VALLA_CIERRE);
 	    vallaCierreid.setValue(true);
-	}
-
-	if (filesLinkButton == null) {
-	    addNewButtonsToActionsToolBar();
 	}
     }
 

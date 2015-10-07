@@ -46,19 +46,6 @@ public class BarreraRigidaForm extends AbstractFormWithLocationWidgets {
 		BarreraRigidaReconocimientosSubForm.class));
     }
 
-    private void addNewButtonsToActionsToolBar() {
-	super.addNewButtonsToActionsToolBar(DBFieldNames.Elements.Barrera_Rigida);
-    }
-
-    @Override
-    protected void fillSpecificValues() {
-	super.fillSpecificValues();
-
-	if (filesLinkButton == null) {
-	    addNewButtonsToActionsToolBar();
-	}
-    }
-
     @Override
     protected void setListeners() {
 	super.setListeners();

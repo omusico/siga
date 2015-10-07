@@ -37,10 +37,6 @@ public class MurosForm extends AbstractFormWithLocationWidgets {
 		MurosReconocimientosSubForm.class));
     }
 
-    private void addNewButtonsToActionsToolBar() {
-	super.addNewButtonsToActionsToolBar(DBFieldNames.Elements.Muros);
-    }
-
     @Override
     protected void fillSpecificValues() {
 	super.fillSpecificValues();
@@ -49,10 +45,6 @@ public class MurosForm extends AbstractFormWithLocationWidgets {
 	    murosid = new MurosCalculateIDValue(this, getWidgetComponents(),
 		    getElementID(), getElementID());
 	    murosid.setValue(true);
-	}
-
-	if (filesLinkButton == null) {
-	    addNewButtonsToActionsToolBar();
 	}
     }
 

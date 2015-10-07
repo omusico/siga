@@ -49,19 +49,6 @@ public class IsletasForm extends AbstractFormWithLocationWidgets {
 		IsletasReconocimientosSubForm.class));
     }
 
-    private void addNewButtonsToActionsToolBar() {
-	super.addNewButtonsToActionsToolBar(DBFieldNames.Elements.Isletas);
-    }
-
-    @Override
-    protected void fillSpecificValues() {
-	super.fillSpecificValues();
-
-	if (filesLinkButton == null) {
-	    addNewButtonsToActionsToolBar();
-	}
-    }
-
     @Override
     protected void setListeners() {
 	super.setListeners();

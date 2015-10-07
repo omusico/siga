@@ -43,10 +43,6 @@ public class TransformadoresForm extends AbstractFormWithLocationWidgets {
 		DBFieldNames.reconocimientosWhitoutIndexColAlias, null, this));
     }
 
-    private void addNewButtonsToActionsToolBar() {
-	super.addNewButtonsToActionsToolBar(DBFieldNames.Elements.Transformadores);
-    }
-
     @Override
     protected void fillSpecificValues() {
 	super.fillSpecificValues();
@@ -55,10 +51,6 @@ public class TransformadoresForm extends AbstractFormWithLocationWidgets {
 	    transformadorid = new TransformadoresCalculateIDValue(this,
 		    getWidgetComponents(), getElementID(), getElementID());
 	    transformadorid.setValue(true);
-	}
-
-	if (filesLinkButton == null) {
-	    addNewButtonsToActionsToolBar();
 	}
     }
 

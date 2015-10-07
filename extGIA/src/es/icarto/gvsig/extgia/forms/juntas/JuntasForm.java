@@ -37,10 +37,6 @@ public class JuntasForm extends AbstractFormWithLocationWidgets {
 		JuntasReconocimientosSubForm.class));
     }
 
-    private void addNewButtonsToActionsToolBar() {
-	super.addNewButtonsToActionsToolBar(DBFieldNames.Elements.Juntas);
-    }
-
     @Override
     protected void fillSpecificValues() {
 	super.fillSpecificValues();
@@ -49,10 +45,6 @@ public class JuntasForm extends AbstractFormWithLocationWidgets {
 	    juntaid = new JuntasCalculateIDValue(this, getWidgetComponents(),
 		    DBFieldNames.ID_JUNTA, DBFieldNames.ID_JUNTA);
 	    juntaid.setValue(true);
-	}
-
-	if (filesLinkButton == null) {
-	    addNewButtonsToActionsToolBar();
 	}
     }
 

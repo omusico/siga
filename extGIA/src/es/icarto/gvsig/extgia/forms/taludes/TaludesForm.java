@@ -1,6 +1,5 @@
 package es.icarto.gvsig.extgia.forms.taludes;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,11 +10,9 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import com.iver.andami.Launcher;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.forms.AbstractFormWithLocationWidgets;
@@ -24,9 +21,6 @@ import es.icarto.gvsig.extgia.forms.EnableComponentBasedOnCheckBox;
 import es.icarto.gvsig.extgia.forms.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames.Elements;
-import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkButton;
-import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkData;
-import es.icarto.gvsig.siga.PreferencesPage;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
@@ -42,10 +36,6 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
     private CalculateComponentValue inclinacionMedia;
     private EnableComponentBasedOnCheckBox cunetaPie;
     private EnableComponentBasedOnCheckBox cunetaCabeza;
-
-    FilesLinkButton filesLinkButton;
-
-    boolean hasJustOpened = true;
 
     public TaludesForm(FLyrVect layer) {
 	super(layer);
@@ -64,49 +54,11 @@ public class TaludesForm extends AbstractFormWithLocationWidgets {
 		TaludesReconocimientosSubForm.class));
     }
 
-    private void addNewButtonsToActionsToolBar() {
-	JPanel actionsToolBar = this.getActionsToolBar();
-
-	filesLinkButton = new FilesLinkButton(this, new FilesLinkData() {
-
-	    @Override
-	    public String getRegisterField() {
-		return DBFieldNames
-			.getPrimaryKey(DBFieldNames.Elements.Taludes);
-	    }
-
-	    @Override
-	    public String getBaseDirectory() {
-		String baseDirectory = null;
-		try {
-		    baseDirectory = PreferencesPage.getBaseDirectory();
-		} catch (Exception e) {
-		}
-
-		if (baseDirectory == null || baseDirectory.isEmpty()) {
-		    baseDirectory = Launcher.getAppHomeDir();
-		}
-
-		baseDirectory = baseDirectory + File.separator + "FILES"
-			+ File.separator + "inventario" + File.separator
-			+ DBFieldNames.Elements.Taludes;
-
-		return baseDirectory;
-	    }
-	});
-
-	if (hasJustOpened) {
-	    actionsToolBar.add(filesLinkButton);
-	    hasJustOpened = false;
-	}
-    }
-
     @Override
     protected void fillSpecificValues() {
 	super.fillSpecificValues();
 	cunetaCabeza.fillSpecificValues();
 	cunetaPie.fillSpecificValues();
-	addNewButtonsToActionsToolBar();
     }
 
     @Override

@@ -46,11 +46,7 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getTrabajosDBTableName(), getWidgets(), getElementID(),
 		firmeTrabajoColNames, firmeTrabajoColAlias, new int[] { 1, 35,
-			1, 1, 30, 250 }, this));
-    }
-
-    private void addNewButtonsToActionsToolBar() {
-	super.addNewButtonsToActionsToolBar(DBFieldNames.Elements.Firme);
+		    1, 1, 30, 250 }, this));
     }
 
     @Override
@@ -61,11 +57,6 @@ public class FirmeForm extends AbstractFormWithLocationWidgets {
 		    DBFieldNames.ID_FIRME, DBFieldNames.ID_FIRME);
 	    firmeid.setValue(true);
 	}
-
-	if (filesLinkButton == null) {
-	    addNewButtonsToActionsToolBar();
-	}
-
 	repaint();
     }
 

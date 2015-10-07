@@ -37,10 +37,6 @@ public class AreasMantenimientoForm extends AbstractFormWithLocationWidgets {
 		DBFieldNames.ramalesDireccionColAlias, null, this));
     }
 
-    private void addNewButtonsToActionsToolBar() {
-	super.addNewButtonsToActionsToolBar(DBFieldNames.Elements.Areas_Mantenimiento);
-    }
-
     @Override
     protected void fillSpecificValues() {
 	super.fillSpecificValues();
@@ -50,11 +46,6 @@ public class AreasMantenimientoForm extends AbstractFormWithLocationWidgets {
 		    getWidgetComponents(), getElementID(), getElementID());
 	    areaMantenimientoid.setValue(true);
 	}
-
-	if (filesLinkButton == null) {
-	    addNewButtonsToActionsToolBar();
-	}
-
     }
 
     @Override

@@ -43,10 +43,6 @@ public class LineasSuministroForm extends AbstractFormWithLocationWidgets {
 		DBFieldNames.reconocimientosWhitoutIndexColAlias, null, this));
     }
 
-    private void addNewButtonsToActionsToolBar() {
-	super.addNewButtonsToActionsToolBar(DBFieldNames.Elements.Lineas_Suministro);
-    }
-
     @Override
     protected void fillSpecificValues() {
 	super.fillSpecificValues();
@@ -55,10 +51,6 @@ public class LineasSuministroForm extends AbstractFormWithLocationWidgets {
 	    lineaSuministroid = new LineasSuministroCalculateIDValue(this,
 		    getWidgetComponents(), getElementID(), getElementID());
 	    lineaSuministroid.setValue(true);
-	}
-
-	if (filesLinkButton == null) {
-	    addNewButtonsToActionsToolBar();
 	}
 
 	// Embebed Tables
