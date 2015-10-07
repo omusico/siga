@@ -32,12 +32,12 @@
 			<menu text="SIGA/es.icarto.gvsig.extgia.FormLauncherExtension.menu_folder/transformadores" action-command="Transformadores" position="30417"/>
 			<menu text="SIGA/es.icarto.gvsig.extgia.FormLauncherExtension.menu_folder/valla_cierre" action-command="Valla_Cierre" position="30418"/>
 			<menu text="SIGA/es.icarto.gvsig.extgia.FormLauncherExtension.menu_folder/separator" position="30419" is_separator="true"/>
-			<menu text="SIGA/es.icarto.gvsig.extgia.FormLauncherExtension.menu_folder/Ramales" action-command="Ramales" position="30420"/>
+			<menu text="SIGA/es.icarto.gvsig.extgia.FormLauncherExtension.menu_folder/ramales" action-command="Ramales" position="30420"/>
 		</extension>
 		
-		<extension class-name="es.icarto.gvsig.extgia.ToolBarFormLauncherExtension" description="toolbar_form_launcher" active="true">
+		<extension class-name="es.icarto.gvsig.extgia.ToolBarFormLauncherExtension" active="true">
 			<tool-bar name="GIA" position="73">
-				<action-tool icon="extgia-openform" tooltip="Formulario Inventario" action-command="ToolBarFormExtension" position="2"/>
+				<action-tool icon="es.icarto.gvsig.extgia.ToolBarFormLauncherExtension" tooltip="es.icarto.gvsig.extgia.ToolBarFormLauncherExtension.tooltip" position="2"/>
 			</tool-bar>
 		</extension>
 		
