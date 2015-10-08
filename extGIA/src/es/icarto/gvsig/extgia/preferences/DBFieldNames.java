@@ -3,114 +3,74 @@ package es.icarto.gvsig.extgia.preferences;
 public class DBFieldNames {
 
     public enum Elements {
-	Areas_Descanso, Areas_Mantenimiento, Areas_Peaje, Areas_Servicio, Barrera_Rigida, Enlaces, Firme, Isletas, Juntas, Lecho_Frenado, Lineas_Suministro, Muros, Obras_Desague, Obras_Paso, Pasos_Mediana, Senhalizacion_Variable, Senhalizacion_Vertical, Taludes, Transformadores, Valla_Cierre, Ramales;
+	Areas_Descanso("id_area_descanso"),
+	Areas_Mantenimiento("id_area_mantenimiento"),
+	Areas_Peaje("id_area_peaje"),
+	Areas_Servicio("id_area_servicio"),
+	Barrera_Rigida("id_barrera_rigida"),
+	Enlaces("id_enlace"),
+	Firme("id_firme"),
+	Isletas("id_isleta"),
+	Juntas("id_junta"),
+	Lecho_Frenado("id_lecho_frenado"),
+	Lineas_Suministro("id_linea_suministro"),
+	Muros("id_muro"),
+	Obras_Desague("id_obra_desague"),
+	Obras_Paso("id_obra_paso"),
+	Pasos_Mediana("id_paso_mediana"),
+	Senhalizacion_Variable("id_senhal_variable"),
+	Senhalizacion_Vertical("id_elemento_senhalizacion"),
+	Taludes("id_talud"),
+	Transformadores("id_transformador"),
+	Valla_Cierre("id_valla"),
+	Ramales("gid");
+
+	private final String pk;
+
+	private Elements(String pk) {
+	    this.pk = pk;
+	}
     }
 
     public static String getPrimaryKey(Elements element) {
-	String pk = "";
-	switch (element) {
-	case Taludes:
-	    pk = "id_talud";
-	    break;
-	case Isletas:
-	    pk = "id_isleta";
-	    break;
-	case Enlaces:
-	    pk = "id_enlace";
-	    break;
-	case Barrera_Rigida:
-	    pk = "id_barrera_rigida";
-	    break;
-	case Areas_Servicio:
-	    pk = "id_area_servicio";
-	    break;
-	case Areas_Descanso:
-	    pk = "id_area_descanso";
-	    break;
-	case Areas_Peaje:
-	    pk = "id_area_peaje";
-	    break;
-	case Juntas:
-	    pk = "id_junta";
-	    break;
-	case Pasos_Mediana:
-	    pk = "id_paso_mediana";
-	    break;
-	case Senhalizacion_Vertical:
-	    pk = "id_elemento_senhalizacion";
-	    break;
-	case Firme:
-	    pk = "id_firme";
-	    break;
-	case Valla_Cierre:
-	    pk = "id_valla";
-	    break;
-	case Obras_Desague:
-	    pk = "id_obra_desague";
-	    break;
-	case Obras_Paso:
-	    pk = "id_obra_paso";
-	    break;
-	case Muros:
-	    pk = "id_muro";
-	    break;
-	case Senhalizacion_Variable:
-	    pk = "id_senhal_variable";
-	    break;
-	case Lecho_Frenado:
-	    pk = "id_lecho_frenado";
-	    break;
-	case Areas_Mantenimiento:
-	    pk = "id_area_mantenimiento";
-	    break;
-	case Lineas_Suministro:
-	    pk = "id_linea_suministro";
-	    break;
-	case Transformadores:
-	    pk = "id_transformador";
-	    break;
-	case Ramales:
-	    pk = "gid";
-	    break;
-	}
-	return pk;
+	return element.pk;
     }
 
     public static String[] ramalesColNames = { "id_ramal", "ramal",
-	"sentido_ramal", "longitud" };
+	    "sentido_ramal", "longitud" };
     public static String[] ramalesColAlias = { "ID Ramal", "Nombre Ramal",
-	"Sentido", "Longitud" };
+	    "Sentido", "Longitud" };
 
     public static String[] ramalesDireccionColNames = { "id_ramal", "ramal",
-	"sentido_ramal", "direccion_ramal", "longitud" };
+	    "sentido_ramal", "direccion_ramal", "longitud" };
     public static String[] ramalesDireccionColAlias = { "ID Ramal",
-	"Nombre Ramal", "Sentido", "Dirección", "Longitud" };
+	    "Nombre Ramal", "Sentido", "Dirección", "Longitud" };
 
     public static String[] reconocimientosWhitoutIndexColNames = {
-	"n_inspeccion", "nombre_revisor", "fecha_inspeccion" };
+	    "n_inspeccion", "nombre_revisor", "fecha_inspeccion" };
     public static String[] reconocimientosWhitoutIndexColAlias = {
-	"Nº Inspección", "Revisor", "Fecha Inspección" };
+	    "Nº Inspección", "Revisor", "Fecha Inspección" };
 
     public static final String[] reconocimientosColNames = { "n_inspeccion",
-	"nombre_revisor", "fecha_inspeccion", "indice_estado" };
+	    "nombre_revisor", "fecha_inspeccion", "indice_estado" };
     public static final String[] reconocimientosColAlias = { "Nº Inspección",
-	"Revisor", "Fecha Inspección", "Índice Estado" };
+	    "Revisor", "Fecha Inspección", "Índice Estado" };
 
     public static String[] trabajosColNames = { "id_trabajo",
-	"fecha_certificado", "unidad", "medicion_audasa", "observaciones" };
+	    "fecha_certificado", "unidad", "medicion_audasa", "observaciones" };
 
     public static String[] trabajosColAlias = { "ID", "Fecha cert", "Unidad",
-	"Medición AUDASA", "Observaciones" };
+	    "Medición AUDASA", "Observaciones" };
     public static int[] trabajosColWidths = { 10, 45, 90, 75, 190 };
 
     public static String[] trabajosVegetacionColNames = { "id_trabajo",
-	"fecha", "unidad", "medicion", "observaciones" };
+	    "fecha", "unidad", "medicion", "observaciones" };
 
     public static String[] trabajosVegetacionColAlias = { "ID", "Fecha",
-	"Unidad", "Medición", "Observaciones" };
+	    "Unidad", "Medición", "Observaciones" };
 
     public static String[] trabajosVegetacionTableEditableCells = { "Fecha",
-	"Unidad", "Medición", "Observaciones" };
+	    "Unidad", "Medición", "Observaciones" };
 
     public static final String GIA_SCHEMA = "audasa_extgia";
 
