@@ -69,6 +69,9 @@ public class DBFieldNames {
 	case Transformadores:
 	    pk = "id_transformador";
 	    break;
+	case Ramales:
+	    pk = "gid";
+	    break;
 	}
 	return pk;
     }

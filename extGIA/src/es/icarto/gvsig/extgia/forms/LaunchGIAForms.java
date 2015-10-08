@@ -55,6 +55,7 @@ import es.icarto.gvsig.extgia.forms.muros.MurosForm;
 import es.icarto.gvsig.extgia.forms.obras_desague.ObrasDesagueForm;
 import es.icarto.gvsig.extgia.forms.obras_paso.ObrasPasoForm;
 import es.icarto.gvsig.extgia.forms.pasos_mediana.PasosMedianaForm;
+import es.icarto.gvsig.extgia.forms.ramales.RamalesForm;
 import es.icarto.gvsig.extgia.forms.senhalizacion_variable.SenhalizacionVariableForm;
 import es.icarto.gvsig.extgia.forms.senhalizacion_vertical.SenhalizacionVerticalForm;
 import es.icarto.gvsig.extgia.forms.taludes.TaludesForm;
@@ -137,6 +138,9 @@ public class LaunchGIAForms {
 	    break;
 	case Valla_Cierre:
 	    form = new VallaCierreForm(layer);
+	    break;
+	case Ramales:
+	    form = new RamalesForm(layer);
 	    break;
 	default:
 	    return false;
