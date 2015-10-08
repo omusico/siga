@@ -25,15 +25,11 @@ public class DBFieldNames {
 	Valla_Cierre("id_valla"),
 	Ramales("gid");
 
-	private final String pk;
+	public final String pk;
 
 	private Elements(String pk) {
 	    this.pk = pk;
 	}
-    }
-
-    public static String getPrimaryKey(Elements element) {
-	return element.pk;
     }
 
     public static String[] ramalesColNames = { "id_ramal", "ramal",

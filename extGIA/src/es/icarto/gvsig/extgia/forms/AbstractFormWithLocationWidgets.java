@@ -349,7 +349,7 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 
 	    @Override
 	    public String getRegisterField() {
-		return DBFieldNames.getPrimaryKey(element);
+		return element.pk;
 	    }
 
 	    @Override
