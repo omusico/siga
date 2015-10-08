@@ -78,65 +78,65 @@ public class LaunchGIAForms {
 	AbstractFormWithLocationWidgets form = null;
 
 	switch (DBFieldNames.Elements.valueOf(layerName)) {
-	case Taludes:
-	    form = new TaludesForm(layer);
-	    break;
-	case Isletas:
-	    form = new IsletasForm(layer);
-	    break;
-	case Enlaces:
-	    form = new EnlacesForm(layer);
-	    break;
-	case Barrera_Rigida:
-	    form = new BarreraRigidaForm(layer);
-	    break;
-	case Areas_Servicio:
-	    form = new AreasServicioForm(layer);
-	    break;
 	case Areas_Descanso:
 	    form = new AreasDescansoForm(layer);
-	    break;
-	case Areas_Peaje:
-	    form = new AreasPeajeForm(layer);
-	    break;
-	case Juntas:
-	    form = new JuntasForm(layer);
-	    break;
-	case Pasos_Mediana:
-	    form = new PasosMedianaForm(layer);
-	    break;
-	case Senhalizacion_Vertical:
-	    form = new SenhalizacionVerticalForm(layer);
-	    break;
-	case Valla_Cierre:
-	    form = new VallaCierreForm(layer);
-	    break;
-	case Firme:
-	    form = new FirmeForm(layer);
-	    break;
-	case Obras_Paso:
-	    form = new ObrasPasoForm(layer);
-	    break;
-	case Obras_Desague:
-	    form = new ObrasDesagueForm(layer);
-	    break;
-	case Muros:
-	    form = new MurosForm(layer);
-	    break;
-	case Senhalizacion_Variable:
-	    form = new SenhalizacionVariableForm(layer);
-	    break;
-	case Lecho_Frenado:
-	    form = new LechoFrenadoForm(layer);
 	    break;
 	case Areas_Mantenimiento:
 	    form = new AreasMantenimientoForm(layer);
 	    break;
+	case Areas_Peaje:
+	    form = new AreasPeajeForm(layer);
+	    break;
+	case Areas_Servicio:
+	    form = new AreasServicioForm(layer);
+	    break;
+	case Barrera_Rigida:
+	    form = new BarreraRigidaForm(layer);
+	    break;
+	case Enlaces:
+	    form = new EnlacesForm(layer);
+	    break;
+	case Firme:
+	    form = new FirmeForm(layer);
+	    break;
+	case Isletas:
+	    form = new IsletasForm(layer);
+	    break;
+	case Juntas:
+	    form = new JuntasForm(layer);
+	    break;
+	case Lecho_Frenado:
+	    form = new LechoFrenadoForm(layer);
+	    break;
 	case Lineas_Suministro:
 	    form = new LineasSuministroForm(layer);
 	    break;
+	case Muros:
+	    form = new MurosForm(layer);
+	    break;
+	case Obras_Desague:
+	    form = new ObrasDesagueForm(layer);
+	    break;
+	case Obras_Paso:
+	    form = new ObrasPasoForm(layer);
+	    break;
+	case Pasos_Mediana:
+	    form = new PasosMedianaForm(layer);
+	    break;
+	case Senhalizacion_Variable:
+	    form = new SenhalizacionVariableForm(layer);
+	    break;
+	case Senhalizacion_Vertical:
+	    form = new SenhalizacionVerticalForm(layer);
+	    break;
+	case Taludes:
+	    form = new TaludesForm(layer);
+	    break;
 	case Transformadores:
 	    form = new TransformadoresForm(layer);
+	    break;
+	case Valla_Cierre:
+	    form = new VallaCierreForm(layer);
 	    break;
 	default:
 	    return false;
@@ -169,67 +169,70 @@ public class LaunchGIAForms {
 	BatchAbstractSubForm subform = null;
 	BatchVegetationTrabajosAbstractSubForm vegetationSubForm = null;
 	switch (DBFieldNames.Elements.valueOf(element)) {
-	case Taludes:
-	    vegetationSubForm = new BatchTaludesTrabajos(formFileName,
-		    dbTableName);
-	    break;
-	case Isletas:
-	    vegetationSubForm = new BatchIsletasTrabajos(formFileName,
-		    dbTableName);
-	    break;
-	case Barrera_Rigida:
-	    vegetationSubForm = new BatchBarreraRigidaTrabajos(formFileName,
-		    dbTableName);
-	    break;
-	case Areas_Servicio:
-	    subform = new BatchAreasServicioTrabajos(formFileName, dbTableName);
-	    break;
 	case Areas_Descanso:
 	    subform = new BatchAreasDescansoTrabajos(formFileName, dbTableName);
 	    break;
 	case Areas_Peaje:
 	    subform = new BatchAreasPeajeTrabajos(formFileName, dbTableName);
 	    break;
-	case Juntas:
-	    subform = new BatchJuntasTrabajos(formFileName, dbTableName);
+	case Barrera_Rigida:
+	    vegetationSubForm = new BatchBarreraRigidaTrabajos(formFileName,
+		    dbTableName);
 	    break;
-	case Pasos_Mediana:
-	    subform = new BatchPasosMedianaTrabajos(formFileName, dbTableName);
-	    break;
-	case Senhalizacion_Vertical:
-	    vegetationSubForm = new BatchSenhalizacionVerticalTrabajos(
-		    formFileName, dbTableName);
-	    break;
-	case Valla_Cierre:
-	    subform = new BatchVallaCierreTrabajos(formFileName, dbTableName);
+
+	case Areas_Servicio:
+	    subform = new BatchAreasServicioTrabajos(formFileName, dbTableName);
 	    break;
 	case Firme:
 	    subform = new BatchFirmeTrabajos(formFileName, dbTableName);
 	    break;
-	case Obras_Paso:
-	    subform = new BatchObrasPasoTrabajos(formFileName, dbTableName);
+	case Isletas:
+	    vegetationSubForm = new BatchIsletasTrabajos(formFileName,
+		    dbTableName);
+	    break;
+	case Juntas:
+	    subform = new BatchJuntasTrabajos(formFileName, dbTableName);
+	    break;
+	case Lecho_Frenado:
+	    subform = new BatchLechoFrenadoTrabajos(formFileName, dbTableName);
+	    break;
+
+	case Lineas_Suministro:
+	    subform = new BatchLineasSuministroTrabajos(formFileName,
+		    dbTableName);
+	    break;
+	case Muros:
+	    subform = new BatchMurosTrabajos(formFileName, dbTableName);
 	    break;
 	case Obras_Desague:
 	    subform = new BatchObrasDesagueTrabajos(formFileName, dbTableName);
 	    break;
-	case Muros:
-	    subform = new BatchMurosTrabajos(formFileName, dbTableName);
+	case Obras_Paso:
+	    subform = new BatchObrasPasoTrabajos(formFileName, dbTableName);
+	    break;
+	case Pasos_Mediana:
+	    subform = new BatchPasosMedianaTrabajos(formFileName, dbTableName);
 	    break;
 	case Senhalizacion_Variable:
 	    subform = new BatchSenhalizacionVariableTrabajos(formFileName,
 		    dbTableName);
 	    break;
-	case Lecho_Frenado:
-	    subform = new BatchLechoFrenadoTrabajos(formFileName, dbTableName);
+	case Senhalizacion_Vertical:
+	    vegetationSubForm = new BatchSenhalizacionVerticalTrabajos(
+		    formFileName, dbTableName);
 	    break;
-	case Lineas_Suministro:
-	    subform = new BatchLineasSuministroTrabajos(formFileName,
+	case Taludes:
+	    vegetationSubForm = new BatchTaludesTrabajos(formFileName,
 		    dbTableName);
 	    break;
 	case Transformadores:
 	    subform = new BatchTransformadoresTrabajos(formFileName,
 		    dbTableName);
 	    break;
+	case Valla_Cierre:
+	    subform = new BatchVallaCierreTrabajos(formFileName, dbTableName);
+	    break;
+
 	default:
 	    subform = null;
 	}
@@ -251,55 +254,33 @@ public class LaunchGIAForms {
 	    String element, String formFileName, String dbTableName) {
 	BatchAbstractSubForm subform;
 	switch (DBFieldNames.Elements.valueOf(element)) {
-	case Taludes:
-	    subform = new BatchTaludesReconocimientos(formFileName, dbTableName);
-	    break;
-	case Isletas:
-	    subform = new BatchIsletasReconocimientos(formFileName, dbTableName);
-	    break;
-	case Barrera_Rigida:
-	    subform = new BatchBarreraRigidaReconocimientos(formFileName,
-		    dbTableName);
-	    break;
-	case Areas_Servicio:
-	    subform = new BatchAreasServicioReconocimientos(formFileName,
+	case Areas_Peaje:
+	    subform = new BatchAreasPeajeReconocimientos(formFileName,
 		    dbTableName);
 	    break;
 	case Areas_Descanso:
 	    subform = new BatchAreasDescansoReconocimientos(formFileName,
 		    dbTableName);
 	    break;
-	case Areas_Peaje:
-	    subform = new BatchAreasPeajeReconocimientos(formFileName,
+	case Areas_Servicio:
+	    subform = new BatchAreasServicioReconocimientos(formFileName,
+		    dbTableName);
+	    break;
+	case Barrera_Rigida:
+	    subform = new BatchBarreraRigidaReconocimientos(formFileName,
 		    dbTableName);
 	    break;
 	case Enlaces:
 	    subform = new BatchEnlacesReconocimientos(formFileName, dbTableName);
 	    break;
-	case Juntas:
-	    subform = new BatchJuntasReconocimientos(formFileName, dbTableName);
-	    break;
-	case Pasos_Mediana:
-	    subform = new BatchPasosMedianaReconocimientos(formFileName,
-		    dbTableName);
-	    break;
-	case Senhalizacion_Vertical:
-	    subform = new BatchSenhalizacionVerticalReconocimientos(
-		    formFileName, dbTableName);
-	    break;
-	case Valla_Cierre:
-	    subform = new BatchVallaCierreReconocimientos(formFileName,
-		    dbTableName);
-	    break;
 	case Firme:
 	    subform = new BatchFirmeReconocimientos(formFileName, dbTableName);
 	    break;
-	case Muros:
-	    subform = new BatchMurosReconocimientos(formFileName, dbTableName);
+	case Isletas:
+	    subform = new BatchIsletasReconocimientos(formFileName, dbTableName);
 	    break;
-	case Senhalizacion_Variable:
-	    subform = new BatchSenhalizacionVariableReconocimientos(
-		    formFileName, dbTableName);
+	case Juntas:
+	    subform = new BatchJuntasReconocimientos(formFileName, dbTableName);
 	    break;
 	case Lecho_Frenado:
 	    subform = new BatchLechoFrenadoReconocimientos(formFileName,
@@ -309,8 +290,30 @@ public class LaunchGIAForms {
 	    subform = new BatchLineasSuministroReconocimientos(formFileName,
 		    dbTableName);
 	    break;
+	case Muros:
+	    subform = new BatchMurosReconocimientos(formFileName, dbTableName);
+	    break;
+	case Pasos_Mediana:
+	    subform = new BatchPasosMedianaReconocimientos(formFileName,
+		    dbTableName);
+	    break;
+	case Senhalizacion_Variable:
+	    subform = new BatchSenhalizacionVariableReconocimientos(
+		    formFileName, dbTableName);
+	    break;
+	case Senhalizacion_Vertical:
+	    subform = new BatchSenhalizacionVerticalReconocimientos(
+		    formFileName, dbTableName);
+	    break;
+	case Taludes:
+	    subform = new BatchTaludesReconocimientos(formFileName, dbTableName);
+	    break;
 	case Transformadores:
 	    subform = new BatchTransformadoresReconocimientos(formFileName,
+		    dbTableName);
+	    break;
+	case Valla_Cierre:
+	    subform = new BatchVallaCierreReconocimientos(formFileName,
 		    dbTableName);
 	    break;
 	default:
