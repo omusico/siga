@@ -1,6 +1,8 @@
 package es.icarto.gvsig.navtableforms.gui.tables.handler;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.JComponent;
@@ -20,6 +22,7 @@ import es.icarto.gvsig.navtableforms.gui.tables.model.BaseTableModel;
  * entities related to the one displayed in the current form).
  * 
  * @author Jorge López Fernández <jlopez@cartolab.es>
+ * @author Francisco Puga <fpuga@icarto.es>
  */
 
 public abstract class BaseTableHandler {
@@ -42,7 +45,7 @@ public abstract class BaseTableHandler {
     /**
      * The name of the foreign key in the related entity.
      */
-    protected String destinationKey;
+    private final String[] destinationKey;
 
     /**
      * The current value of the primary key in the current form.
@@ -62,7 +65,7 @@ public abstract class BaseTableHandler {
     /**
      * The column which contains the foreign key.
      */
-    protected int keyColumn = 0;
+    private final List<Integer> keyColumn = new ArrayList<Integer>();
 
     /**
      * The contextual menu for the table.
@@ -70,7 +73,7 @@ public abstract class BaseTableHandler {
     protected BaseJTableContextualMenu listener;
 
     public BaseTableHandler(String tableName,
-	    Map<String, JComponent> widgets, String foreignKeyId,
+	    Map<String, JComponent> widgets, String[] foreignKeyId,
 	    String[] colNames, String[] colAliases) {
 	this.sourceTableName = tableName;
 	getJTable(widgets);
@@ -79,10 +82,14 @@ public abstract class BaseTableHandler {
 	this.colNames = colNames;
 	this.colAliases = colAliases;
 	if (colNames != null) {
-	    for (int i = 0, columns = colNames.length; i < columns; i++) {
-		if (colNames[i].equals(destinationKey)) {
-		    keyColumn = i;
-		    break;
+	    List<String> colNamesList = Arrays.asList(colNames);
+	    for (String s : destinationKey) {
+		int index = colNamesList.indexOf(s);
+		if (index != -1) {
+		    keyColumn.add(index);
+		} else {
+		    // Probably is safer to add a -1, but previously it was initialized with 0 so this behavior is preserved
+		    keyColumn.add(0);
 		}
 	    }
 	}
@@ -131,7 +138,7 @@ public abstract class BaseTableHandler {
     }
 
     public String getDestinationKey() {
-	return destinationKey;
+	return destinationKey[0];
     }
 
     public String getOriginKeyValue() {
@@ -159,7 +166,7 @@ public abstract class BaseTableHandler {
     }
 
     public int getKeyColumn() {
-	return keyColumn;
+	return keyColumn.get(0);
     }
 
 }

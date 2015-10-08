@@ -37,7 +37,7 @@ public class AlphanumericNotEditableNNRelTableHandler extends
 
     protected void createTableModel() throws ReadDriverException {
 	AlphanumericTableModel model = TableModelFactory
-		.createFromTableWithOrFilter(sourceTableName, destinationKey,
+		.createFromTableWithOrFilter(sourceTableName, getDestinationKey(),
 			destinationKeyValues, colNames, colAliases);
 	jtable.setModel(model);
 	if (form != null) {

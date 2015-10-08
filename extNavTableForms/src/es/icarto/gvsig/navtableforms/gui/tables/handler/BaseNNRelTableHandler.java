@@ -47,7 +47,7 @@ public abstract class BaseNNRelTableHandler extends BaseTableHandler {
 	    HashMap<String, JComponent> widgets, String dbSchema,
 	    String originKey, String relTable, String destinationKey,
 	    String[] colNames, String[] colAliases) {
-	super(sourceTableName, widgets, destinationKey, colNames, colAliases);
+	super(sourceTableName, widgets, new String[] {destinationKey}, colNames, colAliases);
 	this.originKey = originKey;
 	this.dbSchema = dbSchema;
 	this.relTable = relTable;
@@ -59,7 +59,7 @@ public abstract class BaseNNRelTableHandler extends BaseTableHandler {
 	    DBSession session = DBSession.getCurrentSession();
 	    if (session != null) {
 		destinationKeyValues = session.getDistinctValues(relTable,
-			dbSchema, destinationKey, false, false, "WHERE "
+			dbSchema, getDestinationKey(), false, false, "WHERE "
 				+ originKey + "='" + originKeyValue + "'");
 		createTableModel();
 		((DefaultTableCellRenderer) jtable.getTableHeader()
