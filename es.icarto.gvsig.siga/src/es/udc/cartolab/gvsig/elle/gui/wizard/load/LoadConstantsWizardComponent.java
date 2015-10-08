@@ -134,8 +134,10 @@ public class LoadConstantsWizardComponent extends WizardComponent {
     private void setWhereOnProvinciasLoc(ELLEMap map) {
 	LayerProperties overviewLayer = map
 		.getOverviewLayer("Provincias_galicia_loc");
-	String where = constantsPanel.buildWhereForProvinciasLoc();
-	overviewLayer.setWhere(where);
+	if (overviewLayer != null) {
+	    String where = constantsPanel.buildWhereForProvinciasLoc();
+	    overviewLayer.setWhere(where);
+	}
     }
 
     private void loadLegends(View view, String mapName) throws WizardException {
