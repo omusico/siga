@@ -45,6 +45,7 @@ import es.icarto.gvsig.extgia.forms.areas_mantenimiento.AreasMantenimientoForm;
 import es.icarto.gvsig.extgia.forms.areas_peaje.AreasPeajeForm;
 import es.icarto.gvsig.extgia.forms.areas_servicio.AreasServicioForm;
 import es.icarto.gvsig.extgia.forms.barrera_rigida.BarreraRigidaForm;
+import es.icarto.gvsig.extgia.forms.competencias.CompetenciasForm;
 import es.icarto.gvsig.extgia.forms.enlaces.EnlacesForm;
 import es.icarto.gvsig.extgia.forms.firme.FirmeForm;
 import es.icarto.gvsig.extgia.forms.isletas.IsletasForm;
@@ -62,6 +63,7 @@ import es.icarto.gvsig.extgia.forms.taludes.TaludesForm;
 import es.icarto.gvsig.extgia.forms.transformadores.TransformadoresForm;
 import es.icarto.gvsig.extgia.forms.valla_cierre.VallaCierreForm;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.gui.tables.handler.BaseTableHandler;
 import es.icarto.gvsig.navtableforms.gui.tables.model.AlphanumericTableModel;
 import es.icarto.gvsig.navtableforms.gui.tables.model.TableModelFactory;
@@ -69,14 +71,14 @@ import es.icarto.gvsig.navtableforms.utils.FormFactory;
 
 public class LaunchGIAForms {
 
-    public static boolean callFormDependingOfLayer(FLyrVect layer,
-	    boolean editing) {
+    public static AbstractForm getFormDependingOfLayer(
+	    FLyrVect layer) {
+	AbstractForm form = null;
 
 	final String layerName = layer.getName();
 	if (!isGIALayerName(layerName)) {
-	    return false;
+	    return form;
 	}
-	AbstractFormWithLocationWidgets form = null;
 
 	switch (DBFieldNames.Elements.valueOf(layerName)) {
 	case Areas_Descanso:
@@ -142,10 +144,19 @@ public class LaunchGIAForms {
 	case Ramales:
 	    form = new RamalesForm(layer);
 	    break;
+	case Competencias:
+	    form = new CompetenciasForm(layer);
+	    break;
 	default:
-	    return false;
+	    form = null;
+	    break;
 	}
+	return form;
+    }
 
+    public static boolean callFormDependingOfLayer(FLyrVect layer,
+	    boolean editing) {
+	AbstractForm form = getFormDependingOfLayer(layer);
 	if (form != null) {
 	    if (form.init()) {
 		PluginServices.getMDIManager().addWindow(form);

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LAYER alias="competencias">
+	<TABLENAME>competencias</TABLENAME>
+	<PRIMARYKEY>
+		<PKELEMENT>gid</PKELEMENT>
+	</PRIMARYKEY>
+	<RECORDSET>
+
+		<FIELD>
+		<FIELDNAME>competencia</FIELDNAME>
+		<DOMAINREADER>
+			<DRTYPE>db</DRTYPE>
+			<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+			<DRDBTABLE>competencia</DRDBTABLE>
+			<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+			<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+			<DRADDVOIDVALUE>true</DRADDVOIDVALUE>
+		</DOMAINREADER>
+	</FIELD>
+
+	</RECORDSET>
+</LAYER>

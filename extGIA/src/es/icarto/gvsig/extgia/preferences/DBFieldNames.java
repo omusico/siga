@@ -23,7 +23,8 @@ public class DBFieldNames {
 	Taludes("id_talud"),
 	Transformadores("id_transformador"),
 	Valla_Cierre("id_valla"),
-	Ramales("gid");
+	Ramales("gid"),
+	Competencias("gid");
 
 	public final String pk;
 

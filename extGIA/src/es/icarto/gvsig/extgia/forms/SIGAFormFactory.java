@@ -1,7 +1,8 @@
-package es.icarto.gvsig.navtableforms;
+package es.icarto.gvsig.extgia.forms;
 
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
+import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.gui.tables.AbstractSubForm;
 import es.icarto.gvsig.navtableforms.utils.DBConnectionBaseFormFactory;
 import es.icarto.gvsig.navtableforms.utils.FormFactory;
@@ -24,7 +25,7 @@ public class SIGAFormFactory extends DBConnectionBaseFormFactory {
 
     @Override
     public AbstractForm createForm(FLyrVect layer) {
-	return null;
+	return LaunchGIAForms.getFormDependingOfLayer(layer);
     }
 
     @Override

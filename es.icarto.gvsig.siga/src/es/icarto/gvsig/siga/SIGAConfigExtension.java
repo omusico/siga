@@ -16,7 +16,6 @@ import com.iver.andami.preferences.IPreferenceExtension;
 import com.iver.cit.gvsig.About;
 import com.iver.cit.gvsig.gui.panels.FPanelAbout;
 
-import es.icarto.gvsig.navtableforms.SIGAFormFactory;
 import es.icarto.gvsig.siga.models.InfoEmpresa;
 import es.icarto.gvsig.utils.SIGAFormatter;
 import es.udc.cartolab.gvsig.elle.ConfigExtension;
@@ -25,7 +24,7 @@ import es.udc.cartolab.gvsig.users.preferences.UsersPreferencePage;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class SIGAConfigExtension extends Extension implements
-IPreferenceExtension {
+	IPreferenceExtension {
 
     private static final Logger logger = Logger
 	    .getLogger(SIGAConfigExtension.class);
@@ -35,8 +34,6 @@ IPreferenceExtension {
     @Override
     public void initialize() {
 	setVersion();
-	SIGAFormFactory.registerFormFactory();
-
 	UsersPreferencePage.LOGO = PreferencesPage.SIGA_LOGO;
     }
 
