@@ -45,12 +45,12 @@ public abstract class BaseTableHandler {
     /**
      * The name of the foreign key in the related entity.
      */
-    private final String[] destinationKey;
+    protected final String[] destinationKey;
 
     /**
      * The current value of the primary key in the current form.
      */
-    protected String originKeyValue;
+    protected String[] originKeyValue;
 
     /**
      * The columns we want to show of those related entities.
@@ -79,6 +79,7 @@ public abstract class BaseTableHandler {
 	getJTable(widgets);
 	jtable.getTableHeader().setReorderingAllowed(false);
 	this.destinationKey = foreignKeyId;
+	this.originKeyValue = new String[foreignKeyId.length];
 	this.colNames = colNames;
 	this.colAliases = colAliases;
 	if (colNames != null) {
@@ -117,7 +118,7 @@ public abstract class BaseTableHandler {
     }
 
     public void fillValues(String foreignKeyValue) {
-	this.originKeyValue = foreignKeyValue;
+	this.originKeyValue[0] = foreignKeyValue;
 	try {
 	    createTableModel();
 	    ((DefaultTableCellRenderer) jtable.getTableHeader()
@@ -142,7 +143,7 @@ public abstract class BaseTableHandler {
     }
 
     public String getOriginKeyValue() {
-	return originKeyValue;
+	return originKeyValue[0];
     }
 
     public BaseJTableContextualMenu getListener() {

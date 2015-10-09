@@ -77,10 +77,10 @@ public class VectorialEditableNNRelTableHandler extends
     public void insertRow(String secondaryPKValue) {
 	try {
 	    String[] columns = { originKey, getDestinationKey() };
-	    String[] values = { originKeyValue, secondaryPKValue };
+	    String[] values = { getOriginKeyValue(), secondaryPKValue };
 	    DBSession.getCurrentSession().insertRow(dbSchema, relTable,
 		    columns, values);
-	    fillValues(originKeyValue);
+	    fillValues(getOriginKeyValue());
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
@@ -88,11 +88,11 @@ public class VectorialEditableNNRelTableHandler extends
 
     public void deleteRow(String secondaryPKValue) {
 	try {
-	    String where = "WHERE " + originKey + " = '" + originKeyValue
+	    String where = "WHERE " + originKey + " = '" + getOriginKeyValue()
 		    + "' AND " + getDestinationKey() + " = '" + secondaryPKValue
 		    + "'";
 	    DBSession.getCurrentSession().deleteRows(dbSchema, relTable, where);
-	    fillValues(originKeyValue);
+	    fillValues(getOriginKeyValue());
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}

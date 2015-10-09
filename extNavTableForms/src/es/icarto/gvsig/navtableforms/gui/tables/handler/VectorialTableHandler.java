@@ -1,6 +1,6 @@
 package es.icarto.gvsig.navtableforms.gui.tables.handler;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JComponent;
 
@@ -23,23 +23,22 @@ import es.icarto.gvsig.navtableforms.utils.FormFactory;
 public class VectorialTableHandler extends BaseTableHandler {
 
     public VectorialTableHandler(String layerName,
-	    HashMap<String, JComponent> widgets, String[] foreignKeyId,
+	    Map<String, JComponent> widgets, String[] foreignKeyId,
 	    String[] colNames, String[] colAliases) {
 	super(layerName, widgets, foreignKeyId, colNames, colAliases);
 	FormFactory.checkAndLoadLayerRegistered(layerName);
     }
     
     public VectorialTableHandler(String layerName,
-	    HashMap<String, JComponent> widgets, String foreignKeyId,
+	    Map<String, JComponent> widgets, String foreignKeyId,
 	    String[] colNames, String[] colAliases) {
-	
 	this(layerName, widgets, new String[] {foreignKeyId}, colNames, colAliases);
     }
 
     @Override
     protected void createTableModel() throws ReadDriverException {
 	VectorialTableModel model = TableModelFactory
-		.createFromLayerWithFilter(sourceTableName, getDestinationKey(),
+		.createFromLayerWithFilter(sourceTableName, destinationKey,
 			originKeyValue, colNames, colAliases);
 	jtable.setModel(model);
     }

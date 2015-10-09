@@ -37,7 +37,7 @@ public class AlphanumericTableHandler extends BaseTableHandler {
     protected void createTableModel() throws ReadDriverException {
 	AlphanumericTableModel model = TableModelFactory
 		.createFromTableWithFilter(sourceTableName, getDestinationKey(),
-			originKeyValue, colNames, colAliases);
+			getOriginKeyValue(), colNames, colAliases);
 	jtable.setModel(model);
 	if (form != null) {
 	    form.setModel(model);
@@ -54,7 +54,7 @@ public class AlphanumericTableHandler extends BaseTableHandler {
     public void fillValues(String foreignKeyValue) {
 	super.fillValues(foreignKeyValue);
 	Map<String, String> foreignKey = new HashMap<String, String>(1);
-	foreignKey.put(getDestinationKey(), originKeyValue);
+	foreignKey.put(getDestinationKey(), getOriginKeyValue());
 	if (form != null) {
 	    form.setForeingKey(foreignKey);
 	}

@@ -53,14 +53,15 @@ public abstract class BaseNNRelTableHandler extends BaseTableHandler {
 	this.relTable = relTable;
     }
 
+    @Override
     public void fillValues(String value) {
 	try {
-	    originKeyValue = value;
+	    originKeyValue[0] = value;
 	    DBSession session = DBSession.getCurrentSession();
 	    if (session != null) {
 		destinationKeyValues = session.getDistinctValues(relTable,
 			dbSchema, getDestinationKey(), false, false, "WHERE "
-				+ originKey + "='" + originKeyValue + "'");
+				+ originKey + "='" + getOriginKeyValue() + "'");
 		createTableModel();
 		((DefaultTableCellRenderer) jtable.getTableHeader()
 			.getDefaultRenderer())
