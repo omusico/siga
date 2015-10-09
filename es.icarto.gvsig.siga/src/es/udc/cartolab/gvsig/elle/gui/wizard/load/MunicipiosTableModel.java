@@ -1,9 +1,9 @@
 package es.udc.cartolab.gvsig.elle.gui.wizard.load;
 
-import javax.swing.table.DefaultTableModel;
+import es.icarto.gvsig.commons.gui.NonEditableTableModel;
 
 @SuppressWarnings("serial")
-public class MunicipiosTableModel extends DefaultTableModel {
+public class MunicipiosTableModel extends NonEditableTableModel {
 
     @Override
     public Object getValueAt(int row, int column) {
