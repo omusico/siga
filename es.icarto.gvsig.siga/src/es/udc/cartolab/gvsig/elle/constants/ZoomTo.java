@@ -14,6 +14,9 @@ public class ZoomTo {
     }
 
     public void zoom(Rectangle2D rectangle) {
+	if (rectangle == null) {
+	    return;
+	}
 	Rectangle2D bbox = getGeometry(rectangle);
 	if (bbox != null) {
 	    zoomTo(bbox);
