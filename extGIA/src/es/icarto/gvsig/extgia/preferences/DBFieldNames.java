@@ -1,35 +1,61 @@
 package es.icarto.gvsig.extgia.preferences;
 
+import es.icarto.gvsig.extgia.forms.areas_descanso.AreasDescansoForm;
+import es.icarto.gvsig.extgia.forms.areas_mantenimiento.AreasMantenimientoForm;
+import es.icarto.gvsig.extgia.forms.areas_peaje.AreasPeajeForm;
+import es.icarto.gvsig.extgia.forms.areas_servicio.AreasServicioForm;
+import es.icarto.gvsig.extgia.forms.barrera_rigida.BarreraRigidaForm;
+import es.icarto.gvsig.extgia.forms.competencias.CompetenciasForm;
+import es.icarto.gvsig.extgia.forms.enlaces.EnlacesForm;
+import es.icarto.gvsig.extgia.forms.firme.FirmeForm;
+import es.icarto.gvsig.extgia.forms.isletas.IsletasForm;
+import es.icarto.gvsig.extgia.forms.juntas.JuntasForm;
+import es.icarto.gvsig.extgia.forms.lecho_frenado.LechoFrenadoForm;
+import es.icarto.gvsig.extgia.forms.lineas_suministro.LineasSuministroForm;
+import es.icarto.gvsig.extgia.forms.muros.MurosForm;
+import es.icarto.gvsig.extgia.forms.obras_desague.ObrasDesagueForm;
+import es.icarto.gvsig.extgia.forms.obras_paso.ObrasPasoForm;
+import es.icarto.gvsig.extgia.forms.pasos_mediana.PasosMedianaForm;
+import es.icarto.gvsig.extgia.forms.ramales.RamalesForm;
+import es.icarto.gvsig.extgia.forms.senhalizacion_variable.SenhalizacionVariableForm;
+import es.icarto.gvsig.extgia.forms.senhalizacion_vertical.SenhalizacionVerticalForm;
+import es.icarto.gvsig.extgia.forms.taludes.TaludesForm;
+import es.icarto.gvsig.extgia.forms.transformadores.TransformadoresForm;
+import es.icarto.gvsig.extgia.forms.valla_cierre.VallaCierreForm;
+import es.icarto.gvsig.navtableforms.AbstractForm;
+
 public class DBFieldNames {
 
     public enum Elements {
-	Areas_Descanso("id_area_descanso"),
-	Areas_Mantenimiento("id_area_mantenimiento"),
-	Areas_Peaje("id_area_peaje"),
-	Areas_Servicio("id_area_servicio"),
-	Barrera_Rigida("id_barrera_rigida"),
-	Enlaces("id_enlace"),
-	Firme("id_firme"),
-	Isletas("id_isleta"),
-	Juntas("id_junta"),
-	Lecho_Frenado("id_lecho_frenado"),
-	Lineas_Suministro("id_linea_suministro"),
-	Muros("id_muro"),
-	Obras_Desague("id_obra_desague"),
-	Obras_Paso("id_obra_paso"),
-	Pasos_Mediana("id_paso_mediana"),
-	Senhalizacion_Variable("id_senhal_variable"),
-	Senhalizacion_Vertical("id_elemento_senhalizacion"),
-	Taludes("id_talud"),
-	Transformadores("id_transformador"),
-	Valla_Cierre("id_valla"),
-	Ramales("gid"),
-	Competencias("gid");
+	Areas_Descanso("id_area_descanso", AreasDescansoForm.class),
+	Areas_Mantenimiento("id_area_mantenimiento", AreasMantenimientoForm.class),
+	Areas_Peaje("id_area_peaje", AreasPeajeForm.class),
+	Areas_Servicio("id_area_servicio", AreasServicioForm.class),
+	Barrera_Rigida("id_barrera_rigida", BarreraRigidaForm.class),
+	Enlaces("id_enlace", EnlacesForm.class),
+	Firme("id_firme", FirmeForm.class),
+	Isletas("id_isleta", IsletasForm.class),
+	Juntas("id_junta", JuntasForm.class),
+	Lecho_Frenado("id_lecho_frenado", LechoFrenadoForm.class),
+	Lineas_Suministro("id_linea_suministro", LineasSuministroForm.class),
+	Muros("id_muro", MurosForm.class),
+	Obras_Desague("id_obra_desague", ObrasDesagueForm.class),
+	Obras_Paso("id_obra_paso", ObrasPasoForm.class),
+	Pasos_Mediana("id_paso_mediana", PasosMedianaForm.class),
+	Senhalizacion_Variable("id_senhal_variable", SenhalizacionVariableForm.class),
+	Senhalizacion_Vertical("id_elemento_senhalizacion", SenhalizacionVerticalForm.class),
+	Taludes("id_talud", TaludesForm.class),
+	Transformadores("id_transformador", TransformadoresForm.class),
+	Valla_Cierre("id_valla", VallaCierreForm.class),
+	Ramales("gid", RamalesForm.class),
+	Competencias("gid", CompetenciasForm.class);
 
 	public final String pk;
+	public final Class<? extends AbstractForm> form;
 
-	private Elements(String pk) {
+	private Elements(String pk, Class<? extends AbstractForm> form) {
 	    this.pk = pk;
+	    this.form = form;
 	}
     }
 

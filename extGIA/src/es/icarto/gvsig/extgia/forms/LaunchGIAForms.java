@@ -1,5 +1,10 @@
 package es.icarto.gvsig.extgia.forms;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
+import org.apache.log4j.Logger;
+
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
@@ -40,28 +45,6 @@ import es.icarto.gvsig.extgia.batch.elements.BatchTransformadoresReconocimientos
 import es.icarto.gvsig.extgia.batch.elements.BatchTransformadoresTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchVallaCierreReconocimientos;
 import es.icarto.gvsig.extgia.batch.elements.BatchVallaCierreTrabajos;
-import es.icarto.gvsig.extgia.forms.areas_descanso.AreasDescansoForm;
-import es.icarto.gvsig.extgia.forms.areas_mantenimiento.AreasMantenimientoForm;
-import es.icarto.gvsig.extgia.forms.areas_peaje.AreasPeajeForm;
-import es.icarto.gvsig.extgia.forms.areas_servicio.AreasServicioForm;
-import es.icarto.gvsig.extgia.forms.barrera_rigida.BarreraRigidaForm;
-import es.icarto.gvsig.extgia.forms.competencias.CompetenciasForm;
-import es.icarto.gvsig.extgia.forms.enlaces.EnlacesForm;
-import es.icarto.gvsig.extgia.forms.firme.FirmeForm;
-import es.icarto.gvsig.extgia.forms.isletas.IsletasForm;
-import es.icarto.gvsig.extgia.forms.juntas.JuntasForm;
-import es.icarto.gvsig.extgia.forms.lecho_frenado.LechoFrenadoForm;
-import es.icarto.gvsig.extgia.forms.lineas_suministro.LineasSuministroForm;
-import es.icarto.gvsig.extgia.forms.muros.MurosForm;
-import es.icarto.gvsig.extgia.forms.obras_desague.ObrasDesagueForm;
-import es.icarto.gvsig.extgia.forms.obras_paso.ObrasPasoForm;
-import es.icarto.gvsig.extgia.forms.pasos_mediana.PasosMedianaForm;
-import es.icarto.gvsig.extgia.forms.ramales.RamalesForm;
-import es.icarto.gvsig.extgia.forms.senhalizacion_variable.SenhalizacionVariableForm;
-import es.icarto.gvsig.extgia.forms.senhalizacion_vertical.SenhalizacionVerticalForm;
-import es.icarto.gvsig.extgia.forms.taludes.TaludesForm;
-import es.icarto.gvsig.extgia.forms.transformadores.TransformadoresForm;
-import es.icarto.gvsig.extgia.forms.valla_cierre.VallaCierreForm;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.gui.tables.handler.BaseTableHandler;
@@ -71,85 +54,29 @@ import es.icarto.gvsig.navtableforms.utils.FormFactory;
 
 public class LaunchGIAForms {
 
-    public static AbstractForm getFormDependingOfLayer(
-	    FLyrVect layer) {
+    private static final Logger logger = Logger.getLogger(LaunchGIAForms.class);
+
+    public static AbstractForm getFormDependingOfLayer(FLyrVect layer) {
 	AbstractForm form = null;
 
 	final String layerName = layer.getName();
 	if (!isGIALayerName(layerName)) {
 	    return form;
 	}
-
-	switch (DBFieldNames.Elements.valueOf(layerName)) {
-	case Areas_Descanso:
-	    form = new AreasDescansoForm(layer);
-	    break;
-	case Areas_Mantenimiento:
-	    form = new AreasMantenimientoForm(layer);
-	    break;
-	case Areas_Peaje:
-	    form = new AreasPeajeForm(layer);
-	    break;
-	case Areas_Servicio:
-	    form = new AreasServicioForm(layer);
-	    break;
-	case Barrera_Rigida:
-	    form = new BarreraRigidaForm(layer);
-	    break;
-	case Enlaces:
-	    form = new EnlacesForm(layer);
-	    break;
-	case Firme:
-	    form = new FirmeForm(layer);
-	    break;
-	case Isletas:
-	    form = new IsletasForm(layer);
-	    break;
-	case Juntas:
-	    form = new JuntasForm(layer);
-	    break;
-	case Lecho_Frenado:
-	    form = new LechoFrenadoForm(layer);
-	    break;
-	case Lineas_Suministro:
-	    form = new LineasSuministroForm(layer);
-	    break;
-	case Muros:
-	    form = new MurosForm(layer);
-	    break;
-	case Obras_Desague:
-	    form = new ObrasDesagueForm(layer);
-	    break;
-	case Obras_Paso:
-	    form = new ObrasPasoForm(layer);
-	    break;
-	case Pasos_Mediana:
-	    form = new PasosMedianaForm(layer);
-	    break;
-	case Senhalizacion_Variable:
-	    form = new SenhalizacionVariableForm(layer);
-	    break;
-	case Senhalizacion_Vertical:
-	    form = new SenhalizacionVerticalForm(layer);
-	    break;
-	case Taludes:
-	    form = new TaludesForm(layer);
-	    break;
-	case Transformadores:
-	    form = new TransformadoresForm(layer);
-	    break;
-	case Valla_Cierre:
-	    form = new VallaCierreForm(layer);
-	    break;
-	case Ramales:
-	    form = new RamalesForm(layer);
-	    break;
-	case Competencias:
-	    form = new CompetenciasForm(layer);
-	    break;
-	default:
-	    form = null;
-	    break;
+	Class<? extends AbstractForm> formClass = DBFieldNames.Elements
+		.valueOf(layerName).form;
+	try {
+	    Constructor<? extends AbstractForm> constructor = formClass
+		    .getConstructor(FLyrVect.class);
+	    form = constructor.newInstance(layer);
+	} catch (NoSuchMethodException e) {
+	    logger.error(e.getStackTrace(), e);
+	} catch (InstantiationException e) {
+	    logger.error(e.getStackTrace(), e);
+	} catch (IllegalAccessException e) {
+	    logger.error(e.getStackTrace(), e);
+	} catch (InvocationTargetException e) {
+	    logger.error(e.getStackTrace(), e);
 	}
 	return form;
     }
