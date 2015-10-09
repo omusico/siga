@@ -145,24 +145,24 @@ public class ConstantsPanel extends JPanel {
 	table.removeColumn(table.getColumnModel().getColumn(0));
 	table.removeColumn(table.getColumnModel().getColumn(2));
 	table.removeColumn(table.getColumnModel().getColumn(2));
-	table.getColumn("Municipio").setPreferredWidth(175);
-	table.getColumn("Municipio").setMaxWidth(175);
-	table.getColumn("Municipio").setMinWidth(175);
-	table.getColumn("Descripción").setMinWidth(600);
+	table.getColumn("Municipio").setPreferredWidth(170);
+	table.getColumn("Municipio").setMaxWidth(170);
+	table.getColumn("Municipio").setMinWidth(170);
+	table.getColumn("Descripción").setMinWidth(595);
 
 	table.getColumnModel().getColumn(0)
-	.setCellRenderer(new DefaultTableCellRenderer() {
-	    @Override
-	    public Component getTableCellRendererComponent(
-		    JTable table, Object value, boolean isSelected,
-		    boolean hasFocus, int row, int column) {
-		super.getTableCellRendererComponent(table, value,
-			isSelected, hasFocus, row, column);
-		Font font = getFont().deriveFont(Font.BOLD);
-		setFont(font);
-		return this;
-	    }
-	});
+		.setCellRenderer(new DefaultTableCellRenderer() {
+		    @Override
+		    public Component getTableCellRendererComponent(
+			    JTable table, Object value, boolean isSelected,
+			    boolean hasFocus, int row, int column) {
+			super.getTableCellRendererComponent(table, value,
+				isSelected, hasFocus, row, column);
+			Font font = getFont().deriveFont(Font.BOLD);
+			setFont(font);
+			return this;
+		    }
+		});
 
 	sorter = new TableRowSorter<TableModel>(table.getModel());
 	for (int i = 0; i < table.getModel().getColumnCount(); i++) {

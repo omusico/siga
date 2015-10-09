@@ -45,10 +45,10 @@ public class SigaLoadMapWizard extends WizardWindow {
     public WindowInfo getWindowInfo() {
 	if (viewInfo == null) {
 	    viewInfo = new WindowInfo(WindowInfo.MODELESSDIALOG
-		    | WindowInfo.PALETTE);
+		    | WindowInfo.PALETTE | WindowInfo.RESIZABLE);
 	    viewInfo.setTitle(PluginServices.getText(this, "Load_map"));
-	    viewInfo.setWidth(600);
-	    viewInfo.setHeight(800);
+	    viewInfo.setWidth(800);
+	    viewInfo.setHeight(775);
 	}
 	return viewInfo;
     }
