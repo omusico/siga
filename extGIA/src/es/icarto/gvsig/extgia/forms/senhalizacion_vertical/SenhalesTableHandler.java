@@ -31,7 +31,7 @@ public class SenhalesTableHandler extends GIAAlphanumericTableHandler {
     protected void createTableModel() throws ReadDriverException {
 	SenhalesTableModel model = null;
 	model = createFromTableWithFilterSenhales(sourceTableName,
-		destinationKey, originKeyValue, colNames, colAliases);
+		getDestinationKey(), getOriginKeyValue(), colNames, colAliases);
 
 	jtable.setModel(model);
 

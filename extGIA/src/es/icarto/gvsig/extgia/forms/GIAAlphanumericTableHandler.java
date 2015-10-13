@@ -45,7 +45,7 @@ public class GIAAlphanumericTableHandler extends BaseTableHandler {
 	    String[] colNames, String[] colAliases, int[] colWidths,
 	    AbstractForm form) {
 
-	super(tableName, widgets, foreignKeyId, colNames, colAliases);
+	super(tableName, widgets, new String[] {foreignKeyId}, colNames, colAliases);
 	this.coldWidths = colWidths;
 
 	FormFactory.checkAndLoadTableRegistered(tableName);
@@ -63,7 +63,7 @@ public class GIAAlphanumericTableHandler extends BaseTableHandler {
 	    Map<String, JComponent> widgets, String foreignKeyId,
 	    String[] colNames, String[] colAliases, int[] colWidths,
 	    AbstractForm form, Class<? extends AbstractSubForm> subFormClass) {
-	super(tableName, widgets, foreignKeyId, colNames, colAliases);
+	super(tableName, widgets, new String[] {foreignKeyId}, colNames, colAliases);
 
 	FormFactory.checkAndLoadTableRegistered(tableName);
 	this.coldWidths = colWidths;
@@ -87,18 +87,8 @@ public class GIAAlphanumericTableHandler extends BaseTableHandler {
     @Override
     protected void createTableModel() throws ReadDriverException {
 	AlphanumericTableModel model = null;
-	// if (sourceTableName.equals("senhalizacion_vertical_senhales")) {
-	// TOCTableManager toc = new TOCTableManager();
-	// IEditableSource orgModel = toc.getTableModelByName(sourceTableName);
-	// int fieldIndex = orgModel.getRecordset().getFieldIndexByName(
-	// destinationKey);
-	// IRowFilter filter = new IRowFilterQuick(fieldIndex, originKeyValue);
-	// model = new AlphanumericTableModel(orgModel, colNames, colAliases,
-	// filter);
-	// } else {
 	model = TableModelFactory.createFromTableWithFilter(sourceTableName,
-		destinationKey, originKeyValue, colNames, colAliases);
-	// }
+		getDestinationKey(), getOriginKeyValue(), colNames, colAliases);
 
 	jtable.setModel(model);
 	if (subform != null) {
@@ -132,7 +122,7 @@ public class GIAAlphanumericTableHandler extends BaseTableHandler {
     public void fillValues(String foreignKeyValue) {
 	super.fillValues(foreignKeyValue);
 	Map<String, String> foreignKey = new HashMap<String, String>(1);
-	foreignKey.put(destinationKey, originKeyValue);
+	foreignKey.put(getDestinationKey(), getOriginKeyValue());
 	if (subform != null) {
 	    subform.setForeingKey(foreignKey);
 	}

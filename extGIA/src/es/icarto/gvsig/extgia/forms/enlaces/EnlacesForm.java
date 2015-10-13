@@ -1,5 +1,9 @@
 package es.icarto.gvsig.extgia.forms.enlaces;
 
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.NOMBRE_VIA;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TIPO_VIA;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TRAMO;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,8 +22,10 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import es.icarto.gvsig.extgia.forms.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.GIAAlphanumericTableHandler;
+import es.icarto.gvsig.extgia.forms.ramales.RamalesForm;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames.Elements;
+import es.icarto.gvsig.navtableforms.gui.tables.handler.VectorialTableHandler;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
@@ -31,10 +37,10 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
     CalculateComponentValue enlaceid;
 
     public static String[] carreterasColNames = { "id_carretera_enlazada",
-	    "clave_carretera", "pk", "titular", "tipo_cruce" };
+	"clave_carretera", "pk", "titular", "tipo_cruce" };
 
     public static String[] carreterasColAlias = { "ID Carretera", "Clave",
-	    "PK", "Titular", "Tipo Cruce" };
+	"PK", "Titular", "Tipo Cruce" };
 
     public EnlacesForm(FLyrVect layer) {
 	super(layer);
@@ -47,6 +53,10 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 	addTableHandler(new GIAAlphanumericTableHandler(
 		"enlaces_carreteras_enlazadas", getWidgets(), getElementID(),
 		carreterasColNames, carreterasColAlias, null, this));
+
+	addTableHandler(new VectorialTableHandler(RamalesForm.TABLENAME,
+		getWidgets(), new String[] { TRAMO, TIPO_VIA, NOMBRE_VIA },
+		RamalesForm.colNames, RamalesForm.colAlias));
     }
 
     @Override

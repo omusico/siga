@@ -1,5 +1,9 @@
 package es.icarto.gvsig.extgia.forms.areas_servicio;
 
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.NOMBRE_VIA;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TIPO_VIA;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TRAMO;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,8 +20,10 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import es.icarto.gvsig.extgia.forms.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.GIAAlphanumericTableHandler;
+import es.icarto.gvsig.extgia.forms.ramales.RamalesForm;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames.Elements;
+import es.icarto.gvsig.navtableforms.gui.tables.handler.VectorialTableHandler;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
@@ -36,6 +42,9 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 		DBFieldNames.trabajosColNames, DBFieldNames.trabajosColAlias,
 		DBFieldNames.trabajosColWidths, this));
 
+	addTableHandler(new VectorialTableHandler(RamalesForm.TABLENAME,
+		getWidgets(), new String[] { TRAMO, TIPO_VIA, NOMBRE_VIA },
+		RamalesForm.colNames, RamalesForm.colAlias));
 
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getReconocimientosDBTableName(), getWidgets(), getElementID(),

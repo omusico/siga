@@ -15,12 +15,13 @@ public class MultipleKeyRowFilter implements IRowFilter {
     private final ValueFormatNT valueFormatNT = new ValueFormatNT();
 
     private final List<Integer> indexes;
-    private String[] originKeyValues;
+    private final String[] originKeyValues;
 
     public MultipleKeyRowFilter(FLyrVect layer, String[] destinationKey,
 	    String[] originKeyValues) {
 	indexes = FieldNames.getIndexesOfColumns(layer,
 		Arrays.asList(destinationKey));
+	this.originKeyValues = originKeyValues;
     }
 
     @Override
