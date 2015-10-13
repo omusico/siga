@@ -12,6 +12,11 @@ import es.icarto.gvsig.extgia.preferences.DBFieldNames.Elements;
 @SuppressWarnings("serial")
 public class RamalesForm extends AbstractFormWithLocationWidgets {
 
+    public static final String[] colNames = { "gid", "ramal", "direccion",
+	    "sentido", "longitud" };
+    public static final String[] colAlias = { "ID Ramal", "Nombre Ramal",
+	    "Dirección", "Sentido", "Longitud" };
+
     public RamalesForm(FLyrVect layer) {
 	super(layer);
     }

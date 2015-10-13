@@ -31,10 +31,6 @@ public class AreasMantenimientoForm extends AbstractFormWithLocationWidgets {
     public AreasMantenimientoForm(FLyrVect layer) {
 	super(layer);
 
-	addTableHandler(new GIAAlphanumericTableHandler(
-		getRamalesDBTableName(), getWidgets(), getElementID(),
-		DBFieldNames.ramalesDireccionColNames,
-		DBFieldNames.ramalesDireccionColAlias, null, this));
     }
 
     @Override

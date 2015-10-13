@@ -59,16 +59,6 @@ public class DBFieldNames {
 	}
     }
 
-    public static String[] ramalesColNames = { "id_ramal", "ramal",
-	    "sentido_ramal", "longitud" };
-    public static String[] ramalesColAlias = { "ID Ramal", "Nombre Ramal",
-	    "Sentido", "Longitud" };
-
-    public static String[] ramalesDireccionColNames = { "id_ramal", "ramal",
-	    "sentido_ramal", "direccion_ramal", "longitud" };
-    public static String[] ramalesDireccionColAlias = { "ID Ramal",
-	    "Nombre Ramal", "Sentido", "Dirección", "Longitud" };
-
     public static String[] reconocimientosWhitoutIndexColNames = {
 	    "n_inspeccion", "nombre_revisor", "fecha_inspeccion" };
     public static String[] reconocimientosWhitoutIndexColAlias = {

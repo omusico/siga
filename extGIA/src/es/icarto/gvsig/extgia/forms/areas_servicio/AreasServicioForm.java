@@ -36,10 +36,6 @@ public class AreasServicioForm extends AbstractFormWithLocationWidgets {
 		DBFieldNames.trabajosColNames, DBFieldNames.trabajosColAlias,
 		DBFieldNames.trabajosColWidths, this));
 
-	addTableHandler(new GIAAlphanumericTableHandler(
-		getRamalesDBTableName(), getWidgets(), getElementID(),
-		DBFieldNames.ramalesColNames, DBFieldNames.ramalesColAlias,
-		null, this));
 
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getReconocimientosDBTableName(), getWidgets(), getElementID(),

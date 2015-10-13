@@ -59,17 +59,17 @@ public class ConsultasFieldNames {
 	case Senhalizacion_Variable:
 	case Transformadores:
 	    return "sub."
-		    + elementId
-		    + ", sub.nombre_revisor, sub.fecha_inspeccion, sub.observaciones";
+	    + elementId
+	    + ", sub.nombre_revisor, sub.fecha_inspeccion, sub.observaciones";
 	case Firme:
 	    return "sub."
-	    + elementId
-	    + ", sub.tipo_inspeccion, sub.nombre_revisor, sub.aparato_medicion,"
-	    + "sub.fecha_inspeccion, sub.observaciones";
+		    + elementId
+		    + ", sub.tipo_inspeccion, sub.nombre_revisor, sub.aparato_medicion,"
+		    + "sub.fecha_inspeccion, sub.observaciones";
 	default:
 	    return "sub."
-	    + elementId
-	    + ", sub.nombre_revisor, sub.fecha_inspeccion, sub.indice_estado, sub.observaciones";
+		    + elementId
+		    + ", sub.nombre_revisor, sub.fecha_inspeccion, sub.indice_estado, sub.observaciones";
 	}
     }
 
@@ -77,74 +77,74 @@ public class ConsultasFieldNames {
 	switch (DBFieldNames.Elements.valueOf(element)) {
 	case Taludes:
 	    return "id_talud, tr.item, pk_inicial, pk_final, tipo_talud, roca, arboles, "
-		    + "gunita, escollera, maleza, malla, longitud, altura_max_talud, sup_total_analitica,"
-		    + "sup_mecanizada_analitica, sup_manual_analitica, sup_restada_analitica";
+	    + "gunita, escollera, maleza, malla, longitud, altura_max_talud, sup_total_analitica,"
+	    + "sup_mecanizada_analitica, sup_manual_analitica, sup_restada_analitica";
 	case Isletas:
 	    return "id_isleta, tr.item, tv.item, nv.item, pk_inicial, pk_final, "
-		    + "tipo_isleta, superficie_bajo_bionda, posibilidad_empleo_vehiculos, observaciones";
+	    + "tipo_isleta, superficie_bajo_bionda, posibilidad_empleo_vehiculos, observaciones";
 	case Barrera_Rigida:
 	    return "id_barrera_rigida, tr.item, tv.item, nv.item, pk_inicial, pk_final, "
-		    + "obstaculo_protegido, longitud, codigo, tipo, metodo_constructivo, perfil, observaciones";
+	    + "obstaculo_protegido, longitud, codigo, tipo, metodo_constructivo, perfil, observaciones";
 	case Areas_Servicio:
 	    return "id_area_servicio, nombre, tr.item, pk, fecha_puesta_servicio, "
-		    + "sup_total, riego, cafeteria_rest_bar, aparcamiento_camion_bus, area_picnic, "
-		    + "fuentes_potables, observaciones";
+	    + "sup_total, riego, cafeteria_rest_bar, aparcamiento_camion_bus, area_picnic, "
+	    + "fuentes_potables, observaciones";
 	case Areas_Descanso:
 	    return "id_area_descanso, nombre, tr.item, pk, fecha_puesta_servicio, "
-		    + "sup_total, riego, aparcamiento_camion_bus, area_picnic, fuentes_potables, observaciones";
+	    + "sup_total, riego, aparcamiento_camion_bus, area_picnic, fuentes_potables, observaciones";
 	case Areas_Peaje:
 	    return "id_area_peaje, nombre, tr.item, pk, fecha_puesta_servicio, "
-		    + "bordillos, bumpers, tunel_peaje, marquesina_tipo, marquesina_sup, sup_total, "
-		    + "observaciones, numero_vias";
+	    + "bordillos, bumpers, tunel_peaje, marquesina_tipo, marquesina_sup, sup_total, "
+	    + "observaciones, numero_vias";
 	case Enlaces:
 	    return "id_enlace, nombre, tr.item, pk, n_salida, tipo_enlace, "
-		    + "alumbrado, observaciones";
+	    + "alumbrado, observaciones";
 	case Juntas:
 	    return "id_junta, tr.item, tv.item, nv.item, pk, numero_junta, ancho, modulo, "
-		    + "elemento, codigo_elemento, descripcion, observaciones";
+	    + "elemento, codigo_elemento, descripcion, observaciones";
 	case Pasos_Mediana:
 	    return "id_paso_mediana, tr.item, tv.item, nv.item, pk, longitud, numero_postes, "
-		    + "cierre, longitud_cierre, cuneta_entubada, observaciones";
+	    + "cierre, longitud_cierre, cuneta_entubada, observaciones";
 	case Senhalizacion_Vertical:
 	    return "el.id_elemento_senhalizacion, tr.item, tv.item, nv.item, pk, tipo_senhal, "
-		    + "codigo_senhal, leyenda, panel_complementario, codigo_panel, texto_panel, "
-		    + "fecha_fabricacion, fecha_instalacion, fecha_reposicion, tipo_sustentacion ";
+	    + "codigo_senhal, leyenda, panel_complementario, codigo_panel, texto_panel, "
+	    + "fecha_fabricacion, fecha_instalacion, fecha_reposicion, tipo_sustentacion ";
 	case Valla_Cierre:
 	    return "id_valla, tr.item, pk_inicial, pk_final, tipo_valla, longitud, "
-		    + "altura, n_panhos, n_puertas, n_postes_simples, n_postes_tripode, pastor_electrico, "
-		    + "observaciones";
+	    + "altura, n_panhos, n_puertas, n_postes_simples, n_postes_tripode, pastor_electrico, "
+	    + "observaciones";
 	case Firme:
 	    return "id_firme, fecha_inauguracion, fecha_apertura, unidad_constructiva, "
-		    + "pk_inicial, pk_final, explanada_cm, zahorra_artificial_cm, suelo_cemento_cm, "
-		    + "grava_cemento_cm, mbc_base_cm, mbc_intermedia_cm, mbc_rodadura_cm, observaciones";
+	    + "pk_inicial, pk_final, explanada_cm, zahorra_artificial_cm, suelo_cemento_cm, "
+	    + "grava_cemento_cm, mbc_base_cm, mbc_intermedia_cm, mbc_rodadura_cm, observaciones";
 	case Obras_Paso:
 	    return "id_obra_paso, tr.item, tv.item, nv.item, pk, codigo, nombre,"
-		    + "tipo_obra, tipologia, longitud, anchura, altura,"
-		    + "galibo_v_c, galibo_v_d, observaciones";
+	    + "tipo_obra, tipologia, longitud, anchura, altura,"
+	    + "galibo_v_c, galibo_v_d, observaciones";
 	case Obras_Desague:
 	    return "id_obra_desague, tr.item, tv.item, nv.item, pk, tipologia, material, "
-		    + "objeto, fecha_construccion, n_elementos, seccion, longitud, observaciones";
+	    + "objeto, fecha_construccion, n_elementos, seccion, longitud, observaciones";
 	case Muros:
 	    return "id_muro, tr.item, tv.item, nv.item, pk_inicial, pk_final, material, longitud, "
-		    + "altura_max, observaciones";
+	    + "altura_max, observaciones";
 	case Senhalizacion_Variable:
 	    return "id_senhal_variable, tr.item, tv.item, nv.item, pk, referencia, "
-		    + "fecha_instalacion, tipo, tipo_sustentacion, corunha, ferrol, santiago, pontevedra, "
-		    + "vigo, tui, observaciones";
+	    + "fecha_instalacion, tipo, tipo_sustentacion, corunha, ferrol, santiago, pontevedra, "
+	    + "vigo, tui, observaciones";
 	case Lecho_Frenado:
 	    return "id_lecho_frenado, tr.item, tv.item, nv.item, pk, longitud, anchura, pendiente, "
-		    + "observaciones";
+	    + "observaciones";
 	case Areas_Mantenimiento:
 	    return "id_area_mantenimiento, nombre, tr.item, pk, centro_operaciones, "
-		    + "centro_comunicaciones, control_postes_auxilio, control_tuneles, almacen_fundentes, "
-		    + "alumbrado, observaciones";
+	    + "centro_comunicaciones, control_postes_auxilio, control_tuneles, almacen_fundentes, "
+	    + "alumbrado, observaciones";
 	case Lineas_Suministro:
 	    return "id_linea_suministro, tr.item, tv.item, nv.item, pk_inicial, pk_final, "
-		    + "denominacion, titularidad, estado, tipo, longitud, num_apoyos, observaciones";
+	    + "denominacion, titularidad, estado, tipo, longitud, num_apoyos, observaciones";
 	case Transformadores:
 	    return "id_transformador, tr.item, tv.item, nv.item, pk, denominacion, titularidad, "
-		    + "estado, referencia, fabricante, tipo, ubicacion, "
-		    + "potencia, observaciones";
+	    + "estado, referencia, fabricante, tipo, ubicacion, "
+	    + "potencia, observaciones";
 	}
 	return null;
     }
@@ -281,8 +281,8 @@ public class ConsultasFieldNames {
 		+ "aparcamiento_camion_bus as \"Aparcamientos\","
 		+ "area_picnic as \"Área Picnic\","
 		+ "fuentes_potables as \"Fuentes Potables\","
-		+ "observaciones as \"Observaciones\""
-		+ getFieldCountRamales("areas_servicio");
+		+ "observaciones as \"Observaciones\"";
+	// + getFieldCountRamales("areas_servicio");
     }
 
     public static String areasDescansoCSVFieldNames() {
@@ -301,8 +301,8 @@ public class ConsultasFieldNames {
 		+ "aparcamiento_camion_bus as \"Aparcamientos\","
 		+ "area_picnic as \"Área Picnic\","
 		+ "fuentes_potables as \"Fuentes Potables\","
-		+ "observaciones as \"Observaciones\""
-		+ getFieldCountRamales("areas_descanso");
+		+ "observaciones as \"Observaciones\"";
+	// + getFieldCountRamales("areas_descanso");
     }
 
     public static String areasPeajeCSVFieldNames() {
@@ -362,13 +362,15 @@ public class ConsultasFieldNames {
 		+ "n_salida as \"Nº Salida\","
 		+ "tipo_enlace as \"Tipo Enlace\","
 		+ "alumbrado as \"Alumbrado\","
-		+ "observaciones as \"Observaciones\""
-		+ ", (select count(id_ramal) from audasa_extgia.enlaces_ramales ra "
-		+ "where ra.id_enlace = el.id_enlace) " + "|| ' | ' || "
+		+ "observaciones as \"Observaciones\", "
+		// +
+		// ", (select count(id_ramal) from audasa_extgia.enlaces_ramales ra "
+		// + "where ra.id_enlace = el.id_enlace) " + "|| ' | ' || "
 		+ "(select array_to_string(array_agg(clave_carretera), ';') "
 		+ "from audasa_extgia.enlaces_carreteras_enlazadas ce "
 		+ "where ce.id_enlace = el.id_enlace)"
-		+ "as \"Nº Ramales | Carreteras Enlazadas\"";
+		// + "as \"Nº Ramales | Carreteras Enlazadas\"";
+		+ "as \"Carreteras Enlazadas\"";
     }
 
     public static String senhalizacionCSVFieldNames() {
@@ -551,8 +553,8 @@ public class ConsultasFieldNames {
 		+ "control_tuneles as \"Control de túneles\","
 		+ "almacen_fundentes as \"Almacén de fundentes\","
 		+ "alumbrado as \"Alumbrado\","
-		+ "observaciones as \"Observaciones\""
-		+ getFieldCountRamales("areas_mantenimiento");
+		+ "observaciones as \"Observaciones\"";
+	// + getFieldCountRamales("areas_mantenimiento");
     }
 
     public static String senhalizacionVariableCSVFieldNames() {
@@ -710,12 +712,13 @@ public class ConsultasFieldNames {
 	}
     }
 
-    private static String getFieldCountRamales(String element) {
-	String table = element.toLowerCase();
-	String elementId = ConsultasFieldNames.getElementId(element);
-	return String
-		.format(", (select count(id_ramal) from audasa_extgia.%s_ramales ra where ra.%s = el.%s) as \"Nº Ramales\"",
-			table, elementId, elementId);
-    }
+    // private static String getFieldCountRamales(String element) {
+    // String table = element.toLowerCase();
+    // String elementId = ConsultasFieldNames.getElementId(element);
+    // String query =
+    // "SELECT count(a.gid) FROM audasa_extgia.%s a JOIN audasa_extgia.ramales b ON a.tramo = b.tramo AND a.tipo_via = b.tipo_via AND a.nombre_via = b.nombre_via  WHERE %s = '%s';";
+    // query = String.format(query, table, elementId, id);
+    // return query;
+    // }
 
 }

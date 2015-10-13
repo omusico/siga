@@ -38,10 +38,6 @@ public class EnlacesForm extends AbstractFormWithLocationWidgets {
 
     public EnlacesForm(FLyrVect layer) {
 	super(layer);
-	addTableHandler(new GIAAlphanumericTableHandler(
-		getRamalesDBTableName(), getWidgets(), getElementID(),
-		DBFieldNames.ramalesDireccionColNames,
-		DBFieldNames.ramalesDireccionColAlias, null, this));
 
 	addTableHandler(new GIAAlphanumericTableHandler(
 		getReconocimientosDBTableName(), getWidgets(), getElementID(),

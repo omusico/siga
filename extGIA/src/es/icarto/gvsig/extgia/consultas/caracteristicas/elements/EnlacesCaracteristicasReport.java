@@ -81,9 +81,8 @@ public class EnlacesCaracteristicasReport extends PDFReport {
 	try {
 	    Statement st = DBSession.getCurrentSession().getJavaConnection()
 		    .createStatement();
-	    String query = "SELECT count(id_ramal) FROM audasa_extgia.enlaces_ramales"
-		    + " WHERE id_enlace = '" + id + "';";
-	    ResultSet rs = st.executeQuery(query);
+	    String query = "SELECT count(a.gid) FROM audasa_extgia.enlaces a JOIN audasa_extgia.ramales b ON a.tramo = b.tramo AND a.tipo_via = b.tipo_via AND a.nombre_via = b.nombre_via  WHERE id_enlace = '%s';";
+	    ResultSet rs = st.executeQuery(String.format(query, id));
 	    rs.next();
 	    String data = rs.getString(1);
 

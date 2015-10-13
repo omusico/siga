@@ -439,10 +439,6 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 	return getBasicName() + "_trabajos";
     }
 
-    public String getRamalesDBTableName() {
-	return getBasicName() + "_ramales";
-    }
-
     @Override
     protected String getPrimaryKeyValue() {
 	return getFormController().getValue(getElementID());

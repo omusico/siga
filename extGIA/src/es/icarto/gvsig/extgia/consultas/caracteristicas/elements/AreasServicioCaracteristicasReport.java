@@ -37,7 +37,7 @@ public class AreasServicioCaracteristicasReport extends PDFReport {
 	String[] columnNames = { "ID Área", "Nombre", "Tramo", "PK",
 		"Puesta en Servicio", "Superficie Total", "Riego", "Cafetería",
 		"Aparcamiento", "Area Picnic", "Fuentes Potables",
-		"Observaciones" };
+	"Observaciones" };
 	return columnNames;
     }
 
@@ -87,9 +87,8 @@ public class AreasServicioCaracteristicasReport extends PDFReport {
 	try {
 	    Statement st = DBSession.getCurrentSession().getJavaConnection()
 		    .createStatement();
-	    String query = "SELECT count(id_ramal) FROM audasa_extgia.areas_servicio_ramales"
-		    + " WHERE id_area_servicio = '" + id + "';";
-	    ResultSet rs = st.executeQuery(query);
+	    String query = "SELECT count(a.gid) FROM audasa_extgia.areas_servicio a JOIN audasa_extgia.ramales b ON a.tramo = b.tramo AND a.tipo_via = b.tipo_via AND a.nombre_via = b.nombre_via  WHERE id_area_servicio = '%s';";
+	    ResultSet rs = st.executeQuery(String.format(query, id));
 	    rs.next();
 	    PdfPCell aditionalCell = new PdfPCell(new Paragraph(
 		    rs.getString(1), cellBoldStyle));
