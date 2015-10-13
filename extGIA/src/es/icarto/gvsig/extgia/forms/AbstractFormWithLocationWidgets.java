@@ -17,6 +17,7 @@ import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TIPO_VIA_PF;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.TRAMO;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,6 +32,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import org.apache.log4j.Logger;
 
@@ -44,6 +46,7 @@ import com.toedter.calendar.JTextFieldDateEditor;
 
 import es.icarto.gvsig.extgia.batch.AddReconocimientosBatchListener;
 import es.icarto.gvsig.extgia.batch.AddTrabajosBatchListener;
+import es.icarto.gvsig.extgia.forms.ramales.RamalesForm;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames.Elements;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
@@ -410,6 +413,42 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 	if (filesLinkButton == null) {
 	    addNewButtonsToActionsToolBar(getElement());
 	}
+
+	fillSentidoInRamalesTable();
+    }
+
+    private void fillSentidoInRamalesTable() {
+	JTable table = getFormPanel().getTable(RamalesForm.TABLENAME);
+	if (table == null) {
+	    return;
+	}
+	table.getColumnModel().getColumn(3).setCellRenderer(
+
+		new DefaultTableCellRenderer() {
+		    @Override
+		    public Component getTableCellRendererComponent(JTable table,
+			    Object value, boolean isSelected, boolean hasFocus,
+			    int row, int column) {
+			JLabel label = (JLabel) super.getTableCellRendererComponent(
+				table, value, isSelected, hasFocus, row, column);
+			if (value == null) {
+			    label.setText("");
+			} else {
+			    String text = value.toString().trim();
+			    if (text.equals("0") || text.isEmpty()) {
+				label.setText("");
+			    } else if (text.equals("1")) {
+				label.setText("Creciente");
+			    } else if (text.equals("2")) {
+				label.setText("Decreciente");
+			    } else if (text.equals("3")) {
+				label.setText("Ambos");
+			    }
+			}
+
+		return label;
+		    }
+		});
     }
 
     private void fillEmpresaLB() {
