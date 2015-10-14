@@ -145,10 +145,11 @@ public class ConstantsPanel extends JPanel {
 	table.removeColumn(table.getColumnModel().getColumn(0));
 	table.removeColumn(table.getColumnModel().getColumn(2));
 	table.removeColumn(table.getColumnModel().getColumn(2));
-	table.getColumn("Municipio").setPreferredWidth(170);
-	table.getColumn("Municipio").setMaxWidth(170);
-	table.getColumn("Municipio").setMinWidth(170);
-	table.getColumn("Descripción").setMinWidth(595);
+	// size is adjusted for windows L&F
+	table.getColumn("Municipio").setPreferredWidth(150);
+	table.getColumn("Municipio").setMaxWidth(150);
+	table.getColumn("Municipio").setMinWidth(150);
+	table.getColumn("Descripción").setMinWidth(500);
 
 	table.getColumnModel().getColumn(0)
 		.setCellRenderer(new DefaultTableCellRenderer() {
