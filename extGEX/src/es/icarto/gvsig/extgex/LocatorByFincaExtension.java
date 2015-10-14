@@ -31,4 +31,8 @@ public class LocatorByFincaExtension extends AbstractExtension {
 	return false;
     }
 
+    @Override
+    public void initialize() {
+	// nothing to do here
+    }
 }
