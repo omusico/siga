@@ -20,9 +20,11 @@ import es.udc.cartolab.gvsig.navtable.AbstractNavTable;
 public class ZoomToHandler implements ActionListener {
 
     private final IPositionRetriever zoomHandlerData;
+    private final boolean zoomAndSelect;
 
-    public ZoomToHandler(IPositionRetriever zoomHandlerData) {
+    public ZoomToHandler(IPositionRetriever zoomHandlerData, boolean zoomAndSelect) {
 	this.zoomHandlerData = zoomHandlerData;
+	this.zoomAndSelect = zoomAndSelect;
     }
 
     @Override
@@ -31,7 +33,9 @@ public class ZoomToHandler implements ActionListener {
 	FLyrVect layer = zoomHandlerData.getLayer();
 	if(position != AbstractNavTable.EMPTY_REGISTER) {
 	    zoom(layer, position);
-	    select(layer, position);
+	    if (zoomAndSelect) {
+		select(layer, position);
+	    }
 	}
     }
 

@@ -22,8 +22,8 @@ import es.udc.cartolab.gvsig.elle.constants.IPositionRetriever;
 import es.udc.cartolab.gvsig.navtable.AbstractNavTable;
 
 @SuppressWarnings("serial")
-public class LocatorByMunicipio extends BasicAbstractWindow implements IPositionRetriever,
-	ActionListener {
+public class LocatorByMunicipio extends BasicAbstractWindow implements
+	IPositionRetriever, ActionListener {
 
     private JComboBox ayuntamiento;
     private JComboBox parroquia;
@@ -35,12 +35,12 @@ public class LocatorByMunicipio extends BasicAbstractWindow implements IPosition
 	this.setWindowTitle("Localizador por Municipio o Parroquia");
 	initWidgets();
     }
-    
+
     @Override
     protected String getBasicName() {
-        return "LocatorByMunicipio";
+	return "LocatorByMunicipio";
     }
-    
+
     public void initWidgets() {
 	ayuntamiento = (JComboBox) formPanel.getComponentByName("ayuntamiento");
 	parroquia = (JComboBox) formPanel.getComponentByName("parroquia");
@@ -48,7 +48,7 @@ public class LocatorByMunicipio extends BasicAbstractWindow implements IPosition
 	ayuntamiento.addActionListener(this);
 	fillParroquia();
 	zoom = (JButton) formPanel.getComponentByName("zoom");
-	ZoomToHandler zoomToHandler = new ZoomToHandler(this);
+	ZoomToHandler zoomToHandler = new ZoomToHandler(this, false);
 	zoom.addActionListener(zoomToHandler);
     }
 

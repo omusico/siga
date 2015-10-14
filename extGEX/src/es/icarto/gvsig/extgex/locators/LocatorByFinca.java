@@ -40,7 +40,7 @@ import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 @SuppressWarnings("serial")
 public class LocatorByFinca extends BasicAbstractWindow implements
-IPositionRetriever {
+	IPositionRetriever {
 
     private static final String TABLE_MUNICIPIO_TRAMOS = "municipio_tramos";
     private static final String FIELD_MUNICIPIO_MUNICIPIO_TRAMOS = "municipio";
@@ -103,7 +103,7 @@ IPositionRetriever {
 	    e.printStackTrace();
 	}
 
-	zoomToHandler = new ZoomToHandler(this);
+	zoomToHandler = new ZoomToHandler(this, true);
 	zoom.addActionListener(zoomToHandler);
 
 	formOpener = new FormOpener(this);
