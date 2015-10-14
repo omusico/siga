@@ -37,7 +37,7 @@ public class MunicipioConstantes {
 	if (area.isEmpty()) {
 	    return;
 	}
-	String where = String.format(" WHERE area = '%s' ", area);
+	String where = String.format(" WHERE area IN ('%s', 'Ambas') ", area);
 	if (area.equalsIgnoreCase("ambas")) {
 	    where = "";
 	}
