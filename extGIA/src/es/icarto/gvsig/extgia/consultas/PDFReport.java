@@ -39,9 +39,8 @@ import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 
 public abstract class PDFReport {
 
-    
     private static final Logger logger = Logger.getLogger(PDFReport.class);
-    
+
     protected final com.lowagie.text.Font cellBoldStyle = FontFactory.getFont(
 	    "arial", 6, Font.BOLD);
     protected final com.lowagie.text.Font bodyBoldStyle = FontFactory.getFont(
@@ -85,14 +84,15 @@ public abstract class PDFReport {
 
     private Image getHeaderImage() {
 
-	SIGAConfigExtension ext = (SIGAConfigExtension) PluginServices.getExtension(SIGAConfigExtension.class);
+	SIGAConfigExtension ext = (SIGAConfigExtension) PluginServices
+		.getExtension(SIGAConfigExtension.class);
 	InfoEmpresa infoEmpresa = ext.getInfoEmpresa();
 	String logoPath = infoEmpresa.getReportLogo(filters.getTramo());
 
 	Image image = null;
 	try {
 	    image = Image.getInstance(logoPath);
-	    image.scaleToFit(200, 50);
+	    image.scaleToFit(150, 40);
 	    image.setAlignment(Chunk.ALIGN_RIGHT);
 	} catch (IOException e) {
 	    logger.error(e.getMessage(), e);

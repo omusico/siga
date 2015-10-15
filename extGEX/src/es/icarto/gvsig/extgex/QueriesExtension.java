@@ -17,4 +17,10 @@ public class QueriesExtension extends AbstractExtension {
 	return DBSession.isActive();
     }
 
+    @Override
+    public void initialize() {
+	// nothing to do here
+	// we only use icons when there is a button in the toolbar
+    }
+
 }

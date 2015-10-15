@@ -71,7 +71,7 @@
 				<action-tool icon="es.icarto.gvsig.extgex.queriesextension" tooltip="Consultas" position="0"/>
 			</tool-bar>
 		-->
-			<menu text="SIGA/es.icarto.gvsig.extgex.QueriesExtension.menu" icon="es.icarto.gvsig.extgex.QueriesExtension" position="30100"/>
+			<menu text="SIGA/es.icarto.gvsig.extgex.QueriesExtension.menu" position="30100"/>
 		</extension>
 		
 		<extension class-name="es.icarto.gvsig.extgex.LocatorByPKExtension" active="true">
