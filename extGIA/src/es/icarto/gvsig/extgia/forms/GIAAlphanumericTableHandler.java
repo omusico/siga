@@ -24,6 +24,7 @@ import es.icarto.gvsig.navtableforms.gui.tables.AbstractSubForm;
 import es.icarto.gvsig.navtableforms.gui.tables.handler.BaseTableHandler;
 import es.icarto.gvsig.navtableforms.gui.tables.menu.AlphanumericCompleteJTableContextualMenu;
 import es.icarto.gvsig.navtableforms.gui.tables.model.AlphanumericTableModel;
+import es.icarto.gvsig.navtableforms.gui.tables.model.BaseTableModel;
 import es.icarto.gvsig.navtableforms.gui.tables.model.TableModelFactory;
 import es.icarto.gvsig.navtableforms.utils.FormFactory;
 import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
@@ -40,12 +41,15 @@ public class GIAAlphanumericTableHandler extends BaseTableHandler {
 
     private final int[] coldWidths;
 
+    private AlphanumericTableModel mymodel;
+
     public GIAAlphanumericTableHandler(String tableName,
 	    Map<String, JComponent> widgets, String foreignKeyId,
 	    String[] colNames, String[] colAliases, int[] colWidths,
 	    AbstractForm form) {
 
-	super(tableName, widgets, new String[] {foreignKeyId}, colNames, colAliases);
+	super(tableName, widgets, new String[] { foreignKeyId }, colNames,
+		colAliases);
 	this.coldWidths = colWidths;
 
 	FormFactory.checkAndLoadTableRegistered(tableName);
@@ -63,7 +67,8 @@ public class GIAAlphanumericTableHandler extends BaseTableHandler {
 	    Map<String, JComponent> widgets, String foreignKeyId,
 	    String[] colNames, String[] colAliases, int[] colWidths,
 	    AbstractForm form, Class<? extends AbstractSubForm> subFormClass) {
-	super(tableName, widgets, new String[] {foreignKeyId}, colNames, colAliases);
+	super(tableName, widgets, new String[] { foreignKeyId }, colNames,
+		colAliases);
 
 	FormFactory.checkAndLoadTableRegistered(tableName);
 	this.coldWidths = colWidths;
@@ -86,16 +91,21 @@ public class GIAAlphanumericTableHandler extends BaseTableHandler {
     // TODO
     @Override
     protected void createTableModel() throws ReadDriverException {
-	AlphanumericTableModel model = null;
-	model = TableModelFactory.createFromTableWithFilter(sourceTableName,
+
+	mymodel = TableModelFactory.createFromTableWithFilter(sourceTableName,
 		getDestinationKey(), getOriginKeyValue(), colNames, colAliases);
 
-	jtable.setModel(model);
+	jtable.setModel(mymodel);
 	if (subform != null) {
-	    subform.setModel(model);
+	    subform.setModel(mymodel);
 	}
 	// jtable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
+    }
+
+    @Override
+    public BaseTableModel getModel() {
+	return mymodel;
     }
 
     private void autoFit() {
@@ -113,7 +123,7 @@ public class GIAAlphanumericTableHandler extends BaseTableHandler {
 	    double preferredWidth = avaliable * (maxLengths[i] / needed);
 
 	    jtable.getColumnModel().getColumn(i)
-		    .setPreferredWidth((int) preferredWidth);
+	    .setPreferredWidth((int) preferredWidth);
 	}
     }
 

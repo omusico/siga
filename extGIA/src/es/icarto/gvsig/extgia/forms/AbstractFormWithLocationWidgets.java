@@ -208,7 +208,7 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 		    getElement(), getReconocimientosFormFileName(),
 		    getReconocimientosDBTableName());
 	    addReconocimientosBatchButton
-		    .addActionListener(addReconocimientosBatchListener);
+	    .addActionListener(addReconocimientosBatchListener);
 	}
 
 	if (saveRecordsBatchButton == null) {
@@ -246,11 +246,11 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 		    if (layerController.getValuesChanged().containsKey(
 			    getElementID())) {
 			JOptionPane
-				.showMessageDialog(
-					null,
-					"La actualización masiva no funciona en campos que forman parte del ID.",
-					"Cambios en el ID",
-					JOptionPane.WARNING_MESSAGE);
+			.showMessageDialog(
+				null,
+				"La actualización masiva no funciona en campos que forman parte del ID.",
+				"Cambios en el ID",
+				JOptionPane.WARNING_MESSAGE);
 			layerController.clearAll();
 			setChangedValues(false);
 			setSavingValues(false);
@@ -263,14 +263,14 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 		    int m = JOptionPane.showOptionDialog(
 			    null,
 			    PluginServices.getText(this, "updateInfo_msg_I")
-				    + layer.getRecordset().getSelection()
-					    .cardinality()
-				    + " "
-				    + PluginServices.getText(this,
-					    "updateInfo_msg_II"), null,
-			    JOptionPane.YES_NO_CANCEL_OPTION,
-			    JOptionPane.INFORMATION_MESSAGE, null, options,
-			    options[1]);
+			    + layer.getRecordset().getSelection()
+			    .cardinality()
+			    + " "
+			    + PluginServices.getText(this,
+				    "updateInfo_msg_II"), null,
+				    JOptionPane.YES_NO_CANCEL_OPTION,
+				    JOptionPane.INFORMATION_MESSAGE, null, options,
+				    options[1]);
 		    if (m == JOptionPane.OK_OPTION) {
 			saveRecords();
 			JOptionPane.showMessageDialog(
@@ -278,7 +278,7 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 				PluginServices.getText(this,
 					"updatedInfo_msg_I")
 					+ layer.getRecordset().getSelection()
-						.cardinality()
+					.cardinality()
 					+ " "
 					+ PluginServices.getText(this,
 						"updatedInfo_msg_II"));
@@ -300,7 +300,7 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 	}
 
 	private void saveRecords() throws ReadDriverException,
-		StopWriterVisitorException {
+	StopWriterVisitorException {
 	    int[] indexesofValuesChanged = layerController
 		    .getIndexesOfValuesChanged();
 	    String[] valuesChanged = layerController.getValuesChanged()
@@ -330,11 +330,11 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 
 	if (addTrabajosBatchButton != null) {
 	    addTrabajosBatchButton
-		    .removeActionListener(addTrabajosBatchListener);
+	    .removeActionListener(addTrabajosBatchListener);
 	}
 	if (addReconocimientosBatchButton != null) {
 	    addReconocimientosBatchButton
-		    .removeActionListener(addReconocimientosBatchListener);
+	    .removeActionListener(addReconocimientosBatchListener);
 	}
 
 	saveRecordsBatchButton.removeActionListener(saveRecordsBatchListener);
@@ -422,33 +422,33 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 	if (table == null) {
 	    return;
 	}
-	table.getColumnModel().getColumn(3).setCellRenderer(
+	table.getColumnModel().getColumn(2).setCellRenderer(
 
-		new DefaultTableCellRenderer() {
-		    @Override
-		    public Component getTableCellRendererComponent(JTable table,
-			    Object value, boolean isSelected, boolean hasFocus,
-			    int row, int column) {
-			JLabel label = (JLabel) super.getTableCellRendererComponent(
-				table, value, isSelected, hasFocus, row, column);
-			if (value == null) {
-			    label.setText("");
-			} else {
-			    String text = value.toString().trim();
-			    if (text.equals("0") || text.isEmpty()) {
-				label.setText("");
-			    } else if (text.equals("1")) {
-				label.setText("Creciente");
-			    } else if (text.equals("2")) {
-				label.setText("Decreciente");
-			    } else if (text.equals("3")) {
-				label.setText("Ambos");
-			    }
-			}
-
-		return label;
+	new DefaultTableCellRenderer() {
+	    @Override
+	    public Component getTableCellRendererComponent(JTable table,
+		    Object value, boolean isSelected, boolean hasFocus,
+		    int row, int column) {
+		JLabel label = (JLabel) super.getTableCellRendererComponent(
+			table, value, isSelected, hasFocus, row, column);
+		if (value == null) {
+		    label.setText("");
+		} else {
+		    String text = value.toString().trim();
+		    if (text.equals("0") || text.isEmpty()) {
+			label.setText("");
+		    } else if (text.equals("1")) {
+			label.setText("Creciente");
+		    } else if (text.equals("2")) {
+			label.setText("Decreciente");
+		    } else if (text.equals("3")) {
+			label.setText("Ambos");
 		    }
-		});
+		}
+
+			return label;
+	    }
+	});
     }
 
     private void fillEmpresaLB() {

@@ -1,16 +1,16 @@
 /*
  * Copyright (c) 2011. iCarto
- * 
+ *
  * This file is part of extNavTableForms
- * 
+ *
  * extNavTableForms is free software: you can redistribute it and/or modify it under the terms
  * of the GNU General Public License as published by the Free Software Foundation, either
  * version 3 of the License, or any later version.
- * 
+ *
  * extNavTableForms is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with extNavTableForms.
  * If not, see <http://www.gnu.org/licenses/>.
  */
@@ -59,6 +59,7 @@ import es.icarto.gvsig.navtableforms.forms.windowproperties.FormWindowProperties
 import es.icarto.gvsig.navtableforms.gui.images.ImageHandler;
 import es.icarto.gvsig.navtableforms.gui.images.ImageHandlerManager;
 import es.icarto.gvsig.navtableforms.gui.tables.handler.BaseTableHandler;
+import es.icarto.gvsig.navtableforms.gui.tables.model.BaseTableModel;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.ValidatorForm;
 import es.icarto.gvsig.navtableforms.utils.AbeilleParser;
@@ -68,7 +69,7 @@ import es.udc.cartolab.gvsig.navtable.format.DateFormatNT;
 
 @SuppressWarnings("serial")
 public abstract class AbstractForm extends AbstractNavTable implements
-	IValidatableForm {
+IValidatableForm {
 
     private static final Logger logger = Logger.getLogger(AbstractForm.class);
 
@@ -87,7 +88,7 @@ public abstract class AbstractForm extends AbstractNavTable implements
     private final DependencyHandler dependencyHandler;
     private final CalculationHandler calculationHandler;
     private final ChainedHandler chainedHandler;
-    private ImageHandlerManager imageHandlerManager;
+    private final ImageHandlerManager imageHandlerManager;
 
     private String title;
 
@@ -133,7 +134,8 @@ public abstract class AbstractForm extends AbstractNavTable implements
      * @return
      */
     public abstract FormPanel getFormBody();
-    
+
+    @Override
     public FormPanel getFormPanel() {
 	return getFormBody();
     }
@@ -200,9 +202,9 @@ public abstract class AbstractForm extends AbstractNavTable implements
 	c.setDateFormatString(dateFormat.toPattern());
 	c.getDateEditor().setEnabled(false);
 	c.getDateEditor().getUiComponent()
-		.setBackground(new Color(255, 255, 255));
+	.setBackground(new Color(255, 255, 255));
 	c.getDateEditor().getUiComponent()
-		.setFont(new Font("Arial", Font.PLAIN, 11));
+	.setFont(new Font("Arial", Font.PLAIN, 11));
 	c.getDateEditor().getUiComponent().setToolTipText(null);
 
     }
@@ -246,9 +248,11 @@ public abstract class AbstractForm extends AbstractNavTable implements
 	dependencyHandler.setListeners();
 	for (BaseTableHandler tableHandler : tableHandlers) {
 	    tableHandler.reload();
-	    // When the layer is in edition mode, subforms must be disabled, because if the user, adds a new subelement
+	    // When the layer is in edition mode, subforms must be disabled,
+	    // because if the user, adds a new subelement
 	    // with an fk or modifies the pk of the element it will fail
-	    // We remove it after the reload, to allow propper initializations, and avoid NullPointerException when 
+	    // We remove it after the reload, to allow propper initializations,
+	    // and avoid NullPointerException when
 	    // removing the listeners or when layerEvent is called
 	    if (layer.isEditing()) {
 		tableHandler.removeListeners();
@@ -508,8 +512,10 @@ public abstract class AbstractForm extends AbstractNavTable implements
     }
 
     /**
-     * Instead of create an implementation of ImageHandler that only sets a path (FixedImageHandler) this utiliy method
-     * sets the image without doing anything more
+     * Instead of create an implementation of ImageHandler that only sets a path
+     * (FixedImageHandler) this utiliy method sets the image without doing
+     * anything more
+     * 
      * @param imgComponent
      *            . Name of the abeille widget
      * @param absPath
@@ -521,17 +527,17 @@ public abstract class AbstractForm extends AbstractNavTable implements
 	ImageIcon icon = new ImageIcon(absPath);
 	image.setIcon(icon);
     }
-    
+
     protected void addImageHandler(ImageHandler imageHandler) {
 	imageHandlerManager.addHandler(imageHandler);
     }
-    
+
     @Override
     public void layerEvent(LayerEvent e) {
 	super.layerEvent(e);
-	
-	
-	// When the layer is in edition mode, subforms must be disabled, because if the user, adds a new subelement
+
+	// When the layer is in edition mode, subforms must be disabled, because
+	// if the user, adds a new subelement
 	// with an fk or modifies the pk of the element it will fail
 	if (e.getEventType() == LayerEvent.EDITION_CHANGED) {
 	    if (layer.isEditing()) {
@@ -540,6 +546,13 @@ public abstract class AbstractForm extends AbstractNavTable implements
 		}
 	    } else {
 		for (BaseTableHandler bth : tableHandlers) {
+		    final BaseTableModel bthModel = bth.getModel();
+		    if (bthModel != null) {
+			// This should never happen, but tablehandlers are not
+			// correctly constructed and model field is not
+			// correctly set
+			bthModel.reloadUnderlyingData();
+		    }
 		    bth.reload();
 		}
 	    }

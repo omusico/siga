@@ -2,8 +2,11 @@ package es.icarto.gvsig.navtableforms.gui.tables.model;
 
 import java.util.HashMap;
 
+import org.apache.log4j.Logger;
+
 import com.hardcode.gdbms.driver.exceptions.InitializeWriterException;
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
+import com.hardcode.gdbms.driver.exceptions.ReloadDriverException;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.exceptions.visitors.StartWriterVisitorException;
 import com.iver.cit.gvsig.exceptions.visitors.StopWriterVisitorException;
@@ -15,6 +18,9 @@ import es.udc.cartolab.gvsig.navtable.dataacces.TableController;
 
 @SuppressWarnings("serial")
 public class AlphanumericTableModel extends BaseTableModel {
+    
+    private static final Logger logger = Logger
+	    .getLogger(AlphanumericTableModel.class);
 
     private final IEditableSource source;
     private final TableController tableController;
@@ -126,6 +132,17 @@ public class AlphanumericTableModel extends BaseTableModel {
 	} catch (Exception e) {
 	    e.printStackTrace();
 	    return null;
+	}
+    }
+
+    @Override
+    public void reloadUnderlyingData() {
+	try {
+	    source.getRecordset().reload();
+	} catch (ReloadDriverException e) {
+	    logger.error(e.getStackTrace(), e);
+	} catch (ReadDriverException e) {
+	    logger.error(e.getStackTrace(), e);
 	}
     }
 
