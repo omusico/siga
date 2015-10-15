@@ -95,6 +95,7 @@ public class SaveSelection {
 	Collection<String> pks = new ArrayList<String>(pksSelected);
 	source.start();
 	FBitSet selection = layer.getSelectionSupport().getSelection();
+	selection.clear();
 	for (int i = 0; i < source.getShapeCount(); i++) {
 	    IFeature feat = source.getFeature(i);
 	    String id = feat.getID();

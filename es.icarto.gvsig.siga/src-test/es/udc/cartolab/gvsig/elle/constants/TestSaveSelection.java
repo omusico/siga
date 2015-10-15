@@ -21,7 +21,6 @@ import com.iver.cit.gvsig.fmap.layers.VectorialAdapter;
 import com.iver.cit.gvsig.fmap.layers.VectorialDefaultAdapter;
 
 import es.icarto.gvsig.commons.datasources.FieldDescriptionFactory;
-import es.udc.cartolab.gvsig.elle.constants.SaveSelection;
 import es.udc.cartolab.gvsig.testutils.FLyrVectDBStub;
 import es.udc.cartolab.gvsig.testutils.FLyrVectStub;
 import es.udc.cartolab.gvsig.testutils.VectorialDBDriverStub;
@@ -97,17 +96,12 @@ public class TestSaveSelection {
 
 	layer.setData(newFeatureList(), layerDefinition());
 
-	// simulates the usual clear
-	layer.getSelectionSupport().clearSelection();
-	layer.getSelectionSupport().getSelection().set(10);
-
 	saveSelection.restoreSelection();
 
 	SelectionSupport selection = layer.getSelectionSupport();
 	for (int i = 0; i < 11; i++) {
 	    switch (i) {
 	    case 3:
-	    case 10:
 		assertTrue("i: " + i, selection.isSelected(i));
 		break;
 
