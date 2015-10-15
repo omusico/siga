@@ -7,15 +7,16 @@ import javax.swing.JButton;
 
 import com.iver.andami.PluginServices;
 
+import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.udc.cartolab.gvsig.navtable.AbstractNavTable;
 
 public class NavTableComponentsPrintButton {
 
     public JButton getPrintButton(String reportPath, String tableName,
-	    String idField, String idValue) {
+	    String idField, AbstractForm form) {
 	JButton printReportB = createButton(PluginServices.getText(this,
 		"printReportsToolTip"), getIcon("images/print-report.png"),
-		new PrintPMReportObserver(reportPath, tableName, idField, idValue));
+		new PrintPMReportObserver(reportPath, tableName, idField, form));
 	return printReportB;
     }
 

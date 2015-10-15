@@ -11,7 +11,9 @@ import java.sql.SQLException;
 import java.util.HashMap;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
+import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.siga.PreferencesPage;
 import es.icarto.gvsig.siga.forms.reports.imagefilechooser.ImageFileChooser;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
@@ -23,13 +25,13 @@ public class PrintPMReportObserver implements ActionListener {
     private final String reportPath;
     private final String tableName;
     private final String idField;
-    private final String idValue;
+    private final AbstractForm form;
 
-    public PrintPMReportObserver(String reportPath, String tableName, String idField, String idValue) {
+    public PrintPMReportObserver(String reportPath, String tableName, String idField, AbstractForm form) {
 	this.reportPath = reportPath;
 	this.tableName = tableName;
 	this.idField = idField;
-	this.idValue = idValue;
+	this.form = form;
     }
 
     @Override
@@ -93,8 +95,10 @@ public class PrintPMReportObserver implements ActionListener {
 	    postgresIdField = "gid";
 	}
 	PreparedStatement statement;
+	JTextField numeroPM = (JTextField) form.getWidgets().get(idField);
+	String idValue = numeroPM.getText();
 	String query = "SELECT " + postgresIdField + " FROM " + tableName
-		+ " WHERE " + idField + "= '" + idValue + "';";
+		+ " WHERE " + idField + "= '" + idValue  + "';";
 	try {
 	    statement = DBSession.getCurrentSession().getJavaConnection()
 		    .prepareStatement(query);
