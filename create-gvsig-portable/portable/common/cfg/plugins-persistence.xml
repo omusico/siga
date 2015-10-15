@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xml-tag xmlns="http://www.gvsig.gva.es">
-
+ 
 	<xml-tag>
         <property key="options.view.open_view_window_maximized" value="true"/>
         <property key="db-connections" value=""/>
@@ -60,7 +60,7 @@
         <xml-tag>
         <property key="com.iver.andami.pluginName" value="com.iver.cit.gvsig.wms"/>
         <xml-tag>
-            <property key="serverURL" value="http://www.idee.es/wms/IDEE-Base/IDEE-Base"/>
+            <property key="serverURL" value="http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx"/>
             <property key="added" value="2012-05-10 12:35:46.226"/>
             <property key="lastAccess" value="2012-05-10 12:35:46.226"/>
             <property key="type" value="WMS"/>
@@ -68,65 +68,24 @@
         </xml-tag>
 
         <xml-tag>
-            <property key="serverURL" value="http://www2.dmsolutions.ca/cgi-bin/mswms_gmap?"/>
+            <property key="serverURL" value="http://visorsiu.fomento.es:80/geoserver/wms"/>
             <property key="added" value="2012-05-10 12:35:46.226"/>
             <property key="lastAccess" value="2012-05-10 12:35:46.226"/>
             <property key="type" value="WMS"/>
             <property key="subType" value=""/>
         </xml-tag>
         <xml-tag>
-            <property key="serverURL" value="http://orto.cth.gva.es/wmsconnector/com.esri.wms.Esrimap/wms_patricova"/>
+            <property key="serverURL" value="http://ideg.xunta.es/WMS_ORTO_1956-57/request.aspx"/>
             <property key="added" value="2012-05-10 12:35:46.226"/>
             <property key="lastAccess" value="2012-05-10 12:35:46.226"/>
             <property key="type" value="WMS"/>
             <property key="subType" value=""/>
         </xml-tag>
-        <xml-tag>
-            <property key="serverURL" value="http://orto.cth.gva.es/wmsconnector/com.esri.wms.Esrimap/wms_parque_fondo_prug"/>
-            <property key="added" value="2012-05-10 12:35:46.226"/>
-            <property key="lastAccess" value="2012-05-10 12:35:46.226"/>
-            <property key="type" value="WMS"/>
-            <property key="subType" value=""/>
-        </xml-tag>
-        <xml-tag>
-            <property key="serverURL" value="http://orto.cth.gva.es/wmsconnector/com.esri.wms.Esrimap/wms_pgof"/>
-            <property key="added" value="2012-05-10 12:35:46.226"/>
-            <property key="lastAccess" value="2012-05-10 12:35:46.226"/>
-            <property key="type" value="WMS"/>
-            <property key="subType" value=""/>
-        </xml-tag>
-        <xml-tag>
-            <property key="serverURL" value="http://orto.cth.gva.es/wmsconnector/com.esri.wms.Esrimap/wms_urbanismo_tematicos"/>
-            <property key="added" value="2012-05-10 12:35:46.226"/>
-            <property key="lastAccess" value="2012-05-10 12:35:46.226"/>
-            <property key="type" value="WMS"/>
-            <property key="subType" value=""/>
-        </xml-tag>
-        <xml-tag>
-            <property key="serverURL" value="http://www.ign.es/wms-inspire/ign-base"/>
-            <property key="added" value="2012-05-10 12:35:46.226"/>
-            <property key="lastAccess" value="2012-05-10 12:35:46.226"/>
-            <property key="type" value="WMS"/>
-            <property key="subType" value=""/>
-        </xml-tag>
-        <xml-tag>
-            <property key="serverURL" value="http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx"/>
-            <property key="added" value="2012-05-10 12:35:46.226"/>
-            <property key="lastAccess" value="2012-05-10 12:35:46.226"/>
-            <property key="type" value="WMS"/>
-            <property key="subType" value=""/>
-        </xml-tag>
+
         <xml-tag>
             <property key="serverURL" value="http://www.idee.es/wms/PNOA/PNOA"/>
             <property key="added" value="2012-05-10 12:36:05.860"/>
             <property key="lastAccess" value="2012-05-10 17:36:47.985"/>
-            <property key="type" value="WMS"/>
-            <property key="subType" value=""/>
-        </xml-tag>
-        <xml-tag>
-            <property key="serverURL" value="http://192.168.0.12:8000/geoserver/audasa/wms"/>
-            <property key="added" value="2012-05-10 18:42:09.848"/>
-            <property key="lastAccess" value="2012-05-10 18:42:09.848"/>
             <property key="type" value="WMS"/>
             <property key="subType" value=""/>
         </xml-tag>
