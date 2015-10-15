@@ -35,8 +35,7 @@ public class ConstantReloadExtension extends AbstractExtension {
 
 	List<WizardComponent> cpms = new ArrayList<WizardComponent>(1);
 	LoadConstantsWizardComponent constantsCmp = new LoadConstantsWizardComponent(
-		properties);
-	constantsCmp.setReload(true);
+		properties, true);
 	cpms.add(constantsCmp);
 	new SigaLoadMapWizard(view, cpms).open();
     }

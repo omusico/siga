@@ -45,11 +45,13 @@ public class ConstantsPanel extends JPanel {
 
     private TableRowSorter<TableModel> sorter;
 
-    public ConstantsPanel() {
+    public ConstantsPanel(boolean reload) {
 	super(new BorderLayout());
 	setUpUI();
 	setUpData();
-	preselectConstants();
+	if (reload) {
+	    preselectConstants();
+	}
     }
 
     private void setUpUI() {

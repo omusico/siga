@@ -33,14 +33,20 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 
     public final static String PROPERTY_VIEW = "view";
 
-    public LoadConstantsWizardComponent(Map<String, Object> properties) {
+    public LoadConstantsWizardComponent(Map<String, Object> properties,
+	    boolean reload) {
 	super(properties);
+	this.reload = reload;
 	setUpUI();
+    }
+
+    public LoadConstantsWizardComponent(Map<String, Object> properties) {
+	this(properties, false);
     }
 
     private void setUpUI() {
 	this.setLayout(new BorderLayout());
-	constantsPanel = new ConstantsPanel();
+	constantsPanel = new ConstantsPanel(reload);
 	this.add(constantsPanel, BorderLayout.CENTER);
     }
 
@@ -173,9 +179,4 @@ public class LoadConstantsWizardComponent extends WizardComponent {
 	String msg = constantsPanel.getStatusBarMsg();
 	statusBar.setMessage("constants", msg);
     }
-
-    public void setReload(boolean reload) {
-	this.reload = true;
-    }
-
 }
