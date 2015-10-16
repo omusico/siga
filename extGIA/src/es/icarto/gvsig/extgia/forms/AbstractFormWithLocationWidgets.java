@@ -44,6 +44,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 
+import es.icarto.gvsig.commons.utils.StrUtils;
 import es.icarto.gvsig.extgia.batch.AddReconocimientosBatchListener;
 import es.icarto.gvsig.extgia.batch.AddTrabajosBatchListener;
 import es.icarto.gvsig.extgia.forms.ramales.RamalesForm;
@@ -66,8 +67,6 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 	    .getLogger(AbstractFormWithLocationWidgets.class);
 
     protected FilesLinkButton filesLinkButton;
-
-    private JComboBox sentidoWidget;
 
     protected JButton addTrabajosBatchButton;
     protected JButton addReconocimientosBatchButton;
@@ -157,10 +156,6 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
     protected void setListeners() {
 	super.setListeners();
 	imagesInForms.setListeners();
-
-	if (hasSentido()) {
-	    sentidoWidget = (JComboBox) getWidgets().get(SENTIDO);
-	}
 
 	if (SqlUtils.elementHasType(dataName, "inspecciones")) {
 	    if (addReconocimientosBatchButton == null) {
@@ -379,29 +374,21 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 
     @Override
     public boolean saveRecord() throws StopWriterVisitorException {
+	sanitizeWidget(NOMBRE_VIA);
+	sanitizeWidget(NOMBRE_VIA_PF);
+	sanitizeWidget(SENTIDO);
 
-	JComboBox nombreViaWidget = (JComboBox) getWidgets().get(NOMBRE_VIA);
-	if (nombreViaWidget != null) {
-	    if (nombreViaWidget.getSelectedItem().toString().isEmpty()) {
-		layerController.setValue(nombreViaWidget.getName(), "0");
-	    }
-	}
-
-	// taludes, valla cierre, muros, lineas suministro
-	JComboBox nombreViaPFWidget = (JComboBox) getWidgets().get(
-		NOMBRE_VIA_PF);
-	if (nombreViaPFWidget != null) {
-	    if (nombreViaPFWidget.getSelectedItem().toString().isEmpty()) {
-		layerController.setValue(nombreViaPFWidget.getName(), "0");
-	    }
-	}
-
-	if (hasSentido()) {
-	    if (sentidoWidget.getSelectedItem().toString().isEmpty()) {
-		layerController.setValue(sentidoWidget.getName(), "0");
-	    }
-	}
 	return super.saveRecord();
+    }
+
+    private void sanitizeWidget(String nombreVia) {
+	JComboBox widget = (JComboBox) getWidgets().get(nombreVia);
+	if (widget != null) {
+	    String value = layerController.getValue(nombreVia);
+	    if (StrUtils.isEmptyString(value)) {
+		layerController.setValue(nombreVia, "0");
+	    }
+	}
     }
 
     @Override
