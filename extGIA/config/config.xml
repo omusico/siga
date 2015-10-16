@@ -26,8 +26,8 @@
 			<menu text="SIGA/es.icarto.gvsig.extgia.FormLauncherExtension.menu_folder/obras_desague" action-command="Obras_Desague" position="30411"/>
 			<menu text="SIGA/es.icarto.gvsig.extgia.FormLauncherExtension.menu_folder/obras_paso" action-command="Obras_Paso" position="30412"/>
 			<menu text="SIGA/es.icarto.gvsig.extgia.FormLauncherExtension.menu_folder/pasos_mediana" action-command="Pasos_Mediana" position="30413"/>
-			<menu text="SIGA/es.icarto.gvsig.extgia.FormLauncherExtension.menu_folder/senalizacion_variable" action-command="Senhalizacion_Variable" position="30414"/>
-			<menu text="SIGA/es.icarto.gvsig.extgia.FormLauncherExtension.menu_folder/senalizacion_vertical" action-command="Senhalizacion_Vertical" position="30415"/>
+			<menu text="SIGA/es.icarto.gvsig.extgia.FormLauncherExtension.menu_folder/senhalizacion_variable" action-command="Senhalizacion_Variable" position="30414"/>
+			<menu text="SIGA/es.icarto.gvsig.extgia.FormLauncherExtension.menu_folder/senhalizacion_vertical" action-command="Senhalizacion_Vertical" position="30415"/>
 			<menu text="SIGA/es.icarto.gvsig.extgia.FormLauncherExtension.menu_folder/taludes" action-command="Taludes" position="30416"/>
 			<menu text="SIGA/es.icarto.gvsig.extgia.FormLauncherExtension.menu_folder/transformadores" action-command="Transformadores" position="30417"/>
 			<menu text="SIGA/es.icarto.gvsig.extgia.FormLauncherExtension.menu_folder/valla_cierre" action-command="Valla_Cierre" position="30418"/>
