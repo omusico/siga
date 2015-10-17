@@ -224,6 +224,13 @@ public class ConstantsPanel extends JPanel {
 	    }
 	    where = where.substring(0, where.length() - 2) + ")";
 
+	} else if (sorter.getRowFilter() != null) {
+	    for (int i = 0; i < table.getRowCount(); i++) {
+		int modelIdx = table.convertRowIndexToModel(i);
+		String s = table.getModel().getValueAt(modelIdx, 0).toString();
+		where += "'" + s + "', ";
+	    }
+	    where = where.substring(0, where.length() - 2) + ")";
 	} else if (!user.getArea().equalsIgnoreCase("ambas")) {
 	    ELLEMap.setConstantValuesSelected(new ArrayList<String>());
 
@@ -258,6 +265,18 @@ public class ConstantsPanel extends JPanel {
 
 	    where = where.substring(0, where.length() - 2) + ")";
 
+	} else if (sorter.getRowFilter() != null) {
+	    for (int i = 0; i < table.getRowCount(); i++) {
+		int modelIdx = table.convertRowIndexToModel(i);
+		String s = table.getModel().getValueAt(modelIdx, 0).toString();
+		set.add(s.substring(0, 2));
+	    }
+
+	    for (String s : set) {
+		where += s + " ,";
+	    }
+
+	    where = where.substring(0, where.length() - 2) + ")";
 	} else if (!user.getArea().equalsIgnoreCase("ambas")) {
 	    Collection<String> councils = municipioConstantes.getAsIds();
 
