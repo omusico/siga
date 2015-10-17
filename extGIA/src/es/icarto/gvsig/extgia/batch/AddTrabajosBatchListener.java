@@ -38,6 +38,16 @@ public class AddTrabajosBatchListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+	boolean emptySelection = form.getRecordset().getSelection().isEmpty();
+	if (emptySelection) {
+	    JOptionPane
+		    .showMessageDialog(
+			    form,
+			    "Debe tener registros seleccionados para añadir trabajos en lote",
+			    "Aviso", JOptionPane.WARNING_MESSAGE);
+	    return;
+	}
+
 	LaunchGIAForms.callBatchTrabajosSubFormDependingOfElement(element,
 		formFileName, dbTableName, trabajosTableHandler);
 
