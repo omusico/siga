@@ -126,7 +126,7 @@ public class SenhalizacionVariableForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    protected String getBasicName() {
+    public String getBasicName() {
 	return TABLENAME;
     }
 

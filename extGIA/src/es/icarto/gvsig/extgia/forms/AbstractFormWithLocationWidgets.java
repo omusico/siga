@@ -54,7 +54,6 @@ import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.BasicAbstractForm;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkButton;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkData;
-import es.icarto.gvsig.navtableforms.gui.tables.handler.BaseTableHandler;
 import es.icarto.gvsig.siga.PreferencesPage;
 import es.icarto.gvsig.siga.SIGAConfigExtension;
 import es.icarto.gvsig.siga.models.InfoEmpresa;
@@ -184,16 +183,7 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 	}
 
 	if (addTrabajosBatchListener == null && addTrabajosBatchButton != null) {
-	    BaseTableHandler trabajosTableHandler = null;
-	    for (BaseTableHandler th : getTableHandlers()) {
-		if (th.getJTable().getName().equals(getTrabajosDBTableName())) {
-		    trabajosTableHandler = th;
-		    break;
-		}
-	    }
-	    addTrabajosBatchListener = new AddTrabajosBatchListener(
-		    getElement(), getTrabajosFormFileName(),
-		    getTrabajosDBTableName(), trabajosTableHandler);
+	    addTrabajosBatchListener = new AddTrabajosBatchListener(this);
 	    addTrabajosBatchButton.addActionListener(addTrabajosBatchListener);
 	}
 
@@ -453,10 +443,6 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
 	return "forms/" + getBasicName() + "_reconocimientos.jfrm";
     }
 
-    protected String getTrabajosFormFileName() {
-	return "forms/" + getBasicName() + "_trabajos.jfrm";
-    }
-
     public String getReconocimientosDBTableName() {
 	return getBasicName() + "_reconocimientos";
     }
@@ -491,7 +477,7 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
     }
 
     @Override
-    protected abstract String getBasicName();
+    public abstract String getBasicName();
 
     protected abstract boolean hasSentido();
 }

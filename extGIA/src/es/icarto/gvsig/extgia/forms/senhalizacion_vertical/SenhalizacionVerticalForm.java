@@ -135,7 +135,7 @@ public class SenhalizacionVerticalForm extends AbstractFormWithLocationWidgets {
     }
 
     @Override
-    protected String getBasicName() {
+    public String getBasicName() {
 	return TABLENAME;
     }
 
