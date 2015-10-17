@@ -16,6 +16,19 @@
         	<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
         </DOMAINREADER>
       </FIELD>
+      
+      <FIELD>
+        <FIELDNAME>organismo</FIELDNAME>
+        <DOMAINREADER>
+            <DRTYPE>db</DRTYPE>
+            <DRDBSCHEMA>audasa_expropiaciones</DRDBSCHEMA>
+        	<DRDBTABLE>dominio_organismo</DRDBTABLE>
+        	<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+        	<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+        	<DRADDVOIDVALUE>true</DRADDVOIDVALUE>
+        </DOMAINREADER>
+      </FIELD>
+      
   </RECORDSET>
   </LAYER>
 </METADATA>
