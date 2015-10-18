@@ -15,6 +15,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 
 import es.icarto.gvsig.extgia.forms.GIASubForm;
+import es.icarto.gvsig.navtableforms.gui.tables.handler.BaseTableHandler;
 import es.icarto.gvsig.navtableforms.gui.tables.model.AlphanumericTableModel;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 import es.udc.cartolab.gvsig.navtable.dataacces.IController;
@@ -23,18 +24,24 @@ import es.udc.cartolab.gvsig.navtable.format.ValueFormatNT;
 @SuppressWarnings("serial")
 public abstract class BatchAbstractSubForm extends GIASubForm {
 
-    private static final ValueFormatNT WRITER = new ValueFormatNT();
+    protected static final ValueFormatNT WRITER = new ValueFormatNT();
 
     private static final Logger logger = Logger
 	    .getLogger(BatchAbstractSubForm.class);
 
     private final String primaryKey;
 
+    protected BaseTableHandler trabajosTableHandler;
+
     public BatchAbstractSubForm(String formFile, String basicName) {
 	super(basicName);
 	setForeingKey(new HashMap<String, String>());
 	primaryKey = basicName.endsWith("_trabajos") ? "id_trabajo"
 		: "n_inspeccion";
+    }
+
+    public void setTrabajoTableHandler(BaseTableHandler trabajosTableHandler) {
+	this.trabajosTableHandler = trabajosTableHandler;
     }
 
     @Override

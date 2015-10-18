@@ -16,36 +16,26 @@ import com.iver.cit.gvsig.fmap.layers.FBitSet;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 
-import es.icarto.gvsig.extgia.forms.GIASubForm;
 import es.icarto.gvsig.navtableforms.gui.tables.handler.BaseTableHandler;
 import es.icarto.gvsig.navtableforms.gui.tables.model.AlphanumericTableModel;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 import es.udc.cartolab.gvsig.navtable.dataacces.IController;
-import es.udc.cartolab.gvsig.navtable.format.ValueFormatNT;
 
 @SuppressWarnings("serial")
-public abstract class BatchVegetationTrabajosAbstractSubForm extends GIASubForm {
-
-    private static final ValueFormatNT WRITER = new ValueFormatNT();
+public abstract class BatchVegetationTrabajosAbstractSubForm extends
+BatchAbstractSubForm {
 
     private static final Logger logger = Logger
-	    .getLogger(BatchAbstractSubForm.class);
+	    .getLogger(BatchVegetationTrabajosAbstractSubForm.class);
 
     private final ORMLite batchOrmLite;
 
-    private BaseTableHandler trabajosTableHandler;
-
     public BatchVegetationTrabajosAbstractSubForm(String formFile,
 	    String basicName) {
-	super(basicName);
-	setForeingKey(new HashMap<String, String>());
+	super(formFile, basicName);
 	batchOrmLite = new ORMLite(getMetadataPath());
 	getWindowInfo().setTitle("Añadir Trabajos: Datos comunes");
-    }
-
-    public void setTrabajoTableHandler(BaseTableHandler trabajosTableHandler) {
-	this.trabajosTableHandler = trabajosTableHandler;
     }
 
     @Override
@@ -67,10 +57,6 @@ public abstract class BatchVegetationTrabajosAbstractSubForm extends GIASubForm 
 	PluginServices.getMDIManager().addCentredWindow(this);
     }
 
-    public abstract String getLayerName();
-
-    public abstract String getIdFieldName();
-
     public abstract String getDbTableName();
 
     public abstract String[] getColumnNames();
@@ -79,7 +65,8 @@ public abstract class BatchVegetationTrabajosAbstractSubForm extends GIASubForm 
 
     public abstract Integer[] getColumnDbTypes();
 
-    public abstract void getForeignValues(HashMap<String, String> values, String idValue);
+    public abstract void getForeignValues(HashMap<String, String> values,
+	    String idValue);
 
     private final class BatchCreateAction implements ActionListener {
 
