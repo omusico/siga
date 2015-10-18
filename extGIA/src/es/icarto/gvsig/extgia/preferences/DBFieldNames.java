@@ -1,5 +1,24 @@
 package es.icarto.gvsig.extgia.preferences;
 
+import es.icarto.gvsig.extgia.batch.BatchAbstractSubForm;
+import es.icarto.gvsig.extgia.batch.elements.BatchAreasDescansoTrabajos;
+import es.icarto.gvsig.extgia.batch.elements.BatchAreasPeajeTrabajos;
+import es.icarto.gvsig.extgia.batch.elements.BatchAreasServicioTrabajos;
+import es.icarto.gvsig.extgia.batch.elements.BatchBarreraRigidaTrabajos;
+import es.icarto.gvsig.extgia.batch.elements.BatchFirmeTrabajos;
+import es.icarto.gvsig.extgia.batch.elements.BatchIsletasTrabajos;
+import es.icarto.gvsig.extgia.batch.elements.BatchJuntasTrabajos;
+import es.icarto.gvsig.extgia.batch.elements.BatchLechoFrenadoTrabajos;
+import es.icarto.gvsig.extgia.batch.elements.BatchLineasSuministroTrabajos;
+import es.icarto.gvsig.extgia.batch.elements.BatchMurosTrabajos;
+import es.icarto.gvsig.extgia.batch.elements.BatchObrasDesagueTrabajos;
+import es.icarto.gvsig.extgia.batch.elements.BatchObrasPasoTrabajos;
+import es.icarto.gvsig.extgia.batch.elements.BatchPasosMedianaTrabajos;
+import es.icarto.gvsig.extgia.batch.elements.BatchSenhalizacionVariableTrabajos;
+import es.icarto.gvsig.extgia.batch.elements.BatchSenhalizacionVerticalTrabajos;
+import es.icarto.gvsig.extgia.batch.elements.BatchTaludesTrabajos;
+import es.icarto.gvsig.extgia.batch.elements.BatchTransformadoresTrabajos;
+import es.icarto.gvsig.extgia.batch.elements.BatchVallaCierreTrabajos;
 import es.icarto.gvsig.extgia.forms.areas_descanso.AreasDescansoForm;
 import es.icarto.gvsig.extgia.forms.areas_mantenimiento.AreasMantenimientoForm;
 import es.icarto.gvsig.extgia.forms.areas_peaje.AreasPeajeForm;
@@ -27,63 +46,66 @@ import es.icarto.gvsig.navtableforms.AbstractForm;
 public class DBFieldNames {
 
     public enum Elements {
-	Areas_Descanso("id_area_descanso", AreasDescansoForm.class),
-	Areas_Mantenimiento("id_area_mantenimiento", AreasMantenimientoForm.class),
-	Areas_Peaje("id_area_peaje", AreasPeajeForm.class),
-	Areas_Servicio("id_area_servicio", AreasServicioForm.class),
-	Barrera_Rigida("id_barrera_rigida", BarreraRigidaForm.class),
-	Enlaces("id_enlace", EnlacesForm.class),
-	Firme("id_firme", FirmeForm.class),
-	Isletas("id_isleta", IsletasForm.class),
-	Juntas("id_junta", JuntasForm.class),
-	Lecho_Frenado("id_lecho_frenado", LechoFrenadoForm.class),
-	Lineas_Suministro("id_linea_suministro", LineasSuministroForm.class),
-	Muros("id_muro", MurosForm.class),
-	Obras_Desague("id_obra_desague", ObrasDesagueForm.class),
-	Obras_Paso("id_obra_paso", ObrasPasoForm.class),
-	Pasos_Mediana("id_paso_mediana", PasosMedianaForm.class),
-	Senhalizacion_Variable("id_senhal_variable", SenhalizacionVariableForm.class),
-	Senhalizacion_Vertical("id_elemento_senhalizacion", SenhalizacionVerticalForm.class),
-	Taludes("id_talud", TaludesForm.class),
-	Transformadores("id_transformador", TransformadoresForm.class),
-	Valla_Cierre("id_valla", VallaCierreForm.class),
-	Ramales("gid", RamalesForm.class),
-	Competencias("gid", CompetenciasForm.class);
+	Areas_Descanso("id_area_descanso", AreasDescansoForm.class, BatchAreasDescansoTrabajos.class),
+	Areas_Mantenimiento("id_area_mantenimiento", AreasMantenimientoForm.class, null),
+	Areas_Peaje("id_area_peaje", AreasPeajeForm.class, BatchAreasPeajeTrabajos.class),
+	Areas_Servicio("id_area_servicio", AreasServicioForm.class, BatchAreasServicioTrabajos.class),
+	Barrera_Rigida("id_barrera_rigida", BarreraRigidaForm.class, BatchBarreraRigidaTrabajos.class),
+	Enlaces("id_enlace", EnlacesForm.class, null),
+	Firme("id_firme", FirmeForm.class, BatchFirmeTrabajos.class),
+	Isletas("id_isleta", IsletasForm.class, BatchIsletasTrabajos.class),
+	Juntas("id_junta", JuntasForm.class, BatchJuntasTrabajos.class),
+	Lecho_Frenado("id_lecho_frenado", LechoFrenadoForm.class, BatchLechoFrenadoTrabajos.class),
+	Lineas_Suministro("id_linea_suministro", LineasSuministroForm.class, BatchLineasSuministroTrabajos.class),
+	Muros("id_muro", MurosForm.class, BatchMurosTrabajos.class),
+	Obras_Desague("id_obra_desague", ObrasDesagueForm.class, BatchObrasDesagueTrabajos.class),
+	Obras_Paso("id_obra_paso", ObrasPasoForm.class, BatchObrasPasoTrabajos.class),
+	Pasos_Mediana("id_paso_mediana", PasosMedianaForm.class, BatchPasosMedianaTrabajos.class),
+	Senhalizacion_Variable("id_senhal_variable", SenhalizacionVariableForm.class, BatchSenhalizacionVariableTrabajos.class),
+	Senhalizacion_Vertical("id_elemento_senhalizacion", SenhalizacionVerticalForm.class, BatchSenhalizacionVerticalTrabajos.class),
+	Taludes("id_talud", TaludesForm.class, BatchTaludesTrabajos.class),
+	Transformadores("id_transformador", TransformadoresForm.class, BatchTransformadoresTrabajos.class),
+	Valla_Cierre("id_valla", VallaCierreForm.class, BatchVallaCierreTrabajos.class),
+	Ramales("gid", RamalesForm.class, null),
+	Competencias("gid", CompetenciasForm.class, null);
 
 	public final String pk;
 	public final Class<? extends AbstractForm> form;
+	public final Class<? extends BatchAbstractSubForm> batchForm;
 
-	private Elements(String pk, Class<? extends AbstractForm> form) {
+	private Elements(String pk, Class<? extends AbstractForm> form,
+		Class<? extends BatchAbstractSubForm> batchForm) {
 	    this.pk = pk;
 	    this.form = form;
+	    this.batchForm = batchForm;
 	}
     }
 
     public static String[] reconocimientosWhitoutIndexColNames = {
-	    "n_inspeccion", "nombre_revisor", "fecha_inspeccion" };
+	"n_inspeccion", "nombre_revisor", "fecha_inspeccion" };
     public static String[] reconocimientosWhitoutIndexColAlias = {
-	    "Nº Inspección", "Revisor", "Fecha Inspección" };
+	"Nº Inspección", "Revisor", "Fecha Inspección" };
 
     public static final String[] reconocimientosColNames = { "n_inspeccion",
-	    "nombre_revisor", "fecha_inspeccion", "indice_estado" };
+	"nombre_revisor", "fecha_inspeccion", "indice_estado" };
     public static final String[] reconocimientosColAlias = { "Nº Inspección",
-	    "Revisor", "Fecha Inspección", "Índice Estado" };
+	"Revisor", "Fecha Inspección", "Índice Estado" };
 
     public static String[] trabajosColNames = { "id_trabajo",
-	    "fecha_certificado", "unidad", "medicion_audasa", "observaciones" };
+	"fecha_certificado", "unidad", "medicion_audasa", "observaciones" };
 
     public static String[] trabajosColAlias = { "ID", "Fecha cert", "Unidad",
-	    "Medición AUDASA", "Observaciones" };
+	"Medición AUDASA", "Observaciones" };
     public static int[] trabajosColWidths = { 10, 45, 90, 75, 190 };
 
     public static String[] trabajosVegetacionColNames = { "id_trabajo",
-	    "fecha", "unidad", "medicion", "observaciones" };
+	"fecha", "unidad", "medicion", "observaciones" };
 
     public static String[] trabajosVegetacionColAlias = { "ID", "Fecha",
-	    "Unidad", "Medición", "Observaciones" };
+	"Unidad", "Medición", "Observaciones" };
 
     public static String[] trabajosVegetacionTableEditableCells = { "Fecha",
-	    "Unidad", "Medición", "Observaciones" };
+	"Unidad", "Medición", "Observaciones" };
 
     public static final String GIA_SCHEMA = "audasa_extgia";
 

@@ -9,42 +9,23 @@ import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.batch.BatchAbstractSubForm;
-import es.icarto.gvsig.extgia.batch.BatchVegetationTrabajosAbstractSubForm;
 import es.icarto.gvsig.extgia.batch.elements.BatchAreasDescansoReconocimientos;
-import es.icarto.gvsig.extgia.batch.elements.BatchAreasDescansoTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchAreasPeajeReconocimientos;
-import es.icarto.gvsig.extgia.batch.elements.BatchAreasPeajeTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchAreasServicioReconocimientos;
-import es.icarto.gvsig.extgia.batch.elements.BatchAreasServicioTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchBarreraRigidaReconocimientos;
-import es.icarto.gvsig.extgia.batch.elements.BatchBarreraRigidaTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchEnlacesReconocimientos;
 import es.icarto.gvsig.extgia.batch.elements.BatchFirmeReconocimientos;
-import es.icarto.gvsig.extgia.batch.elements.BatchFirmeTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchIsletasReconocimientos;
-import es.icarto.gvsig.extgia.batch.elements.BatchIsletasTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchJuntasReconocimientos;
-import es.icarto.gvsig.extgia.batch.elements.BatchJuntasTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchLechoFrenadoReconocimientos;
-import es.icarto.gvsig.extgia.batch.elements.BatchLechoFrenadoTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchLineasSuministroReconocimientos;
-import es.icarto.gvsig.extgia.batch.elements.BatchLineasSuministroTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchMurosReconocimientos;
-import es.icarto.gvsig.extgia.batch.elements.BatchMurosTrabajos;
-import es.icarto.gvsig.extgia.batch.elements.BatchObrasDesagueTrabajos;
-import es.icarto.gvsig.extgia.batch.elements.BatchObrasPasoTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchPasosMedianaReconocimientos;
-import es.icarto.gvsig.extgia.batch.elements.BatchPasosMedianaTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchSenhalizacionVariableReconocimientos;
-import es.icarto.gvsig.extgia.batch.elements.BatchSenhalizacionVariableTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchSenhalizacionVerticalReconocimientos;
-import es.icarto.gvsig.extgia.batch.elements.BatchSenhalizacionVerticalTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchTaludesReconocimientos;
-import es.icarto.gvsig.extgia.batch.elements.BatchTaludesTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchTransformadoresReconocimientos;
-import es.icarto.gvsig.extgia.batch.elements.BatchTransformadoresTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchVallaCierreReconocimientos;
-import es.icarto.gvsig.extgia.batch.elements.BatchVallaCierreTrabajos;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.gui.tables.handler.BaseTableHandler;
@@ -108,88 +89,45 @@ public class LaunchGIAForms {
     public static void callBatchTrabajosSubFormDependingOfElement(
 	    String element, String formFileName, String dbTableName,
 	    BaseTableHandler trabajosTableHandler) {
-	BatchAbstractSubForm subform = null;
-	BatchVegetationTrabajosAbstractSubForm vegetationSubForm = null;
-	switch (DBFieldNames.Elements.valueOf(element)) {
-	case Areas_Descanso:
-	    subform = new BatchAreasDescansoTrabajos(formFileName, dbTableName);
-	    break;
-	case Areas_Peaje:
-	    subform = new BatchAreasPeajeTrabajos(formFileName, dbTableName);
-	    break;
-	case Barrera_Rigida:
-	    vegetationSubForm = new BatchBarreraRigidaTrabajos(formFileName,
-		    dbTableName);
-	    break;
-
-	case Areas_Servicio:
-	    subform = new BatchAreasServicioTrabajos(formFileName, dbTableName);
-	    break;
-	case Firme:
-	    subform = new BatchFirmeTrabajos(formFileName, dbTableName);
-	    break;
-	case Isletas:
-	    vegetationSubForm = new BatchIsletasTrabajos(formFileName,
-		    dbTableName);
-	    break;
-	case Juntas:
-	    subform = new BatchJuntasTrabajos(formFileName, dbTableName);
-	    break;
-	case Lecho_Frenado:
-	    subform = new BatchLechoFrenadoTrabajos(formFileName, dbTableName);
-	    break;
-
-	case Lineas_Suministro:
-	    subform = new BatchLineasSuministroTrabajos(formFileName,
-		    dbTableName);
-	    break;
-	case Muros:
-	    subform = new BatchMurosTrabajos(formFileName, dbTableName);
-	    break;
-	case Obras_Desague:
-	    subform = new BatchObrasDesagueTrabajos(formFileName, dbTableName);
-	    break;
-	case Obras_Paso:
-	    subform = new BatchObrasPasoTrabajos(formFileName, dbTableName);
-	    break;
-	case Pasos_Mediana:
-	    subform = new BatchPasosMedianaTrabajos(formFileName, dbTableName);
-	    break;
-	case Senhalizacion_Variable:
-	    subform = new BatchSenhalizacionVariableTrabajos(formFileName,
-		    dbTableName);
-	    break;
-	case Senhalizacion_Vertical:
-	    vegetationSubForm = new BatchSenhalizacionVerticalTrabajos(
-		    formFileName, dbTableName);
-	    break;
-	case Taludes:
-	    vegetationSubForm = new BatchTaludesTrabajos(formFileName,
-		    dbTableName);
-	    break;
-	case Transformadores:
-	    subform = new BatchTransformadoresTrabajos(formFileName,
-		    dbTableName);
-	    break;
-	case Valla_Cierre:
-	    subform = new BatchVallaCierreTrabajos(formFileName, dbTableName);
-	    break;
-
-	default:
-	    subform = null;
+	BatchAbstractSubForm batchForm = getBatchTrabajosSubFormDependingOfElement(
+		element, formFileName, dbTableName);
+	if (batchForm == null) {
+	    logger.error(String.format("This sould not happen: %s %s %s %s",
+		    element, formFileName, dbTableName, trabajosTableHandler));
 	}
 
 	FormFactory.checkAndLoadTableRegistered(dbTableName);
 	AlphanumericTableModel model = TableModelFactory.createFromTable(
 		dbTableName, null, null);
-	if (subform != null) {
-	    subform.setModel(model);
-	    subform.actionCreateRecord();
-	} else {
-	    vegetationSubForm.setModel(model);
-	    vegetationSubForm.setTrabajoTableHandler(trabajosTableHandler);
-	    vegetationSubForm.actionCreateRecord();
+
+	batchForm.setModel(model);
+	batchForm.setTrabajoTableHandler(trabajosTableHandler);
+	batchForm.actionCreateRecord();
+    }
+
+    private static BatchAbstractSubForm getBatchTrabajosSubFormDependingOfElement(
+	    String element, String formFileName, String dbTableName) {
+	BatchAbstractSubForm form = null;
+	Class<? extends BatchAbstractSubForm> formClass = DBFieldNames.Elements
+		.valueOf(element).batchForm;
+	if (formClass == null) {
+	    return form;
 	}
+
+	try {
+	    Constructor<? extends BatchAbstractSubForm> constructor = formClass
+		    .getConstructor(String.class, String.class);
+	    form = constructor.newInstance(formFileName, dbTableName);
+	} catch (NoSuchMethodException e) {
+	    logger.error(e.getStackTrace(), e);
+	} catch (InstantiationException e) {
+	    logger.error(e.getStackTrace(), e);
+	} catch (IllegalAccessException e) {
+	    logger.error(e.getStackTrace(), e);
+	} catch (InvocationTargetException e) {
+	    logger.error(e.getStackTrace(), e);
+	}
+	return form;
     }
 
     public static void callBatchReconocimientosSubFormDependingOfElement(
