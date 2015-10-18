@@ -57,17 +57,6 @@ public class BatchSenhalizacionVerticalTrabajos extends BatchVegetationTrabajosA
     }
 
     @Override
-    public Integer[] getColumnDbTypes() {
-	Integer[] columnTypes = {Types.VARCHAR,
-		Types.DATE,
-		Types.VARCHAR,
-		Types.NUMERIC,
-		Types.VARCHAR
-	};
-	return columnTypes;
-    }
-
-    @Override
     public void getForeignValues(HashMap<String, String> values, String idValue) {
 	// TODO Auto-generated method stub
 

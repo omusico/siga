@@ -55,7 +55,6 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
     private final String dbTableName;
     private final String[] columnNames;
     private final String[] columnDbNames;
-    private final Integer[] columnDbTypes;
     private final String[][] data;
     private final ORMLite ormLite;
 
@@ -70,13 +69,11 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 
     public BatchTrabajosTable(ORMLite ormLite, String dbTableName,
 	    String[][] data, final String[] columnNames,
-	    final String[] columnDbNames, final Integer[] columnsDbTypes,
-	    BaseTableHandler trabajosTableHandler) {
+	    final String[] columnDbNames, BaseTableHandler trabajosTableHandler) {
 	super();
 	this.dbTableName = dbTableName;
 	this.columnNames = columnNames;
 	this.columnDbNames = columnDbNames;
-	this.columnDbTypes = columnsDbTypes;
 	this.ormLite = ormLite;
 	this.data = data;
 	this.trabajosTableHandler = trabajosTableHandler;

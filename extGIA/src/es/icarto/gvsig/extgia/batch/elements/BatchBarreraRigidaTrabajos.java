@@ -1,6 +1,5 @@
 package es.icarto.gvsig.extgia.batch.elements;
 
-import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,20 +61,6 @@ public class BatchBarreraRigidaTrabajos extends BatchVegetationTrabajosAbstractS
 		"observaciones"
 	};
 	return columnNames;
-    }
-
-    @Override
-    public Integer[] getColumnDbTypes() {
-	Integer[] columnTypes = {Types.VARCHAR,
-		Types.DATE,
-		Types.VARCHAR,
-		Types.NUMERIC,
-		Types.NUMERIC,
-		Types.NUMERIC,
-		Types.NUMERIC,
-		Types.VARCHAR
-	};
-	return columnTypes;
     }
 
     @Override

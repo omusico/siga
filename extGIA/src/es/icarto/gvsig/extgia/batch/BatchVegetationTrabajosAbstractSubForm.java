@@ -63,8 +63,6 @@ BatchAbstractSubForm {
 
     public abstract String[] getColumnDbNames();
 
-    public abstract Integer[] getColumnDbTypes();
-
     public abstract void getForeignValues(HashMap<String, String> values,
 	    String idValue);
 
@@ -127,7 +125,7 @@ BatchAbstractSubForm {
 		    BatchTrabajosTable table = new BatchTrabajosTable(
 			    batchOrmLite, getDbTableName(), data,
 			    getColumnNames(), getColumnDbNames(),
-			    getColumnDbTypes(), trabajosTableHandler);
+			    trabajosTableHandler);
 		    PluginServices.getMDIManager().addCentredWindow(table);
 		}
 	    } catch (Exception e) {
