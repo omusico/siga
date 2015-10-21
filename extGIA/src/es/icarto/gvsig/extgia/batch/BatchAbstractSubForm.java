@@ -15,6 +15,8 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 
 import es.icarto.gvsig.extgia.forms.GIASubForm;
+import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.extgia.preferences.DBFieldNames.Elements;
 import es.icarto.gvsig.navtableforms.gui.tables.handler.BaseTableHandler;
 import es.icarto.gvsig.navtableforms.gui.tables.model.AlphanumericTableModel;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
@@ -22,7 +24,7 @@ import es.udc.cartolab.gvsig.navtable.dataacces.IController;
 import es.udc.cartolab.gvsig.navtable.format.ValueFormatNT;
 
 @SuppressWarnings("serial")
-public abstract class BatchAbstractSubForm extends GIASubForm {
+public class BatchAbstractSubForm extends GIASubForm {
 
     protected static final ValueFormatNT WRITER = new ValueFormatNT();
 
@@ -33,11 +35,18 @@ public abstract class BatchAbstractSubForm extends GIASubForm {
 
     protected BaseTableHandler trabajosTableHandler;
 
-    public BatchAbstractSubForm(String formFile, String basicName) {
+    private Elements parentElement;
+
+    public BatchAbstractSubForm(String basicName) {
 	super(basicName);
 	setForeingKey(new HashMap<String, String>());
 	primaryKey = basicName.endsWith("_trabajos") ? "id_trabajo"
 		: "n_inspeccion";
+    }
+    
+    public BatchAbstractSubForm(String basicName, DBFieldNames.Elements parentElement) {
+	this(basicName);
+	this.parentElement = parentElement;
     }
 
     public void setTrabajoTableHandler(BaseTableHandler trabajosTableHandler) {
@@ -55,9 +64,13 @@ public abstract class BatchAbstractSubForm extends GIASubForm {
 	PluginServices.getMDIManager().addCentredWindow(this);
     }
 
-    public abstract String getLayerName();
+    public String getLayerName() {
+	return parentElement.layerName;
+    }
 
-    public abstract String getIdFieldName();
+    public String getIdFieldName() {
+	return parentElement.pk;
+    }
 
     private final class BatchCreateAction implements ActionListener {
 

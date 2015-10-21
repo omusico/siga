@@ -8,7 +8,7 @@ import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 public class BatchVallaCierreReconocimientos extends BatchAbstractSubForm {
 
     public BatchVallaCierreReconocimientos(String formFile, String dbTableName) {
-	super(formFile, dbTableName);
+	super(dbTableName);
 	addCalculation(new VallaCierreCalculateIndiceEstado(this));
     }
 

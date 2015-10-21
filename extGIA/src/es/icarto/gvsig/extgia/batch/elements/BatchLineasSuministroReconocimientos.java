@@ -8,7 +8,7 @@ public class BatchLineasSuministroReconocimientos extends BatchAbstractSubForm {
 
     public BatchLineasSuministroReconocimientos(String formFile,
 	    String dbTableName) {
-	super(formFile, dbTableName);
+	super(dbTableName);
     }
 
     @Override

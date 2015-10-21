@@ -33,7 +33,7 @@ BatchAbstractSubForm {
 
     public BatchVegetationTrabajosAbstractSubForm(String formFile,
 	    String basicName) {
-	super(formFile, basicName);
+	super(basicName);
 	batchOrmLite = new ORMLite(getMetadataPath());
 	getWindowInfo().setTitle("Añadir Trabajos: Datos comunes");
     }

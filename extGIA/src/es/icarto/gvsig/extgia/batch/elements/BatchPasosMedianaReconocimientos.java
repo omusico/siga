@@ -8,7 +8,7 @@ import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 public class BatchPasosMedianaReconocimientos extends BatchAbstractSubForm {
 
     public BatchPasosMedianaReconocimientos(String formFile, String dbTableName) {
-	super(formFile, dbTableName);
+	super(dbTableName);
 	addCalculation(new PasosMedianaCalculateIndiceEstado(this));
     }
 

@@ -8,7 +8,7 @@ import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 public class BatchIsletasReconocimientos extends BatchAbstractSubForm {
 
     public BatchIsletasReconocimientos(String formFile, String dbTableName) {
-	super(formFile, dbTableName);
+	super(dbTableName);
 	addCalculation(new IsletasCalculateIndiceEstado(this));
     }
 

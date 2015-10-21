@@ -8,7 +8,7 @@ import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 public class BatchMurosReconocimientos extends BatchAbstractSubForm {
 
     public BatchMurosReconocimientos(String formFile, String dbTableName) {
-	super(formFile, dbTableName);
+	super(dbTableName);
 	addCalculation(new MurosCalculateIndiceEstado(this));
     }
 

@@ -1,24 +1,10 @@
 package es.icarto.gvsig.extgia.preferences;
 
 import es.icarto.gvsig.extgia.batch.BatchAbstractSubForm;
-import es.icarto.gvsig.extgia.batch.elements.BatchAreasDescansoTrabajos;
-import es.icarto.gvsig.extgia.batch.elements.BatchAreasPeajeTrabajos;
-import es.icarto.gvsig.extgia.batch.elements.BatchAreasServicioTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchBarreraRigidaTrabajos;
-import es.icarto.gvsig.extgia.batch.elements.BatchFirmeTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchIsletasTrabajos;
-import es.icarto.gvsig.extgia.batch.elements.BatchJuntasTrabajos;
-import es.icarto.gvsig.extgia.batch.elements.BatchLechoFrenadoTrabajos;
-import es.icarto.gvsig.extgia.batch.elements.BatchLineasSuministroTrabajos;
-import es.icarto.gvsig.extgia.batch.elements.BatchMurosTrabajos;
-import es.icarto.gvsig.extgia.batch.elements.BatchObrasDesagueTrabajos;
-import es.icarto.gvsig.extgia.batch.elements.BatchObrasPasoTrabajos;
-import es.icarto.gvsig.extgia.batch.elements.BatchPasosMedianaTrabajos;
-import es.icarto.gvsig.extgia.batch.elements.BatchSenhalizacionVariableTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchSenhalizacionVerticalTrabajos;
 import es.icarto.gvsig.extgia.batch.elements.BatchTaludesTrabajos;
-import es.icarto.gvsig.extgia.batch.elements.BatchTransformadoresTrabajos;
-import es.icarto.gvsig.extgia.batch.elements.BatchVallaCierreTrabajos;
 import es.icarto.gvsig.extgia.forms.areas_descanso.AreasDescansoForm;
 import es.icarto.gvsig.extgia.forms.areas_mantenimiento.AreasMantenimientoForm;
 import es.icarto.gvsig.extgia.forms.areas_peaje.AreasPeajeForm;
@@ -46,38 +32,40 @@ import es.icarto.gvsig.navtableforms.AbstractForm;
 public class DBFieldNames {
 
     public enum Elements {
-	Areas_Descanso("id_area_descanso", AreasDescansoForm.class, BatchAreasDescansoTrabajos.class),
+	Areas_Descanso("id_area_descanso", AreasDescansoForm.class, BatchAbstractSubForm.class),
 	Areas_Mantenimiento("id_area_mantenimiento", AreasMantenimientoForm.class, null),
-	Areas_Peaje("id_area_peaje", AreasPeajeForm.class, BatchAreasPeajeTrabajos.class),
-	Areas_Servicio("id_area_servicio", AreasServicioForm.class, BatchAreasServicioTrabajos.class),
+	Areas_Peaje("id_area_peaje", AreasPeajeForm.class, BatchAbstractSubForm.class),
+	Areas_Servicio("id_area_servicio", AreasServicioForm.class, BatchAbstractSubForm.class),
 	Barrera_Rigida("id_barrera_rigida", BarreraRigidaForm.class, BatchBarreraRigidaTrabajos.class),
 	Enlaces("id_enlace", EnlacesForm.class, null),
-	Firme("id_firme", FirmeForm.class, BatchFirmeTrabajos.class),
+	Firme("id_firme", FirmeForm.class, BatchAbstractSubForm.class),
 	Isletas("id_isleta", IsletasForm.class, BatchIsletasTrabajos.class),
-	Juntas("id_junta", JuntasForm.class, BatchJuntasTrabajos.class),
-	Lecho_Frenado("id_lecho_frenado", LechoFrenadoForm.class, BatchLechoFrenadoTrabajos.class),
-	Lineas_Suministro("id_linea_suministro", LineasSuministroForm.class, BatchLineasSuministroTrabajos.class),
-	Muros("id_muro", MurosForm.class, BatchMurosTrabajos.class),
-	Obras_Desague("id_obra_desague", ObrasDesagueForm.class, BatchObrasDesagueTrabajos.class),
-	Obras_Paso("id_obra_paso", ObrasPasoForm.class, BatchObrasPasoTrabajos.class),
-	Pasos_Mediana("id_paso_mediana", PasosMedianaForm.class, BatchPasosMedianaTrabajos.class),
-	Senhalizacion_Variable("id_senhal_variable", SenhalizacionVariableForm.class, BatchSenhalizacionVariableTrabajos.class),
+	Juntas("id_junta", JuntasForm.class, BatchAbstractSubForm.class),
+	Lecho_Frenado("id_lecho_frenado", LechoFrenadoForm.class, BatchAbstractSubForm.class),
+	Lineas_Suministro("id_linea_suministro", LineasSuministroForm.class, BatchAbstractSubForm.class),
+	Muros("id_muro", MurosForm.class, BatchAbstractSubForm.class),
+	Obras_Desague("id_obra_desague", ObrasDesagueForm.class, BatchAbstractSubForm.class),
+	Obras_Paso("id_obra_paso", ObrasPasoForm.class, BatchAbstractSubForm.class),
+	Pasos_Mediana("id_paso_mediana", PasosMedianaForm.class, BatchAbstractSubForm.class),
+	Senhalizacion_Variable("id_senhal_variable", SenhalizacionVariableForm.class, BatchAbstractSubForm.class),
 	Senhalizacion_Vertical("id_elemento_senhalizacion", SenhalizacionVerticalForm.class, BatchSenhalizacionVerticalTrabajos.class),
 	Taludes("id_talud", TaludesForm.class, BatchTaludesTrabajos.class),
-	Transformadores("id_transformador", TransformadoresForm.class, BatchTransformadoresTrabajos.class),
-	Valla_Cierre("id_valla", VallaCierreForm.class, BatchVallaCierreTrabajos.class),
+	Transformadores("id_transformador", TransformadoresForm.class, BatchAbstractSubForm.class),
+	Valla_Cierre("id_valla", VallaCierreForm.class, BatchAbstractSubForm.class),
 	Ramales("gid", RamalesForm.class, null),
 	Competencias("gid", CompetenciasForm.class, null);
 
 	public final String pk;
 	public final Class<? extends AbstractForm> form;
 	public final Class<? extends BatchAbstractSubForm> batchForm;
+	public final String layerName;
 
 	private Elements(String pk, Class<? extends AbstractForm> form,
 		Class<? extends BatchAbstractSubForm> batchForm) {
 	    this.pk = pk;
 	    this.form = form;
 	    this.batchForm = batchForm;
+	    this.layerName = this.toString();
 	}
     }
 

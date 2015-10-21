@@ -8,7 +8,7 @@ import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 public class BatchBarreraRigidaReconocimientos extends BatchAbstractSubForm {
 
     public BatchBarreraRigidaReconocimientos(String formFile, String dbTableName) {
-	super(formFile, dbTableName);
+	super(dbTableName);
 	addCalculation(new BarreraRigidaCalculateIndiceEstado(this));
     }
 

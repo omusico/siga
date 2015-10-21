@@ -10,7 +10,7 @@ public class BatchSenhalizacionVerticalReconocimientos extends
 
     public BatchSenhalizacionVerticalReconocimientos(String formFile,
 	    String dbTableName) {
-	super(formFile, dbTableName);
+	super(dbTableName);
 	addCalculation(new SenhalizacionVerticalCalculateIndiceEstado(this));
     }
 

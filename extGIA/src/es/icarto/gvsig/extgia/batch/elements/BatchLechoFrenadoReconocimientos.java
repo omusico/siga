@@ -7,7 +7,7 @@ import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 public class BatchLechoFrenadoReconocimientos extends BatchAbstractSubForm {
 
     public BatchLechoFrenadoReconocimientos(String formFile, String dbTableName) {
-	super(formFile, dbTableName);
+	super(dbTableName);
     }
 
     @Override

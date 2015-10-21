@@ -8,19 +8,18 @@ import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 public class BatchAreasDescansoReconocimientos extends BatchAbstractSubForm {
 
     public BatchAreasDescansoReconocimientos(String formFile, String dbTableName) {
-	super(formFile, dbTableName);
-
+	super(dbTableName);
 	addCalculation(new AreasDescansoCalculateIndiceEstado(this));
     }
 
     @Override
     public String getLayerName() {
-	return DBFieldNames.AREAS_DESCANSO_LAYERNAME;
+	return DBFieldNames.Elements.Areas_Descanso.layerName;
     }
 
     @Override
     public String getIdFieldName() {
-	return DBFieldNames.ID_AREA_DESCANSO;
+	return DBFieldNames.Elements.Areas_Descanso.pk;
     }
 
 }

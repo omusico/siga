@@ -8,7 +8,7 @@ public class BatchTransformadoresReconocimientos extends BatchAbstractSubForm {
 
     public BatchTransformadoresReconocimientos(String formFile,
 	    String dbTableName) {
-	super(formFile, dbTableName);
+	super(dbTableName);
     }
 
     @Override

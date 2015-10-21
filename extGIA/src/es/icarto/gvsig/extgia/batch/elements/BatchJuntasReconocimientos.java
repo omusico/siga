@@ -8,7 +8,7 @@ import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 public class BatchJuntasReconocimientos extends BatchAbstractSubForm {
 
     public BatchJuntasReconocimientos(String formFile, String dbTableName) {
-	super(formFile, dbTableName);
+	super(dbTableName);
 	addCalculation(new JuntasCalculateIndiceEstado(this));
     }
 

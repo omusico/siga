@@ -7,7 +7,7 @@ import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 public class BatchAreasPeajeReconocimientos extends BatchAbstractSubForm {
 
     public BatchAreasPeajeReconocimientos(String formFile, String dbTableName) {
-	super(formFile, dbTableName);
+	super(dbTableName);
     }
 
     @Override

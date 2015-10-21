@@ -27,6 +27,7 @@ import es.icarto.gvsig.extgia.batch.elements.BatchTaludesReconocimientos;
 import es.icarto.gvsig.extgia.batch.elements.BatchTransformadoresReconocimientos;
 import es.icarto.gvsig.extgia.batch.elements.BatchVallaCierreReconocimientos;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.extgia.preferences.DBFieldNames.Elements;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.gui.tables.handler.BaseTableHandler;
 import es.icarto.gvsig.navtableforms.gui.tables.model.AlphanumericTableModel;
@@ -87,13 +88,13 @@ public class LaunchGIAForms {
     }
 
     public static void callBatchTrabajosSubFormDependingOfElement(
-	    String element, String formFileName, String dbTableName,
+	    String element, String dbTableName,
 	    BaseTableHandler trabajosTableHandler) {
 	BatchAbstractSubForm batchForm = getBatchTrabajosSubFormDependingOfElement(
-		element, formFileName, dbTableName);
+		element, dbTableName);
 	if (batchForm == null) {
-	    logger.error(String.format("This sould not happen: %s %s %s %s",
-		    element, formFileName, dbTableName, trabajosTableHandler));
+	    logger.error(String.format("This sould not happen: %s %s %s",
+		    element, dbTableName, trabajosTableHandler));
 	}
 
 	FormFactory.checkAndLoadTableRegistered(dbTableName);
@@ -106,18 +107,18 @@ public class LaunchGIAForms {
     }
 
     private static BatchAbstractSubForm getBatchTrabajosSubFormDependingOfElement(
-	    String element, String formFileName, String dbTableName) {
+	    String element, String dbTableName) {
 	BatchAbstractSubForm form = null;
-	Class<? extends BatchAbstractSubForm> formClass = DBFieldNames.Elements
-		.valueOf(element).batchForm;
+	final Elements valueOf = DBFieldNames.Elements.valueOf(element);
+	Class<? extends BatchAbstractSubForm> formClass = valueOf.batchForm;
 	if (formClass == null) {
 	    return form;
 	}
 
 	try {
 	    Constructor<? extends BatchAbstractSubForm> constructor = formClass
-		    .getConstructor(String.class, String.class);
-	    form = constructor.newInstance(formFileName, dbTableName);
+		    .getConstructor(String.class, Elements.class);
+	    form = constructor.newInstance(dbTableName, valueOf);
 	} catch (NoSuchMethodException e) {
 	    logger.error(e.getStackTrace(), e);
 	} catch (InstantiationException e) {

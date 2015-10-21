@@ -7,7 +7,7 @@ import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 public class BatchEnlacesReconocimientos extends BatchAbstractSubForm {
 
     public BatchEnlacesReconocimientos(String formFile, String dbTableName) {
-	super(formFile, dbTableName);
+	super(dbTableName);
     }
 
     @Override

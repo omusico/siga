@@ -8,7 +8,7 @@ import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 public class BatchTaludesReconocimientos extends BatchAbstractSubForm {
 
     public BatchTaludesReconocimientos(String formFile, String dbTableName) {
-	super(formFile, dbTableName);
+	super(dbTableName);
 	addCalculation(new TaludesCalculateIndiceEstado(this));
     }
 

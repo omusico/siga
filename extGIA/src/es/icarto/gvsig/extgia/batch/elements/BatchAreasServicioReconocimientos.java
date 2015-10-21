@@ -8,7 +8,7 @@ import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 public class BatchAreasServicioReconocimientos extends BatchAbstractSubForm {
 
     public BatchAreasServicioReconocimientos(String formFile, String dbTableName) {
-	super(formFile, dbTableName);
+	super(dbTableName);
 	addCalculation(new AreasServicioCalculateIndiceEstado(this));
     }
 

@@ -12,7 +12,6 @@ import es.icarto.gvsig.navtableforms.gui.tables.handler.BaseTableHandler;
 public class AddTrabajosBatchListener implements ActionListener {
 
     private final String element;
-    private final String formFileName;
     private final String dbTableName;
     private final BaseTableHandler trabajosTableHandler;
     private final AbstractFormWithLocationWidgets form;
@@ -20,7 +19,6 @@ public class AddTrabajosBatchListener implements ActionListener {
     public AddTrabajosBatchListener(AbstractFormWithLocationWidgets form) {
 	this.form = form;
 	this.element = form.getElement().name();
-	this.formFileName = "forms/" + form.getBasicName() + "_trabajos.jfrm";
 	this.dbTableName = form.getTrabajosDBTableName();
 	this.trabajosTableHandler = getTrabajosTableHandler();
     }
@@ -41,15 +39,15 @@ public class AddTrabajosBatchListener implements ActionListener {
 	boolean emptySelection = form.getRecordset().getSelection().isEmpty();
 	if (emptySelection) {
 	    JOptionPane
-		    .showMessageDialog(
-			    form,
-			    "Debe tener registros seleccionados para añadir trabajos en lote",
-			    "Aviso", JOptionPane.WARNING_MESSAGE);
+	    .showMessageDialog(
+		    form,
+		    "Debe tener registros seleccionados para añadir trabajos en lote",
+		    "Aviso", JOptionPane.WARNING_MESSAGE);
 	    return;
 	}
 
 	LaunchGIAForms.callBatchTrabajosSubFormDependingOfElement(element,
-		formFileName, dbTableName, trabajosTableHandler);
+		dbTableName, trabajosTableHandler);
 
     }
 

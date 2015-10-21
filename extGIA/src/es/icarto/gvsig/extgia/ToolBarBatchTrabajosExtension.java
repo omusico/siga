@@ -52,12 +52,9 @@ public class ToolBarBatchTrabajosExtension extends Extension {
 			showWarning("Debe tener elementos seleccionados en la capa");
 			return;
 		    }
-		    LaunchGIAForms
-			    .callBatchTrabajosSubFormDependingOfElement(layer
-				    .getName(), "forms/" + layer.getName()
-				    + "_trabajos.jfrm",
-				    (layer.getName() + "_trabajos")
-					    .toLowerCase(), null);
+		    LaunchGIAForms.callBatchTrabajosSubFormDependingOfElement(
+			    layer.getName(), layer.getName().toLowerCase()
+				    + "_trabajos", null);
 		    return;
 		}
 	    }
@@ -92,7 +89,7 @@ public class ToolBarBatchTrabajosExtension extends Extension {
 	PluginServices.getIconTheme().registerDefault(
 		"extgia-batchTrabajos",
 		this.getClass().getClassLoader()
-		.getResource("images/batch_trabajo_toolbar.png"));
+			.getResource("images/batch_trabajo_toolbar.png"));
     }
 
     private boolean hasView() {

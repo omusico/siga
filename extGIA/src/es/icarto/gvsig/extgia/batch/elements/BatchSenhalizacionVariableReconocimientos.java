@@ -9,7 +9,7 @@ public class BatchSenhalizacionVariableReconocimientos extends
 
     public BatchSenhalizacionVariableReconocimientos(String formFile,
 	    String dbTableName) {
-	super(formFile, dbTableName);
+	super(dbTableName);
     }
 
     @Override
