@@ -1,20 +1,14 @@
 package es.icarto.gvsig.extgia.batch;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 
-import javax.swing.AbstractCellEditor;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -26,7 +20,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 
 import org.apache.log4j.Logger;
@@ -35,7 +28,6 @@ import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.iver.cit.gvsig.fmap.edition.IEditableSource;
-import com.toedter.calendar.JDateChooser;
 
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.gui.tables.handler.BaseTableHandler;
@@ -106,8 +98,10 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	setUnidadCellEditorAsComboBox();
 	setFechaCellEditorAsJDateChooser();
 
-	calculation = new BatchTrabajosTableCalculation(this, dbTableName, columnDbNames[0]);
-	table.setDefaultRenderer(Object.class, new ColorColumnRenderer(calculation));
+	calculation = new BatchTrabajosTableCalculation(this, dbTableName,
+		columnDbNames[0]);
+	table.setDefaultRenderer(Object.class, new ColorColumnRenderer(
+		calculation));
 
 	calculation.updateAllRows();
 	autoFit();
@@ -190,47 +184,60 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 		TOCTableManager tm = new TOCTableManager();
 		IEditableSource source = tm.getTableModelByName(dbTableName);
 		for (int i = 0; i < data.length; i++) {
-		    HashMap<String, String> newValues = new HashMap<String, String>();
-		    for (int j = 0; j < data[i].length; j++) {
-			String v = (data[i][j] == null) ? "" : data[i][j];
-			newValues.put(columnDbNames[j], v);
-		    }
-
-		    // workaround. Si la unidad no es herbicida ponemos a null a
-		    // la hora de guardar
-		    // longitud y ancho
-		    String unidad = newValues.get("unidad");
-		    if ((unidad != null)
-			    && (!unidad.equalsIgnoreCase("herbicida"))) {
-			newValues.remove("ancho");
-			newValues.remove("longitud");
-		    }
-
-		    TableController tableController = new TableController(
-			    source);
-		    tableController.create(newValues);
+		    saveRow(source, i);
 		}
-		if (trabajosTableHandler != null) {
-		    BaseTableModel m = (BaseTableModel) trabajosTableHandler
-			    .getJTable().getModel();
-		    m.dataChanged();
-		    // workaround. next line should work if createTableModel in
-		    // GIATableHandler doesnt ofuscate it
-		    // trabajosTableHandler.getModel().dataChanged();
-		}
+
+		notifyChangesToEmbedFormTable();
 
 	    } catch (Exception e) {
 		logger.error(e.getStackTrace(), e);
 		showWarning("Problema desconocido guardando la capa. Los datos no serán salvados");
 		return;
 	    }
+
+	    showSavedSuccesfullyMsg();
+
+	    closeWindow();
+	}
+
+	private void showSavedSuccesfullyMsg() {
 	    JOptionPane.showMessageDialog(
-		    null,
+		    (Component) PluginServices.getMainFrame(),
 		    PluginServices.getText(this, "addedInfo_msg_I")
 			    + data.length + " "
 			    + PluginServices.getText(this, "addedInfo_msg_II"));
 
-	    closeWindow();
+	}
+
+	private void notifyChangesToEmbedFormTable() {
+	    if (trabajosTableHandler != null) {
+		BaseTableModel m = (BaseTableModel) trabajosTableHandler
+			.getJTable().getModel();
+		m.dataChanged();
+		// workaround. next line should work if createTableModel in
+		// GIATableHandler doesnt ofuscate it
+		// trabajosTableHandler.getModel().dataChanged();
+	    }
+	}
+
+	private void saveRow(IEditableSource source, int i) throws Exception {
+	    HashMap<String, String> newValues = new HashMap<String, String>();
+	    for (int j = 0; j < data[i].length; j++) {
+		String v = (data[i][j] == null) ? "" : data[i][j];
+		newValues.put(columnDbNames[j], v);
+	    }
+
+	    // workaround. Si la unidad no es herbicida ponemos a null a
+	    // la hora de guardar
+	    // longitud y ancho
+	    String unidad = newValues.get("unidad");
+	    if ((unidad != null) && (!unidad.equalsIgnoreCase("herbicida"))) {
+		newValues.remove("ancho");
+		newValues.remove("longitud");
+	    }
+
+	    TableController tableController = new TableController(source);
+	    tableController.create(newValues);
 	}
     }
 
@@ -275,45 +282,11 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	    TableColumn unidadColumn = columns.nextElement();
 	    if (unidadColumn.getHeaderValue().toString()
 		    .equalsIgnoreCase(DBFieldNames.FECHA)) {
-		unidadColumn.setCellEditor(new DateCellEditor());
+		DateCellEditor dateEditor = new DateCellEditor(
+			DateFormatNT.getDateFormat());
+		unidadColumn.setCellEditor(dateEditor);
 		break;
 	    }
-	}
-    }
-
-    public class DateCellEditor extends AbstractCellEditor implements
-	    TableCellEditor {
-	JDateChooser dateChooser = new JDateChooser();
-	SimpleDateFormat dateFormat = DateFormatNT.getDateFormat();
-
-	@Override
-	public Component getTableCellEditorComponent(JTable table,
-		Object value, boolean isSelected, int row, int column) {
-	    dateChooser.setDateFormatString(dateFormat.toPattern());
-	    dateChooser.getDateEditor().setEnabled(false);
-	    dateChooser.getDateEditor().getUiComponent()
-		    .setBackground(new Color(255, 255, 255));
-	    dateChooser.getDateEditor().getUiComponent()
-		    .setFont(new Font("Arial", Font.PLAIN, 11));
-	    dateChooser.getDateEditor().getUiComponent().setToolTipText(null);
-	    if (!value.toString().isEmpty()) {
-		try {
-		    Date date = dateFormat.parse(value.toString());
-		    dateChooser.setDate(date);
-		} catch (ParseException e) {
-		    e.printStackTrace();
-		}
-	    }
-	    return dateChooser;
-	}
-
-	@Override
-	public Object getCellEditorValue() {
-	    final Date date = dateChooser.getDate();
-	    if (date != null) {
-		return dateFormat.format(date);		
-	    }
-	    return "";
 	}
     }
 
