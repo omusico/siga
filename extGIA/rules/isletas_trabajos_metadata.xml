@@ -4,10 +4,12 @@
 	<FIELD>
 		<FIELDNAME>fecha</FIELDNAME>
 		<VALIDATIONRULE>DATE</VALIDATIONRULE>
+		<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
 	</FIELD>
 
 	<FIELD>
 		<FIELDNAME>unidad</FIELDNAME>
+		<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
 		<DOMAINREADER>
 			<DRTYPE>db</DRTYPE>
 			<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
@@ -20,58 +22,17 @@
 	<FIELD>
 		<FIELDNAME>longitud</FIELDNAME>
 		<VALIDATIONRULE>double_positive</VALIDATIONRULE>
-		<ENABLEIF>
-			<CONDITION>
-			<COMPONENT>unidad</COMPONENT>
-			<VALUE>Herbicida</VALUE>
-			</CONDITION>
-		</ENABLEIF>
 	</FIELD>
 
 	<FIELD>
 		<FIELDNAME>ancho</FIELDNAME>
 		<VALIDATIONRULE>DOUBLE_POSITIVE</VALIDATIONRULE>
-		<ENABLEIF>
-			<CONDITION>
-			<COMPONENT>unidad</COMPONENT>
-			<VALUE>Herbicida</VALUE>
-			</CONDITION>
-		</ENABLEIF>
 	</FIELD>
 
 	<FIELD>
 		<FIELDNAME>medicion</FIELDNAME>
+		<VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
 		<VALIDATIONRULE>double_positive</VALIDATIONRULE>
-				<ENABLEIF>
-			<CONDITION>
-			<COMPONENT>unidad</COMPONENT>
-			<VALUE>Desbroce con retroaraña</VALUE>
-			</CONDITION>
-			<CONDITION>
-			<COMPONENT>unidad</COMPONENT>
-			<VALUE>Desbroce mecánico</VALUE>
-			</CONDITION>
-			<CONDITION>
-			<COMPONENT>unidad</COMPONENT>
-			<VALUE>Eliminación veg. mediana de HG y transp. a vertedero</VALUE>
-			</CONDITION>
-			<CONDITION>
-			<COMPONENT>unidad</COMPONENT>
-			<VALUE>Siega mecánica de isletas</VALUE>
-			</CONDITION>
-			<CONDITION>
-			<COMPONENT>unidad</COMPONENT>
-			<VALUE>Siega mecánica de medianas</VALUE>
-			</CONDITION>
-			<CONDITION>
-			<COMPONENT>unidad</COMPONENT>
-			<VALUE>Siega mecánica de medianas &lt; 1,5 m</VALUE>
-			</CONDITION>
-			<CONDITION>
-			<COMPONENT>unidad</COMPONENT>
-			<VALUE>Tala y desbroce manual</VALUE>
-			</CONDITION>
-		</ENABLEIF>
 	</FIELD>
 	
 	<FIELD>
