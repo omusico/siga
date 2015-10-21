@@ -15,7 +15,7 @@
     el.*,
 	tr.item as tramo_n,
 	tv.item as tipo_via_n,
-	nv.item as nombre_via_n,
+	COALESCE(nv.item,'') as nombre_via_n,
 	st.item as sentido_n,
 	mu.item as municipio_n,
     info_empresa.report_logo,
@@ -24,9 +24,9 @@
     LEFT OUTER JOIN audasa_extgia_dominios.area_mantenimiento am ON am.id = el.area_mantenimiento
     LEFT OUTER JOIN audasa_extgia_dominios.base_contratista bc ON bc.id = el.base_contratista
     LEFT OUTER JOIN audasa_extgia_dominios.tramo tr ON (tr.id = el.tramo AND tr.id_bc = el.base_contratista)
-    LEFT OUTER JOIN audasa_extgia_dominios.municipio mu ON mu.id = el.municipio
+    LEFT OUTER JOIN audasa_extgia_dominios.municipio mu ON (mu.id = el.municipio AND mu.id_tramo = el.tramo AND mu.id_bc = el.base_contratista)
     LEFT OUTER JOIN audasa_extgia_dominios.tipo_via tv ON (tv.id = el.tipo_via AND tv.id_tramo = el.tramo AND tv.id_bc = el.base_contratista)
-    LEFT OUTER JOIN audasa_extgia_dominios.nombre_via nv ON (cast (nv.id as text) = el.nombre_via AND nv.id_tv = el.tipo_via AND nv.id_bc = el.base_contratista AND nv.id_tramo = el.tramo)
+    LEFT OUTER JOIN audasa_extgia_dominios.nombre_via nv ON (nv.id::text = el.nombre_via AND nv.id_tv = el.tipo_via AND nv.id_bc = el.base_contratista AND nv.id_tramo = el.tramo)
     LEFT OUTER JOIN audasa_extgia_dominios.sentido st ON el.sentido = st.id
     LEFT OUTER JOIN audasa_aplicaciones.info_empresa as info_empresa ON tr.empresa = info_empresa.id
     WHERE el.id_elemento_senhalizacion = $P{SENHALIZACION_VERTICAL_QUERY}]]>
@@ -68,7 +68,7 @@
 	</background>
 	<pageHeader>
 		<band height="50">
-			<image onErrorType="Blank" scaleImage="RetainShape" hAlign="Left" vAlign="Middle">
+			<image scaleImage="RetainShape" hAlign="Left" vAlign="Middle" onErrorType="Blank">
 				<reportElement x="0" y="5" width="150" height="40" uuid="7d1a1d82-41db-41f4-9b37-5e7f85d23951"/>
 				<imageExpression><![CDATA[($P{LOGO_PATH}) + $F{report_logo}]]></imageExpression>
 			</image>
