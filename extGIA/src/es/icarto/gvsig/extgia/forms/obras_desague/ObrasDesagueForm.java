@@ -37,8 +37,7 @@ public class ObrasDesagueForm extends AbstractFormWithLocationWidgets {
 
 	if (obraDesagueIDWidget.getText().isEmpty()) {
 	    obraDesagueid = new ObrasDesagueCalculateIDValue(this,
-		    getWidgetComponents(), DBFieldNames.ID_OBRA_DESAGUE,
-		    DBFieldNames.ID_OBRA_DESAGUE);
+		    getWidgetComponents(), getElementID(), getElementID());
 	    obraDesagueid.setValue(true);
 	}
     }
@@ -48,8 +47,7 @@ public class ObrasDesagueForm extends AbstractFormWithLocationWidgets {
 	super.setListeners();
 	Map<String, JComponent> widgets = getWidgets();
 
-	obraDesagueIDWidget = (JTextField) widgets
-		.get(DBFieldNames.ID_OBRA_DESAGUE);
+	obraDesagueIDWidget = (JTextField) widgets.get(getElementID());
     }
 
     @Override

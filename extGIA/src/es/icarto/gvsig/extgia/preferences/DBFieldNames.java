@@ -189,10 +189,6 @@ public class DBFieldNames {
     public static final String AREA_SERVICIO_D = "zona_ajardinada";
     public static final String AREA_SERVICIO_E = "servicios";
 
-    // AREAS DESCANSO
-    public static final String AREAS_DESCANSO_LAYERNAME = "Areas_Descanso";
-    public static final String ID_AREA_DESCANSO = "id_area_descanso";
-
     // AREAS DESCANSO RECONOCIMIENTO ESTADO
     public static final String AREA_DESCANSO_INDEX = "indice_estado";
     public static final String AREA_DESCANSO_A = "sup_pavimentada";
@@ -246,14 +242,6 @@ public class DBFieldNames {
     // FIRME
     public static final String FIRME_LAYERNAME = "Firme";
     public static final String ID_FIRME = "id_firme";
-
-    // OBRAS PASO
-    public static final String OBRAS_PASO_LAYERNAME = "Obras_Paso";
-    public static final String ID_OBRA_PASO = "id_obra_paso";
-
-    // OBRAS DESAGUE
-    public static final String OBRAS_DESAGUE_LAYERNAME = "Obras_Desague";
-    public static final String ID_OBRA_DESAGUE = "id_obra_desague";
 
     // AREAS PEAJE
     public static final String AREAS_PEAJE_LAYERNAME = "Areas_Peaje";

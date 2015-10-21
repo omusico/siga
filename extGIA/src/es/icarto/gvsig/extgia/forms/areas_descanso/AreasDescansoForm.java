@@ -63,11 +63,10 @@ public class AreasDescansoForm extends AbstractFormWithLocationWidgets {
 	super.setListeners();
 	Map<String, JComponent> widgets = getWidgets();
 
-	areaDescansoIDWidget = (JTextField) widgets
-		.get(DBFieldNames.ID_AREA_DESCANSO);
+	areaDescansoIDWidget = (JTextField) widgets.get(getElementID());
 
 	areaDescansoid = new AreasDescansoCalculateIDValue(this, getWidgets(),
-		DBFieldNames.ID_AREA_DESCANSO, DBFieldNames.AREA_MANTENIMIENTO,
+		getElementID(), DBFieldNames.AREA_MANTENIMIENTO,
 		DBFieldNames.BASE_CONTRATISTA, DBFieldNames.TRAMO,
 		DBFieldNames.TIPO_VIA, DBFieldNames.MUNICIPIO,
 		DBFieldNames.SENTIDO);

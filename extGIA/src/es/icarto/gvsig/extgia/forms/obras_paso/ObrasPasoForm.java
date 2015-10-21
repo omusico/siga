@@ -37,8 +37,7 @@ public class ObrasPasoForm extends AbstractFormWithLocationWidgets {
 
 	if (obraPasoIDWidget.getText().isEmpty()) {
 	    obraPasoid = new ObrasPasoCalculateIDValue(this,
-		    getWidgetComponents(), DBFieldNames.ID_OBRA_PASO,
-		    DBFieldNames.ID_OBRA_PASO);
+		    getWidgetComponents(), getElementID(), getElementID());
 	    obraPasoid.setValue(true);
 	}
 
@@ -50,7 +49,7 @@ public class ObrasPasoForm extends AbstractFormWithLocationWidgets {
 	super.setListeners();
 	Map<String, JComponent> widgets = getWidgets();
 
-	obraPasoIDWidget = (JTextField) widgets.get(DBFieldNames.ID_OBRA_PASO);
+	obraPasoIDWidget = (JTextField) widgets.get(getElementID());
     }
 
     @Override
