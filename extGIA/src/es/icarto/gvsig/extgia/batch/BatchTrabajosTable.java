@@ -61,7 +61,7 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
     private JButton cancelButton;
     private JButton saveButton;
 
-    private BatchTrabajosCalculation foo;
+    private BatchTrabajosTableCalculation calculation;
     private final BaseTableHandler trabajosTableHandler;
 
     private static final Logger logger = Logger
@@ -106,13 +106,13 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	setUnidadCellEditorAsComboBox();
 	setFechaCellEditorAsJDateChooser();
 
-	foo = new BatchTrabajosCalculation(this, dbTableName, columnDbNames[0]);
-	table.setDefaultRenderer(Object.class, new ColorColumnRenderer(foo));
+	calculation = new BatchTrabajosTableCalculation(this, dbTableName, columnDbNames[0]);
+	table.setDefaultRenderer(Object.class, new ColorColumnRenderer(calculation));
 
-	foo.updateAllRows();
+	calculation.updateAllRows();
 	autoFit();
 
-	table.getModel().addTableModelListener(foo);
+	table.getModel().addTableModelListener(calculation);
     }
 
     private void autoFit() {
@@ -180,7 +180,7 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 
 	private void save() {
 	    stopCellEdition();
-	    if (!foo.validate()) {
+	    if (!calculation.validate()) {
 		showWarning("Hay valores incorrectos en la tabla");
 		saveButton.setEnabled(false);
 		return;

@@ -10,11 +10,11 @@ import javax.swing.table.DefaultTableCellRenderer;
 public class ColorColumnRenderer extends DefaultTableCellRenderer {
 
     private static final Color notValidColor = Color.RED;
-    private final BatchTrabajosCalculation validator;
+    private final BatchTrabajosTableCalculation validator;
 
     private final Color nonEditableColumnForegndColor = Color.LIGHT_GRAY;
 
-    public ColorColumnRenderer(BatchTrabajosCalculation validator) {
+    public ColorColumnRenderer(BatchTrabajosTableCalculation validator) {
 	super();
 	this.validator = validator;
     }

@@ -15,10 +15,10 @@ import es.icarto.gvsig.navtableforms.ormlite.domainvalidator.ValidatorDomain;
 import es.udc.cartolab.gvsig.navtable.format.DoubleFormatNT;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
-public class BatchTrabajosCalculation implements TableModelListener {
+public class BatchTrabajosTableCalculation implements TableModelListener {
 
     private static final Logger logger = Logger
-	    .getLogger(BatchTrabajosCalculation.class);
+	    .getLogger(BatchTrabajosTableCalculation.class);
 
     private static NumberFormat format = DoubleFormatNT.getDisplayingFormat();
 
@@ -38,7 +38,7 @@ public class BatchTrabajosCalculation implements TableModelListener {
 
     private int obsColIdx;
 
-    public BatchTrabajosCalculation(BatchTrabajosTable ttable,
+    public BatchTrabajosTableCalculation(BatchTrabajosTable ttable,
 	    String dbTableName, String idElemento) {
 	this.tTable = ttable;
 	this.table = ttable.getTable();
