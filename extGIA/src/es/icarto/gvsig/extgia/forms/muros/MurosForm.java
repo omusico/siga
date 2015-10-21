@@ -12,7 +12,7 @@ import es.icarto.gvsig.extgia.forms.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.extgia.preferences.DBFieldNames.Elements;
+import es.icarto.gvsig.extgia.preferences.Elements;
 
 @SuppressWarnings("serial")
 public class MurosForm extends AbstractFormWithLocationWidgets {
@@ -58,7 +58,7 @@ public class MurosForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public Elements getElement() {
-	return DBFieldNames.Elements.Muros;
+	return Elements.Muros;
     }
 
     @Override

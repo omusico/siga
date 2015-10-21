@@ -1,10 +1,10 @@
 package es.icarto.gvsig.extgia.forms;
 
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.MEDICION;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.MEDICION_ELEMENTO;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.MEDICION_ULTIMO_TRABAJO;
+
 import java.util.ArrayList;
-
-import javax.swing.JTextField;
-
-import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 
 @SuppressWarnings("serial")
 public abstract class GIATrabajosSubForm extends GIASubForm {
@@ -32,32 +32,32 @@ public abstract class GIATrabajosSubForm extends GIASubForm {
 	getWindowInfo().setTitle("Editar Trabajo");
     }
 
-    private void fillForeignValues() {
+    protected void fillForeignValues() {
 	for (ForeignValue fv : getForeignValues()) {
-	    JTextField component = (JTextField) getFormPanel()
-		    .getComponentByName(fv.getComponent());
 	    String v = (fv.getValue() != null) ? fv.getValue() : "";
-	    component.setText(v);
-	    getFormController().setValue(fv.getComponent(), v);
+	    final String compName = fv.getComponent();
+	    getFormPanel().getTextField(compName).setText(v);
+	    getFormController().setValue(compName, v);
 	}
     }
 
-    private void fillMedicionValue() {
+    protected void fillMedicionValue() {
+	String medicionValue = "";
+
 	for (ForeignValue fv : getForeignValues()) {
-	    JTextField medicionComponent = (JTextField) getFormPanel()
-		    .getComponentByName(DBFieldNames.MEDICION);
-	    if (fv.getComponent().equalsIgnoreCase(DBFieldNames.MEDICION_ULTIMO_TRABAJO)
+	    if (fv.getComponent().equals(MEDICION_ULTIMO_TRABAJO)
 		    && fv.getValue() != null) {
-		medicionComponent.setText(fv.getValue());
-		getFormController().setValue(medicionComponent.getName(), fv.getValue());
+		medicionValue = fv.getValue();
 		break;
 	    }
-	    if (fv.getComponent().equalsIgnoreCase(DBFieldNames.MEDICION_ELEMENTO)
+	    if (fv.getComponent().equals(MEDICION_ELEMENTO)
 		    && fv.getValue() != null) {
-		medicionComponent.setText(fv.getValue());
-		getFormController().setValue(medicionComponent.getName(), fv.getValue());
+		medicionValue = fv.getValue();
+		medicionValue = fv.getValue();
 	    }
 	}
+	getFormPanel().getTextField(MEDICION).setText(medicionValue);
+	getFormController().setValue(MEDICION, medicionValue);
     }
 
     protected abstract ArrayList<ForeignValue> getForeignValues();

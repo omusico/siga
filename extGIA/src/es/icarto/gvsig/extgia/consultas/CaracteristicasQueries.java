@@ -2,12 +2,13 @@ package es.icarto.gvsig.extgia.consultas;
 
 import es.icarto.gvsig.commons.utils.Field;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.extgia.preferences.Elements;
 
 public class CaracteristicasQueries {
 
     public static String getPDFCaracteristicasQuery(String element,
 	    ConsultasFilters<Field> filters) {
-	switch (DBFieldNames.Elements.valueOf(element)) {
+	switch (Elements.valueOf(element)) {
 	case Senhalizacion_Vertical:
 	    return "SELECT gid, "
 	    + ConsultasFieldNames
@@ -55,7 +56,7 @@ public class CaracteristicasQueries {
 
     public static String getFromClauseReconocimientosTrabajos(String element,
 	    String elementId, String tipoConsulta) {
-	switch (DBFieldNames.Elements.valueOf(element)) {
+	switch (Elements.valueOf(element)) {
 	case Senhalizacion_Vertical:
 	    return " FROM "
 	    + DBFieldNames.GIA_SCHEMA
@@ -83,7 +84,7 @@ public class CaracteristicasQueries {
     }
 
     public static String getFromClauseCaracteristicas(String element) {
-	switch (DBFieldNames.Elements.valueOf(element)) {
+	switch (Elements.valueOf(element)) {
 	case Senhalizacion_Vertical:
 	    return " FROM  audasa_extgia.senhalizacion_vertical_senhales se LEFT OUTER JOIN audasa_extgia.senhalizacion_vertical el ON (el.id_elemento_senhalizacion = se.id_elemento_senhalizacion) "
 	    + get(element);
@@ -93,7 +94,7 @@ public class CaracteristicasQueries {
     }
 
     public static String get(String element) {
-	switch (DBFieldNames.Elements.valueOf(element)) {
+	switch (Elements.valueOf(element)) {
 	case Senhalizacion_Vertical:
 	    return getLocalizationTablesWithSentido();
 	case Areas_Descanso:
@@ -128,7 +129,7 @@ public class CaracteristicasQueries {
 
     public static String getCSVCaracteristicasQuery(String element,
 	    ConsultasFilters<Field> filters) {
-	switch (DBFieldNames.Elements.valueOf(element)) {
+	switch (Elements.valueOf(element)) {
 	case Areas_Descanso:
 	    return "SELECT " + ConsultasFieldNames.areasDescansoCSVFieldNames()
 		    + getFromClauseCaracteristicas(element)

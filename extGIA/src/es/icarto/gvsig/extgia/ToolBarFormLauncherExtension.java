@@ -7,8 +7,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.icarto.gvsig.extgia.forms.LaunchGIAForms;
-import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.extgia.preferences.DBFieldNames.Elements;
+import es.icarto.gvsig.extgia.preferences.Elements;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 import es.icarto.gvsig.siga.AbstractExtension;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
@@ -17,7 +16,7 @@ public class ToolBarFormLauncherExtension extends AbstractExtension {
 
     private final static List<String> elementList = new ArrayList<String>();
     static {
-	for (Elements e : DBFieldNames.Elements.values()) {
+	for (Elements e : Elements.values()) {
 	    elementList.add(e.name());
 	}
     }

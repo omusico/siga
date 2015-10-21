@@ -12,7 +12,7 @@ import es.icarto.gvsig.extgia.forms.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.GIAAlphanumericTableHandler;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.extgia.preferences.DBFieldNames.Elements;
+import es.icarto.gvsig.extgia.preferences.Elements;
 
 @SuppressWarnings("serial")
 public class JuntasForm extends AbstractFormWithLocationWidgets {
@@ -74,7 +74,7 @@ public class JuntasForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public Elements getElement() {
-	return DBFieldNames.Elements.Juntas;
+	return Elements.Juntas;
     }
 
     @Override

@@ -20,8 +20,7 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import es.icarto.gvsig.extgia.forms.AbstractFormWithLocationWidgets;
 import es.icarto.gvsig.extgia.forms.CalculateComponentValue;
 import es.icarto.gvsig.extgia.forms.ramales.RamalesForm;
-import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.extgia.preferences.DBFieldNames.Elements;
+import es.icarto.gvsig.extgia.preferences.Elements;
 import es.icarto.gvsig.navtableforms.gui.tables.handler.VectorialTableHandler;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
@@ -91,7 +90,7 @@ public class AreasMantenimientoForm extends AbstractFormWithLocationWidgets {
 
     @Override
     public Elements getElement() {
-	return DBFieldNames.Elements.Areas_Mantenimiento;
+	return Elements.Areas_Mantenimiento;
     }
 
     @Override

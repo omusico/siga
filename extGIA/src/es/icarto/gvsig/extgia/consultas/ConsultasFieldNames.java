@@ -28,7 +28,7 @@ import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.SenhalizacionVe
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.TaludesCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.TransformadoresCaracteristicasReport;
 import es.icarto.gvsig.extgia.consultas.caracteristicas.elements.VallaCierreCaracteristicasReport;
-import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.extgia.preferences.Elements;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class ConsultasFieldNames {
@@ -53,7 +53,7 @@ public class ConsultasFieldNames {
 
     public static String getReconocimientosFieldNames(String element) {
 	String elementId = ConsultasFieldNames.getElementId(element);
-	switch (DBFieldNames.Elements.valueOf(element)) {
+	switch (Elements.valueOf(element)) {
 	case Areas_Peaje:
 	case Lineas_Suministro:
 	case Senhalizacion_Variable:
@@ -74,7 +74,7 @@ public class ConsultasFieldNames {
     }
 
     public static String getPDFCaracteristicasFieldNames(String element) {
-	switch (DBFieldNames.Elements.valueOf(element)) {
+	switch (Elements.valueOf(element)) {
 	case Taludes:
 	    return "id_talud, tr.item, pk_inicial, pk_final, tipo_talud, roca, arboles, "
 	    + "gunita, escollera, maleza, malla, longitud, altura_max_talud, sup_total_analitica,"
@@ -597,7 +597,7 @@ public class ConsultasFieldNames {
 	    String outputFile, DefaultTableModel tableModel,
 	    ConsultasFilters<Field> filters, QueryType tipo) {
 
-	switch (DBFieldNames.Elements.valueOf(element[0])) {
+	switch (Elements.valueOf(element[0])) {
 	case Taludes:
 	    new TaludesCaracteristicasReport(element, outputFile, tableModel,
 		    filters, tipo);

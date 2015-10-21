@@ -9,8 +9,6 @@ import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.extgia.batch.BatchAbstractSubForm;
-import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.extgia.preferences.DBFieldNames.Elements;
 import es.icarto.gvsig.extgia.batch.reconocimientos.BatchAreasDescansoReconocimientos;
 import es.icarto.gvsig.extgia.batch.reconocimientos.BatchAreasPeajeReconocimientos;
 import es.icarto.gvsig.extgia.batch.reconocimientos.BatchAreasServicioReconocimientos;
@@ -28,6 +26,7 @@ import es.icarto.gvsig.extgia.batch.reconocimientos.BatchSenhalizacionVerticalRe
 import es.icarto.gvsig.extgia.batch.reconocimientos.BatchTaludesReconocimientos;
 import es.icarto.gvsig.extgia.batch.reconocimientos.BatchTransformadoresReconocimientos;
 import es.icarto.gvsig.extgia.batch.reconocimientos.BatchVallaCierreReconocimientos;
+import es.icarto.gvsig.extgia.preferences.Elements;
 import es.icarto.gvsig.navtableforms.AbstractForm;
 import es.icarto.gvsig.navtableforms.gui.tables.handler.BaseTableHandler;
 import es.icarto.gvsig.navtableforms.gui.tables.model.AlphanumericTableModel;
@@ -45,7 +44,7 @@ public class LaunchGIAForms {
 	if (!isGIALayerName(layerName)) {
 	    return form;
 	}
-	Class<? extends AbstractForm> formClass = DBFieldNames.Elements
+	Class<? extends AbstractForm> formClass = Elements
 		.valueOf(layerName).form;
 	try {
 	    Constructor<? extends AbstractForm> constructor = formClass
@@ -79,8 +78,8 @@ public class LaunchGIAForms {
 
     private static boolean isGIALayerName(String layerName) {
 	boolean isGIALayerName = false;
-	for (int i = 0; i < DBFieldNames.Elements.values().length; i++) {
-	    if (DBFieldNames.Elements.values()[i].toString().equals(layerName)) {
+	for (int i = 0; i < Elements.values().length; i++) {
+	    if (Elements.values()[i].toString().equals(layerName)) {
 		isGIALayerName = true;
 	    }
 	}
@@ -109,7 +108,7 @@ public class LaunchGIAForms {
     private static BatchAbstractSubForm getBatchTrabajosSubFormDependingOfElement(
 	    String element, String dbTableName) {
 	BatchAbstractSubForm form = null;
-	final Elements valueOf = DBFieldNames.Elements.valueOf(element);
+	final Elements valueOf = Elements.valueOf(element);
 	Class<? extends BatchAbstractSubForm> formClass = valueOf.batchForm;
 	if (formClass == null) {
 	    return form;
@@ -134,7 +133,7 @@ public class LaunchGIAForms {
     public static void callBatchReconocimientosSubFormDependingOfElement(
 	    String element, String formFileName, String dbTableName) {
 	BatchAbstractSubForm subform;
-	switch (DBFieldNames.Elements.valueOf(element)) {
+	switch (Elements.valueOf(element)) {
 	case Areas_Peaje:
 	    subform = new BatchAreasPeajeReconocimientos(formFileName,
 		    dbTableName);

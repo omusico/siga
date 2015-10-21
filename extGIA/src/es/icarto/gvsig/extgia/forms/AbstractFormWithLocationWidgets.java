@@ -45,11 +45,11 @@ import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 
 import es.icarto.gvsig.commons.utils.StrUtils;
-import es.icarto.gvsig.extgia.batch.AddReconocimientosBatchListener;
 import es.icarto.gvsig.extgia.batch.AddTrabajosBatchListener;
+import es.icarto.gvsig.extgia.batch.reconocimientos.AddReconocimientosBatchListener;
 import es.icarto.gvsig.extgia.forms.ramales.RamalesForm;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
-import es.icarto.gvsig.extgia.preferences.DBFieldNames.Elements;
+import es.icarto.gvsig.extgia.preferences.Elements;
 import es.icarto.gvsig.extgia.utils.SqlUtils;
 import es.icarto.gvsig.navtableforms.BasicAbstractForm;
 import es.icarto.gvsig.navtableforms.gui.buttons.fileslink.FilesLinkButton;
@@ -330,7 +330,7 @@ public abstract class AbstractFormWithLocationWidgets extends BasicAbstractForm 
     }
 
     protected void addNewButtonsToActionsToolBar(
-	    final DBFieldNames.Elements element) {
+	    final Elements element) {
 	JPanel actionsToolBar = this.getActionsToolBar();
 
 	filesLinkButton = new FilesLinkButton(this, new FilesLinkData() {
