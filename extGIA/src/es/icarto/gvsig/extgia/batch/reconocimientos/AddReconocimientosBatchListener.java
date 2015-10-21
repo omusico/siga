@@ -1,10 +1,10 @@
-package es.icarto.gvsig.extgia.batch;
+package es.icarto.gvsig.extgia.batch.reconocimientos;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import es.icarto.gvsig.extgia.forms.LaunchGIAForms;
-import es.icarto.gvsig.extgia.preferences.DBFieldNames.Elements;
+import es.icarto.gvsig.extgia.preferences.Elements;
 
 public class AddReconocimientosBatchListener implements ActionListener {
 

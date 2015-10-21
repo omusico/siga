@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgia.batch.elements;
+package es.icarto.gvsig.extgia.batch.reconocimientos;
 
 import es.icarto.gvsig.extgia.batch.BatchAbstractSubForm;
 import es.icarto.gvsig.extgia.forms.pasos_mediana.PasosMedianaCalculateIndiceEstado;

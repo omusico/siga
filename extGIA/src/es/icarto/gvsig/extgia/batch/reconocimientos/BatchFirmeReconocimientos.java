@@ -1,22 +1,22 @@
-package es.icarto.gvsig.extgia.batch.elements;
+package es.icarto.gvsig.extgia.batch.reconocimientos;
 
 import es.icarto.gvsig.extgia.batch.BatchAbstractSubForm;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 
 @SuppressWarnings("serial")
-public class BatchEnlacesReconocimientos extends BatchAbstractSubForm {
+public class BatchFirmeReconocimientos extends BatchAbstractSubForm {
 
-    public BatchEnlacesReconocimientos(String formFile, String dbTableName) {
+    public BatchFirmeReconocimientos(String formFile, String dbTableName) {
 	super(dbTableName);
     }
 
     @Override
     public String getLayerName() {
-	return DBFieldNames.ENLACES_LAYERNAME;
+	return DBFieldNames.FIRME_LAYERNAME;
     }
 
     @Override
     public String getIdFieldName() {
-	return DBFieldNames.ID_ENLACE;
+	return DBFieldNames.ID_FIRME;
     }
 }

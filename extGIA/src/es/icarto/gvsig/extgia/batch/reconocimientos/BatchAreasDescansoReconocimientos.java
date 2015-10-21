@@ -1,8 +1,8 @@
-package es.icarto.gvsig.extgia.batch.elements;
+package es.icarto.gvsig.extgia.batch.reconocimientos;
 
 import es.icarto.gvsig.extgia.batch.BatchAbstractSubForm;
 import es.icarto.gvsig.extgia.forms.areas_descanso.AreasDescansoCalculateIndiceEstado;
-import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.extgia.preferences.Elements;
 
 @SuppressWarnings("serial")
 public class BatchAreasDescansoReconocimientos extends BatchAbstractSubForm {
@@ -14,12 +14,12 @@ public class BatchAreasDescansoReconocimientos extends BatchAbstractSubForm {
 
     @Override
     public String getLayerName() {
-	return DBFieldNames.Elements.Areas_Descanso.layerName;
+	return Elements.Areas_Descanso.layerName;
     }
 
     @Override
     public String getIdFieldName() {
-	return DBFieldNames.Elements.Areas_Descanso.pk;
+	return Elements.Areas_Descanso.pk;
     }
 
 }

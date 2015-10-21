@@ -1,4 +1,4 @@
-package es.icarto.gvsig.extgia.batch.elements;
+package es.icarto.gvsig.extgia.batch.reconocimientos;
 
 import es.icarto.gvsig.extgia.batch.BatchAbstractSubForm;
 import es.icarto.gvsig.extgia.forms.taludes.TaludesCalculateIndiceEstado;
