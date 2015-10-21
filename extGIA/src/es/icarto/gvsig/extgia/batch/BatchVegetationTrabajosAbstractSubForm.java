@@ -16,6 +16,8 @@ import com.iver.cit.gvsig.fmap.layers.FBitSet;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 
+import es.icarto.gvsig.extgia.batch.BatchAbstractSubForm;
+import es.icarto.gvsig.extgia.preferences.Elements;
 import es.icarto.gvsig.navtableforms.gui.tables.handler.BaseTableHandler;
 import es.icarto.gvsig.navtableforms.gui.tables.model.AlphanumericTableModel;
 import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
@@ -31,18 +33,10 @@ BatchAbstractSubForm {
 
     private final ORMLite batchOrmLite;
 
-    public BatchVegetationTrabajosAbstractSubForm(String formFile,
-	    String basicName) {
-	super(basicName);
+    public BatchVegetationTrabajosAbstractSubForm(
+	    Elements parentElement) {
+	super(parentElement);
 	batchOrmLite = new ORMLite(getMetadataPath());
-	getWindowInfo().setTitle("Añadir Trabajos: Datos comunes");
-    }
-
-    @Override
-    protected String getMetadataPath() {
-	return this.getClass().getClassLoader()
-		.getResource("rules/" + getDbTableName() + "_metadata.xml")
-		.getPath();
     }
 
     @Override
@@ -57,7 +51,9 @@ BatchAbstractSubForm {
 	PluginServices.getMDIManager().addCentredWindow(this);
     }
 
-    public abstract String getDbTableName();
+    public String getDbTableName() {
+	return getParentElement().trabajosTableName;
+    }
 
     public abstract String[] getColumnNames();
 

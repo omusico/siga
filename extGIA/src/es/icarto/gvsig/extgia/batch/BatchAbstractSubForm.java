@@ -42,14 +42,18 @@ public class BatchAbstractSubForm extends GIASubForm {
 	primaryKey = basicName.endsWith("_trabajos") ? "id_trabajo"
 		: "n_inspeccion";
     }
-    
-    public BatchAbstractSubForm(String basicName, DBFieldNames.Elements parentElement) {
-	this(basicName);
+
+    public BatchAbstractSubForm(Elements parentElement) {
+	this(parentElement.batchTrabajosBasicName);
 	this.parentElement = parentElement;
     }
 
     public void setTrabajoTableHandler(BaseTableHandler trabajosTableHandler) {
 	this.trabajosTableHandler = trabajosTableHandler;
+    }
+
+    public Elements getParentElement() {
+	return parentElement;
     }
 
     @Override

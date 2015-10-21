@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LAYER alias="senhalizacion_vertical_trabajos">
+
+	<FIELD>
+		<FIELDNAME>fecha</FIELDNAME>
+		<VALIDATIONRULE>DATE</VALIDATIONRULE>
+	</FIELD>
+
+	<FIELD>
+		<FIELDNAME>unidad</FIELDNAME>
+		<DOMAINREADER>
+			<DRTYPE>db</DRTYPE>
+			<DRDBSCHEMA>audasa_extgia_dominios</DRDBSCHEMA>
+			<DRDBTABLE>unidad_senhalizacion_vertical</DRDBTABLE>
+			<DRDBCOLUMNALIAS>item</DRDBCOLUMNALIAS>
+			<DRDBCOLUMNVALUE>item</DRDBCOLUMNVALUE>
+		</DOMAINREADER>
+	</FIELD>
+
+</LAYER>

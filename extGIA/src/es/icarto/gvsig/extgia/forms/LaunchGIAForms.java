@@ -44,8 +44,7 @@ public class LaunchGIAForms {
 	if (!isGIALayerName(layerName)) {
 	    return form;
 	}
-	Class<? extends AbstractForm> formClass = Elements
-		.valueOf(layerName).form;
+	Class<? extends AbstractForm> formClass = Elements.valueOf(layerName).form;
 	try {
 	    Constructor<? extends AbstractForm> constructor = formClass
 		    .getConstructor(FLyrVect.class);
@@ -87,16 +86,16 @@ public class LaunchGIAForms {
     }
 
     public static void callBatchTrabajosSubFormDependingOfElement(
-	    String element, String dbTableName,
+	    String elementStr, String dbTableName,
 	    BaseTableHandler trabajosTableHandler) {
-	BatchAbstractSubForm batchForm = getBatchTrabajosSubFormDependingOfElement(
-		element, dbTableName);
+	final Elements element = Elements.valueOf(elementStr);
+	BatchAbstractSubForm batchForm = getBatchTrabajosSubFormDependingOfElement(element);
 	if (batchForm == null) {
 	    logger.error(String.format("This sould not happen: %s %s %s",
-		    element, dbTableName, trabajosTableHandler));
+		    elementStr, dbTableName, trabajosTableHandler));
 	}
 
-	FormFactory.checkAndLoadTableRegistered(dbTableName);
+	FormFactory.checkAndLoadTableRegistered(element.trabajosTableName);
 	AlphanumericTableModel model = TableModelFactory.createFromTable(
 		dbTableName, null, null);
 
@@ -106,18 +105,18 @@ public class LaunchGIAForms {
     }
 
     private static BatchAbstractSubForm getBatchTrabajosSubFormDependingOfElement(
-	    String element, String dbTableName) {
+	    Elements element) {
 	BatchAbstractSubForm form = null;
-	final Elements valueOf = Elements.valueOf(element);
-	Class<? extends BatchAbstractSubForm> formClass = valueOf.batchForm;
+
+	Class<? extends BatchAbstractSubForm> formClass = element.batchForm;
 	if (formClass == null) {
 	    return form;
 	}
 
 	try {
 	    Constructor<? extends BatchAbstractSubForm> constructor = formClass
-		    .getConstructor(String.class, Elements.class);
-	    form = constructor.newInstance(dbTableName, valueOf);
+		    .getConstructor(Elements.class);
+	    form = constructor.newInstance(element);
 	} catch (NoSuchMethodException e) {
 	    logger.error(e.getStackTrace(), e);
 	} catch (InstantiationException e) {

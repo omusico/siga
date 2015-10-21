@@ -7,32 +7,13 @@ import es.icarto.gvsig.extgia.batch.BatchVegetationTrabajosAbstractSubForm;
 import es.icarto.gvsig.extgia.forms.isletas.CalculateIsletasTrabajosMedicionElemento;
 import es.icarto.gvsig.extgia.forms.isletas.CalculateIsletasTrabajosMedicionUltimoTrabajo;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.extgia.preferences.Elements;
 
 @SuppressWarnings("serial")
 public class BatchIsletasTrabajos extends BatchVegetationTrabajosAbstractSubForm {
 
-    public BatchIsletasTrabajos(String formFile, String dbTableName) {
-	super(formFile, dbTableName);
-    }
-
-    @Override
-    public String getLayerName() {
-	return DBFieldNames.ISLETAS_LAYERNAME;
-    }
-
-    @Override
-    public String getIdFieldName() {
-	return DBFieldNames.ID_ISLETA;
-    }
-
-    @Override
-    public String getDbTableName() {
-	return "isletas_trabajos";
-    }
-
-    @Override
-    protected String getBasicName() {
-	return "batch_vegetation_trabajos";
+    public BatchIsletasTrabajos(Elements parentElement) {
+	super(parentElement);
     }
 
     @Override

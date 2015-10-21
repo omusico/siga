@@ -1,37 +1,15 @@
 package es.icarto.gvsig.extgia.batch.elements;
 
-import java.sql.Types;
 import java.util.HashMap;
 
 import es.icarto.gvsig.extgia.batch.BatchVegetationTrabajosAbstractSubForm;
-import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.extgia.preferences.Elements;
 
 @SuppressWarnings("serial")
 public class BatchSenhalizacionVerticalTrabajos extends BatchVegetationTrabajosAbstractSubForm {
 
-    public BatchSenhalizacionVerticalTrabajos(String formFile,
-	    String dbTableName) {
-	super(formFile, dbTableName);
-    }
-
-    @Override
-    public String getLayerName() {
-	return DBFieldNames.SENHALIZACION_VERTICAL_LAYERNAME;
-    }
-
-    @Override
-    public String getIdFieldName() {
-	return DBFieldNames.ID_ELEMENTO_SENHALIZACION;
-    }
-
-    @Override
-    public String getDbTableName() {
-	return "senhalizacion_vertical_trabajos";
-    }
-
-    @Override
-    protected String getBasicName() {
-	return "batch_senhalizacion_vertical_trabajos";
+    public BatchSenhalizacionVerticalTrabajos(Elements parentElement) {
+	super(parentElement);
     }
 
     @Override

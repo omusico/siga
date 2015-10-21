@@ -153,7 +153,7 @@ public enum Elements {
     public final Class<? extends BatchAbstractSubForm> batchForm;
     public final String layerName;
     public final String batchTrabajosBasicName;
-    public final String dbTableName;
+    public final String trabajosTableName;
 
     private Elements(String pk, Class<? extends AbstractForm> form,
 	    Class<? extends BatchAbstractSubForm> batchForm,
@@ -163,6 +163,6 @@ public enum Elements {
 	this.batchForm = batchForm;
 	this.layerName = this.toString();
 	this.batchTrabajosBasicName = batchTrabajosBasicName;
-	this.dbTableName = dbTableName;
+	this.trabajosTableName = dbTableName;
     }
 }

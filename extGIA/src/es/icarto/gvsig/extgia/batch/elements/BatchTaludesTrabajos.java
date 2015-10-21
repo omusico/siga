@@ -9,32 +9,13 @@ import es.icarto.gvsig.extgia.forms.taludes.CalculateTaludesTrabajosMedicionComp
 import es.icarto.gvsig.extgia.forms.taludes.CalculateTaludesTrabajosMedicionElemento;
 import es.icarto.gvsig.extgia.forms.taludes.CalculateTaludesTrabajosMedicionUltimoTrabajo;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.extgia.preferences.Elements;
 
 @SuppressWarnings("serial")
 public class BatchTaludesTrabajos extends BatchVegetationTrabajosAbstractSubForm {
 
-    public BatchTaludesTrabajos(String formFile, String dbTableName) {
-	super(formFile, dbTableName);
-    }
-
-    @Override
-    public String getLayerName() {
-	return DBFieldNames.TALUDES_LAYERNAME;
-    }
-
-    @Override
-    public String getIdFieldName() {
-	return DBFieldNames.ID_TALUD;
-    }
-
-    @Override
-    public String getDbTableName() {
-	return "taludes_trabajos";
-    }
-
-    @Override
-    protected String getBasicName() {
-	return "batch_vegetation_trabajos";
+    public BatchTaludesTrabajos(Elements parentElement) {
+	super(parentElement);
     }
 
     @Override

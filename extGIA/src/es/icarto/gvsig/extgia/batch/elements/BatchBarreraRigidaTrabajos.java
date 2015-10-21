@@ -7,32 +7,13 @@ import es.icarto.gvsig.extgia.batch.BatchVegetationTrabajosAbstractSubForm;
 import es.icarto.gvsig.extgia.forms.barrera_rigida.CalculateBarreraRigidaTrabajosLongitud;
 import es.icarto.gvsig.extgia.forms.barrera_rigida.CalculateBarreraRigidaTrabajosMedicionUltimoTrabajo;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.extgia.preferences.Elements;
 
 @SuppressWarnings("serial")
 public class BatchBarreraRigidaTrabajos extends BatchVegetationTrabajosAbstractSubForm {
 
-    public BatchBarreraRigidaTrabajos(String formFile, String dbTableName) {
-	super(formFile, dbTableName);
-    }
-
-    @Override
-    public String getLayerName() {
-	return DBFieldNames.BARRERA_RIGIDA_LAYERNAME;
-    }
-
-    @Override
-    public String getIdFieldName() {
-	return DBFieldNames.ID_BARRERA_RIGIDA;
-    }
-
-    @Override
-    public String getDbTableName() {
-	return "barrera_rigida_trabajos";
-    }
-
-    @Override
-    protected String getBasicName() {
-	return "batch_vegetation_trabajos";
+    public BatchBarreraRigidaTrabajos(Elements parentElement) {
+	super(parentElement);
     }
 
     @Override
