@@ -5,15 +5,13 @@ import static es.icarto.gvsig.extgia.preferences.DBFieldNames.LONGITUD;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.MEDICION;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.UNIDAD;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.math.BigDecimal;
 import java.util.HashMap;
 
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
-
-import com.hardcode.gdbms.engine.values.Value;
 
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.IValidatableForm;
@@ -22,26 +20,17 @@ import es.icarto.gvsig.navtableforms.calculation.Calculation;
 public abstract class VegetationCalculateMedicion extends Calculation {
 
     UnidadListener unidadHandler;
+    private final String idField;
 
-    public VegetationCalculateMedicion(IValidatableForm form) {
+    public VegetationCalculateMedicion(IValidatableForm form, String idField) {
 	super(form);
+	this.idField = idField;
 	if (!form.isFillingValues()) {
 	    unidadHandler = new UnidadListener();
 	    ((JComboBox) form.getWidgets().get(UNIDAD))
-		    .addActionListener(unidadHandler);
+	    .addItemListener(unidadHandler);
 	}
     }
-
-    public VegetationCalculateMedicion(IValidatableForm form, Value longitud) {
-	super(form);
-	if (!form.isFillingValues()) {
-	    unidadHandler = new UnidadListener();
-	    ((JComboBox) form.getWidgets().get(UNIDAD))
-		    .addActionListener(unidadHandler);
-	}
-    }
-
-    protected abstract String getIDField();
 
     protected abstract ForeignValue getMedicionForeignValue();
 
@@ -66,36 +55,18 @@ public abstract class VegetationCalculateMedicion extends Calculation {
     }
 
     protected HashMap<String, String> getForeignKey() {
-	String primaryKeyValue = ((JTextField) form.getWidgets().get(
-		getIDField())).getText();
+	String primaryKeyValue = ((JTextField) form.getWidgets().get(idField))
+		.getText();
 	HashMap<String, String> foreignKey = new HashMap<String, String>();
-	foreignKey.put(getIDField(), primaryKeyValue);
+	foreignKey.put(idField, primaryKeyValue);
 	return foreignKey;
     }
 
-    public class UnidadListener extends OperandComponentListener implements
-	    ActionListener {
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    super.actionPerformed(e);
-	    if (e.getSource() != null
-		    && ((JComboBox) e.getSource()).getSelectedItem() != null) {
-		if (((JComboBox) e.getSource()).getSelectedItem().toString()
-			.equalsIgnoreCase("Herbicida")) {
-		    updateMedicionLastJobValue();
-		} else {
-		    if (!((GIATrabajosSubForm) form).isEditing()) {
-			updateMedicionValue();
-		    }
-		    updateMedicionLastJobValue();
-		}
-	    }
-	}
+    public class UnidadListener implements ItemListener {
 
 	private void updateMedicionValue() {
 	    ((JTextField) form.getWidgets().get(MEDICION))
-		    .setText(getMedicionForeignValue().getValue());
+	    .setText(getMedicionForeignValue().getValue());
 	}
 
 	private void updateMedicionLastJobValue() {
@@ -107,6 +78,23 @@ public abstract class VegetationCalculateMedicion extends Calculation {
 	    } else {
 		((JTextField) form.getWidgets().get(
 			DBFieldNames.MEDICION_ULTIMO_TRABAJO)).setText(null);
+	    }
+	}
+
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+	    if (e.getStateChange() == ItemEvent.SELECTED) {
+		if ((e.getItem() == null)
+			|| (e.getItem().toString().trim().isEmpty())) {
+		    ((JTextField) form.getWidgets().get(MEDICION)).setText("");
+		    ((JTextField) form.getWidgets().get(
+			    DBFieldNames.MEDICION_ULTIMO_TRABAJO)).setText("");
+		    return;
+		}
+		if (!((GIATrabajosSubForm) form).isEditing()) {
+		    updateMedicionValue();
+		}
+		updateMedicionLastJobValue();
 	    }
 	}
     }

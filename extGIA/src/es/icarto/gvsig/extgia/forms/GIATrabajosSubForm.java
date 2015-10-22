@@ -23,12 +23,6 @@ public abstract class GIATrabajosSubForm extends GIASubForm {
 	updateAnchoWhenUnidadChanges();
 	updateLongWhenUnidadChanges();
 
-	for (ForeignValue fv : getForeignValues()) {
-	    if (fv.getComponent().equals(LONGITUD)) {
-		orgLongitud = fv.getValue();
-		break;
-	    }
-	}
     }
 
     private void updateLongWhenUnidadChanges() {
@@ -60,7 +54,14 @@ public abstract class GIATrabajosSubForm extends GIASubForm {
 	this.setEditing(false);
 	super.actionCreateRecord();
 	fillForeignValues();
+	for (ForeignValue fv : getForeignValues()) {
+	    if (fv.getComponent().equals(LONGITUD)) {
+		orgLongitud = fv.getValue();
+		break;
+	    }
+	}
 	fillMedicionValue();
+	validateForm();
 	getWindowInfo().setTitle("Añadir Trabajo");
     }
 
@@ -69,6 +70,12 @@ public abstract class GIATrabajosSubForm extends GIASubForm {
 	this.setEditing(true);
 	super.actionUpdateRecord(position);
 	fillForeignValues();
+	for (ForeignValue fv : getForeignValues()) {
+	    if (fv.getComponent().equals(LONGITUD)) {
+		orgLongitud = fv.getValue();
+		break;
+	    }
+	}
 	getWindowInfo().setTitle("Editar Trabajo");
     }
 

@@ -10,15 +10,10 @@ import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.IValidatableForm;
 
 public class IsletasTrabajosCalculateMedicion extends
-	VegetationCalculateMedicion {
+VegetationCalculateMedicion {
 
     public IsletasTrabajosCalculateMedicion(IValidatableForm form) {
-	super(form);
-    }
-
-    @Override
-    protected String getIDField() {
-	return DBFieldNames.ID_ISLETA;
+	super(form, DBFieldNames.ID_ISLETA);
     }
 
     @Override
@@ -30,7 +25,7 @@ public class IsletasTrabajosCalculateMedicion extends
 		getForeignKey(), DBFieldNames.MEDICION_ELEMENTO,
 		DBFieldNames.SUPERFICIE_BAJO_BIONDA,
 		DBFieldNames.ISLETAS_DBTABLENAME, DBFieldNames.ID_ISLETA)
-	.getForeignValue();
+		.getForeignValue();
 
 	ForeignValue medicionUltimoTrabajo = new CalculateDBForeignValueLastJob(
 		unidad, getForeignKey(), DBFieldNames.MEDICION_ULTIMO_TRABAJO,

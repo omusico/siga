@@ -27,32 +27,33 @@ public class TaludesTrabajosSubForm extends GIATrabajosSubForm {
     protected ArrayList<ForeignValue> getForeignValues() {
 	JComboBox unidadCB = (JComboBox) getFormPanel().getComponentByName(
 		DBFieldNames.UNIDAD);
-	String unidad = unidadCB.getSelectedItem().toString();
+	String unidad = unidadCB.getSelectedItem() == null ? " " : unidadCB
+		.getSelectedItem().toString();
 	ArrayList<ForeignValue> foreignValues = new ArrayList<ForeignValue>();
 	foreignValues
-		.add(new CalculateDBForeignValue(getForeignKey(),
-			DBFieldNames.MEDICION_ELEMENTO,
-			DBFieldNames.SUP_TOTAL_ANALITICA,
-			DBFieldNames.TALUDES_DBTABLENAME, taludes.pk)
-			.getForeignValue());
+	.add(new CalculateDBForeignValue(getForeignKey(),
+		DBFieldNames.MEDICION_ELEMENTO,
+		DBFieldNames.SUP_TOTAL_ANALITICA,
+		DBFieldNames.TALUDES_DBTABLENAME, taludes.pk)
+	.getForeignValue());
 
 	foreignValues
-		.add(new CalculateDBForeignValue(getForeignKey(),
-			DBFieldNames.MEDICION_COMPLEMENTARIA,
-			DBFieldNames.SUP_COMPLEMENTARIA,
-			DBFieldNames.TALUDES_DBTABLENAME, taludes.pk)
-			.getForeignValue());
+	.add(new CalculateDBForeignValue(getForeignKey(),
+		DBFieldNames.MEDICION_COMPLEMENTARIA,
+		DBFieldNames.SUP_COMPLEMENTARIA,
+		DBFieldNames.TALUDES_DBTABLENAME, taludes.pk)
+	.getForeignValue());
 
 	foreignValues.add(new CalculateDBForeignValueLastJob(unidad,
 		getForeignKey(), DBFieldNames.MEDICION_ULTIMO_TRABAJO,
 		DBFieldNames.TALUDES_TRABAJOS_DBTABLENAME, taludes.pk)
-		.getForeignValue());
+	.getForeignValue());
 
 	foreignValues
-		.add(new CalculateDBForeignValue(getForeignKey(), LONGITUD,
-			DBFieldNames.TALUDES_LONGITUD,
-			DBFieldNames.TALUDES_DBTABLENAME, taludes.pk)
-			.getForeignValue());
+	.add(new CalculateDBForeignValue(getForeignKey(), LONGITUD,
+		DBFieldNames.TALUDES_LONGITUD,
+		DBFieldNames.TALUDES_DBTABLENAME, taludes.pk)
+	.getForeignValue());
 
 	return foreignValues;
     }

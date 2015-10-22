@@ -9,15 +9,10 @@ import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.IValidatableForm;
 
 public class BarreraRigidaTrabajosCalculateMedicion extends
-	VegetationCalculateMedicion {
+VegetationCalculateMedicion {
 
     public BarreraRigidaTrabajosCalculateMedicion(IValidatableForm form) {
-	super(form);
-    }
-
-    @Override
-    protected String getIDField() {
-	return DBFieldNames.ID_BARRERA_RIGIDA;
+	super(form, DBFieldNames.ID_BARRERA_RIGIDA);
     }
 
     @Override
