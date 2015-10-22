@@ -4,20 +4,14 @@ import java.util.Map;
 
 import es.icarto.gvsig.extgia.forms.CalculateDBForeignValue;
 import es.icarto.gvsig.extgia.forms.CalculateForeignValue;
-import es.icarto.gvsig.extgia.forms.ForeignValue;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 
 public class CalculateIsletasTrabajosMedicionElemento extends
-CalculateDBForeignValue implements CalculateForeignValue {
+	CalculateDBForeignValue implements CalculateForeignValue {
 
     public CalculateIsletasTrabajosMedicionElemento(
 	    Map<String, String> foreingKey) {
 	super(foreingKey);
-    }
-
-    @Override
-    public ForeignValue getForeignValue() {
-	return new ForeignValue(getComponentName(), getValue());
     }
 
     @Override
