@@ -9,34 +9,34 @@ import java.util.Map;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
-public abstract class CalculateDBForeignValue {
+public class CalculateDBForeignValue implements CalculateForeignValue {
 
-    Map<String, String> foreingKey;
+    protected final Map<String, String> foreingKey;
+    protected final String componentName;
+    protected final String foreignField;
+    protected final String tableName;
+    protected final String idField;
 
-    public CalculateDBForeignValue(Map<String, String> foreingKey) {
+    public CalculateDBForeignValue(Map<String, String> foreingKey,
+	    String componentName, String foreignField, String tableName,
+	    String idField) {
 	this.foreingKey = foreingKey;
-    }
-
-    protected abstract String getComponentName();
-
-    protected abstract String getForeignField();
-
-    protected abstract String getTableName();
-
-    protected abstract String getIDField();
-
-    public ForeignValue getForeignValue() {
-	return new ForeignValue(getComponentName(), getValue());
+	this.componentName = componentName;
+	this.foreignField = foreignField;
+	this.tableName = tableName;
+	this.idField = idField;
     }
 
     protected String getSQLSentence() {
-	return "SELECT " + getForeignField() + " FROM " + DBFieldNames.GIA_SCHEMA + "."
-		+ getTableName() + " WHERE " + getIDField() + " = " + "'" + foreingKey.get(getIDField()) + "'";
+	return "SELECT " + foreignField + " FROM " + DBFieldNames.GIA_SCHEMA
+		+ "." + tableName + " WHERE " + idField + " = " + "'"
+		+ foreingKey.get(idField) + "'";
     }
 
-    protected String getValue() {
+    private String getValue() {
 	try {
-	    Connection connection = DBSession.getCurrentSession().getJavaConnection();
+	    Connection connection = DBSession.getCurrentSession()
+		    .getJavaConnection();
 	    PreparedStatement statement;
 	    statement = connection.prepareStatement(getSQLSentence());
 	    ResultSet rs = statement.executeQuery();
@@ -53,6 +53,16 @@ public abstract class CalculateDBForeignValue {
 	    e.printStackTrace();
 	}
 	return null;
+    }
+
+    @Override
+    public String getComponentName() {
+	return componentName;
+    }
+
+    @Override
+    public ForeignValue getForeignValue() {
+	return new ForeignValue(componentName, getValue());
     }
 
 }

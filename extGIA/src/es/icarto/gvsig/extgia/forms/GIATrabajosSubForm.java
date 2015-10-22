@@ -1,9 +1,14 @@
 package es.icarto.gvsig.extgia.forms;
 
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.ANCHO;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.LONGITUD;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.MEDICION;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.MEDICION_ELEMENTO;
 import static es.icarto.gvsig.extgia.preferences.DBFieldNames.MEDICION_ULTIMO_TRABAJO;
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.UNIDAD;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
@@ -13,6 +18,33 @@ public abstract class GIATrabajosSubForm extends GIASubForm {
 
     public GIATrabajosSubForm(String basicName) {
 	super(basicName);
+
+	updateAnchoWhenUnidadChanges();
+	updateLongWhenUnidadChanges();
+    }
+
+    private void updateLongWhenUnidadChanges() {
+	getFormPanel().getComboBox(UNIDAD).addItemListener(new ItemListener() {
+	    @Override
+	    public void itemStateChanged(ItemEvent e) {
+		if (e.getStateChange() == ItemEvent.SELECTED) {
+		    getFormPanel().getTextField(LONGITUD).setText("");
+		    getFormController().setValue(LONGITUD, "");
+		}
+	    }
+	});
+    }
+
+    private void updateAnchoWhenUnidadChanges() {
+	getFormPanel().getComboBox(UNIDAD).addItemListener(new ItemListener() {
+	    @Override
+	    public void itemStateChanged(ItemEvent e) {
+		if (e.getStateChange() == ItemEvent.SELECTED) {
+		    getFormPanel().getTextField(ANCHO).setText("");
+		    getFormController().setValue(ANCHO, "");
+		}
+	    }
+	});
     }
 
     @Override

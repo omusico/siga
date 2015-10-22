@@ -9,55 +9,52 @@ import java.util.Map;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
-public abstract class CalculateDBForeignValueLastJob extends CalculateDBForeignValue {
+public abstract class CalculateDBForeignValueLastJob extends
+CalculateDBForeignValue {
 
-    String unidad;
+    private final String unidad;
 
-    public CalculateDBForeignValueLastJob(Map<String, String> foreingKey, String unidad) {
-	super(foreingKey);
+    public CalculateDBForeignValueLastJob(String unidad,
+	    Map<String, String> foreingKey, String componentName,
+	    String tableName, String idField) {
+	super(foreingKey, componentName, DBFieldNames.MEDICION, tableName,
+		idField);
 	this.unidad = unidad;
+
     }
-
-    public CalculateDBForeignValueLastJob(Map<String, String> foreingKey) {
-	super(foreingKey);
-    }
-
-    @Override
-    protected String getForeignField() {
-	return DBFieldNames.MEDICION;
-    }
-
-    @Override
-    protected abstract String getTableName();
-
-    @Override
-    protected abstract String getIDField();
 
     @Override
     protected String getSQLSentence() {
 	if (unidad.equalsIgnoreCase(" ") || !getLastJobByUnit()) {
-	    return "SELECT " + getForeignField() + " FROM " + DBFieldNames.GIA_SCHEMA + "."
-		    + getTableName() + " WHERE " + getIDField() + " = " + "'" + foreingKey.get(getIDField())
-		    + "'" +" AND " + DBFieldNames.FECHA + " IN (SELECT max(" + DBFieldNames.FECHA + ") FROM "
-		    + DBFieldNames.GIA_SCHEMA + "." + getTableName() + " WHERE " + getIDField() + " = "
-		    + "'" + foreingKey.get(getIDField()) + "')";
+	    return "SELECT " + foreignField + " FROM "
+		    + DBFieldNames.GIA_SCHEMA + "." + tableName + " WHERE "
+		    + idField + " = " + "'" + foreingKey.get(idField) + "'"
+		    + " AND " + DBFieldNames.FECHA + " IN (SELECT max("
+		    + DBFieldNames.FECHA + ") FROM " + DBFieldNames.GIA_SCHEMA
+		    + "." + tableName + " WHERE " + idField + " = " + "'"
+		    + foreingKey.get(idField) + "')";
 	} else {
-	    return "SELECT " + getForeignField() + " FROM " + DBFieldNames.GIA_SCHEMA + "."
-		    + getTableName() + " WHERE " + getIDField() + " = " + "'" + foreingKey.get(getIDField())
-		    + "'" +" AND " + DBFieldNames.FECHA + " IN (SELECT max(" + DBFieldNames.FECHA + ") FROM "
-		    + DBFieldNames.GIA_SCHEMA + "." + getTableName() + " WHERE " + getIDField() + " = "
-		    + "'" + foreingKey.get(getIDField()) + "' AND unidad = '" + unidad + "')";
+	    return "SELECT " + foreignField + " FROM "
+		    + DBFieldNames.GIA_SCHEMA + "." + tableName + " WHERE "
+		    + idField + " = " + "'" + foreingKey.get(idField) + "'"
+		    + " AND " + DBFieldNames.FECHA + " IN (SELECT max("
+		    + DBFieldNames.FECHA + ") FROM " + DBFieldNames.GIA_SCHEMA
+		    + "." + tableName + " WHERE " + idField + " = " + "'"
+		    + foreingKey.get(idField) + "' AND unidad = '" + unidad
+		    + "')";
 	}
     }
 
-    protected Boolean getLastJobByUnit() {
+    private Boolean getLastJobByUnit() {
 	if (!unidad.equalsIgnoreCase(" ")) {
 	    try {
-		Connection connection = DBSession.getCurrentSession().getJavaConnection();
+		Connection connection = DBSession.getCurrentSession()
+			.getJavaConnection();
 		PreparedStatement statement;
-		String query = "SELECT " + getForeignField() + " FROM " + DBFieldNames.GIA_SCHEMA + "."
-			+ getTableName() + " WHERE " + getIDField() + " = " + "'" + foreingKey.get(getIDField())
-			+ "'" +" AND " + DBFieldNames.UNIDAD + " = '" + unidad + "'";
+		String query = "SELECT " + foreignField + " FROM "
+			+ DBFieldNames.GIA_SCHEMA + "." + tableName + " WHERE "
+			+ idField + " = " + "'" + foreingKey.get(idField) + "'"
+			+ " AND " + DBFieldNames.UNIDAD + " = '" + unidad + "'";
 		statement = connection.prepareStatement(query);
 		ResultSet rs = statement.executeQuery();
 		return rs.next();

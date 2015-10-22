@@ -4,40 +4,15 @@ import java.util.Map;
 
 import es.icarto.gvsig.extgia.forms.CalculateDBForeignValue;
 import es.icarto.gvsig.extgia.forms.CalculateForeignValue;
-import es.icarto.gvsig.extgia.forms.ForeignValue;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 
 public class CalculateTaludesTrabajosMedicionComplementaria extends
-CalculateDBForeignValue implements CalculateForeignValue {
+	CalculateDBForeignValue implements CalculateForeignValue {
 
     public CalculateTaludesTrabajosMedicionComplementaria(
 	    Map<String, String> foreingKey) {
-	super(foreingKey);
+	super(foreingKey, DBFieldNames.MEDICION_COMPLEMENTARIA,
+		DBFieldNames.SUP_COMPLEMENTARIA,
+		DBFieldNames.TALUDES_DBTABLENAME, DBFieldNames.ID_TALUD);
     }
-
-    @Override
-    public ForeignValue getForeignValue() {
-	return new ForeignValue(getComponentName(), getValue());
-    }
-
-    @Override
-    public String getComponentName() {
-	return DBFieldNames.MEDICION_COMPLEMENTARIA;
-    }
-
-    @Override
-    protected String getForeignField() {
-	return DBFieldNames.SUP_COMPLEMENTARIA;
-    }
-
-    @Override
-    protected String getTableName() {
-	return DBFieldNames.TALUDES_DBTABLENAME;
-    }
-
-    @Override
-    protected String getIDField() {
-	return DBFieldNames.ID_TALUD;
-    }
-
 }

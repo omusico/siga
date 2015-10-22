@@ -10,28 +10,10 @@ public class CalculateTaludesTrabajosMedicionUltimoTrabajo extends
 CalculateDBForeignValueLastJob implements CalculateForeignValue {
 
     public CalculateTaludesTrabajosMedicionUltimoTrabajo(
-	    Map<String, String> foreignKey) {
-	super(foreignKey);
-    }
-
-    public CalculateTaludesTrabajosMedicionUltimoTrabajo(
 	    Map<String, String> foreingKey, String unidad) {
-	super(foreingKey,unidad);
-    }
-
-    @Override
-    public String getComponentName() {
-	return DBFieldNames.MEDICION_ULTIMO_TRABAJO;
-    }
-
-    @Override
-    protected String getTableName() {
-	return DBFieldNames.TALUDES_TRABAJOS_DBTABLENAME;
-    }
-
-    @Override
-    protected String getIDField() {
-	return DBFieldNames.ID_TALUD;
+	super(unidad, foreingKey, DBFieldNames.MEDICION_ULTIMO_TRABAJO,
+		DBFieldNames.TALUDES_TRABAJOS_DBTABLENAME,
+		DBFieldNames.ID_TALUD);
     }
 
 }
