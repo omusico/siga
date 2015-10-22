@@ -9,8 +9,7 @@ import java.util.Map;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
-public abstract class CalculateDBForeignValueLastJob extends
-CalculateDBForeignValue {
+public class CalculateDBForeignValueLastJob extends CalculateDBForeignValue {
 
     private final String unidad;
 
