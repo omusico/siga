@@ -1,5 +1,7 @@
 package es.icarto.gvsig.extgia.forms.taludes;
 
+import static es.icarto.gvsig.extgia.preferences.DBFieldNames.LONGITUD;
+
 import java.util.ArrayList;
 
 import javax.swing.JComboBox;
@@ -9,9 +11,13 @@ import es.icarto.gvsig.extgia.forms.CalculateDBForeignValueLastJob;
 import es.icarto.gvsig.extgia.forms.ForeignValue;
 import es.icarto.gvsig.extgia.forms.GIATrabajosSubForm;
 import es.icarto.gvsig.extgia.preferences.DBFieldNames;
+import es.icarto.gvsig.extgia.preferences.Elements;
 
 @SuppressWarnings("serial")
 public class TaludesTrabajosSubForm extends GIATrabajosSubForm {
+
+    private final Elements taludes = Elements.Taludes;
+
     public TaludesTrabajosSubForm() {
 	super("taludes_trabajos");
 	addCalculation(new TaludesTrabajosCalculateMedicion(this));
@@ -23,22 +29,30 @@ public class TaludesTrabajosSubForm extends GIATrabajosSubForm {
 		DBFieldNames.UNIDAD);
 	String unidad = unidadCB.getSelectedItem().toString();
 	ArrayList<ForeignValue> foreignValues = new ArrayList<ForeignValue>();
-	foreignValues.add(new CalculateDBForeignValue(getForeignKey(),
-		DBFieldNames.MEDICION_ELEMENTO,
-		DBFieldNames.SUP_TOTAL_ANALITICA,
-		DBFieldNames.TALUDES_DBTABLENAME, DBFieldNames.ID_TALUD)
-	.getForeignValue());
+	foreignValues
+		.add(new CalculateDBForeignValue(getForeignKey(),
+			DBFieldNames.MEDICION_ELEMENTO,
+			DBFieldNames.SUP_TOTAL_ANALITICA,
+			DBFieldNames.TALUDES_DBTABLENAME, taludes.pk)
+			.getForeignValue());
 
-	foreignValues.add(new CalculateDBForeignValue(getForeignKey(),
-		DBFieldNames.MEDICION_COMPLEMENTARIA,
-		DBFieldNames.SUP_COMPLEMENTARIA,
-		DBFieldNames.TALUDES_DBTABLENAME, DBFieldNames.ID_TALUD)
-		.getForeignValue());
+	foreignValues
+		.add(new CalculateDBForeignValue(getForeignKey(),
+			DBFieldNames.MEDICION_COMPLEMENTARIA,
+			DBFieldNames.SUP_COMPLEMENTARIA,
+			DBFieldNames.TALUDES_DBTABLENAME, taludes.pk)
+			.getForeignValue());
 
 	foreignValues.add(new CalculateDBForeignValueLastJob(unidad,
 		getForeignKey(), DBFieldNames.MEDICION_ULTIMO_TRABAJO,
-			DBFieldNames.TALUDES_TRABAJOS_DBTABLENAME,
-			DBFieldNames.ID_TALUD).getForeignValue());
+		DBFieldNames.TALUDES_TRABAJOS_DBTABLENAME, taludes.pk)
+		.getForeignValue());
+
+	foreignValues
+		.add(new CalculateDBForeignValue(getForeignKey(), LONGITUD,
+			DBFieldNames.TALUDES_LONGITUD,
+			DBFieldNames.TALUDES_DBTABLENAME, taludes.pk)
+			.getForeignValue());
 
 	return foreignValues;
     }

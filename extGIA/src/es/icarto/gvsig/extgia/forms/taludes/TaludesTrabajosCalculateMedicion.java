@@ -10,7 +10,7 @@ import es.icarto.gvsig.extgia.preferences.DBFieldNames;
 import es.icarto.gvsig.navtableforms.IValidatableForm;
 
 public class TaludesTrabajosCalculateMedicion extends
-	VegetationCalculateMedicion {
+VegetationCalculateMedicion {
 
     public TaludesTrabajosCalculateMedicion(IValidatableForm form) {
 	super(form);
@@ -22,14 +22,6 @@ public class TaludesTrabajosCalculateMedicion extends
     }
 
     @Override
-    protected String getLongitudForeignValue() {
-	return (new CalculateDBForeignValue(getForeignKey(),
-		DBFieldNames.LONGITUD, DBFieldNames.TALUDES_LONGITUD,
-		DBFieldNames.TALUDES_DBTABLENAME, DBFieldNames.ID_TALUD)
-	.getForeignValue()).getValue();
-    }
-
-    @Override
     protected ForeignValue getMedicionForeignValue() {
 	String unidad = ((JComboBox) form.getWidgets().get(DBFieldNames.UNIDAD))
 		.getSelectedItem().toString();
@@ -37,7 +29,7 @@ public class TaludesTrabajosCalculateMedicion extends
 		getForeignKey(), DBFieldNames.MEDICION_ELEMENTO,
 		DBFieldNames.SUP_TOTAL_ANALITICA,
 		DBFieldNames.TALUDES_DBTABLENAME, DBFieldNames.ID_TALUD)
-		.getForeignValue();
+	.getForeignValue();
 
 	ForeignValue medicionUltimoTrabajo = new CalculateDBForeignValueLastJob(
 		unidad, getForeignKey(), DBFieldNames.MEDICION_ULTIMO_TRABAJO,

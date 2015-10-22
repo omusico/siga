@@ -27,7 +27,8 @@ public abstract class VegetationCalculateMedicion extends Calculation {
 	super(form);
 	if (!form.isFillingValues()) {
 	    unidadHandler = new UnidadListener();
-	    ((JComboBox) form.getWidgets().get(UNIDAD)).addActionListener(unidadHandler);
+	    ((JComboBox) form.getWidgets().get(UNIDAD))
+		    .addActionListener(unidadHandler);
 	}
     }
 
@@ -35,13 +36,12 @@ public abstract class VegetationCalculateMedicion extends Calculation {
 	super(form);
 	if (!form.isFillingValues()) {
 	    unidadHandler = new UnidadListener();
-	    ((JComboBox) form.getWidgets().get(UNIDAD)).addActionListener(unidadHandler);
+	    ((JComboBox) form.getWidgets().get(UNIDAD))
+		    .addActionListener(unidadHandler);
 	}
     }
 
     protected abstract String getIDField();
-
-    protected abstract String getLongitudForeignValue();
 
     protected abstract ForeignValue getMedicionForeignValue();
 
@@ -52,7 +52,7 @@ public abstract class VegetationCalculateMedicion extends Calculation {
 
     @Override
     protected String[] operandNames() {
-	return new String[] {LONGITUD, ANCHO};
+	return new String[] { LONGITUD, ANCHO };
     }
 
     @Override
@@ -66,20 +66,24 @@ public abstract class VegetationCalculateMedicion extends Calculation {
     }
 
     protected HashMap<String, String> getForeignKey() {
-	String primaryKeyValue = ((JTextField) form.getWidgets().get(getIDField())).getText();
+	String primaryKeyValue = ((JTextField) form.getWidgets().get(
+		getIDField())).getText();
 	HashMap<String, String> foreignKey = new HashMap<String, String>();
 	foreignKey.put(getIDField(), primaryKeyValue);
 	return foreignKey;
     }
 
-    public class UnidadListener extends OperandComponentListener implements ActionListener {
+    public class UnidadListener extends OperandComponentListener implements
+	    ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    super.actionPerformed(e);
-	    if (e.getSource() != null && ((JComboBox) e.getSource()).getSelectedItem() != null) {
-		if (((JComboBox) e.getSource()).getSelectedItem().toString().equalsIgnoreCase("Herbicida")){
-		    updateLongitudValue();
+	    if (e.getSource() != null
+		    && ((JComboBox) e.getSource()).getSelectedItem() != null) {
+		if (((JComboBox) e.getSource()).getSelectedItem().toString()
+			.equalsIgnoreCase("Herbicida")) {
+		    updateMedicionLastJobValue();
 		} else {
 		    if (!((GIATrabajosSubForm) form).isEditing()) {
 			updateMedicionValue();
@@ -90,21 +94,20 @@ public abstract class VegetationCalculateMedicion extends Calculation {
 	}
 
 	private void updateMedicionValue() {
-	    ((JTextField) form.getWidgets().get(MEDICION)).setText(getMedicionForeignValue().getValue());
+	    ((JTextField) form.getWidgets().get(MEDICION))
+		    .setText(getMedicionForeignValue().getValue());
 	}
 
 	private void updateMedicionLastJobValue() {
-	    if (getMedicionForeignValue().getComponent().equalsIgnoreCase(DBFieldNames.MEDICION_ULTIMO_TRABAJO)) {
-		((JTextField) form.getWidgets().get(DBFieldNames.MEDICION_ULTIMO_TRABAJO)).setText(getMedicionForeignValue().getValue());
+	    if (getMedicionForeignValue().getComponent().equalsIgnoreCase(
+		    DBFieldNames.MEDICION_ULTIMO_TRABAJO)) {
+		((JTextField) form.getWidgets().get(
+			DBFieldNames.MEDICION_ULTIMO_TRABAJO))
+			.setText(getMedicionForeignValue().getValue());
 	    } else {
-		((JTextField) form.getWidgets().get(DBFieldNames.MEDICION_ULTIMO_TRABAJO)).setText(null);
+		((JTextField) form.getWidgets().get(
+			DBFieldNames.MEDICION_ULTIMO_TRABAJO)).setText(null);
 	    }
-	}
-
-	private void updateLongitudValue() {
-	    ((JTextField) form.getWidgets().get(LONGITUD)).setText(getLongitudForeignValue());
-	    form.getFormController().setValue(LONGITUD, getLongitudForeignValue());
-	    updateMedicionLastJobValue();
 	}
     }
 

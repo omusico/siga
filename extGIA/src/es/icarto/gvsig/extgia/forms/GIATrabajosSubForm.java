@@ -15,12 +15,20 @@ import java.util.ArrayList;
 public abstract class GIATrabajosSubForm extends GIASubForm {
 
     boolean editing = false;
+    private String orgLongitud = "";
 
     public GIATrabajosSubForm(String basicName) {
 	super(basicName);
 
 	updateAnchoWhenUnidadChanges();
 	updateLongWhenUnidadChanges();
+
+	for (ForeignValue fv : getForeignValues()) {
+	    if (fv.getComponent().equals(LONGITUD)) {
+		orgLongitud = fv.getValue();
+		break;
+	    }
+	}
     }
 
     private void updateLongWhenUnidadChanges() {
@@ -28,8 +36,8 @@ public abstract class GIATrabajosSubForm extends GIASubForm {
 	    @Override
 	    public void itemStateChanged(ItemEvent e) {
 		if (e.getStateChange() == ItemEvent.SELECTED) {
-		    getFormPanel().getTextField(LONGITUD).setText("");
-		    getFormController().setValue(LONGITUD, "");
+		    getFormPanel().getTextField(LONGITUD).setText(orgLongitud);
+		    getFormController().setValue(LONGITUD, orgLongitud);
 		}
 	    }
 	});
