@@ -48,6 +48,8 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
     private final String[] columnNames;
     private final String[] columnDbNames;
     private final String[][] data;
+    private final String[][] originalData;
+
     private final ORMLite ormLite;
 
     private JButton cancelButton;
@@ -59,6 +61,9 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
     private static final Logger logger = Logger
 	    .getLogger(BatchTrabajosTable.class);
 
+    public static String[] editableColumns = { "Fecha", "Unidad", "Medición",
+	    "Observaciones", "Ancho", "Longitud" };
+
     public BatchTrabajosTable(ORMLite ormLite, String dbTableName,
 	    String[][] data, final String[] columnNames,
 	    final String[] columnDbNames, BaseTableHandler trabajosTableHandler) {
@@ -68,6 +73,14 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	this.columnDbNames = columnDbNames;
 	this.ormLite = ormLite;
 	this.data = data;
+
+	this.originalData = new String[data.length][data[0].length];
+	for (int i = 0; i < data.length; i++) {
+	    for (int j = 0; j < data[i].length; j++) {
+		originalData[i][j] = data[i][j] + "";
+	    }
+	}
+
 	this.trabajosTableHandler = trabajosTableHandler;
 	initTable();
     }
@@ -103,7 +116,7 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	table.setDefaultRenderer(Object.class, new ColorColumnRenderer(
 		calculation));
 
-	calculation.updateAllRows();
+	calculation.initAllRows();
 	autoFit();
 
 	table.getModel().addTableModelListener(calculation);
@@ -118,7 +131,7 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	for (int i = 0; i < table.getColumnCount(); i++) {
 	    int m = (table.getColumnName(i).length() > maxLengths[i]) ? table
 		    .getColumnName(i).length() : maxLengths[i];
-	    needed += m;
+		    needed += m;
 	}
 
 	for (int i = 0; i < table.getModel().getColumnCount(); i++) {
@@ -126,7 +139,7 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 
 	    preferredWidth = 150;
 	    table.getColumnModel().getColumn(i)
-	    .setPreferredWidth((int) preferredWidth);
+		    .setPreferredWidth((int) preferredWidth);
 	}
     }
 
@@ -204,8 +217,8 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	    JOptionPane.showMessageDialog(
 		    (Component) PluginServices.getMainFrame(),
 		    PluginServices.getText(this, "addedInfo_msg_I")
-			    + data.length + " "
-			    + PluginServices.getText(this, "addedInfo_msg_II"));
+		    + data.length + " "
+		    + PluginServices.getText(this, "addedInfo_msg_II"));
 
 	}
 
@@ -225,15 +238,6 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	    for (int j = 0; j < data[i].length; j++) {
 		String v = (data[i][j] == null) ? "" : data[i][j];
 		newValues.put(columnDbNames[j], v);
-	    }
-
-	    // workaround. Si la unidad no es herbicida ponemos a null a
-	    // la hora de guardar
-	    // longitud y ancho
-	    String unidad = newValues.get("unidad");
-	    if ((unidad != null) && (!unidad.equalsIgnoreCase("herbicida"))) {
-		newValues.remove("ancho");
-		newValues.remove("longitud");
 	    }
 
 	    TableController tableController = new TableController(source);
@@ -270,7 +274,7 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	    if (unidadColumn.getHeaderValue().toString()
 		    .equalsIgnoreCase(DBFieldNames.UNIDAD)) {
 		unidadColumn
-			.setCellEditor(new DefaultCellEditor(unidadComboBox));
+		.setCellEditor(new DefaultCellEditor(unidadComboBox));
 		break;
 	    }
 	}
@@ -328,20 +332,9 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-	    // TODO
 	    TableColumn column = table.getColumnModel().getColumn(columnIndex);
-
-	    for (int i = 0; i < DBFieldNames.trabajosVegetacionTableEditableCells.length; i++) {
-		if (DBFieldNames.trabajosVegetacionTableEditableCells[i]
-			.equals(column.getHeaderValue().toString())) {
-		    return true;
-		}
-	    }
-	    int unidadColumnIndex = table.getColumn("Unidad").getModelIndex();
-	    Object foo = getValueAt(rowIndex, unidadColumnIndex);
-	    if ((foo != null) && (foo.toString().equals("Herbicida"))) {
-		if (column.getHeaderValue().toString().equals("Longitud")
-			|| column.getHeaderValue().toString().equals("Ancho")) {
+	    for (String s : editableColumns) {
+		if (s.equals(column.getHeaderValue().toString())) {
 		    return true;
 		}
 	    }
@@ -379,5 +372,9 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 
     public JTable getTable() {
 	return table;
+    }
+
+    public String[][] getOrinalData() {
+	return originalData;
     }
 }

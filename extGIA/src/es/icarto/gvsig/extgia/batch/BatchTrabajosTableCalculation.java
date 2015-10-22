@@ -32,11 +32,10 @@ public class BatchTrabajosTableCalculation implements TableModelListener {
     private int medicionElementoColIdx = -1;
     private int medicionLastJobColIdx = -1;
     private int fechaColIdx = -1;
+    private int obsColIdx;
 
     private final String dbTableName;
     private final String idElemento;
-
-    private int obsColIdx;
 
     public BatchTrabajosTableCalculation(BatchTrabajosTable ttable,
 	    String dbTableName, String idElemento) {
@@ -64,11 +63,14 @@ public class BatchTrabajosTableCalculation implements TableModelListener {
 	obsColIdx = table.getColumn("Observaciones").getModelIndex();
     }
 
-    public void updateRow(int row) {
-	if (row == -1) {
-	    logger.warn("Should never happen");
-	    return;
+    public void initAllRows() {
+	for (int row = 0; row < table.getRowCount(); row++) {
+	    initRow(row);
 	}
+	table.repaint();
+    }
+
+    private void initRow(int row) {
 
 	if (dbTableName.equals("senhalizacion_vertical_trabajos")) {
 	    return;
@@ -78,26 +80,17 @@ public class BatchTrabajosTableCalculation implements TableModelListener {
 	String medicionLastJob = getMedicionLastJobValueByUnit(row, unidad);
 	String medicion = "";
 
-	if (unidad.equals("Herbicida")) {
-	    medicion = calculateMedicionHerbicida(row);
-	} else {
-
-	    if (((medicionLastJob == null) || medicionLastJob.isEmpty())
-		    && (medicionElementoColIdx != -1)) {
-		medicion = strValue(row, medicionElementoColIdx);
-	    } else {
-		medicion = medicionLastJob;
-	    }
+	if ((!strValue(row, anchoColIdx).isEmpty())
+		&& (!strValue(row, longColIdx).isEmpty())) {
+	    medicion = calculateAnchoxLong(row);
+	} else if (!medicionLastJob.isEmpty()) {
+	    medicion = medicionLastJob;
+	} else if (medicionElementoColIdx != -1) {
+	    medicion = strValue(row, medicionElementoColIdx);
 	}
+
 	table.setValueAt(medicionLastJob, row, medicionLastJobColIdx);
 	table.setValueAt(medicion, row, medicionColIdx);
-    }
-
-    public void updateAllRows() {
-	for (int row = 0; row < table.getRowCount(); row++) {
-	    updateRow(row);
-	}
-	table.repaint();
     }
 
     private String strValue(int row, int col) {
@@ -114,7 +107,7 @@ public class BatchTrabajosTableCalculation implements TableModelListener {
 	return 0;
     }
 
-    private String calculateMedicionHerbicida(int row) {
+    private String calculateAnchoxLong(int row) {
 	String medicion = "";
 	try {
 	    double longitud = doubleValue(row, longColIdx);
@@ -193,11 +186,61 @@ public class BatchTrabajosTableCalculation implements TableModelListener {
 	    return;
 	}
 
-	if ((e.getColumn() != medicionColIdx) && (e.getColumn() != fechaColIdx)
-		&& (e.getColumn() != obsColIdx)) {
-	    updateRow(row);
+	if (e.getColumn() == unidadColIdx) {
+	    updateRowForNewUnidad(row);
+	} else if ((e.getColumn() == anchoColIdx)
+		|| e.getColumn() == longColIdx) {
+	    updateRowForNewAnchoOrLong(row);
 	}
+
 	tTable.getSaveButton().setEnabled(validate());
+    }
+
+    private void updateRowForNewUnidad(int row) {
+	if (row == -1) {
+	    logger.warn("Should never happen");
+	    return;
+	}
+
+	if (dbTableName.equals("senhalizacion_vertical_trabajos")) {
+	    return;
+	}
+
+	final String unidad = strValue(row, unidadColIdx);
+	String medicionLastJob = getMedicionLastJobValueByUnit(row, unidad);
+	String medicion = "";
+
+	if (!medicionLastJob.isEmpty()) {
+	    medicion = medicionLastJob;
+	} else if (medicionElementoColIdx != -1) {
+	    medicion = strValue(row, medicionElementoColIdx);
+	}
+
+	String orgLong = tTable.getOrinalData()[row][longColIdx];
+	table.setValueAt(orgLong, row, longColIdx);
+	table.setValueAt("", row, anchoColIdx);
+	table.setValueAt(medicionLastJob, row, medicionLastJobColIdx);
+	table.setValueAt(medicion, row, medicionColIdx);
+    }
+
+    private void updateRowForNewAnchoOrLong(int row) {
+	if (row == -1) {
+	    logger.warn("Should never happen");
+	    return;
+	}
+
+	if (dbTableName.equals("senhalizacion_vertical_trabajos")) {
+	    return;
+	}
+
+	String medicion = "";
+
+	if ((!strValue(row, anchoColIdx).isEmpty())
+		&& (!strValue(row, longColIdx).isEmpty())) {
+	    medicion = calculateAnchoxLong(row);
+	}
+
+	table.setValueAt(medicion, row, medicionColIdx);
     }
 
     public boolean validate() {
