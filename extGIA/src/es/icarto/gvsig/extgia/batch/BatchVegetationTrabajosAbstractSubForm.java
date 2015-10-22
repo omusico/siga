@@ -16,27 +16,21 @@ import com.iver.cit.gvsig.fmap.layers.FBitSet;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 
-import es.icarto.gvsig.extgia.batch.BatchAbstractSubForm;
 import es.icarto.gvsig.extgia.preferences.Elements;
 import es.icarto.gvsig.navtableforms.gui.tables.handler.BaseTableHandler;
 import es.icarto.gvsig.navtableforms.gui.tables.model.AlphanumericTableModel;
-import es.icarto.gvsig.navtableforms.ormlite.ORMLite;
 import es.icarto.gvsig.navtableforms.utils.TOCLayerManager;
 import es.udc.cartolab.gvsig.navtable.dataacces.IController;
 
 @SuppressWarnings("serial")
 public abstract class BatchVegetationTrabajosAbstractSubForm extends
-BatchAbstractSubForm {
+	BatchAbstractSubForm {
 
     private static final Logger logger = Logger
 	    .getLogger(BatchVegetationTrabajosAbstractSubForm.class);
 
-    private final ORMLite batchOrmLite;
-
-    public BatchVegetationTrabajosAbstractSubForm(
-	    Elements parentElement) {
+    public BatchVegetationTrabajosAbstractSubForm(Elements parentElement) {
 	super(parentElement);
-	batchOrmLite = new ORMLite(getMetadataPath());
     }
 
     @Override
@@ -44,7 +38,7 @@ BatchAbstractSubForm {
 	this.position = -1;
 	saveButton.removeActionListener(action);
 	action = new BatchCreateAction(this, getFormController(), model,
-		batchOrmLite, trabajosTableHandler);
+		trabajosTableHandler);
 	saveButton.addActionListener(action);
 	setListeners();
 	fillEmptyValues();
@@ -67,16 +61,14 @@ BatchAbstractSubForm {
 	private final IWindow iWindow;
 	private final IController iController;
 	private final AlphanumericTableModel model;
-	private final ORMLite batchOrmLite;
 	private final BaseTableHandler trabajosTableHandler;
 
 	public BatchCreateAction(IWindow iWindow, IController iController,
-		AlphanumericTableModel model, ORMLite batchOrmLite,
+		AlphanumericTableModel model,
 		BaseTableHandler trabajosTableHandler) {
 	    this.iWindow = iWindow;
 	    this.iController = iController;
 	    this.model = model;
-	    this.batchOrmLite = batchOrmLite;
 	    this.trabajosTableHandler = trabajosTableHandler;
 	}
 
@@ -108,10 +100,10 @@ BatchAbstractSubForm {
 		int m = JOptionPane.showOptionDialog(
 			null,
 			PluginServices.getText(this, "addInfo_msg_I")
-			+ selectedElements
-			+ " "
-			+ PluginServices
-			.getText(this, "addInfo_msg_II"), null,
+				+ selectedElements
+				+ " "
+				+ PluginServices
+					.getText(this, "addInfo_msg_II"), null,
 			JOptionPane.YES_NO_CANCEL_OPTION,
 			JOptionPane.INFORMATION_MESSAGE, null, options,
 			options[1]);
@@ -119,9 +111,8 @@ BatchAbstractSubForm {
 		    String[][] data = getDataForFillingTable(values, recordset,
 			    selectedElements);
 		    BatchTrabajosTable table = new BatchTrabajosTable(
-			    batchOrmLite, getDbTableName(), data,
-			    getColumnNames(), getColumnDbNames(),
-			    trabajosTableHandler);
+			    getDbTableName(), data, getColumnNames(),
+			    getColumnDbNames(), trabajosTableHandler);
 		    PluginServices.getMDIManager().addCentredWindow(table);
 		}
 	    } catch (Exception e) {
@@ -132,19 +123,26 @@ BatchAbstractSubForm {
 	    PluginServices.getMDIManager().closeWindow(iWindow);
 	}
 
-	private String[][] getDataForFillingTable(HashMap<String, String> values, SelectableDataSource recordset, int selectedElements) throws ReadDriverException {
+	private String[][] getDataForFillingTable(
+		HashMap<String, String> values, SelectableDataSource recordset,
+		int selectedElements) throws ReadDriverException {
 	    String[][] data = new String[selectedElements][];
 	    int dataIdx = 0;
 	    int idFieldIdx = recordset.getFieldIndexByName(getIdFieldName());
 	    FBitSet selection = recordset.getSelection();
-	    for (int i = selection.nextSetBit(0); i >= 0; i = selection.nextSetBit(i+1)) {
-		values.put(getIdFieldName(), recordset.getFieldValue(i, idFieldIdx).getStringValue(WRITER));
-		getForeignValues(values, recordset.getFieldValue(i, idFieldIdx).getStringValue(WRITER));
+	    for (int i = selection.nextSetBit(0); i >= 0; i = selection
+		    .nextSetBit(i + 1)) {
+		values.put(
+			getIdFieldName(),
+			recordset.getFieldValue(i, idFieldIdx).getStringValue(
+				WRITER));
+		getForeignValues(values, recordset.getFieldValue(i, idFieldIdx)
+			.getStringValue(WRITER));
 		String[] row = new String[getColumnNames().length];
-		for (int j = 0; j < getColumnNames().length; j++ ) {
+		for (int j = 0; j < getColumnNames().length; j++) {
 		    if (values.containsKey(getColumnDbNames()[j])) {
 			row[j] = values.get(getColumnDbNames()[j]);
-		    }else {
+		    } else {
 			row[j] = "";
 		    }
 		}

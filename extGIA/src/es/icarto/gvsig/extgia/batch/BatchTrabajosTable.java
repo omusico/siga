@@ -62,16 +62,16 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	    .getLogger(BatchTrabajosTable.class);
 
     public static String[] editableColumns = { "Fecha", "Unidad", "Medición",
-	    "Observaciones", "Ancho", "Longitud" };
+	"Observaciones", "Ancho", "Longitud" };
 
-    public BatchTrabajosTable(ORMLite ormLite, String dbTableName,
-	    String[][] data, final String[] columnNames,
-	    final String[] columnDbNames, BaseTableHandler trabajosTableHandler) {
+    public BatchTrabajosTable(String dbTableName, String[][] data,
+	    final String[] columnNames, final String[] columnDbNames,
+	    BaseTableHandler trabajosTableHandler) {
 	super();
 	this.dbTableName = dbTableName;
 	this.columnNames = columnNames;
 	this.columnDbNames = columnDbNames;
-	this.ormLite = ormLite;
+	this.ormLite = getOrmLite();
 	this.data = data;
 
 	this.originalData = new String[data.length][data[0].length];
@@ -85,10 +85,17 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	initTable();
     }
 
+    public ORMLite getOrmLite() {
+	return new ORMLite(getClass().getClassLoader()
+		.getResource("rules/" + dbTableName + "_metadata.xml")
+		.getPath());
+    }
+
     private void initTable() {
 	this.setLayout(new BorderLayout());
 	table = new JTable(new BatchTrabajosTableModel());
 	table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+	table.getTableHeader().setReorderingAllowed(false);
 
 	JScrollPane scrollPane = new JScrollPane(table);
 
@@ -118,6 +125,7 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 
 	calculation.initAllRows();
 	autoFit();
+	saveButton.setEnabled(calculation.validate());
 
 	table.getModel().addTableModelListener(calculation);
     }
@@ -131,7 +139,7 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	for (int i = 0; i < table.getColumnCount(); i++) {
 	    int m = (table.getColumnName(i).length() > maxLengths[i]) ? table
 		    .getColumnName(i).length() : maxLengths[i];
-		    needed += m;
+	    needed += m;
 	}
 
 	for (int i = 0; i < table.getModel().getColumnCount(); i++) {
@@ -139,7 +147,7 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 
 	    preferredWidth = 150;
 	    table.getColumnModel().getColumn(i)
-		    .setPreferredWidth((int) preferredWidth);
+	    .setPreferredWidth((int) preferredWidth);
 	}
     }
 
@@ -217,8 +225,8 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	    JOptionPane.showMessageDialog(
 		    (Component) PluginServices.getMainFrame(),
 		    PluginServices.getText(this, "addedInfo_msg_I")
-		    + data.length + " "
-		    + PluginServices.getText(this, "addedInfo_msg_II"));
+			    + data.length + " "
+			    + PluginServices.getText(this, "addedInfo_msg_II"));
 
 	}
 
@@ -274,7 +282,7 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 	    if (unidadColumn.getHeaderValue().toString()
 		    .equalsIgnoreCase(DBFieldNames.UNIDAD)) {
 		unidadColumn
-		.setCellEditor(new DefaultCellEditor(unidadComboBox));
+			.setCellEditor(new DefaultCellEditor(unidadComboBox));
 		break;
 	    }
 	}
@@ -364,10 +372,6 @@ public class BatchTrabajosTable extends JPanel implements IWindow {
 
     public String[] getColumnDbNames() {
 	return columnDbNames;
-    }
-
-    public ORMLite getOrmLite() {
-	return ormLite;
     }
 
     public JTable getTable() {
