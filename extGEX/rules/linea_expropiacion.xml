@@ -8,6 +8,7 @@
     <RECORDSET>
       <FIELD>
         <FIELDNAME>municipio</FIELDNAME>
+        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
         <DOMAINREADER>
             <DRTYPE>db</DRTYPE>
             <DRDBSCHEMA>audasa_expropiaciones</DRDBSCHEMA>
@@ -19,6 +20,7 @@
       
       <FIELD>
         <FIELDNAME>organismo</FIELDNAME>
+        <VALIDATIONRULE>MANDATORY</VALIDATIONRULE>
         <DOMAINREADER>
             <DRTYPE>db</DRTYPE>
             <DRDBSCHEMA>audasa_expropiaciones</DRDBSCHEMA>
