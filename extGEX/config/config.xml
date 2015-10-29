@@ -13,8 +13,6 @@
 	<libraries library-dir="lib"/>
 	<resourceBundle name="text"/>
 	<extensions>
-
-		<!-- FORMS EXTENSIONS -->
 		
 		<extension class-name="es.icarto.gvsig.extgex.InitializationExtension" active="true">
 		</extension>
@@ -35,6 +33,14 @@
 		
 		<extension class-name="es.icarto.gvsig.extgex.FormExpropiationLineExtension" description="FORMS_PANEL" active="true">
 			<menu text="SIGA/Expropiaciones/Línea de Expropiación" action-command="ExpropiationLineFileExtensionv" position="30060"/>
+		</extension>
+		
+		<extension class-name="es.icarto.gvsig.extgex.QueriesExtension" active="true">
+			<menu text="SIGA/es.icarto.gvsig.extgex.QueriesExtension.menu" position="30100"/>
+		</extension>
+		
+		<extension class-name="es.icarto.gvsig.extgex.ExpropiationsFolderExtension" active="true">
+			<menu text="SIGA/es.icarto.gvsig.extgex.ExpropiationsFolderExtension.menu" position="30101"/>
 		</extension>
 
 		<!-- MAPAS EXTENSIONS -->
@@ -65,14 +71,6 @@
 		</extension>
 
 		<!-- TOOLS EXTENSIONS -->
-		<extension class-name="es.icarto.gvsig.extgex.QueriesExtension" active="true">
-		<!--
-			<tool-bar name="SIGA_Tools" position="75">
-				<action-tool icon="es.icarto.gvsig.extgex.queriesextension" tooltip="Consultas" position="0"/>
-			</tool-bar>
-		-->
-			<menu text="SIGA/es.icarto.gvsig.extgex.QueriesExtension.menu" position="30100"/>
-		</extension>
 		
 		<extension class-name="es.icarto.gvsig.extgex.LocatorByPKExtension" active="true">
 			<menu text="SIGA" position="30699" is_separator="true"/>			
